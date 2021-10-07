@@ -1,0 +1,86 @@
+.create{
+    display: flex;
+    flex-direction: row;
+}
+.create-container{
+    display: flex;
+    justify-content: space-evenly;
+    margin-left: 12vw;
+    height: 100vh;
+    width: 100vw;
+} 
+.name-container{
+    margin-top: 30vh;
+}
+.layerOrder-container{
+    width: 18vw;
+    height: 20vh;
+    background-color: #27292C;
+    border-radius: 10px 10px 0px 0px ;
+}
+.layers{
+    display: flex;
+    flex-direction: column;
+    /* background-color: #27292C; */
+    height: 90vh;
+    width: 40vw;
+    margin-top:6vh ;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    margin-right: 8px;
+}
+.nft-container{
+    margin-top: 6vh ;    
+}
+.nft{
+    width: 22vw;
+    height:20vh;
+    background-color: blue;
+    margin-top: 6vh;
+}
+.map{
+    display: flex;
+    width: 100%;
+    height:300px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+::-webkit-scrollbar {
+    width: 30px;
+   
+}
+.background-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color:#27292C ;
+    border-radius: 10px;
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+    
+}
+.background-img{
+    width: 200px;
+    height: 100px;
+}
+.head-img{
+    width: 100px;
+}
+#p-{
+    width: 200px;
+}
+                    
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    background-color: #27292C ;
+    border-radius: 10px;
+
+}
+                    
+::-webkit-scrollbar-thumb {
+    background-color: #00CC9B ;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
