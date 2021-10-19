@@ -1,0 +1,577 @@
+.create-page {
+    background-color: var(--darkBlack);
+    color: var(--white);
+    display: grid;
+    grid-template-columns: 321px 2.2fr 1.4fr;
+    column-gap: 1rem;
+}
+
+/* layer order column */
+.layer-orders {
+    /* width: 100%; */
+    /* max-width: 321px; */
+    max-width: 321px;
+    margin-top: 270px;
+    margin-left: 1rem;
+}
+
+.layer-orders-list {
+    display: grid;
+    grid-template-columns: 1fr 2fr 5fr 2fr;
+    background-color: var(--darkGray);
+    border-radius: 0.5rem;
+    /* width: 100%; */
+    /* overflow: hidden; */
+    margin-right: 1rem;
+}
+.layer-orders-list .list-title {
+    grid-column: 1/5;
+    grid-row: 1/2;
+    padding-left: 1.5rem;
+    margin: 0px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 55px;
+    border-bottom: 1px solid var(--white);
+}
+.layer-orders-list .column1-title {
+    grid-column: 1/4;
+    padding-left: 1rem;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0px;
+    height: 3rem;
+    padding-top: 0.5rem;
+}
+.layer-orders-list .column2-title {
+    grid-column: 4/5;
+    text-align: center;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0px;
+    padding-top: 0.5rem;
+}
+
+/* list */
+div.list-container {
+    grid-column: 1/-1;
+}
+.list {
+    display: grid;
+    grid-template-columns: 10% 20% 50% 20%;
+    /* height: 76px; */
+}
+/* .list:nth-child(odd) {
+    
+    background-color: var(--black);
+    
+} */
+
+.list img {
+    grid-column: 1/2;
+    justify-self: center;
+    align-self: center;
+    height: 24px;
+}
+
+.list .white-space {
+    grid-column: 2/3;
+    justify-self: center;
+    align-self: center;
+    width: 44px;
+    height: 44px;
+    background-color: var(--white);
+}
+.list h4 {
+    grid-column: 3/4;
+    align-self: center;
+    padding-left: 0.5rem;
+}
+.list span {
+    grid-column: 4/5;
+    align-self: center;
+    justify-self: center;
+}
+
+/* button */
+.new-layer-name-btn {
+    grid-column: 1/-1;
+    align-self: center;
+    /* justify-self: center; */
+    width: 100%;
+    height: 76px;
+    border: none;
+    background-color: var(--black);
+    color: var(--white);
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 29px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.new-layer-name-btn span {
+    margin-right: 41px;
+    margin-left: 41px;
+}
+
+.input-layer {
+    grid-column: 1/-1;
+    display: grid;
+    grid-template-columns: 80% 20%;
+    padding: 1rem;
+    background-color: var(--black);
+}
+.input-layer input[type="text"] {
+    grid-column: 1/2;
+    height: 2rem;
+    margin-right: 0.3rem;
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+}
+.input-layer button {
+    grid-column: 2/3;
+    background-color: var(--black);
+    color: var(--white);
+    border: 1px solid var(--white);
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+/* **************************************** */
+/* layers column (middle column) */
+
+section.layers-section {
+    margin-bottom: 2.95rem;
+    height: 100vh;
+    overflow-y: auto;
+    margin-top: 2.95rem;
+    padding: 0px;
+    grid-column: 2/3;
+}
+section.layers-section::-webkit-scrollbar {
+    width: 0; /*Remove scrollbar space*/
+    /* margin-left: 1rem; */
+    color: var(--mainGreen);
+    background-color: transparent; /*Optional: just make scrollbar invisible */
+}
+
+section.layers-section .layer {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+section.layers-section .layer .content {
+    border: 1px solid var(--white);
+    border-radius: 0.5rem;
+    /* padding-left: 1.8rem;
+    padding-bottom: 1.8rem; */
+    overflow: hidden;
+}
+section.layers-section .layer .content h3 {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 28px;
+    line-height: 42px;
+    margin-bottom: 0.25rem;
+    margin-top: 0.5rem;
+    margin-left: 1rem;
+}
+section.layers-section .layer button {
+    width: 100%;
+    background-color: var(--mainGreen);
+    height: 42px;
+    border: none;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 62px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.traits {
+    display: flex;
+    column-gap: 1rem;
+    overflow-x: scroll;
+    padding: 0px 1rem 0.25rem;
+}
+.traits::-webkit-scrollbar {
+    width: 1; /* Remove scrollbar space */
+    background: transparent; /*Optional: just make scrollbar invisible */
+}
+.trait {
+    width: 252px;
+    height: 223px;
+    border: 1px solid var(--white);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.trait:hover {
+    border: 2px solid var(--mainGreen);
+}
+
+.trait * {
+    margin: 0px;
+    padding: 0px;
+}
+
+.trait img {
+    width: 248px;
+    height: 116px;
+    object-fit: cover;
+}
+.trait h4 {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 36px;
+    text-align: center;
+    margin-top: -0.5rem;
+}
+.trait h4:last-child {
+    font-weight: normal;
+}
+.trait div.delete-btn {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 36px;
+    color: var(--red);
+    text-align: right;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+/* **************************************** */
+/* presenation section (last column) */
+section.presenation-section {
+    grid-column: 3/4;
+    /* width: 100%; */
+    margin-top: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 2rem;
+}
+section.presenation-section div.image-display {
+    width: 388px;
+    height: 381px;
+    /* background-color: var(--white); */
+    border-radius: 0.5rem;
+    position: relative;
+}
+section.presenation-section div.image-display img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    border-radius: 0.5rem;
+}
+section.presenation-section div.description {
+    width: 388px;
+    height: 178px;
+    border: 1.6px solid var(--white);
+    overflow-y: auto;
+    padding: 0.5rem;
+}
+section.presenation-section div.description p,
+section.presenation-section div.description h4 {
+    font-family: Poppins;
+    font-style: normal;
+    font-size: 15.528px;
+    line-height: 32px;
+    margin: 0px;
+    padding: 0px;
+}
+
+section.presenation-section button.download-zip-btn,
+section.presenation-section button.mint-btn {
+    width: 386px;
+    height: 3.85rem;
+    box-sizing: border-box;
+    border: 3px solid var(--white);
+    font-family: Poppins;
+    font-size: 34px;
+    line-height: 62px;
+
+    background-color: var(--darkBlack);
+    color: var(--white);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+section.presenation-section div.mint {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+section.presenation-section div.mint div.mint-combinations,
+section.presenation-section div.mint div.mint-amount {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--darkGray);
+}
+
+section.presenation-section div.mint div {
+    width: 40%;
+    padding-top: 0.5rem;
+    padding-bottom: 0.75rem;
+    /* column-gap: 2rem; */
+}
+section.presenation-section div.mint div label {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 29px;
+}
+section.presenation-section div.mint div span,
+section.presenation-section div.mint div input[type="text"] {
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 29px;
+    text-align: center;
+}
+
+section.presenation-section div.mint div input[type="text"] {
+    width: 100%;
+    background-color: var(--lightGray);
+    border: none;
+    border-radius: 1rem;
+    color: var(--white);
+}
+@media only screen and (max-width: 600px) {
+    .create-page {
+        display: grid;
+        grid-template-columns: 1fr;
+        column-gap: 0rem;
+        row-gap: 1rem;
+        padding-right: 0rem;
+    }
+    .layer-orders {
+        grid-row: 1/2;
+        grid-column: 1/2;
+        margin-top: 1rem;
+        max-width: 100%;
+    }
+    section.layers-section {
+        grid-row: 2/3;
+        grid-column: 1/2;
+        margin: 1rem;
+        height: auto;
+    }
+    section.presenation-section {
+        grid-row: 3/4;
+        grid-column: 1/2;
+        margin-top: 1rem;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        column-gap: 0rem;
+        row-gap: 0.5rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+        margin: 1rem;
+    }
+    section.presenation-section div.image-display {
+        grid-row: 1/2;
+        /* margin: 1rem; */
+        width: 100%;
+        height: 248px;
+    }
+    section.presenation-section div.mint {
+        grid-column: 1/2;
+        grid-row: 3/4;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    section.presenation-section div.mint div.mint-combinations,
+    section.presenation-section div.mint div.mint-amount {
+        width: 50%;
+        margin: 0.5rem;
+        grid-row: 4/5;
+    }
+    section.presenation-section div.description {
+        width: 100%;
+        height: 100%;
+        padding: 0.5rem;
+        margin-top: 1rem;
+        grid-row: 2/3;
+    }
+
+    section.presenation-section button.download-zip-btn,
+    section.presenation-section button.mint-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+        font-size: 1.5rem;
+    }
+}
+
+@media only screen and (min-width: 600px) and (max-width: 900px) {
+    .create-page {
+        display: grid;
+        grid-template-columns: 2fr 2fr;
+        column-gap: 0.25rem;
+        row-gap: 1rem;
+        padding-right: 1rem;
+    }
+    .layer-orders {
+        grid-row: 1/2;
+        grid-column: 1/2;
+    }
+    section.layers-section {
+        grid-row: 1/2;
+        grid-column: 2/3;
+        margin-top: 9rem;
+    }
+    section.presenation-section {
+        grid-row: 2/3;
+        grid-column: 1/-1;
+        margin-top: 0px;
+
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 1rem;
+        row-gap: 0rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    section.presenation-section div.image-display {
+        grid-row: 1/3;
+        /* margin: 1rem; */
+        width: 100%;
+    }
+    section.presenation-section div.mint {
+        grid-column: 2/3;
+        grid-row: 2/3;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    section.presenation-section div.mint div.mint-combinations,
+    section.presenation-section div.mint div.mint-amount {
+        width: 50%;
+        margin: 0.5rem;
+    }
+    section.presenation-section div.description {
+        width: 100%;
+        height: 100%;
+        padding: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    section.presenation-section button.download-zip-btn,
+    section.presenation-section button.mint-btn {
+        width: 100%;
+        margin-top: 0.5rem;
+        font-size: 1.5rem;
+    }
+}
+
+@media only screen and (min-width: 900px) and (max-width: 1200px) {
+    .create-page {
+        display: grid;
+        grid-template-columns: 2fr 4fr;
+        column-gap: 0.25rem;
+        row-gap: 1rem;
+        padding-right: 1rem;
+    }
+    .layer-orders {
+        grid-row: 1/2;
+        grid-column: 1/2;
+    }
+    section.layers-section {
+        grid-row: 1/2;
+        grid-column: 2/3;
+        margin-top: 9rem;
+    }
+    section.presenation-section {
+        grid-row: 2/3;
+        grid-column: 1/-1;
+        margin-top: 0px;
+
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 0rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    section.presenation-section div.image-display {
+        grid-row: 1/3;
+    }
+    section.presenation-section div.mint {
+        grid-column: 2/3;
+        grid-row: 2/3;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+    }
+    section.presenation-section div.mint div.mint-combinations,
+    section.presenation-section div.mint div.mint-amount {
+        width: 50%;
+        margin: 0.5rem;
+    }
+    section.presenation-section div.description {
+        width: 100%;
+        height: 100%;
+        padding: 0.5rem;
+        margin-top: 1rem;
+    }
+
+    section.presenation-section button.download-zip-btn,
+    section.presenation-section button.mint-btn {
+        margin-top: 0.5rem;
+    }
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1536px) {
+    .create-page {
+        /* background-color: var(--darkBlack);
+        color: var(--white); */
+        display: grid;
+        grid-template-columns: 1.5fr 2.3fr 1.85fr;
+        column-gap: 1rem;
+    }
+    section.presenation-section div.image-display {
+        width: 288px;
+        height: 281px;
+    }
+
+    section.presenation-section div.description {
+        width: 288px;
+        height: 178px;
+    }
+    section.presenation-section button.download-zip-btn,
+    section.presenation-section button.mint-btn {
+        width: 286px;
+        height: 3.85rem;
+    }
+    /* .layer-orders-list {
+        width: 100%;
+    } */
+
+    /* width: 100%; */
+}
