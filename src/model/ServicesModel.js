@@ -6,7 +6,7 @@ export const Services = [
         titles: [
             'create layer name',
             'upload same size png',
-            'input rarity and minut amount',
+            'input rarity and mint amount',
             'mint, auto-list, revenue + royalties'
         ]
     },
