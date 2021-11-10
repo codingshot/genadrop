@@ -1,0 +1,45 @@
+.container {
+  width: auto;
+}
+
+.appname {
+  width: auto;
+  font-size: 3rem;
+  position: relative;
+  position: absolute;
+  top: -0.25em;
+}
+
+.container p {
+  position: absolute;
+  white-space: nowrap;
+  top: 11.5em;
+  left: -1em;
+  font-size: 0.75rem;
+}
+
+.appname * {
+  position: absolute;
+}
+
+.appname *:nth-child(2){
+  top: 1em;
+  left: 0.35em;
+}
+
+.appname *:nth-child(3){
+  top: 2em;
+  left: 0.35em;
+}
+
+@media screen and (max-width: 768px) {
+  .appname {
+    font-size: 1.5em;
+  }
+
+  .container p {
+    top: 3em;
+    left: 3em;
+    font-size: unset;
+  }
+}

@@ -1,0 +1,29 @@
+.container {
+  flex: 1;
+  height: 100vh;
+  overflow: auto;
+}
+
+.fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  height: 80vh;
+  font-size: 2rem;
+  text-transform: capitalize;
+  font-style: italic;
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    height: 80vh;
+    min-height: 10em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}

@@ -1,0 +1,11 @@
+.container {
+  width: 100%;
+  min-height: 90vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--main-accent);
+  font-size: 2rem;
+  text-transform: capitalize;
+}

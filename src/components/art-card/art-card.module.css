@@ -1,0 +1,113 @@
+.container {
+  width: 14em;
+  height: 14em;
+  cursor: pointer;
+  position:  relative;
+  background: var(--main-bg);
+  border-radius: 0.25em;
+  overflow: hidden;
+  border: 1px solid gray;
+  transition: all 0.2s;
+}
+
+.container.active {
+  border-color: var(--main-accent);
+  border-width: 2px;
+}
+
+.container.inActive:hover {
+  border: 2px solid var(--main-accent);
+}
+
+.container.inActive {
+  border-color: gray;
+}
+
+.container * {
+  transition: all 0.3s;
+}
+
+.image {
+  display: block;
+  width: 100%;
+}
+
+.remove {
+  width: 100%;
+  position: absolute;
+  top: 0;  
+  left: 0;
+  background: var(--card-bg);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.remove * {
+  padding: 0 0.25em;
+  font-weight: bold;
+  color: red;
+}
+
+.remove *:hover {
+ color: rgb(133, 0, 0); 
+}
+
+.details {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  color: white;
+  background:var(--card-bg);
+}
+
+.details *{
+  text-align: center;
+  margin-bottom: 0.5em;
+}
+
+.input {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+}
+
+.reset {
+ background: var(--main-accent);
+}
+
+.reset * {
+  animation: bounce 650ms infinite alternate linear;
+}
+
+@keyframes bounce {
+  from{transform: translateY(4px);}
+  to{transform: translateY(0);}
+}
+
+.details input {
+  width: calc(100% - 1em);
+  height: 100%;
+  text-align: left;
+  padding: 0.25em;
+  background: white;
+  color: black;
+  border: 1px solid gray;
+}
+
+.details input:focus {
+  outline: none;
+}
+
+.promptWrapper {
+  display: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.promptWrapper.show {
+  display: block;
+}

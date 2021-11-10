@@ -1,0 +1,47 @@
+.container {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid gray;
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.header {
+  color: white;
+  margin-bottom: 0.5em;
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 8em;
+  margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: auto;
+  gap: 1em;
+  padding: 0.5em;
+}
+
+.wrapper * {
+  flex: 0 0 auto;
+}
+
+.uploadBtn {
+  width: 100%;
+  background: var(--main-accent);
+  color: white;
+  border: none;
+  padding: 0.5em;
+  font-weight: bold;
+  font-size: 1.2em;
+  text-transform: capitalize;
+  cursor: pointer;
+  transition: all 300ms;
+  border-radius: 0.25em;
+}
+
+.uploadBtn:hover {
+  background: var(--main-accent-dark);
+}

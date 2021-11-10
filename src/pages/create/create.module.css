@@ -1,0 +1,34 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  padding: 0 1em 2em 1em;
+}
+
+.layer_overview {
+  width: calc(100% - 20em);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .layer_overview {
+    width: 100%;
+    border: 3px solid black;
+  }
+} 
+
+
+@media screen and (max-width: 768px) {
+  .layer_overview {
+    flex-direction: column;
+  }
+}

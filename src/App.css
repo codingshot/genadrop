@@ -1,150 +1,78 @@
-/* 
-    Default breakpoints
-    Each breakpoint (a key) matches with a fixed screen width (a value):
-    xs, extra-small: 0px
-    sm, small: 600px
-    md, medium: 900px
-    lg, large: 1200px
-    xl, extra-large: 1536px
-*/
-
 :root {
-    --darkBlack: #000000;
-
-    --black: #151616;
-    --darkGray: #27292c;
-    --lightGray: #444444;
-    --white: #ffffff;
-    --mainGreen: #00cc9b;
-    --red: #ff0000;
+  --main-bg: #0A0A0A;
+  --sidebar-bg: #27292C;
+  --main-accent: #00CC9B;
+  --main-accent-dark: #339e85;
+  --main-text: #ffffff;
+  --card-bg: #151616;
 }
 
-*,
-*::before,
-*::after {
-    font-family: Poppins;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
 .App {
-    display: grid;
-    grid-template-columns: 147px 1fr;
-    height: 100%;
+  width: 100%;
+  background-color: var(--main-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-nav {
-    background-color: var(--darkGray);
-    min-height: 100vh;
-    position: relative;
-    z-index: 1;
-}
-nav ul {
-    list-style-type: none;
-    padding: 1.5rem;
-}
-nav ul a {
-    text-decoration: none;
-    text-align: center;
+.App-Container {
+  width: 100%;
+  padding-left: 6em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  flex-direction: column;
 }
 
-nav ul a img {
-    width: 110px;
-    height: 100px;
-    display: block;
-    text-align: center;
-}
-nav ul a img.logo {
-    width: 282px;
-    height: auto;
-    padding-left: 2.3rem;
-    display: block;
-    text-align: center;
+.Wallet-Wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 1em 2em;
 }
 
-nav ul a span {
-    color: var(--white);
-    font-family: Poppins;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 30px;
-    line-height: 62px;
-    display: block;
-    margin-top: -1rem;
-    text-align: center;
+.Wallet-Wrapper * {
+  max-width: 16em;
 }
-@media only screen and (max-width: 600px) {
-    .App {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 72px 1fr;
-        min-height: 100vh;
-    }
-    nav {
-        /* background-color: var(--darkGray); */
-        min-height: auto;
-        max-height: 100px;
-        width: 100%;
-        /* position: relative;
-        z-index: 1; */
-    }
-    nav ul a img.logo {
-        width: 116px;
-        height: auto;
-        padding-left: 0px;
-        padding-right: 2.3rem;
-        display: block;
-        text-align: center;
-    }
-    nav ul {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-        align-items: center;
-        padding: 0px;
-        width: 100%;
-        margin: 0px;
-        height: 100%;
-    }
-    nav ul li a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-    nav ul a img {
-        width: 42px;
-        height: 32px;
-        /* justify-self: center; */
-    }
-    nav ul a span {
-        font-size: 16px;
-        line-height: 1.5rem;
-        margin-top: 0px;
-    }
+
+/* width */
+::-webkit-scrollbar {
+  width: inherit;
 }
-@media only screen and (min-width: 600px) and (max-width: 1200px) {
-    .App {
-        grid-template-columns: 120px 1fr;
-    }
 
-    nav ul a img.logo {
-        width: 242px;
-        height: auto;
-        display: block;
-        position: relative;
-        text-align: center;
-        left: 80px;
-    }
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background: var(--sidebar-bg);
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--main-accent); 
+  border-radius: 10px;
+}
 
-    nav ul a {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    nav ul a img {
-        width: 70px;
-        height: 60px;
-    }
-    nav ul a span {
-        font-size: 24px;
-    }
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #00b88d; 
+}
+
+
+@media screen and (max-width: 768px) {
+  .App-Container {
+    padding-left: 0;
+  }
 }
