@@ -1,0 +1,15 @@
+.container {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid rgba(128, 128, 128, 0.233);
+  border-radius: 0.5em;
+}
+
+.container button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

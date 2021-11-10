@@ -1,0 +1,34 @@
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+._name {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.5em 0;
+  text-transform: capitalize;
+}
+
+.line {
+  margin-right: 0.5em;
+}
+
+.icon {
+  width: 2em;
+  height: 2em;
+  margin-right: 0.5em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid gray;
+}
+
+.trait {
+  margin-left: 1em;
+}

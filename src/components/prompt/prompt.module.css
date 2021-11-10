@@ -1,0 +1,38 @@
+.form {
+  width: 100%;
+  background: transparent;
+  margin-bottom: 0.25em;
+}
+
+.form input {
+  width: 100%;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+  padding: 0.25em;
+  color: black;
+  background: white;
+  outline: none;
+  border-radius: 0.25em;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+.buttons button {
+  background: white;
+  color: black;
+  outline: none;
+  border: 1px solid gray;
+  padding: 0.25em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.buttons button:hover {
+  transform: scale(0.99);
+}

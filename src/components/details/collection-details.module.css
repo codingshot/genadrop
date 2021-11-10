@@ -1,0 +1,22 @@
+.container {
+  width: 100%;
+  height: 8rem;
+  overflow: auto;
+  border: 1px solid gray;
+  padding: 0.5em;
+}
+
+h4 {
+  margin-bottom: 0.5em;
+}
+
+@media screen and (max-width: 1200px) {
+  .container{
+    height: auto;
+    max-height: 16em;
+  }
+
+  h4 {
+    margin-bottom: 1em;
+  }
+}

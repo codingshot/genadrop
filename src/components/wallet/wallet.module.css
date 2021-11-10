@@ -1,0 +1,16 @@
+.button {
+  width: 100%;
+  padding: 0.5em 3em;
+  background: transparent;
+  border: 2px solid gray;
+  font-weight: bold;
+  color: white;
+  outline: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.button:hover {
+  border-color: var(--main-accent);
+}

@@ -1,0 +1,18 @@
+.container {
+  width: 100%;
+  min-height: 90vh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  font-size: 2rem;
+  text-transform: capitalize;
+  color: var(--main-accent);
+}
+
+.container img {
+  width: 10em;
+  height: 10em;
+}
