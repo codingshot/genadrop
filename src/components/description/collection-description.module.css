@@ -64,6 +64,25 @@
 .mintInfo {
   padding: 0.25em;
   text-transform: capitalize;
+  margin-bottom: 0.5em;
+  font-size: 0.75em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.previewBtn {
+  padding: 0.25em 1.5em;
+  border-radius: 0.75em;
+  background: var(--main-accent);
+  color: white;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.previewBtn:hover {
+  background: var(--main-accent-dark);
 }
 
 .mintInfo.isLoading {

@@ -28,7 +28,7 @@ a {
 
 .App-Container {
   width: 100%;
-  padding-left: 6em;
+  padding-left: 8em;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -45,7 +45,7 @@ a {
 }
 
 .Wallet-Wrapper * {
-  max-width: 16em;
+  max-width: 14em;
 }
 
 /* width */
@@ -74,5 +74,10 @@ a {
 @media screen and (max-width: 768px) {
   .App-Container {
     padding-left: 0;
+  }
+
+  .Wallet-Wrapper {
+    justify-content: flex-start;
+    padding: 1em 0.5em;
   }
 }

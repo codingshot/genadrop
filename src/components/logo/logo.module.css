@@ -1,45 +1,51 @@
 .container {
   width: auto;
+  overflow: hidden;
 }
 
 .appname {
   width: auto;
-  font-size: 3rem;
-  position: relative;
-  position: absolute;
-  top: -0.25em;
+  font-size: 2rem;
 }
 
 .container p {
-  position: absolute;
   white-space: nowrap;
-  top: 11.5em;
-  left: -1em;
   font-size: 0.75rem;
+  transform: translateY(-30px);
 }
 
 .appname * {
-  position: absolute;
+  text-align: right;
+  transform: translateX(-20px) translateY(0);
 }
 
 .appname *:nth-child(2){
-  top: 1em;
-  left: 0.35em;
+  transform: translateX(-20px) translateY(-10px);
 }
 
 .appname *:nth-child(3){
-  top: 2em;
-  left: 0.35em;
+  transform: translateX(-20px) translateY(-20px);
 }
 
 @media screen and (max-width: 768px) {
-  .appname {
-    font-size: 1.5em;
+  .appname * {
+    text-align: right;
+    transform: translateX(-40px) translateY(0);
+  }  
+
+  .appname *:nth-child(2){
+    transform: translateX(-40px) translateY(-10px);
   }
+  
+  .appname *:nth-child(3){
+    transform: translateX(-40px) translateY(-20px);
+  }  
 
   .container p {
-    top: 3em;
-    left: 3em;
-    font-size: unset;
+    transform: translateY(-20px);
+  }
+
+  .appname {
+    font-size: 1.5em;
   }
 }
