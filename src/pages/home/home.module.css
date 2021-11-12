@@ -34,11 +34,14 @@
 
 .feature {
   margin: 2em;
+  display: flex;
+  flex-direction: column;
 }
 
 .feature .header {
   font-weight: 500;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
+  font-size: 1.6rem;
 }
 
 .feature .icon {
@@ -57,7 +60,12 @@
   width: 20em;
   text-align: center;
   border: 2px solid var(--main-accent);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+  transition: all 450ms;
+}
+
+.function:hover {
+  transform: translateX(-15px);
 }
 
 .icons {
@@ -91,8 +99,20 @@
   max-width: 12em;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .container {
     height: unset;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .function {
+    font-size: 0.85rem;
+  }
+
+  .function:hover {
+    transform: translateX(0px);
+    margin-bottom: 1em;
+    margin-top: 1em;
   }
 }

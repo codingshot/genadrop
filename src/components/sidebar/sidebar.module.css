@@ -6,11 +6,17 @@
   top: 0;
   left: 0;
   z-index: 10;
-  padding: 0 1em;
+  padding: 1em 0.25em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: auto;
 }
 
 .logoWrapper {
-  position: absolute;
+  z-index: 1;
+  margin-bottom: 4em;
 }
 
 .container * {
@@ -19,7 +25,6 @@
 
 .navItems {
   width: auto;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,6 +33,32 @@
 
 .navItem {
   margin-bottom: 2em;
+  position: relative;
+}
+
+.effect {
+  position: absolute;
+  width: 0.3em;
+  height: 0.3em;
+  background: var(--main-accent);
+  top: 0;
+  left: -0.8em;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.navItem:hover .effect {
+  opacity: 1;
+  border-radius: 2px;
+}
+
+.navItem.active .effect {
+  opacity: 0.8;
+  transform: translateY(10px);
+  border-radius: 50%;
+  width: 0.5em;
+  height: 0.5em;
+
 }
 
 .navItem p {
@@ -44,27 +75,17 @@
   height: 4em;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  z-index: 1000;
-}
-
-.overlay.isLoading {
-  background: rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: 100%;
-}
-
 @media screen and (max-width: 768px) {
   .container {
     width: 100%;
     height: unset;
     position: static;
-    padding: 1em;
+    padding: 0 1em;
+    flex-direction: row;
+  }
+
+  .logoWrapper {
+    margin-bottom: 0;
   }
 
   .navItems {
@@ -78,5 +99,9 @@
     display: block;
     width: 2em;
     height: 2em;
+  }
+
+  .navItem p {
+    font-size: 0.85rem;
   }
 }

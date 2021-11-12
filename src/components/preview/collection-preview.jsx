@@ -25,6 +25,9 @@ const CollectionPreview = () => {
           })
         })
       })
+      
+      // reverse preview 
+      newPreview.reverse();
 
       for (let img of newPreview) {
         const image = await new Promise(resolve => {

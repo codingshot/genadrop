@@ -7,6 +7,7 @@ import CollectionDetails from '../details/collection-details';
 import CollectionPreview from '../preview/collection-preview';
 import classes from './collection-description.module.css';
 import { v4 as uuid } from 'uuid';
+import { Link } from 'react-router-dom';
 
 const CollectionDescription = () => {
   const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
@@ -138,7 +139,10 @@ const CollectionDescription = () => {
           <Button>download zip</Button>
         </div>
         <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
-          {mintInfo}
+          {mintInfo} 
+          {
+            mintInfo === "minting completed" && <Link to="/preview" className={classes.previewBtn}>preview</Link>
+          }
         </div>
         <div className={classes.btnWrapper}>
           <div style={{ cursor: "pointer" }} onClick={handleMint}>
