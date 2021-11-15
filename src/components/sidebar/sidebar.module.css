@@ -1,7 +1,7 @@
 .container {
   width: auto;
   height: 100vh;
-  background: var(--sidebar-bg);
+  border-right: 2px solid var(--sidebar-bg);
   position: fixed;
   top: 0;
   left: 0;
@@ -16,7 +16,7 @@
 
 .logoWrapper {
   z-index: 1;
-  margin-bottom: 4em;
+  margin-bottom: 6em;
 }
 
 .container * {
@@ -28,11 +28,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 1.5em;
+  gap: 4em;
 }
 
 .navItem {
-  margin-bottom: 2em;
   position: relative;
 }
 
@@ -41,24 +40,23 @@
   width: 0.3em;
   height: 0.3em;
   background: var(--main-accent);
-  top: 0;
-  left: -0.8em;
+  bottom: -0.5em;
+  left: 0em;
   opacity: 0;
   transition: all 0.3s;
+  border-radius: 50%;
 }
 
 .navItem:hover .effect {
   opacity: 1;
-  border-radius: 2px;
 }
 
 .navItem.active .effect {
   opacity: 0.8;
-  transform: translateY(10px);
+  /* transform: translateY(10px); */
   border-radius: 50%;
-  width: 0.5em;
+  width: 100%;
   height: 0.5em;
-
 }
 
 .navItem p {
@@ -80,8 +78,10 @@
     width: 100%;
     height: unset;
     position: static;
-    padding: 0 1em;
+    padding: 0.75em 1em;
     flex-direction: row;
+    border-right: unset;
+    border-bottom: 2px solid var(--sidebar-bg);
   }
 
   .logoWrapper {
@@ -103,5 +103,21 @@
 
   .navItem p {
     font-size: 0.85rem;
+  }
+
+  .effect {
+    bottom: -0.5em;
+  }
+
+  .navItem.active .effect {
+    height: 0.3em;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .navItem > img {
+    display: block;
+    width: 1.5em;
+    height: 1.5em;
   }
 }

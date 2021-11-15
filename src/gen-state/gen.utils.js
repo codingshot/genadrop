@@ -105,5 +105,5 @@ export const createDna = layers => {
     const newTraits = (layer.traits.map(trait => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait))).flat();
     return { ...layer, traits: shuffle(newTraits) }
   })
-  return newLayers
+  return newLayers.reverse();
 }

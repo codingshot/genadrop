@@ -5,12 +5,7 @@ const Logo = () => {
   return (
     <div className={classes.container}>
       <Link to="/">
-        <h1 className={classes.appname}>
-          <div>gena</div>
-          <div>DR</div>
-          <div>OP.</div>
-        </h1>
-        <p>create, mint, resell</p>
+        <img className={classes.logo} src="./logo.PNG" alt="" />
       </Link>
     </div>
   )

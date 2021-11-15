@@ -5,8 +5,7 @@ import { GenContext } from '../../gen-state/gen.context';
 
 const CollectionOverview = () => {
   const { layers } = useContext(GenContext);
-  console.log(layers.length)
-
+  
   return (
     <div className={classes.container}>
       {

@@ -1,51 +1,22 @@
 .container {
   width: auto;
-  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.appname {
-  width: auto;
-  font-size: 2rem;
-}
-
-.container p {
-  white-space: nowrap;
-  font-size: 0.75rem;
-  transform: translateY(-30px);
-}
-
-.appname * {
-  text-align: right;
-  transform: translateX(-20px) translateY(0);
-}
-
-.appname *:nth-child(2){
-  transform: translateX(-20px) translateY(-10px);
-}
-
-.appname *:nth-child(3){
-  transform: translateX(-20px) translateY(-20px);
+.logo {
+  width: 5em;
 }
 
 @media screen and (max-width: 768px) {
-  .appname * {
-    text-align: right;
-    transform: translateX(-40px) translateY(0);
-  }  
-
-  .appname *:nth-child(2){
-    transform: translateX(-40px) translateY(-10px);
+  .logo {
+    width: 4em;
   }
-  
-  .appname *:nth-child(3){
-    transform: translateX(-40px) translateY(-20px);
-  }  
+}
 
-  .container p {
-    transform: translateY(-20px);
-  }
-
-  .appname {
-    font-size: 1.5em;
+@media screen and (max-width: 360px) {
+  .logo {
+    width: 3em;
   }
 }

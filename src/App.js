@@ -7,7 +7,7 @@ import './App.css';
 import Home from './pages/home/home';
 import Mint from './pages/mint/mint';
 import Explore from './pages/explore/explore';
-import ConnectWallet from './components/wallet/wallet';
+// import ConnectWallet from './components/wallet/wallet';
 import Preview from './pages/preview/preview';
 
 function App() {
@@ -15,9 +15,9 @@ function App() {
     <div className="App">
       <div className="App-Container">
         <Sidebar />
-        <div className="Wallet-Wrapper">
+        {/* <div className="Wallet-Wrapper">
           <ConnectWallet>connect-wallet</ConnectWallet>
-        </div>
+        </div> */}
         <Switch>
           <Redirect exact from="/" to="/home" />
           <Route exact path="/home" component={Home} />
