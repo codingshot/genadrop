@@ -29,7 +29,6 @@ a {
 .App-Container {
   width: 100%;
   padding-left: 6em;
-  padding-top: 2em;
   padding-bottom: 2em;
   display: flex;
   align-items: center;
