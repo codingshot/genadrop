@@ -29,16 +29,11 @@
   padding: 0.5em 1em;
 }
 
-.info .warn {
-  color: red;
-  margin-left: 1em;
-}
-
 .imgWrapper {
   display: inline-block;
   border: 1px solid rgba(128, 128, 128, 0.2);
-  width: 10em;
-  height: 10em;
+  width: 14em;
+  height: 14em;
   position: relative;
   cursor: pointer;
   transition: all 300ms;
@@ -58,6 +53,8 @@
 }
 
 .popup {
+  width: 100%;
+  border: 1px solid var(--sidebar-bg);
   position: absolute;
   bottom: 0;
   right: 0;

@@ -23,8 +23,8 @@ const CollectionDescription = () => {
   // draw images
   const handleImage = async images => {
     const canvas = canvasRef.current;
-    canvas.setAttribute("width", "250px");
-    canvas.setAttribute("height", "250px");
+    canvas.setAttribute("width", "1000px");
+    canvas.setAttribute("height", "1000px");
     const ctx = canvas.getContext("2d");
     for (let img of images) {
       const image = await new Promise(resolve => {
@@ -34,7 +34,7 @@ const CollectionDescription = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0, 250, 250);
+      image && ctx.drawImage(image, 0, 0, 1000, 1000);
     };
   };
 
