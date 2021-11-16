@@ -1,0 +1,16 @@
+.container {
+  width: 100%;
+  border-top: 1px solid  var(--sidebar-bg);
+  color: white;
+  padding: 1em;
+  text-align: center;
+  margin-top: 4em;
+}
+
+.container * {
+  color: white;
+}
+
+.container a {
+  font-size: 0.85rem;
+}
