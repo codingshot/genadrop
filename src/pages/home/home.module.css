@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   overflow: auto;
   padding: 1em 0;
   display: flex;
@@ -97,12 +97,6 @@
 .btnWrapper {
   width: 100%;
   max-width: 12em;
-}
-
-@media screen and (max-width: 900px) {
-  .container {
-    height: unset;
-  }
 }
 
 @media screen and (max-width: 480px) {

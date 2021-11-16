@@ -4,7 +4,6 @@ import { GenContext } from '../../gen-state/gen.context';
 
 const CollectionPreview = () => {
   const { layers, preview } = useContext(GenContext);
-
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -15,8 +14,9 @@ const CollectionPreview = () => {
       canvas.setAttribute("height", "250px");
       const ctx = canvas.getContext("2d");
       const newPreview = [];
+      const newLayers = [...layers];
 
-      layers.forEach(({ layerTitle: name, traits }) => {
+      newLayers.reverse().forEach(({ layerTitle: name, traits }) => {
         traits.forEach(({traitTitle, image}) => {
           preview.forEach(({ layerTitle, imageName }) => {
             if (name === layerTitle && traitTitle === imageName) {
@@ -25,9 +25,6 @@ const CollectionPreview = () => {
           })
         })
       })
-      
-      // reverse preview 
-      newPreview.reverse();
 
       for (let img of newPreview) {
         const image = await new Promise(resolve => {

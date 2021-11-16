@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  min-height: 90vh;
+  min-height: 100vh;
   overflow: auto;
   display: flex;
   align-items: center;
@@ -8,4 +8,5 @@
   color: var(--main-accent);
   font-size: 2rem;
   text-transform: capitalize;
+  text-align: center;
 }

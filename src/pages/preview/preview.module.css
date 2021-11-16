@@ -1,6 +1,7 @@
 .container {
   width: 100%;
-  min-height: 90vh;
+  min-height: 100vh;
+  padding: 1em;
 }
 
 .container img {
@@ -12,7 +13,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 0.5em;
 }
 
@@ -28,6 +29,7 @@
   padding: 0 1.5em;
   border-radius: 0.5em;
   cursor: pointer;
+  margin-bottom: 2em;
 }
 
 .goBackBtn i {

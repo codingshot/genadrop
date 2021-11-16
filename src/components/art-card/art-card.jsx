@@ -44,7 +44,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
       }
     })
     dispatch(updateImage({ layerTitle, image, traitTitle: inputValue.name, Rarity: inputValue.rarity }))
-  }, [inputValue])
+  }, [inputValue, dispatch, image, layerTitle, preview, previousValue])
 
   return (
     <div onClick={handleActive} className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>

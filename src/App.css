@@ -28,7 +28,8 @@ a {
 
 .App-Container {
   width: 100%;
-  padding-left: 8em;
+  padding-left: 6em;
+  padding-bottom: 2em;
   display: flex;
   align-items: center;
   justify-content: flex-start;

@@ -38,7 +38,7 @@ const CollectionMenu = ({ layer: { layerTitle, traits } }) => {
     ), 1)
 
     dispatch(setCombinations(amt))
-  }, [layers])
+  }, [layers, dispatch])
 
   return (
     <div className={classes.container}>
