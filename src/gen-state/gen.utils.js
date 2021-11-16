@@ -83,6 +83,10 @@ export const updatePreview = (preview, { layerTitle, imageName }) => {
   return newPreview
 }
 
+export const deleteAsset = (nftLayers, id) => {
+  return nftLayers.filter(layer => layer.id !== id)
+}
+
 export const createDna = layers => {
 
   const getPercentage = (rarity, total) => {

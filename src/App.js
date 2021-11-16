@@ -10,11 +10,13 @@ import Explore from './pages/explore/explore';
 // import ConnectWallet from './components/wallet/wallet';
 import Preview from './pages/preview/preview';
 import Footer from './components/footer/footer';
+import Overlay from './components/overlay/overlay';
 
 function App() {
   return (
     <div className="App">
       <div className="App-Container">
+        <Overlay/>
         <Sidebar />
         {/* <div className="Wallet-Wrapper">
           <ConnectWallet>connect-wallet</ConnectWallet>

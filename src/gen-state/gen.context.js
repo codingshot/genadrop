@@ -5,9 +5,17 @@ export const GenContext = createContext();
 
 const GenContextProvider = ({ children }) => {
 
-  const [ state, dispatch] = useReducer(genReducer, INITIAL_STATE)
-  
-  const  { layers, preview, mintAmount, nftLayers, combinations, isLoading, mintInfo } = state;
+  const [state, dispatch] = useReducer(genReducer, INITIAL_STATE)
+
+  const { layers,
+    preview,
+    mintAmount,
+    nftLayers,
+    combinations,
+    isLoading,
+    mintInfo,
+    currentDnaLayers
+  } = state;
 
   // console.log("preview => ", preview);
   // console.log("layers => ", layers );
@@ -16,9 +24,20 @@ const GenContextProvider = ({ children }) => {
   // console.log("combinations => ", combinations)
   // console.log("isLoading => ", isLoading)
   // console.log("isLoading => ", mintInfo)
-
+  // console.log("currentDnaLayers => ", currentDnaLayers)
+  
   return (
-    <GenContext.Provider value={{ layers, preview, mintAmount, nftLayers, combinations, isLoading, mintInfo, dispatch }}>
+    <GenContext.Provider value={{
+      layers,
+      preview,
+      mintAmount,
+      nftLayers,
+      combinations,
+      isLoading,
+      mintInfo,
+      currentDnaLayers,
+      dispatch
+    }}>
       {children}
     </GenContext.Provider>
   )
