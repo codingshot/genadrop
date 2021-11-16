@@ -69,3 +69,13 @@ export const setMintInfo = val => ({
   type: genActionTypes.SET_MINT_INFO,
   payload: val
 })
+
+export const deleteAsset = asset => ({
+  type: genActionTypes.DELETE_ASSET,
+  payload: asset
+})
+
+export const setCurrentDnaLayers = layers => ({
+  type: genActionTypes.SET_CURRENT_DNA_LAYERS,
+  payload: layers
+})

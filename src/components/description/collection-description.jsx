@@ -1,5 +1,5 @@
 import { useContext, useRef } from 'react';
-import { setLoading, setMintAmount, setMintInfo, setNftLayers } from '../../gen-state/gen.actions';
+import { setCurrentDnaLayers, setLoading, setMintAmount, setMintInfo, setNftLayers } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import { createDna } from '../../gen-state/gen.utils';
 import Button from '../button/button';
@@ -15,15 +15,16 @@ const CollectionDescription = () => {
 
   // set generate amount
   const handleChange = event => {
-    dispatch(setMintAmount(event.target.value))
+    let value = event.target.value;
+    dispatch(setMintAmount(value ? parseInt(value) : 0))
     dispatch(setMintInfo(""))
   }
 
-  // draw image 
+  // draw images
   const handleImage = async images => {
     const canvas = canvasRef.current;
-    canvas.setAttribute("width", "250px");
-    canvas.setAttribute("height", "250px");
+    canvas.setAttribute("width", "1000px");
+    canvas.setAttribute("height", "1000px");
     const ctx = canvas.getContext("2d");
     for (let img of images) {
       const image = await new Promise(resolve => {
@@ -33,12 +34,12 @@ const CollectionDescription = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0, 250, 250);
+      image && ctx.drawImage(image, 0, 0, 1000, 1000);
     };
   };
 
   // generate nfts
-  const generateNFT = async (layers, r, u) => {
+  const generateNFT = async (layers) => {
     const uniqueImages = [];
 
     for (let { attributes, id } of layers) {
@@ -69,7 +70,7 @@ const CollectionDescription = () => {
       return true
     }
 
-    for (let i = 0; i < (parseInt(mintAmount) + uniqueIndex); i++) {
+    for (let i = 0; i < (mintAmount + uniqueIndex); i++) {
       let attr = [];
       layers.forEach(({ layerTitle, traits }) => {
         let randNum = Math.floor(Math.random() * traits.length)
@@ -98,16 +99,16 @@ const CollectionDescription = () => {
   }
 
   // generate nft data ready for upload
-  const handleMint = async () => {
-    dispatch(setMintInfo("minting in progress..."))
-    if (!parseInt(mintAmount)) return dispatch(setMintInfo("please set the amount to continue..."));
+  const handleGenerate = async () => {
+    dispatch(setMintInfo("generating..."))
+    if (!mintAmount) return dispatch(setMintInfo("please set the amount to continue..."));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets to continue..."))
     if (mintAmount > combinations) return dispatch(setMintInfo("cannot generate more than possible combinations"));
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))
-    const result = createDna(layers);
-    const uniqueLayers = createUniqueLayer(result);
-    const NFTs = await generateNFT(uniqueLayers, result);
+    const dnaLayers = createDna(layers);
+    const uniqueLayers = createUniqueLayer(dnaLayers);
+    const NFTs = await generateNFT(uniqueLayers);
 
     let newLayers = uniqueLayers.map(layer => {
       let newLayer = null
@@ -119,8 +120,9 @@ const CollectionDescription = () => {
       return newLayer
     })
 
+    dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(newLayers))
-    dispatch(setMintInfo("minting completed"))
+    dispatch(setMintInfo("completed"))
     dispatch(setLoading(false))
   }
 
@@ -141,11 +143,11 @@ const CollectionDescription = () => {
         <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
           {mintInfo} 
           {
-            mintInfo === "minting completed" && <Link to="/preview" className={classes.previewBtn}>preview</Link>
+            mintInfo === "completed" && <Link to="/preview" className={classes.previewBtn}>preview</Link>
           }
         </div>
         <div className={classes.btnWrapper}>
-          <div style={{ cursor: "pointer" }} onClick={handleMint}>
+          <div style={{ cursor: "pointer" }} onClick={handleGenerate}>
             <Button>generate {mintAmount}</Button>
           </div>
         </div>

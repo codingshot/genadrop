@@ -20,7 +20,7 @@ const Home = () => {
 
         <div className={classes.features}>
           <div className={classes.feature}>
-          <h3 className={classes.header}>For Collectors</h3>
+            <h3 className={classes.header}>For Collectors</h3>
             <div className={classes.icons}>
               <img className={classes.icon} src="/assets/gena-icon-2.png" alt="icon" />
               <img className={classes.icon} src="/assets/gena-icon-3.png" alt="icon" />
@@ -29,7 +29,7 @@ const Home = () => {
           </div>
 
           <div className={classes.functionalities}>
-            <p className={classes.function}>browse generative drop</p>
+            <p className={classes.function}>browse generative drops</p>
             <p className={classes.function}>get new drop</p>
             <p className={classes.function}>resell on marketplace</p>
           </div>
