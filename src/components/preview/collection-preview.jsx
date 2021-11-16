@@ -43,9 +43,22 @@ const CollectionPreview = () => {
 
   }, [preview, layers])
  
+  const handleDownload = () => {
+    let image = canvasRef.current.toDataURL();  
+  
+    let link = document.createElement( 'a' );  
+    link.download = 'asset.png'; 
+    link.href = image;  
+  
+    document.body.appendChild( link );  
+    link.click();  
+    document.body.removeChild( link );  
+  }
+
   return (
     <div className={classes.container}>
       <canvas className={classes.canvas} ref={canvasRef}></canvas>
+      {preview.length ? <button onClick={handleDownload}>download</button> : null}
     </div>
   )
 }

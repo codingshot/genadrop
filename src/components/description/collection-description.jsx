@@ -13,7 +13,7 @@ const CollectionDescription = () => {
   const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
   const canvasRef = useRef(null);
 
-  // set mint amount
+  // set generate amount
   const handleChange = event => {
     dispatch(setMintAmount(event.target.value))
     dispatch(setMintInfo(""))
@@ -100,9 +100,9 @@ const CollectionDescription = () => {
   // generate nft data ready for upload
   const handleMint = async () => {
     dispatch(setMintInfo("minting in progress..."))
-    if (!parseInt(mintAmount)) return dispatch(setMintInfo("please set mint amount to continue..."));
+    if (!parseInt(mintAmount)) return dispatch(setMintInfo("please set the amount to continue..."));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets to continue..."))
-    if (mintAmount > combinations) return dispatch(setMintInfo("cannot mint more than possible combinations"));
+    if (mintAmount > combinations) return dispatch(setMintInfo("cannot generate more than possible combinations"));
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))
     const result = createDna(layers);
@@ -146,14 +146,14 @@ const CollectionDescription = () => {
         </div>
         <div className={classes.btnWrapper}>
           <div style={{ cursor: "pointer" }} onClick={handleMint}>
-            <Button>mint {mintAmount}</Button>
+            <Button>generate {mintAmount}</Button>
           </div>
         </div>
 
       </div>
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="mint amout">Mint Amout</label>
+          <label htmlFor="generate amout">Amout</label>
           <input onChange={handleChange} type="number" min="0" max="100" />
         </div>
         <div className={classes.action}>

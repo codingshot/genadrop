@@ -12,4 +12,12 @@
   position: absolute;
   top: 0;
   right: 0;
+  color: black;
+  padding: 0.15em 0.75em;
+  cursor: pointer;
+  background: var(--main-bg);
+  color: white;
+  outline: none;
+  border: none;
+  font-size: 12px;
 }

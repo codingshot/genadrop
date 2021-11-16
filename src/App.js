@@ -9,6 +9,7 @@ import Mint from './pages/mint/mint';
 import Explore from './pages/explore/explore';
 // import ConnectWallet from './components/wallet/wallet';
 import Preview from './pages/preview/preview';
+import Footer from './components/footer/footer';
 
 function App() {
   return (
@@ -26,6 +27,8 @@ function App() {
           <Route exact path="/explore" component={Explore} />
           <Route exact path="/preview" component={Preview} />
         </Switch>
+        
+        <Footer/>
       </div>
     </div>
   )
