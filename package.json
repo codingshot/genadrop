@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@json-rpc-tools/utils": "^1.7.6",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@walletconnect/client": "^1.6.6",
+    "algorand-walletconnect-qrcode-modal": "^1.6.1",
+    "algosdk": "^1.12.0",
     "canvas": "^2.8.0",
     "file-saver": "^2.0.5",
     "image-data-uri": "^2.0.1",
