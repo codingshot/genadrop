@@ -8,9 +8,11 @@ import CollectionPreview from '../preview/collection-preview';
 import classes from './collection-description.module.css';
 import { v4 as uuid } from 'uuid';
 import { Link } from 'react-router-dom';
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 
 const CollectionDescription = () => {
-  const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
+  const { layers, mintAmount, dispatch, nftLayers, combinations, isLoading, mintInfo } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   // set generate amount
@@ -92,6 +94,7 @@ const CollectionDescription = () => {
       newLayers.push({
         id: uuid(),
         image: "image",
+        decimals: 10,
         attributes: attr
       })
     })
@@ -111,19 +114,62 @@ const CollectionDescription = () => {
     const NFTs = await generateNFT(uniqueLayers);
 
     let newLayers = uniqueLayers.map(layer => {
-      let newLayer = null
       for (let nft of NFTs) {
         if (nft.id === layer.id) {
-          return newLayer = { ...layer, image: nft.imageUrl }
+          return { ...layer, image: nft.imageUrl }
         }
       }
-      return newLayer
+      return layer
     })
 
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(newLayers))
     dispatch(setMintInfo("completed"))
     dispatch(setLoading(false))
+  }
+
+  const handleDownload = () => {
+
+    let _nftLayers = nftLayers.map((layer, idx) => (
+      {
+        name: `asset-${idx+1}`, image: layer.image, properties: layer.attributes.map(({ trait, layerTitle }) => {
+          return { layerTitle: layerTitle, traits: { traitTitle: trait.traitTitle, Rarity: trait.Rarity } } 
+        })
+      }
+    ))
+
+    const zip1 = new JSZip();
+    zip1.file("all-asset-metadata.json", JSON.stringify(_nftLayers, null, '\t'));
+    zip1.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, "metadata.zip");
+    });
+
+    const zip2 = new JSZip();
+    _nftLayers.forEach((layer, idx) => {
+      let base64String = layer.image.replace("data:image/png;base64,", "");
+      zip2.file(`art-${idx+1}.png`, base64String, { base64: true });
+    })
+    zip2.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, "arts.zip");
+    });
+
+    const zip3 = new JSZip();
+    _nftLayers.forEach((layer, idx) => {
+      zip3.file(`asset-${idx+1}.json`, JSON.stringify(layer, null, '\t'))
+      let base64String = layer.image.replace("data:image/png;base64,", "");
+      zip3.file(`art-${idx}.png`, base64String, { base64: true });
+    })
+    zip3.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, "assets-arts.zip");
+    });
+
+    const zip4 = new JSZip();
+    _nftLayers.forEach((layer, idx) => {
+      zip4.file(`asset-${idx+1}.json`, JSON.stringify(layer, null, '\t'))
+    })
+    zip4.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, "assets.zip");
+    });
   }
 
   return (
@@ -137,11 +183,11 @@ const CollectionDescription = () => {
             <CollectionDetails />
           </div>
         </div>
-        <div className={classes.btnWrapper}>
+        <div onClick={handleDownload} className={classes.btnWrapper}>
           <Button>download zip</Button>
         </div>
         <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
-          {mintInfo} 
+          {mintInfo}
           {
             mintInfo === "completed" && <Link to="/preview" className={classes.previewBtn}>preview</Link>
           }
