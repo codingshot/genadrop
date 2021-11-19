@@ -9,7 +9,7 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
+  gap: 1.5em;
 }
 
 .info {
@@ -29,6 +29,10 @@
   padding: 0.5em 1em;
 }
 
+.info .warn {
+  color: tomato;
+}
+
 .imgWrapper {
   display: inline-block;
   border: 1px solid rgba(128, 128, 128, 0.2);
@@ -45,7 +49,7 @@
 }
 
 .imgWrapper:hover {
-  border: 1px solid var(--main-accent);
+  border: 1px solid var(--main-accent-dark);
 }
 
 .imgWrapper:hover .popup {
@@ -55,6 +59,7 @@
 .popup {
   width: 100%;
   border: 1px solid var(--sidebar-bg);
+  border-radius: 4em;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -68,18 +73,53 @@
   transition: all 0.3s;
 }
 
-.popup button {
+.imgWrapper button {
   font-size: 10px;
   background: var(--main-bg);
   color: white;
   color: white;
   outline: none;
   border: 1px solid var(--sidebar-bg);
-  box-shadow: 0px 0px 20px 0px var(--main-accent);
+  box-shadow: 0px 0px 5px 0px var(--main-accent);
   font-size: 12px;
   border-radius: 0.2em;
   padding: 0.25em 0.5em;
   cursor: pointer;
+  transition: all 0.3s;
+}
+
+.imgWrapper button:hover {
+  box-shadow: 0px 0px 10px 0px var(--main-accent);
+}
+
+.renameInputContainer {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.25em;
+  padding: 0.25em .5em;
+}
+
+.renameBtn {
+
+}
+
+.renameInput {
+  width: 100%;
+  border: 1px solid var(--sidebar-bg);
+  padding: 0.25em;
+  outline: none;
+  transition: all 0.3s;
+  opacity: 0;
+}
+
+.renameInput.active {
+  opacity: 1;
 }
 
 .goBackBtn {

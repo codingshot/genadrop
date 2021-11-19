@@ -93,6 +93,7 @@ const CollectionDescription = () => {
     newAttributes.forEach(attr => {
       newLayers.push({
         id: uuid(),
+        name: "",
         image: "image",
         decimals: 10,
         attributes: attr
@@ -132,7 +133,7 @@ const CollectionDescription = () => {
 
     let _nftLayers = nftLayers.map((layer, idx) => (
       {
-        name: `asset-${idx+1}`, image: layer.image, properties: layer.attributes.map(({ trait, layerTitle }) => {
+        name: `${layer.name}_${idx+1}`, image: layer.image, properties: layer.attributes.map(({ trait, layerTitle }) => {
           return { layerTitle: layerTitle, traits: { traitTitle: trait.traitTitle, Rarity: trait.Rarity } } 
         })
       }
@@ -147,7 +148,7 @@ const CollectionDescription = () => {
     const zip2 = new JSZip();
     _nftLayers.forEach((layer, idx) => {
       let base64String = layer.image.replace("data:image/png;base64,", "");
-      zip2.file(`art-${idx+1}.png`, base64String, { base64: true });
+      zip2.file(`${layer.name}.png`, base64String, { base64: true });
     })
     zip2.generateAsync({ type: "blob" }).then(function (content) {
       saveAs(content, "arts.zip");
@@ -155,9 +156,9 @@ const CollectionDescription = () => {
 
     const zip3 = new JSZip();
     _nftLayers.forEach((layer, idx) => {
-      zip3.file(`asset-${idx+1}.json`, JSON.stringify(layer, null, '\t'))
+      zip3.file(`${layer.name}.json`, JSON.stringify(layer, null, '\t'))
       let base64String = layer.image.replace("data:image/png;base64,", "");
-      zip3.file(`art-${idx}.png`, base64String, { base64: true });
+      zip3.file(`${layer.name}.png`, base64String, { base64: true });
     })
     zip3.generateAsync({ type: "blob" }).then(function (content) {
       saveAs(content, "assets-arts.zip");
@@ -165,7 +166,7 @@ const CollectionDescription = () => {
 
     const zip4 = new JSZip();
     _nftLayers.forEach((layer, idx) => {
-      zip4.file(`asset-${idx+1}.json`, JSON.stringify(layer, null, '\t'))
+      zip4.file(`${layer.name}.json`, JSON.stringify(layer, null, '\t'))
     })
     zip4.generateAsync({ type: "blob" }).then(function (content) {
       saveAs(content, "assets.zip");

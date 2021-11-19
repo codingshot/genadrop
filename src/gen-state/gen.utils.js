@@ -1,3 +1,29 @@
+export const createDna = layers => {
+
+  const getPercentage = (rarity, total) => {
+    let result = (parseInt(rarity) / total) * 100;
+    return Math.floor(result)
+  }
+
+  function shuffle(array) {
+    for (let i = 0; i < 100; i++) {
+      for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    return array
+  }
+
+  const newLayers = layers.map(layer => {
+    const totalTraits = (layer.traits.map(trait => parseInt(trait.Rarity))).reduce((acc, curr) => acc + curr);
+    const newTraits = (layer.traits.map(trait => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait))).flat();
+    return { ...layer, traits: shuffle(newTraits) }
+  })
+  return newLayers.reverse();
+}
+
+
 export const addLayer = (layers, layerToAdd) => {
   let result = layers.find(layer => layer.layerTitle.toLowerCase() === layerToAdd.layerTitle.toLowerCase())
   if (result) return layers;
@@ -87,27 +113,16 @@ export const deleteAsset = (nftLayers, id) => {
   return nftLayers.filter(layer => layer.id !== id)
 }
 
-export const createDna = layers => {
-
-  const getPercentage = (rarity, total) => {
-    let result = (parseInt(rarity) / total) * 100;
-    return Math.floor(result)
-  }
-
-  function shuffle(array) {
-    for (let i = 0; i < 100; i++) {
-      for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-    return array
-  }
-
-  const newLayers = layers.map(layer => {
-    const totalTraits = (layer.traits.map(trait => parseInt(trait.Rarity))).reduce((acc, curr) => acc + curr);
-    const newTraits = (layer.traits.map(trait => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait))).flat();
-    return { ...layer, traits: shuffle(newTraits) }
-  })
-  return newLayers.reverse();
+export const renameAsset = (nftLayers, value) => {
+  return nftLayers.map(layer => (
+    layer.id === value.id ? {...layer, name: value.name} : layer
+  ))
 }
+
+
+
+
+
+
+
+

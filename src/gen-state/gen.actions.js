@@ -79,3 +79,8 @@ export const setCurrentDnaLayers = layers => ({
   type: genActionTypes.SET_CURRENT_DNA_LAYERS,
   payload: layers
 })
+
+export const renameAsset = val => ({
+  type: genActionTypes.RENAME_ASSET,
+  payload: val
+})
