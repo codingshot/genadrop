@@ -11,6 +11,16 @@
   transition: all 0.3s;
 }
 
+.button.invert {
+  background: var(--main-accent);
+  color: white;
+  border: transparent;
+}
+
+.button.invert:hover {
+  background: var(--main-accent-dark);
+}
+
 .button:hover {
   border-color: var(--main-accent);
 }

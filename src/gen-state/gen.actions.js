@@ -84,3 +84,8 @@ export const renameAsset = val => ({
   type: genActionTypes.RENAME_ASSET,
   payload: val
 })
+
+export const setCollectionName = name => ({
+  type: genActionTypes.SET_COLLECTION_NAME,
+  payload: name
+})

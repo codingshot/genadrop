@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './preview.module.css';
 import { useHistory } from 'react-router';
@@ -11,23 +11,38 @@ import {
   setNftLayers
 } from '../../gen-state/gen.actions';
 import { v4 as uuid } from 'uuid';
+import Button from '../../components/button/button';
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
 
 const Preview = () => {
 
   const history = useHistory();
-  const { nftLayers, currentDnaLayers, dispatch, combinations, mintAmount, mintInfo } = useContext(GenContext);
+  const { nftLayers, currentDnaLayers, dispatch, combinations, mintAmount, mintInfo, collectionName } = useContext(GenContext);
 
   const [deleteId, setDeleteId] = useState("");
   const [renameAction, setRenameAction] = useState("");
   const [inputValue, setInputValue] = useState("");
+  const didMountRef = useRef(false)
 
   const canvas = document.createElement("canvas");
 
+  // image size
+  const getImageSize = async img => {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.src = URL.createObjectURL(img);
+      image.onload = () => {
+        resolve({height: image.height, width: image.width});
+      };
+    })
+  }
 
-  // draw image 
+  // draw images
   const handleImage = async images => {
-    canvas.setAttribute("width", "250px");
-    canvas.setAttribute("height", "250px");
+    const {height, width} = await getImageSize(images[0]);
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
     const ctx = canvas.getContext("2d");
     for (let img of images) {
       const image = await new Promise(resolve => {
@@ -37,7 +52,7 @@ const Preview = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0, 250, 250);
+      image && ctx.drawImage(image, 0, 0);
     };
   };
 
@@ -147,7 +162,7 @@ const Preview = () => {
     if (renameAction === id) {
       setRenameAction("")
       setInputValue("")
-      dispatch(renameAsset({id: id, name: inputValue}))
+      dispatch(renameAsset({ id: id, name: inputValue }))
     } else {
       setRenameAction(id)
     }
@@ -157,8 +172,34 @@ const Preview = () => {
     setInputValue(value);
   }
 
+  const handleDownload = () => {
+
+    let _nftLayers = nftLayers.map((layer, idx) => (
+      {
+        name: layer.name ? layer.name : `_${idx}`, properties: layer.attributes.map(({ trait, layerTitle }) => {
+          return { layerTitle: layerTitle, traits: { traitTitle: trait.traitTitle, Rarity: trait.Rarity } }
+        })
+      }
+    ))
+
+    const zip = new JSZip();
+    zip.file("metadata.json", JSON.stringify(_nftLayers, null, '\t'));
+
+    nftLayers.forEach((layer, idx) => {
+      let base64String = layer.image.replace("data:image/png;base64,", "");
+      zip.file(layer.name ? `${layer.name}.png` : `_${idx}.png`, base64String, { base64: true });
+    })
+
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, `${collectionName ? `${collectionName}.zip` : 'collections.zip'}`);
+    });
+  }
+
+
   useEffect(() => {
-    handleGenerate()
+    if (didMountRef.current) {
+      handleGenerate()
+    } else didMountRef.current = true;
   }, [deleteId])
 
   useEffect(() => {
@@ -174,6 +215,10 @@ const Preview = () => {
         <div>possible combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}</div>
       </div>
 
+      <div onClick={handleDownload} className={classes.downloadBtn}>
+        <Button>download zip</Button>
+      </div>
+
       <div className={classes.preview}>
         {
           nftLayers.length && nftLayers.map(({ image, id, name }, idx) => (
@@ -187,13 +232,17 @@ const Preview = () => {
                 <button className={classes.renameBtn} onClick={() => handleRename(id)}>{name ? name : "asset name"}{": "}{renameAction === id ? "done" : "rename"}</button>
                 {
                   renameAction === id
-                    ? <input
-                      className={`${classes.renameInput} ${classes.active}`}
-                      type="text"
-                      onChange={handleChange}
-                      value={inputValue}
-                      autoFocus
-                    />
+                    ? 
+                    <form onSubmit={() => handleRename(id)}>
+                      <input
+                        className={`${classes.renameInput} ${classes.active}`}
+                        type="text"
+                        onChange={handleChange}
+                        value={inputValue}
+                        autoFocus
+                      />
+                    </form>
+
                     : null
                 }
               </div>

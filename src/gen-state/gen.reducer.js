@@ -4,11 +4,12 @@ import { addLayer, removeLayer, addImage, removeImage, addPreview, removePreview
 export const INITIAL_STATE = {
   layers: [],
   preview: [],
-  mintAmount: 0,
   nftLayers: [],
   combinations: 0,
-  isLoading: false,
+  mintAmount: 0,
   mintInfo: "",
+  collectionName: "",
+  isLoading: false,
   currentDnaLayers: null
 }
 
@@ -100,6 +101,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state, 
         nftLayers: renameAsset(state.nftLayers, action.payload)
+      }
+    case genActionTypes.SET_COLLECTION_NAME:
+      return {
+        ...state,
+        collectionName: action.payload
       }
     default:
       return state;

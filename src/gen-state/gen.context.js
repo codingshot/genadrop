@@ -14,7 +14,8 @@ const GenContextProvider = ({ children }) => {
     combinations,
     isLoading,
     mintInfo,
-    currentDnaLayers
+    currentDnaLayers,
+    collectionName
   } = state;
 
   // console.log("preview => ", preview);
@@ -25,6 +26,7 @@ const GenContextProvider = ({ children }) => {
   // console.log("isLoading => ", isLoading)
   // console.log("isLoading => ", mintInfo)
   // console.log("currentDnaLayers => ", currentDnaLayers)
+  // console.log("collectionName =>", collectionName)
   
   return (
     <GenContext.Provider value={{
@@ -36,6 +38,7 @@ const GenContextProvider = ({ children }) => {
       isLoading,
       mintInfo,
       currentDnaLayers,
+      collectionName,
       dispatch
     }}>
       {children}

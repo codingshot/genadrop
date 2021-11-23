@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { addPreview, removeImage, removePreview, updateImage, updatePreview } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './art-card.module.css';
@@ -8,14 +8,12 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
 
   const [prompt, setPrompt] = useState("");
   const [inputValue, setValue] = useState({ name: trait.traitTitle, rarity: trait.Rarity });
-  const [previousValue, setPrevious] = useState("");
-
+  const [previousValue, setPreviousValue] = useState("");
   const { name, rarity } = inputValue;
-
   const { image, traitTitle, Rarity } = trait;
 
-  const handleAdd = () => {
-    dispatch(addPreview({ layerTitle, imageName: traitTitle }))
+  const handleAdd = value => {
+    dispatch(addPreview({ layerTitle, imageName: value }))
   }
 
   const handleRemove = () => {
@@ -26,49 +24,71 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const handleChange = event => {
     const { name, value } = event.target;
     setValue(v => ({ ...v, [name]: value }))
-    setPrevious(inputValue.name)
   }
 
-  const handleActive = () => {
+  const handleActive = () => {    
     setActiveCard(traitTitle)
   }
 
-  const handleUpdate = () => {
+  const handleRename = () => {
     setPrompt("");
-  }
-
-  useEffect(() => {
     preview.forEach(item => {
       if (item["layerTitle"] === layerTitle && item["imageName"] === previousValue) {
         dispatch(updatePreview({ layerTitle, imageName: inputValue.name }))
       }
     })
     dispatch(updateImage({ layerTitle, image, traitTitle: inputValue.name, Rarity: inputValue.rarity }))
-  }, [inputValue, dispatch, image, layerTitle, preview, previousValue])
+  }
+
+  const handlePrompt = value => {
+    setPrompt(value);
+    setPreviousValue(traitTitle)
+  }
+
+  useEffect(()=> {
+    if(activeCard !== traitTitle) setPrompt("")
+  },[activeCard, traitTitle])
 
   return (
     <div onClick={handleActive} className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
       <div className={classes.remove}>
         <div onClick={handleRemove}>x</div>
       </div>
-      <img onClick={handleAdd} className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
+      <img onClick={()=>handleAdd(traitTitle)} className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
       <div className={classes.details}>
         <div>
-          {
-            prompt &&
-            <div className={classes.reset} onClick={handleUpdate}>
-              <i className="fas fa-chevron-down"></i>
+          {prompt !== "name"
+            ?
+            <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="far fa-edit"></i></div>
+            :
+            <div className={classes.editInput}>
+              <input
+                autoFocus type="text"
+                name="name"
+                value={name}
+                onChange={handleChange}
+              />
+              <i onClick={handleRename} className="far fa-check-square"></i>
             </div>
           }
         </div>
-        <div onClick={() => setPrompt("name")}>
-          {
-            prompt !== "name" ? traitTitle : <input autoFocus type="text" name="name" value={name} onChange={handleChange} />
-          }
-        </div>
-        <div onClick={() => setPrompt("rarity")}>
-          {
-            prompt !== "rarity" ? <span>Rarity: {Rarity}</span> : <input autoFocus type="number" min="0" name="rarity" value={rarity} onChange={handleChange} />
+
+        <div>
+          {prompt !== "rarity"
+            ?
+            <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="far fa-edit"></i></div>
+            :
+            <div className={classes.editInput}>
+              <input
+                autoFocus
+                type="number"
+                min="0"
+                name="rarity"
+                value={rarity}
+                onChange={handleChange}
+              />
+              <i onClick={handleRename} className="far fa-check-square"></i>
+            </div>
           }
         </div>
       </div>

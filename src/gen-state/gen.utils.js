@@ -79,8 +79,9 @@ export const updateImage = (layers, imageObj) => {
 
 export const addPreview = (preview, { layerTitle, imageName }) => {
   let result = preview.find(item => item.layerTitle === layerTitle);
+  let newPreview = [];
   if (result) {
-    return preview.map(item => {
+    newPreview = preview.map(item => {
       if (item.layerTitle === layerTitle) {
         return { layerTitle, imageName }
       } else {
@@ -90,6 +91,7 @@ export const addPreview = (preview, { layerTitle, imageName }) => {
   } else {
     return [...preview, { layerTitle, imageName }]
   }
+  return newPreview
 }
 
 export const removePreview = (preview, { layerTitle, imageName }) => {
@@ -106,6 +108,7 @@ export const updatePreview = (preview, { layerTitle, imageName }) => {
       return pre
     }
   })
+
   return newPreview
 }
 
@@ -115,7 +118,7 @@ export const deleteAsset = (nftLayers, id) => {
 
 export const renameAsset = (nftLayers, value) => {
   return nftLayers.map(layer => (
-    layer.id === value.id ? {...layer, name: value.name} : layer
+    layer.id === value.id ? { ...layer, name: value.name } : layer
   ))
 }
 

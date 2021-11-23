@@ -1,7 +1,8 @@
 .container {
   width: 100%;
   min-height: 100vh;
-  padding: 1em;
+  position: relative;
+  margin-bottom: 3.5em;
 }
 
 .preview {
@@ -15,18 +16,23 @@
 .info {
   color: white;
   margin-bottom: 2em;
-  width: auto;
+  width: 100%;
+  padding: 0 0.5em;
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   text-transform: capitalize;
   font-size: 12px;
+  position: sticky;
+  top: 1em;
+  z-index: 1000;
 }
 
 .info div {
   border: 1px solid var(--sidebar-bg);
   padding: 0.5em 1em;
+  background: var(--main-bg);
 }
 
 .info .warn {
@@ -59,7 +65,7 @@
 .popup {
   width: 100%;
   border: 1px solid var(--sidebar-bg);
-  border-radius: 4em;
+  border-radius: 0.25em;
   position: absolute;
   bottom: 0;
   right: 0;
@@ -68,7 +74,7 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.25em;
-  padding: 1em;
+  padding: 0.5em;
   opacity: 0;
   transition: all 0.3s;
 }
@@ -105,8 +111,12 @@
   padding: 0.25em .5em;
 }
 
-.renameBtn {
-
+.downloadBtn {
+  position: fixed;
+  right: 0.5em;
+  bottom: 4em;
+  z-index: 1000;
+  background: black;
 }
 
 .renameInput {
@@ -131,6 +141,7 @@
   cursor: pointer;
   margin-bottom: 3em;
   margin-top: 1em;
+  margin-left: 0.5em;
 }
 
 .goBackBtn i {

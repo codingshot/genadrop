@@ -6,7 +6,7 @@
   background: var(--main-bg);
   border-radius: 0.25em;
   overflow: hidden;
-  border: 1px solid gray;
+  border: 2px solid gray;
   transition: all 0.2s;
 }
 
@@ -60,18 +60,30 @@
   left: 0;
   color: white;
   background:var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.5em;
 }
 
-.details *{
-  text-align: center;
-  margin-bottom: 0.5em;
-}
-
-.input {
+.editInput,
+.inputText {
+  width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  color: white;
+  justify-content: space-between;
+  gap: 0.25em;
+}
+
+.editInput input,
+.inputText div {
+  flex: 1;
+  text-align: center;
+}
+
+.container i {
+  cursor: pointer;
+  font-size: 0.7rem;
 }
 
 .reset {
