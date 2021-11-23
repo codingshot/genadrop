@@ -8,11 +8,9 @@ import CollectionPreview from '../preview/collection-preview';
 import classes from './collection-description.module.css';
 import { v4 as uuid } from 'uuid';
 import { Link } from 'react-router-dom';
-import { saveAs } from 'file-saver';
-import JSZip from 'jszip';
 
 const CollectionDescription = () => {
-  const { layers, mintAmount, dispatch, nftLayers, combinations, isLoading, mintInfo } = useContext(GenContext);
+  const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   // set generate amount
@@ -22,11 +20,23 @@ const CollectionDescription = () => {
     dispatch(setMintInfo(""))
   }
 
+  // image size
+  const getImageSize = async img => {
+    return new Promise(resolve => {
+      const image = new Image();
+      image.src = URL.createObjectURL(img);
+      image.onload = () => {
+        resolve({height: image.height, width: image.width});
+      };
+    })
+  }
+
   // draw images
   const handleImage = async images => {
+    const {height, width} = await getImageSize(images[0]);
     const canvas = canvasRef.current;
-    canvas.setAttribute("width", "1000px");
-    canvas.setAttribute("height", "1000px");
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
     const ctx = canvas.getContext("2d");
     for (let img of images) {
       const image = await new Promise(resolve => {
@@ -36,7 +46,7 @@ const CollectionDescription = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0, 1000, 1000);
+      image && ctx.drawImage(image, 0, 0);
     };
   };
 
@@ -93,6 +103,7 @@ const CollectionDescription = () => {
     newAttributes.forEach(attr => {
       newLayers.push({
         id: uuid(),
+        name: "",
         image: "image",
         decimals: 10,
         attributes: attr
@@ -128,49 +139,6 @@ const CollectionDescription = () => {
     dispatch(setLoading(false))
   }
 
-  const handleDownload = () => {
-
-    let _nftLayers = nftLayers.map((layer, idx) => (
-      {
-        name: `asset-${idx+1}`, image: layer.image, properties: layer.attributes.map(({ trait, layerTitle }) => {
-          return { layerTitle: layerTitle, traits: { traitTitle: trait.traitTitle, Rarity: trait.Rarity } } 
-        })
-      }
-    ))
-
-    const zip1 = new JSZip();
-    zip1.file("all-asset-metadata.json", JSON.stringify(_nftLayers, null, '\t'));
-    zip1.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, "metadata.zip");
-    });
-
-    const zip2 = new JSZip();
-    _nftLayers.forEach((layer, idx) => {
-      let base64String = layer.image.replace("data:image/png;base64,", "");
-      zip2.file(`art-${idx+1}.png`, base64String, { base64: true });
-    })
-    zip2.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, "arts.zip");
-    });
-
-    const zip3 = new JSZip();
-    _nftLayers.forEach((layer, idx) => {
-      zip3.file(`asset-${idx+1}.json`, JSON.stringify(layer, null, '\t'))
-      let base64String = layer.image.replace("data:image/png;base64,", "");
-      zip3.file(`art-${idx}.png`, base64String, { base64: true });
-    })
-    zip3.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, "assets-arts.zip");
-    });
-
-    const zip4 = new JSZip();
-    _nftLayers.forEach((layer, idx) => {
-      zip4.file(`asset-${idx+1}.json`, JSON.stringify(layer, null, '\t'))
-    })
-    zip4.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, "assets.zip");
-    });
-  }
 
   return (
     <div className={classes.container}>
@@ -183,25 +151,29 @@ const CollectionDescription = () => {
             <CollectionDetails />
           </div>
         </div>
-        <div onClick={handleDownload} className={classes.btnWrapper}>
-          <Button>download zip</Button>
-        </div>
-        <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
-          {mintInfo}
-          {
-            mintInfo === "completed" && <Link to="/preview" className={classes.previewBtn}>preview</Link>
-          }
-        </div>
         <div className={classes.btnWrapper}>
-          <div style={{ cursor: "pointer" }} onClick={handleGenerate}>
+          <div onClick={handleGenerate}>
             <Button>generate {mintAmount}</Button>
           </div>
         </div>
 
+        <div className={classes.btnWrapper}>
+          {
+            mintInfo === "completed"
+              ?
+              <Button invert>
+                <Link to="/preview">preview</Link>
+              </Button>
+              :
+              <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
+                {mintInfo}
+              </div>
+          }
+        </div>
       </div>
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Amout</label>
+          <label htmlFor="generate amout">Amount</label>
           <input onChange={handleChange} type="number" min="0" max="100" />
         </div>
         <div className={classes.action}>

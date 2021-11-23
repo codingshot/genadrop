@@ -11,8 +11,8 @@
 
 .container button {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 0.5em;
+  right: 0.5em;
   color: black;
   padding: 0.15em 0.75em;
   cursor: pointer;
@@ -20,7 +20,7 @@
   color: white;
   outline: none;
   border: 1px solid var(--sidebar-bg);
-  box-shadow: 0px 0px 20px 0px var(--main-accent);
+  box-shadow: 0px 0px 5px 0px var(--main-accent);
   font-size: 12px;
   border-radius: 0.2em;
 }
