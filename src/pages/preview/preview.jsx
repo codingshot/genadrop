@@ -14,6 +14,7 @@ import { v4 as uuid } from 'uuid';
 import Button from '../../components/button/button';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
+import { getImageSize } from '../../components/utils/getImageSize';
 
 const Preview = () => {
 
@@ -26,17 +27,6 @@ const Preview = () => {
   const didMountRef = useRef(false)
 
   const canvas = document.createElement("canvas");
-
-  // image size
-  const getImageSize = async img => {
-    return new Promise(resolve => {
-      const image = new Image();
-      image.src = URL.createObjectURL(img);
-      image.onload = () => {
-        resolve({height: image.height, width: image.width});
-      };
-    })
-  }
 
   // draw images
   const handleImage = async images => {
@@ -52,7 +42,7 @@ const Preview = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0);
+      image && ctx.drawImage(image, 0, 0, width, height);
     };
   };
 
@@ -212,7 +202,7 @@ const Preview = () => {
 
       <div className={classes.info}>
         <div>no of generative arts: {nftLayers.length}</div>
-        <div>possible combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}</div>
+        <div>unused combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}</div>
       </div>
 
       <div onClick={handleDownload} className={classes.downloadBtn}>

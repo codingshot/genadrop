@@ -8,6 +8,7 @@ import CollectionPreview from '../preview/collection-preview';
 import classes from './collection-description.module.css';
 import { v4 as uuid } from 'uuid';
 import { Link } from 'react-router-dom';
+import { getImageSize } from '../utils/getImageSize';
 
 const CollectionDescription = () => {
   const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
@@ -20,20 +21,9 @@ const CollectionDescription = () => {
     dispatch(setMintInfo(""))
   }
 
-  // image size
-  const getImageSize = async img => {
-    return new Promise(resolve => {
-      const image = new Image();
-      image.src = URL.createObjectURL(img);
-      image.onload = () => {
-        resolve({height: image.height, width: image.width});
-      };
-    })
-  }
-
   // draw images
   const handleImage = async images => {
-    const {height, width} = await getImageSize(images[0]);
+    const { height, width } = await getImageSize(images[0]);
     const canvas = canvasRef.current;
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);
@@ -46,7 +36,7 @@ const CollectionDescription = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0);
+      image && ctx.drawImage(image, 0, 0, width, height);
     };
   };
 
@@ -114,6 +104,7 @@ const CollectionDescription = () => {
 
   // generate nft data ready for upload
   const handleGenerate = async () => {
+
     dispatch(setMintInfo("generating..."))
     if (!mintAmount) return dispatch(setMintInfo("please set the amount to continue..."));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets to continue..."))
@@ -161,9 +152,11 @@ const CollectionDescription = () => {
           {
             mintInfo === "completed"
               ?
-              <Button invert>
-                <Link to="/preview">preview</Link>
-              </Button>
+
+              <Link to="/preview">
+                <Button invert>preview</Button>
+              </Link>
+
               :
               <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
                 {mintInfo}
@@ -174,7 +167,7 @@ const CollectionDescription = () => {
       <div className={classes.input}>
         <div className={classes.action}>
           <label htmlFor="generate amout">Amount</label>
-          <input onChange={handleChange} type="number" min="0" max="100" />
+          <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
           <div htmlFor="combinations">Combinations</div>
