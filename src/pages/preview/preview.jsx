@@ -52,7 +52,7 @@ const Preview = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0);
+      image && ctx.drawImage(image, 0, 0, width, height);
     };
   };
 
@@ -212,7 +212,7 @@ const Preview = () => {
 
       <div className={classes.info}>
         <div>no of generative arts: {nftLayers.length}</div>
-        <div>possible combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}</div>
+        <div>unused combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}</div>
       </div>
 
       <div onClick={handleDownload} className={classes.downloadBtn}>

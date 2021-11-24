@@ -1,19 +1,19 @@
 import classes from './collection-preview.module.css';
 import { useEffect, useRef, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
+import { getImageSize } from '../utils/getImageSize';
 
 const CollectionPreview = () => {
   const { layers, preview } = useContext(GenContext);
   const canvasRef = useRef(null);
+  const newPreview = [];
 
   useEffect(() => {
-
     const handleImage = async () => {
       const canvas = canvasRef.current;
       canvas.setAttribute("width", "250px");
       canvas.setAttribute("height", "250px");
       const ctx = canvas.getContext("2d");
-      const newPreview = [];
       const newLayers = [...layers];
 
       newLayers.reverse().forEach(({ layerTitle: name, traits }) => {
@@ -38,13 +38,28 @@ const CollectionPreview = () => {
         image && ctx.drawImage(image, 0, 0, 250, 250);
       };
     };
-
     handleImage();
 
   }, [preview, layers])
  
-  const handleDownload = () => {
-    let image = canvasRef.current.toDataURL();  
+  const handleDownload = async () => {
+    const canvas = document.createElement("canvas");
+    const { width, height } = await getImageSize(newPreview[0])
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+    const ctx = canvas.getContext("2d");
+    for (let img of newPreview) {
+      const image = await new Promise(resolve => {
+        const image = new Image();
+        image.src = URL.createObjectURL(img);
+        image.onload = () => {
+          resolve(image);
+        };
+      });
+
+      image && ctx.drawImage(image, 0, 0, width, height);
+    };
+    let image = canvas.toDataURL();  
   
     let link = document.createElement( 'a' );  
     link.download = 'asset.png'; 
