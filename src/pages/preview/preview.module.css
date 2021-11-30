@@ -111,12 +111,10 @@
   padding: 0.25em .5em;
 }
 
-.downloadBtn {
+.downloadContainer {
   position: fixed;
   right: 0.5em;
   bottom: 4em;
-  z-index: 1000;
-  background: black;
 }
 
 .renameInput {
@@ -151,4 +149,13 @@
 
 .goBackBtn:hover i {
   transform: translateX(-6px);
+}
+
+.outputFormat {
+
+}
+
+.toggleLabel{
+  color: white;
+  margin-left: 5px;
 }

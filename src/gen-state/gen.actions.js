@@ -89,3 +89,8 @@ export const setCollectionName = name => ({
   type: genActionTypes.SET_COLLECTION_NAME,
   payload: name
 })
+
+export const setOutputFormat = format => ({
+  type: genActionTypes.SET_OUTPUT_FORMAT,
+  payload: format 
+})

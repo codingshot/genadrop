@@ -15,7 +15,8 @@ const GenContextProvider = ({ children }) => {
     isLoading,
     mintInfo,
     currentDnaLayers,
-    collectionName
+    collectionName,
+    outputFormat
   } = state;
 
   // console.log("preview => ", preview);
@@ -39,6 +40,7 @@ const GenContextProvider = ({ children }) => {
       mintInfo,
       currentDnaLayers,
       collectionName,
+      outputFormat,
       dispatch
     }}>
       {children}
