@@ -227,7 +227,8 @@ const Preview = () => {
 
     // add json data to individual json files
     jsonData.forEach((data, i) => {
-      zip.file(i, JSON.stringify(data));
+      // different file extensions for arweave vs ipfs
+      zip.file(outputFormat.toLowerCase() === "arweave" ? `${i}.json` : i, JSON.stringify(data));
     });
 
     nftLayers.forEach((layer, idx) => {
