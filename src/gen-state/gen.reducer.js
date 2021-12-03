@@ -1,5 +1,5 @@
 import genActionTypes from './gen.types';
-import { addLayer, removeLayer, addImage, removeImage, addPreview, removePreview, updateImage, updatePreview, deleteAsset, renameAsset } from './gen.utils';
+import { addLayer, removeLayer, addImage, removeImage, addPreview, removePreview, updateImage, updatePreview, deleteAsset, renameAsset, updateLayer } from './gen.utils';
 
 export const INITIAL_STATE = {
   layers: [],
@@ -29,6 +29,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: removeLayer(state.layers, action.payload)
+      }
+    case genActionTypes.UPDATE_LAYER:
+      return {
+        ...state,
+        layers: updateLayer(state.layers, action.payload)
       }
     case genActionTypes.ADD_IMAGE:
       return {
@@ -92,14 +97,14 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         nftLayers: deleteAsset(state.nftLayers, action.payload)
       }
-    case genActionTypes.SET_CURRENT_DNA_LAYERS: 
+    case genActionTypes.SET_CURRENT_DNA_LAYERS:
       return {
         ...state,
         currentDnaLayers: action.payload
       }
-    case genActionTypes.RENAME_ASSET: 
+    case genActionTypes.RENAME_ASSET:
       return {
-        ...state, 
+        ...state,
         nftLayers: renameAsset(state.nftLayers, action.payload)
       }
     case genActionTypes.SET_COLLECTION_NAME:

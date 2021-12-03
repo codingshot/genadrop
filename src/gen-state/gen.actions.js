@@ -15,6 +15,11 @@ export const removeLayer = layer => ({
   payload: layer
 });
 
+export const updateLayer = layer => ({
+  type: genActionTypes.UPDATE_LAYER,
+  payload: layer
+});
+
 export const addImage = image => ({
   type: genActionTypes.ADD_IMAGE,
   payload: image

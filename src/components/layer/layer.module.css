@@ -11,7 +11,6 @@
   align-items: center;
   justify-content: flex-start;
   padding: 0.5em 0;
-  text-transform: capitalize;
 }
 
 .line {
@@ -32,3 +31,37 @@
 .trait {
   margin-left: 1em;
 }
+
+
+.renameBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  color: white;
+  font-size: 1rem;
+  border: none;
+}
+
+.renameBtn form {
+  flex: 1;
+  height: 100%;
+  display: flex;
+}
+
+.renameBtn input {
+  background: transparent;
+  width: 100%;
+  outline: none;
+  border: none;
+  font-size: 1.1rem;
+  padding: 0.25em;
+  border: 1px solid gray;
+}
+
+.editBtn {
+  cursor: pointer;
+  padding: 0.1em;
+}
+
