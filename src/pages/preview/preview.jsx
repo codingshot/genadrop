@@ -10,7 +10,8 @@ import {
   setLoading,
   setMintAmount,
   setMintInfo,
-  setNftLayers
+  setNftLayers,
+  setOutputFormat
 } from '../../gen-state/gen.actions';
 import { v4 as uuid } from 'uuid';
 import Button from '../../components/button/button';
@@ -22,10 +23,20 @@ import InputEditor from './inputEditor';
 const Preview = () => {
 
   const history = useHistory();
-  const { nftLayers, currentDnaLayers, dispatch, combinations, mintAmount, mintInfo, collectionName } = useContext(GenContext);
+  const {
+    nftLayers,
+    currentDnaLayers,
+    dispatch,
+    combinations,
+    mintAmount,
+    mintInfo,
+    collectionName,
+    outputFormat,
+  } = useContext(GenContext);
 
   const [deleteId, setDeleteId] = useState("");
   const [editorAction, setEditorAction] = useState({ index: "", id: "" });
+  const [checked, setChecked] = useState(true);
   const didMountRef = useRef(false)
 
   const canvas = document.createElement("canvas");
@@ -177,18 +188,73 @@ const Preview = () => {
     }
   }
 
+  const handleToggle = (e) => {
+    setChecked(!checked);
+    if (!checked) dispatch(setOutputFormat("ipfs"));
+    else dispatch(setOutputFormat("arweave"));
+  }
+
   const handleDownload = () => {
+    let jsonData = [];
+    nftLayers.forEach((layer) => {
+      let data = {};
+      let attributes = [];
+      // add the rest of the attributes
+      data.attributes = attributes;
+      data.description = "";
+      data.name = collectionName;
+      data.image = "image.png";
+      // extract layer data 
+      layer.attributes.forEach((traitData) => {
+        const value = traitData.trait.traitTitle;
+        attributes.push({
+          trait_type: traitData.layerTitle,
+          value: value.substring(0, value.indexOf("."))
+        });
+      });
+
+      console.log(outputFormat.toLowerCase())
+      // arweave specific data  
+      if (outputFormat.toLowerCase() === "arweave") {
+        data.symbol = "";
+        data.seller_fee_basis_points = "";
+        data.external_url = "";
+        data.collection = {
+          name: "",
+          family: ""
+        };
+        data.properties = {
+          creators: [
+            {
+              address: "",
+              share: 100
+            }
+          ]
+        }
+      }
+
+      // add to json data array
+      jsonData.push(data);
+
+    });
+
 
     let _nftLayers = nftLayers.map((layer, idx) => (
       {
         name: layer.name ? layer.name : `_${idx}`, description: layer.description, properties: layer.attributes.map(({ trait, layerTitle }) => {
           return { layerTitle: layerTitle, traits: { traitTitle: trait.traitTitle, Rarity: trait.Rarity } }
         })
-      }
-    ))
+      }));
 
     const zip = new JSZip();
+
     zip.file("metadata.json", JSON.stringify(_nftLayers, null, '\t'));
+
+    // add json data to individual json files
+    jsonData.forEach((data, i) => {
+      // different file extensions for arweave vs ipfs
+      zip.file(outputFormat.toLowerCase() === "arweave" ? `${i}.json` : i, JSON.stringify(data));
+    });
 
     nftLayers.forEach((layer, idx) => {
       let base64String = layer.image.replace("data:image/png;base64,", "");
@@ -213,7 +279,9 @@ const Preview = () => {
 
   return (
     <div className={classes.container}>
-      <div onClick={() => history.goBack()} className={classes.goBackBtn}><i className="fas fa-arrow-left"></i></div>
+      <div onClick={() => history.goBack()} className={classes.goBackBtn}>
+        <i className="fas fa-arrow-left"></i>
+      </div>
 
       <div className={classes.info}>
         <div className={classes.collectionName}>
@@ -236,17 +304,23 @@ const Preview = () => {
         </div>
       </div>
 
-      <div onClick={handleDownload} className={classes.downloadBtn}>
+      <div onClick={handleDownload} className={classes.downloadContainer}>
+        <div>
+          <input onChange={handleToggle} type="checkbox" name="format" checked={checked} value="ipfs" />
+          <label className={classes.toggleLabel} for="format">Use IPFS Format</label><br />
+        </div>
         <Button>download zip</Button>
       </div>
 
       <div className={classes.preview}>
-        {
-          nftLayers.length && nftLayers.map(({ image, id, name, description }, idx) => (
+        {nftLayers.length &&
+          nftLayers.map(({ image, id, name, description }, idx) => (
             <div key={idx} className={classes.imgWrapper}>
               <img src={image} alt="" />
               <div className={classes.popup}>
-                <button onClick={() => handleDeleteAndReplace(id)}>generate new</button>
+                <button onClick={() => handleDeleteAndReplace(id)}>
+                  generate new
+                </button>
                 <button onClick={() => handleDelete(id)}>delete</button>
               </div>
               <div className={classes.inputs}>
@@ -270,11 +344,10 @@ const Preview = () => {
               </div>
 
             </div>
-          ))
-        }
+          ))}
       </div>
     </div>
-  )
+  );
 }
 
 export default Preview

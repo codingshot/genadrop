@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   position: relative;
-  margin-bottom: 3.5em;
+  margin-bottom: 4em;
 }
 
 .preview {
@@ -127,12 +127,13 @@
   padding: 0.25em .5em;
 }
 
-.downloadBtn {
+.downloadContainer {
   position: fixed;
   right: 0.5em;
   bottom: 4em;
   z-index: 1000;
   background: black;
+  padding: 1em;
 }
 
 .renameInput {
@@ -167,4 +168,9 @@
 
 .goBackBtn:hover i {
   transform: translateX(-6px);
+}
+
+.toggleLabel{
+  color: white;
+  margin-left: 5px;
 }

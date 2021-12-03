@@ -20,6 +20,7 @@ export const INITIAL_STATE = {
   nftLayers: [],
   combinations: 0,
   mintAmount: 0,
+  outputFormat: 'ipfs',
   mintInfo: "",
   collectionName: "",
   isLoading: false,
@@ -129,6 +130,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collectionName: action.payload
+      }
+    case genActionTypes.SET_OUTPUT_FORMAT:
+      return {
+        ...state,
+        outputFormat: action.payload
       }
     default:
       return state;

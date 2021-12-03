@@ -99,3 +99,8 @@ export const addDescription = val => ({
   type: genActionTypes.ADD_DESCRIPTION,
   payload: val
 })
+
+export const setOutputFormat = format => ({
+  type: genActionTypes.SET_OUTPUT_FORMAT,
+  payload: format 
+})
