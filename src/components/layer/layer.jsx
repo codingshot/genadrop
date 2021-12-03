@@ -55,8 +55,8 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           }
           <div className={classes.editBtn} >
             {activeInput === name
-              ? <i onClick={handleRename} className="far fa-check-square"></i>
-              : <i onClick={()=>handleEdit(name)} className="far fa-edit"></i>
+              ? <i onClick={handleRename} className="fas fa-ellipsis-h"></i>
+              : <i onClick={()=>handleEdit(name)} className="fas fa-ellipsis-h"></i>
             }
           </div>
         </div>

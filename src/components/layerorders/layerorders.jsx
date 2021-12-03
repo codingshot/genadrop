@@ -81,8 +81,8 @@ const LayerOrders = () => {
         }
         <div className={classes.editBtn} onClick={handleRename}>
           {renameAction
-            ? <i className="far fa-check-square"></i>
-            : <i className="far fa-edit"></i>
+            ? <i className="fas fa-ellipsis-h"></i>
+            : <i className="fas fa-ellipsis-h"></i>
           }
         </div>
       </div>

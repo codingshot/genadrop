@@ -94,6 +94,7 @@ const CollectionDescription = () => {
       newLayers.push({
         id: uuid(),
         name: "",
+        description: "",
         image: "image",
         decimals: 10,
         attributes: attr
@@ -124,6 +125,8 @@ const CollectionDescription = () => {
       return layer
     })
 
+    console.log(newLayers);
+    
     // // uncomment the block below to display a list of all nft sizes
     // const nftSizes = [];
     // for (let nft of NFTs) {

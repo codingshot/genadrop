@@ -131,6 +131,11 @@ export const renameAsset = (nftLayers, value) => {
   ))
 }
 
+export const addDescription = (nftLayers, value) => {
+  return nftLayers.map(layer => (
+    layer.id === value.id ? { ...layer, description: value.description } : layer
+  ))
+}
 
 
 

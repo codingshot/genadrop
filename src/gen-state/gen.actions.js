@@ -94,3 +94,8 @@ export const setCollectionName = name => ({
   type: genActionTypes.SET_COLLECTION_NAME,
   payload: name
 })
+
+export const addDescription = val => ({
+  type: genActionTypes.ADD_DESCRIPTION,
+  payload: val
+})
