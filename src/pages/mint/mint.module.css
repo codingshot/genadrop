@@ -1,19 +1,296 @@
 .container {
   width: 100%;
-  min-height: 100vh;
+  height: calc(100vh - 8.25em);
   overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  background: var(--main-bg);
+  color: white;
+  padding: 0 2.65em;
+}
+
+.innerContainer {
+  width: 100%;
+  max-width: 72em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 4em;
+}
+
+.innerContainer.height {
+  height: 100%;
+}
+
+.wrapper {
+  flex: 1;
+  max-width: 48em;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 2em;  
+}
+
+.uploadWrapper {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  border: 1px solid gray;
+  padding: 1em;
+}
+
+.title {
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 2em;
+  font-size: 1.2rem;
+}
+
+.upload {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  border: 1px solid gray;
+  padding: 1em 2em;
+  margin-bottom: 1em;
+}
+
+.uploadWrapper button {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+  cursor: pointer;
+  background: var(--main-accent);
+  color: white;
+  border-radius: 0.25em;
+  font-size: 1rem;
+  transition: all 300ms;
+}
+
+.buttonWrapper {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: 1em;
+}
+
+.buttonWrapper .uploadBtn {
+  flex: 60%;
+}
+
+.buttonWrapper .exportBtn {
+  flex: 40%;
+  background: transparent;
+  color: white;
+  border: 1px solid gray;
+}
+
+.uploadWrapper button:hover {
+  opacity: 0.9;
+}
+
+.upload img {
+  width: 6em;
+  height: 4em;
+}
+
+.upload p {
+  flex: 1;
+}
+
+.fallback,
+.previewWrapper {
+  width: 28em;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fallback {
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  padding: 2em;
+}
+
+.fallback i {
+  color: white;
+  font-size: 1.5rem;
+  animation: rotate 1.5s infinite linear;
+}
+
+@keyframes rotate {
+  from{transform: rotate(0deg);}
+  to{transform: rotate(360deg);}
+}
+
+.preview {
+  overflow: auto;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.5em;
-  font-size: 2rem;
-  text-transform: capitalize;
-  color: var(--main-accent);
+  justify-items: center;
+  margin-bottom: 1em;
+}
+
+.next,
+.preview img {
+  height: 5em;
+  width: 5em;
+  border: 1px solid gray;
+  border-radius: 0.25em;
+}
+
+.next {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 0.25em;
+  padding: 0.15em;
   text-align: center;
 }
 
-.container img {
-  width: 10em;
-  height: 10em;
+.next i,
+.next div {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  box-shadow: -2px -2px 2px rgb(63, 60, 60);
+  border: 1px solid gray;
+}
+
+.description {
+  width: 100%;
+  max-height: 8em;
+  min-height: 4em;
+  overflow: auto;
+  border: 2px solid white;
+  padding: 0.5em;
+  font-size: 0.9rem;
+}
+
+.layers {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.25em;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1350px) {
+  .innerContainer {
+    max-width: 64em;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .innerContainer {
+    max-width: 58em;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+  .container {
+    margin-bottom: 4em;
+    height: auto;
+    min-height: 40em;
+  }
+
+  .innerContainer {
+    flex-direction: column;
+  }
+
+  .wrapper {
+    width: 100%;
+  }
+
+  .fallback,
+  .previewWrapper {
+    width: 100%;
+  }
+
+  .next,
+  .preview img {
+    width: 9em;
+    height: 9em;
+  }
+
+  .upload img {
+    width: 6em;
+    height: 4em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 1em;
+  }
+
+  .upload img {
+    width: 4em;
+    height: 3em;
+  }
+
+  .next,
+  .preview img {
+    width: 7em;
+    height: 7em;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .next,
+  .preview img {
+    width: 5em;
+    height: 5em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .upload {
+    margin-bottom: 1em;
+    padding: 0.5em 1em;
+  }
+
+  .upload img {
+    width: 1.5em;
+    height: 1em;
+  }
+
+  .next,
+  .preview img {
+    width: 3.5em;
+    height: 3.5em;
+  }
+
+  .next i,
+  .next div {
+    font-size: 0.65rem;
+  } 
+
+  .title {
+    margin-bottom: 0.5em;
+    font-size: 0.9rem;
+  }
+
+  .uploadWrapper button {
+    font-size: 0.8rem;
+  }
+
 }

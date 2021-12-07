@@ -1,6 +1,8 @@
 .container {
   width: 100%;
   max-width: 20em;
+  height: calc(100vh - 8.25em);
+  overflow: auto;
 }
 
 .container * {
@@ -90,6 +92,10 @@
 }
 
 @media screen and (max-width: 1200px) {
+  .container {
+    height: auto;
+  }
+
   .preview_details {
     flex-direction: row;
     align-items: flex-start;
@@ -117,6 +123,5 @@
 
   .detailsWrapper {
     width: 100%;
-    min-height: 10em;
   }
 }

@@ -4,8 +4,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 1em;
-  padding: 1em;
-  padding-top: 3em;
+  padding: 0 1em;
 }
 
 .layer_overview {
@@ -19,16 +18,19 @@
 @media screen and (max-width: 1200px) {
   .container {
     flex-direction: column;
+    margin-bottom: 4em;
   }
 
   .layer_overview {
     width: 100%;
-    border: 3px solid black;
   }
 } 
 
 
 @media screen and (max-width: 768px) {
+  .container {
+    margin-top: 2em;
+  }
   .layer_overview {
     flex-direction: column;
   }

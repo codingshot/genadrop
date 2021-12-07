@@ -12,6 +12,7 @@
   align-items: center;
   justify-content: flex-start;
   overflow: auto;
+  background: var(--main-bg);
 }
 
 .logoWrapper {
