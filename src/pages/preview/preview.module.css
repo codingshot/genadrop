@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   position: relative;
-  margin-bottom: 3.5em;
+  margin-bottom: 4em;
 }
 
 .preview {
@@ -29,10 +29,22 @@
   z-index: 1000;
 }
 
+.collectionName {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
 .info div {
   border: 1px solid var(--sidebar-bg);
   padding: 0.5em 1em;
   background: var(--main-bg);
+}
+
+.infoRight {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .info .warn {
@@ -98,11 +110,15 @@
   box-shadow: 0px 0px 10px 0px var(--main-accent);
 }
 
-.renameInputContainer {
+.inputs {
   width: 100%;
   position: absolute;
   top: 0;
   right: 0;
+}
+
+.renameInputContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -115,6 +131,9 @@
   position: fixed;
   right: 0.5em;
   bottom: 4em;
+  z-index: 1000;
+  background: black;
+  padding: 1em;
 }
 
 .renameInput {
@@ -149,10 +168,6 @@
 
 .goBackBtn:hover i {
   transform: translateX(-6px);
-}
-
-.outputFormat {
-
 }
 
 .toggleLabel{

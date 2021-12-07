@@ -3,8 +3,10 @@ import { GenContext } from '../../gen-state/gen.context';
 import classes from './preview.module.css';
 import { useHistory } from 'react-router';
 import {
+  addDescription,
   deleteAsset,
   renameAsset,
+  setCollectionName,
   setLoading,
   setMintAmount,
   setMintInfo,
@@ -16,6 +18,7 @@ import Button from '../../components/button/button';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { getImageSize } from '../../components/utils/getImageSize';
+import InputEditor from './inputEditor';
 
 const Preview = () => {
 
@@ -32,8 +35,7 @@ const Preview = () => {
   } = useContext(GenContext);
 
   const [deleteId, setDeleteId] = useState("");
-  const [renameAction, setRenameAction] = useState("");
-  const [inputValue, setInputValue] = useState("");
+  const [editorAction, setEditorAction] = useState({ index: "", id: "" });
   const [checked, setChecked] = useState(true);
   const didMountRef = useRef(false)
 
@@ -41,7 +43,7 @@ const Preview = () => {
 
   // draw images
   const handleImage = async images => {
-    const {height, width} = await getImageSize(images[0]);
+    const { height, width } = await getImageSize(images[0]);
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);
     const ctx = canvas.getContext("2d");
@@ -159,18 +161,31 @@ const Preview = () => {
     }
   }
 
-  const handleRename = id => {
-    if (renameAction === id) {
-      setRenameAction("")
-      setInputValue("")
+  const handleRename = (id, inputValue, idx) => {
+    if (editorAction.index === idx) {
+      setEditorAction("")
       dispatch(renameAsset({ id: id, name: inputValue }))
     } else {
-      setRenameAction(id)
+      setEditorAction({ index: idx, id })
     }
   }
 
-  const handleChange = ({ target: { value } }) => {
-    setInputValue(value);
+  const handleDescription = (id, inputValue, idx) => {
+    if (editorAction.index === idx) {
+      setEditorAction("")
+      dispatch(addDescription({ id: id, description: inputValue }))
+    } else {
+      setEditorAction({ index: idx, id })
+    }
+  }
+
+  const handleCollectionName = (id, inputValue, idx) => {
+    if (editorAction.index === idx) {
+      setEditorAction("")
+      dispatch(setCollectionName(inputValue))
+    } else {
+      setEditorAction({ index: idx, id })
+    }
   }
 
   const handleToggle = (e) => {
@@ -193,8 +208,8 @@ const Preview = () => {
       layer.attributes.forEach((traitData) => {
         const value = traitData.trait.traitTitle;
         attributes.push({
-          trait_type: traitData.layerTitle, 
-          value: value.substring(0,value.indexOf("."))
+          trait_type: traitData.layerTitle,
+          value: value.substring(0, value.indexOf("."))
         });
       });
 
@@ -223,7 +238,17 @@ const Preview = () => {
 
     });
 
+
+    let _nftLayers = nftLayers.map((layer, idx) => (
+      {
+        name: layer.name ? layer.name : `_${idx}`, description: layer.description, properties: layer.attributes.map(({ trait, layerTitle }) => {
+          return { layerTitle: layerTitle, traits: { traitTitle: trait.traitTitle, Rarity: trait.Rarity } }
+        })
+      }));
+
     const zip = new JSZip();
+
+    zip.file("metadata.json", JSON.stringify(_nftLayers, null, '\t'));
 
     // add json data to individual json files
     jsonData.forEach((data, i) => {
@@ -259,31 +284,37 @@ const Preview = () => {
       </div>
 
       <div className={classes.info}>
-        <div>no of generative arts: {nftLayers.length}</div>
-        <div>
-          unused combinations: {combinations - mintAmount}
-          {mintInfo ? (
-            <>
-              <br />
-              <span className={classes.warn}>{mintInfo}</span>
-            </>
-          ) : null}
+        <div className={classes.collectionName}>
+          <InputEditor
+            inputIndex="1"
+            id={0}
+            editorAction={editorAction}
+            clickHandler={handleCollectionName}
+            value={collectionName ? collectionName : `collectionName`}
+            inputType="text"
+          />
+        </div>
+        <div className={classes.infoRight}>
+          <div>
+            no of generative arts: {nftLayers.length}
+          </div>
+          <div>
+            unused combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}
+          </div>
         </div>
       </div>
-      
-      <div className={classes.downloadContainer}>
+
+      <div onClick={handleDownload} className={classes.downloadContainer}>
         <div>
-          <input onChange={handleToggle} type="checkbox" name="format" checked={checked} value="ipfs"/>
-          <label className={classes.toggleLabel} for="format">Use IPFS Format</label><br/>
+          <input onChange={handleToggle} type="checkbox" name="format" checked={checked} value="ipfs" />
+          <label className={classes.toggleLabel} for="format">Use IPFS Format</label><br />
         </div>
-        <div onClick={handleDownload} className={classes.downloadBtn}>
-          <Button>download zip</Button>
-        </div>
+        <Button>download zip</Button>
       </div>
 
       <div className={classes.preview}>
         {nftLayers.length &&
-          nftLayers.map(({ image, id, name }, idx) => (
+          nftLayers.map(({ image, id, name, description }, idx) => (
             <div key={idx} className={classes.imgWrapper}>
               <img src={image} alt="" />
               <div className={classes.popup}>
@@ -292,27 +323,26 @@ const Preview = () => {
                 </button>
                 <button onClick={() => handleDelete(id)}>delete</button>
               </div>
-              <div className={classes.renameInputContainer}>
-                <button
-                  className={classes.renameBtn}
-                  onClick={() => handleRename(id)}
-                >
-                  {name ? name : "asset name"}
-                  {": "}
-                  {renameAction === id ? "done" : "rename"}
-                </button>
-                {renameAction === id ? (
-                  <form onSubmit={() => handleRename(id)}>
-                    <input
-                      className={`${classes.renameInput} ${classes.active}`}
-                      type="text"
-                      onChange={handleChange}
-                      value={inputValue}
-                      autoFocus
-                    />
-                  </form>
-                ) : null}
+              <div className={classes.inputs}>
+                <InputEditor
+                  id={id}
+                  inputIndex="0"
+                  editorAction={editorAction}
+                  value={name ? name : `name_${idx}`}
+                  clickHandler={handleRename}
+                  inputType="text"
+                />
+
+                <InputEditor
+                  inputIndex="1"
+                  id={id}
+                  editorAction={editorAction}
+                  clickHandler={handleDescription}
+                  value={description ? description : `description`}
+                  inputType="textarea"
+                />
               </div>
+
             </div>
           ))}
       </div>

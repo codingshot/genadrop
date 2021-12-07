@@ -34,7 +34,6 @@ a {
   justify-content: flex-start;
   position: relative;
   flex-direction: column;
-  margin-bottom: 4em;
 }
 
 .Wallet-Wrapper {
@@ -42,7 +41,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 1em 2em;
+  padding: 1em 2.65em;
 }
 
 .Wallet-Wrapper * {

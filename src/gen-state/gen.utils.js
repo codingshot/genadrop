@@ -34,6 +34,15 @@ export const removeLayer = (layers, layerToRemove) => {
   return layers.filter(layer => layer.layerTitle.toLowerCase() !== layerToRemove.layerTitle.toLowerCase())
 }
 
+export const updateLayer = (layers, layerToUpdate) => {
+  let result = layers.find(layer => layer.layerTitle.toLowerCase() === layerToUpdate.layerTitle.toLowerCase())
+  if(result) return layers
+
+  return layers.map(layer => (
+    layer.id === layerToUpdate.id ? {...layer, layerTitle: layerToUpdate.layerTitle} : layer
+  ))
+}
+
 export const addImage = (layers, imageObj) => {
   let newLayers = layers.map(layer => {
     if (layer.layerTitle.toLowerCase() === imageObj.layerTitle.toLowerCase()) {
@@ -122,6 +131,11 @@ export const renameAsset = (nftLayers, value) => {
   ))
 }
 
+export const addDescription = (nftLayers, value) => {
+  return nftLayers.map(layer => (
+    layer.id === value.id ? { ...layer, description: value.description } : layer
+  ))
+}
 
 
 

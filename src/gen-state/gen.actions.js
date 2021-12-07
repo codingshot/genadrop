@@ -15,6 +15,11 @@ export const removeLayer = layer => ({
   payload: layer
 });
 
+export const updateLayer = layer => ({
+  type: genActionTypes.UPDATE_LAYER,
+  payload: layer
+});
+
 export const addImage = image => ({
   type: genActionTypes.ADD_IMAGE,
   payload: image
@@ -88,6 +93,11 @@ export const renameAsset = val => ({
 export const setCollectionName = name => ({
   type: genActionTypes.SET_COLLECTION_NAME,
   payload: name
+})
+
+export const addDescription = val => ({
+  type: genActionTypes.ADD_DESCRIPTION,
+  payload: val
 })
 
 export const setOutputFormat = format => ({

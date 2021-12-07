@@ -52,7 +52,7 @@ const CollectionPreview = () => {
   useEffect(() => {
     const imageHandler = async () => {
       const canvas = canvasRef.current;
-      await handleImage(canvas);
+      await handleImage(canvas, 250, 250);
     }
     imageHandler()
   }, [preview, layers])

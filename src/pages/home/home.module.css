@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  min-height: 100vh;
+  height: calc(100vh - 8em);
   overflow: auto;
   padding: 1em 0;
   display: flex;
