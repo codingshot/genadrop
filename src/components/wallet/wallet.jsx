@@ -59,7 +59,8 @@ function ConnectWallet() {
         // console.log(metadata)
         console.log(fileData)
         try {
-            minter.createNFT(fileData, selectedAcount, connector);
+            let drt = await minter.createNFT(fileData, selectedAcount, connector);
+            console.log(drt)
         } catch (error) {
             console.log('pioli', error)
         }
@@ -128,7 +129,7 @@ function ConnectWallet() {
                 <div className={classes.address}>
                     {breakAddress(selectedAcount)}
                 </div>
-                <div className={classes.discornect} onClick={disconnect}>
+                <div className={classes.discornect} onClick={getTheFile}>
                     disconnect
                 </div>
             </div>

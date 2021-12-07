@@ -187,7 +187,7 @@ async function createAsset(asset, account) {
   }
 
 async function signTx(connector, txns) {
-  let assetID = null;
+  let assetID;
     const txnsToSign = txns.map(txn => {
         const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
         return {
@@ -228,10 +228,9 @@ async function signTx(connector, txns) {
 
 
 async function createNFT(fileData, account, connector) {
-  let collection_id = {};
+  
   let assets = [];
   console.log('starting....')
-  let txns = [];
   //zip.loadAsync(fileData).then((data) =>console.log(data.files))
   const data = await zip.loadAsync(fileData) 
   const files = data.files['metadata.json']
@@ -245,14 +244,19 @@ async function createNFT(fileData, account, connector) {
     const blob = new File([uint8array], imgName, { type: "image/png" });
     const asset = await connectAndMint(blob, metadata[i], imgName)
     assets.push(asset);
-    try {
-      const txn = await createAsset(asset, account)
-      txns.push(txn)
-    } catch (error) {
-      console.log("err", error);
-      return;
-    }
   }
+  return assets;
+  };
+
+async function mintToAlgo(assets, account, connector) {
+  console.log('minting...........')
+  let collection_id = {};
+  let txns = [];
+  for (let i = 0; i < assets.length; i++) {
+    const txn = await createAsset(assets[i], account)
+    txns.push(txn)
+  }
+  
   let txgroup = algosdk.assignGroupID(txns)
   let groupId = txgroup[0].group.toString("base64")
   let assetID = await signTx(connector, txns)
@@ -263,12 +267,11 @@ async function createNFT(fileData, account, connector) {
   let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
   await write.writeUserData(`collection${assetID}`, collectionUrl)
   alert(`https://testnet.algoexplorer.io/tx/group/${groupId}`)
-  };
-
-
+}
 
 
 export {
-    createNFT
+    createNFT,
+    mintToAlgo
 }
 
