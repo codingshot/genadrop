@@ -1,24 +1,49 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './preview.module.css';
 import { useHistory } from 'react-router';
-import { deleteAsset, setLoading, setMintAmount, setMintInfo, setNftLayers } from '../../gen-state/gen.actions';
+import {
+  deleteAsset,
+  renameAsset,
+  setLoading,
+  setMintAmount,
+  setMintInfo,
+  setNftLayers,
+  setOutputFormat
+} from '../../gen-state/gen.actions';
 import { v4 as uuid } from 'uuid';
+import Button from '../../components/button/button';
+import { saveAs } from 'file-saver';
+import JSZip from 'jszip';
+import { getImageSize } from '../../components/utils/getImageSize';
 
 const Preview = () => {
+
   const history = useHistory();
-  const { nftLayers, currentDnaLayers, dispatch, combinations, mintAmount, mintInfo } = useContext(GenContext);
+  const {
+    nftLayers,
+    currentDnaLayers,
+    dispatch,
+    combinations,
+    mintAmount,
+    mintInfo,
+    collectionName,
+    outputFormat,
+  } = useContext(GenContext);
 
   const [deleteId, setDeleteId] = useState("");
+  const [renameAction, setRenameAction] = useState("");
+  const [inputValue, setInputValue] = useState("");
+  const [checked, setChecked] = useState(true);
+  const didMountRef = useRef(false)
 
   const canvas = document.createElement("canvas");
 
-
-  // draw image 
+  // draw images
   const handleImage = async images => {
-    // const canvas = document.createElement("canvas");
-    canvas.setAttribute("width", "250px");
-    canvas.setAttribute("height", "250px");
+    const {height, width} = await getImageSize(images[0]);
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
     const ctx = canvas.getContext("2d");
     for (let img of images) {
       const image = await new Promise(resolve => {
@@ -28,7 +53,7 @@ const Preview = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0, 250, 250);
+      image && ctx.drawImage(image, 0, 0, width, height);
     };
   };
 
@@ -124,47 +149,175 @@ const Preview = () => {
     dispatch(setMintAmount(mintAmount - 1))
   }
 
+
   const handleDeleteAndReplace = id => {
     setDeleteId(id)
     if (!(combinations - mintAmount)) {
-      dispatch(setMintInfo("  maximum combinations exceeded"));
+      dispatch(setMintInfo("  cannot generate asset from 0 combination"));
     } else {
       dispatch(setMintInfo(""))
     }
   }
 
+  const handleRename = id => {
+    if (renameAction === id) {
+      setRenameAction("")
+      setInputValue("")
+      dispatch(renameAsset({ id: id, name: inputValue }))
+    } else {
+      setRenameAction(id)
+    }
+  }
+
+  const handleChange = ({ target: { value } }) => {
+    setInputValue(value);
+  }
+
+  const handleToggle = (e) => {
+    setChecked(!checked);
+    if (!checked) dispatch(setOutputFormat("ipfs"));
+    else dispatch(setOutputFormat("arweave"));
+  }
+
+  const handleDownload = () => {
+    let jsonData = [];
+    nftLayers.forEach((layer) => {
+      let data = {};
+      let attributes = [];
+      // add the rest of the attributes
+      data.attributes = attributes;
+      data.description = "";
+      data.name = collectionName;
+      data.image = "image.png";
+      // extract layer data 
+      layer.attributes.forEach((traitData) => {
+        const value = traitData.trait.traitTitle;
+        attributes.push({
+          trait_type: traitData.layerTitle, 
+          value: value.substring(0,value.indexOf("."))
+        });
+      });
+
+      console.log(outputFormat.toLowerCase())
+      // arweave specific data  
+      if (outputFormat.toLowerCase() === "arweave") {
+        data.symbol = "";
+        data.seller_fee_basis_points = "";
+        data.external_url = "";
+        data.collection = {
+          name: "",
+          family: ""
+        };
+        data.properties = {
+          creators: [
+            {
+              address: "",
+              share: 100
+            }
+          ]
+        }
+      }
+
+      // add to json data array
+      jsonData.push(data);
+
+    });
+
+    const zip = new JSZip();
+
+    // add json data to individual json files
+    jsonData.forEach((data, i) => {
+      // different file extensions for arweave vs ipfs
+      zip.file(outputFormat.toLowerCase() === "arweave" ? `${i}.json` : i, JSON.stringify(data));
+    });
+
+    nftLayers.forEach((layer, idx) => {
+      let base64String = layer.image.replace("data:image/png;base64,", "");
+      zip.file(layer.name ? `${layer.name}.png` : `_${idx}.png`, base64String, { base64: true });
+    })
+
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      saveAs(content, `${collectionName ? `${collectionName}.zip` : 'collections.zip'}`);
+    });
+  }
+
+
   useEffect(() => {
-    handleGenerate()
+    if (didMountRef.current) {
+      handleGenerate()
+    } else didMountRef.current = true;
   }, [deleteId])
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch(setMintInfo(""))
-  },[dispatch, mintAmount])
+  }, [dispatch, mintAmount])
 
   return (
     <div className={classes.container}>
-      <div onClick={() => history.goBack()} className={classes.goBackBtn}><i className="fas fa-arrow-left"></i></div>
+      <div onClick={() => history.goBack()} className={classes.goBackBtn}>
+        <i className="fas fa-arrow-left"></i>
+      </div>
 
       <div className={classes.info}>
         <div>no of generative arts: {nftLayers.length}</div>
-        <div>possible combinations: {combinations - mintAmount}{mintInfo ? <><br />{mintInfo}</> : null}</div>
+        <div>
+          unused combinations: {combinations - mintAmount}
+          {mintInfo ? (
+            <>
+              <br />
+              <span className={classes.warn}>{mintInfo}</span>
+            </>
+          ) : null}
+        </div>
+      </div>
+      
+      <div className={classes.downloadContainer}>
+        <div>
+          <input onChange={handleToggle} type="checkbox" name="format" checked={checked} value="ipfs"/>
+          <label className={classes.toggleLabel} for="format">Use IPFS Format</label><br/>
+        </div>
+        <div onClick={handleDownload} className={classes.downloadBtn}>
+          <Button>download zip</Button>
+        </div>
       </div>
 
       <div className={classes.preview}>
-        {
-          nftLayers.length && nftLayers.map(({ image, id }, idx) => (
+        {nftLayers.length &&
+          nftLayers.map(({ image, id, name }, idx) => (
             <div key={idx} className={classes.imgWrapper}>
               <img src={image} alt="" />
               <div className={classes.popup}>
-                <button onClick={() => handleDeleteAndReplace(id)}>delete and replace</button>
+                <button onClick={() => handleDeleteAndReplace(id)}>
+                  generate new
+                </button>
                 <button onClick={() => handleDelete(id)}>delete</button>
               </div>
+              <div className={classes.renameInputContainer}>
+                <button
+                  className={classes.renameBtn}
+                  onClick={() => handleRename(id)}
+                >
+                  {name ? name : "asset name"}
+                  {": "}
+                  {renameAction === id ? "done" : "rename"}
+                </button>
+                {renameAction === id ? (
+                  <form onSubmit={() => handleRename(id)}>
+                    <input
+                      className={`${classes.renameInput} ${classes.active}`}
+                      type="text"
+                      onChange={handleChange}
+                      value={inputValue}
+                      autoFocus
+                    />
+                  </form>
+                ) : null}
+              </div>
             </div>
-          ))
-        }
+          ))}
       </div>
     </div>
-  )
+  );
 }
 
 export default Preview

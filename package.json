@@ -18,6 +18,7 @@
     "firebase": "^9.6.0",
     "image-data-uri": "^2.0.1",
     "ipfs": "^0.60.0",
+    "file-saver": "^2.0.5",
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "merge-images": "^2.0.0",

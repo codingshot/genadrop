@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
       <div className="App-Container">
-        <Overlay/>
+        <Overlay />
         <Sidebar />
         <div className="Wallet-Wrapper">
           <ConnectWallet>connect-wallet</ConnectWallet>
@@ -29,8 +29,10 @@ function App() {
           <Route exact path="/explore" component={Explore} />
           <Route exact path="/preview" component={Preview} />
         </Switch>
-        
-        <Footer/>
+
+        <div className="Footer">
+          <Footer />
+        </div>
       </div>
     </div>
   )

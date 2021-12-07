@@ -34,6 +34,7 @@ a {
   justify-content: flex-start;
   position: relative;
   flex-direction: column;
+  margin-bottom: 4em;
 }
 
 .Wallet-Wrapper {
@@ -46,6 +47,14 @@ a {
 
 .Wallet-Wrapper * {
   max-width: 14em;
+}
+
+.Footer {
+  width: 100%;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background: black;
 }
 
 /* width */

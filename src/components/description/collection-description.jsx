@@ -8,6 +8,7 @@ import CollectionPreview from '../preview/collection-preview';
 import classes from './collection-description.module.css';
 import { v4 as uuid } from 'uuid';
 import { Link } from 'react-router-dom';
+import { getImageSize } from '../utils/getImageSize';
 
 const CollectionDescription = () => {
   const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
@@ -22,9 +23,10 @@ const CollectionDescription = () => {
 
   // draw images
   const handleImage = async images => {
+    const { height, width } = await getImageSize(images[0]);
     const canvas = canvasRef.current;
-    canvas.setAttribute("width", "1000px");
-    canvas.setAttribute("height", "1000px");
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
     const ctx = canvas.getContext("2d");
     for (let img of images) {
       const image = await new Promise(resolve => {
@@ -34,7 +36,7 @@ const CollectionDescription = () => {
           resolve(image);
         };
       });
-      image && ctx.drawImage(image, 0, 0, 1000, 1000);
+      image && ctx.drawImage(image, 0, 0, width, height);
     };
   };
 
@@ -91,7 +93,9 @@ const CollectionDescription = () => {
     newAttributes.forEach(attr => {
       newLayers.push({
         id: uuid(),
+        name: "",
         image: "image",
+        decimals: 10,
         attributes: attr
       })
     })
@@ -100,6 +104,7 @@ const CollectionDescription = () => {
 
   // generate nft data ready for upload
   const handleGenerate = async () => {
+
     dispatch(setMintInfo("generating..."))
     if (!mintAmount) return dispatch(setMintInfo("please set the amount to continue..."));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets to continue..."))
@@ -111,13 +116,12 @@ const CollectionDescription = () => {
     const NFTs = await generateNFT(uniqueLayers);
 
     let newLayers = uniqueLayers.map(layer => {
-      let newLayer = null
       for (let nft of NFTs) {
         if (nft.id === layer.id) {
-          return newLayer = { ...layer, image: nft.imageUrl }
+          return { ...layer, image: nft.imageUrl }
         }
       }
-      return newLayer
+      return layer
     })
 
     dispatch(setCurrentDnaLayers(dnaLayers))
@@ -125,6 +129,7 @@ const CollectionDescription = () => {
     dispatch(setMintInfo("completed"))
     dispatch(setLoading(false))
   }
+
 
   return (
     <div className={classes.container}>
@@ -138,25 +143,31 @@ const CollectionDescription = () => {
           </div>
         </div>
         <div className={classes.btnWrapper}>
-          <Button>download zip</Button>
-        </div>
-        <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
-          {mintInfo} 
-          {
-            mintInfo === "completed" && <Link to="/preview" className={classes.previewBtn}>preview</Link>
-          }
-        </div>
-        <div className={classes.btnWrapper}>
-          <div style={{ cursor: "pointer" }} onClick={handleGenerate}>
+          <div onClick={handleGenerate}>
             <Button>generate {mintAmount}</Button>
           </div>
         </div>
 
+        <div className={classes.btnWrapper}>
+          {
+            mintInfo === "completed"
+              ?
+
+              <Link to="/preview">
+                <Button invert>preview</Button>
+              </Link>
+
+              :
+              <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
+                {mintInfo}
+              </div>
+          }
+        </div>
       </div>
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Amout</label>
-          <input onChange={handleChange} type="number" min="0" max="100" />
+          <label htmlFor="generate amout">Amount</label>
+          <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
           <div htmlFor="combinations">Combinations</div>
