@@ -10,6 +10,10 @@
   transition: all 0.2s;
 }
 
+.container i {
+  color: var(--main-accent-dark);
+}
+
 .container.active {
   border-color: var(--main-accent);
   border-width: 2px;

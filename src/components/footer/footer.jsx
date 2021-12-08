@@ -5,7 +5,7 @@ const Footer = () => {
   return (
     <div className={classes.container}>
       <a href="https://minorityprogrammers.com/" target="_blank" rel="noreferrer noopener">
-        Built by Minority Programmers Association &#x2764; 
+        Built with &#x2764; by Minority Programmers Association 
       </a>
     </div>
   )

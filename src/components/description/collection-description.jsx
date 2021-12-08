@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { setCurrentDnaLayers, setLoading, setMintAmount, setMintInfo, setNftLayers } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import { createDna } from '../../gen-state/gen.utils';
@@ -52,10 +52,10 @@ const CollectionDescription = () => {
       await handleImage(images);
       const imageUrl = canvasRef.current.toDataURL();
       uniqueImages.push({ id, imageUrl })
+
     }
     return uniqueImages;
   }
-
 
   // create layers with unique traits
   const createUniqueLayer = layers => {
@@ -94,6 +94,7 @@ const CollectionDescription = () => {
       newLayers.push({
         id: uuid(),
         name: "",
+        description: "",
         image: "image",
         decimals: 10,
         attributes: attr
@@ -124,14 +125,28 @@ const CollectionDescription = () => {
       return layer
     })
 
+    console.log(newLayers);
+    
+    // // uncomment the block below to display a list of all nft sizes
+    // const nftSizes = [];
+    // for (let nft of NFTs) {
+    //   const { height, width } = await getImageSize(nft.imageUrl);
+    //   nftSizes.push({height, width})
+    // }
+    // console.log(nftSizes)
+
+
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(newLayers))
     dispatch(setMintInfo("completed"))
     dispatch(setLoading(false))
   }
 
+  useEffect(()=> {
+    dispatch(setLoading(false))
+  },[dispatch])
 
-  return (
+  return (  
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.preview_details}>
@@ -152,11 +167,9 @@ const CollectionDescription = () => {
           {
             mintInfo === "completed"
               ?
-
               <Link to="/preview">
                 <Button invert>preview</Button>
               </Link>
-
               :
               <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
                 {mintInfo}

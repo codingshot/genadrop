@@ -6,6 +6,12 @@
   color: white;
 }
 
+.container i {
+  color: var(--main-accent-dark);
+  font-size: 14px;
+  padding: 0 0.5em;
+}
+
 .renameBtn {
   width: 100%;
   display: flex;
@@ -43,7 +49,6 @@
   width: 90%;
   word-wrap: break-word;
   text-align: center;
-  text-transform: capitalize;
 }
 
 .layerHeadWrapper {

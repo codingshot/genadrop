@@ -26,6 +26,7 @@ const LayerOrders = () => {
   const [prompt, setPrompt] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [renameAction, setRenameAction] = useState(false);
+  const [activeInput, setActiveInput] = useState(false);
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return
@@ -33,6 +34,7 @@ const LayerOrders = () => {
     const [removed] = newList.splice(source.index, 1);
     newList.splice(destination.index, 0, removed);
     dispatch(orderLayers(newList));
+    setActiveInput('')
   }
 
   const handleAddLayer = value => {
@@ -60,9 +62,7 @@ const LayerOrders = () => {
 
   return (
     <div className={classes.container}>
-      <div
-        className={classes.renameBtn}
-      >
+      <div className={classes.renameBtn}>
         {renameAction
           ?
           <form onSubmit={handleRename}>
@@ -77,12 +77,12 @@ const LayerOrders = () => {
           :
           collectionName
             ? <div className={classes.nameHeader}>{collectionName}</div>
-            : <div className={classes.nameHeader}>Collection Name</div> 
+            : <div className={classes.nameHeader}>Collection Name</div>
         }
         <div className={classes.editBtn} onClick={handleRename}>
           {renameAction
-            ? <i className="far fa-check-square"></i>
-            : <i className="far fa-edit"></i>
+            ? <i className="fas fa-ellipsis-h"></i>
+            : <i className="fas fa-ellipsis-h"></i>
           }
         </div>
       </div>
@@ -118,7 +118,14 @@ const LayerOrders = () => {
                         )}
                       >
                         <div className={`${classes.layerWrapper} ${index % 2 === 0 ? classes.even : classes.odd}`}>
-                          <Layer name={item.layerTitle} id={index} trait={item.traitsAmount} click={() => handleRemoveLayer(item)} />
+                          <Layer
+                            name={item.layerTitle}
+                            id={item.id}
+                            trait={item.traitsAmount}
+                            click={() => handleRemoveLayer(item)}
+                            activeInput={activeInput}
+                            setActiveInput={setActiveInput}
+                          />
                         </div>
                       </div>
                     )}

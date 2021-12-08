@@ -59,7 +59,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== "name"
             ?
-            <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="far fa-edit"></i></div>
+            <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="fas fa-ellipsis-h"></i></div>
             :
             <div className={classes.editInput}>
               <input
@@ -68,7 +68,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                 value={name}
                 onChange={handleChange}
               />
-              <i onClick={handleRename} className="far fa-check-square"></i>
+              <i onClick={handleRename} className="fas fa-ellipsis-h"></i>
             </div>
           }
         </div>
@@ -76,7 +76,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== "rarity"
             ?
-            <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="far fa-edit"></i></div>
+            <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="fas fa-ellipsis-h"></i></div>
             :
             <div className={classes.editInput}>
               <input
@@ -87,7 +87,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                 value={rarity}
                 onChange={handleChange}
               />
-              <i onClick={handleRename} className="far fa-check-square"></i>
+              <i onClick={handleRename} className="fas fa-ellipsis-h"></i>
             </div>
           }
         </div>
