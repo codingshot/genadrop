@@ -1,15 +1,15 @@
 import genActionTypes from './gen.types';
-import { 
-  addLayer, 
-  removeLayer, 
-  addImage, 
-  removeImage, 
-  addPreview, 
-  removePreview, 
-  updateImage, 
-  updatePreview, 
-  deleteAsset, 
-  renameAsset, 
+import {
+  addLayer,
+  removeLayer,
+  addImage,
+  removeImage,
+  addPreview,
+  removePreview,
+  updateImage,
+  updatePreview,
+  deleteAsset,
+  renameAsset,
   updateLayer,
   addDescription
 } from './gen.utils';
@@ -24,7 +24,9 @@ export const INITIAL_STATE = {
   mintInfo: "",
   collectionName: "",
   isLoading: false,
-  currentDnaLayers: null
+  currentDnaLayers: null,
+  account: '',
+  connector: null
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -135,6 +137,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         outputFormat: action.payload
+      }
+    case genActionTypes.SET_ACCOUNT:
+      return {
+        ...state,
+        account: action.payload
+      }
+    case genActionTypes.SET_CONNECTOR:
+      return {
+        ...state,
+        connector: action.payload
       }
     default:
       return state;

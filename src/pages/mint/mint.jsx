@@ -1,11 +1,14 @@
 import classes from './mint.module.css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import JSZip from 'jszip';
 import { getImageSize } from '../../components/utils/getImageSize';
+import { createNFT, mintToAlgo } from '../../components/utils/arc_ipfs';
+import { GenContext } from '../../gen-state/gen.context';
 
 const Mint = () => {
 
   const [collections, setCollections] = useState([]);
+  const [zip, setZip] = useState(null);
   const [metadata, setMetadata] = useState([]);
   const [collectionName, setCollectionName] = useState('');
   const [nextCount, setNextCount] = useState(0);
@@ -14,9 +17,9 @@ const Mint = () => {
   const [loading, setLoading] = useState(false);
   const [size, setSize] = useState({ height: 0, width: 0 });
   const [activeExport, setExport] = useState(false);
+  // const { account, connector } = useContext(GenContext);
 
   const countBy = 24;
-
   const fileRef = useRef(null);
 
   const handleUpload = () => {
@@ -31,6 +34,7 @@ const Mint = () => {
 
   const handleFileChange = async event => {
     if (!event.target.files[0]) return;
+    setZip(event.target.files[0]);
     setLoading(true)
     let content = event.target.files[0];
     setCollectionName(content.name);
@@ -54,10 +58,6 @@ const Mint = () => {
     setLoading(false);
   }
 
-  const handleMint = () => {
-
-  }
-
   const handleNextClick = () => {
     setNextCount(c => c + 1);
   }
@@ -71,8 +71,15 @@ const Mint = () => {
     return result > 0 ? result : 0
   }
 
-  const handleExport = () => {
-    setExport(true)
+  const handleExport = async () => {
+    // const ipfs = await createNFT(zip)
+    // console.log(ipfs);
+    // setExport(true)
+  }
+
+  const handleMint = () => {
+    // const url = await mintToAlgo(zip, account, connector);
+    // console.log(url);
   }
 
   useEffect(() => {
@@ -103,9 +110,9 @@ const Mint = () => {
             <div className={classes.buttonWrapper}>
               <button className={classes.uploadBtn} onClick={handleUpload}>upload</button>
               {
-                collections.length 
-                ? <button className={classes.exportBtn} onClick={handleExport}>export IPFS.json</button>
-                : null
+                collections.length
+                  ? <button className={classes.exportBtn} onClick={handleExport}>export IPFS.json</button>
+                  : null
               }
             </div>
             <input style={{ display: 'none' }} onChange={handleFileChange} ref={fileRef} type="file" accept=".zip,.rar,.7zip" />
@@ -131,14 +138,19 @@ const Mint = () => {
                       <img key={idx} src={URL.createObjectURL(image)} alt="" />
                     ))
                 }
-                <div className={classes.next}>
-                  {
-                    nextCount ? <i onClick={handlePrevClick} className="fas fa-long-arrow-alt-left"></i> : null
-                  }
-                  {
-                    getCount() ? <div onClick={handleNextClick}>{getCount()} more...</div> : null
-                  }
-                </div>
+                {
+                  (getCount() || nextCount)
+                    ?
+                    <div className={classes.next}>
+                      {
+                        nextCount ? <i onClick={handlePrevClick} className="fas fa-long-arrow-alt-left"></i> : null
+                      }
+                      {
+                        getCount() ? <div onClick={handleNextClick}>{getCount()} more...</div> : null
+                      }
+                    </div>
+                    : null
+                }
               </div>
               <div className={classes.description}>
                 <h3>Description</h3>
@@ -149,8 +161,8 @@ const Mint = () => {
                     ?
                     <span className={classes.layers}>
                       {
-                        metadata[0]["properties"].map(({ layerTitle }, idx) => (
-                          <span key={idx}>{layerTitle},</span>
+                        metadata[0].attributes.map(({ trait_type }, idx) => (
+                          <span key={idx}>{trait_type},</span>
                         ))
                       }
                     </span>

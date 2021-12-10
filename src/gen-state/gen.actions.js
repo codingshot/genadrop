@@ -104,3 +104,13 @@ export const setOutputFormat = format => ({
   type: genActionTypes.SET_OUTPUT_FORMAT,
   payload: format 
 })
+
+export const setConnector = connector => ({
+  type: genActionTypes.SET_CONNECTOR,
+  payload: connector
+})
+
+export const setAccount = account => ({
+  type: genActionTypes.SET_ACCOUNT,
+  payload: account
+})

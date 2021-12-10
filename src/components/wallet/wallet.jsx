@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import classes from './wallet.module.css';
 import WalletConnect from "@walletconnect/client";
 import QRCodeModal from "algorand-walletconnect-qrcode-modal";
-const minter = require('../utils/arc_ipfs')
-
-
-
-
+import { GenContext } from '../../gen-state/gen.context';
+import { setConnector, setAccount } from '../../gen-state/gen.actions';
+const minter = require('../utils/arc_ipfs');
 
 function ConnectWallet() {
     let [wallet, setWallet] = useState('Connect Wallet');
-    const [connector, setConnector] = useState();
-    const [selectedAcount, setAccount] = useState('');
+    const { dispatch, connector, account } = useContext(GenContext);
 
     function breakAddress(address = "", width = 6) {
         return `${address.slice(0, width)}...${address.slice(-width)}`
@@ -21,8 +18,8 @@ function ConnectWallet() {
         if (connector) {
             connector.killSession();
             setWallet('Connect Wallet');
-            setAccount('');
-            setConnector();
+            dispatch(setAccount(''));
+            dispatch(setConnector())
         }
     }
 
@@ -59,7 +56,7 @@ function ConnectWallet() {
         // console.log(metadata)
         console.log(fileData)
         try {
-            let drt = await minter.createNFT(fileData, selectedAcount, connector);
+            let drt = await minter.createNFT(fileData, account, connector);
             console.log(drt)
         } catch (error) {
             console.log('pioli', error)
@@ -77,7 +74,7 @@ function ConnectWallet() {
             qrcodeModal: QRCodeModal,
         });
 
-        await setConnector(connector);
+        await dispatch(setConnector(connector));
 
         // check if already connected
         if (!connector.connected) {
@@ -94,7 +91,7 @@ function ConnectWallet() {
             // Get provided accounts
             const { accounts } = payload.params[0];
             console.log(payload.params, accounts)
-            setAccount(accounts[0]);
+            dispatch(setAccount(accounts[0]));
 
 
 
@@ -108,12 +105,12 @@ function ConnectWallet() {
 
             // Get updated accounts 
             const { accounts } = payload.params[0];
-            setAccount(accounts[0]);
+            dispatch(setAccount(accounts[0]));
         });
 
         if (connector.connected) {
             const { accounts } = connector;
-            setAccount(accounts[0]);
+            dispatch(setAccount(accounts[0]));
         }
 
         connector.on("disconnect", (error, payload) => {
@@ -124,10 +121,10 @@ function ConnectWallet() {
     };
 
     return (
-        (selectedAcount ?
+        (account ?
             <div className={classes.condected}>
                 <div className={classes.address}>
-                    {breakAddress(selectedAcount)}
+                    {breakAddress(account)}
                 </div>
                 <div className={classes.discornect} onClick={getTheFile}>
                     disconnect

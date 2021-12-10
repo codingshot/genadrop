@@ -47,7 +47,7 @@ const CollectionDescription = () => {
     for (let { attributes, id } of layers) {
       const images = [];
       attributes.forEach(attr => {
-        images.push(attr.trait.image)
+        images.push(attr.image)
       })
       await handleImage(images);
       const imageUrl = canvasRef.current.toDataURL();
@@ -76,10 +76,12 @@ const CollectionDescription = () => {
       let attr = [];
       layers.forEach(({ layerTitle, traits }) => {
         let randNum = Math.floor(Math.random() * traits.length)
-        let randomPreview = traits[randNum]
+        let{traitTitle, Rarity, image}  = traits[randNum]
         attr.push({
-          layerTitle: layerTitle,
-          trait: randomPreview
+          trait_type: layerTitle,
+          value: traitTitle,
+          rarity: Rarity,
+          image: image
         })
       })
 
@@ -96,10 +98,10 @@ const CollectionDescription = () => {
         name: "",
         description: "",
         image: "image",
-        decimals: 10,
         attributes: attr
       })
     })
+
     return newLayers;
   }
 
@@ -124,8 +126,6 @@ const CollectionDescription = () => {
       }
       return layer
     })
-
-    console.log(newLayers);
     
     // // uncomment the block below to display a list of all nft sizes
     // const nftSizes = [];
@@ -179,7 +179,7 @@ const CollectionDescription = () => {
       </div>
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Amount</label>
+          <label htmlFor="generate amout">Add Amount</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
