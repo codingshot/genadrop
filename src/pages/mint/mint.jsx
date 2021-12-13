@@ -17,7 +17,7 @@ const Mint = () => {
   const [loading, setLoading] = useState(false);
   const [size, setSize] = useState({ height: 0, width: 0 });
   const [activeExport, setExport] = useState(false);
-  // const { account, connector } = useContext(GenContext);
+  const { account, connector } = useContext(GenContext);
 
   const countBy = 24;
   const fileRef = useRef(null);
@@ -72,14 +72,16 @@ const Mint = () => {
   }
 
   const handleExport = async () => {
-    // const ipfs = await createNFT(zip)
-    // console.log(ipfs);
-    // setExport(true)
+    const ipfs = await createNFT(zip)
+    console.log('log once', ipfs);
+    // const url = await mintToAlgo(ipfs, account, connector)
+    // console.log(url)
+    setExport(true)
   }
 
-  const handleMint = () => {
-    // const url = await mintToAlgo(zip, account, connector);
-    // console.log(url);
+  const handleMint = async () => {
+    const url = await mintToAlgo(zip, account, connector);
+    console.log(url);
   }
 
   useEffect(() => {

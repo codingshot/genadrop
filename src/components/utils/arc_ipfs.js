@@ -97,7 +97,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     "mimetype": `image/${fileExt}`,
   };
   let properties = {
-    ...asset.properties,
     "file_url": nftFileNameSplit[0],
     "file_url_integrity": "",
     "file_url_mimetype": `image/${fileExt}`,
@@ -202,6 +201,7 @@ async function signTx(connector, txns) {
   let result;
   try {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
+    console.log('please check wallet to confirm transaction')
     result = await connector.sendCustomRequest(request);
   } catch (error) {
     console.log(error);
@@ -266,7 +266,7 @@ async function mintToAlgo(assets, account, connector) {
   const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${assetID}` } })
   let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
   await write.writeUserData(`collection${assetID}`, collectionUrl)
-  alert(`https://testnet.algoexplorer.io/tx/group/${groupId}`)
+  return `https://testnet.algoexplorer.io/tx/group/${groupId}`
 }
 
 
