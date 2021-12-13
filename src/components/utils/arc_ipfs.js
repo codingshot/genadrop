@@ -272,6 +272,8 @@ async function mintToAlgo(assets, account, connector) {
 
 export {
   createNFT,
-  mintToAlgo
+  mintToAlgo,
+  pinata,
+  write
 }
 
