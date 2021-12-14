@@ -51,29 +51,29 @@ const pinFileToIPFS = async (pinataApiKey, pinataSecretApiKey, file, metadata, o
     });
 };
 
-const waitForConfirmation = async function (txId) {
-  let response = await algodClient.status().do();
-  let lastround = response["last-round"];
-  while (true) {
-    const pendingInfo = await algodClient
-      .pendingTransactionInformation(txId)
-      .do();
-    if (
-      pendingInfo["confirmed-round"] !== null &&
-      pendingInfo["confirmed-round"] > 0
-    ) {
-      console.log(
-        "Transaction " +
-        txId +
-        " confirmed in round " +
-        pendingInfo["confirmed-round"]
-      );
-      break;
-    }
-    lastround++;
-    await algodClient.statusAfterBlock(lastround).do();
-  }
-}
+// const waitForConfirmation = async function (txId) {
+//   let response = await algodClient.status().do();
+//   let lastround = response["last-round"];
+//   while (true) {
+//     const pendingInfo = await algodClient
+//       .pendingTransactionInformation(txId)
+//       .do();
+//     if (
+//       pendingInfo["confirmed-round"] !== null &&
+//       pendingInfo["confirmed-round"] > 0
+//     ) {
+//       console.log(
+//         "Transaction " +
+//         txId +
+//         " confirmed in round " +
+//         pendingInfo["confirmed-round"]
+//       );
+//       break;
+//     }
+//     lastround++;
+//     await algodClient.statusAfterBlock(lastround).do();
+//   }
+// }
 
 const convertIpfsCidV0ToByte32 = (cid) => {
   let hex = `${bs58.decode(cid).slice(2).toString('hex')}`
@@ -201,7 +201,7 @@ async function signTx(connector, txns) {
   let result;
   try {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
-    console.log('please check wallet to confirm transaction')
+    alert('please check wallet to confirm transaction')
     result = await connector.sendCustomRequest(request);
   } catch (error) {
     console.log(error);
@@ -215,7 +215,7 @@ async function signTx(connector, txns) {
     return element ? new Uint8Array(Buffer.from(element, "base64")) : null;
   });
   let tx = await algodClient.sendRawTransaction(decodedResult).do();
-  const confirmedTxn = await waitForConfirmation(tx.txId);
+  // const confirmedTxn = await waitForConfirmation(tx.txId);
 
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
@@ -238,7 +238,7 @@ async function createNFT(fileData) {
   const metadata = JSON.parse(metadataString)
   for (let i = 0; i < metadata.length; i++) {
     let imgName = `${metadata[i].name}.png`
-    console.log(imgName)
+    console.log(imgName, '-------')
     let imgFile = data.files[imgName]
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: "image/png" });

@@ -8,6 +8,56 @@
   background: var(--main-bg);
   color: white;
   padding: 0 2.65em;
+  position: relative;
+  overflow: hidden;
+}
+
+.clipboard {
+  position: absolute;
+  top: 1em;
+  width: auto;
+  min-width: 15em;
+  max-width: 20em;
+  word-wrap: break-word;
+  background: black;
+  padding: 1em;
+  font-size: 14px;
+  border-radius: 0.5em;
+  box-shadow: 1px 1px 5px rgb(155, 153, 153);
+  user-select: none;
+  transform: translateX(1000px);
+  transition: all 1s;
+  z-index: 1000;
+}
+
+.enter {
+  transform: translateX(0);
+}
+.leave {
+  transform: translateX(1000px);
+}
+
+.clipboard .icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  visibility: hidden;
+  cursor: pointer;
+  border: 1px solid gray;
+  border-radius: 0.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15em 1em;
+  background: black;
+}
+
+.clipboard:hover .icon {
+  visibility: visible;
+}
+
+.clipboard .icon.clicked {
+  transform: scale(1.02);
 }
 
 .innerContainer {
@@ -35,7 +85,6 @@
 
 .uploadWrapper {
   width: 100%;
-  padding: 0.5em;
   border-radius: 0.5em;
   border: 1px solid gray;
   padding: 1em;
@@ -292,5 +341,4 @@
   .uploadWrapper button {
     font-size: 0.8rem;
   }
-
 }

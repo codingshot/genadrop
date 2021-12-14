@@ -301,7 +301,7 @@ const Preview = () => {
             Ipfs format
           </label>
           <label htmlFor="arweave">
-            <input onChange={handleFormatChange} type="radio" value="arweave" name="format" disabled />
+            <input onChange={handleFormatChange} type="radio" value="arweave" name="format" />
             Arweave
           </label>
         </div>
