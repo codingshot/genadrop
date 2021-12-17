@@ -26,27 +26,27 @@ async function initializeContract(name, setCeloAccount, celoAccount) {
 }
 
 export async function mintToCelo(celoProps) {
-  const {window, assets, name, setCeloAccount, celoAccount} = celoProps;
+  const {window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount} = celoProps;
 
   if (typeof window.ethereum !== 'undefined') {
-      const contract = await initializeContract(name, setCeloAccount);
+      const contract = await initializeContract(mintFileName, setCeloAccount, celoAccount);
       let collection_id = {};
-      let uris = assets.map((asset) => asset.url);
-      let ids = assets.map((asset) => {
-          let uintArray = asset.metadata.toLocaleString();
+      let uris = ipfsJsonData.map((asset) => asset.url);
+      let ids = ipfsJsonData.map((asset) => {
+          let uintArray = asset.metadata.data.toLocaleString();
           return parseInt(uintArray.slice(0,7).replace(/,/g, ''));
       })
+      
       let amounts = new Array(ids.length).fill(1);
       let tx;
       try {
           tx = await contract.mintBatch(celoAccount, ids, amounts, uris, '0x');
-          console.log(tx)
       } catch (error) {
           console.log(error);
           return;
       }
       for (let nfts = 0; nfts < ids.length; nfts++) {
-          collection_id[ids[nfts]] = assets[nfts]['url']
+          collection_id[ids[nfts]] = ipfsJsonData[nfts]['url']
         }
       const collectionHash = await minter.pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${ids[0]}` } })
       let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;

@@ -124,6 +124,7 @@ const Mint = () => {
         setShowCopy(true)
       }
     } catch (error) {
+      console.log(error)
       alert('Please connect your account and try again!'.toUpperCase())
     }
   }
