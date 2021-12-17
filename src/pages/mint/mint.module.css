@@ -67,6 +67,8 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 4em;
+  overflow: auto;
+  padding-bottom: 2em;
 }
 
 .innerContainer.height {
@@ -241,6 +243,33 @@
   align-items: center;
   justify-content: center;
 }
+
+.mintOption {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+.mintOption div {
+  font-weight: bold;
+}
+
+.mintOption select {
+  padding: 0.25em 1em;
+  font-size: 1em;
+  outline: none;
+  border-radius: 0.2em;
+  cursor: pointer;
+  background: transparent;
+  color: white;
+}
+
+.mintOption select * {
+  color: black;
+}
+
 
 @media screen and (max-width: 1350px) {
   .innerContainer {
