@@ -1,26 +1,47 @@
 import classes from './mint.module.css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import JSZip from 'jszip';
 import { getImageSize } from '../../components/utils/getImageSize';
+import { createNFT, mintToAlgo } from '../../components/utils/arc_ipfs';
+import { GenContext } from '../../gen-state/gen.context';
+import { saveAs } from 'file-saver';
+import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
+import { mintToCelo } from './mint.script';
 
 const Mint = () => {
 
   const [collections, setCollections] = useState([]);
+  const [zip, setZip] = useState(null);
+  const [ipfsJsonData, setIpfsJsonData] = useState([]);
   const [metadata, setMetadata] = useState([]);
   const [collectionName, setCollectionName] = useState('');
+  const [mintFileName, setMintFileName] = useState('');
   const [nextCount, setNextCount] = useState(0);
   const [startCount, setStartCount] = useState(0);
   const [endCount, setEndCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [algoUrl, setAlgoUrl] = useState('');
+  const [showCopy, setShowCopy] = useState(false);
   const [size, setSize] = useState({ height: 0, width: 0 });
-  const [activeExport, setExport] = useState(false);
+  const [iconClicked, setIconClicked] = useState(false);
+  const { account, connector, dispatch } = useContext(GenContext);
+  const [celoAccount, setCeloAccount] = useState('')
+  const [selectValue, setSelectValue] = useState('Algo');
+
+  console.log(selectValue);
 
   const countBy = 24;
-
   const fileRef = useRef(null);
+  const jsonFileRef = useRef(null);
+  const clipboardRef = useRef(null)
 
   const handleUpload = () => {
     fileRef.current.click()
+  }
+
+  const handleMintUpload = () => {
+    jsonFileRef.current.click()
+    setShowCopy(false)
   }
 
   const unzip = async zip => {
@@ -29,8 +50,20 @@ const Mint = () => {
     return unzipped
   }
 
+  const handleMintFileChange = event => {
+    if (!event.target.files[0]) return;
+    let content = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = function (evt) {
+      setIpfsJsonData(JSON.parse(evt.target.result))
+    };
+    fileReader.readAsText(content);
+    setMintFileName(content.name);
+  }
+
   const handleFileChange = async event => {
     if (!event.target.files[0]) return;
+    setZip(event.target.files[0]);
     setLoading(true)
     let content = event.target.files[0];
     setCollectionName(content.name);
@@ -54,10 +87,6 @@ const Mint = () => {
     setLoading(false);
   }
 
-  const handleMint = () => {
-
-  }
-
   const handleNextClick = () => {
     setNextCount(c => c + 1);
   }
@@ -71,8 +100,43 @@ const Mint = () => {
     return result > 0 ? result : 0
   }
 
-  const handleExport = () => {
-    setExport(true)
+  const handleExport = async () => {
+    dispatch(setGlobalLoading(true))
+    const ipfs = await createNFT(zip)
+    dispatch(setGlobalLoading(false))
+    let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
+    let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
+      type: 'application/json',
+      name: fileName
+    });
+    saveAs(fileToSave, fileName);
+  }
+
+  const handleMint = async () => {
+    try {
+      if(selectValue.toLowerCase() === 'algo'){
+        const url = await mintToAlgo(ipfsJsonData, account, connector);
+        setAlgoUrl(url)
+        setShowCopy(true)
+      }else if(selectValue.toLowerCase() === 'celo') {
+        const url = await mintToCelo({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
+        setAlgoUrl(url)
+        setShowCopy(true)
+      }
+    } catch (error) {
+      console.log(error)
+      alert('Please connect your account and try again!'.toUpperCase())
+    }
+  }
+
+  const handleSelectChange = event => {
+    setSelectValue(event.target.value)
+  }
+
+  const handleCopy = () => {
+    clipboardRef.current.select();
+    clipboardRef.current.setSelectionRange(0, 99999); /* For mobile devices */
+    navigator.clipboard.writeText(clipboardRef.current.value);
   }
 
   useEffect(() => {
@@ -92,6 +156,19 @@ const Mint = () => {
 
   return (
     <div className={classes.container}>
+
+      <div className={` ${classes.clipboard} ${showCopy === true ? classes.enter : classes.leave}`}>
+        <div>{algoUrl}</div>
+        <div
+          onMouseDown={() => setIconClicked(true)}
+          onMouseUp={() => setIconClicked(false)}
+          onClick={handleCopy} className={`${classes.icon} ${iconClicked && classes.clicked}`}
+        >
+          copy to clipboard
+        </div>
+        <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={algoUrl} />
+      </div>
+
       <div className={`${classes.innerContainer} ${!collections.length && classes.height}`}>
         <div className={classes.wrapper}>
           <div className={classes.uploadWrapper}>
@@ -103,21 +180,39 @@ const Mint = () => {
             <div className={classes.buttonWrapper}>
               <button className={classes.uploadBtn} onClick={handleUpload}>upload</button>
               {
-                collections.length 
-                ? <button className={classes.exportBtn} onClick={handleExport}>export IPFS.json</button>
-                : null
+                collections.length
+                  ? <button className={classes.exportBtn} onClick={handleExport}>export IPFS.json</button>
+                  : null
               }
             </div>
             <input style={{ display: 'none' }} onChange={handleFileChange} ref={fileRef} type="file" accept=".zip,.rar,.7zip" />
           </div>
-          {activeExport && <div className={classes.uploadWrapper}>
-            <div className={classes.title}>Mint with IPFS.json</div>
+
+          <div className={classes.mintOption}>
+            <div>Select Mint Option: </div>
+            <select value={selectValue} onChange={handleSelectChange}>
+              <option value="Algo">Algo</option>
+              <option value="Celo">Celo</option>
+            </select>
+          </div>
+
+          <div className={classes.uploadWrapper}>
+            <div className={classes.title}>Mint with IPFS.json {`[${selectValue}]`}</div>
             <div className={classes.upload}>
               <img src="/assets/upload-icon.png" alt="" />
-              <div>{""}</div>
+              <div>{mintFileName}</div>
             </div>
-            <button onClick={handleMint}>Mint</button>
-          </div>}
+            <div className={classes.buttonWrapper}>
+              <button className={classes.uploadBtn} onClick={handleMintUpload}>upload</button>
+              {
+                ipfsJsonData.length
+                  ? <button className={classes.exportBtn} onClick={handleMint}>mint</button>
+                  : null
+              }
+            </div>
+            <input style={{ display: 'none' }} onChange={handleMintFileChange} ref={jsonFileRef} type="file" accept=".json" />
+          </div>
+
         </div>
         {
           collections.length
@@ -131,14 +226,19 @@ const Mint = () => {
                       <img key={idx} src={URL.createObjectURL(image)} alt="" />
                     ))
                 }
-                <div className={classes.next}>
-                  {
-                    nextCount ? <i onClick={handlePrevClick} className="fas fa-long-arrow-alt-left"></i> : null
-                  }
-                  {
-                    getCount() ? <div onClick={handleNextClick}>{getCount()} more...</div> : null
-                  }
-                </div>
+                {
+                  (getCount() || nextCount)
+                    ?
+                    <div className={classes.next}>
+                      {
+                        nextCount ? <i onClick={handlePrevClick} className="fas fa-long-arrow-alt-left"></i> : null
+                      }
+                      {
+                        getCount() ? <div onClick={handleNextClick}>{getCount()} more...</div> : null
+                      }
+                    </div>
+                    : null
+                }
               </div>
               <div className={classes.description}>
                 <h3>Description</h3>
@@ -149,8 +249,8 @@ const Mint = () => {
                     ?
                     <span className={classes.layers}>
                       {
-                        metadata[0]["properties"].map(({ layerTitle }, idx) => (
-                          <span key={idx}>{layerTitle},</span>
+                        metadata[0].attributes.map(({ trait_type }, idx) => (
+                          <span key={idx}>{trait_type},</span>
                         ))
                       }
                     </span>

@@ -63,14 +63,14 @@ a {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  border-radius: 10px;
+  border-radius: 5px;
   background: var(--sidebar-bg);
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
   background: var(--main-accent); 
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 /* Handle on hover */

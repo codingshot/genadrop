@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { updateLayer } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './layer.module.css';
@@ -23,10 +21,6 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
   const handleChange = event => {
     setInputValue(event.target.value)
   }
-
-  useEffect(()=> {
-    console.log(activeInput)
-  },[activeInput])
 
   return (
     <li className={classes.item}>

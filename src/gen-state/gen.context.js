@@ -7,7 +7,8 @@ const GenContextProvider = ({ children }) => {
 
   const [state, dispatch] = useReducer(genReducer, INITIAL_STATE)
 
-  const { layers,
+  const {
+    layers,
     preview,
     mintAmount,
     nftLayers,
@@ -16,7 +17,9 @@ const GenContextProvider = ({ children }) => {
     mintInfo,
     currentDnaLayers,
     collectionName,
-    outputFormat
+    outputFormat,
+    connector,
+    account
   } = state;
 
   // console.log("preview => ", preview);
@@ -28,7 +31,8 @@ const GenContextProvider = ({ children }) => {
   // console.log("isLoading => ", mintInfo)
   // console.log("currentDnaLayers => ", currentDnaLayers)
   // console.log("collectionName =>", collectionName)
-  
+  // console.log("connector => ", connector)
+  // console.log("account =>", account)
   return (
     <GenContext.Provider value={{
       layers,
@@ -41,6 +45,8 @@ const GenContextProvider = ({ children }) => {
       currentDnaLayers,
       collectionName,
       outputFormat,
+      connector,
+      account,
       dispatch
     }}>
       {children}
