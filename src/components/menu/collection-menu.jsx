@@ -100,7 +100,9 @@ const CollectionMenu = ({ layer: { layerTitle, traits } }) => {
         </div>
         <div className={classes.uploadBtnContainer}>
           <button onClick={handleUpload} className={classes.uploadBtn}>upload</button>
-          <button onClick={handleAddBlank} className={classes.addBlankBtn}>Add blank image</button>
+          {
+            traits[0] && <button onClick={handleAddBlank} className={classes.addBlankBtn}>Add blank image</button>
+          }
         </div>
       </section>
 
