@@ -23,7 +23,7 @@ const InputEditor = ({
         className={classes.renameBtn}
         onClick={() => clickHandler(id, inputValue, inputIndex)}
       >
-        {name ? name : value} <i className="fas fa-ellipsis-h"></i>
+        <span>{name ? name : value} </span><i className="fas fa-ellipsis-h"></i>
       </button>
       {
         editorAction.index === inputIndex && editorAction.id === id

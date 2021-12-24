@@ -7,6 +7,11 @@
   border-radius: 0.5em;
 }
 
+
+.layer {
+  position: relative;
+}
+
 .header {
   color: white;
   margin-bottom: 0.5em;
@@ -28,8 +33,29 @@
   flex: 0 0 auto;
 }
 
+.uploadBtnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.addBlankBtn {
+  width: auto;
+  border: 1px solid red;
+  background: black;
+  border: 1px solid white;
+  color: white;
+  padding: 0.5em 1em;
+  font-weight: bold;
+  font-size: 1em;
+  cursor: pointer;
+  transition: all 300ms;
+  border-radius: 0.25em;
+}
+
 .uploadBtn {
-  width: 100%;
+  flex: 1;
   background: var(--main-accent);
   color: white;
   border: none;
@@ -42,6 +68,9 @@
   border-radius: 0.25em;
 }
 
+.addBlankBtn:hover {
+  color: rgb(207, 207, 207);
+}
 .uploadBtn:hover {
   background: var(--main-accent-dark);
 }

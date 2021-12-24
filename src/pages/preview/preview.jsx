@@ -256,6 +256,16 @@ const Preview = () => {
     });
   }
 
+  const handleDownloadAsset = (id, name) => {
+    let { image } = nftLayers.find(el => el.id === id)
+    let link = document.createElement('a');
+    link.download = `${name || 'asset'}.png`;
+    link.href = image;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
   useEffect(() => {
     if (didMountRef.current) {
       handleGenerate()
@@ -297,7 +307,7 @@ const Preview = () => {
         <div>Use </div>
         <div className={classes.downloadFormatContainer}>
           <label htmlFor="ipfs">
-            <input onChange={handleFormatChange} type="radio" value="ipfs" name="format" defaultChecked/>
+            <input onChange={handleFormatChange} type="radio" value="ipfs" name="format" defaultChecked />
             Ipfs format
           </label>
           <label htmlFor="arweave">
@@ -313,34 +323,38 @@ const Preview = () => {
       <div className={classes.preview}>
         {nftLayers.length &&
           nftLayers.map(({ image, id, name, description }, idx) => (
-            <div key={idx} className={classes.imgWrapper}>
-              <img src={image} alt="" />
-              <div className={classes.popup}>
-                <button onClick={() => handleDeleteAndReplace(id)}>
-                  generate new
-                </button>
-                <button onClick={() => handleDelete(id)}>delete</button>
+            <div key={idx} className={classes.assetContainer}>
+              <div className={classes.imgWrapper}>
+                <img src={image} alt="" />
+                <button onClick={() => handleDownloadAsset(id, name)}>download</button>
               </div>
-              <div className={classes.inputs}>
-                <InputEditor
-                  id={id}
-                  inputIndex="0"
-                  editorAction={editorAction}
-                  value={name ? name : `name_${idx}`}
-                  clickHandler={handleRename}
-                  inputType="text"
-                />
+              <div className={classes.wrapper_2}>
+                <div className={classes.inputs}>
+                  <InputEditor
+                    id={id}
+                    inputIndex="0"
+                    editorAction={editorAction}
+                    value={name ? name : `name_${idx}`}
+                    clickHandler={handleRename}
+                    inputType="text"
+                  />
 
-                <InputEditor
-                  inputIndex="1"
-                  id={id}
-                  editorAction={editorAction}
-                  clickHandler={handleDescription}
-                  value={description ? description : `description`}
-                  inputType="textarea"
-                />
+                  <InputEditor
+                    inputIndex="1"
+                    id={id}
+                    editorAction={editorAction}
+                    clickHandler={handleDescription}
+                    value={description ? description : `description`}
+                    inputType="textarea"
+                  />
+                </div>
+                <div className={classes.popup}>
+                  <button onClick={() => handleDeleteAndReplace(id)}>
+                    generate new
+                  </button>
+                  <button onClick={() => handleDelete(id)}>delete</button>
+                </div>
               </div>
-
             </div>
           ))}
       </div>
