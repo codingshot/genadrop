@@ -5,10 +5,27 @@
   margin-bottom: 14em;
 }
 
+.wrapper_2 button {
+  font-size: 10px;
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  outline: none;
+  border: 1px solid var(--sidebar-bg);
+  font-size: 12px;
+  border-radius: 0.2em;
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.wrapper_2 button:hover {
+  box-shadow: 0px 0px 5px 0px var(--main-accent);
+}
+
 .preview {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 1.5em;
 }
@@ -51,6 +68,17 @@
   color: tomato;
 }
 
+.assetContainer {
+  width: auto;
+  max-width: 14em;
+}
+
+.wrapper_2 {
+  border: 1px solid var(--sidebar-bg);
+  border-top-right-radius: 0.25em;
+  border-top-left-radius: 0.25em;
+}
+
 .imgWrapper {
   display: inline-block;
   border: 1px solid rgba(128, 128, 128, 0.2);
@@ -66,39 +94,15 @@
   height: 100%;
 }
 
-.imgWrapper:hover {
-  border: 1px solid var(--main-accent-dark);
-}
-
-.imgWrapper:hover .popup {
-  opacity: 1;
-}
-
-.popup {
-  width: 100%;
-  border: 1px solid var(--sidebar-bg);
-  border-radius: 0.25em;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.25em;
-  padding: 0.5em;
-  opacity: 0;
-  transition: all 0.3s;
-}
-
 .imgWrapper button {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
   font-size: 10px;
-  background: var(--main-bg);
-  color: white;
+  background: rgba(0, 0, 0, 0.3);
   color: white;
   outline: none;
   border: 1px solid var(--sidebar-bg);
-  box-shadow: 0px 0px 5px 0px var(--main-accent);
   font-size: 12px;
   border-radius: 0.2em;
   padding: 0.25em 0.5em;
@@ -107,24 +111,40 @@
 }
 
 .imgWrapper button:hover {
-  box-shadow: 0px 0px 10px 0px var(--main-accent);
+  box-shadow: 0px 0px 5px 0px var(--main-accent);
+}
+
+.imgWrapper:hover {
+  border: 1px solid var(--main-accent-dark);
+}
+
+.popup {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  padding: 0.5em;
+  transition: all 0.3s;
+  margin: 1em auto;
+}
+
+.popup > button {
+  border-radius: 1em !important;
+  padding: 0.5em 1em !important;
 }
 
 .inputs {
   width: 100%;
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.renameInputContainer {
-  width: 100%;
+  word-break: break-all;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 0.25em;
-  padding: 0.25em .5em;
+  gap: 1em;
+}
+
+.inputs button {
+  width: 100%;
 }
 
 .downloadContainer {

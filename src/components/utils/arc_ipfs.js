@@ -121,7 +121,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   metadata.properties = properties;
   metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
   metadata.properties.file_url_integrity = `${integrity.base64}`;
-  metadata.name = `${asset.name}@arc3`;
+  metadata.name = asset.name;
   metadata.description = asset.description;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
   metadata.image_integrity = `${integrity.base64}`;;
@@ -153,7 +153,7 @@ async function createAsset(asset, account) {
 
   const defaultFrozen = false;
   const unitName = 'nft';
-  const assetName = asset.name;
+  const assetName = `${asset.name}@arc3`;
   const url = asset.url;
 
   const managerAddr = account;
