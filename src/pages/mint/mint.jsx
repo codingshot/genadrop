@@ -6,6 +6,7 @@ import { createNFT, mintToAlgo } from '../../components/utils/arc_ipfs';
 import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
 import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
+import { mintToCelo } from './mint.script';
 
 const Mint = () => {
 
@@ -24,6 +25,10 @@ const Mint = () => {
   const [size, setSize] = useState({ height: 0, width: 0 });
   const [iconClicked, setIconClicked] = useState(false);
   const { account, connector, dispatch } = useContext(GenContext);
+  const [celoAccount, setCeloAccount] = useState('')
+  const [selectValue, setSelectValue] = useState('Algo');
+
+  console.log(selectValue);
 
   const countBy = 24;
   const fileRef = useRef(null);
@@ -109,12 +114,23 @@ const Mint = () => {
 
   const handleMint = async () => {
     try {
-      const url = await mintToAlgo(ipfsJsonData, account, connector);
-      setAlgoUrl(url)
-      setShowCopy(true)
+      if(selectValue.toLowerCase() === 'algo'){
+        const url = await mintToAlgo(ipfsJsonData, account, connector);
+        setAlgoUrl(url)
+        setShowCopy(true)
+      }else if(selectValue.toLowerCase() === 'celo') {
+        const url = await mintToCelo({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
+        setAlgoUrl(url)
+        setShowCopy(true)
+      }
     } catch (error) {
+      console.log(error)
       alert('Please connect your account and try again!'.toUpperCase())
     }
+  }
+
+  const handleSelectChange = event => {
+    setSelectValue(event.target.value)
   }
 
   const handleCopy = () => {
@@ -153,7 +169,6 @@ const Mint = () => {
         <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={algoUrl} />
       </div>
 
-
       <div className={`${classes.innerContainer} ${!collections.length && classes.height}`}>
         <div className={classes.wrapper}>
           <div className={classes.uploadWrapper}>
@@ -173,8 +188,16 @@ const Mint = () => {
             <input style={{ display: 'none' }} onChange={handleFileChange} ref={fileRef} type="file" accept=".zip,.rar,.7zip" />
           </div>
 
+          <div className={classes.mintOption}>
+            <div>Select Mint Option: </div>
+            <select value={selectValue} onChange={handleSelectChange}>
+              <option value="Algo">Algo</option>
+              <option value="Celo">Celo</option>
+            </select>
+          </div>
+
           <div className={classes.uploadWrapper}>
-            <div className={classes.title}>Mint with IPFS.json</div>
+            <div className={classes.title}>Mint with IPFS.json {`[${selectValue}]`}</div>
             <div className={classes.upload}>
               <img src="/assets/upload-icon.png" alt="" />
               <div>{mintFileName}</div>
