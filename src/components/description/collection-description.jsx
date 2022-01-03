@@ -9,6 +9,7 @@ import classes from './collection-description.module.css';
 import { v4 as uuid } from 'uuid';
 import { Link } from 'react-router-dom';
 import { getImageSize } from '../utils/getImageSize';
+import ButtonClickEffect from '../button-effect/button-effect';
 
 const CollectionDescription = () => {
   const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
@@ -76,7 +77,7 @@ const CollectionDescription = () => {
       let attr = [];
       layers.forEach(({ layerTitle, traits }) => {
         let randNum = Math.floor(Math.random() * traits.length)
-        let{traitTitle, Rarity, image}  = traits[randNum]
+        let { traitTitle, Rarity, image } = traits[randNum]
         attr.push({
           trait_type: layerTitle,
           value: traitTitle,
@@ -126,7 +127,7 @@ const CollectionDescription = () => {
       }
       return layer
     })
-    
+
     // // uncomment the block below to display a list of all nft sizes
     // const nftSizes = [];
     // for (let nft of NFTs) {
@@ -142,11 +143,11 @@ const CollectionDescription = () => {
     dispatch(setLoading(false))
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     dispatch(setLoading(false))
-  },[dispatch])
+  }, [dispatch])
 
-  return (  
+  return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.preview_details}>
@@ -159,7 +160,9 @@ const CollectionDescription = () => {
         </div>
         <div className={classes.btnWrapper}>
           <div onClick={handleGenerate}>
-            <Button>generate {mintAmount}</Button>
+            <ButtonClickEffect>
+              <Button>generate {mintAmount}</Button>
+            </ButtonClickEffect>
           </div>
         </div>
 
@@ -168,7 +171,9 @@ const CollectionDescription = () => {
             mintInfo === "completed"
               ?
               <Link to="/preview">
-                <Button invert>preview</Button>
+                <ButtonClickEffect>
+                  <Button invert>preview</Button>
+                </ButtonClickEffect>
               </Link>
               :
               <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>

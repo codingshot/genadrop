@@ -19,6 +19,7 @@ import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
 import { getImageSize } from '../../components/utils/getImageSize';
 import InputEditor from './inputEditor';
+import ButtonClickEffect from '../../components/button-effect/button-effect';
 
 const Preview = () => {
 
@@ -316,7 +317,9 @@ const Preview = () => {
           </label>
         </div>
         <div onClick={handleDownload}>
-          <Button>download zip</Button>
+          <ButtonClickEffect>
+            <Button>download zip</Button>
+          </ButtonClickEffect>
         </div>
       </div>
 
@@ -326,7 +329,7 @@ const Preview = () => {
             <div key={idx} className={classes.assetContainer}>
               <div className={classes.imgWrapper}>
                 <img src={image} alt="" />
-                <button onClick={() => handleDownloadAsset(id, name)}>download</button>
+                  <button onClick={() => handleDownloadAsset(id, name)}>download</button>
               </div>
               <div className={classes.wrapper_2}>
                 <div className={classes.inputs}>
@@ -349,10 +352,14 @@ const Preview = () => {
                   />
                 </div>
                 <div className={classes.popup}>
-                  <button onClick={() => handleDeleteAndReplace(id)}>
-                    generate new
-                  </button>
-                  <button onClick={() => handleDelete(id)}>delete</button>
+                  <ButtonClickEffect>
+                    <button onClick={() => handleDeleteAndReplace(id)}>
+                      generate new
+                    </button>
+                  </ButtonClickEffect>
+                  <ButtonClickEffect>
+                    <button onClick={() => handleDelete(id)}>delete</button>
+                  </ButtonClickEffect>
                 </div>
               </div>
             </div>
