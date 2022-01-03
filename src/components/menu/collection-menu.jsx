@@ -4,6 +4,7 @@ import { useRef, useContext, useEffect, useState } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { addImage, setCombinations } from '../../gen-state/gen.actions';
 import { getImageSize } from '../utils/getImageSize';
+import ButtonClickEffect from '../button-effect/button-effect';
 
 const CollectionMenu = ({ layer: { layerTitle, traits } }) => {
 
@@ -101,7 +102,11 @@ const CollectionMenu = ({ layer: { layerTitle, traits } }) => {
         <div className={classes.uploadBtnContainer}>
           <button onClick={handleUpload} className={classes.uploadBtn}>upload</button>
           {
-            traits[0] && <button onClick={handleAddBlank} className={classes.addBlankBtn}>Add blank image</button>
+            traits[0] && (
+              <ButtonClickEffect>
+                <button onClick={handleAddBlank} className={classes.addBlankBtn}>Add blank image</button>
+              </ButtonClickEffect>
+            )
           }
         </div>
       </section>

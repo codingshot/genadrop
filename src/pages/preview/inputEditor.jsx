@@ -10,7 +10,7 @@ const InputEditor = ({
   inputIndex,
   inputType
 }) => {
-  
+
   const [inputValue, setInputValue] = useState();
 
   const handleChange = event => {
@@ -23,7 +23,7 @@ const InputEditor = ({
         className={classes.renameBtn}
         onClick={() => clickHandler(id, inputValue, inputIndex)}
       >
-        <span>{name ? name : value} </span><i className="fas fa-ellipsis-h"></i>
+        <span>{name ? name : value} </span><i className={`fas fa-${editorAction.index === inputIndex && editorAction.id === id ? 'minus' : 'edit'}`}></i>
       </button>
       {
         editorAction.index === inputIndex && editorAction.id === id
