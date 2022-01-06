@@ -41,7 +41,7 @@
 }
 
 .renameInputContainer i {
-  color: var(--main-accent-dark);
+  color: var(--icon-color);
   font-size: 10px;
   margin-left: 1em;
 }

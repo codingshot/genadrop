@@ -1,65 +1,75 @@
 .container {
   width: 14em;
-  height: 14em;
+  /* height: 8em; */
   cursor: pointer;
   position:  relative;
   background: var(--main-bg);
   border-radius: 0.25em;
   overflow: hidden;
-  border: 2px solid gray;
+  border: 2px solid transparent;
   transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 
 .container i {
-  color: var(--main-accent-dark);
+  color: var(--icon-color);
 }
 
 .container.active {
-  border-color: var(--main-accent);
+  border-color: var(--sidebar-bg);
   border-width: 2px;
 }
 
-.container.inActive:hover {
-  border: 2px solid var(--main-accent);
-}
-
 .container.inActive {
-  border-color: gray;
+  border-color: transparent;
 }
 
 .container * {
   transition: all 0.3s;
 }
 
-.image {
-  display: block;
+.imageContainer {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageContainer:hover .image{
+  transform: scale(1.05);
+}
+
+.image {
+  width: 6em;
+  height: 6em;
+  box-shadow: 4px 4px 4px 0px rgba(75, 75, 75, 0.274);
+  border-radius: 0.25em;
 }
 
 .remove {
   width: 100%;
-  position: absolute;
   top: 0;  
   left: 0;
   background: var(--card-bg);
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  padding: 0.5em;
 }
 
-.remove * {
-  padding: 0 0.25em;
+.remove i {
   font-weight: bold;
-  color: red;
+  color: var(--icon-color);
 }
 
-.remove *:hover {
- color: rgb(133, 0, 0); 
+.remove i:hover {
+  color: var(--icon-color-dark);
 }
 
 .details {
   width: 100%;
-  position: absolute;
   bottom: 0;
   left: 0;
   color: white;
@@ -110,7 +120,7 @@
   padding: 0.25em;
   background: white;
   color: black;
-  border: 1px solid gray;
+  border: 1px solid var(--sidebar-bg);
 }
 
 .details input:focus {

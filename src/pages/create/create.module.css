@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  min-height: calc(100vh - 6.25em);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -18,7 +19,8 @@
 @media screen and (max-width: 1200px) {
   .container {
     flex-direction: column;
-    margin-bottom: 4em;
+    margin-bottom: 6em;
+    margin-top: 2em;
   }
 
   .layer_overview {
@@ -28,9 +30,7 @@
 
 
 @media screen and (max-width: 768px) {
-  .container {
-    margin-top: 2em;
-  }
+
   .layer_overview {
     flex-direction: column;
   }

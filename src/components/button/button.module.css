@@ -2,13 +2,13 @@
   width: 100%;
   padding: 0.5em 3em;
   background: transparent;
-  border: 2px solid gray;
-  font-weight: bold;
+  border: 1px solid var(--sidebar-bg);
   color: white;
   outline: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
+  border-radius: 0.5em;
 }
 
 .button.invert {

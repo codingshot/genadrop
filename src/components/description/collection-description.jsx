@@ -184,7 +184,7 @@ const CollectionDescription = () => {
       </div>
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Add Amount</label>
+          <label htmlFor="generate amout">Set Range</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>

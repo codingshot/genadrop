@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: calc(100vh - 8.25em);
+  height: calc(100vh - 6.25em);
   overflow: auto;
   display: flex;
   align-items: center;
