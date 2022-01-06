@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  height: calc(100vh - 8.25em);
+  min-height: calc(100vh - 6.25em);
   overflow: auto;
   display: flex;
   align-items: center;
@@ -66,9 +66,9 @@
   cursor: default;
 }
 
-.function:hover {
-  box-shadow: 0px 0px 5px 0px rgb(215, 235, 102);
-  transform: scale(1.05);
+.function:hover {  
+  position: relative;
+  transform: scale(1) translateY(-5px);
   margin-bottom: 1em;
 }
 

@@ -48,10 +48,11 @@
 
 .action {
   flex: 50%;
-  border: 1px solid gray;
+  border: 1px solid var(--sidebar-bg);
   text-align: center;
-  font-size: 1rem;
   padding: 0.25em;
+  border-radius: 0.5em;
+  font-size: 0.85rem;
 }
 
 .action input {
@@ -59,19 +60,21 @@
   background: white;
   color: black;
   outline: none;
-  padding: 0 0.25em;
-  font-size: 1.1em;
+  padding: 0.15em 0.5em;
+  font-size: 0.85rem;
+  border-radius: 0.5em;
 }
 
 .mintInfo {
   padding: 0.25em;
-  text-transform: capitalize;
+  text-transform: lowercase;
   margin-bottom: 0.5em;
-  font-size: 0.75em;
+  font-size: 0.85em;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
+  color: var(--icon-color);
 }
 
 .previewBtn {

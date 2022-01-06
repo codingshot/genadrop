@@ -34,7 +34,7 @@
   color: white;
   margin-bottom: 2em;
   width: 100%;
-  padding: 0 0.5em;
+  /* padding: 0 0.5em; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -50,6 +50,7 @@
   display: flex;
   align-items: center;
   gap: 2em;
+  white-space: nowrap;
 }
 
 .info div {
@@ -87,11 +88,13 @@
   position: relative;
   cursor: pointer;
   transition: all 300ms;
+  overflow: hidden;
 }
 
 .imgWrapper img {
   width: 100%;
   height: 100%;
+  transition: all 250ms;
 }
 
 .imgWrapper button {
@@ -114,8 +117,8 @@
   box-shadow: 0px 0px 5px 0px var(--main-accent);
 }
 
-.imgWrapper:hover {
-  border: 1px solid var(--main-accent-dark);
+.imgWrapper:hover img{
+  transform: scale(1.05);
 }
 
 .popup {
@@ -149,7 +152,7 @@
 
 .downloadContainer {
   position: fixed;
-  right: 0.5em;
+  right: 0em;
   bottom: 4em;
   z-index: 1000;
   background: black;
@@ -199,9 +202,8 @@
   padding: 0 1.5em;
   border-radius: 0.5em;
   cursor: pointer;
-  margin-bottom: 3em;
-  margin-top: 1em;
-  margin-left: 0.5em;
+  position: sticky;
+  top: 12em;
 }
 
 .goBackBtn i {
@@ -216,4 +218,21 @@
 .toggleLabel{
   color: white;
   margin-left: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .downloadContainer {
+    right: 0.5em;
+  }  
+
+  .info {
+      padding: 0 0.5em;
+  }
+
+  .goBackBtn {
+    position: static;
+    margin-left: 1em;
+    margin-bottom: 2em;
+    margin-top: 2em;
+  }
 }

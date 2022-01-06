@@ -26,11 +26,12 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
     setValue(v => ({ ...v, [name]: value }))
   }
 
-  const handleActive = () => {    
+  const handleActive = () => {
     setActiveCard(traitTitle)
   }
 
-  const handleRename = () => {
+  const handleRename = e => {
+    e.preventDefault()
     setPrompt("");
     preview.forEach(item => {
       if (item["layerTitle"] === layerTitle && item["imageName"] === previousValue) {
@@ -45,16 +46,18 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
     setPreviousValue(traitTitle)
   }
 
-  useEffect(()=> {
-    if(activeCard !== traitTitle) setPrompt("")
-  },[activeCard, traitTitle])
+  useEffect(() => {
+    if (activeCard !== traitTitle) setPrompt("")
+  }, [activeCard, traitTitle])
 
   return (
     <div onClick={handleActive} className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
       <div className={classes.remove}>
-        <div onClick={handleRemove}>x</div>
+        <i onClick={handleRemove} className="fas fa-times"></i>
       </div>
-      <img onClick={()=>handleAdd(traitTitle)} className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
+      <div onClick={() => handleAdd(traitTitle)} className={classes.imageContainer}>
+        <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
+      </div>
       <div className={classes.details}>
         <div>
           {prompt !== "name"
@@ -62,12 +65,14 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
             <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="fas fa-edit"></i></div>
             :
             <div className={classes.editInput}>
-              <input
-                autoFocus type="text"
-                name="name"
-                value={name}
-                onChange={handleChange}
-              />
+              <form onSubmit={handleRename}>
+                <input
+                  autoFocus type="text"
+                  name="name"
+                  value={name}
+                  onChange={handleChange}
+                />
+              </form>
               <i onClick={handleRename} className="fas fa-minus"></i>
             </div>
           }
@@ -79,14 +84,16 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
             <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="fas fa-edit"></i></div>
             :
             <div className={classes.editInput}>
-              <input
-                autoFocus
-                type="number"
-                min="0"
-                name="rarity"
-                value={rarity}
-                onChange={handleChange}
-              />
+              <form onSubmit={handleRename}>
+                <input
+                  autoFocus
+                  type="number"
+                  min="0"
+                  name="rarity"
+                  value={rarity}
+                  onChange={handleChange}
+                />
+              </form>
               <i onClick={handleRename} className="fas fa-minus"></i>
             </div>
           }

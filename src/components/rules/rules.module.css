@@ -1,0 +1,97 @@
+.container {
+  width: 80%;
+  background: white;
+  color: black;
+  min-height: 84vh;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-bottom: 2em;
+  /* overflow: auto; */
+}
+
+.rulesContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4em;
+  padding: 2em;
+}
+
+.title {
+  text-transform: uppercase;
+}
+
+.filterAttribute,
+.addConflict {
+  width: 100%;
+}
+
+.heading {
+  border-bottom: 1px solid red;
+  width: 100%;
+  margin-bottom: 1em;
+  text-align: left;
+  font-style: italic;
+  font-size: 1.2rem;
+}
+
+.filterSection {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+}
+
+.filterContainer {
+  width: 100%;
+  max-width: 15em;
+}
+
+.filteredList {
+  padding: 0.25em;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.filteredItem {
+  border: 1px solid red;
+  border-radius: 1em;
+  padding: 0.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: 0.85rem;
+}
+
+.closeIcon {
+  padding: 0 0.5em;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.btn {
+  display: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+  padding-right: 1em;
+}
+
+.btn div {
+  border: 1px solid red;
+  padding: 0.25em 1em;
+  border-radius: 1em;
+  cursor: pointer;
+}

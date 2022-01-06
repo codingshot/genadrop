@@ -26,7 +26,7 @@
   background: white;
   color: black;
   outline: none;
-  border: 1px solid gray;
+  border: 1px solid var(--sidebar-bg);
   padding: 0.25em 1em;
   border-radius: 0.25em;
   cursor: pointer;

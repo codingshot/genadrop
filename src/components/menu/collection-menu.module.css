@@ -1,7 +1,7 @@
 .container {
   flex: 1;
   overflow: auto;
-  border: 1px solid gray;
+  border: 1px solid var(--sidebar-bg);
   margin-bottom: 1em;
   padding: 1em;
   border-radius: 0.5em;
@@ -44,11 +44,10 @@
   width: auto;
   border: 1px solid red;
   background: black;
-  border: 1px solid white;
+  border: 1px solid var(--sidebar-bg);
   color: white;
   padding: 0.5em 1em;
-  font-weight: bold;
-  font-size: 1em;
+  font-size: 0.85em;
   cursor: pointer;
   transition: all 300ms;
   border-radius: 0.25em;
@@ -60,8 +59,7 @@
   color: white;
   border: none;
   padding: 0.5em;
-  font-weight: bold;
-  font-size: 1.2em;
+  font-size: 0.85rem;
   text-transform: capitalize;
   cursor: pointer;
   transition: all 300ms;

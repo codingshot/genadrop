@@ -7,9 +7,13 @@
 }
 
 .container i {
-  color: var(--main-accent-dark);
+  color: var(--icon-color);
   font-size: 14px;
   padding: 0 0.5em;
+}
+
+.container i:hover {
+  color: var(--icon-color-dark);
 }
 
 .renameBtn {
@@ -35,9 +39,9 @@
   width: 100%;
   outline: none;
   border: none;
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 0.25em;
-  border: 1px solid gray;
+  border: 1px solid var(--sidebar-bg);
 }
 
 .editBtn {
@@ -49,6 +53,8 @@
   width: 90%;
   word-wrap: break-word;
   text-align: center;
+  font-weight: 300;
+  font-size: 1.4rem;
 }
 
 .layerHeadWrapper {
