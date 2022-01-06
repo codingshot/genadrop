@@ -1,6 +1,6 @@
 .button {
   width: 100%;
-  padding: 0.5em 3em;
+  padding: 0.75em 3em;
   background: transparent;
   border: 1px solid var(--sidebar-bg);
   color: white;

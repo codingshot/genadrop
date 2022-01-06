@@ -67,13 +67,14 @@
 
 .mintInfo {
   padding: 0.25em;
-  text-transform: capitalize;
+  text-transform: lowercase;
   margin-bottom: 0.5em;
   font-size: 0.85em;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
+  color: var(--icon-color);
 }
 
 .previewBtn {

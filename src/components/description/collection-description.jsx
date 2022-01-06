@@ -109,8 +109,8 @@ const CollectionDescription = () => {
   // generate nft data ready for upload
   const handleGenerate = async () => {
 
-    dispatch(setMintInfo("generating..."))
-    if (!mintAmount) return dispatch(setMintInfo("please set the amount to continue..."));
+    dispatch(setMintInfo("in progress..."))
+    if (!mintAmount) return dispatch(setMintInfo("please set amount to continue..."));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets to continue..."))
     if (mintAmount > combinations) return dispatch(setMintInfo("cannot generate more than possible combinations"));
     dispatch(setNftLayers([]))
@@ -184,7 +184,7 @@ const CollectionDescription = () => {
       </div>
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Set Range</label>
+          <label htmlFor="generate amout">Generate Amount</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
