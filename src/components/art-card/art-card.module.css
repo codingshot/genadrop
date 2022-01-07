@@ -44,7 +44,7 @@
 .image {
   width: 6em;
   height: 6em;
-  box-shadow: 4px 4px 4px 0px rgba(75, 75, 75, 0.274);
+  /* box-shadow: 4px 4px 4px 0px rgba(75, 75, 75, 0.274); */
   border-radius: 0.25em;
 }
 

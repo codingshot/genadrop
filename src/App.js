@@ -11,7 +11,7 @@ import ConnectWallet from './components/wallet/wallet';
 import Preview from './pages/preview/preview';
 import Footer from './components/footer/footer';
 import Overlay from './components/overlay/overlay';
-// import Rules from './components/rules/rules';
+import Rules from './components/rules/rules';
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
           <Route exact path="/mint" component={Mint} />
           <Route exact path="/explore" component={Explore} />
           <Route exact path="/preview" component={Preview} />
-          {/* <Route exact path="/rules" component={Rules} /> */}
+          <Route exact path="/rules" component={Rules} />
         </Switch>
 
         <div className="Footer">

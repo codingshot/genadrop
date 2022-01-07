@@ -3,9 +3,10 @@
   min-height: calc(100vh - 6.25em);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 1em;
   padding: 0 1em;
+  position: relative;
 }
 
 .layer_overview {
@@ -14,6 +15,45 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
+}
+
+.rulesWrapper {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5em;
+}
+
+.rulesWrapper.active {
+  display: flex;
+}
+
+.rulesWrapper.inactive {
+  display: none;
+}
+
+.ruleBtn {
+  position: absolute;
+  top: 1em;
+  left: 1em;
+  background: var(--sidebar-bg);
+  border: none;
+  color: white;
+  padding: 0.45em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+}
+
+.ruleBtn.active {
+  display: none;
 }
 
 @media screen and (max-width: 1200px) {

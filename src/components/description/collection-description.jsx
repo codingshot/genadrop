@@ -110,8 +110,8 @@ const CollectionDescription = () => {
   const handleGenerate = async () => {
 
     dispatch(setMintInfo("in progress..."))
-    if (!mintAmount) return dispatch(setMintInfo("please set amount to continue..."));
-    if (!combinations) return dispatch(setMintInfo("Please uplaod assets to continue..."))
+    if (!mintAmount) return dispatch(setMintInfo("please set the amount to generate"));
+    if (!combinations) return dispatch(setMintInfo("Please uplaod assets"))
     if (mintAmount > combinations) return dispatch(setMintInfo("cannot generate more than possible combinations"));
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))

@@ -98,7 +98,7 @@
 .list {
   width: 100%;
   min-height: 4em;
-  max-height: 20em;
+  max-height: 16em;
   overflow: auto;
   display: flex;
   flex-direction: column;
