@@ -22,6 +22,12 @@ const algodClient = new algosdk.Algodv2(
   algodClientPort
 );
 
+const fromHexString = hexString =>
+  new Uint8Array(hexString.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+
+const toHexString = bytes =>
+  bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+
 const pinFileToIPFS = async (pinataApiKey, pinataSecretApiKey, file, metadata, option) => {
   const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
   //we gather a local file for this example, but any valid readStream source will work here.
@@ -51,29 +57,29 @@ const pinFileToIPFS = async (pinataApiKey, pinataSecretApiKey, file, metadata, o
     });
 };
 
-// const waitForConfirmation = async function (txId) {
-//   let response = await algodClient.status().do();
-//   let lastround = response["last-round"];
-//   while (true) {
-//     const pendingInfo = await algodClient
-//       .pendingTransactionInformation(txId)
-//       .do();
-//     if (
-//       pendingInfo["confirmed-round"] !== null &&
-//       pendingInfo["confirmed-round"] > 0
-//     ) {
-//       console.log(
-//         "Transaction " +
-//         txId +
-//         " confirmed in round " +
-//         pendingInfo["confirmed-round"]
-//       );
-//       break;
-//     }
-//     lastround++;
-//     await algodClient.statusAfterBlock(lastround).do();
-//   }
-// }
+const waitForConfirmation = async function (txId) {
+  let response = await algodClient.status().do();
+  let lastround = response["last-round"];
+  while (true) {
+    const pendingInfo = await algodClient
+      .pendingTransactionInformation(txId)
+      .do();
+    if (
+      pendingInfo["confirmed-round"] !== null &&
+      pendingInfo["confirmed-round"] > 0
+    ) {
+      console.log(
+        "Transaction " +
+        txId +
+        " confirmed in round " +
+        pendingInfo["confirmed-round"]
+      );
+      break;
+    }
+    lastround++;
+    await algodClient.statusAfterBlock(lastround).do();
+  }
+}
 
 const convertIpfsCidV0ToByte32 = (cid) => {
   let hex = `${bs58.decode(cid).slice(2).toString('hex')}`
@@ -97,6 +103,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     "mimetype": `image/${fileExt}`,
   };
   let properties = {
+    ...asset.attributes,
     "file_url": nftFileNameSplit[0],
     "file_url_integrity": "",
     "file_url_mimetype": `image/${fileExt}`,
@@ -130,7 +137,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   const resultMeta = await pinata.pinJSONToIPFS(metadata, { pinataMetadata: { name: asset.name } });
   let jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash)
   return {
-    name: `${asset.name}@arc3`,
+    name: asset.name,
     url: `ipfs://${resultMeta.IpfsHash}`,
     metadata: jsonIntegrity.buffer,
     integrity: jsonIntegrity.base64,
@@ -203,6 +210,7 @@ async function signTx(connector, txns) {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
     alert('please check wallet to confirm transaction')
     result = await connector.sendCustomRequest(request);
+    console.log('result', result)
   } catch (error) {
     console.log(error);
     alert("user rejected transaction")
@@ -214,16 +222,29 @@ async function signTx(connector, txns) {
   const decodedResult = result.map(element => {
     return element ? new Uint8Array(Buffer.from(element, "base64")) : null;
   });
+  console.log(decodedResult)
   let tx = await algodClient.sendRawTransaction(decodedResult).do();
-  // const confirmedTxn = await waitForConfirmation(tx.txId);
+  console.log('transaction', tx);
+  // const decoded = algosdk.decodeSignedTransaction(decodedResult);
+  // console.log('decoded', decoded);
+  // const fromdc = decoded.txn.from
+  // console.log('fromdc', fromdc);
+  // console.log('address', algosdk.encodeAddress(fromdc.publicKey))
+  const confirmedTxn = await waitForConfirmation(tx.txId);
+
+  console.log('confam', tx.txId)
+  
 
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
+  console.log('asset id', Buffer.from(decodedResult[0]).toString('hex'));
+
+
 
   // console.log('Account: ',account,' Has created ASA with ID: ', assetID);
 
 
-  return assetID;
+  return decodedResult;
 }
 
 
@@ -248,24 +269,30 @@ async function createNFT(fileData) {
   return assets;
 };
 
+
 async function mintToAlgo(assets, account, connector) {
   console.log('minting...........')
-  let collection_id = {};
+  let collection_id = [];
   let txns = [];
   for (let i = 0; i < assets.length; i++) {
     const txn = await createAsset(assets[i], account)
+    console.log('ide', txn.rawTxID())
     txns.push(txn)
   }
 
   let txgroup = algosdk.assignGroupID(txns)
+  
   let groupId = txgroup[0].group.toString("base64")
-  let assetID = await signTx(connector, txns)
-  for (let nfts = 0; nfts < assets.length; nfts++) {
-    collection_id[assetID + nfts] = assets[nfts]['url']
+  console.log('groupie', groupId)
+  console.log(algodClient.pendingTransactionInformation("groupId"))
+  let hashes = await signTx(connector, txns)
+  for (let nfts = 0; nfts < txns.length; nfts++) {
+    collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
   }
-  const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${assetID}` } })
+  console.log(collection_id)
+  const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
   let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-  await write.writeUserData(`collection${assetID}`, collectionUrl)
+  await write.writeUserData(account, collectionUrl)
   return `https://testnet.algoexplorer.io/tx/group/${groupId}`
 }
 
