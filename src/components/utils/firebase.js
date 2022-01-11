@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 const { initializeApp } = require("firebase/app")
-const { getDatabase, ref, set } = require("firebase/database")
+const { getDatabase, ref, get, child, push} = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,15 +21,35 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 
-async function writeUserData(collectionName, collection) {
+async function writeUserData(owner, collection) {
     const db = getDatabase(app);
-    await set(ref(db, `collections/${collectionName}`), {
-      collection: collection,
-      name: collectionName
+    await push(ref(db, `collections/${owner}`), {
+      collection
     });
     return;
   }
 
+  async function readData() {
+    const dbRef = ref(getDatabase());
+    console.log('p0pll0')
+    await get(child(dbRef, `collections`)).then((snapshot) => {  
+      if (snapshot.exists()) {
+        console.log(snapshot.val());
+      } else {
+        console.log("No data available");
+      }
+    }).catch((error) => {
+      console.error(error);
+    });
+    return;
+  }
+
+
 export {
     writeUserData
 }
+
+
+readData()
+console.log('009ppp')
+
