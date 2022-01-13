@@ -19,7 +19,9 @@ const GenContextProvider = ({ children }) => {
     collectionName,
     outputFormat,
     connector,
-    account
+    account,
+    rule,
+    isRule
   } = state;
 
   // console.log("preview => ", preview);
@@ -33,6 +35,9 @@ const GenContextProvider = ({ children }) => {
   // console.log("collectionName =>", collectionName)
   // console.log("connector => ", connector)
   // console.log("account =>", account)
+  // console.log("rule =>", rule)
+  // console.log("isRule =>", isRule)
+
   return (
     <GenContext.Provider value={{
       layers,
@@ -47,6 +52,8 @@ const GenContextProvider = ({ children }) => {
       outputFormat,
       connector,
       account,
+      rule,
+      isRule,
       dispatch
     }}>
       {children}

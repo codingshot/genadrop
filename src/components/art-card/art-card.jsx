@@ -1,10 +1,11 @@
 import { useContext, useState, useEffect } from 'react';
-import { addPreview, removeImage, removePreview, updateImage, updatePreview } from '../../gen-state/gen.actions';
+import { addPreview, addRule, clearPreview, removeImage, removePreview, updateImage, updatePreview } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './art-card.module.css';
 
 const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
-  const { dispatch, preview } = useContext(GenContext);
+  
+  const { dispatch, preview, isRule } = useContext(GenContext);
 
   const [prompt, setPrompt] = useState("");
   const [inputValue, setValue] = useState({ name: trait.traitTitle, rarity: trait.Rarity });
@@ -12,8 +13,9 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const { name, rarity } = inputValue;
   const { image, traitTitle, Rarity } = trait;
 
-  const handleAdd = value => {
-    dispatch(addPreview({ layerTitle, imageName: value }))
+  const handleAddPreview = (name, imageFile) => {
+    dispatch(addPreview({ layerTitle, imageName: name, imageFile }))
+    setActiveCard(traitTitle)
   }
 
   const handleRemove = () => {
@@ -26,23 +28,21 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
     setValue(v => ({ ...v, [name]: value }))
   }
 
-  const handleActive = () => {
-    setActiveCard(traitTitle)
-  }
-
-  const handleRename = e => {
+  const handleRename = (e, imageFile) => {
     e.preventDefault()
     setPrompt("");
     preview.forEach(item => {
       if (item["layerTitle"] === layerTitle && item["imageName"] === previousValue) {
-        dispatch(updatePreview({ layerTitle, imageName: inputValue.name }))
+        dispatch(updatePreview({ layerTitle, imageName: inputValue.name, imageFile }))
       }
     })
     dispatch(updateImage({ layerTitle, image, traitTitle: inputValue.name, Rarity: inputValue.rarity }))
   }
 
   const handlePrompt = value => {
+    console.log('prompt');
     setPrompt(value);
+    setActiveCard(traitTitle)
     setPreviousValue(traitTitle)
   }
 
@@ -50,12 +50,19 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
     if (activeCard !== traitTitle) setPrompt("")
   }, [activeCard, traitTitle])
 
+  useEffect(()=> {
+    if(!preview.length) setActiveCard('')
+  },[preview])
+
   return (
-    <div onClick={handleActive} className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
-      <div className={classes.remove}>
+    <div className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
+      <div className={classes.action}>
+        {
+          isRule ? <i onClick={() => handleAddPreview(traitTitle, image)} className={`fas fa-check-circle ${classes.addRuleBtn}`}></i> : <i/>
+        }
         <i onClick={handleRemove} className="fas fa-times"></i>
       </div>
-      <div onClick={() => handleAdd(traitTitle)} className={classes.imageContainer}>
+      <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
       </div>
       <div className={classes.details}>
@@ -65,7 +72,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
             <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="fas fa-edit"></i></div>
             :
             <div className={classes.editInput}>
-              <form onSubmit={handleRename}>
+              <form onSubmit={e =>handleRename(e, image)}>
                 <input
                   autoFocus type="text"
                   name="name"
@@ -73,7 +80,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                   onChange={handleChange}
                 />
               </form>
-              <i onClick={handleRename} className="fas fa-minus"></i>
+              <i onClick={e =>handleRename(e, image)} className="fas fa-minus"></i>
             </div>
           }
         </div>

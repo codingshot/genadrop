@@ -6,8 +6,8 @@ import { addImage, setCombinations } from '../../gen-state/gen.actions';
 import { getImageSize } from '../utils/getImageSize';
 import ButtonClickEffect from '../button-effect/button-effect';
 
-const CollectionMenu = ({ layer: { layerTitle, traits } }) => {
-
+const CollectionMenu = ({layer}) => {
+  const { layerTitle, traits } = layer;
   const { dispatch, layers } = useContext(GenContext);
   const [activeCard, setActiveCard] = useState("");
 
@@ -92,7 +92,8 @@ const CollectionMenu = ({ layer: { layerTitle, traits } }) => {
             traits.map((trait, index) => (
               <ArtCard
                 layerTitle={layerTitle}
-                trait={trait} key={index}
+                trait={trait} 
+                key={index}
                 setActiveCard={setActiveCard}
                 activeCard={activeCard}
               />

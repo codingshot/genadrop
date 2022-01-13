@@ -23,7 +23,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
   }
 
   return (
-    <li className={classes.item}>
+    <div className={classes.item}>
       <div className={classes._name}>
         <div className={classes.line}>
           <i className="fas fa-arrows-alt-v"></i>
@@ -57,7 +57,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
 
       </div>
       <div className={classes.trait}>{trait}</div>
-    </li>
+    </div>
   )
 }
 

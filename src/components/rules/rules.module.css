@@ -90,7 +90,7 @@
   gap: 0.5em;
   font-size: 0.85rem;
   background: rgba(0, 0, 0, 0.185);
-  color: var(--icon-color-dark);
+  color: white;
 }
 
 .filteredItem img {
@@ -110,7 +110,7 @@
   align-self: flex-end;
   justify-content: flex-end;
   display: flex;
-  gap: 1em;
+  gap: 0.5em;
   position: absolute;
   right: 0;
   bottom: 0;

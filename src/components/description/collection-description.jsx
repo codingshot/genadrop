@@ -12,7 +12,7 @@ import { getImageSize } from '../utils/getImageSize';
 import ButtonClickEffect from '../button-effect/button-effect';
 
 const CollectionDescription = () => {
-  const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo } = useContext(GenContext);
+  const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo, rule, isRule } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   // set generate amount
@@ -65,11 +65,23 @@ const CollectionDescription = () => {
     let uniqueIndex = 0;
 
     const isUnique = (attributes, attr) => {
+      console.log(attr);
+      
+      let parseAttrToRule = attr.map(p => ({ layerTitle: p.trait_type, imageName: p.value }))
       let att_str = JSON.stringify(attr);
       for (let _attr of attributes) {
         let _attr_str = JSON.stringify(_attr);
         if (_attr_str === att_str) return false;
-      }
+      };
+        let result;
+        for (let rl of rule) {
+          result = rl.every(el => {
+            if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) return true;
+            return false;
+          });
+
+          if(result === true) return false;
+        };
       return true
     }
 
@@ -108,17 +120,16 @@ const CollectionDescription = () => {
 
   // generate nft data ready for upload
   const handleGenerate = async () => {
-
+    if(isRule) return
     dispatch(setMintInfo("in progress..."))
     if (!mintAmount) return dispatch(setMintInfo("please set the amount to generate"));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets"))
-    if (mintAmount > combinations) return dispatch(setMintInfo("cannot generate more than possible combinations"));
+    if (mintAmount > combinations - rule.length) return dispatch(setMintInfo("cannot generate more than possible combinations"));
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))
     const dnaLayers = createDna(layers);
     const uniqueLayers = createUniqueLayer(dnaLayers);
     const NFTs = await generateNFT(uniqueLayers);
-
     let newLayers = uniqueLayers.map(layer => {
       for (let nft of NFTs) {
         if (nft.id === layer.id) {
@@ -127,16 +138,6 @@ const CollectionDescription = () => {
       }
       return layer
     })
-
-    // // uncomment the block below to display a list of all nft sizes
-    // const nftSizes = [];
-    // for (let nft of NFTs) {
-    //   const { height, width } = await getImageSize(nft.imageUrl);
-    //   nftSizes.push({height, width})
-    // }
-    // console.log(nftSizes)
-
-
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(newLayers))
     dispatch(setMintInfo("completed"))
@@ -168,7 +169,7 @@ const CollectionDescription = () => {
 
         <div className={classes.btnWrapper}>
           {
-            mintInfo === "completed"
+            mintInfo === "completed" && !isRule
               ?
               <Link to="/preview">
                 <ButtonClickEffect>
@@ -189,7 +190,7 @@ const CollectionDescription = () => {
         </div>
         <div className={classes.action}>
           <div htmlFor="combinations">Combinations</div>
-          <div>{combinations}</div>
+          <div>{combinations - rule.length}</div>
         </div>
       </div>
 

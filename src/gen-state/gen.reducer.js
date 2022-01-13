@@ -11,7 +11,8 @@ import {
   deleteAsset,
   renameAsset,
   updateLayer,
-  addDescription
+  addDescription,
+  deleteRule
 } from './gen.utils';
 
 export const INITIAL_STATE = {
@@ -26,7 +27,9 @@ export const INITIAL_STATE = {
   isLoading: false,
   currentDnaLayers: null,
   account: '',
-  connector: null
+  connector: null,
+  isRule: false,
+  rule: []
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -72,6 +75,21 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         preview: addPreview(state.preview, action.payload)
+      }
+    case genActionTypes.CLEAR_PREVIEW:
+      return {
+        ...state, 
+        preview: []
+      }
+    case genActionTypes.ADD_RULE:
+      return {
+        ...state,
+        rule: action.payload
+      }
+    case genActionTypes.CLEAR_RULE: 
+      return {
+        ...state,
+        rule: []
       }
     case genActionTypes.REMOVE_PREVIEW:
       return {
@@ -147,6 +165,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         connector: action.payload
+      }
+    case genActionTypes.SET_CONFLICT_RULE:
+      return {
+        ...state,
+        isRule: action.payload
+      }
+    case genActionTypes.DELETE_RULE:
+      return {
+        ...state,
+        rule: deleteRule(state.rule, action.payload)
       }
     default:
       return state;

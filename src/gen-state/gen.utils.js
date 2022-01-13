@@ -36,10 +36,10 @@ export const removeLayer = (layers, layerToRemove) => {
 
 export const updateLayer = (layers, layerToUpdate) => {
   let result = layers.find(layer => layer.layerTitle.toLowerCase() === layerToUpdate.layerTitle.toLowerCase())
-  if(result) return layers
+  if (result) return layers
 
   return layers.map(layer => (
-    layer.id === layerToUpdate.id ? {...layer, layerTitle: layerToUpdate.layerTitle} : layer
+    layer.id === layerToUpdate.id ? { ...layer, layerTitle: layerToUpdate.layerTitle } : layer
   ))
 }
 
@@ -86,19 +86,19 @@ export const updateImage = (layers, imageObj) => {
   return newLayers
 }
 
-export const addPreview = (preview, { layerTitle, imageName }) => {
-  let result = preview.find(item => item.layerTitle === layerTitle);
+export const addPreview = (preview, { layerTitle, imageName, imageFile }) => {
   let newPreview = [];
+  let result = preview.find(item => item.layerTitle === layerTitle);
   if (result) {
     newPreview = preview.map(item => {
       if (item.layerTitle === layerTitle) {
-        return { layerTitle, imageName }
+        return { layerTitle, imageName, imageFile }
       } else {
         return item
       }
     })
   } else {
-    return [...preview, { layerTitle, imageName }]
+    return [...preview, { layerTitle, imageName, imageFile }]
   }
   return newPreview
 }
@@ -117,7 +117,6 @@ export const updatePreview = (preview, { layerTitle, imageName }) => {
       return pre
     }
   })
-
   return newPreview
 }
 
@@ -137,9 +136,6 @@ export const addDescription = (nftLayers, value) => {
   ))
 }
 
-
-
-
-
-
-
+export const deleteRule = (rule, ruleToDelete) => {
+  return rule.filter(rl => JSON.stringify(rl) !== JSON.stringify(ruleToDelete))
+}

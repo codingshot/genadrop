@@ -50,6 +50,10 @@ export const updatePreview = item => ({
   payload: item
 })
 
+export const clearPreview = () => ({
+  type: genActionTypes.CLEAR_PREVIEW,
+})
+
 export const setMintAmount = amount => ({
   type: genActionTypes.SET_MINT_AMOUNT,
   payload: amount
@@ -102,7 +106,7 @@ export const addDescription = val => ({
 
 export const setOutputFormat = format => ({
   type: genActionTypes.SET_OUTPUT_FORMAT,
-  payload: format 
+  payload: format
 })
 
 export const setConnector = connector => ({
@@ -113,4 +117,23 @@ export const setConnector = connector => ({
 export const setAccount = account => ({
   type: genActionTypes.SET_ACCOUNT,
   payload: account
+})
+
+export const setConflictRule = state => ({
+  type: genActionTypes.SET_CONFLICT_RULE,
+  payload: state
+})
+
+export const addRule = rule => ({
+  type: genActionTypes.ADD_RULE,
+  payload: rule
+})
+
+export const clearRule = () => ({
+  type: genActionTypes.CLEAR_RULE,
+})
+
+export const deleteRule = rule => ({
+  type: genActionTypes.DELETE_RULE,
+  payload: rule
 })

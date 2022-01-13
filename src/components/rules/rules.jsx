@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import { useState } from 'react';
+import { setConflictRule } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import Select from '../select/select';
 import cx from './rules.module.css';
@@ -10,21 +11,15 @@ const Rules = ({ show, setRule }) => {
   const [conflict, setConflict] = useState([])
   const [conflictModel, setConflictModel] = useState({})
   const [collection, setCollection] = useState({})
-  const { layers } = useContext(GenContext)
+  const { layers, dispatch } = useContext(GenContext)
 
   useEffect(() => {
     const col = {}
     layers.forEach(layer => {
       col[layer.layerTitle] = layer.traits
     })
-    console.log(col);
     setCollection(col)
   }, [layers])
-
-  useEffect(() => {
-    setFilteredAttribute([])
-    setConflict([])
-  }, [show])
 
   const handleSetAttribute = data => {
     let isUnique = filteredAttribute.find(d => d.layer === data.layer);
@@ -56,6 +51,18 @@ const Rules = ({ show, setRule }) => {
     setConflict(newFiltered)
   }
 
+  const handleClose = () => {
+      setFilteredAttribute([])
+      setConflict([])
+      setRule(false)
+  }
+
+  const handleSaveRule = () => {
+    dispatch(setConflictRule({filteredAttribute, conflict}))
+    setFilteredAttribute([])
+    setConflict([])
+  }
+
   useEffect(() => {
     let newConflictModel = {};
     Object.keys(collection).forEach(key => {
@@ -77,7 +84,7 @@ const Rules = ({ show, setRule }) => {
   return (
     <div className={`${cx.container} ${show ? cx.active : cx.inactive}`}>
       <div className={cx.rulesContainer}>
-        <i onClick={() => setRule(false)} className={`fas fa-times ${cx.cancelBtn}`}></i>
+        <i onClick={handleClose} className={`fas fa-times ${cx.cancelBtn}`}></i>
         <div className={cx.title}>Add Conflict Rule</div>
         <div className={cx.filterAttribute}>
           <div className={cx.heading}>Filter Attribute</div>
@@ -119,8 +126,8 @@ const Rules = ({ show, setRule }) => {
         </div>
       </div>
       <div className={cx.btn}>
-        <div>save and add new</div>
-        <div>save and close</div>
+        <div onClick={handleSaveRule}>save</div>
+        <div onClick={handleClose}>close</div>
       </div>
     </div>
   )

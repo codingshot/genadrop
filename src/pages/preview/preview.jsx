@@ -33,6 +33,7 @@ const Preview = () => {
     mintInfo,
     collectionName,
     outputFormat,
+    rule
   } = useContext(GenContext);
 
   const [deleteId, setDeleteId] = useState("");
@@ -299,7 +300,7 @@ const Preview = () => {
             no of generative arts: {nftLayers.length}
           </div>
           <div>
-            unused combinations: {combinations - mintAmount}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}
+            unused combinations: {combinations - mintAmount - rule.length}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}
           </div>
         </div>
       </div>

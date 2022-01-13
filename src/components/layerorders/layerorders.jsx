@@ -22,7 +22,7 @@ const getListStyle = isDraggingOver => ({
 
 const LayerOrders = () => {
 
-  const { layers, dispatch, collectionName } = useContext(GenContext);
+  const { layers, dispatch, collectionName, isRule } = useContext(GenContext);
   const [prompt, setPrompt] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [renameAction, setRenameAction] = useState(false);
@@ -99,7 +99,7 @@ const LayerOrders = () => {
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="droppable">
             {(provided, snapshot) => (
-              <ul
+              <div
                 {...provided.droppableProps}
                 ref={provided.innerRef}
                 style={getListStyle(snapshot.isDraggingOver)}
@@ -132,7 +132,7 @@ const LayerOrders = () => {
                   </Draggable>
                 ))}
                 {provided.placeholder}
-              </ul>
+              </div>
             )}
           </Droppable>
         </DragDropContext>
@@ -142,7 +142,7 @@ const LayerOrders = () => {
               <Prompt handleAddLayer={handleAddLayer} setPrompt={setPrompt} />
             </div>
             :
-            <button className={classes.addBtn} onClick={() => setPrompt(true)}><i className="fas fa-plus"></i>New Layer Name</button>
+            <button className={classes.addBtn} onClick={() => !isRule && setPrompt(true)}><i className="fas fa-plus"></i>New Layer Name</button>
         }
 
       </div>
