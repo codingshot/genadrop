@@ -8,6 +8,8 @@ Genadrop Walk Through https://docs.google.com/document/d/e/2PACX-1vS8bwlR12wBqlA
 
 ## Algorand Foundation Milestones
 Milestone 1 YouTube Deliverables https://youtu.be/vXzubFQ5Ulo
+### Minting Nft on Algorand flow
+https://www.loom.com/share/68509b38d5d0489891b5f1e426c1cd29
 
 
 # ALGORAND UPDATE 1 
