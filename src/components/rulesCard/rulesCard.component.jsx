@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { clearRule, deleteRule } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './rulesCard.module.css';
@@ -24,7 +24,7 @@ const RulesCard = () => {
                 {
                   rl.map((r, idx) => (
                     <div key={idx} className={classes.innerContent}>
-                      <img className={classes.image} src={URL.createObjectURL(r.imageFile)} />
+                      <img className={classes.image} src={URL.createObjectURL(r.imageFile)} alt='' />
                       <div className={classes.title}>{r.layerTitle}</div>
                       <div className={classes.text}>{r.imageName}</div>{rl.length - 1 !== idx && '&'}
                     </div>

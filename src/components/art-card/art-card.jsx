@@ -1,17 +1,24 @@
 import { useContext, useState, useEffect } from 'react';
-import { addPreview, addRule, clearPreview, removeImage, removePreview, updateImage, updatePreview } from '../../gen-state/gen.actions';
+import { addPreview, removeImage, removePreview, updateImage, updatePreview } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './art-card.module.css';
 
 const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
-  
+  const [state, setState] = useState({
+    prompt: '',
+    inputValue: {
+      name: trait.traitTitle, 
+      rarity: trait.Rarity
+    },
+    previousValue: '',
+  })
+  const { prompt, inputValue, previousValue } = state;
+  const { image, traitTitle, Rarity } = trait;
   const { dispatch, preview, isRule } = useContext(GenContext);
 
-  const [prompt, setPrompt] = useState("");
-  const [inputValue, setValue] = useState({ name: trait.traitTitle, rarity: trait.Rarity });
-  const [previousValue, setPreviousValue] = useState("");
-  const { name, rarity } = inputValue;
-  const { image, traitTitle, Rarity } = trait;
+  const handleSetState = payload => {
+    setState(state => ({...state, ...payload}))
+  }
 
   const handleAddPreview = (name, imageFile) => {
     dispatch(addPreview({ layerTitle, imageName: name, imageFile }))
@@ -25,33 +32,34 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
 
   const handleChange = event => {
     const { name, value } = event.target;
-    setValue(v => ({ ...v, [name]: value }))
+    handleSetState({inputValue: ({ ...inputValue, [name]: value })})
   }
 
   const handleRename = (e, imageFile) => {
     e.preventDefault()
-    setPrompt("");
     preview.forEach(item => {
-      if (item["layerTitle"] === layerTitle && item["imageName"] === previousValue) {
+      if (item['layerTitle'] === layerTitle && item['imageName'] === previousValue) {
         dispatch(updatePreview({ layerTitle, imageName: inputValue.name, imageFile }))
       }
     })
+    handleSetState({prompt: ''})
     dispatch(updateImage({ layerTitle, image, traitTitle: inputValue.name, Rarity: inputValue.rarity }))
   }
 
   const handlePrompt = value => {
-    console.log('prompt');
-    setPrompt(value);
+    handleSetState({prompt: value})
     setActiveCard(traitTitle)
-    setPreviousValue(traitTitle)
+    handleSetState({previousValue: traitTitle})
   }
 
   useEffect(() => {
-    if (activeCard !== traitTitle) setPrompt("")
+    if (activeCard !== traitTitle) handleSetState({prompt: ''})
   }, [activeCard, traitTitle])
 
   useEffect(()=> {
-    if(!preview.length) setActiveCard('')
+    if(!preview.length) {
+      setActiveCard('')
+    }
   },[preview])
 
   return (
@@ -76,7 +84,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                 <input
                   autoFocus type="text"
                   name="name"
-                  value={name}
+                  value={inputValue.name }
                   onChange={handleChange}
                 />
               </form>
@@ -97,7 +105,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                   type="number"
                   min="0"
                   name="rarity"
-                  value={rarity}
+                  value={inputValue.rarity}
                   onChange={handleChange}
                 />
               </form>

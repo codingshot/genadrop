@@ -29,7 +29,7 @@ function App() {
           <Route exact path="/mint" component={Mint} />
           <Route exact path="/explore" component={Explore} />
           <Route exact path="/preview" component={Preview} />
-          <Route exact path="/rules" component={Rules} />
+          <Route exact path="/rule" component={Rules} />
         </Switch>
 
         <div className="Footer">

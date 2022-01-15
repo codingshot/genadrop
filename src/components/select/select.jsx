@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useState } from 'react';
 import cx from './select.module.css';
 
@@ -52,7 +51,7 @@ const Select = ({ heading, selectionList, select, selected }) => {
                         } 
                       </span>
                       <span>{data.traitTitle}</span>
-                      <img src={URL.createObjectURL(data.image)}/>
+                      <img src={URL.createObjectURL(data.image)} alt=''/>
                     </div>
                   ))
                 }

@@ -7,26 +7,23 @@ import { removeLayer } from '../../gen-state/gen.actions';
 import Layer from '../layer/layer';
 import Prompt from '../prompt/prompt';
 import { v4 as uuid } from 'uuid';
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: "none",
-  marginBottom: 8,
-  // background: isDragging ? "lightgreen" : "grey",
-  ...draggableStyle
-});
-
-const getListStyle = isDraggingOver => ({
-  // background: isDraggingOver ? "lightblue" : "lightgrey",
-  width: "100%"
-});
+import { getItemStyle, getListStyle } from './layeroders-script';
 
 const LayerOrders = () => {
 
   const { layers, dispatch, collectionName, isRule } = useContext(GenContext);
-  const [prompt, setPrompt] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const [renameAction, setRenameAction] = useState(false);
-  const [activeInput, setActiveInput] = useState(false);
+  const [state, setState] = useState({
+    prompt: false,
+    inputValue: "",
+    renameAction: false,
+    activeInput: false
+  })
+
+  const { prompt, inputValue, renameAction, activeInput } = state;
+
+  const handleSetState = payload => {
+    setState(state => ({ ...state, ...payload }))
+  }
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return
@@ -34,7 +31,7 @@ const LayerOrders = () => {
     const [removed] = newList.splice(source.index, 1);
     newList.splice(destination.index, 0, removed);
     dispatch(orderLayers(newList));
-    setActiveInput('')
+    handleSetState({ inputValue: '' })
   }
 
   const handleAddLayer = value => {
@@ -46,17 +43,13 @@ const LayerOrders = () => {
     dispatch(removeLayer(layer))
   }
 
-  const handleChange = ({ target: { value } }) => {
-    setInputValue(value);
-  }
-
   const handleRename = () => {
     if (renameAction) {
-      setRenameAction(false)
-      setInputValue("")
+      handleSetState({ renameAction: false })
+      handleSetState({ inputValue: "" })
       dispatch(setCollectionName(inputValue))
     } else {
-      setRenameAction(true)
+      handleSetState({ renameAction: true })
     }
   }
 
@@ -69,7 +62,7 @@ const LayerOrders = () => {
             <input
               className={`${classes.renameInput} ${classes.active}`}
               type="text"
-              onChange={handleChange}
+              onChange={e => handleSetState({inputValue: e.target.value})}
               value={inputValue}
               autoFocus
             />
@@ -124,7 +117,7 @@ const LayerOrders = () => {
                             trait={item.traitsAmount}
                             click={() => handleRemoveLayer(item)}
                             activeInput={activeInput}
-                            setActiveInput={setActiveInput}
+                            setActiveInput={input => handleSetState({activeInput: input})}
                           />
                         </div>
                       </div>
@@ -139,10 +132,10 @@ const LayerOrders = () => {
         {
           prompt
             ? <div className={classes.promptWrapper}>
-              <Prompt handleAddLayer={handleAddLayer} setPrompt={setPrompt} />
+              <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({prompt})} />
             </div>
             :
-            <button className={classes.addBtn} onClick={() => !isRule && setPrompt(true)}><i className="fas fa-plus"></i>New Layer Name</button>
+            <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}><i className="fas fa-plus"></i>New Layer Name</button>
         }
 
       </div>

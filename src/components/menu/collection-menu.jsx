@@ -3,84 +3,25 @@ import ArtCard from '../art-card/art-card';
 import { useRef, useContext, useEffect, useState } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { addImage, setCombinations } from '../../gen-state/gen.actions';
-import { getImageSize } from '../utils/getImageSize';
 import ButtonClickEffect from '../button-effect/button-effect';
+import { getCombinations, handleAddBlank, handleFileChange } from './collection-menu-script';
 
-const CollectionMenu = ({layer}) => {
+const CollectionMenu = ({ layer }) => {
+  const [state, setState] = useState({
+    activeCard: ''
+  })
+  const { activeCard } = state;
   const { layerTitle, traits } = layer;
   const { dispatch, layers } = useContext(GenContext);
-  const [activeCard, setActiveCard] = useState("");
-
   const fileRef = useRef(null);
-
-  const handleUpload = () => {
-    fileRef.current.click();
-  }
-
-  const handleFileChange = event => {
-    const { files } = event.target;
-    let imageFiles = Object.values(files);
-    let uniqueImageFile = [...traits];
-    let filterArr = traits.map(({ image }) => image.name);
-
-    imageFiles.forEach(imageFile => {
-      if (!filterArr.includes(imageFile.name)) {
-        uniqueImageFile.push({ traitTitle: imageFile.name, Rarity: "1", image: imageFile })
-        filterArr.push(imageFile.name)
-      }
-    })
-
-    dispatch(addImage({ layerTitle, traits: uniqueImageFile }))
-  }
-
-  // draw empty image
   const canvas = document.createElement("canvas");
-  const handleImage = async img => {
-    const { height, width } = await getImageSize(img);
-    canvas.setAttribute("width", width);
-    canvas.setAttribute("height", height);
-    const ctx = canvas.getContext("2d");
-    const image = await new Promise(resolve => {
-      const image = new Image();
-      image.src = "/assets/blank.png";
-      image.onload = () => {
-        resolve(image);
-      };
-    });
-    image && ctx.drawImage(image, 0, 0, width, height);
-  };
 
-  const dataURItoBlob = (dataURI) => {
-    let byteString = atob(dataURI.split(',')[1]);
-    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
-    let ab = new ArrayBuffer(byteString.length);
-    let ia = new Uint8Array(ab);
-    for (let i = 0; i < byteString.length; i++) {
-      ia[i] = byteString.charCodeAt(i);
-    }
-    let blob = new Blob([ab], { type: mimeString });
-    return blob;
-  }
-
-  const handleAddBlank = async () => {
-    await handleImage(traits[0].image)
-    const imageUrl = canvas.toDataURL();
-    let imageFile = new File([dataURItoBlob(imageUrl)], "blank_image");
-    let uniqueImageFile = [...traits];
-    let filterArr = traits.map(({ image }) => image.name);
-    if (!filterArr.includes(imageFile.name)) {
-      uniqueImageFile.push({ traitTitle: imageFile.name, Rarity: "1", image: imageFile })
-    }
-    dispatch(addImage({ layerTitle, traits: uniqueImageFile }))
+  const handleSetState = payload => {
+    setState(state => ({ ...state, ...payload }))
   }
 
   useEffect(() => {
-    const amtArr = layers.map(layer => layer.traitsAmount);
-    const amt = amtArr.reduce((acc, curr) => (
-      acc * curr
-    ), 1)
-
-    dispatch(setCombinations(amt))
+    dispatch(setCombinations(getCombinations(layers)))
   }, [layers, dispatch])
 
   return (
@@ -92,27 +33,46 @@ const CollectionMenu = ({layer}) => {
             traits.map((trait, index) => (
               <ArtCard
                 layerTitle={layerTitle}
-                trait={trait} 
+                trait={trait}
                 key={index}
-                setActiveCard={setActiveCard}
+                setActiveCard={activeCard => handleSetState({ activeCard })}
                 activeCard={activeCard}
               />
             ))
           }
         </div>
         <div className={classes.uploadBtnContainer}>
-          <button onClick={handleUpload} className={classes.uploadBtn}>upload</button>
+          <button
+            onClick={() => fileRef.current.click()}
+            className={classes.uploadBtn}
+          >
+            upload
+          </button>
           {
             traits[0] && (
               <ButtonClickEffect>
-                <button onClick={handleAddBlank} className={classes.addBlankBtn}>Add blank image</button>
+                <button
+                  onClick={() => dispatch(addImage(handleAddBlank({ traits, layerTitle, canvas })))}
+                  className={classes.addBlankBtn}
+                >
+                  Add blank image
+                </button>
               </ButtonClickEffect>
             )
           }
         </div>
       </section>
 
-      <input onChange={handleFileChange} ref={fileRef} style={{ display: "none" }} type="file" name="avatar" id="avatar" accept="image/png" multiple />
+      <input
+        onChange={event => dispatch(addImage(handleFileChange({ event, traits, layerTitle })))}
+        ref={fileRef}
+        style={{ display: "none" }}
+        type="file"
+        name="avatar"
+        id="avatar"
+        accept="image/png"
+        multiple
+      />
     </div>
   )
 }

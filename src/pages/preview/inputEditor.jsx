@@ -11,7 +11,7 @@ const InputEditor = ({
   inputType
 }) => {
 
-  const [inputValue, setInputValue] = useState();
+  const [inputValue, setInputValue] = useState('');
 
   const handleChange = event => {
     setInputValue(event.target.value)

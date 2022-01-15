@@ -4,43 +4,41 @@ import CollectionOverview from '../../components/overview/collection-overview';
 import classes from './create.module.css';
 import { useContext, useState } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { addRule, clearPreview, setConflictRule, clearRule } from '../../gen-state/gen.actions';
-import { useEffect } from 'react';
+import { addRule, clearPreview, setConflictRule } from '../../gen-state/gen.actions';
 import RulesCard from '../../components/rulesCard/rulesCard.component';
-// import Rules from '../../components/rules/rules';
+import { isUnique } from './create-script';
 
 const Create = () => {
 
   const { dispatch, isRule, preview, rule, layers } = useContext(GenContext)
-  const [showRule, toggleRule] = useState(false)
+  const [state, setState] = useState({
+    showRule: false
+  });
+
+  const { showRule } = state;
+
+  const handleSetState = payload => {
+    setState(state => ({...state, ...payload}))
+  }
 
   const openRule = () => {
     dispatch(setConflictRule(true))
     dispatch(clearPreview())
-    toggleRule(false)
+    handleSetState({showRule: false})
   }
 
   const closeRule = () => {
     dispatch(setConflictRule(false))
   }
 
-  const isUnique = () => {
-    let prev_str = JSON.stringify(preview);
-    for (let r of rule) {
-      let _attr_str = JSON.stringify(r);
-      if (_attr_str === prev_str) return false;
-    }
-    return true
+  const handleRules = () => {
+    handleSetState({showRule: !showRule})
   }
 
   const handleAddRule = () => {
-    if (isUnique() && preview.length) dispatch(addRule([...rule, preview]))
+    if (isUnique({rule, preview}) && preview.length) dispatch(addRule([...rule, preview]))
     dispatch(clearPreview())
     closeRule()
-  }
-
-  const handleRules = () => {
-    toggleRule(!showRule)
   }
 
   return (

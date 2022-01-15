@@ -1,7 +1,7 @@
 import classes from './collection-preview.module.css';
 import { useEffect, useRef, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { getImageSize } from '../utils/getImageSize';
+import { getImageSize } from '../utils';
 import ButtonClickEffect from '../button-effect/button-effect';
 
 const CollectionPreview = () => {

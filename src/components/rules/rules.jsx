@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import { useState } from 'react';
+import { useState, useContext, useEffect} from 'react';
 import { setConflictRule } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import Select from '../select/select';
