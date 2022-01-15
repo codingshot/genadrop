@@ -8,6 +8,63 @@ Genadrop Walk Through https://docs.google.com/document/d/e/2PACX-1vS8bwlR12wBqlA
 
 ## Algorand Foundation Milestones
 Milestone 1 YouTube Deliverables https://youtu.be/vXzubFQ5Ulo
+### Minting Nft on Algorand flow
+https://www.loom.com/share/68509b38d5d0489891b5f1e426c1cd29
+
+
+# ALGORAND UPDATE 1 
+### January 3rd, 2021
+
+Thank you so much Algorand Foundation and Happy New Year! Let this year be the year of getting Algorand dApps into production. 
+
+We have made a lot of progress with Genadrop. Right now genadrop is used by artists to generate art. We have even been spending time adding functionality as we launch NFT drops to help the creative process. 
+
+Check out the product today at genadrop.com and here is a very quick demo https://youtu.be/DnjhyvK4dUY 
+
+We have completed milestone 1- Generative Web App PFP Maker as seen in the following video
+Milestone 1 YouTube Deliverables https://youtu.be/vXzubFQ5Ulo 
+
+Use the web application you can now ✔️✔️✔️✔️✔️✔️✔️✔️✔️
+Ability to upload png images to layers
+generative all combinations of different layers,
+ figure out the number of possible combinations based on layers and traits
+Ability to delete layer assets
+Ability to change rarities
+Create, rename, reorder, and delete layers
+highlight assets from each layer to generate preview
+Download preview as png of same of correct size
+Ability to preview all generated renders
+the combination amount displayed by multiplying all the number of traits to each other
+Ability to drag and reorder layer order and that affect order of generative script
+Ability to download all generatives attributes output .png name CollectionName_#N with a json file with the meta data description of traits and rarity, as (format to structure what is needed for ipfs) as a zipped folder
+Ability to have active selected assets in each layer and displayed on right with correct metadata
+Layers reflect order on left
+Ability to omit bad image and choose new possible collection
+Ability to add blank layers 
+Ability to rename collection
+Milestone 2 YouTube Deliverable 
+https://www.loom.com/share/68509b38d5d0489891b5f1e426c1cd29 
+Our second deliverable is completed however we already have a mitner working,  So essentially half of milestone 3 and all milestone 3.
+IPFS Upload
+Upload zip of images with metadata unto ipfs
+Return IPFS json
+Preview collection, number of pictures, layers and size
+(We can get the second milestone amount for this)
+Algorand Mint
+Mint complete IPFS.json to algorand
+Shows transaction link after minted to view on block explorer
+We still need to add
+A NFT Marketplace
+List and purchasing abilities
+Custom marketplace tax
+View marketplace
+Individual NFT view
+Custom transfer contracts
+Tweak metadata description
+
+Thank you so much for your continued support. Would love to pilot some drops as other foundations are asking us to add minters and definitely want Algorand support in the marketing of the genadrop marketplace when it comes out. 
+
+
 
 # Getting Started with Create React App
 
