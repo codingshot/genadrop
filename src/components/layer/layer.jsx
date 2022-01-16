@@ -4,8 +4,16 @@ import { GenContext } from '../../gen-state/gen.context';
 import classes from './layer.module.css';
 
 const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [state, setState] = useState({
+    inputValue: ''
+  })
+  const { inputValue } = state;
+
   const { dispatch } = useContext(GenContext);
+  
+  const handleSetState = payload => {
+    setState(state => ({...state, ...payload}))
+  }
 
   const handleRename = () => {
     setActiveInput('')
@@ -15,15 +23,11 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
 
   const handleEdit = name => {
     setActiveInput(name)
-    setInputValue(name)
-  }
-
-  const handleChange = event => {
-    setInputValue(event.target.value)
+    handleSetState({inputValue: name})
   }
 
   return (
-    <li className={classes.item}>
+    <div className={classes.item}>
       <div className={classes._name}>
         <div className={classes.line}>
           <i className="fas fa-arrows-alt-v"></i>
@@ -39,7 +43,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
               <input
                 className={`${classes.renameInput} ${classes.active}`}
                 type="text"
-                onChange={handleChange}
+                onChange={e => handleSetState({inputValue: e.target.value})}
                 value={inputValue}
                 autoFocus
               />
@@ -57,7 +61,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
 
       </div>
       <div className={classes.trait}>{trait}</div>
-    </li>
+    </div>
   )
 }
 

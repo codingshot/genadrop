@@ -1,14 +1,10 @@
 .container {
-  width: 80%;
-  background: white;
-  color: black;
-  min-height: 84vh;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  padding-bottom: 2em;
-  /* overflow: auto; */
+  width: 64em;
+  height: 30em;
+  background: var(--sidebar-bg);
+  color: white;
+  border-radius: 0.25em;
+  position: relative;
 }
 
 .rulesContainer {
@@ -17,22 +13,43 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 4em;
-  padding: 2em;
+  justify-content: flex-start;
+  padding: 0 2em;
+  overflow: auto;
+  position: relative;
+}
+
+.container.inactive {
+  animation: close 250ms forwards cubic-bezier(0,0,0,1.15);
+}
+
+@keyframes close {
+  0% {width: 64em; height: 30em; overflow: hidden; visibility: visible;}
+  100%{width: 0; height: 0; overflow: hidden; visibility: hidden;}
+}
+
+.container.active {
+  animation: open 250ms forwards cubic-bezier(0,0,0,1.15);
+}
+
+@keyframes open {
+  0% {width: 0; height: 0; overflow: auto; visibility: hidden;}
+  40% {width: 48em; height: 24em; overflow: auto; visibility: hidden;}
+  100%{width: 72em; height: 30em; overflow: auto; visibility: visible;}
 }
 
 .title {
   text-transform: uppercase;
+  margin-bottom: 1em;
 }
 
 .filterAttribute,
 .addConflict {
   width: 100%;
+  margin-bottom: 1em;
 }
 
 .heading {
-  border-bottom: 1px solid red;
   width: 100%;
   margin-bottom: 1em;
   text-align: left;
@@ -49,7 +66,7 @@
 
 .filterContainer {
   width: 100%;
-  max-width: 15em;
+  max-width: 18em;
 }
 
 .filteredList {
@@ -60,38 +77,63 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 0.5em;
+  position: sticky;
+  top: 0em;
 }
 
 .filteredItem {
-  border: 1px solid red;
-  border-radius: 1em;
-  padding: 0.25em;
+  border-radius: 0.25em;
+  padding: 0.5em 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
   font-size: 0.85rem;
+  background: rgba(0, 0, 0, 0.185);
+  color: white;
+}
+
+.filteredItem img {
+  width: 2em;
+  height: 2em;
 }
 
 .closeIcon {
   padding: 0 0.5em;
   cursor: pointer;
   border-radius: 50%;
+  color: var(--icon-color);
 }
 
 .btn {
-  display: none;
-  width: 100%;
-  display: flex;
-  align-items: center;
+  /* width: 100%; */
+  align-self: flex-end;
   justify-content: flex-end;
-  gap: 1em;
-  padding-right: 1em;
+  display: flex;
+  gap: 0.5em;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 1em 2em;
 }
 
 .btn div {
-  border: 1px solid red;
-  padding: 0.25em 1em;
-  border-radius: 1em;
+  padding: 0.35em 1.5em;
+  border-radius: 0.25em;
   cursor: pointer;
+  background: var(--card-bg);
+  font-size: 0.85rem;
+}
+
+.cancelBtn {
+  align-self: flex-end;
+  position: sticky;
+  top: 1em;
+  cursor: pointer;
+  color: var(--icon-color);
+  transition: all 150ms;
+}
+
+.cancelBtn:hover {
+  transform: rotate(90deg);
 }

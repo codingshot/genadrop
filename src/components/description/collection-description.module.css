@@ -3,6 +3,7 @@
   max-width: 20em;
   height: calc(100vh - 8.25em);
   overflow: auto;
+  padding-bottom: 1em;
 }
 
 .container * {

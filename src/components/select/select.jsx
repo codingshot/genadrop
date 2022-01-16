@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useState } from 'react';
 import cx from './select.module.css';
 
@@ -17,7 +16,7 @@ const Select = ({ heading, selectionList, select, selected }) => {
   }
 
   const getHeight = layer => {
-    return selectionList[layer].length * 2.1 + 'em'
+    return selectionList[layer].length * 3 + 'em'
   }
 
   const handleAddAttribute = data => {
@@ -26,7 +25,6 @@ const Select = ({ heading, selectionList, select, selected }) => {
 
   const isSlected = data => {
     let result = JSON.stringify(selected).includes(JSON.stringify(data))
-    // console.log(result);
     return result
   }
 
@@ -37,19 +35,23 @@ const Select = ({ heading, selectionList, select, selected }) => {
         {
           Object.keys(selectionList).map((layer, idx) => (
             <div key={idx} className={cx.layers}>
-              <div onClick={() => handleClick(idx)} className={cx.layer}>{layer}</div>
+              <div onClick={() => handleClick(idx)} className={cx.layer}>
+                <span>{layer}</span>
+                <i className="fas fa-angle-down"></i>
+              </div>
               <div style={{ height: inShow === idx && toggle ? getHeight(layer) : '0' }} className={`${cx.attributes}`}>
                 {
-                  selectionList[layer].map((attr, idx) => (
-                    <div key={idx} onClick={() => handleAddAttribute({ layer, attr })} className={cx.attribute}>
+                  selectionList[layer].map((data, idx) => (
+                    <div key={idx} onClick={() => handleAddAttribute({ layer, attr: data.traitTitle, image: data.image })} className={cx.attribute}>
                       <span className={cx.icon}>
                         {
-                          isSlected({ layer, attr })
+                          isSlected({ layer, attr: data.traitTitle, image: data.image })
                             ? <i className={`fas fa-times`}></i>
                             : <i className={`fas fa-minus`}></i>
-                        }
+                        } 
                       </span>
-                      <span>{attr}</span>
+                      <span>{data.traitTitle}</span>
+                      <img src={URL.createObjectURL(data.image)} alt=''/>
                     </div>
                   ))
                 }

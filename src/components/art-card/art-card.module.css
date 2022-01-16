@@ -26,8 +26,12 @@
   border-color: transparent;
 }
 
+.container.active .addRuleBtn {
+  color: var(--main-accent);
+}
+
 .container * {
-  transition: all 0.3s;
+  transition: all 150ms;
 }
 
 .imageContainer {
@@ -44,27 +48,27 @@
 .image {
   width: 6em;
   height: 6em;
-  box-shadow: 4px 4px 4px 0px rgba(75, 75, 75, 0.274);
+  /* box-shadow: 4px 4px 4px 0px rgba(75, 75, 75, 0.274); */
   border-radius: 0.25em;
 }
 
-.remove {
+.action {
   width: 100%;
   top: 0;  
   left: 0;
   background: var(--card-bg);
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 0.5em;
 }
 
-.remove i {
+.action i {
   font-weight: bold;
   color: var(--icon-color);
 }
 
-.remove i:hover {
+.action i:hover {
   color: var(--icon-color-dark);
 }
 

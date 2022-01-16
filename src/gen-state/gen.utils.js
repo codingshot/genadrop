@@ -1,29 +1,3 @@
-export const createDna = layers => {
-
-  const getPercentage = (rarity, total) => {
-    let result = (parseInt(rarity) / total) * 100;
-    return Math.floor(result)
-  }
-
-  function shuffle(array) {
-    for (let i = 0; i < 100; i++) {
-      for (let i = array.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-    return array
-  }
-
-  const newLayers = layers.map(layer => {
-    const totalTraits = (layer.traits.map(trait => parseInt(trait.Rarity))).reduce((acc, curr) => acc + curr);
-    const newTraits = (layer.traits.map(trait => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait))).flat();
-    return { ...layer, traits: shuffle(newTraits) }
-  })
-  return newLayers.reverse();
-}
-
-
 export const addLayer = (layers, layerToAdd) => {
   let result = layers.find(layer => layer.layerTitle.toLowerCase() === layerToAdd.layerTitle.toLowerCase())
   if (result) return layers;
@@ -36,10 +10,10 @@ export const removeLayer = (layers, layerToRemove) => {
 
 export const updateLayer = (layers, layerToUpdate) => {
   let result = layers.find(layer => layer.layerTitle.toLowerCase() === layerToUpdate.layerTitle.toLowerCase())
-  if(result) return layers
+  if (result) return layers
 
   return layers.map(layer => (
-    layer.id === layerToUpdate.id ? {...layer, layerTitle: layerToUpdate.layerTitle} : layer
+    layer.id === layerToUpdate.id ? { ...layer, layerTitle: layerToUpdate.layerTitle } : layer
   ))
 }
 
@@ -86,19 +60,19 @@ export const updateImage = (layers, imageObj) => {
   return newLayers
 }
 
-export const addPreview = (preview, { layerTitle, imageName }) => {
-  let result = preview.find(item => item.layerTitle === layerTitle);
+export const addPreview = (preview, { layerTitle, imageName, imageFile }) => {
   let newPreview = [];
+  let result = preview.find(item => item.layerTitle === layerTitle);
   if (result) {
     newPreview = preview.map(item => {
       if (item.layerTitle === layerTitle) {
-        return { layerTitle, imageName }
+        return { layerTitle, imageName, imageFile }
       } else {
         return item
       }
     })
   } else {
-    return [...preview, { layerTitle, imageName }]
+    return [...preview, { layerTitle, imageName, imageFile }]
   }
   return newPreview
 }
@@ -117,7 +91,6 @@ export const updatePreview = (preview, { layerTitle, imageName }) => {
       return pre
     }
   })
-
   return newPreview
 }
 
@@ -137,9 +110,6 @@ export const addDescription = (nftLayers, value) => {
   ))
 }
 
-
-
-
-
-
-
+export const deleteRule = (rule, ruleToDelete) => {
+  return rule.filter(rl => JSON.stringify(rl) !== JSON.stringify(ruleToDelete))
+}

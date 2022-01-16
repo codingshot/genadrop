@@ -1,0 +1,97 @@
+.container {
+  width: 20em;
+  color: rgb(207, 207, 207);
+  border-radius: 0.25em;
+  background: var(--card-bg);
+  /* box-shadow: 2px 2px 2px rgb(51, 51, 51); */
+  border: 1px solid rgb(29, 29, 29);
+  padding: 2em 1em;
+  padding-top: 4em;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  max-height: 15em;
+  overflow: auto;
+}
+
+.conflictCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  align-items: center;
+  padding: 0.25em;
+  border-bottom: 1px solid var(--icon-color);
+}
+
+.content {
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.85rem;
+  gap: 1em;
+  width: 18em;
+  overflow: auto;
+  cursor: default;
+}
+
+.content:hover {
+  background: var(--sidebar-bg);
+  background: var(--sidebar-bg);
+}
+
+.conflict {
+  font-style: italic;
+}
+
+.icon {
+  cursor: pointer;
+  color: var(--icon-color);
+  font-size: 0.65rem;
+  transition: all 250ms;
+}
+
+.icon:hover {
+  color: white;
+  transform: scale(1.1);
+}
+
+.image {
+  display: inline-flex;
+  width: 2em;
+  height: 2em;
+  border-radius: 0.25em;
+  border: 1px solid var(--icon-color-dark);
+}
+
+.innerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.clearBtnContainer {
+  margin-top: 2em;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clearBtnContainer > div {
+  border: 1px solid var(--sidebar-bg);
+  border-radius: 0.25em;
+  padding: 0.25em 0.75em;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+.notification {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+}

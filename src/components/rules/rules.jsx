@@ -1,18 +1,23 @@
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useState, useContext, useEffect} from 'react';
+import { setConflictRule } from '../../gen-state/gen.actions';
+import { GenContext } from '../../gen-state/gen.context';
 import Select from '../select/select';
 import cx from './rules.module.css';
 
-const model = {
-  head: ['head-one', 'head-two', 'head-three', 'head-four', 'head-five', 'head-six', 'head-seven'],
-  body: ['body-one', 'body-two', 'body-three', 'body-four'],
-  eyewear: ['eyewear-one', 'eyewear-two', 'eyewear-three', 'eyewear-four'],
-}
-
-const Rules = () => {
+const Rules = ({ show, setRule }) => {
   const [filteredAttribute, setFilteredAttribute] = useState([])
   const [conflict, setConflict] = useState([])
-  const [conflictModel, setConflictModel] = useState(model)
+  const [conflictModel, setConflictModel] = useState({})
+  const [collection, setCollection] = useState({})
+  const { layers, dispatch } = useContext(GenContext)
+
+  useEffect(() => {
+    const col = {}
+    layers.forEach(layer => {
+      col[layer.layerTitle] = layer.traits
+    })
+    setCollection(col)
+  }, [layers])
 
   const handleSetAttribute = data => {
     let isUnique = filteredAttribute.find(d => d.layer === data.layer);
@@ -44,43 +49,52 @@ const Rules = () => {
     setConflict(newFiltered)
   }
 
+  const handleClose = () => {
+      setFilteredAttribute([])
+      setConflict([])
+      setRule(false)
+  }
+
+  const handleSaveRule = () => {
+    dispatch(setConflictRule({filteredAttribute, conflict}))
+    setFilteredAttribute([])
+    setConflict([])
+  }
+
   useEffect(() => {
     let newConflictModel = {};
-    filteredAttribute.forEach(attr => {
-      let filteredModel = model[attr.layer].filter(m => m !== attr.attr)
-      newConflictModel[attr.layer] = filteredModel
+    Object.keys(collection).forEach(key => {
+      let layers = filteredAttribute.map(data => data.layer)
+      let res = layers.includes(key)
+      if (!res) {
+        newConflictModel[key] = collection[key]
+      }
     })
-    setConflictModel({ ...model, ...newConflictModel })
+    setConflictModel(newConflictModel)
   }, [filteredAttribute])
 
   useEffect(() => {
-    console.log(conflict);
-    console.log(filteredAttribute);
-    for (let f of filteredAttribute) {
-      let result = conflict.find(c => c.layer === f.layer && c.attr === f.attr)
-      console.log(result);
-      if (result) {
-        let newConflict = conflict.filter(c => c.layer !== result.layer)
-        setConflict(newConflict)
-        return
-      }
-    }
+    let key = Object.keys(conflictModel)
+    let newConflict = conflict.filter(data => key.includes(data.layer))
+    setConflict(newConflict)
   }, [conflictModel])
 
   return (
-    <div className={cx.container}>
+    <div className={`${cx.container} ${show ? cx.active : cx.inactive}`}>
       <div className={cx.rulesContainer}>
+        <i onClick={handleClose} className={`fas fa-times ${cx.cancelBtn}`}></i>
         <div className={cx.title}>Add Conflict Rule</div>
         <div className={cx.filterAttribute}>
           <div className={cx.heading}>Filter Attribute</div>
           <div className={cx.filterSection}>
             <div className={cx.filterContainer}>
-              <Select selectionList={model} select={handleSetAttribute} selected={filteredAttribute} heading={"Select Filter"} />
+              <Select selectionList={collection} select={handleSetAttribute} selected={filteredAttribute} heading={"Select Filter"} />
             </div>
             <div className={cx.filteredList}>
               {
                 filteredAttribute.map(f => (
                   <div className={cx.filteredItem} key={f.layer}>
+                    <img src={URL.createObjectURL(f.image)} alt="" />
                     <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
                     <i onClick={() => handleRemoveAttribute(f)} className={`${cx.closeIcon} fas fa-times`}></i>
                   </div>
@@ -99,6 +113,7 @@ const Rules = () => {
               {
                 conflict.map(f => (
                   <div className={cx.filteredItem} key={f.layer}>
+                    <img src={URL.createObjectURL(f.image)} alt="" />
                     <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
                     <i onClick={() => handleRemoveConflict(f)} className={`${cx.closeIcon} fas fa-times`}></i>
                   </div>
@@ -107,12 +122,10 @@ const Rules = () => {
             </div>
           </div>
         </div>
-
-        <div className={cx.btn}>
-        <div>save and add new</div>
-        <div>save and close</div>
       </div>
-
+      <div className={cx.btn}>
+        <div onClick={handleSaveRule}>save</div>
+        <div onClick={handleClose}>close</div>
       </div>
     </div>
   )
