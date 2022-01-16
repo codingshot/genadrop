@@ -17,28 +17,6 @@
   gap: 1em;
 }
 
-.rulesWrapper {
-  height: 100%;
-  top: 0;
-  left: 0;
-  overflow: auto;
-  position: fixed;
-  z-index: 10;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 0.5em;
-}
-
-.rulesWrapper.active {
-  display: flex;
-}
-
-.rulesWrapper.inactive {
-  display: none;
-}
-
 .ruleSelectButton {
   position: absolute;
   top: 1em;
@@ -55,22 +33,27 @@
 }
 
 .ruleBtn {
-  background: var(--sidebar-bg);
-  border: none;
-  color: white;
+  background: var(--card-bg);
+  border: 1px solid var(--icon-color-dark);
+  outline: none;
+  color: var(--icon-color-light);
   padding: 0.45em 1em;
-  border-radius: 0.25em;
+  border-radius: 0.35em;
   cursor: pointer;
   white-space: nowrap;
+  text-transform: capitalize;
+  transition: all 150ms;
+}
+
+.ruleBtn:hover {
+  border: 1px solid var(--icon-color-light);
 }
 
 .ruleCardWrapper {
   min-width: 10em;
   position: absolute;
-}
-
-.ruleBtn.active {
-  display: none;
+  border-radius: 0.35em;
+  z-index: 0;
 }
 
 @media screen and (max-width: 1200px) {
@@ -85,10 +68,26 @@
   }
 } 
 
-
 @media screen and (max-width: 768px) {
+  .container {
+    margin-top: 6em;
+  }
+
+  .ruleSelectButton {
+    top: -4em;
+  }
 
   .layer_overview {
     flex-direction: column;
+  }
+
+  .ruleCardWrapper {
+    transform: translateX(-40%);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .ruleCardWrapper {
+    transform: translateX(-47%);
   }
 }
