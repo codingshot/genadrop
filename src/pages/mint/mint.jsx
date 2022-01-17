@@ -144,7 +144,7 @@ const Mint = () => {
                   : null
               }
             </div>
-            <input style={{ display: 'none' }} onChange={event => handleMintFileChange(event, handleSetState)} ref={jsonFileRef} type="file" accept=".json" />
+            <input style={{ display: 'none' }} onChange={event => handleMintFileChange({event, handleSetState})} ref={jsonFileRef} type="file" accept=".json" />
           </div>
 
         </div>
