@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 const { initializeApp } = require("firebase/app")
-const { getDatabase, ref, get, child, push} = require("firebase/database")
+const { getDatabase, ref, get, child, push, update} = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,18 +21,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 
-async function writeUserData(owner, collection) {
-    const db = getDatabase(app);
-    await push(ref(db, `collections/${owner}`), {
-      collection
-    });
-    return;
+async function writeUserData(owner, collection, name, collection_id) {
+  name = name.split('-')[0]
+  let updates = {};
+  for (let i = 0; i < collection_id.length; i++) {
+    updates[collection_id[i]] = collection_id[i]
   }
+    const db = getDatabase(app);
+    await update(ref(db, `collections/${owner}`), {
+      [name]: collection
+    });
+    await update(ref(db, `list/${owner}`), {
+      ...updates
+    })
+
+    return;
+  } 
 
   async function readData() {
     const dbRef = ref(getDatabase());
     console.log('p0pll0')
-    await get(child(dbRef, `collections`)).then((snapshot) => {  
+    await get(child(dbRef, `list`)).then((snapshot) => {  
       if (snapshot.exists()) {
         console.log(snapshot.val());
       } else {
@@ -50,6 +59,6 @@ export {
 }
 
 
-// readData()
+//readData()
 // console.log('009ppp')
 
