@@ -119,13 +119,14 @@ export const handleMint = async props => {
   let url = null;
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await mintToAlgo(ipfsJsonData, account, connector);
+      url = await mintToAlgo(ipfsJsonData, account, connector, mintFileName);
     } else if (selectValue.toLowerCase() === 'celo') {
       url = await mintToCelo({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
     }
     handleSetState({ showCopy: true })
     handleSetState({ mintUrl: url })
   } catch (error) {
+    console.log(error)
     alert('Please connect your account and try again!'.toUpperCase())
   }
 }
