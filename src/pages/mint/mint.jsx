@@ -68,6 +68,7 @@ const Mint = () => {
       });
       saveAs(fileToSave, fileName);
     } catch (error) {
+      console.log(error)
       alert('No pinataApiKey provided!')
       dispatch(setGlobalLoading(false))
     }

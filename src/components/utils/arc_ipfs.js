@@ -261,6 +261,7 @@ async function createNFT(fileData) {
     let imgName = `${metadata[i].name}.png`
     console.log(imgName, '-------')
     let imgFile = data.files[imgName]
+    console.log(imgFile, data.files)
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: "image/png" });
     const asset = await connectAndMint(blob, metadata[i], imgName)
