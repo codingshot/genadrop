@@ -30,7 +30,7 @@ const Home = () => {
 
           <div className={classes.functionalities}>
             <p className={classes.function}>browse generative drops</p>
-            <p className={classes.function}>get new drop</p>
+            <p className={classes.function}>get the latest art</p>
             <p className={classes.function}>resell on marketplace</p>
           </div>
         </div>

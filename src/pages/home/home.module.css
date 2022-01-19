@@ -64,6 +64,7 @@
   font-size: 1.1rem;
   transition: all 150ms;
   cursor: default;
+  text-transform: capitalize;
 }
 
 .function:hover {  
