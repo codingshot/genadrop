@@ -1,0 +1,147 @@
+.container {
+  padding: 1em;
+  margin-bottom: 4em;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.heading h3 {
+  font-size: 2rem;
+}
+
+.heading button {
+  cursor: pointer;
+  padding: 0.5em 1.5em;
+  border-radius: 1.5em;
+  background: var(--main-accent);
+  border: none;
+  color: white;
+  transition: background 200ms;
+}
+
+.heading button:hover {
+  background: var(--main-accent-dark);
+}
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2em;
+}
+
+.card {
+  border-radius: 1em;
+  overflow: hidden;
+}
+
+.imgContainer {
+  width: 100%;
+  height: 20em;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.cardBody {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+  background: var(--card-bg2);
+  color: white;
+}
+
+.cardBody h3 {
+  text-align: center;
+  margin-bottom: 1em;
+  margin-top: 3.5em;
+}
+
+.cardBody p {
+  margin-bottom: 1em;
+}
+
+.thumbnail {
+  display: block;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nfts{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.dot {
+  width: 1.2em;
+  height: 1.2em;
+  background: var(--main-bg);
+  box-shadow: 0px 0px 5px 2px white;
+  border-radius: 50%;
+}
+
+.price {
+  padding: 0.25em 1.5em;
+  border-radius: 1em;
+  background: var(--main-accent);
+}
+
+@media screen and (max-width: 1200px) {
+  .imgContainer {
+    height: 12em;
+  }
+
+  .dot {
+    width: 1em;
+    height: 1em;
+  }
+
+  .price, .nfts {
+    font-size: 0.85rem;
+  }
+
+  .price {
+    padding: 0 1em;
+    border-radius: 1em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .imgContainer {
+    height: 16em;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .wrapper {
+    grid-template-columns: repeat(1, 1fr);
+    justify-items: center;
+  }
+  
+  .card {
+    max-width: 24em;
+  }
+
+  .imgContainer {
+    height: 20em;
+  }
+}
