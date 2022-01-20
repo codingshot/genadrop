@@ -164,6 +164,8 @@ export const handleMint = async props => {
     if (selectValue.toLowerCase() === 'algo') {
       url = await mintToAlgo(ipfsJsonData, account, connector, mintFileName);
     } else if (selectValue.toLowerCase() === 'celo') {
+      url = await mintToCelo({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
+    } else if (selectValue.toLowerCase() === 'polygon') {
       url = await mintToPoly({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
     }
     handleSetState({ showCopy: true })

@@ -25,11 +25,12 @@ async function writeUserData(owner, collection, name, collection_id) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-    updates[collection_id[i]] = collection_id[i]
+    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
   }
     const db = getDatabase(app);
-    await update(ref(db, `collections/${owner}`), {
-      [name]: collection
+    await update(ref(db, `collections/${owner}/${name}`), {
+      'url': collection,
+      'price': 10
     });
     await update(ref(db, `list/${owner}`), {
       ...updates

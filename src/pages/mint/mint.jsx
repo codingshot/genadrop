@@ -128,6 +128,7 @@ const Mint = () => {
             <select value={selectValue} onChange={event => handleSetState({ selectValue: event.target.value })}>
               <option value="Algo">Algo</option>
               <option value="Celo">Celo</option>
+              <option value="Polygon">Polygon</option>
             </select>
           </div>
 
