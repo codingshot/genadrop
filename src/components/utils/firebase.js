@@ -6,6 +6,20 @@ const { getDatabase, ref, get, child, push, update } = require("firebase/databas
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+const algosdk = require('algosdk');
+const config = require("./arc_config")
+
+const algoAddress = config.algodClientUrl;
+const algodClientPort = config.algodClientPort;
+const algoToken = config.algodClientToken;
+
+const algodClient = new algosdk.Algodv2(
+  algoToken,
+  algoAddress,
+  algodClientPort
+);
+
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
   authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -60,6 +74,12 @@ export {
 }
 
 
-readData()
+// readData()
+
 // console.log('009ppp')
+
+(async function run(){
+  const data = await algodClient.getAssetByID(65659724).do()
+  console.log(data)
+}())
 
