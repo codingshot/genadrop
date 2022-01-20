@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 const { initializeApp } = require("firebase/app")
-const { getDatabase, ref, get, child, push, update} = require("firebase/database")
+const { getDatabase, ref, get, child, push, update } = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -25,41 +25,41 @@ async function writeUserData(owner, collection, name, collection_id) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
+    updates[collection_id[i]] = { 'id': collection_id[i], 'collection': name }
   }
-    const db = getDatabase(app);
-    await update(ref(db, `collections/${owner}/${name}`), {
-      'url': collection,
-      'price': 10
-    });
-    await update(ref(db, `list/${owner}`), {
-      ...updates
-    })
+  const db = getDatabase(app);
+  await update(ref(db, `collections/${owner}/${name}`), {
+    'url': collection,
+    'price': 10
+  });
+  await update(ref(db, `list/${owner}`), {
+    ...updates
+  })
 
-    return;
-  } 
+  return;
+}
 
-  async function readData() {
-    const dbRef = ref(getDatabase());
-    console.log('p0pll0')
-    await get(child(dbRef, `list`)).then((snapshot) => {  
-      if (snapshot.exists()) {
-        console.log(snapshot.val());
-      } else {
-        console.log("No data available");
-      }
-    }).catch((error) => {
-      console.error(error);
-    });
-    return;
-  }
-
-
-export {
-    writeUserData
+async function readData() {
+  const dbRef = ref(getDatabase());
+  console.log('p0pll0')
+  await get(child(dbRef, `list`)).then((snapshot) => {
+    if (snapshot.exists()) {
+      console.log(snapshot.val());
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+  return;
 }
 
 
-//readData()
+export {
+  writeUserData
+}
+
+
+readData()
 // console.log('009ppp')
 
