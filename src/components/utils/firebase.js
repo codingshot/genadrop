@@ -18,7 +18,10 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 // async function writesData() {
 //   const db = firebase.firestore();
@@ -116,8 +119,4 @@ export {
     readUserCollection,
     readAllUserNft
 }
-
-
-//readData()
-// console.log('009ppp')
 
