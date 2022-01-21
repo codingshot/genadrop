@@ -2,17 +2,19 @@
   width: 100%;
   min-height: calc(100vh - 6.25em);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 1em;
-  padding: 0 1em;
+  /* padding: 0 1em; */
   position: relative;
+  border: 1px solid red;
 }
 
 .layer_overview {
+  border: 1px solid red;
   width: calc(100% - 20em);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
 }

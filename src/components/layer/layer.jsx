@@ -10,32 +10,28 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
   const { inputValue } = state;
 
   const { dispatch } = useContext(GenContext);
-  
+
   const handleSetState = payload => {
-    setState(state => ({...state, ...payload}))
+    setState(state => ({ ...state, ...payload }))
   }
 
   const handleRename = () => {
     setActiveInput('')
-    if(!inputValue) return
-    dispatch(updateLayer({layerTitle: inputValue, id: id}))
+    if (!inputValue) return
+    dispatch(updateLayer({ layerTitle: inputValue, id: id }))
   }
 
   const handleEdit = name => {
     setActiveInput(name)
-    handleSetState({inputValue: name})
+    handleSetState({ inputValue: name })
   }
 
   return (
     <div className={classes.item}>
       <div className={classes._name}>
         <div className={classes.line}>
-          <i className="fas fa-arrows-alt-v"></i>
+          <i className="fas fa-bars"></i>
         </div>
-        <div onClick={click} className={classes.icon}>
-          <i className="far fa-trash-alt"></i>
-        </div>
-        
         <div className={classes.renameBtn}>
           {activeInput === name
             ?
@@ -43,7 +39,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
               <input
                 className={`${classes.renameInput} ${classes.active}`}
                 type="text"
-                onChange={e => handleSetState({inputValue: e.target.value})}
+                onChange={e => handleSetState({ inputValue: e.target.value })}
                 value={inputValue}
                 autoFocus
               />
@@ -54,13 +50,15 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           <div className={classes.editBtn} >
             {activeInput === name
               ? <i onClick={handleRename} className="fas fa-minus"></i>
-              : <i onClick={()=>handleEdit(name)} className="fas fa-edit"></i>
+              : <i onClick={() => handleEdit(name)} className="fas fa-pen"></i>
             }
           </div>
         </div>
-
       </div>
       <div className={classes.trait}>{trait}</div>
+      <div onClick={click} className={classes.icon}>
+        <i className="far fa-times"></i>
+      </div>
     </div>
   )
 }

@@ -77,7 +77,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== "name"
             ?
-            <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="fas fa-edit"></i></div>
+            <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="fas fa-pen"></i></div>
             :
             <div className={classes.editInput}>
               <form onSubmit={e =>handleRename(e, image)}>
@@ -96,7 +96,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== "rarity"
             ?
-            <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="fas fa-edit"></i></div>
+            <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="fas fa-pen"></i></div>
             :
             <div className={classes.editInput}>
               <form onSubmit={handleRename}>

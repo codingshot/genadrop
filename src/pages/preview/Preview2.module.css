@@ -1,0 +1,199 @@
+.container {
+  border: 1px solid red;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.sidebar {
+  border: 1px solid red;
+  width: 20em;
+  height: 100vh;
+  position: sticky;
+  top: 4em;
+}
+
+.main {
+  border: 1px solid red;
+  flex: 1;
+  height: auto;
+}
+
+.details {
+  width: 100%;
+  position: sticky;
+  top: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2em;
+  border: 1px solid red;
+  padding: 1em;
+  background: var(--main-bg);
+  z-index: 1;
+}
+
+.details div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.65em 1em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  background: var(--card-bg);
+  color: white;
+}
+
+.details div span:last-child {
+  border: 1px solid white;
+  padding: 0 1em;
+}
+
+.details div i {
+  color: red;
+}
+
+.collectionName {
+  width: 100%;
+  border: 1px solid red;
+  padding: 1em;
+}
+
+.collectionName .wrapper {
+  width: 100%;
+  padding: 0.5em 1em;
+  background: var(--card-bg1);
+  color: white;
+  border-radius: 0.25em;
+}
+
+.actionContainer {
+  border: 1px solid red;
+  padding: 1em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.actionContainer h3 {
+  width: 100%;
+  border: 1px solid red;
+}
+
+.actionContainer label {
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.75em;
+  border-radius: 0.25em;
+  background: var(--card-bg1);
+  color: white;
+}
+
+.actionContainer button {
+  width: 100%;
+  margin-top: 2em;
+  border: none;
+  padding: 0.75em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  background: var(--main-accent);
+  color: white;
+  cursor: pointer;
+}
+
+.preview {
+  width: 100%;
+  padding: 0.5em;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.card {
+  width: calc(16px * 16);
+  position: relative;
+}
+
+.card > i {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  color: var(--card-bg);
+  cursor: pointer;
+}
+
+.card img {
+  display: inline-block;
+  width: 100%;
+  border-top-right-radius: 0.5em;
+  border-top-left-radius: 0.5em;
+  border: 1px solid gainsboro;
+}
+
+.cardBody {
+  background: var(--main-bg);
+  box-shadow: 1px 1px 5px gray;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 1em;
+  border-bottom-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.cardBody .textWrapper {
+  width: 100%;
+  color: black;
+}
+
+.cardBody .textWrapper * {
+  color: black !important;
+}
+
+.cardBody textarea {
+  width: 100%;
+  background: white;
+  border: 1px solid gainsboro;
+  color: black;
+  padding: 0.25em;
+  resize: none;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.buttonContainer button {
+  flex: 1;
+  padding: 0.5em 0em;
+  white-space: nowrap;
+  border-radius: 0.25em;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.buttonContainer button:first-child {
+  background: var(--main-accent);
+}
+
+.buttonContainer button:last-child {
+  background: var(--card-bg);
+}

@@ -1,19 +1,17 @@
 .container {
-  width: 20em;
-  color: rgb(207, 207, 207);
+  width: 100%;
+  color: black;
   border-radius: 0.25em;
-  background: var(--card-bg);
-  /* box-shadow: 2px 2px 2px rgb(51, 51, 51); */
-  border: 1px solid rgb(29, 29, 29);
-  padding: 2em 1em;
-  padding-top: 4em;
+  background: var(--main-bg);
+  box-shadow: 1px 1px 5px gray;
+  padding: 0.5em;
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2em;
-  max-height: 15em;
+  gap: 1em;
+  max-height: 25em;
   overflow: auto;
 }
 
@@ -25,16 +23,17 @@
   align-items: center;
   padding: 0.25em;
   border-bottom: 1px solid var(--icon-color);
+  border-bottom: 1px solid gainsboro;
 }
 
 .content {
+  flex: 1;
   display: flex;
   white-space: nowrap;
   align-items: center;
   justify-content: flex-start;
   font-size: 0.85rem;
   gap: 1em;
-  width: 18em;
   overflow: auto;
   cursor: default;
 }
@@ -50,48 +49,76 @@
 
 .icon {
   cursor: pointer;
-  color: var(--icon-color);
+  color: var(--card-bg1);
   font-size: 0.65rem;
-  transition: all 250ms;
+  padding: 0 0.5em;
 }
 
 .icon:hover {
-  color: white;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .image {
   display: inline-flex;
-  width: 2em;
-  height: 2em;
+  width: 4em;
+  height: 4em;
   border-radius: 0.25em;
   border: 1px solid var(--icon-color-dark);
 }
 
 .innerContent {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   gap: 0.5em;
 }
 
 .clearBtnContainer {
-  margin-top: 2em;
+  margin: 2em 0;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.clearBtnContainer > div {
-  border: 1px solid var(--sidebar-bg);
+.clearBtnContainer > button {
   border-radius: 0.25em;
-  padding: 0.25em 0.75em;
+  padding: 0.25em 1em;
   cursor: pointer;
   font-size: 0.85em;
+  text-transform: capitalize;
 }
+
 .notification {
   width: 100%;
   text-align: center;
   font-style: italic;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: inherit;
+  height: 6px;
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background: #F1F1F1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #C1C1C1; 
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-corner {
+  border-radius: 0px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b1b1b1; 
 }

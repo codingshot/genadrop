@@ -6,7 +6,7 @@
   justify-content: center;
   gap: 0.25em;
   padding: 0.25em .5em;
-  border-bottom: 1px solid rgb(83, 83, 83);
+  border: 1px solid blue;
   margin: auto;
 }
 
@@ -17,7 +17,7 @@
 .renameBtn {
   background: transparent;
   outline: none;
-  color: white;
+  color: black;
   border: none;
   cursor: pointer;
   display: flex;
@@ -25,6 +25,7 @@
   justify-content: space-between;
   gap: 0.5em;
   text-align: left;
+  border: 1px solid red;
 } 
 
 .renameInput {

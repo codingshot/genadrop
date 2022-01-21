@@ -1,5 +1,8 @@
 .container {
   width: 20em;
+  border: 1px solid red;
+  position: sticky;
+  top: 5em;
 }
 
 .container * {
@@ -16,32 +19,39 @@
   color: var(--icon-color-dark);
 }
 
-.renameBtn {
+.collectionNameContainer {
+  border: 1px solid red;
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+}
+
+.collectionName {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1em;
   background: transparent;
   color: white;
-  font-size: 1.5rem;
   border: none;
+  background: #212529;
+  padding: 0.7em;
+  border-radius: 0.25em;
 }
 
-.renameBtn form {
+.collectionName form {
   flex: 1;
   height: 100%;
   display: flex;
 }
 
-.renameBtn input {
+.collectionName input {
   background: transparent;
   width: 100%;
   outline: none;
   border: none;
   font-size: 1rem;
   padding: 0.25em;
-  border: 1px solid var(--sidebar-bg);
+  border: 1px solid gainsboro;
 }
 
 .editBtn {
@@ -54,12 +64,7 @@
   word-wrap: break-word;
   text-align: center;
   font-weight: 300;
-  font-size: 1.4rem;
-}
-
-.layerHeadWrapper {
-  width: 100%;
-  background: var(--card-bg);
+  font-size: 1.2rem;
 }
  
 .layerorder {
@@ -70,20 +75,20 @@
   justify-content: flex-start;
   position: relative;
   background:  var(--main-bg);
-  border-radius: 0.5em;
   overflow: hidden;
+}
+
+.layerHeadWrapper {
+  width: 100%;
 }
 
 .layerorderHeader {
   width: 100%;
-  padding: 1em 2em;
-}
-
-.line {
-  width: 100%;
-  height: 2px;
-  background: white;
-  margin: 0.5em 0;
+  padding: 0.5em 1em;
+  color: black;
+  font-weight: 500;
+  font-size: 1.2rem;
+  border: 1px solid red;
 }
 
 .layer_trait {
@@ -91,34 +96,40 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1em 1.5em 1em;
+  padding: 0.5em 1em ;
+  padding-right: 2em;
   text-transform: capitalize;
+  background: var(--card-bg1);
+  margin-bottom: 0.5em;
+}
+
+.listWrapper {
+  width: 100%;
+  padding: 0.25em 1em;
+  border: 1px solid gray;
 }
 
 .list {
   width: 100%;
-  min-height: 4em;
-  max-height: 16em;
+  min-height: 16em;
+  max-height: 20em;
   overflow: auto;
   display: flex;
   flex-direction: column;
+  margin-bottom: 1em;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.list {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 .promptWrapper {
   width: 100%;
-  background: var(--card-bg);
-}
-
-.layerWrapper {
-  padding: 0.5em 1em;
-}
-
-.layerWrapper.even {
-  background: var(--main-bg);
-}
-
-.layerWrapper.odd {
-  background: var(--card-bg);
 }
 
 .addBtn {
@@ -126,11 +137,13 @@
   background:  #151616;
   border: none;
   cursor: pointer;
-  padding: 1em;
+  padding: 0.75em 1em;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  font-size: 0.85rem;
+  border-radius: 0.25em;
 }
 
 .addBtn *:first-child {
