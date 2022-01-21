@@ -54,7 +54,6 @@ async function writeUserData(owner, collection, name, collection_id) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-<<<<<<< HEAD
     updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
   }
   const db = firebase.firestore();
@@ -86,21 +85,7 @@ async function writeUserData(owner, collection, name, collection_id) {
       });
       return res;
   });
-=======
-    updates[collection_id[i]] = { 'id': collection_id[i], 'collection': name }
->>>>>>> 10d9e5a0e36c7f45bcf9a06d490ed09a3979302f
   }
-  const db = getDatabase(app);
-  await update(ref(db, `collections/${owner}/${name}`), {
-    'url': collection,
-    'price': 10
-  });
-  await update(ref(db, `list/${owner}`), {
-    ...updates
-  })
-
-  return;
-}
 
 async function readData() {
   const dbRef = ref(getDatabase());
@@ -125,7 +110,6 @@ async function readData() {
   });
   }
 
-<<<<<<< HEAD
   async function readAllCollection() {
     const db = firebase.firestore();
     db.collection("collections").get().then((querySnapshot) => {
@@ -152,17 +136,11 @@ async function readData() {
       return res;
   });
   }
-=======
-export {
-  writeUserData
-}
->>>>>>> 10d9e5a0e36c7f45bcf9a06d490ed09a3979302f
 
   // readAllUserNft("X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4").then((data) => {
   //   console.log(data)
   // });
 
-<<<<<<< HEAD
 export {
     writeUserData,
     readAllCollection,
@@ -170,11 +148,6 @@ export {
     readUserCollection,
     readAllUserNft
 }
-=======
-// readData()
-
-// console.log('009ppp')
->>>>>>> 10d9e5a0e36c7f45bcf9a06d490ed09a3979302f
 
 // (async function run(){
 //   const data = await algodClient.getAssetByID(65659724).do()
