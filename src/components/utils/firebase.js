@@ -78,8 +78,8 @@ export {
 
 // console.log('009ppp')
 
-(async function run(){
-  const data = await algodClient.getAssetByID(65659724).do()
-  console.log(data)
-}())
+// (async function run(){
+//   const data = await algodClient.getAssetByID(65659724).do()
+//   console.log(data)
+// }())
 
