@@ -17,7 +17,7 @@
     "dotenv": "^10.0.0",
     "ethers": "^5.5.2",
     "file-saver": "^2.0.5",
-    "firebase": "^9.6.0",
+    "firebase": "^9.6.4",
     "image-data-uri": "^2.0.1",
     "ipfs": "^0.60.0",
     "jszip": "^3.7.1",

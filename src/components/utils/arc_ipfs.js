@@ -163,7 +163,7 @@ async function createAsset(asset, account) {
   const assetName = `${asset.name}@arc3`;
   const url = asset.url;
 
-  const managerAddr = account;
+  const managerAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
   const clawbackAddr = undefined;
@@ -297,7 +297,7 @@ async function mintToAlgo(assets, account, connector, name) {
 }
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 
-
+console.log(algodClient.getAssetByID(65659724).do().then(data => {console.log(data)}))
 export {
   createNFT,
   mintToAlgo,
