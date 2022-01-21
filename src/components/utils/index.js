@@ -13,8 +13,9 @@ export const getImageSize = async (img) => {
 }
 
 export const handleImage = async props => {
-  const { canvas, images } = props;
-  const { height, width } = await getImageSize(images[0]);
+  const { canvas, images, image } = props;
+  const { height, width } = await getImageSize(image);
+  console.log(height, width);
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
   const ctx = canvas.getContext("2d");
