@@ -1,5 +1,6 @@
 // Import the functions you need from the SDKs you need
-import firebase from "firebase";
+import firebase from "firebase/compat/app";
+import 'firebase/firestore'
 const { getDatabase, ref, get, child, push, update} = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
