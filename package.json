@@ -23,6 +23,7 @@
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "merge-images": "^2.0.0",
+    "node-pre-gyp": "^0.17.0",
     "react": "^17.0.2",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^17.0.2",
@@ -34,8 +35,8 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts --openssl-legacy-provider build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -58,6 +59,6 @@
     ]
   },
   "engines": {
-      "node": ">=15.0.0"
-    }
+    "node": ">=15.0.0"
+  }
 }
