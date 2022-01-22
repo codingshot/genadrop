@@ -8,18 +8,6 @@ const { getDatabase, ref, get, child, push, update} = require("firebase/database
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-const algosdk = require('algosdk');
-const config = require("./arc_config")
-
-const algoAddress = config.algodClientUrl;
-const algodClientPort = config.algodClientPort;
-const algoToken = config.algodClientToken;
-
-const algodClient = new algosdk.Algodv2(
-  algoToken,
-  algoAddress,
-  algodClientPort
-);
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
