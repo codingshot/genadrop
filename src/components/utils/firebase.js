@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app";
-import 'firebase/firestore'
+import 'firebase/compat/firestore';
 const { getDatabase, ref, get, child, push, update} = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -38,6 +38,7 @@ if (!firebase.apps.length) {
 //   });
 // }
 
+const db = firebase.firestore();
 
 async function writeUserData(owner, collection, name, collection_id) {
   name = name.split('-')[0]
@@ -45,7 +46,6 @@ async function writeUserData(owner, collection, name, collection_id) {
   for (let i = 0; i < collection_id.length; i++) {
     updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
   }
-  const db = firebase.firestore();
   db.collection('collections').add({
     name: `${name}`,
     url: `${collection}`,
@@ -64,16 +64,13 @@ async function writeUserData(owner, collection, name, collection_id) {
   } 
 
   async function readAllNft() {
-    const db = firebase.firestore();
-    db.collection("listed").get().then((querySnapshot) => {
-      let res = [];
-      querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          res.push(...Object.values(doc.data()));
+    let querySnapshot = await db.collection("listed").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      res.push(...Object.values(doc.data()));
       });
       return res;
-  });
   }
 
 async function readData() {
@@ -92,43 +89,52 @@ async function readData() {
 }
 
   async function readAllUserNft(userAddress) {
-    const db = firebase.firestore();
-    db.collection("listed").doc(userAddress).get().then((querySnapshot) => {
-      console.log(Object.values(querySnapshot.data()));
-      return Object.values(querySnapshot.data())
-  });
+    let querySnapshot = await db.collection("listed").doc(userAddress).get()
+    console.log(Object.values(querySnapshot.data()));
+    return Object.values(querySnapshot.data())
   }
 
   async function readAllCollection() {
-    const db = firebase.firestore();
-    db.collection("collections").get().then((querySnapshot) => {
-      let res = [];
-      querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          res.push(doc.data());
-      });
-      return res;
-  });
+    let querySnapshot = await db.collection("collections").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+        res.push(doc.data());
+    });
+    return res;
   }
 
   async function readUserCollection(userAddress) {
-    const db = firebase.firestore();
-    db.collection("collections").where("owner", "==", userAddress).get().then((querySnapshot) => {
-      let res = [];
-      querySnapshot.forEach((doc) => {
-          // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          res.push(doc.data())
-      });
-      console.log(res)
-      return res;
-  });
+    let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+      res.push(doc.data())
+    });
+    console.log(res)
+    return res;
   }
+//   .then((querySnapshot) => {
+//     let res = [];
+//     querySnapshot.forEach((doc) => {
+//         // doc.data() is never undefined for query doc snapshots
+//         console.log(doc.id, " => ", doc.data());
+//         res.push(doc.data());
+//     });
+//     console.log(res)
+//     return res;
+// });
 
   // readAllUserNft("X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4").then((data) => {
   //   console.log(data)
   // });
+
+  (async function run(){
+    let res = await readUserCollection("X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4")
+    console.log('this is my response => ', res);
+  }())
 
 export {
     writeUserData,
@@ -138,8 +144,4 @@ export {
     readAllUserNft
 }
 
-// (async function run(){
-//   const data = await algodClient.getAssetByID(65659724).do()
-//   console.log(data)
-// }())
 

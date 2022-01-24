@@ -305,3 +305,4 @@ export {
   write
 }
 
+// write.readAllCollection()
