@@ -30,3 +30,19 @@ export const handleImage = async props => {
     image && ctx.drawImage(image, 0, 0, width, height);
   };
 };
+
+export const handleBlankImage = async props => {
+  const { img, canvas } = props
+  const { height, width } = await getImageSize(img);
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", height);
+  const ctx = canvas.getContext("2d");
+  const image = await new Promise(resolve => {
+    const image = new Image();
+    image.src = "/assets/blank.png";
+    image.onload = () => {
+      resolve(image);
+    };
+  });
+  image && ctx.drawImage(image, 0, 0, width, height);
+};

@@ -1,4 +1,4 @@
-import { handleImage } from "../utils";
+import { handleBlankImage, handleImage } from "../utils";
 
 export const handleFileChange = props => {
   const { event, traits, layerTitle } = props;
@@ -31,8 +31,8 @@ export const dataURItoBlob = dataURI => {
 }
 
 export const handleAddBlank = async props => {
-  const { traits, layerTitle, canvas } = props;
-  await handleImage({ canvas, images: [traits[0].image] })
+  const { canvas, img, traits, layerTitle } = props;
+  await handleBlankImage({ canvas, img })
   const imageUrl = canvas.toDataURL();
   let imageFile = new File([dataURItoBlob(imageUrl)], "blank_image");
   let uniqueImageFile = [...traits];

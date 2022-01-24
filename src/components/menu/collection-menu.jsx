@@ -20,6 +20,11 @@ const CollectionMenu = ({ layer }) => {
     setState(state => ({ ...state, ...payload }))
   }
 
+  const handleBlank = async () => {
+    let res = await handleAddBlank({ traits, layerTitle, canvas, img: layers[0]['traits'][0]['image'] })
+    dispatch(addImage(res))
+  }
+
   useEffect(() => {
     dispatch(setCombinations(getCombinations(layers)))
   }, [layers, dispatch])
@@ -52,7 +57,7 @@ const CollectionMenu = ({ layer }) => {
             traits[0] && (
               <ButtonClickEffect>
                 <button
-                  onClick={() => dispatch(addImage(handleAddBlank({ traits, layerTitle, canvas })))}
+                  onClick={handleBlank}
                   className={classes.addBlankBtn}
                 >
                   Add blank image
