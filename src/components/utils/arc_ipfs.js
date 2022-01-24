@@ -297,12 +297,10 @@ async function mintToAlgo(assets, account, connector, name) {
 }
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 
-console.log(algodClient.getAssetByID(65659724).do().then(data => {console.log(data)}))
+//console.log(algodClient.getAssetByID(65659724).do().then(data => {console.log(data)}))
 export {
   createNFT,
   mintToAlgo,
   pinata,
   write
 }
-
-// write.readAllCollection()
