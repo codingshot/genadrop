@@ -1,4 +1,4 @@
-export const getImageSize = async (img) => {
+export const getImageSize = async img => {
   return new Promise(resolve => {
     const image = new Image();
     if(typeof(img) === "string"){
@@ -13,8 +13,8 @@ export const getImageSize = async (img) => {
 }
 
 export const handleImage = async props => {
-  const { canvas, images } = props;
-  const { height, width } = await getImageSize(images[0]);
+  const { canvas, images, image } = props;
+  const { height, width } = await getImageSize(image);
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);
   const ctx = canvas.getContext("2d");
@@ -28,4 +28,20 @@ export const handleImage = async props => {
     });
     image && ctx.drawImage(image, 0, 0, width, height);
   };
+};
+
+export const handleBlankImage = async props => {
+  const { img, canvas } = props
+  const { height, width } = await getImageSize(img);
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", height);
+  const ctx = canvas.getContext("2d");
+  const image = await new Promise(resolve => {
+    const image = new Image();
+    image.src = "/assets/blank.png";
+    image.onload = () => {
+      resolve(image);
+    };
+  });
+  image && ctx.drawImage(image, 0, 0, width, height);
 };

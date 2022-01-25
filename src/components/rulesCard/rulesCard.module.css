@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   gap: 1em;
-  max-height: 25em;
+  max-height: 16em;
   overflow: auto;
 }
 
@@ -63,7 +63,7 @@
   width: 4em;
   height: 4em;
   border-radius: 0.25em;
-  border: 1px solid var(--icon-color-dark);
+  border: 1px solid gainsboro;
 }
 
 .innerContent {

@@ -63,14 +63,14 @@ export const createUniqueLayer = props => {
 }
 
 export const generateArt = async props => {
-  const { layers, canvas } = props;
+  const { layers, canvas, image } = props;
   const uniqueImages = [];
   for (let { attributes, id } of layers) {
     const images = [];
     attributes.forEach(attr => {
       images.push(attr.image)
     })
-    await handleImage({images, canvas});
+    await handleImage({images, canvas, image});
     const imageUrl = canvas.toDataURL();
     uniqueImages.push({ id, imageUrl })
   }

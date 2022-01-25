@@ -5,13 +5,11 @@
   align-items: flex-start;
   justify-content: center;
   gap: 1em;
-  /* padding: 0 1em; */
+  padding: 0 1em;
   position: relative;
-  border: 1px solid red;
 }
 
 .layer_overview {
-  border: 1px solid red;
   width: calc(100% - 20em);
   display: flex;
   align-items: flex-start;
@@ -36,19 +34,13 @@
 
 .ruleBtn {
   background: var(--card-bg);
-  border: 1px solid var(--icon-color-dark);
   outline: none;
-  color: var(--icon-color-light);
   padding: 0.45em 1em;
   border-radius: 0.35em;
   cursor: pointer;
   white-space: nowrap;
   text-transform: capitalize;
   transition: all 150ms;
-}
-
-.ruleBtn:hover {
-  border: 1px solid var(--icon-color-light);
 }
 
 .ruleCardWrapper {

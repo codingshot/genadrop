@@ -30,15 +30,7 @@ const CollectionDescription = () => {
     dispatch(setLoading(true))
     const dnaLayers = createDna(layers);
     const uniqueLayers = createUniqueLayer({ layers: dnaLayers, mintAmount, rule });
-    const arts = await generateArt({ layers: uniqueLayers, canvas: canvasRef.current });
-
-    // uncomment the block below to display a list of all nft sizes
-    const nftSizes = [];
-    for (let nft of arts) {
-      const { height, width } = await getImageSize(nft.imageUrl);
-      nftSizes.push({ height, width })
-    }
-    console.log('image sizes: ',nftSizes)
+    const arts = await generateArt({ layers: uniqueLayers, canvas: canvasRef.current, image: layers[0]['traits'][0]['image'] });
 
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))

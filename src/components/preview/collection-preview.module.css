@@ -13,16 +13,17 @@
   position: absolute;
   top: 0.5em;
   right: 0.5em;
-  color: black;
   padding: 0.15em 0.75em;
   cursor: pointer;
-  background: var(--main-bg);
-  color: white;
   outline: none;
-  border: 1px solid var(--sidebar-bg);
   font-size: 12px;
   border-radius: 0.2em;
   transition: all 300ms;
+  border: none;
+}
+
+.container button * {
+  color: black;
 }
 
 .container button:hover {

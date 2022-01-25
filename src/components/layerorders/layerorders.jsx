@@ -136,7 +136,7 @@ const LayerOrders = () => {
                 <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({ prompt })} />
               </div>
               :
-              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}><i className="fas fa-plus"></i>New Layer Name</button>
+              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>New Layer Name <i className="fas fa-plus"></i></button>
           }
         </div>
       </div>

@@ -84,7 +84,6 @@ const Mint = () => {
 
   return (
     <div className={classes.container}>
-
       <div className={` ${classes.clipboard} ${showCopy === true ? classes.enter : classes.leave}`}>
         <div>{mintUrl}</div>
         <div
@@ -96,20 +95,21 @@ const Mint = () => {
         </div>
         <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={mintUrl} />
       </div>
+      <div className={classes.wrapper}>
+        <div className={classes.uploadSection}>
+          <h3>Upload</h3>
 
-      <div className={`${classes.innerContainer} ${!collections.length && classes.height}`}>
-        <div className={classes.wrapper}>
-          <div className={classes.uploadWrapper}>
-            <div className={classes.title}>Upload zip file to ipfs</div>
-            <div className={classes.upload}>
-              <img src="/assets/upload-icon.png" alt="" />
+          <div className={classes.upload}>
+            <h4>Upload zip file to IPFS</h4>
+            <div className={classes.uploadInfo}>
+              <img src="./assets/icon-upload.svg" alt="" />
               <div>{collectionName}</div>
             </div>
             <div className={classes.buttonWrapper}>
               <button className={classes.uploadBtn} onClick={() => fileRef.current.click()}>upload</button>
               {
                 collections.length
-                  ? <button className={classes.exportBtn} onClick={handleExport}>export IPFS.json</button>
+                  ? <button className={classes.exportBtn} onClick={handleExport}>export</button>
                   : null
               }
             </div>
@@ -122,36 +122,52 @@ const Mint = () => {
             />
           </div>
 
-          <div className={classes.mintOption}>
-            <div>Select Mint Option: </div>
-            <select value={selectValue} onChange={event => handleSetState({ selectValue: event.target.value })}>
-              <option value="Algo">Algo</option>
-              <option value="Celo">Celo</option>
-            </select>
-          </div>
-
-          <div className={classes.uploadWrapper}>
-            <div className={classes.title}>Mint with IPFS.json {`[${selectValue}]`}</div>
-            <div className={classes.upload}>
-              <img src="/assets/upload-icon.png" alt="" />
+          <div className={classes.upload}>
+            <h4>Mint with IPFS.json</h4>
+            <div className={classes.uploadInfo}>
+              <img src="./assets/icon-upload.svg" alt="" />
               <div>{mintFileName}</div>
             </div>
             <div className={classes.buttonWrapper}>
               <button className={classes.uploadBtn} onClick={handleMintUpload}>upload</button>
-              {
-                ipfsJsonData.length
-                  ? <button className={classes.exportBtn} onClick={() => handleMint(mintProps)}>mint</button>
-                  : null
-              }
             </div>
-            <input style={{ display: 'none' }} onChange={event => handleMintFileChange(event, handleSetState)} ref={jsonFileRef} type="file" accept=".json" />
+            <input
+              style={{ display: 'none' }}
+              onChange={event => handleMintFileChange({ event, handleSetState })}
+              ref={jsonFileRef}
+              type="file"
+              accept=".json"
+            />
           </div>
 
+          {
+            ipfsJsonData.length
+              ?
+              <>
+                <div className={classes.details}>
+                  <div className={classes.heading}>
+                    <h4>Fixed Price -In </h4>
+                    <select value={selectValue} onChange={event => handleSetState({ selectValue: event.target.value })}>
+                      <option value="Algo">Algo</option>
+                      <option value="Celo">Celo</option>
+                    </select>
+                  </div>
+                  <input type="text" />
+                  <div>
+                    <p>Price in USSD</p>
+                    <p>Current Algo price: </p>
+                  </div>
+                </div>
+
+                <button className={classes.exportBtn} onClick={() => handleMint(mintProps)}>mint</button>
+              </>
+              : null
+          }
         </div>
         {
           collections.length
             ?
-            <div className={classes.previewWrapper}>
+            <div className={classes.previewSection}>
               <div className={classes.preview}>
                 {
                   collections
@@ -169,8 +185,8 @@ const Mint = () => {
                     ?
                     <span className={classes.layers}>
                       {
-                        metadata[0].attributes.map(({ trait_type }, idx) => (
-                          <span key={idx}>{trait_type},</span>
+                        metadata[0]?.attributes.map(({ trait_type }, idx) => (
+                          <span key={idx}>{trait_type}; </span>
                         ))
                       }
                     </span>
@@ -189,9 +205,11 @@ const Mint = () => {
             </div>
         }
       </div>
-
     </div>
   )
 }
 
-export default Mint
+export default Mint;
+
+
+

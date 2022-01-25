@@ -7,7 +7,7 @@
   transition: all 0.2s;
   display: flex;
   flex-direction: column;
-  box-shadow: 1px 1px 5px gray;
+  box-shadow: 1px 1px 5px rgb(201, 201, 201);
   border: 1px solid transparent;
 }
 
@@ -36,12 +36,11 @@
 }
 
 .imageContainer:hover .image{
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 
 .image {
-  width: 10em;
-  height: 10em;
+  width: 100%;
 }
 
 .action {

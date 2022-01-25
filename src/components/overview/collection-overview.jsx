@@ -51,7 +51,7 @@ const CollectionOverview = () => {
                 </>
                 :
                 <>
-                  <button onClick={openRule} className={classes.addRuleBtn}>Add Conflict Rules</button>
+                  <button onClick={openRule} className={classes.addRuleBtn}>Set Conflict</button>
                   <button onClick={handleRules} className={classes.showRuleBtn}>Rules <span>{rule.length}</span></button>
                   {
                     showRule &&

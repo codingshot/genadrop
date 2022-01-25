@@ -96,7 +96,7 @@ export const handleFileChange = async (props) => {
 
 export const handleMintFileChange = props => {
   const { event, handleSetState } = props;
-  if (!event.target.files[0]) return;
+  if (!event?.target?.files[0]) return;
   let content = event.target.files[0];
   let fileReader = new FileReader();
   fileReader.onload = function (evt) {

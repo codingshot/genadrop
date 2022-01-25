@@ -6,18 +6,22 @@ import Footer from './components/Footer-New/Footer';
 import Navbar from './components/Navbar/Navbar';
 import Marketplace from './pages/Marketplace/Marketplace';
 import Create from './pages/create/create';
-import NewPreview from './pages/preview/Preview2';
+import Mint from './pages/mint/mint';
+import Preview from './pages/preview/preview';
+import Overlay from './components/overlay/overlay';
 
 function App() {
   return (
     <div className="App">
+      <Overlay/>
       <Navbar />
       <div className="Routes">
         <Switch>
           {/* <Redirect exact from="/" to="/home" /> */}
           <Route exact path="/marketplace" component={Marketplace} />
           <Route exact path="/create" component={Create} />
-          <Route exact path="/preview" component={NewPreview} />
+          <Route exact path="/preview" component={Preview} />
+          <Route exact path="/mint" component={Mint} />
         </Switch>
       </div>
       <Footer/>

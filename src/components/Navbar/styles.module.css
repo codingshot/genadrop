@@ -12,12 +12,12 @@
   padding: 0.5em 2em;
 }
 
-.container > img:nth-child(2) {
+.logoMobile {
   display: none;
 }
 
 .wrapper {
-  flex: 1;
+  gap: 8em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,6 +37,7 @@
   padding: 0.25em;
   font-size: 1rem;
   border-radius: 0.25em;
+  display: none;
 }
 
 .navList {
@@ -51,6 +52,15 @@
 
 .navItem {
   font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+
+.navItem:hover {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.navItem.active {
+  border-bottom: 2px solid white;
 }
 
 .iconClose,
@@ -85,11 +95,11 @@
     background: var(--main-bg);
   }
 
-  .container > img:nth-child(1) {
+  .logoDesktop {
     display: none;
   }
 
-  .container > img:nth-child(2) {
+  .logoMobile {
     display: block;
   }
 
@@ -104,10 +114,11 @@
     position: absolute;
     flex-direction: column;
     gap: 2em;
-    right: 0;
+    right: 2em;
     top: 3em;
     padding: 0 1em;
     background: rgba(255, 255, 255, 0.95);
+    box-shadow: 1px 5px 5px gray;
     color: black;
     max-height: 0;
     overflow: hidden;
@@ -154,5 +165,6 @@
 @media screen and (max-width: 480px) {
   .wrapper {
     max-width: 100%;
+    right: 0;
   }
 }
