@@ -129,6 +129,7 @@ const Mint = () => {
               <option value="Algo">Algo</option>
               <option value="Celo">Celo</option>
               <option value="Polygon">Polygon</option>
+              <option value="Solana">Solana</option>
             </select>
           </div>
 
