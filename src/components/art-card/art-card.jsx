@@ -7,7 +7,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const [state, setState] = useState({
     prompt: '',
     inputValue: {
-      name: trait.traitTitle, 
+      name: trait.traitTitle,
       rarity: trait.Rarity
     },
     previousValue: '',
@@ -17,7 +17,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const { dispatch, preview, isRule } = useContext(GenContext);
 
   const handleSetState = payload => {
-    setState(state => ({...state, ...payload}))
+    setState(state => ({ ...state, ...payload }))
   }
 
   const handleAddPreview = (name, imageFile) => {
@@ -32,7 +32,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
 
   const handleChange = event => {
     const { name, value } = event.target;
-    handleSetState({inputValue: ({ ...inputValue, [name]: value })})
+    handleSetState({ inputValue: ({ ...inputValue, [name]: value }) })
   }
 
   const handleRename = (e, imageFile) => {
@@ -42,33 +42,37 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         dispatch(updatePreview({ layerTitle, imageName: inputValue.name, imageFile }))
       }
     })
-    handleSetState({prompt: ''})
+    handleSetState({ prompt: '' })
     dispatch(updateImage({ layerTitle, image, traitTitle: inputValue.name, Rarity: inputValue.rarity }))
   }
 
   const handlePrompt = value => {
-    handleSetState({prompt: value})
+    handleSetState({ prompt: value })
     setActiveCard(traitTitle)
-    handleSetState({previousValue: traitTitle})
+    handleSetState({ previousValue: traitTitle })
   }
 
   useEffect(() => {
-    if (activeCard !== traitTitle) handleSetState({prompt: ''})
+    if (activeCard !== traitTitle) handleSetState({ prompt: '' })
   }, [activeCard, traitTitle])
 
-  useEffect(()=> {
-    if(!preview.length) {
+  useEffect(() => {
+    if (!preview.length) {
       setActiveCard('')
     }
-  },[preview])
+  }, [preview])
 
   return (
     <div className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
       <div className={classes.action}>
         {
-          isRule ? <i onClick={() => handleAddPreview(traitTitle, image)} className={`fas fa-check-circle ${classes.addRuleBtn}`}></i> : <i/>
+          !isRule 
+          ? <i/>
+          : activeCard === traitTitle 
+          ? <img src='./assets/icon-check-active.svg' alt='' onClick={() => handleAddPreview(traitTitle, image)} /> 
+          : <img src='./assets/icon-check.svg' alt=''/> 
         }
-        <i onClick={handleRemove} className="fas fa-times"></i>
+        <img onClick={handleRemove} src="./assets/icon-close.svg" alt="" />
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
@@ -77,18 +81,21 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== "name"
             ?
-            <div className={classes.inputText}><div>{traitTitle}</div> <i onClick={() => handlePrompt("name")} className="fas fa-pen"></i></div>
+            <div className={classes.inputText}>
+              <div>{traitTitle}</div>
+              <img onClick={() => handlePrompt("name")} src="./assets/icon-edit-dark.svg" alt="" />
+            </div>
             :
             <div className={classes.editInput}>
-              <form onSubmit={e =>handleRename(e, image)}>
+              <form onSubmit={e => handleRename(e, image)}>
                 <input
                   autoFocus type="text"
                   name="name"
-                  value={inputValue.name }
+                  value={inputValue.name}
                   onChange={handleChange}
                 />
               </form>
-              <i onClick={e =>handleRename(e, image)} className="fas fa-minus"></i>
+              <img onClick={e => handleRename(e, image)} src="./assets/icon-mark-dark.svg" alt="" />
             </div>
           }
         </div>
@@ -96,7 +103,10 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== "rarity"
             ?
-            <div className={classes.inputText}><div>Rarity: {Rarity}</div> <i onClick={() => handlePrompt("rarity")} className="fas fa-pen"></i></div>
+            <div className={classes.inputText}>
+              <div>Rarity: {Rarity}</div>
+              <img onClick={() => handlePrompt("rarity")} src="./assets/icon-edit-dark.svg" alt="" />
+            </div>
             :
             <div className={classes.editInput}>
               <form onSubmit={handleRename}>
@@ -109,7 +119,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                   onChange={handleChange}
                 />
               </form>
-              <i onClick={handleRename} className="fas fa-minus"></i>
+              <img onClick={handleRename} src="./assets/icon-mark-dark.svg" alt="" />
             </div>
           }
         </div>

@@ -4,6 +4,8 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
+  margin-bottom: 4em;
+  min-height: 100vh;
 }
 
 .sidebar {
@@ -120,27 +122,19 @@
   position: relative;
 }
 
-.card > i {
+.iconClose {
   position: absolute;
-  height: 1em;
-  width: 1em;
   top: 1em;
   right: 1em;
-  color: var(--card-bg);
   cursor: pointer;
-  padding: 1em;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 150ms;
+  transition: transform 100ms;
 }
 
-.card > i:hover {
-  background: gainsboro;
+.card > .iconClose:hover {
+  transform: scale(1.2);
 }
 
-.card img {
+.asset {
   display: inline-block;
   width: 100%;
   border-top-right-radius: 0.5em;
@@ -149,7 +143,7 @@
 }
 
 .cardBody {
-  background: var(--main-bg);
+  background: var(--card-bg1);
   box-shadow: 1px 1px 5px rgb(201, 201, 201);
   color: white;
   display: flex;
@@ -167,17 +161,22 @@
   color: black;
 }
 
-.cardBody .textWrapper * {
-  color: black !important;
+.cardBody .textWrapper {
+  color: white;
 }
 
 .cardBody textarea {
   width: 100%;
-  background: white;
-  border: 1px solid gainsboro;
-  color: black;
+  background: var(--card-bg3);
+  border: 1px solid black;
+  color: white;
   padding: 0.25em;
   resize: none;
+  border-radius: 0.25em;
+}
+
+.cardBody textarea:focus {
+  outline: 2px solid var(--card-bg);
 }
 
 .buttonContainer {
@@ -197,6 +196,7 @@
   color: white;
   cursor: pointer;
   transition: all 150ms;
+  outline: 1px solid transparent;
 }
 
 .buttonContainer button:first-child {
@@ -213,11 +213,34 @@
 }
 
 .buttonContainer button:last-child:hover {
-  background: var(--card-bg);
-  outline: 1px solid var(--card-bg1);
+  background: var(--card-bg3);
+  outline: 2px solid var(--card-bg);
 }
 
-@media screen and (max-width: 769px) {
+.radioBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radioBtn::before {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background: white;
+  position: absolute;
+  content: '';
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.radioBtn.clicked::before {
+  background: black;
+}
+
+
+@media screen and (max-width: 768px) {
   .container {
     flex-direction: column;
     align-items: center;

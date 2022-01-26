@@ -7,7 +7,7 @@ const Banner = () => {
   
   return (
     <div style={bgImage} className={classes.container}>
-      <div className={classes.soon}>This page will be available shortly. <br />Thank you!</div>
+      {/* <div className={classes.soon}>This page will be available shortly. <br />Thank you!</div> */}
       <div className={classes.innerContainer}>
         <div className={classes.bannerText}>
           <h4 className={classes.heading}>

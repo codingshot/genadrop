@@ -120,6 +120,11 @@
   width: auto;
   border-radius: 0.5em;
   overflow: hidden;
+  transition: all 650ms;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .imgContainer {

@@ -37,6 +37,12 @@
 .card {
   border-radius: 1em;
   overflow: hidden;
+  transition: all 650ms;
+  cursor: default;
+}
+
+.card:hover {
+  transform: scale(1.05);
 }
 
 .imgContainer {
