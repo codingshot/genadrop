@@ -31,7 +31,6 @@ const CollectionDescription = () => {
     const dnaLayers = createDna(layers);
     const uniqueLayers = createUniqueLayer({ layers: dnaLayers, mintAmount, rule });
     const arts = await generateArt({ layers: uniqueLayers, canvas: canvasRef.current, image: layers[0]['traits'][0]['image'] });
-
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))
     dispatch(setMintInfo("completed"))

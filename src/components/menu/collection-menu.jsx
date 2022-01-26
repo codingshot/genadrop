@@ -25,7 +25,6 @@ const CollectionMenu = ({ layer }) => {
     dispatch(addImage(res))
   }
 
-
   useEffect(() => {
     dispatch(setCombinations(getCombinations(layers)))
   }, [layers, dispatch])

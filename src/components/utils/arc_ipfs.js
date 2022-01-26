@@ -244,7 +244,7 @@ async function signTx(connector, txns) {
   // console.log('Account: ',account,' Has created ASA with ID: ', assetID);
 
 
-  return decodedResult;
+  return assetID;
 }
 
 
@@ -261,6 +261,7 @@ async function createNFT(fileData) {
     let imgName = `${metadata[i].name}.png`
     console.log(imgName, '-------')
     let imgFile = data.files[imgName]
+    console.log(imgFile, data.files)
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: "image/png" });
     const asset = await connectAndMint(blob, metadata[i], imgName)
@@ -270,31 +271,31 @@ async function createNFT(fileData) {
 };
 
 
-async function mintToAlgo(assets, account, connector) {
+async function mintToAlgo(assets, account, connector, name) {
   console.log('minting...........')
   let collection_id = [];
   let txns = [];
   for (let i = 0; i < assets.length; i++) {
     const txn = await createAsset(assets[i], account)
-    console.log('ide', txn.rawTxID())
     txns.push(txn)
   }
 
   let txgroup = algosdk.assignGroupID(txns)
   
   let groupId = txgroup[0].group.toString("base64")
-  console.log('groupie', groupId)
-  console.log(algodClient.pendingTransactionInformation("groupId"))
-  let hashes = await signTx(connector, txns)
-  for (let nfts = 0; nfts < txns.length; nfts++) {
-    collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
+  let assetID = await signTx(connector, txns)
+  // for (let nfts = 0; nfts < txns.length; nfts++) {
+  //   collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
+  // }
+  for (let nfts = 0; nfts < assets.length; nfts++) {
+    collection_id.push(assetID+nfts)
   }
-  console.log(collection_id)
   const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
   let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-  await write.writeUserData(account, collectionUrl)
+  await write.writeUserData(account, collectionUrl, name, collection_id)
   return `https://testnet.algoexplorer.io/tx/group/${groupId}`
 }
+// console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 
 
 export {
