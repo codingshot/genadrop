@@ -1,15 +1,5 @@
 import classes from './Review.module.css';
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import SwiperCore, { Autoplay, Pagination, Navigation } from "swiper";
-
-import 'swiper/swiper-bundle.min.css'
-import 'swiper/swiper.min.css'
-import 'swiper/swiper.scss'
-
-SwiperCore.use([Autoplay, Pagination, Navigation]);
-
-const Feedback = () => {
+const Review = () => {
 
   return (
     <div className={classes.container}>
@@ -29,4 +19,4 @@ const Feedback = () => {
   )
 }
 
-export default Feedback;
+export default Review;

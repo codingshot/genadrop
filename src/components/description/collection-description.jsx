@@ -8,7 +8,6 @@ import classes from './collection-description.module.css';
 import { Link } from 'react-router-dom';
 import ButtonClickEffect from '../button-effect/button-effect';
 import { createDna, createUniqueLayer, generateArt, parseLayers } from './collection-description-script';
-import { getImageSize } from '../utils';
 
 const CollectionDescription = () => {
   const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo, rule, isRule } = useContext(GenContext);
