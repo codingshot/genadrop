@@ -96,12 +96,11 @@
 .listWrapper {
   width: 100%;
   padding: 0.25em 1em;
-  border-top: 2px solid gray;
 }
 
 .list {
   width: 100%;
-  min-height: 16em;
+  min-height: 18em;
   max-height: 20em;
   overflow: auto;
   display: flex;
@@ -134,14 +133,12 @@
   gap: 0.5em;
   font-size: 1rem;
   border-radius: 0.25em;
+  transition: all 300ms;
 }
 
-.addBtn *:first-child {
-  transition: all 0.3s;
-}
-
-.addBtn:hover *:first-child {
-  transform: scale(0.9);
+.addBtn:hover {
+  background: var(--main-accent-dark);
+  outline: 2px solid var(--main-accent);
 }
 
 @media screen and (max-width: 768px) {

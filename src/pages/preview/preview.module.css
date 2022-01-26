@@ -122,10 +122,22 @@
 
 .card > i {
   position: absolute;
+  height: 1em;
+  width: 1em;
   top: 1em;
   right: 1em;
   color: var(--card-bg);
   cursor: pointer;
+  padding: 1em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms;
+}
+
+.card > i:hover {
+  background: gainsboro;
 }
 
 .card img {
@@ -184,6 +196,7 @@
   border: none;
   color: white;
   cursor: pointer;
+  transition: all 150ms;
 }
 
 .buttonContainer button:first-child {
@@ -192,6 +205,16 @@
 
 .buttonContainer button:last-child {
   background: var(--card-bg);
+}
+
+.buttonContainer button:first-child:hover {
+  background: var(--main-accent-dark);
+  outline: 1px solid var(--main-accent);
+}
+
+.buttonContainer button:last-child:hover {
+  background: var(--card-bg);
+  outline: 1px solid var(--card-bg1);
 }
 
 @media screen and (max-width: 769px) {

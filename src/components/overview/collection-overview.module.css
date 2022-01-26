@@ -5,6 +5,8 @@
   min-height: calc(100vh - 8em);
   background: var(--main-bg);
   z-index: 1;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
 }
 
 .container::-webkit-scrollbar {

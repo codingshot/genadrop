@@ -21,7 +21,8 @@ const Mint = () => {
     showCopy: false,
     size: { height: 0, width: 0 },
     iconClicked: false,
-    selectValue: 'Algo'
+    selectValue: 'Algo',
+    priceValue: 0
   })
 
   const {
@@ -36,7 +37,8 @@ const Mint = () => {
     showCopy,
     size,
     iconClicked,
-    selectValue
+    selectValue,
+    priceValue
   } = state;
   const [celoAccount, setCeloAccount] = useState('')
 
@@ -49,7 +51,7 @@ const Mint = () => {
   const jsonFileRef = useRef(null);
   const clipboardRef = useRef(null)
 
-  const mintProps = { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector }
+  const mintProps = { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector, priceValue }
 
   const handleMintUpload = () => {
     jsonFileRef.current.click()
@@ -152,7 +154,7 @@ const Mint = () => {
                       <option value="Celo">Celo</option>
                     </select>
                   </div>
-                  <input type="text" />
+                  <input type="text" value={priceValue} onChange={event => handleSetState({priceValue: event.target.value})} />
                   <div>
                     <p>Price in USSD</p>
                     <p>Current Algo price: </p>

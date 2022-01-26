@@ -29,7 +29,7 @@ a {
 }
 
 .App * {
-  transition: all 150ms;
+  transition: width max-width font-size 150ms;
 }
 
 .Routes {

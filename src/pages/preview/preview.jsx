@@ -22,7 +22,6 @@ import TextEditor from './text-editor';
 
 const Preview = () => {
 
-  const history = useHistory();
   const {
     nftLayers,
     currentDnaLayers,

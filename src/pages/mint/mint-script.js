@@ -114,7 +114,9 @@ export const handleCopy = props => {
 }
 
 export const handleMint = async props => {
-  const { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector } = props;
+  const { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector, priceValue } = props;
+  const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
+  if(!result) return alert('please add a value price')
 
   let url = null;
   try {
