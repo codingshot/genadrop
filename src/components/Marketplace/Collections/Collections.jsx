@@ -23,8 +23,8 @@ const Collections = () => {
         <button onClick={() => handleSetState({ viewAll: !viewAll })}>
           view all {
             viewAll
-              ? <i class="fas fa-angle-up"></i>
-              : <i class="fas fa-angle-down"></i>
+              ? <i className="fas fa-angle-up"></i>
+              : <i className="fas fa-angle-down"></i>
           }
         </button>
       </div>

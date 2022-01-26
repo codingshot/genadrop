@@ -23,8 +23,8 @@ const Academy = () => {
         <button onClick={() => handleSetState({ viewAll: !viewAll })}>
           view all {
             viewAll
-              ? <i class="fas fa-angle-up"></i>
-              : <i class="fas fa-angle-down"></i>
+              ? <i className="fas fa-angle-up"></i>
+              : <i className="fas fa-angle-down"></i>
           }
         </button>      </div>
       <div className={classes.wrapper}>
@@ -32,7 +32,7 @@ const Academy = () => {
           (Array(7).fill(null))
           .filter((_, idx) => viewAll ? true : 4 > idx)
           .map((id, idx) => (
-            <div className={classes.card}>
+            <div key={idx} className={classes.card}>
               <div style={bgImage} className={classes.imgContainer}></div>
               <div className={classes.cardBody}>
                 <div className={classes.text}>

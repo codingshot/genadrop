@@ -1,15 +1,65 @@
 .container {
   width: 100%;
-  border-top: 1px solid  var(--sidebar-bg);
-  color: white;
-  padding: 1em;
-  text-align: center;
-}
-
-.container * {
-  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 6em;
+  background: var(--main-accent);
+  padding: 1em 2em;
 }
 
 .container a {
-  font-size: 0.85rem;
+  color: white;
+  text-align: center;
+}
+
+.container span {
+  color: red;
+}
+
+.contacts {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 1em;
+  color: white;
+}
+
+.contacts h3 {
+  border-bottom: 2px solid white;
+}
+
+.list {
+  color: white;
+  width: 100%;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.list img {
+  width: 1em;
+  color: white !important;
+  fill: white;
+}
+
+.aboutUs {
+  width: 100%;
+  display: flex;
+  gap: 2em;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.aboutUs p {
+  cursor: pointer;
+  color: white;
+  border-bottom: 2px solid transparent;
+}
+
+.aboutUs p:hover {
+  border-bottom: 2px solid white;
 }
