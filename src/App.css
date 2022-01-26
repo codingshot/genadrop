@@ -28,6 +28,10 @@ a {
   width: 100%;
 }
 
+.App * {
+  transition: all 150ms;
+}
+
 .Routes {
   width: 100%;
   margin-top: 6em;

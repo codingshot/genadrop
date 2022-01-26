@@ -1,0 +1,47 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.container > img {
+  display: block;
+  width: 5em;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.description {
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 1440px) {
+  .container > img {
+    width: 4em;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container > img {
+    width: 3em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin-bottom: 3em;
+  }
+
+  .title {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
+}
