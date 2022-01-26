@@ -1,0 +1,170 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8em;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: var(--main-accent);
+  z-index: 10;
+  padding: 0.5em 2em;
+}
+
+.logoMobile {
+  display: none;
+}
+
+.wrapper {
+  gap: 8em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+}
+
+.dropdown {
+  display: none;
+}
+
+.wrapper input {
+  background: transparent;
+  border: 1px solid white;
+  width: 100%;
+  max-width: 28em;
+  outline-color: transparent;
+  padding: 0.25em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  display: none;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+.navItem {
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+}
+
+.navItem:hover {
+  border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.navItem.active {
+  border-bottom: 2px solid white;
+}
+
+.iconClose,
+.iconOpen {
+  display: none;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    gap: 2em;
+  }
+
+  .container input {
+    max-width: 20em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container input {
+    max-width: 12em;
+  }
+
+  .navList {
+    gap: 1em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+  .container {
+    background: var(--main-bg);
+  }
+
+  .logoDesktop {
+    display: none;
+  }
+
+  .logoMobile {
+    display: block;
+  }
+
+  .iconClose,
+  .iconOpen {
+    display: block;
+  }
+
+  .wrapper {
+    width: 100%;
+    max-width: 20em;
+    position: absolute;
+    flex-direction: column;
+    gap: 2em;
+    right: 2em;
+    top: 3em;
+    padding: 0 1em;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 1px 5px 5px gray;
+    color: black;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 450ms;
+  }
+
+  .wrapper.active {
+    max-height: 100vh;
+  }
+
+  .wrapper input {
+    display: block;
+    max-width: 100%;
+    border: 1px solid gray;
+    outline: transparent;
+    color: black;
+    margin-top: 2em;
+  }
+
+  .wrapper input:hover {
+    outline: 1px solid gray;
+  }
+
+  .navList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+    margin-bottom: 2em;
+  }
+
+  .navItem {
+    font-weight: 700;
+  }
+
+  .wallet {
+    width: 100%;
+    margin: auto;
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    max-width: 100%;
+    right: 0;
+  }
+}

@@ -1,0 +1,160 @@
+.container {
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: 4em;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+}
+
+.innerContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 2em;
+}
+
+.bannerText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1em;
+  padding-bottom: 4em;
+}
+
+.heading {
+  font-size: 3.6em;
+  margin-bottom: 0.25em;
+}
+
+.heading span {
+  color: var(--main-accent);
+}
+
+.description {
+  max-width: 36em;
+}
+
+.pageLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.pageLinks > button {
+  outline: none;
+  padding: 0.75em 3em;
+  font-size: 1rem;
+  border-radius: 0.5em;
+  cursor: pointer;
+  border: 2px solid transparent;
+  color: white;
+  transition: all 200ms;
+}
+
+.pageLinks button:first-child {
+  background: var(--main-accent);
+}
+
+.pageLinks button:first-child:hover {
+  background: var(--main-accent-dark);
+}
+
+.pageLinks button:last-child {
+  background: transparent;
+  border: 1px solid white;
+}
+
+.pageLinks button:last-child:hover {
+  outline: 1px solid white;
+}
+
+.innerContainer img {
+  display: block;
+  width: 100%;
+  max-width: 36em;
+}
+
+.soon {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  text-align: center;
+  color: black;
+  font-style: italic;
+  z-index: 100;
+  padding: 4em;
+  background: rgba(255, 255, 255, 0.432);
+  text-transform: uppercase;
+}
+
+@media screen and (max-width: 1200px) {
+  .innerContainer img {
+    max-width: 42vw;
+  }
+ 
+  .heading {
+    font-size: 4vw;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .innerContainer img {
+    max-width: 52vw;
+  }
+ 
+  .heading {
+    font-size: 4vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .innerContainer {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .innerContainer img {
+    max-width: 32em;
+  }
+ 
+  .heading {
+    font-size: 2.5rem;
+  }
+
+  .bannerText {
+    padding-bottom: 3em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .innerContainer {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 0 1em;
+  }
+ 
+  .heading {
+    font-size: 2rem;
+  }
+
+  .pageLinks {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pageLinks button {
+    flex: 1;
+  }
+
+  .bannerText {
+    padding-bottom: 2em;
+  }
+
+}

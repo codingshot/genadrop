@@ -64,7 +64,7 @@ const CollectionPreview = () => {
       {preview.length ?
         <button onClick={handleDownload}>
           <ButtonClickEffect>
-            download
+            Download
           </ButtonClickEffect>
         </button>
         : null}

@@ -18,6 +18,7 @@ export const updateLayer = (layers, layerToUpdate) => {
 }
 
 export const addImage = (layers, imageObj) => {
+  console.log(layers, imageObj);
   let newLayers = layers.map(layer => {
     if (layer.layerTitle.toLowerCase() === imageObj.layerTitle.toLowerCase()) {
       return { ...layer, traits: imageObj.traits, traitsAmount: imageObj.traits.length }

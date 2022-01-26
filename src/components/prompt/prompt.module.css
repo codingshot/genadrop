@@ -13,6 +13,7 @@
   background: white;
   outline: none;
   border-radius: 0.25em;
+  border: 1px solid var(--card-bg);
 }
 
 .buttons {
@@ -26,13 +27,22 @@
   background: white;
   color: black;
   outline: none;
-  border: 1px solid var(--sidebar-bg);
-  padding: 0.25em 1em;
+  padding: 0.25em 1.5em;
   border-radius: 0.25em;
   cursor: pointer;
   transition: all 0.3s;
+  border: 1px solid #151616;
+}
+
+.buttons button:first-child {
+  background:  #151616;
+  color: white;
 }
 
 .buttons button:hover {
-  transform: scale(0.99);
+  outline: 1px solid var(--main-accent);
+}
+
+.buttons button:first-child:hover {
+  background: #303333;
 }

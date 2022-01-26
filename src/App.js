@@ -1,41 +1,31 @@
 import React from 'react';
-import Sidebar from './components/sidebar/sidebar';
-import Create from './pages/create/create';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import './App.css';
-import Home from './pages/home/home';
-import Mint from './pages/mint/mint';
-import Explore from './pages/explore/explore';
-import ConnectWallet from './components/wallet/wallet';
-import Preview from './pages/preview/preview';
 import Footer from './components/footer/footer';
+import Navbar from './components/Navbar/Navbar';
+import Marketplace from './pages/Marketplace/Marketplace';
+import Create from './pages/create/create';
+import Mint from './pages/mint/mint';
+import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
-import Rules from './components/rules/rules';
+import Home from './pages/home/home';
 
 function App() {
   return (
     <div className="App">
-      <div className="App-Container">
-        <Overlay />
-        <Sidebar />
-        <div className="Wallet-Wrapper">
-          <ConnectWallet>connect-wallet</ConnectWallet>
-        </div>
+      <Overlay />
+      <Navbar />
+      <div className="Routes">
         <Switch>
-          <Redirect exact from="/" to="/home" />
-          <Route exact path="/home" component={Home} />
+          <Route exact path="/" component={Home} />
+          <Route exact path="/marketplace" component={Marketplace} />
           <Route exact path="/create" component={Create} />
-          <Route exact path="/mint" component={Mint} />
-          <Route exact path="/explore" component={Explore} />
           <Route exact path="/preview" component={Preview} />
-          <Route exact path="/rule" component={Rules} />
+          <Route exact path="/mint" component={Mint} />
         </Switch>
-
-        <div className="Footer">
-          <Footer />
-        </div>
       </div>
+      <Footer />
     </div>
   )
 }

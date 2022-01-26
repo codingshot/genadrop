@@ -1,13 +1,16 @@
 :root {
-  --main-bg: #0A0A0A;
-  --sidebar-bg: #27292C;
-  --main-accent: #00b68b;
-  --main-accent-dark: #2d8a74;
-  --main-text: #ffffff;
-  --card-bg: #151616;
-  --icon-color-light: rgb(172, 172, 172);
-  --icon-color: rgb(124, 124, 124);
-  --icon-color-dark: rgb(99, 99, 99);
+  --main-bg: #ffffff;
+  --main-accent: #009987;
+  --main-accent-dark:#037568;
+  --text-color: #000000;
+  --card-bg: #3d3d3d;
+  --card-bg1: #27292C;
+  --card-bg2: #242435;
+  --card-bg3: #000000;
+}
+
+li {
+  list-style-type: none;
 }
 
 * {
@@ -18,87 +21,25 @@
 
 a {
   text-decoration: none;
-  color: black;
+  color: unset;
 }
 
 .App {
   width: 100%;
-  background-color: var(--main-bg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.App-Container {
+.App * {
+  transition: width max-width font-size 150ms;
+}
+
+.Routes {
   width: 100%;
-  padding-left: 6em;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  position: relative;
-  flex-direction: column;
+  margin-top: 6em;
 }
-
-.Wallet-Wrapper {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 1em 2.65em;
-  /* position: sticky; */
-  /* top: 1em; */
-  z-index: 10;
-}
-
-.Wallet-Wrapper * {
-  max-width: 16em;
-}
-
-.Footer {
-  width: 100%;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  background: black;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: inherit;
-  height: 6px;
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  border-radius: 5px;
-  background: var(--main-bg);
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: var(--card-bg); 
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-corner {
-  background: var(---bg); 
-  border-radius: 5px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--sidebar-bg); 
-}
-
 
 @media screen and (max-width: 768px) {
-  .App-Container {
-    padding-left: 0;
-  }
-
-  .Wallet-Wrapper {
-    justify-content: flex-start;
-    padding: 1em;
+  .Routes {
+    margin-top: 4em;
   }
 }
+

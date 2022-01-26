@@ -1,0 +1,255 @@
+.container  {
+  width: 100%;
+  margin-bottom: 4em;
+  padding: 1em;
+}
+
+.container > input {
+  display: none;
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.heading h3 {
+  font-size: 2rem;
+}
+
+.control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.control button {
+  padding: 0.5em 1.5em;
+  border-radius: 1.5em;
+  background: var(--main-accent);
+  color: white;
+  border: none;
+  transition: background 200ms;
+  cursor: pointer;
+}
+
+.control button:hover {
+  background: var(--main-accent-dark);
+}
+
+.inputContainer {
+  overflow: hidden;
+}
+
+.control input {
+  font-size: 1rem;
+  border-radius: 0.25em;
+  outline: transparent;
+  border: 1px solid transparent;
+  padding: 0.25em;
+  transform: translateX(101%);
+  transition: transform 300ms;
+}
+
+.control input.active {
+  border: 1px solid var(--main-accent);
+  transform: translateX(0%);
+}
+
+.control > img {
+  cursor: pointer;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  color: var(--main-accent);
+}
+
+.select p {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.filter {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.filter button {
+  padding: 0.5em 1.5em;
+  border-radius: 1.5em;
+  cursor: pointer;
+  border: 1px solid var(--main-accent);
+  font-weight: 500;
+  font-size: 1rem;
+  background: transparent;
+  transition: background 200ms;
+}
+
+.filter button.active {
+  background: var(--main-accent);
+  color: white;
+}
+
+.filter button.active:hover {
+  background: var(--main-accent-dark);
+}
+
+.filter button:hover {
+  outline: 1px solid var(--main-accent);
+}
+
+.wrapper {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+}
+
+.card {
+  width: auto;
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
+.imgContainer {
+  width: 100%;
+  height: 20em;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.cardBody {
+  padding: 0.5em 0.25em;
+  background: var(--card-bg);
+  color: white;
+}
+
+.title {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.info {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5em;
+  padding: 0 1em;
+  gap: 0.25;
+  flex-wrap: wrap;
+}
+
+.price {
+  color: orange;
+  padding: 0 1em;
+}
+
+.tokenId {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+  padding: 0 1em;
+}
+
+.buttons {
+  width: 100%;
+  border-top: 1px solid gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+}
+
+.buttons button {
+  padding: 0.5em 1.5em;
+  border-radius: 1.5em;
+  font-weight: 500;
+  color: white;
+  border: 1px solid var(--main-accent);
+  cursor: pointer;
+}
+
+.buttons button:hover {
+  outline: 1px solid var(--main-accent);
+}
+
+.buttons button:first-child {
+  background: var(--main-accent);
+  transition: background 200ms;
+}
+
+.buttons button:first-child:hover {
+  background: var(--main-accent-dark);
+}
+
+.buttons button:last-child {
+  background: transparent;
+}
+
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .control input,
+  .select,
+  .filter {
+    display: none;
+  }
+
+  .container > input {
+    display: block;
+    margin-bottom: 1em;
+    width: 100%;
+  }
+
+  .card * {
+    font-size: 0.65rem !important;
+  }
+
+  .imgContainer {
+    height: 20em;
+  }
+
+  .tokenId img {
+    width: 1.5em;
+  }
+
+  .buttons {
+    padding: 0.5em 0.5em;
+  }
+
+  .buttons button {
+    padding: 0.25em 0.5em;
+    border-radius: 1em;
+  }
+
+  .info {
+    padding: 0 0.25em;
+  }
+  
+}

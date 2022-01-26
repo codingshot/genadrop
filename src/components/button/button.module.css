@@ -1,26 +1,26 @@
 .button {
   width: 100%;
   padding: 0.75em 3em;
-  background: transparent;
-  border: 1px solid var(--sidebar-bg);
+  background: var(--card-bg1);
+  border: none;
   color: white;
   outline: none;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
-  border-radius: 0.5em;
+  border-radius: 0.25em;
+  text-transform: capitalize;
 }
 
 .button.invert {
   background: var(--main-accent);
-  color: white;
-  border: transparent;
 }
 
 .button.invert:hover {
+  outline: 2px solid var(--main-accent);
   background: var(--main-accent-dark);
 }
 
 .button:hover {
-  border-color: var(--main-accent);
+  outline: 2px solid var(--card-bg);
 }

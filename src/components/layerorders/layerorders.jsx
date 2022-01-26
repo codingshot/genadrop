@@ -55,89 +55,90 @@ const LayerOrders = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.renameBtn}>
-        {renameAction
-          ?
-          <form onSubmit={handleRename}>
-            <input
-              className={`${classes.renameInput} ${classes.active}`}
-              type="text"
-              onChange={e => handleSetState({inputValue: e.target.value})}
-              value={inputValue}
-              autoFocus
-            />
-          </form>
-          :
-          collectionName
-            ? <div className={classes.nameHeader}>{collectionName}</div>
-            : <div className={classes.nameHeader}>Collection Name</div>
-        }
-        <div className={classes.editBtn} onClick={handleRename}>
+
+      <div className={classes.collectionNameContainer}>
+        <div className={classes.collectionName}>
           {renameAction
-            ? <i className="fas fa-minus"></i>
-            : <i className="fas fa-edit"></i>
+            ?
+            <form onSubmit={handleRename}>
+              <input
+                className={`${classes.renameInput} ${classes.active}`}
+                type="text"
+                onChange={e => handleSetState({ inputValue: e.target.value })}
+                value={inputValue}
+                autoFocus
+              />
+            </form>
+            :
+            collectionName
+              ? <div className={classes.nameHeader}>{collectionName}</div>
+              : <div className={classes.nameHeader}>Collection Name</div>
           }
+          <div className={classes.editBtn} onClick={handleRename}>
+            {renameAction
+              ? <i className="fas fa-minus"></i>
+              : <i className="fas fa-pen"></i>
+            }
+          </div>
         </div>
       </div>
 
       <div className={classes.layerorder}>
         <div className={classes.layerHeadWrapper}>
           <div className={classes.layerorderHeader}>Layer Orders</div>
-          <div className={classes.line}></div>
+        </div>
+        <div className={classes.listWrapper}>
           <div className={classes.layer_trait}>
             <div className={classes.layerHeader}>layer name</div>
             <div className={classes.traitHeader}>traits</div>
           </div>
-        </div>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <div
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                style={getListStyle(snapshot.isDraggingOver)}
-                className={classes.list}
-              >
-                {layers.map((item, index) => (
-                  <Draggable key={index} draggableId={index + ''} index={index}>
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={getItemStyle(
-                          snapshot.isDragging,
-                          provided.draggableProps.style
-                        )}
-                      >
-                        <div className={`${classes.layerWrapper} ${index % 2 === 0 ? classes.even : classes.odd}`}>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="droppable">
+              {(provided, snapshot) => (
+                <div
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  style={getListStyle(snapshot.isDraggingOver)}
+                  className={classes.list}
+                >
+                  {layers.map((item, index) => (
+                    <Draggable key={index} draggableId={index + ''} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
                           <Layer
                             name={item.layerTitle}
                             id={item.id}
                             trait={item.traitsAmount}
                             click={() => handleRemoveLayer(item)}
                             activeInput={activeInput}
-                            setActiveInput={input => handleSetState({activeInput: input})}
+                            setActiveInput={input => handleSetState({ activeInput: input })}
                           />
                         </div>
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
+                      )}
+                    </Draggable>
+                  ))}
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+          {
+            prompt
+              ? <div className={classes.promptWrapper}>
+                <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({ prompt })} />
               </div>
-            )}
-          </Droppable>
-        </DragDropContext>
-        {
-          prompt
-            ? <div className={classes.promptWrapper}>
-              <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({prompt})} />
-            </div>
-            :
-            <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}><i className="fas fa-plus"></i>New Layer Name</button>
-        }
-
+              :
+              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>New Layer Name <i className="fas fa-plus"></i></button>
+          }
+        </div>
       </div>
     </div>
   )

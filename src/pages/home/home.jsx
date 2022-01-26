@@ -1,41 +1,73 @@
 import React from 'react';
+import Banner from '../../components/Home/Banner/Banner';
+import Features from '../../components/Home/Features/Features';
+import Review from '../../components/Home/Review/Review';
+import FAQ from '../../components/Home/FAQ/FAQ';
+import Orgs from '../../components/Home/Orgs/Orgs';
 import classes from './home.module.css';
+
+const creators = {
+  heading: 'Genadrop for',
+  headingAccent: 'Creators',
+  description: 'Bring your NFTs to life via a simple interface, upload each assets and have genaDrop create your generative collection effortlessly.',
+  image: './assets/creators-image.png',
+  feature: [
+    {
+      icon: './assets/create-icon.svg',
+      title: 'Create Layers',
+      description: 'You can create your layers and name them according to assets you want to upload'
+    },
+    {
+      icon: './assets/upload-icon2.svg',
+      title: 'Upload Assests',
+      description: 'Make sure your assets are in the same size and are in Png format.'
+    },
+    {
+      icon: './assets/set-rules-icon.svg',
+      title: 'Set Rarity and Conflict Rules',
+      description: 'You can configure rarity and conflict rules as you want it to apply to a certain asset.'
+    },
+    {
+      icon: './assets/download-mint-autolist-icon.svg',
+      title: 'Download, Mint and Auto List',
+      description: 'You can configure rarity and conflict rules as you want it to apply to a certain asset.'
+    }
+  ]
+}
+
+const Collectors = {
+  heading: 'Genadrop for',
+  headingAccent: 'Collectors',
+  description: 'Bring your NFTs to life via a simple interface, collectors trust GenaDrop marketplace to be the home of excellent NFTs with. ',
+  image: './assets/collectors-image.png',
+  feature: [
+    {
+      icon: './assets/create-icon.svg',
+      title: 'Browse Generative Drops',
+      description: 'You can browse through thousands of generative drops designed by other creators.'
+    },
+    {
+      icon: './assets/upload-icon2.svg',
+      title: 'Get New Drops',
+      description: 'Make sure your assets are in the same size and are in Png format.'
+    },
+    {
+      icon: './assets/resell-icon.svg',
+      title: 'Resell on Marketplace',
+      description: 'You can configure rarity and conflict rules as you want it to apply to a certain asset.'
+    }
+  ]
+}
 
 const Home = () => {
   return (
     <div className={classes.container}>
-      <main className={classes.main}>
-        <div className={classes.features}>
-          <div className={classes.feature}>
-            <h3 className={classes.header}>For Creators</h3>
-            <img className={classes.icon} src="/assets/gena-icon-1.png" alt="icon" />
-          </div>
-          <div className={classes.functionalities}>
-            <p className={classes.function}>create layer names</p>
-            <p className={classes.function}>upload same size png asset</p>
-            <p className={classes.function}>input rarity and mint amount</p>
-            <p className={classes.function}>mint, autolist, revenue + royalties</p>
-          </div>
-        </div>
-
-        <div className={classes.features}>
-          <div className={classes.feature}>
-            <h3 className={classes.header}>For Collectors</h3>
-            <div className={classes.icons}>
-              <img className={classes.icon} src="/assets/gena-icon-2.png" alt="icon" />
-              <img className={classes.icon} src="/assets/gena-icon-3.png" alt="icon" />
-              <img className={classes.icon} src="/assets/gena-icon-4.png" alt="icon" />
-            </div>
-          </div>
-
-          <div className={classes.functionalities}>
-            <p className={classes.function}>browse generative drops</p>
-            <p className={classes.function}>get the latest art</p>
-            <p className={classes.function}>resell on marketplace</p>
-          </div>
-        </div>
-      </main>
-
+      <Banner />
+      <Orgs />
+      <Features data={creators} />
+      <Features data={Collectors} />
+      <Review/>
+      <FAQ/>
     </div>
   )
 }

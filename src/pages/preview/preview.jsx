@@ -1,6 +1,6 @@
+import classes from './preview.module.css';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import classes from './preview.module.css';
 import { useHistory } from 'react-router';
 import {
   addDescription,
@@ -13,17 +13,15 @@ import {
   setNftLayers,
   setOutputFormat
 } from '../../gen-state/gen.actions';
-import Button from '../../components/button/button';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-import InputEditor from './inputEditor';
 import ButtonClickEffect from '../../components/button-effect/button-effect';
 import { generateArt, parseLayers } from '../../components/description/collection-description-script';
 import { createUniqueLayer, getAweaveFormat, getIpfsFormat } from './preview-script';
+import TextEditor from './text-editor';
 
 const Preview = () => {
 
-  const history = useHistory();
   const {
     nftLayers,
     currentDnaLayers,
@@ -33,28 +31,31 @@ const Preview = () => {
     mintInfo,
     collectionName,
     outputFormat,
-    rule
+    rule,
+    layers
   } = useContext(GenContext);
 
   const [state, setState] = useState({
     deleteId: '',
     editorAction: { index: "", id: "" }
   })
-  const {deleteId, editorAction } = state;
+  const { deleteId } = state;
   const didMountRef = useRef(false)
+  const ipfsRef = useRef(null)
+  const arweaveRef = useRef(null)
   const canvas = document.createElement("canvas");
 
   const handleSetState = payload => {
-    setState(state => ({...state, ...payload}))
+    setState(state => ({ ...state, ...payload }))
   }
 
   const handleGenerate = async () => {
     if (mintAmount === combinations) return;
     dispatch(setMintInfo(""));
     dispatch(setLoading(true))
-    const uniqueLayers = createUniqueLayer({layers: currentDnaLayers, rule, nftLayers, deleteId});
-    const arts = await generateArt({layers: uniqueLayers, canvas});
-    dispatch(setNftLayers(parseLayers({uniqueLayers, arts})))
+    const uniqueLayers = createUniqueLayer({ layers: currentDnaLayers, rule, nftLayers, deleteId });
+    const arts = await generateArt({ layers: uniqueLayers, canvas, image: layers[0]['traits'][0]['image'] });
+    dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))
     dispatch(setLoading(false))
   }
 
@@ -64,7 +65,7 @@ const Preview = () => {
   }
 
   const handleDeleteAndReplace = id => {
-    handleSetState({deleteId: id})
+    handleSetState({ deleteId: id })
     if (!(combinations - mintAmount)) {
       dispatch(setMintInfo("  cannot generate asset from 0 combination"));
     } else {
@@ -72,39 +73,17 @@ const Preview = () => {
     }
   }
 
-  const handleRename = (id, inputValue, idx) => {
-    if (editorAction.index === idx) {
-      handleSetState({editorAction: ''})
-      dispatch(renameAsset({ id: id, name: inputValue }))
-    } else {
-      handleSetState({editorAction: { index: idx, id }})
-    }
+  const handleRename = input => {
+    if (!input.value) return
+    dispatch(renameAsset({ id: input.id, name: input.value }))
   }
 
-  const handleDescription = (id, inputValue, idx) => {
-    if (editorAction.index === idx) {
-      handleSetState({editorAction: ''})
-      dispatch(addDescription({ id: id, description: inputValue }))
-    } else {
-      handleSetState({editorAction: { index: idx, id }})
-    }
+  const handleDescription = input => {
+    dispatch(addDescription({ id: input.id, description: input.value }))
   }
 
-  const handleCollectionName = (id, inputValue, idx) => {
-    if (editorAction.index === idx) {
-      handleSetState({editorAction: ''})
-      dispatch(setCollectionName(inputValue))
-    } else {
-      handleSetState({editorAction: { index: idx, id }})
-    }
-  }
-
-  const handleFormatChange = event => {
-    if (event.target.value === "ipfs") {
-      dispatch(setOutputFormat("ipfs"))
-    } else if (event.target.value === "arweave") {
-      dispatch(setOutputFormat("arweave"))
-    }
+  const handleCollectionName = value => {
+      dispatch(setCollectionName(value))
   }
 
   const handleDownload = () => {
@@ -128,7 +107,8 @@ const Preview = () => {
     });
   }
 
-  const handleDownloadAsset = (id, name, nftLayers) => {
+  const handleDownloadAsset = input => {
+    const {id, name, nftLayers} = input;
     let { image } = nftLayers.find(el => el.id === id)
     let link = document.createElement('a');
     link.download = `${name || 'asset'}.png`;
@@ -136,6 +116,16 @@ const Preview = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+  }
+
+  const handleFormatChange = val => {
+    if (val === 'ipfs') {
+      ipfsRef.current.checked = true
+      dispatch(setOutputFormat("ipfs"))
+    } else if (val === 'arweave') {
+      arweaveRef.current.checked = true
+      dispatch(setOutputFormat("arweave"))
+    }
   }
 
   useEffect(() => {
@@ -150,94 +140,80 @@ const Preview = () => {
 
   return (
     <div className={classes.container}>
-      <div onClick={() => history.goBack()} className={classes.goBackBtn}>
-        <i className="fas fa-arrow-left"></i>
-      </div>
 
-      <div className={classes.info}>
+      <aside className={classes.sidebar}>
         <div className={classes.collectionName}>
-          <InputEditor
-            inputIndex="1"
-            id={0}
-            editorAction={editorAction}
-            clickHandler={handleCollectionName}
-            value={collectionName ? collectionName : `collectionName`}
-            inputType="text"
-          />
-        </div>
-        <div className={classes.infoRight}>
-          <div>
-            no of generative arts: {nftLayers.length}
-          </div>
-          <div>
-            unused combinations: {combinations - mintAmount - rule.length}{mintInfo ? <><br /><span className={classes.warn}>{mintInfo}</span></> : null}
+          <div className={classes.wrapper}>
+            <TextEditor
+              placeholder={collectionName ? collectionName : `collectionName`}
+              submitHandler={handleCollectionName}
+            />
           </div>
         </div>
-      </div>
-
-      <div className={classes.downloadContainer}>
-        <div>Use </div>
-        <div className={classes.downloadFormatContainer}>
-          <label htmlFor="ipfs">
-            <input onChange={handleFormatChange} type="radio" value="ipfs" name="format" defaultChecked />
-            Ipfs format
+        <div className={classes.actionContainer}>
+          <h3>Use Format</h3>
+          <label htmlFor="ipfs" onClick={() => handleFormatChange('ipfs')}>
+            <input ref={ipfsRef} type="radio" name="format" value="ipfs" defaultChecked />
+            <p>IPFS</p>
           </label>
-          <label htmlFor="arweave">
-            <input onChange={handleFormatChange} type="radio" value="arweave" name="format" />
-            Arweave
+          <label htmlFor="arweave" onClick={() => handleFormatChange('arweave')}>
+            <input ref={arweaveRef} type="radio" name="format" value="arweave" />
+            <p>Arweave</p>
           </label>
+          <button onClick={handleDownload}>Download zip</button>
         </div>
-        <div onClick={handleDownload}>
-          <ButtonClickEffect>
-            <Button>download zip</Button>
-          </ButtonClickEffect>
-        </div>
-      </div>
+      </aside>
 
-      <div className={classes.preview}>
-        {nftLayers.length &&
-          nftLayers.map(({ image, id, name, description }, idx) => (
-            <div key={idx} className={classes.assetContainer}>
-              <div className={classes.imgWrapper}>
+      <main className={classes.main}>
+        <div className={classes.details}>
+          <div>
+            <span>Number of Generative Arts</span>
+            <span>{nftLayers.length}</span>
+          </div>
+          <div>
+            {
+              mintInfo ? <i className="fas fa-exclamation"></i> : null
+            }
+            <span>Unused Combinations</span>
+            <span>{combinations - mintAmount - rule.length}</span>
+          </div>
+        </div>
+
+        <div className={classes.preview}>
+          {
+            nftLayers.length &&
+            nftLayers.map(({ image, id, name, description }, idx) => (
+              <div key={idx} className={classes.card}>
                 <img src={image} alt="" />
-                  <button onClick={() => handleDownloadAsset(id, name, nftLayers)}>download</button>
-              </div>
-              <div className={classes.wrapper_2}>
-                <div className={classes.inputs}>
-                  <InputEditor
-                    id={id}
-                    inputIndex="0"
-                    editorAction={editorAction}
-                    value={name ? name : `name_${idx}`}
-                    clickHandler={handleRename}
-                    inputType="text"
+                <div className={classes.cardBody}>
+                  <div className={classes.textWrapper}>
+                    <TextEditor
+                      placeholder={name ? name : `name_${idx}`}
+                      submitHandler={value => handleRename({ value, id })}
+                    />
+                  </div>
+                  <textarea
+                    name="description"
+                    value={description}
+                    cols="30"
+                    rows="3"
+                    placeholder='description'
+                    onChange={e => handleDescription({ value: e.target.value, id })}
                   />
+                  <div className={classes.buttonContainer}>
+                    <button onClick={() => handleDownloadAsset({id, name, nftLayers})}>Download</button>
+                    <button onClick={() => handleDeleteAndReplace(id)}>Generate New</button>
+                  </div>
+                </div>
+                <i className='fas fa-times' onClick={() => handleDelete(id)}></i>
+              </div>
+            ))
+          }
+        </div>
+      </main>
 
-                  <InputEditor
-                    inputIndex="1"
-                    id={id}
-                    editorAction={editorAction}
-                    clickHandler={handleDescription}
-                    value={description ? description : `description`}
-                    inputType="textarea"
-                  />
-                </div>
-                <div className={classes.popup}>
-                  <ButtonClickEffect>
-                    <button onClick={() => handleDeleteAndReplace(id)}>
-                      generate new
-                    </button>
-                  </ButtonClickEffect>
-                  <ButtonClickEffect>
-                    <button onClick={() => handleDelete(id)}>delete</button>
-                  </ButtonClickEffect>
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
     </div>
-  );
+  )
 }
 
 export default Preview

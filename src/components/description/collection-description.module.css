@@ -1,18 +1,24 @@
 .container {
   width: 100%;
   max-width: 20em;
-  height: calc(100vh - 8.25em);
+  height: calc(100vh - 7em);
   overflow: auto;
-  padding-bottom: 1em;
+  padding: 0 0.5em;
+  position: sticky;
+  top: 5em;
 }
 
 .container * {
   color: white;
 }
 
-.wrapper {
-  padding: 0 1em;
-  margin-bottom: 1em;
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.container {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 .btnWrapper {
@@ -45,15 +51,16 @@
   align-items: center;
   justify-content: space-between;
   gap: 1em;
+  margin-bottom: 1em;
 }
 
 .action {
   flex: 50%;
-  border: 1px solid var(--sidebar-bg);
   text-align: center;
   padding: 0.25em;
-  border-radius: 0.5em;
+  border-radius: 0.25em;
   font-size: 0.85rem;
+  background: var(--main-accent);
 }
 
 .action input {
@@ -63,19 +70,34 @@
   outline: none;
   padding: 0.15em 0.5em;
   font-size: 0.85rem;
-  border-radius: 0.5em;
+  border-radius: 0.25em;
+  border: none;
+  margin-top: 1em;
+}
+
+.action > div {
+  font-size: 0.8rem;
+}
+
+.combinations {
+  width: 100%;
+  background: var(--main-bg);
+  color: black;
+  border-radius: 0.25em;
+  margin-top: 1em;
+  padding: 0.1em;
 }
 
 .mintInfo {
   padding: 0.25em;
-  text-transform: lowercase;
+  border-radius: 0.25em;
   margin-bottom: 0.5em;
   font-size: 0.85em;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
-  color: var(--icon-color);
+  color: black;
 }
 
 .previewBtn {

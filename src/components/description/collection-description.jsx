@@ -21,7 +21,7 @@ const CollectionDescription = () => {
 
   const handleGenerate = async () => {
     if (isRule) return
-    dispatch(setMintInfo("in progress..."))
+    dispatch(setMintInfo("Generating your assets..."))
     if (!mintAmount) return dispatch(setMintInfo("please set the amount to generate"));
     if (!combinations) return dispatch(setMintInfo("Please uplaod assets"))
     if (mintAmount > combinations - rule.length) return dispatch(setMintInfo("cannot generate more than the possible combinations"));
@@ -42,50 +42,49 @@ const CollectionDescription = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.wrapper}>
-        <div className={classes.preview_details}>
-          <div className={classes.previewWrapper}>
-            <CollectionPreview />
-          </div>
-          <div className={classes.detailsWrapper}>
-            <CollectionDetails />
-          </div>
+      <div className={classes.preview_details}>
+        <div className={classes.previewWrapper}>
+          <CollectionPreview />
         </div>
-        <div className={classes.btnWrapper}>
-          <div onClick={handleGenerate}>
-            <ButtonClickEffect>
-              <Button>generate {mintAmount}</Button>
-            </ButtonClickEffect>
-          </div>
-        </div>
-
-        <div className={classes.btnWrapper}>
-          {
-            mintInfo === "completed" && !isRule
-              ?
-              <Link to="/preview">
-                <ButtonClickEffect>
-                  <Button invert>preview</Button>
-                </ButtonClickEffect>
-              </Link>
-              :
-              <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
-                {mintInfo}
-              </div>
-          }
+        <div className={classes.detailsWrapper}>
+          <CollectionDetails />
         </div>
       </div>
+
       <div className={classes.input}>
         <div className={classes.action}>
           <label htmlFor="generate amout">Generate Amount</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
-          <div htmlFor="combinations">Combinations</div>
-          <div>{combinations - rule.length}</div>
+          <div htmlFor="combinations">Possible Combinations</div>
+          <div className={classes.combinations}>{combinations - rule.length}</div>
         </div>
       </div>
 
+      <div className={classes.btnWrapper}>
+        {
+          mintInfo === "completed" && !isRule
+            ?
+            <Link to="/preview">
+              <ButtonClickEffect>
+                <Button invert>preview</Button>
+              </ButtonClickEffect>
+            </Link>
+            :
+            <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
+              {mintInfo}
+            </div>
+        }
+      </div>
+
+      <div className={classes.btnWrapper}>
+        <div onClick={handleGenerate}>
+          <ButtonClickEffect>
+            <Button>generate {mintAmount}</Button>
+          </ButtonClickEffect>
+        </div>
+      </div>
       <canvas style={{ display: "none" }} ref={canvasRef}></canvas>
     </div>
   )

@@ -2,7 +2,7 @@
   width: 100%;
   min-height: calc(100vh - 6.25em);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   gap: 1em;
   padding: 0 1em;
@@ -12,7 +12,7 @@
 .layer_overview {
   width: calc(100% - 20em);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
 }
@@ -34,19 +34,13 @@
 
 .ruleBtn {
   background: var(--card-bg);
-  border: 1px solid var(--icon-color-dark);
   outline: none;
-  color: var(--icon-color-light);
   padding: 0.45em 1em;
   border-radius: 0.35em;
   cursor: pointer;
   white-space: nowrap;
   text-transform: capitalize;
   transition: all 150ms;
-}
-
-.ruleBtn:hover {
-  border: 1px solid var(--icon-color-light);
 }
 
 .ruleCardWrapper {
