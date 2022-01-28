@@ -4,38 +4,57 @@ const Footer = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.aboutUs}>
-        <div className={classes.contacts}>
-          <a href="https://linktr.ee/MinorityProgrammers">
-            <p>Contacts</p>
-          </a>
+      <div className={classes.leftFrame}>
+        <a href="/">
+          <img src="/assets/genadrop-logo.png" alt="" />
+        </a>
+        <p>
+          GenaDrop Is the no-code solution for artists to create, mint,
+          and sell generative art across multiple blockchains,
+          built with <span>&#x2764;</span> by the Minority Programmers Association
+        </p>
+      </div>
+      <div className={classes.centerFrame}>
+        <h3>quick links</h3>
+        <a href="https://snapshot.org/#/minorityprogrammers.eth">
+          <p>DAO</p>
+        </a>
+        <a href="https://www.minorityprogrammers.org/">
+          <p>MPA</p>
+        </a>
 
-          <a href="https://www.minorityprogrammers.com/partner">
-            <p>Partner with us</p>
-          </a>
+        <a href="https://www.minoritynft.com/">
+          <p>MinorityNFT</p>
+        </a>
 
-          <a href="https://snapshot.org/#/minorityprogrammers.eth">
-            <p>DAO</p>
-          </a>
-        </div>
+        <a href="https://linktr.ee/MinorityProgrammers">
+          <p>Minority Link Tree</p>
+        </a>
 
-        <div className={classes.socialLinks}>
-        Social Links: 
-          <a href="https://discord.gg/4vdtmQqz6d">
-            <img src="./assets/icon-discord.svg" alt="" />
-          </a>
-          <a href="https://linkedin.com/company/minority-programmers/">
-            <img src="./assets/icon-linkedin.svg" alt="" />
-          </a>
-          <a href="https://youtube.com/c/minorityprogrammers">
-            <img src="./assets/icon-youtube.svg" alt="" />
-          </a>
+      </div>
+      <div className={classes.rightFrame}>
+        <h3>Join the community</h3>
+        <div className={classes.socialIcons}>
+          <div className={classes.icon}>
+            <a href="https://discord.gg/4vdtmQqz6d">
+              <img src="/assets/icon-discord.svg" alt="" />
+            </a>
+          </div>
+
+          <div className={classes.icon}>
+            <a href="https://linkedin.com/company/minority-programmers/">
+              <img src="/assets/icon-linkedin.svg" alt="" />
+            </a>
+          </div>
+
+          <div className={classes.icon}>
+            <a href="https://youtube.com/c/minorityprogrammers">
+              <img src="/assets/icon-youtube.svg" alt="" />
+            </a>
+          </div>
+
         </div>
       </div>
-
-      <a href="https://minorityprogrammers.com/" target="_blank" rel="noreferrer noopener">
-        Built With <span>&#x2764;</span> By The Minority Programmers Association
-      </a>
     </div>
   )
 }

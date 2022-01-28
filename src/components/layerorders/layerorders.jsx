@@ -76,8 +76,8 @@ const LayerOrders = () => {
           }
           <div className={classes.editBtn} onClick={handleRename}>
             {renameAction
-              ? <img src="./assets/icon-mark.svg" alt="" />
-              : <img src="./assets/icon-edit.svg" alt="" />
+              ? <img src="/assets/icon-mark.svg" alt="" />
+              : <img src="/assets/icon-edit.svg" alt="" />
             }
           </div>
         </div>
@@ -136,7 +136,7 @@ const LayerOrders = () => {
                 <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({ prompt })} />
               </div>
               :
-              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>New Layer Name <img src="./assets/icon-plus.svg" alt="" /></button>
+              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>New Layer Name <img src="/assets/icon-plus.svg" alt="" /></button>
           }
         </div>
       </div>

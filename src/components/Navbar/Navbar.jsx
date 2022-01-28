@@ -18,18 +18,19 @@ const Navbar = () => {
 
   return (
     <div className={classes.container}>
-      <img onClick={()=> {history.push('/')}} className={classes.logoDesktop} src="./assets/genadrop-logo.png" alt="" />
-      <img onClick={()=> {history.push('/')}} className={classes.logoMobile} src="./assets/genadrop-logo-mobile.png" alt="" />
+      <img onClick={()=> {history.push('/')}} className={classes.logoDesktop} src="/assets/genadrop-logo.png" alt="" />
+      <img onClick={()=> {history.push('/')}} className={classes.logoMobile} src="/assets/genadrop-logo-mobile.png" alt="" />
       <div className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}>
-        <input type="text" />
+        {/* <input type="text" /> */}
+        <br />
         <ul className={classes.navList}>
-          <Link to="./create">
+          <Link to="/create">
             <li className={`${classes.navItem} ${pathname === '/create' && classes.active}`}>create</li>
           </Link>
-          <Link to="./mint">
-            <li className={`${classes.navItem} ${pathname === '/mint' && classes.active}`}>mint</li>
+          <Link to="/mint/single-nft">
+            <li className={`${classes.navItem} ${pathname.includes('/mint') && classes.active}`}>mint</li>
           </Link>
-          <Link to="./marketplace">
+          <Link to="/marketplace">
             <li className={`${classes.navItem} ${pathname === '/marketplace' && classes.active}`}>explore</li>
           </Link>
         </ul>
@@ -39,8 +40,8 @@ const Navbar = () => {
       </div>
       {
         dropdown
-          ? <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconClose} src="./assets/icon-close.svg" alt="" />
-          : <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconOpen} src="./assets/icon-hamburger.svg" alt="" />
+          ? <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconClose} src="/assets/icon-close.svg" alt="" />
+          : <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconOpen} src="/assets/icon-hamburger.svg" alt="" />
       }
     </div>
   )

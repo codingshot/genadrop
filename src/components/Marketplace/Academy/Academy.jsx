@@ -2,7 +2,7 @@ import { useState } from 'react';
 import classes from './styles.module.css';
 
 const bgImage = {
-  backgroundImage: 'url(./assets/academy-image-1.png)'
+  backgroundImage: 'url(/assets/academy-image-1.png)'
 }
 
 const Academy = () => {

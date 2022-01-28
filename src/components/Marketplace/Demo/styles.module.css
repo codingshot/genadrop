@@ -21,7 +21,7 @@
   gap: 4em;
 }
 
-.video {
+.videoContainer {
   width: 100%;
   max-width: 36em;
   height: 100%;
@@ -33,8 +33,13 @@
   position: relative;
 }
 
-.video img {
+.videoContainer img {
   position: absolute;
+}
+
+.videoContainer video {
+  display: inline-block;
+  width: 100%;
 }
 
 .operations {
@@ -71,11 +76,8 @@
   gap: 1em;
 }
 
-.description {
-}
-
 @media screen and (max-width: 1200px) {
-  .video {
+  .videoContainer {
     max-width: 28em;
   }
 
@@ -90,7 +92,7 @@
     height: auto;
   }
 
-  .video {
+  .videoContainer {
     max-width: 100%;
     min-height: 20em;
   }

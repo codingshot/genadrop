@@ -69,10 +69,10 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
           !isRule 
           ? <i/>
           : activeCard === traitTitle 
-          ? <img src='./assets/icon-check-active.svg' alt='' onClick={() => handleAddPreview(traitTitle, image)} /> 
-          : <img src='./assets/icon-check.svg' alt=''/> 
+          ? <img src='/assets/icon-check-active.svg' alt='' onClick={() => handleAddPreview(traitTitle, image)} /> 
+          : <img src='/assets/icon-check.svg' alt=''/> 
         }
-        <img onClick={handleRemove} src="./assets/icon-close.svg" alt="" />
+        <img onClick={handleRemove} src="/assets/icon-close.svg" alt="" />
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
@@ -83,7 +83,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
             ?
             <div className={classes.inputText}>
               <div>{traitTitle}</div>
-              <img onClick={() => handlePrompt("name")} src="./assets/icon-edit-dark.svg" alt="" />
+              <img onClick={() => handlePrompt("name")} src="/assets/icon-edit-dark.svg" alt="" />
             </div>
             :
             <div className={classes.editInput}>
@@ -95,7 +95,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                   onChange={handleChange}
                 />
               </form>
-              <img onClick={e => handleRename(e, image)} src="./assets/icon-mark-dark.svg" alt="" />
+              <img onClick={e => handleRename(e, image)} src="/assets/icon-mark-dark.svg" alt="" />
             </div>
           }
         </div>
@@ -105,7 +105,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
             ?
             <div className={classes.inputText}>
               <div>Rarity: {Rarity}</div>
-              <img onClick={() => handlePrompt("rarity")} src="./assets/icon-edit-dark.svg" alt="" />
+              <img onClick={() => handlePrompt("rarity")} src="/assets/icon-edit-dark.svg" alt="" />
             </div>
             :
             <div className={classes.editInput}>
@@ -119,7 +119,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                   onChange={handleChange}
                 />
               </form>
-              <img onClick={handleRename} src="./assets/icon-mark-dark.svg" alt="" />
+              <img onClick={handleRename} src="/assets/icon-mark-dark.svg" alt="" />
             </div>
           }
         </div>

@@ -1,11 +1,63 @@
 .container {
   width: 100%;
+  max-width: 1440px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   padding: 0 1em;
+  margin: 0 auto;
+  margin-bottom: 8em;
   position: relative;
   overflow: hidden;
+}
+
+.mintOptions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  align-items: center;
+  margin-top: 3em;
+}
+
+.switch.active {
+  background: var(--main-accent);
+  color: white;
+}
+
+.switch {
+  padding: 0.5em 2em;
+  background: white;
+  color: var(--main-accent);
+  border-radius: 0.5em;
+  border: 2px solid var(--main-accent);
+  text-transform: capitalize;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.switch:hover {
+  outline: 1px solid var(--main-accent);
+}
+
+.heading {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 6em;
+  color: var(--card-bg1);
+  position: relative;
+}
+
+.heading > h3 {
+  font-size: 2.5rem;
+}
+
+.heading > p{
+  font-size: 1rem;
+  font-weight: 500;
+  max-width: 32em;
+  margin: auto;
 }
 
 .wrapper {
@@ -40,7 +92,7 @@
 
 .container h3 {
   display: inline-block;
-  border-bottom: 3px solid black;
+  /* border-bottom: 3px solid black; */
   align-self: flex-start;
 }
 
@@ -63,6 +115,7 @@
 
 .uploadInfo img {
   width: 3em;
+  height: 3em;
 }
 
 .buttonWrapper {
@@ -208,16 +261,16 @@
   border-radius: 0.5em;
   box-shadow: 1px 1px 5px rgb(155, 153, 153);
   user-select: none;
-  transform: translateX(100%);
+  transform: translateX(200%);
   transition: all 650ms;
   z-index: 1000;
 }
 
 .enter {
-  transform: translateX(-48px);
+  transform: translateX(-148px);
 }
 .leave {
-  transform: translateX(100%);
+  transform: translateX(200%);
 }
 
 .clipboard .icon {
@@ -243,7 +296,17 @@
   transform: scale(1.02);
 }
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    max-width: 900px;
+  }
+
   .wrapper {
     flex-direction: column;
     align-items: center;

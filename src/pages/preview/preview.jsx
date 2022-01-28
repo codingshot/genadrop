@@ -170,7 +170,7 @@ const Preview = () => {
           </div>
           <div>
             {
-              mintInfo ? <img src="./assets/icon-warn.svg" alt="" /> : null
+              mintInfo ? <img src="/assets/icon-warn.svg" alt="" /> : null
             }
             <span>Unused Combinations</span>
             <span>{combinations - mintAmount - rule.length}</span>
@@ -203,7 +203,7 @@ const Preview = () => {
                     <button onClick={() => handleDeleteAndReplace(id)}>Generate New</button>
                   </div>
                 </div>
-                <img className={classes.iconClose} src='./assets/icon-close.svg' alt='' onClick={() => handleDelete(id)}/>
+                <img className={classes.iconClose} src='/assets/icon-close.svg' alt='' onClick={() => handleDelete(id)}/>
               </div>
             ))
           }

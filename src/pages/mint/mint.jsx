@@ -6,6 +6,7 @@ import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
 import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
 import { handleCopy, handleFileChange, handleMint, handleMintFileChange } from './mint-script';
+import { useHistory } from 'react-router-dom';
 
 const Mint = () => {
 
@@ -76,6 +77,8 @@ const Mint = () => {
     }
   }
 
+  const history = useHistory()
+
   useEffect(() => {
     if (!collections.length) return
     const run = async () => {
@@ -98,6 +101,22 @@ const Mint = () => {
         </div>
         <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={mintUrl} />
       </div>
+
+      <div className={classes.heading}>
+        <h3>Mint Your Nfts</h3>
+        <p>Upload you NFT collection and its metadata, mint and list it on the blockchain of your choice</p>
+
+        <div className={classes.mintOptions}>
+          <div onClick={() => history.push('/mint/single-nft')} className={classes.switch}>
+            Mint Single NFT
+          </div>
+
+          <div onClick={() => history.push('/mint/nft-collection')} className={`${classes.switch} ${classes.active}`}>
+            Mint Collection
+          </div>
+        </div>
+      </div>
+
       <div className={classes.wrapper}>
         <div className={classes.uploadSection}>
           <h3>Upload</h3>
@@ -105,7 +124,7 @@ const Mint = () => {
           <div className={classes.upload}>
             <h4>Upload zip file to IPFS</h4>
             <div className={classes.uploadInfo}>
-              <img src="./assets/icon-upload.svg" alt="" />
+              <img src="/assets/icon-upload.svg" alt="" />
               <div>{collectionName}</div>
             </div>
             <div className={classes.buttonWrapper}>
@@ -128,7 +147,7 @@ const Mint = () => {
           <div className={classes.upload}>
             <h4>Mint with IPFS.json</h4>
             <div className={classes.uploadInfo}>
-              <img src="./assets/icon-upload.svg" alt="" />
+              <img src="/assets/icon-upload.svg" alt="" />
               <div>{mintFileName}</div>
             </div>
             <div className={classes.buttonWrapper}>
@@ -155,7 +174,7 @@ const Mint = () => {
                       <option value="Celo">Celo</option>
                     </select>
                   </div>
-                  <input type="text" value={priceValue} onChange={event => handleSetState({priceValue: event.target.value})} />
+                  <input type="text" value={priceValue} onChange={event => handleSetState({ priceValue: event.target.value })} />
                   <div>
                     <p>Price in USSD</p>
                     <p>Current Algo price: </p>

@@ -49,15 +49,15 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           }
           <div className={classes.editBtn} >
             {activeInput === name
-              ? <img onClick={handleRename} src="./assets/icon-mark.svg" alt="" />
-              : <img onClick={() => handleEdit(name)} src="./assets/icon-edit.svg" alt="" />
+              ? <img onClick={handleRename} src="/assets/icon-mark.svg" alt="" />
+              : <img onClick={() => handleEdit(name)} src="/assets/icon-edit.svg" alt="" />
             }
           </div>
         </div>
       </div>
       <div className={classes.trait}>{trait}</div>
       <div onClick={click} className={classes.icon}>
-        <img src="./assets/icon-delete.svg" alt="" />
+        <img src="/assets/icon-delete.svg" alt="" />
       </div>
     </div>
   )

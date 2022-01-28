@@ -1,7 +1,9 @@
 .container  {
   width: 100%;
+  max-width: 1440px;
+  margin: auto;
   margin-bottom: 4em;
-  padding: 1em;
+  padding: 0 1em;
 }
 
 .container > input {
@@ -12,7 +14,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2em;
+  margin-bottom: 4em;
 }
 
 .heading h3 {
@@ -42,6 +44,7 @@
 
 .inputContainer {
   overflow: hidden;
+  display: none;
 }
 
 .control input {
@@ -61,6 +64,7 @@
 
 .control > img {
   cursor: pointer;
+  display: none;
 }
 
 .select {
@@ -69,6 +73,7 @@
   justify-content: center;
   gap: 0.5em;
   color: var(--main-accent);
+  display: none; 
 }
 
 .select p {
@@ -82,7 +87,8 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
-  margin-bottom: 1em;
+  margin-bottom: 4em;
+  display: none;
 }
 
 .filter button {
@@ -120,11 +126,11 @@
   width: auto;
   border-radius: 0.5em;
   overflow: hidden;
-  transition: all 650ms;
+  transition: all 450ms;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.015) translateY(-10px);
 }
 
 .imgContainer {

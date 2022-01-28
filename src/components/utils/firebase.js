@@ -1,24 +1,13 @@
 // Import the functions you need from the SDKs you need
-const { initializeApp } = require("firebase/app")
-const { getDatabase, ref, get, child, push, update } = require("firebase/database")
+import firebase from "firebase/compat/app";
+import 'firebase/compat/firestore';
+const { getDatabase, ref, get, child, push, update} = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
-const algosdk = require('algosdk');
-const config = require("./arc_config")
-
-const algoAddress = config.algodClientUrl;
-const algodClientPort = config.algodClientPort;
-const algoToken = config.algodClientToken;
-
-const algodClient = new algosdk.Algodv2(
-  algoToken,
-  algoAddress,
-  algodClientPort
-);
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -32,35 +21,66 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+// async function writesData() {
+//   const db = firebase.firestore();
+//   db.collection('collections').doc('0xC291846A587cf00a7CC4AF0bc4EEdbC9c3340C36').add({
+//     name: 'doodles',
+//     price: 20,
+//   }).then((docRef) => {
+//     console.log("Document ID:", docRef.id)
+//   }).catch((error) => {
+//     console.error("Error", error);
+//   });
+// }
+
+const db = firebase.firestore();
 
 async function writeUserData(owner, collection, name, collection_id) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-    updates[collection_id[i]] = { 'id': collection_id[i], 'collection': name }
+    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
   }
-  const db = getDatabase(app);
-  await update(ref(db, `collections/${owner}/${name}`), {
-    'url': collection,
-    'price': 10
+  db.collection('collections').add({
+    name: `${name}`,
+    url: `${collection}`,
+    price: 20,
+    owner: owner
+  }).then((docRef) => {
+    // console.log("Document ID:", docRef.id)
+  }).catch((error) => {
+    console.error("Error", error);
   });
-  await update(ref(db, `list/${owner}`), {
+  db.collection('listed').doc(`${owner}`).set({
     ...updates
-  })
-
+  }, {merge: true});
+  
   return;
-}
+  } 
+
+  async function readAllNft() {
+    let querySnapshot = await db.collection("listed").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, " => ", doc.data());
+      res.push(...Object.values(doc.data()));
+      });
+      return res;
+  }
 
 async function readData() {
   const dbRef = ref(getDatabase());
-  console.log('p0pll0')
+  // console.log('p0pll0')
   await get(child(dbRef, `list`)).then((snapshot) => {
     if (snapshot.exists()) {
-      console.log(snapshot.val());
+      // console.log(snapshot.val());
     } else {
-      console.log("No data available");
+      // console.log("No data available");
     }
   }).catch((error) => {
     console.error(error);
@@ -68,18 +88,71 @@ async function readData() {
   return;
 }
 
+  async function readAllUserNft(userAddress) {
+    let querySnapshot = await db.collection("listed").doc(userAddress).get()
+    // console.log(Object.values(querySnapshot.data()));
+    return Object.values(querySnapshot.data())
+  }
+
+  async function readAllCollection() {
+    let querySnapshot = await db.collection("collections").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+        // doc.data() is never undefined for query doc snapshots
+        // console.log(doc.id, " => ", doc.data());
+        res.push(doc.data());
+    });
+    return res;
+  }
+
+  async function readUserCollection(userAddress) {
+    let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      res.push(doc.data())
+    });
+    // console.log(res)
+    return res;
+  }
+//   .then((querySnapshot) => {
+//     let res = [];
+//     querySnapshot.forEach((doc) => {
+//         // doc.data() is never undefined for query doc snapshots
+//         console.log(doc.id, " => ", doc.data());
+//         res.push(doc.data());
+//     });
+//     console.log(res)
+//     return res;
+// });
+
+  // readAllUserNft("X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4").then((data) => {
+  //   console.log(data)
+  // });
+
+  async function fetchCollections(){
+
+    let allCollections = await readAllCollection()
+    let allNft = await readAllNft()
+    let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+    let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+
+    return {
+      allCollections,
+      allNft,
+      userCollections,
+      allUserNft
+    }
+  }
 
 export {
-  writeUserData
+    writeUserData,
+    readAllCollection,
+    readAllNft,
+    readUserCollection,
+    readAllUserNft,
+    fetchCollections
 }
 
-
-// readData()
-
-// console.log('009ppp')
-
-// (async function run(){
-//   const data = await algodClient.getAssetByID(65659724).do()
-//   console.log(data)
-// }())
 

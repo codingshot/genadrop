@@ -15,7 +15,7 @@ const Banner = () => {
           Generate all combinations from your art assets, preview and edit meta data, upload to ipfs, mint, and list to multiple blockchains with NO CODE.          </p>
         <button onClick={()=> history.push('./create')}>Generate Collection</button>
       </div>
-      <img src='./assets/home-banner-image.svg' alt='' />
+      <img src='/assets/home-banner-image.svg' alt='' />
     </div>
   )
 }
