@@ -36,8 +36,19 @@ const Footer = () => {
         <h3>Join the community</h3>
         <div className={classes.socialIcons}>
           <div className={classes.icon}>
+            <a href="">
+              <img src="/assets/icon-linktree.svg" alt="" />
+            </a>
+          </div>
+          <div className={classes.icon}>
             <a href="https://discord.gg/4vdtmQqz6d">
               <img src="/assets/icon-discord.svg" alt="" />
+            </a>
+          </div>
+
+          <div className={classes.icon}>
+            <a href="https://twitter.com/minorityprogram">
+              <img src="/assets/icon-twitter.svg" alt="" />
             </a>
           </div>
 

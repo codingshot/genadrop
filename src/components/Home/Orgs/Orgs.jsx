@@ -4,7 +4,6 @@ import classes from './Orgs.module.css';
 
 const Orgs = () => {
   return (
-
     <div className={classes.container}>
       <div className={classes.heading}>Backed by the Web3's <span>Best Orgs</span></div>
       <div className={classes.description}>
@@ -15,7 +14,6 @@ const Orgs = () => {
         <img onClick={() => window.open("https://near.foundation/", "_blank")} src="/assets/org3.svg" alt="" />
         <img onClick={() => window.open("https://www.algorand.com/", "_blank")} src="/assets/org2.svg" alt="" />
         <img onClick={() => window.open("https://www.minorityprogrammers.com/", "_blank")} src="/assets/org1.svg" alt="" />
-
       </div>
       <div className={classes.bgIcons}>
         <img src="/assets/box.svg" alt="" />
