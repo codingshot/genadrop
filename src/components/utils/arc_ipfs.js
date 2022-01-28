@@ -297,8 +297,13 @@ async function mintToAlgo(assets, account, connector, name) {
 }
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 
+async function getAlgoData(id) {
+  let data = await algodClient.getAssetByID(id).do()
+  return data
+}
 
 export {
+  getAlgoData,
   createNFT,
   mintToAlgo,
   pinata,

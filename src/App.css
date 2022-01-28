@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap');
+
 :root {
   --main-bg: #ffffff;
   --main-accent: #009987;
@@ -35,6 +37,11 @@ a {
 .Routes {
   width: 100%;
   margin-top: 6em;
+}
+
+*{
+  font-family: 'Frank Ruhl Libre', serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 @media screen and (max-width: 768px) {

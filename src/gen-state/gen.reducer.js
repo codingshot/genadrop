@@ -29,7 +29,8 @@ export const INITIAL_STATE = {
   account: '',
   connector: null,
   isRule: false,
-  rule: []
+  rule: [],
+  collections: {}
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -175,6 +176,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         rule: deleteRule(state.rule, action.payload)
+      }
+    case genActionTypes.SET_COLLECTIONS: 
+      return {
+        ...state,
+        collections: action.payload
       }
     default:
       return state;

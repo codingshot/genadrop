@@ -137,3 +137,8 @@ export const deleteRule = rule => ({
   type: genActionTypes.DELETE_RULE,
   payload: rule
 })
+
+export const setCollections = collections => ({
+  type: genActionTypes.SET_COLLECTIONS,
+  payload: collections
+})

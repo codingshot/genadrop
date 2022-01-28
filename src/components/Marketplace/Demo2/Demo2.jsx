@@ -14,7 +14,7 @@ const Demo2 = () => {
         </p>
       </div>
       <div className={classes.video}>
-        <img src="./assets/icon-play.png" alt="" />
+        <img src="/assets/icon-play.png" alt="" />
       </div>
     </div>
   )

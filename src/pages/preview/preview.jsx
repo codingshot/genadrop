@@ -1,7 +1,6 @@
 import classes from './preview.module.css';
 import { useContext, useEffect, useState, useRef } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { useHistory } from 'react-router';
 import {
   addDescription,
   deleteAsset,
@@ -15,7 +14,6 @@ import {
 } from '../../gen-state/gen.actions';
 import { saveAs } from 'file-saver';
 import JSZip from 'jszip';
-import ButtonClickEffect from '../../components/button-effect/button-effect';
 import { generateArt, parseLayers } from '../../components/description/collection-description-script';
 import { createUniqueLayer, getAweaveFormat, getIpfsFormat } from './preview-script';
 import TextEditor from './text-editor';
@@ -153,11 +151,11 @@ const Preview = () => {
         <div className={classes.actionContainer}>
           <h3>Use Format</h3>
           <label htmlFor="ipfs" onClick={() => handleFormatChange('ipfs')}>
-            <input ref={ipfsRef} type="radio" name="format" value="ipfs" defaultChecked />
+            <input ref={ipfsRef} type="radio" name="format" value="ipfs" defaultChecked className={`${classes.radioBtn} ${outputFormat === 'ipfs' && classes.clicked}`}/>
             <p>IPFS</p>
           </label>
           <label htmlFor="arweave" onClick={() => handleFormatChange('arweave')}>
-            <input ref={arweaveRef} type="radio" name="format" value="arweave" />
+            <input ref={arweaveRef} type="radio" name="format" value="arweave" className={`${classes.radioBtn} ${outputFormat === 'arweave' && classes.clicked}`} />
             <p>Arweave</p>
           </label>
           <button onClick={handleDownload}>Download zip</button>
@@ -172,7 +170,7 @@ const Preview = () => {
           </div>
           <div>
             {
-              mintInfo ? <i className="fas fa-exclamation"></i> : null
+              mintInfo ? <img src="/assets/icon-warn.svg" alt="" /> : null
             }
             <span>Unused Combinations</span>
             <span>{combinations - mintAmount - rule.length}</span>
@@ -184,7 +182,7 @@ const Preview = () => {
             nftLayers.length &&
             nftLayers.map(({ image, id, name, description }, idx) => (
               <div key={idx} className={classes.card}>
-                <img src={image} alt="" />
+                <img className={classes.asset} src={image} alt="" />
                 <div className={classes.cardBody}>
                   <div className={classes.textWrapper}>
                     <TextEditor
@@ -205,7 +203,7 @@ const Preview = () => {
                     <button onClick={() => handleDeleteAndReplace(id)}>Generate New</button>
                   </div>
                 </div>
-                <i className='fas fa-times' onClick={() => handleDelete(id)}></i>
+                <img className={classes.iconClose} src='/assets/icon-close.svg' alt='' onClick={() => handleDelete(id)}/>
               </div>
             ))
           }

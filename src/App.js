@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Switch, Route } from "react-router-dom";
 
 import './App.css';
@@ -10,8 +10,23 @@ import Mint from './pages/mint/mint';
 import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
 import Home from './pages/home/home';
+import SingleMint from './pages/SingleMint/singleMint';
+import { fetchCollections } from './components/utils/firebase';
+import { GenContext } from './gen-state/gen.context';
+import { setCollections } from './gen-state/gen.actions';
+import Collection from './pages/collection/collection';
+import Fallback from './pages/fallback/fallback';
 
 function App() {
+  const { dispatch } = useContext(GenContext)
+
+  useEffect(() => {
+    (async function getCollections() {
+      let collections = await fetchCollections()
+      dispatch(setCollections(collections))
+    }())
+  }, [])
+
   return (
     <div className="App">
       <Overlay />
@@ -20,9 +35,12 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/marketplace" component={Marketplace} />
+          <Route exact path="/marketplace/:collectionName" component={Collection} />
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
-          <Route exact path="/mint" component={Mint} />
+          <Route exact path="/mint/nft-collection" component={Mint} />
+          <Route exact path="/mint/single-nft" component={SingleMint} />
+          <Route path="" component={Fallback} />
         </Switch>
       </div>
       <Footer />

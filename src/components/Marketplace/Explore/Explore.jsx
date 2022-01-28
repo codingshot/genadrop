@@ -1,22 +1,67 @@
+import axios from 'axios';
+import { useContext } from 'react';
+import { useEffect } from 'react';
 import { useState } from 'react';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getAlgoData } from '../../utils/arc_ipfs';
 import classes from './styles.module.css';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
-const bgImage = {
-  backgroundImage: 'url(./assets/explore-image-1.png)'
-}
-
-const Explore = () => {
+const Explore = ({ collectionName }) => {
   const [state, setState] = useState({
     viewAll: false,
     activeSearch: false,
-    activeFilter: 'recentlySold'
+    activeFilter: 'recentlySold',
+    NFTs: null,
   })
 
-  const { viewAll, activeSearch, activeFilter } = state
+  const { collections } = useContext(GenContext)
+  const { viewAll, activeSearch, activeFilter, NFTs } = state;
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
+
+  useEffect(() => {
+
+    const getNftData = async collection => {
+      let nftArr = []
+      let { data } = await axios.get(collection['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+      for (let i = 0; i < data.length; i++) {
+        try {
+          let nftObj = {}
+          nftObj.collection_name = collection.name
+          nftObj.owner = collection.owner
+          nftObj.price = collection.price
+          let { params } = await getAlgoData(data[i])
+          nftObj.algo_data = params
+          let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          nftObj.ipfs_data = response.data
+          nftObj.name = response.data.name;
+          nftObj.image_url = response.data.properties.file_url
+          nftArr.push(nftObj)
+        } catch (error) {
+          console.error('|=> --- error --- <=|', error);
+        }
+      }
+      return nftArr
+    }
+
+    if (Object.keys(collections).length) {
+      const collection = collections.allCollections.filter(col => col.name === collectionName);
+      (async function getResult() {
+        let result = await getNftData(collection[0])
+        handleSetState({
+          NFTs: result
+        })
+      }())
+    }
+  }, [collections])
+
+  useEffect(() => {
+    console.log(NFTs);
+  },[NFTs])
 
   return (
     <div className={classes.container}>
@@ -26,16 +71,16 @@ const Explore = () => {
           <div className={classes.inputContainer}>
             <input className={`${activeSearch && classes.active}`} type="text" />
           </div>
-          <img onClick={() => handleSetState({ activeSearch: !activeSearch })} src="./assets/icon-search.png" alt="" />
+          <img onClick={() => handleSetState({ activeSearch: !activeSearch })} src="/assets/icon-search.png" alt="" />
           <div className={classes.select}>
             <p>Alphabetical</p>
-            <img src="./assets/icon-dropdown.png" alt="" />
+            <img src="/assets/icon-dropdown.png" alt="" />
           </div>
           <button onClick={() => handleSetState({ viewAll: !viewAll })}>
             view all {
               viewAll
-                ? <i className="fas fa-angle-up"></i>
-                : <i className="fas fa-angle-down"></i>
+              ? <img src="/assets/icon-chevron-up.svg" alt="" />
+              : <img src="/assets/icon-chevron-down.svg" alt="" />
             }
           </button>
         </div>
@@ -59,30 +104,35 @@ const Explore = () => {
         </button>
       </div>
 
-      <input type="text" />
-
       <div className={classes.wrapper}>
         {
-          (Array(10).fill(null))
-            .filter((_, idx) => viewAll ? true : 4 > idx)
-            .map((d, idx) => (
+          NFTs ? NFTs
+            .filter((_, idx) => viewAll ? true : 10 > idx)
+            .map(({name, price, collection_name, owner, image_url}, idx) => (
               <div key={idx} className={classes.card}>
-                <div style={bgImage} className={classes.imgContainer}></div>
+                <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imgContainer}></div>
                 <div className={classes.cardBody}>
-                  <p className={classes.title}>#name</p>
+                  <p className={classes.title}>{collection_name}</p>
                   <div className={classes.info}>
-                    <p className={classes.name}>name naememe</p>
-                    <span className={classes.price}>5.98 Algo</span>
+                    <p className={classes.name}>{name}</p>
+                    <span className={classes.price}>{price} Algo</span>
                   </div>
                   <div className={classes.tokenId}>
-                    <img src="./assets/explore-thumbnail-1.png" alt="" />
-                    <span>0x7c0c7c...DaD0</span>
+                    <img src="/assets/explore-thumbnail-1.png" alt="" />
+                    <span>{owner.substring(0, 5)}...{owner.substring(owner.length-4, owner.length)}</span>
                   </div>
                   <div className={classes.buttons}>
                     <button>make offer</button>
                     <button>buy now</button>
                   </div>
                 </div>
+              </div>
+            ))
+            :
+            (Array(6).fill(null)).map((_, idx) => (
+              <div key={idx}>
+                <Skeleton count={1} height={200} />
+                <Skeleton count={3} height={40} />
               </div>
             ))
         }

@@ -1,0 +1,309 @@
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-bottom: 8em;
+  padding: 0 0.5em;
+}
+
+.mintOptions {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  align-items: center;
+  margin-top: 3em;
+}
+
+.switch.active {
+  background: var(--main-accent);
+  color: white;
+}
+
+.switch {
+  padding: 0.5em 2em;
+  background: white;
+  color: var(--main-accent);
+  border-radius: 0.5em;
+  border: 2px solid var(--main-accent);
+  text-transform: capitalize;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.switch:hover {
+  outline: 1px solid var(--main-accent);
+}
+
+.heading {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 6em;
+  color: var(--card-bg1);
+  position: relative;
+}
+
+.heading > h3 {
+  font-size: 2.5rem;
+}
+
+.heading > p{
+  font-size: 1rem;
+  font-weight: 500;
+  max-width: 32em;
+  margin: auto;
+}
+
+.mainFrame {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4em;
+}
+
+.rightFrame,
+.leftFrame {
+  flex: 50%;
+} 
+
+.leftFrame img {
+  display: block;
+  width: 20em;
+  border: 1px solid gainsboro;
+}
+
+.imageUpload {
+  width: 100%;
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 2em;
+}
+
+.imageUpload > div {
+  width: 100%;
+}
+
+.uploadBtn {
+  width: 100%;
+  border: 1px solid gray;
+  margin-top: 1em;
+  padding: 0.5em;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 0.5em;
+}
+
+.uploadTab {
+  width: 100%;
+  height: 24em;
+  margin-bottom: 2em;
+  border-radius: 0.5em;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  padding: 2em;
+  cursor: pointer;
+}
+
+.uploadTab div {
+  font-weight: 500;
+  color: var(--main-accent);
+}
+
+.textContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.textInput {
+  width: 100%;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+
+.container input,
+.textInput input {
+  width: 100%;
+  border-radius: 0.25em;
+  padding: 0.5em;
+  border: 1px solid var(--card-bg);
+}
+
+.textInput textarea {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  resize: none;
+}
+
+.container input,
+.textInput textarea:focus,
+.textInput input:focus {
+  outline-color: var(--main-accent);
+}
+
+.mintFrame {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2em;
+  border-radius: 0.25em;
+  border: 2px solid var(--main-accent);
+  margin-bottom: 1em;
+}
+
+.mintFrame .mintTitle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.mintFrame input {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.5em;
+}
+
+.mintFrame > div {
+  width: 100%;
+}
+
+.mintFrame > div p:first-child {
+  color: var(--main-accent);
+}
+
+.uploadSection > button {
+  width: 100%;
+  padding: 0.5em;
+  font-size: 1rem;
+}
+
+.uploadBtn,
+.mintBtn {
+  width: 100%;
+  padding: 0.5em 1.5em;
+  border-radius: 0.25em;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer; 
+  background: var(--main-accent);
+}
+
+.mintBtn:hover,
+.uploadBtn:hover {
+  outline: 2px solid gainsboro;
+}
+
+.mintBtn:hover {
+  outline: 2px solid gainsboro;
+}
+
+.clipboard {
+  position: absolute;
+  top: 0em;
+  right: 0;
+  width: auto;
+  min-width: 15em;
+  max-width: 20em;
+  word-wrap: break-word;
+  background: white;
+  padding: 1em;
+  font-size: 14px;
+  border-radius: 0.5em;
+  box-shadow: 1px 1px 5px rgb(155, 153, 153);
+  user-select: none;
+  transform: translateX(200%);
+  transition: all 650ms;
+  z-index: 1000;
+}
+
+.enter {
+  transform: translateX(-148px);
+}
+.leave {
+  transform: translateX(200%);
+}
+
+.clipboard .icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  visibility: hidden;
+  cursor: pointer;
+  border: 1px solid gainsboro;
+  border-radius: 0.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.15em 1em;
+  background: white;
+}
+
+.clipboard:hover .icon {
+  visibility: visible;
+}
+
+.clipboard .icon.clicked {
+  transform: scale(1.02);
+}
+
+
+@media screen and (max-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    max-width: 540px;
+  }
+
+  .imageUpload {
+    flex-direction: column;
+  }
+
+  .mainFrame {
+    flex-direction: column;
+  }
+
+  .rightFrame, .leftFrame {
+    width: 100%;
+  }
+
+  .uploadTab {
+    height: 16em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  
+}

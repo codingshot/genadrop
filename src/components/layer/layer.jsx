@@ -30,7 +30,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
     <div className={classes.item}>
       <div className={classes._name}>
         <div className={classes.line}>
-          <i className="fas fa-bars"></i>
+          <img src="/assets/icon-drag.svg" alt="" />
         </div>
         <div className={classes.renameBtn}>
           {activeInput === name
@@ -49,15 +49,15 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           }
           <div className={classes.editBtn} >
             {activeInput === name
-              ? <i onClick={handleRename} className="fas fa-minus"></i>
-              : <i onClick={() => handleEdit(name)} className="fas fa-pen"></i>
+              ? <img onClick={handleRename} src="/assets/icon-mark.svg" alt="" />
+              : <img onClick={() => handleEdit(name)} src="/assets/icon-edit.svg" alt="" />
             }
           </div>
         </div>
       </div>
       <div className={classes.trait}>{trait}</div>
       <div onClick={click} className={classes.icon}>
-        <i className="far fa-times"></i>
+        <img src="/assets/icon-delete.svg" alt="" />
       </div>
     </div>
   )

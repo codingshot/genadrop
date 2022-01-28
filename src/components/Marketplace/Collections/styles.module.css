@@ -17,7 +17,7 @@
 .heading button {
   cursor: pointer;
   padding: 0.5em 1.5em;
-  border-radius: 1.5em;
+  border-radius: 1em;
   background: var(--main-accent);
   border: none;
   color: white;
@@ -30,13 +30,20 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2em;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
 }
 
 .card {
+  width: auto;
   border-radius: 1em;
   overflow: hidden;
+  transition: all 650ms;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.025);
 }
 
 .imgContainer {
@@ -68,6 +75,9 @@
 }
 
 .thumbnail {
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
   display: block;
   position: absolute;
   transform: translateY(-50%);
@@ -101,23 +111,18 @@
   background: var(--main-accent);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1440px) {
   .imgContainer {
     height: 12em;
   }
+}
 
-  .dot {
-    width: 1em;
-    height: 1em;
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    grid-template-columns: repeat(3, 1fr);
   }
-
-  .price, .nfts {
-    font-size: 0.85rem;
-  }
-
-  .price {
-    padding: 0 1em;
-    border-radius: 1em;
+  .imgContainer {
+    height: 20em;
   }
 }
 
@@ -125,23 +130,16 @@
   .wrapper {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  .imgContainer {
-    height: 16em;
-  }
 }
 
-@media screen and (max-width: 580px) {
+@media screen and (max-width: 680px) {
   .wrapper {
     grid-template-columns: repeat(1, 1fr);
     justify-items: center;
   }
-  
-  .card {
-    max-width: 24em;
-  }
 
-  .imgContainer {
-    height: 20em;
+  .card{
+    width: 100%;
+    max-width: 24em;
   }
 }

@@ -28,14 +28,14 @@ const TextEditor = ({ placeholder, submitHandler }) => {
           <form onSubmit={handleSubmit}>
             <input autoFocus type="text" value={value} onChange={e => handleSetState({ value: e.target.value })} />
             <button>
-              <i className="fas fa-minus"></i>
+            <img src="/assets/icon-mark.svg" alt="" />
             </button>
           </form>
           :
           <div>
             <p>{placeholder}</p>
             <button type="button" onClick={() => handleSetState({ editor: true })}>
-              <i className="fas fa-pen"></i>
+              <img src="/assets/icon-edit.svg" alt="" />
             </button>
           </div>
       }
