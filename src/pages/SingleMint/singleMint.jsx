@@ -138,6 +138,7 @@ const SingleMint = () => {
               <select value={selectChain} onChange={event => handleSetState({ selectChain: event.target.value })}>
                 <option value="Algo">Algo</option>
                 <option value="Celo">Celo</option>
+                <option value="Polygon">Polygon</option>
               </select>
             </div>
             <input type="text" value={priceValue} onChange={event => handleSetState({ priceValue: event.target.value })} />
