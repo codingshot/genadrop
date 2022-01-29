@@ -47,10 +47,12 @@
 
 .bgIcons img {
   width: 6em;
+  
 }
 
 .bgIcons img:first-child {
   align-self: flex-start;
+
 }
 
 .bgIcons img:last-child {

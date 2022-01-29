@@ -16,9 +16,18 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 2em;
+  /* margin-top: 3em; */
+}
+
+.mintOption {
+  border-radius: 0.5em;
+  width: 35%;
+  display: flex;
+  justify-content: center;
   align-items: center;
   margin-top: 3em;
+  background: gray;
+
 }
 
 .switch.active {
@@ -28,18 +37,15 @@
 
 .switch {
   padding: 0.5em 2em;
-  background: white;
-  color: var(--main-accent);
-  border-radius: 0.5em;
-  border: 2px solid var(--main-accent);
-  text-transform: capitalize;
+  width: 50%;
+  color: white;
   font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5em;
+  text-transform: capitalize;
   cursor: pointer;
 }
 
-.switch:hover {
-  outline: 1px solid var(--main-accent);
-}
 
 .heading {
   width: 100%;
@@ -195,8 +201,11 @@
   flex: 1;
   border: 1px solid gainsboro;
   height: calc(100vh - 7em);
+  max-height: 36rem;
   overflow: auto;
   border-radius: 0.25em;
+  width: 50rem;
+  margin-bottom: 2rem;
 }
 
 .fallback {
@@ -324,3 +333,56 @@
     padding: 1em;
   }
 }
+
+.textInput {
+  width: 100%;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5em;
+}
+
+.textInput input {
+  width: 100%;
+  border-radius: 0.5em;
+  padding: 1em;
+  border: 1px solid var(--card-bg);
+}
+
+.textInput textarea {
+  width: 100%;
+  padding: 1em;
+  border-radius: 0.5em;
+  resize: none;
+
+}
+
+.textInput textarea:focus,
+.textInput input:focus {
+  outline-color: var(--main-accent);
+}
+
+.textInput span {
+  font-size: small;
+  color: var(--card-bg);
+}
+
+.attributes {
+  display: flex;
+  width: 100%;
+}
+
+.attribute {
+  margin-right: 2rem;
+  height: 3rem;
+  padding-left: 105px;
+}
+
+.removeBtn {
+  background-color: #000;
+  font-weight: bolder;
+  
+
+}
+

@@ -71,16 +71,16 @@ const SingleMint = () => {
       </div>
 
       <div className={classes.heading}>
-        <h3>Mint Your Nfts</h3>
-        <p>Upload a single NFT and its metadata, mint and list it on the blockchain of your choice</p>
 
         <div className={classes.mintOptions}>
-        <div onClick={() => history.push('/mint/single-nft')} className={`${classes.switch} ${classes.active}`}>
-            Mint Single NFT
-          </div>
+          <div className={classes.mintOption}>
+            <div onClick={() => history.push('/mint/single-nft')} className={`${classes.switch} ${classes.active}`}>
+              Mint 1 Of 1
+            </div>
 
-          <div onClick={() => history.push('/mint/nft-collection')} className={classes.switch}>
-            Mint Collection
+            <div onClick={() => history.push('/mint/nft-collection')} className={classes.switch}>
+              Collection
+            </div>
           </div>
         </div>
 
