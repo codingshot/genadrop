@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   margin-bottom: 4em;
-  /* position: relative; */
+  position: relative;
   padding-bottom: 10em;
   padding-top: 4em;
 }
@@ -36,7 +36,7 @@
 }
 
 .bgIcons {
-  position: absolute;
+  /* position: absolute; */
   width: 100%;
   display: flex;
   justify-content: space-between;
