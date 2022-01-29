@@ -10,9 +10,18 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 2em;
+  margin-top: 3em;
+}
+
+.mintOption {
+  border-radius: 0.5em;
+  width: 35%;
+  display: flex;
+  justify-content: center;
   align-items: center;
   margin-top: 3em;
+  background: gray;
+
 }
 
 .switch.active {
@@ -22,17 +31,13 @@
 
 .switch {
   padding: 0.5em 2em;
-  background: white;
-  color: var(--main-accent);
-  border-radius: 0.5em;
-  border: 2px solid var(--main-accent);
-  text-transform: capitalize;
+  width: 50%;
+  color: white;
   font-size: 1rem;
+  font-weight: bold;
+  border-radius: 0.5em;
+  text-transform: capitalize;
   cursor: pointer;
-}
-
-.switch:hover {
-  outline: 1px solid var(--main-accent);
 }
 
 .heading {
