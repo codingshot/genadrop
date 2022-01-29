@@ -198,6 +198,7 @@ const Mint = () => {
                 <div className={classes.details}>
                   <div className={classes.heading}>
                     <h4>Fixed Price -In </h4>
+
                     <select value={selectValue} onChange={event => handleSetState({ selectValue: event.target.value })}>
                       <option value="Algo">Algo</option>
                       <option value="Celo">Celo</option>
