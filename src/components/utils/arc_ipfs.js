@@ -145,6 +145,11 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 
 };
 
+const AlgoSingleMint = async (imageFile, metadata, connector
+  ) => {
+
+}
+
 const connectAndMint = async (sampleFile, metadata, imgName) => {
   return pinata.testAuthentication().then((res) => {
     return uploadToIpfs(sampleFile, imgName, metadata)
@@ -209,12 +214,13 @@ async function signTx(connector, txns) {
   try {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
     alert('please check wallet to confirm transaction')
-    result = await connector.sendCustomRequest(request);
+    console.log(connector, request)
+    result = await connector.send(request);
     console.log('result', result)
   } catch (error) {
     console.log(error);
-    alert("user rejected transaction")
-    return;
+    alert(error)
+    throw error;
   }
 
 
@@ -273,6 +279,9 @@ async function createNFT(fileData) {
 
 async function mintToAlgo(assets, account, connector, name) {
   console.log('minting...........')
+  if (!connector.isWalletConnect && connector.chainId !== 4160) {
+    return {'message': "please connect to your alogrand wallet"}
+  }
   let collection_id = [];
   let txns = [];
   for (let i = 0; i < assets.length; i++) {

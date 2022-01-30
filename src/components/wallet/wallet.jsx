@@ -1,9 +1,13 @@
 import React, { useContext, useState } from 'react'
 import classes from './wallet.module.css';
-import WalletConnect from "@walletconnect/client";
-import QRCodeModal from "algorand-walletconnect-qrcode-modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
 import { setConnector, setAccount } from '../../gen-state/gen.actions';
+
+
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+
 
 function ConnectWallet() {
     let [wallet, setWallet] = useState('Connect Wallet');
@@ -12,15 +16,6 @@ function ConnectWallet() {
 
     function breakAddress(address = "", width = 6) {
         return `${address.slice(0, width)}...${address.slice(-width)}`
-    }
-
-    function disconnect() {
-        if (connector) {
-            connector.killSession();
-            setWallet('Connect Wallet');
-            dispatch(setAccount(''));
-            dispatch(setConnector())
-        }
     }
 
     // temporarily get image
@@ -65,39 +60,81 @@ function ConnectWallet() {
     //     }
     // }
 
+    const providerOptions = {
+        walletconnect: {
+          package: WalletConnectProvider,
+          options: {
+            rpc: {
+              137: 'https://polygon-mumbai.g.alchemy.com/v2/sjbvWTjbyKXxvfJ1HkHIdEDHc2u8wNym',
+              4160: "https://api.testnet.algoexplorer.io",
+            },
+            rpcUrl: ""
+          }
+        }
+      }
+      
+      const web3Modal = new Web3Modal({
+        // network: "mainnet", // optional
+        // cacheProvider: true, // optional
+        providerOptions // required
+      });
+
+      async function disconnect() {
+        if (connector) {
+            const clear = await web3Modal.clearCachedProvider();
+            setWallet('Connect Wallet');
+            dispatch(setAccount(''));
+            dispatch(setConnector())
+        }
+    }
+
 
     const toggleWallet = async (e) => {
         // bridge url
-        const bridge = "https://bridge.walletconnect.org";
+        // const bridge = "https://bridge.walletconnect.org";
+
+          let connector
+          try {
+            connector = await web3Modal.connect();
+            //await web3Modal.toggleModal();
+          } catch (error) {
+              alert(error)
+              return
+          }
+          
+          
+          console.log('ec2? Meta??', connector)
+          
+          const provider = new ethers.providers.Web3Provider(connector);
+          const signer = provider.getSigner();
+          console.log('info', provider, signer)
 
         // create new connector
-        const connector = new WalletConnect({
-            bridge: bridge,
-            qrcodeModal: QRCodeModal,
-        });
+        // const connector = new WalletConnect({
+        //     bridge: bridge,
+        //     qrcodeModal: QRCodeModal,
+        // });
 
-        await dispatch(setConnector(connector));
-
-        // check if already connected
-        if (!connector.connected) {
-            // create new session
-            await connector.createSession();
-        }
-
-        // Subscribe to connection events
-        connector.on("connect", (error, payload) => {
-            if (error) {
-                throw error;
+        if (provider.connection.url === 'metamask') {
+            await dispatch(setConnector(provider));
+            const account = await signer.getAddress();
+            dispatch(setAccount(account));
+        } else {
+            await dispatch(setConnector(connector));
+            if (!connector.connected) {
+                // create new session
+                await connector.createSession();
+            }
+            // Subscribe to connection events
+            connector.on("connect", (error, payload) => {
+                if (error) {
+                    throw error;
             }
 
             // Get provided accounts
             const { accounts } = payload.params[0];
             console.log(payload.params, accounts)
             dispatch(setAccount(accounts[0]));
-
-
-
-
         });
 
         connector.on("session_update", (error, payload) => {
@@ -111,6 +148,7 @@ function ConnectWallet() {
         });
 
         if (connector.connected) {
+            console.log('ppp', provider, signer)
             const { accounts } = connector;
             dispatch(setAccount(accounts[0]));
         }
@@ -120,6 +158,11 @@ function ConnectWallet() {
                 throw error;
             }
         });
+        }
+        // check if already connected
+        
+
+        
     };
 
     return (
