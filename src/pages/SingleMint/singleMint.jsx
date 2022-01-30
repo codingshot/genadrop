@@ -40,7 +40,7 @@ const SingleMint = () => {
   const fileRef = useRef(null);
   const clipboardRef = useRef(null)
 
-  const mintProps = { handleSetState, window, title, description, celoAccount, setCeloAccount, selectChain, account, connector, priceValue }
+  const mintProps = { handleSetState, file, title, description, selectChain, account, connector, priceValue }
 
   const handleFileChange = event => {
     if (!event.target.files[0]) return;

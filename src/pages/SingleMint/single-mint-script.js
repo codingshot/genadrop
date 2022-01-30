@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import { mintToAlgo } from '../../components/utils/arc_ipfs';
+import { mintToAlgo, AlgoSingleMint} from '../../components/utils/arc_ipfs';
 const minter = require('../../components/utils/arc_ipfs')
 
 let mintCollectionAbi = [
@@ -111,20 +111,25 @@ export const handleCopy = props => {
 }
 
 export const handleMint = async props => {
-  const { handleSetState, window, title, description, celoAccount, setCeloAccount, account, connector, selectChain, priceValue } = props;
-  console.log(props);
-  return
+  const { handleSetState, file, title, description, account, connector, selectChain, priceValue } = props;
+  console.log(props, title, description, account, connector);
+  
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
   if(!result) return alert('please add a value price')
 
   let url = null;
+  let metadata = {name:title, description:description}
   try {
     if (selectChain.toLowerCase() === 'algo') {
-      url = await mintToAlgo( account, connector, title, description);
+      url = await AlgoSingleMint( file, metadata, account, connector);
     } else if (selectChain.toLowerCase() === 'celo') {
-      url = await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
+      url = {'message': "not yet implemented"} // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
     } else if (selectChain.toLowerCase() === 'polygon') {
-      url = await mintToPoly({ window,  title, description, celoAccount, setCeloAccount })
+      url = {'message': "not yet implemented"} //await mintToPoly({ window,  title, description, celoAccount, setCeloAccount })
+    }
+    if (typeof url === "object") {
+      alert(`${url.message}`)
+      return;
     }
     handleSetState({ showCopy: true })
     handleSetState({ mintUrl: url })
