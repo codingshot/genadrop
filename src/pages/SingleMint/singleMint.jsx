@@ -188,7 +188,7 @@ const SingleMint = () => {
             />
           </div>
 
-          <div className={classes.upload}>
+          {/* <div className={classes.upload}>
             <h4>Mint with IPFS.json</h4>
             <div className={classes.uploadInfo}>
               <img src="/assets/icon-upload.svg" alt="" />
@@ -204,12 +204,92 @@ const SingleMint = () => {
               type="file"
               accept=".json"
             />
+          </div> */}
+
+
+          <div className={classes.textInput}>
+
+            <h3>Title</h3>
+            <span>Item Name</span>
+            <input type="text" value={title} onChange={event => handleSetState({ title: event.target.value })} />
           </div>
 
+          <div className={classes.textInput}>
+            <h3>Description</h3>
+            <span>The description will be included on the item's details underneath its image</span>
+            <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
+          </div>
+
+          <div className={classes.textInput}>
+            <h3>Attributes</h3>
+            <span>Select your MetaData file and mint to IPFS</span>
+            {attributes.map((x, i) => {
+              return (
+
+
+                <div className={classes.attributes}>
+                  <input
+                    className={classes.attribute}
+                    name="label"
+                    placeholder="E.g Eyes"
+                    value={x.label}
+                    onChange={e => handleInputChange(e, i)}
+                  />
+                  <input
+                    className={classes.attribute}
+                    name="description"
+                    placeholder="E.g green"
+                    value={x.description}
+                    onChange={e => handleInputChange(e, i)}
+                  />
+                  <button
+
+                    onClick={() => handleRemoveClick(i)}
+                    className={classes.removeBtn}
+                  >
+                    X
+                  </button>
+
+
+
+
+                </div>
+              );
+            })}
+            <p className={classes.addBtn} onClick={handleAddClick}>+ Add Attributes</p>
+
+
+          </div>
+
+        </div>
+        <div>
           {
-            ipfsJsonData.length
+            file
               ?
-              <>
+              <div className={classes.previewSection}>
+                <div className={classes.preview}>
+
+                  <img src={URL.createObjectURL(file)} alt="" />
+
+                </div>
+
+              </div>
+              :
+              <div className={classes.fallback}>
+                {
+                  loading
+                    ? <i className="fas fa-spinner"></i>
+                    : "nothing to preview"
+                }
+
+              </div>
+
+          }
+
+          {
+            file
+              ?
+              <div className={classes.payment}>
                 <div className={classes.details}>
                   <div className={classes.heading}>
                     <h4>Fixed Price -In </h4>
@@ -227,104 +307,11 @@ const SingleMint = () => {
                   </div>
                 </div>
 
-                <button className={classes.exportBtn} onClick={() => handleMint(mintProps)}>mint</button>
-              </>
+                <button className={classes.mintBtn} onClick={() => handleMint(mintProps)}>mint</button>
+              </div>
               : null
           }
-        </div>
-        <div>
-          {
-            file
-              ?
-              <div className={classes.previewSection}>
-                <div className={classes.preview}>
-                  <img src={URL.createObjectURL(file)} alt="" />
-                </div>
-                <div className={classes.description}>
-                  <h3>Description</h3>
-                  <div><span>Collection Name: </span> {collectionName}</div>
-                  <div><span>Number Of Pictures: </span> {1}</div>
-                  <div><span>Layers: </span> {
-                    metadata.length
-                      ?
-                      <span className={classes.layers}>
-                        {
-                          metadata[0]?.attributes.map(({ trait_type }, idx) => (
-                            <span key={idx}>{trait_type}; </span>
-                          ))
-                        }
-                      </span>
-                      : null
-                  }</div>
-                  <div><span>Size: </span> {size.width}{" x "}{size.height}</div>
-                </div>
-              </div>
-              :
-              <div className={classes.fallback}>
-                {
-                  loading
-                    ? <i className="fas fa-spinner"></i>
-                    : "nothing to preview"
-                }
 
-              </div>
-
-          }
-          <div className={classes.itemDescription}>
-            <div className={classes.textInput}>
-
-              <h3>Title</h3>
-              <span>Item Name</span>
-              <input type="text" value={title} onChange={event => handleSetState({ title: event.target.value })} />
-            </div>
-
-            <div className={classes.textInput}>
-              <h3>Description</h3>
-              <span>The description will be included on the item's details underneath its image</span>
-              <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
-            </div>
-
-            <div className={classes.textInput}>
-              <h3>Attributes</h3>
-              <span>Select your MetaData file and mint to IPFS</span>
-              {attributes.map((x, i) => {
-                return (
-
-
-                  <div className={classes.attributes}>
-                    <input
-                      className={classes.attribute}
-                      name="label"
-                      placeholder="E.g Eyes"
-                      value={x.label}
-                      onChange={e => handleInputChange(e, i)}
-                    />
-                    <input
-                      className={classes.attribute}
-                      name="description"
-                      placeholder="E.g green"
-                      value={x.description}
-                      onChange={e => handleInputChange(e, i)}
-                    />
-                    <button
-
-                      onClick={() => handleRemoveClick(i)}
-                      className={classes.removeBtn}
-                    >
-                      X
-                    </button>
-
-
-
-
-                  </div>
-                );
-              })}
-              <p className={classes.addBtn} onClick={handleAddClick}>+ Add Attributes</p>
-
-
-            </div>
-          </div>
         </div>
       </div>
 
