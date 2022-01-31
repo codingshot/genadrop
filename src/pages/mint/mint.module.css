@@ -23,7 +23,8 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
 
 .mintOption {
   border-radius: 0.5em;
-  width: 35%;
+  width: 65%;
+  max-width: 20rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -206,7 +207,8 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
   max-height: 36rem;
   overflow: auto;
   border-radius: 0.25em;
-  width: 50rem;
+  width: calc(100vw - 1em);
+  max-width: 40rem;
   margin-bottom: 2rem;
 }
 
@@ -384,7 +386,9 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
 .removeBtn {
   background-color: #000;
   font-weight: bolder;
-  
-
 }
 
+p.addBtn:hover {
+  text-shadow: 2px 2px 2px grey;
+  cursor: pointer;
+}

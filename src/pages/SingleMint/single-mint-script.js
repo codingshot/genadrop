@@ -112,8 +112,7 @@ export const handleCopy = props => {
 
 export const handleMint = async props => {
   const { handleSetState, window, title, description, celoAccount, setCeloAccount, account, connector, selectChain, priceValue } = props;
-  console.log(props);
-  return
+
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
   if (!result) return alert('please add a value price')
 
@@ -132,4 +131,16 @@ export const handleMint = async props => {
     console.log(error)
     alert('Please connect your account and try again!'.toUpperCase())
   }
+}
+
+export const handleMintFileChange = props => {
+  const { event, handleSetState } = props;
+  if (!event?.target?.files[0]) return;
+  let content = event.target.files[0];
+  let fileReader = new FileReader();
+  fileReader.onload = function (evt) {
+    handleSetState({ ipfsJsonData: JSON.parse(evt.target.result) })
+  };
+  fileReader.readAsText(content);
+  handleSetState({ mintFileName: content.name })
 }
