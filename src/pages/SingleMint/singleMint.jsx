@@ -16,8 +16,6 @@ const SingleMint = () => {
     title: '',
     description: '',
     file: null,
-    showCopy: false,
-    iconClicked: false
   })
 
   const {
