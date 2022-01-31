@@ -11,9 +11,8 @@
   overflow: hidden;
 }
 
-.overlay i {
+.overlay img {
   color: white;
-  font-size: 2rem;
   animation: rotate 1.5s infinite linear;
 }
 

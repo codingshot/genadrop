@@ -27,8 +27,6 @@ const SingleMint = () => {
     selectValue: 'Algo',
     description: '',
     file: null,
-    showCopy: false,
-    iconClicked: false
   })
 
   const {

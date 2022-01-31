@@ -10,7 +10,7 @@ const Overlay = () => {
     <div className={`${classes.overlay} ${isLoading && classes.isLoading}`}>
 
       <div>
-        <i className="fas fa-spinner"></i>
+        <img src="/assets/icon-loading.svg" alt="" />
         <p>Do not refresh your page!</p>
       </div>
 
