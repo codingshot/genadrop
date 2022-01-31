@@ -70,7 +70,7 @@ export async function mintToCelo(celoProps) {
 export async function mintToPoly(polyProps) {
   console.log("..mintiti")
   const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount } = polyProps;
-  
+
   if (typeof window.ethereum !== 'undefined') {
     console.log('defined....')
     const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, setCeloAccount, celoAccount);
@@ -112,19 +112,18 @@ export const handleCopy = props => {
 
 export const handleMint = async props => {
   const { handleSetState, window, title, description, celoAccount, setCeloAccount, account, connector, selectChain, priceValue } = props;
-  console.log(props);
-  return
+
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if(!result) return alert('please add a value price')
+  if (!result) return alert('please add a value price')
 
   let url = null;
   try {
     if (selectChain.toLowerCase() === 'algo') {
-      url = await mintToAlgo( account, connector, title, description);
+      url = await mintToAlgo(account, connector, title, description);
     } else if (selectChain.toLowerCase() === 'celo') {
-      url = await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
+      url = await mintToCelo({ window, title, description, celoAccount, setCeloAccount })
     } else if (selectChain.toLowerCase() === 'polygon') {
-      url = await mintToPoly({ window,  title, description, celoAccount, setCeloAccount })
+      url = await mintToPoly({ window, title, description, celoAccount, setCeloAccount })
     }
     handleSetState({ showCopy: true })
     handleSetState({ mintUrl: url })
@@ -132,4 +131,16 @@ export const handleMint = async props => {
     console.log(error)
     alert('Please connect your account and try again!'.toUpperCase())
   }
+}
+
+export const handleMintFileChange = props => {
+  const { event, handleSetState } = props;
+  if (!event?.target?.files[0]) return;
+  let content = event.target.files[0];
+  let fileReader = new FileReader();
+  fileReader.onload = function (evt) {
+    handleSetState({ ipfsJsonData: JSON.parse(evt.target.result) })
+  };
+  fileReader.readAsText(content);
+  handleSetState({ mintFileName: content.name })
 }

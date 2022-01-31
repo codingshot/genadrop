@@ -89,6 +89,10 @@
   }
 }
 
+.logoDesktop{
+  height: 3em;
+}
+
 @media screen and (max-width: 768px) {
 
   .container {
@@ -101,6 +105,7 @@
 
   .logoMobile {
     display: block;
+    width: 3em;
   }
 
   .iconClose,

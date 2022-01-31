@@ -33,6 +33,10 @@
   flex-wrap: wrap;
 }
 
+.tweet{
+  width: 20rem;
+}
+
 @media screen and (max-width: 1200px) {
   .heading {
     font-size: calc(1rem + 2vmin);
@@ -40,6 +44,10 @@
 
   .heading span {
     white-space: nowrap;
+  }
+
+  .tweet {
+    width: 20rem;
   }
 }
 
@@ -50,5 +58,9 @@
 
   .description {
     font-size: 1rem;
+  }
+  
+  .tweet {
+    width: 25rem;
   }
 }

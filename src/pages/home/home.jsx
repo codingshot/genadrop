@@ -66,8 +66,8 @@ const Home = () => {
       <Orgs />
       <Features data={creators} />
       <Features data={Collectors} />
-      <Review/>
-      <FAQ/>
+      <Review />
+      <FAQ />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import Feature from './Feature';
 import classes from './Features.module.css';
 
-const Features = ({data}) => {
+const Features = ({ data }) => {
   const { heading, headingAccent, image, description, feature } = data;
   console.log(data);
   return (
@@ -12,7 +12,7 @@ const Features = ({data}) => {
         <div className={classes.featureWrapper}>
           {
             feature.map((f, index) => (
-              <Feature key={index} item={f}/>
+              <Feature key={index} item={f} />
             ))
           }
         </div>

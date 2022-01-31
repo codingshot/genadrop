@@ -10,6 +10,30 @@ import { useHistory } from 'react-router-dom';
 
 const Mint = () => {
 
+  const [attributes, setAttribute] = useState([{ label: "", description: "" }]);
+
+  // handle input change
+  const handleInputChange = (e, index) => {
+    console.log(e.target.value);
+    const { name, value } = e.target;
+    const list = [...attributes];
+    list[index][name] = value;
+    console.log(index, name);
+    setAttribute(list);
+  };
+
+  // handle click event of the Remove button
+  const handleRemoveClick = index => {
+    const list = [...attributes];
+    list.splice(index, 1);
+    setAttribute(list);
+  };
+
+  // handle click event of the Add button
+  const handleAddClick = () => {
+    setAttribute([...attributes, { label: "", description: "" }]);
+  };
+
   const [state, setState] = useState({
     collections: [],
     zip: null,
@@ -33,6 +57,8 @@ const Mint = () => {
     metadata,
     collectionName,
     mintFileName,
+    title,
+    description,
     loading,
     mintUrl,
     showCopy,
@@ -103,26 +129,29 @@ const Mint = () => {
       </div>
 
       <div className={classes.heading}>
-        <h3>Mint Your Nfts</h3>
-        <p>Upload you NFT collection and its metadata, mint and list it on the blockchain of your choice</p>
 
         <div className={classes.mintOptions}>
-          <div onClick={() => history.push('/mint/single-nft')} className={classes.switch}>
-            Mint Single NFT
-          </div>
+          <div className={classes.mintOption}>
+            <div onClick={() => history.push('/mint/single-nft')} className={classes.switch}>
+              Mint 1 of 1
+            </div>
 
-          <div onClick={() => history.push('/mint/nft-collection')} className={`${classes.switch} ${classes.active}`}>
-            Mint Collection
+            <div onClick={() => history.push('/mint/nft-collection')} className={`${classes.switch} ${classes.active}`}>
+              Collection
+            </div>
           </div>
         </div>
       </div>
 
       <div className={classes.wrapper}>
         <div className={classes.uploadSection}>
-          <h3>Upload</h3>
+          <h3>Mint Your Nfts</h3>
+          <p>Upload you NFT collection and its metadata, mint and list it on the blockchain of your choice</p>
+
 
           <div className={classes.upload}>
-            <h4>Upload zip file to IPFS</h4>
+            <h4>Upload File</h4>
+            <span>File types supported: Zip. Max size 100MB </span>
             <div className={classes.uploadInfo}>
               <img src="/assets/icon-upload.svg" alt="" />
               <div>{collectionName}</div>
@@ -169,9 +198,11 @@ const Mint = () => {
                 <div className={classes.details}>
                   <div className={classes.heading}>
                     <h4>Fixed Price -In </h4>
+
                     <select value={selectValue} onChange={event => handleSetState({ selectValue: event.target.value })}>
                       <option value="Algo">Algo</option>
                       <option value="Celo">Celo</option>
+                      <option value="Polygon">Polygon</option>
                     </select>
                   </div>
                   <input type="text" value={priceValue} onChange={event => handleSetState({ priceValue: event.target.value })} />
@@ -186,47 +217,107 @@ const Mint = () => {
               : null
           }
         </div>
-        {
-          collections.length
-            ?
-            <div className={classes.previewSection}>
-              <div className={classes.preview}>
+        <div>
+          {
+            collections.length
+              ?
+              <div className={classes.previewSection}>
+                <div className={classes.preview}>
+                  {
+                    collections
+                      .map((image, idx) => (
+                        <img key={idx} src={URL.createObjectURL(image)} alt="" />
+                      ))
+                  }
+                </div>
+                <div className={classes.description}>
+                  <h3>Description</h3>
+                  <div><span>Collection Name: </span> {collectionName}</div>
+                  <div><span>Number Of Pictures: </span> {collections.length}</div>
+                  <div><span>Layers: </span> {
+                    metadata.length
+                      ?
+                      <span className={classes.layers}>
+                        {
+                          metadata[0]?.attributes.map(({ trait_type }, idx) => (
+                            <span key={idx}>{trait_type}; </span>
+                          ))
+                        }
+                      </span>
+                      : null
+                  }</div>
+                  <div><span>Size: </span> {size.width}{" x "}{size.height}</div>
+                </div>
+              </div>
+              :
+              <div className={classes.fallback}>
                 {
-                  collections
-                    .map((image, idx) => (
-                      <img key={idx} src={URL.createObjectURL(image)} alt="" />
-                    ))
+                  loading
+                    ? <i className="fas fa-spinner"></i>
+                    : "nothing to preview"
                 }
+
               </div>
-              <div className={classes.description}>
-                <h3>Description</h3>
-                <div><span>Collection Name: </span> {collectionName}</div>
-                <div><span>Number Of Pictures: </span> {collections.length}</div>
-                <div><span>Layers: </span> {
-                  metadata.length
-                    ?
-                    <span className={classes.layers}>
-                      {
-                        metadata[0]?.attributes.map(({ trait_type }, idx) => (
-                          <span key={idx}>{trait_type}; </span>
-                        ))
-                      }
-                    </span>
-                    : null
-                }</div>
-                <div><span>Size: </span> {size.width}{" x "}{size.height}</div>
-              </div>
+
+          }
+          <div className={classes.itemDescription}>
+            <div className={classes.textInput}>
+
+              <h3>Title</h3>
+              <span>Item Name</span>
+              <input type="text" value={title} onChange={event => handleSetState({ title: event.target.value })} />
             </div>
-            :
-            <div className={classes.fallback}>
-              {
-                loading
-                  ? <i className="fas fa-spinner"></i>
-                  : "nothing to preview"
-              }
+
+            <div className={classes.textInput}>
+              <h3>Description</h3>
+              <span>The description will be included on the item's details underneath its image</span>
+              <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
             </div>
-        }
+
+            <div className={classes.textInput}>
+              <h3>Attributes</h3>
+              <span>Select your MetaData file and mint to IPFS</span>
+              {attributes.map((x, i) => {
+                return (
+
+
+                  <div className={classes.attributes}>
+                    <input
+                      className={classes.attribute}
+                      name="label"
+                      placeholder="E.g Eyes"
+                      value={x.label}
+                      onChange={e => handleInputChange(e, i)}
+                    />
+                    <input
+                      className={classes.attribute}
+                      name="description"
+                      placeholder="E.g green"
+                      value={x.description}
+                      onChange={e => handleInputChange(e, i)}
+                    />
+                    <button
+
+                      onClick={() => handleRemoveClick(i)}
+                      className={classes.removeBtn}
+                    >
+                      X
+                    </button>
+
+
+
+
+                  </div>
+                );
+              })}
+              <p className={classes.addBtn} onClick={handleAddClick}>+ Add Attributes</p>
+
+
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   )
 }

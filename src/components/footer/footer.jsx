@@ -6,7 +6,7 @@ const Footer = () => {
     <div className={classes.container}>
       <div className={classes.leftFrame}>
         <a href="/">
-          <img src="/assets/genadrop-logo.png" alt="" />
+          <img src="/assets/genadrop-logo.png" className={classes.logo} alt="" />
         </a>
         <p>
           GenaDrop Is the no-code solution for artists to create, mint,
@@ -36,8 +36,19 @@ const Footer = () => {
         <h3>Join the community</h3>
         <div className={classes.socialIcons}>
           <div className={classes.icon}>
+            <a href="">
+              <img src="/assets/icon-linktree.svg" alt="" />
+            </a>
+          </div>
+          <div className={classes.icon}>
             <a href="https://discord.gg/4vdtmQqz6d">
               <img src="/assets/icon-discord.svg" alt="" />
+            </a>
+          </div>
+
+          <div className={classes.icon}>
+            <a href="https://twitter.com/minorityprogram">
+              <img src="/assets/icon-twitter.svg" alt="" />
             </a>
           </div>
 
