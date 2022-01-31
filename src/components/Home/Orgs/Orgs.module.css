@@ -80,6 +80,8 @@
     width: 8em;
   } 
 
+  
+
   .bgIcons img {
     width: 4em;
   }
@@ -88,3 +90,9 @@
     font-size: 1rem;
   }
 }
+
+.org:hover{
+    cursor: pointer;
+  transform: scale(1.02);
+    
+  }
