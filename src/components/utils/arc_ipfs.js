@@ -329,6 +329,7 @@ export {
   createNFT,
   mintToAlgo,
   AlgoSingleMint,
+  connectAndMint,
   pinata,
   write
 }
