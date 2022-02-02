@@ -6,7 +6,7 @@ const Footer = () => {
     <div className={classes.container}>
       <div className={classes.leftFrame}>
         <a href="/">
-          <img src="/assets/genadrop-logo.png" alt="" />
+          <img src="/assets/genadrop-logo.png" className={classes.logo} alt="" />
         </a>
         <p>
           GenaDrop Is the no-code solution for artists to create, mint,

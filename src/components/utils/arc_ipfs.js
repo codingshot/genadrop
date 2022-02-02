@@ -102,12 +102,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     "url": nftFileNameSplit[0],
     "mimetype": `image/${fileExt}`,
   };
-  let properties = {
-    ...asset.attributes,
-    "file_url": nftFileNameSplit[0],
-    "file_url_integrity": "",
-    "file_url_mimetype": `image/${fileExt}`,
-  };
   const pinataMetadata = JSON.stringify(
     {
       name: asset.name,
@@ -125,14 +119,14 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   let metadata = config.arc3MetadataJSON;
 
   let integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash)
-  metadata.properties = properties;
-  metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
-  metadata.properties.file_url_integrity = `${integrity.base64}`;
+  metadata.properties = [...asset.attributes]
   metadata.name = asset.name;
   metadata.description = asset.description;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
   metadata.image_integrity = `${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
+
+  console.log(metadata)
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, { pinataMetadata: { name: asset.name } });
   let jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash)

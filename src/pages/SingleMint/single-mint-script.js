@@ -109,20 +109,21 @@ export const handleCopy = props => {
 }
 
 export const handleMint = async props => {
-  const { handleSetState, file, title, description, account, connector, selectChain, priceValue } = props;
-  console.log(props, title, description, account, connector);
+  const { handleSetState, file, title, description, account, connector, selectChain, priceValue, selectValue, attributes } = props;
+  console.log(props);
   
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if(!result) return alert('please add a value price')
+  if (!result) return alert('please add a value price')
 
   let url = null;
-  let metadata = {name:title, description:description}
+  let metadata = {name:title, description:description, attributes}
+  console.log('opium', attributes)
   try {
-    if (selectChain.toLowerCase() === 'algo') {
+    if (selectValue.toLowerCase() === 'algo') {
       url = await AlgoSingleMint( file, metadata, account, connector);
-    } else if (selectChain.toLowerCase() === 'celo') {
+    } else if (selectValue.toLowerCase() === 'celo') {
       url = {'message': "not yet implemented"} // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
-    } else if (selectChain.toLowerCase() === 'polygon') {
+    } else if (selectValue.toLowerCase() === 'polygon') {
       url = await mintSingleToPoly(file, metadata, account, connector)
     }
     if (typeof url === "object") {
@@ -135,4 +136,16 @@ export const handleMint = async props => {
     console.log(error)
     alert('Please connect your account and try again!'.toUpperCase())
   }
+}
+
+export const handleMintFileChange = props => {
+  const { event, handleSetState } = props;
+  if (!event?.target?.files[0]) return;
+  let content = event.target.files[0];
+  let fileReader = new FileReader();
+  fileReader.onload = function (evt) {
+    handleSetState({ ipfsJsonData: JSON.parse(evt.target.result) })
+  };
+  fileReader.readAsText(content);
+  handleSetState({ mintFileName: content.name })
 }

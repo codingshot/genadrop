@@ -228,7 +228,7 @@
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  background: white;
+  background: black;
   position: absolute;
   content: '';
   outline: 2px solid white;
@@ -236,7 +236,7 @@
 }
 
 .radioBtn.clicked::before {
-  background: black;
+  background: white;
 }
 
 

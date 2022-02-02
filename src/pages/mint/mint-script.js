@@ -81,7 +81,6 @@ export async function mintToPoly(ipfsJsonData, account, connector, mintFileName)
       let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
       return id
     })
-
     let amounts = new Array(ids.length).fill(1);
     let tx;
     try {
