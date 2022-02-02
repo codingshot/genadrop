@@ -102,12 +102,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     "url": nftFileNameSplit[0],
     "mimetype": `image/${fileExt}`,
   };
-  let properties = {
-    ...asset.attributes,
-    "file_url": nftFileNameSplit[0],
-    "file_url_integrity": "",
-    "file_url_mimetype": `image/${fileExt}`,
-  };
   const pinataMetadata = JSON.stringify(
     {
       name: asset.name,
@@ -125,14 +119,14 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   let metadata = config.arc3MetadataJSON;
 
   let integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash)
-  metadata.properties = properties;
-  metadata.properties.file_url = `https://ipfs.io/ipfs/${resultFile.IpfsHash}`;
-  metadata.properties.file_url_integrity = `${integrity.base64}`;
+  metadata.properties = [...asset.attributes]
   metadata.name = asset.name;
   metadata.description = asset.description;
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
   metadata.image_integrity = `${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
+
+  console.log(metadata)
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, { pinataMetadata: { name: asset.name } });
   let jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash)
@@ -144,6 +138,22 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   }
 
 };
+
+const AlgoSingleMint = async (imageFile, metadata, account, connector) => {
+  console.log( connector.chainId !== 4160)
+  if (connector.isWalletConnect && connector.chainId === 4160) {
+    const asset =  await connectAndMint(imageFile, metadata, imageFile.name)
+    const txn = await createAsset(asset, account);
+    console.log('transacton', txn);
+    let assetID = await signTx(connector, [txn]);
+    await write.writeNft(account, assetID);
+    return `https://testnet.algoexplorer.io/asset/${assetID}`;
+  } else {
+    return {'message': "please connect to your alogrand wallet"}
+  }
+  
+  
+}
 
 const connectAndMint = async (sampleFile, metadata, imgName) => {
   return pinata.testAuthentication().then((res) => {
@@ -163,7 +173,7 @@ async function createAsset(asset, account) {
   const assetName = `${asset.name}@arc3`;
   const url = asset.url;
 
-  const managerAddr = account;
+  const managerAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
   const clawbackAddr = undefined;
@@ -209,12 +219,13 @@ async function signTx(connector, txns) {
   try {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
     alert('please check wallet to confirm transaction')
-    result = await connector.sendCustomRequest(request);
+    console.log(connector, request)
+    result = await connector.send(request);
     console.log('result', result)
   } catch (error) {
     console.log(error);
-    alert("user rejected transaction")
-    return;
+    alert(error)
+    throw error;
   }
 
 
@@ -273,27 +284,32 @@ async function createNFT(fileData) {
 
 async function mintToAlgo(assets, account, connector, name) {
   console.log('minting...........')
-  let collection_id = [];
-  let txns = [];
-  for (let i = 0; i < assets.length; i++) {
-    const txn = await createAsset(assets[i], account)
-    txns.push(txn)
-  }
+  if (connector.isWalletConnect && connector.chainId === 4160) {
+    let collection_id = [];
+    let txns = [];
+    for (let i = 0; i < assets.length; i++) {
+      const txn = await createAsset(assets[i], account)
+      txns.push(txn)
+    }
 
-  let txgroup = algosdk.assignGroupID(txns)
+    let txgroup = algosdk.assignGroupID(txns)
+    
+    let groupId = txgroup[0].group.toString("base64")
+    let assetID = await signTx(connector, txns)
+    // for (let nfts = 0; nfts < txns.length; nfts++) {
+    //   collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
+    // }
+    for (let nfts = 0; nfts < assets.length; nfts++) {
+      collection_id.push(assetID+nfts)
+    }
+    const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
+    let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
+    await write.writeUserData(account, collectionUrl, name, collection_id)
+    return `https://testnet.algoexplorer.io/tx/group/${groupId}`
+    } else {
+      return {'message': "please connect to your alogrand wallet"}
+    }
   
-  let groupId = txgroup[0].group.toString("base64")
-  let assetID = await signTx(connector, txns)
-  // for (let nfts = 0; nfts < txns.length; nfts++) {
-  //   collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
-  // }
-  for (let nfts = 0; nfts < assets.length; nfts++) {
-    collection_id.push(assetID+nfts)
-  }
-  const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
-  let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-  await write.writeUserData(account, collectionUrl, name, collection_id)
-  return `https://testnet.algoexplorer.io/tx/group/${groupId}`
 }
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 
@@ -306,6 +322,8 @@ export {
   getAlgoData,
   createNFT,
   mintToAlgo,
+  AlgoSingleMint,
+  connectAndMint,
   pinata,
   write
 }

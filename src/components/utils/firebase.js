@@ -61,7 +61,16 @@ async function writeUserData(owner, collection, name, collection_id) {
   }, {merge: true});
   
   return;
-  } 
+  }
+  
+async function writeNft(owner, assetId) {
+  let updates = {};
+  updates[assetId] = {'id': assetId, 'collection': null}
+  db.collection('listed').doc(`${owner}`).set({
+    ...updates
+  }, {merge: true});
+}
+
 
   async function readAllNft() {
     let querySnapshot = await db.collection("listed").get()
@@ -152,7 +161,8 @@ export {
     readAllNft,
     readUserCollection,
     readAllUserNft,
-    fetchCollections
+    fetchCollections,
+    writeNft
 }
 
 

@@ -15,15 +15,9 @@ module.exports = {
         "image": "ipfs://",
         "image_integrity": "sha256-",
         "image_mimetype": "image/png",
-        "external_url": "https://github.com/emg110/arc3ipfs",
         "animation_url": "",
         "animation_url_integrity": "sha256-",
         "animation_url_mimetype": "",
-        "properties": {
-            "file_url": "",
-            "file_url_integrity": "",
-            "file_url_mimetype": "",
-        }
     }
 
 }

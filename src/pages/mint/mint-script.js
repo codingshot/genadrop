@@ -11,22 +11,16 @@ let mintAbi = [
   "function mintBatch( address to, uint256[] memory ids, uint256[] memory amounts, string[] memory uris,bytes memory data) public {}"
 ];
 
-async function initializeContract(minterAddress, name, setCeloAccount, celoAccount) {
-  const provider = new ethers.providers.Web3Provider(window.ethereum);
-  console.log(celoAccount)
+async function initializeContract(minterAddress, name, provider, account) {
   name = name.split('-')[0]
-  await window.ethereum.request({
-    method: 'eth_requestAccounts'
-  });
   const signer = await provider.getSigner();
   console.log('granted..')
-  signer.getAddress().then((data) => setCeloAccount(data))
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
-  console.log('habibi', name, celoAccount)
+  console.log('habibi', name, account)
   let tx = await collectionContract.createCollection(name, name.toUpperCase())
   console.log(tx.hash)
   await tx.wait();
-  let getCollectionAddresses = await collectionContract.collectionsOf(celoAccount);
+  let getCollectionAddresses = await collectionContract.collectionsOf(account);
   console.log(getCollectionAddresses)
   let collectionAddresses = [...getCollectionAddresses];
   console.log(collectionAddresses)
@@ -68,13 +62,17 @@ export async function mintToCelo(celoProps) {
   }
 }
 
-export async function mintToPoly(polyProps) {
+export async function mintToPoly(ipfsJsonData, account, connector, mintFileName) {
   console.log("..mintiti")
-  const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount } = polyProps;
-  
-  if (typeof window.ethereum !== 'undefined') {
+  if (connector.isWalletConnect) {
+    if (connector.chainId === 137) {
+      return {'message': "not yet implemented"}
+    } else {
+      return {'message': "please connect to polygon network on your wallet"}
+    }
+  } else {
     console.log('defined....')
-    const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, setCeloAccount, celoAccount);
+    const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, connector, account);
     console.log('inited..')
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft
@@ -83,25 +81,17 @@ export async function mintToPoly(polyProps) {
       let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
       return id
     })
-
     let amounts = new Array(ids.length).fill(1);
     let tx;
     try {
-      tx = await contract.mintBatch(celoAccount, ids, amounts, uris, '0x');
+      tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
     } catch (error) {
       console.log('opolo', error);
       return;
     }
-    // for (let nfts = 0; nfts < ids.length; nfts++) {
-    //   collection_id[ids[nfts]] = ipfsJsonData[nfts]['url']
-    // }
-    // const collectionHash = await minter.pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${ids[0]}` } })
-    // let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    // await minter.write.writeUserData(celoAccount, collectionUrl, mintFileName, collection_id)
     return `https://mumbai.polygonscan.com/tx/${tx.hash}`
-  } else {
-    alert('download metamask');
   }
+    
 }
 
 export const unzip = async zip => {
@@ -157,7 +147,7 @@ export const handleCopy = props => {
 }
 
 export const handleMint = async props => {
-  const { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector, priceValue } = props;
+  const { selectValue, handleSetState, ipfsJsonData, mintFileName, account, connector, priceValue } = props;
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
   if(!result) return alert('please add a value price')
 
@@ -166,9 +156,13 @@ export const handleMint = async props => {
     if (selectValue.toLowerCase() === 'algo') {
       url = await mintToAlgo(ipfsJsonData, account, connector, mintFileName);
     } else if (selectValue.toLowerCase() === 'celo') {
-      url = await mintToCelo({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
+      url = await mintToCelo(ipfsJsonData, account, connector, mintFileName)
     } else if (selectValue.toLowerCase() === 'polygon') {
-      url = await mintToPoly({ window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount })
+      url = await mintToPoly(ipfsJsonData, account, connector, mintFileName)
+    }
+    if (typeof url === "object") {
+      alert(`${url.message}`)
+      return;
     }
     handleSetState({ showCopy: true })
     handleSetState({ mintUrl: url })
