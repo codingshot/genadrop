@@ -1,0 +1,131 @@
+/* Accordion */
+
+.main{
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.section{
+  display: flex;
+  flex-direction: row;
+}
+
+.v_subsection1{
+  width: 35%;
+  margin-right: 2rem;
+}
+
+.nft{
+  width: 25rem;
+  margin-bottom: 1rem;
+}
+
+.faq {
+  white-space: pre-line;
+  width: 25rem;
+  border: solid 1px #E5E8EB ;
+  border-radius: 10px;
+}
+
+.v_subsection2{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 34rem;
+  
+}
+
+.feature{
+  padding: 1.5rem;
+
+  border: solid 1px #E5E8EB ;
+  border-bottom: none;
+  border-radius: 10px ;
+}
+.mainDetails{
+  border-bottom: 1px solid #E5E8EB;
+}
+
+.nftName{
+  display: flex;
+  flex-direction: row;
+}
+
+.nftId{
+  flex-basis: 80%;
+}
+
+.icons{
+  flex-basis: 30%;
+  float: right;
+  justify-content: space-evenly;
+}
+
+.icon{
+  margin-right: 3px;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid #E5E8EB;
+  padding: 3px;
+}
+
+.refresh{
+  border-radius: 10px 0 0 10px;
+}
+
+.dots{
+  border-radius: 0 10px 10px 0;
+
+}
+
+.priceSection{
+  display: flex;
+  flex-direction: column;
+}
+
+.title{
+  margin: 0.8rem 0;
+  font-size: 13px;
+  color: #707A83;
+}
+
+.price{
+  display: flex;
+  flex-direction: row;
+}
+
+.price img{
+  width: 30px;
+  margin-right: 0.3rem;
+}
+
+.tokenValue{
+  font-weight: bolder;
+  font-size: 25px;
+  margin-right: 0.3rem;
+
+}
+
+.usdValue{
+  /* -ms-transform: translateY(-50%); */
+  transform: translateY(20%);
+  top: 50%;
+  font-size: 15px;
+  color: #707A83;
+  /* font-weight: 30px; */
+}
+
+.buy{
+  flex-direction: row;
+  margin: 1rem 0.5rem 1rem 0 ;
+  background-color: var(--main-accent);
+  color: white;
+  width: 8rem;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.buy img{
+  width: 15px;
+}

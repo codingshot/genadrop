@@ -11,6 +11,7 @@ import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
 import Home from './pages/home/home';
 import SingleMint from './pages/SingleMint/singleMint';
+import SingleNFT from './pages/dashboard/singleNFT';
 import { fetchCollections } from './components/utils/firebase';
 import { GenContext } from './gen-state/gen.context';
 import { setCollections } from './gen-state/gen.actions';
@@ -40,6 +41,7 @@ function App() {
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint/nft-collection" component={Mint} />
           <Route exact path="/mint/single-nft" component={SingleMint} />
+          <Route exact path="/dashboard/single-nft" component={SingleNFT} />
           <Route path="" component={Fallback} />
         </Switch>
       </div>

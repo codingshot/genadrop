@@ -36,10 +36,11 @@
 .switch.active {
   background: var(--main-accent);
   color: white;
+
 }
 
 .switch {
-  padding: 0.5em 2em;
+  padding: 0.5em 1em;
   width: 50%;
   color: white;
   font-size: 1rem;
@@ -328,7 +329,11 @@
     padding: 1em;
   }
 }
-
+@media only screen and (max-width: 500px) {
+  .switch{
+    font-size: 13px;
+  }
+}
 .textInput {
   width: 100%;
   display: flex;

@@ -39,10 +39,11 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
 }
 
 .switch {
-  padding: 0.5em 2em;
+  padding: 0.5em 1em;
   width: 50%;
   color: white;
   font-size: 1rem;
+  height: 100%;
   font-weight: bold;
   border-radius: 0.5em;
   text-transform: capitalize;
@@ -319,6 +320,7 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
   .container {
     max-width: 900px;
   }
+  
 
   .wrapper {
     flex-direction: column;
@@ -337,6 +339,13 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
     padding: 1em;
   }
 }
+
+@media only screen and (max-width: 500px) {
+  .switch{
+    font-size: 13px;
+  }
+}
+
 
 .textInput {
   width: 100%;
