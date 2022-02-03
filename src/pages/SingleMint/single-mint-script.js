@@ -82,10 +82,12 @@ export async function mintSingleToPoly(imageFile, metadata, account, connector) 
     }
   } else {
     const signer = await connector.getSigner();
+    // FEEDBACK: uploading asset to ipfs
     const asset =  await connectAndMint(imageFile, metadata, imageFile.name)
     const contract = await new ethers.Contract(process.env.REACT_APP_GENA_SINGLE_ADDRESS, mintSingle, signer)
     let txn;
     try {
+      // minting asset, please confirm transaction
       txn = await contract.createToken(asset.url);
       console.log('ttttorium', txn)
     } catch (error) {

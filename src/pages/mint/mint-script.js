@@ -17,6 +17,7 @@ async function initializeContract(minterAddress, name, provider, account) {
   console.log('granted..')
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
   console.log('habibi', name, account)
+  // FEEDBACK: creating collection
   let tx = await collectionContract.createCollection(name, name.toUpperCase())
   console.log(tx.hash)
   await tx.wait();
@@ -74,6 +75,7 @@ export async function mintToPoly(ipfsJsonData, account, connector, mintFileName)
     console.log('defined....')
     const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, connector, account);
     console.log('inited..')
+    // FEEDBACK: preparing assets for minting, please wait
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft
     let ids = ipfsJsonData.map((asset) => {

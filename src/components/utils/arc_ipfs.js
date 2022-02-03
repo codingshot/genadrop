@@ -142,11 +142,16 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 const AlgoSingleMint = async (imageFile, metadata, account, connector) => {
   console.log( connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
+    // show feedback: uploading to ipfs
     const asset =  await connectAndMint(imageFile, metadata, imageFile.name)
+  
     const txn = await createAsset(asset, account);
     console.log('transacton', txn);
+    // FEEDBACK: asset uploaded, minting in progress
     let assetID = await signTx(connector, [txn]);
+
     await write.writeNft(account, assetID);
+    // FEEDBACK: asset minted
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
   } else {
     return {'message': "please connect to your alogrand wallet"}
@@ -268,7 +273,9 @@ async function createNFT(fileData) {
   const files = data.files['metadata.json']
   const metadataString = await files.async('string')
   const metadata = JSON.parse(metadataString)
+  //FEEDBACK: preparing files for upload
   for (let i = 0; i < metadata.length; i++) {
+    // FEEDBACK: minting i of metadata.length
     let imgName = `${metadata[i].name}.png`
     console.log(imgName, '-------')
     let imgFile = data.files[imgName]
@@ -287,7 +294,9 @@ async function mintToAlgo(assets, account, connector, name) {
   if (connector.isWalletConnect && connector.chainId === 4160) {
     let collection_id = [];
     let txns = [];
+    // FEEDBACK: preparing assets for minting
     for (let i = 0; i < assets.length; i++) {
+      // FEEDBACK: preparing assets for i of length
       const txn = await createAsset(assets[i], account)
       txns.push(txn)
     }
@@ -295,6 +304,7 @@ async function mintToAlgo(assets, account, connector, name) {
     let txgroup = algosdk.assignGroupID(txns)
     
     let groupId = txgroup[0].group.toString("base64")
+    // FEEDBACK: sign tx
     let assetID = await signTx(connector, txns)
     // for (let nfts = 0; nfts < txns.length; nfts++) {
     //   collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
