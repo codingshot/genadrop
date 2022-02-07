@@ -1,266 +1,345 @@
-.container  {
-  width: 100%;
-  max-width: 1440px;
-  margin: auto;
-  margin-bottom: 4em;
-  padding: 0 1em;
+.container {
+  border: 1px solid red;
+  position: relative;
 }
 
-.container > input {
-  display: none;
-}
-
-.heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 4em;
-}
-
-.heading h3 {
-  font-size: 2rem;
-}
-
-.control {
+.header {
+  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   gap: 1em;
+  margin-bottom: 2em;
 }
 
-.control button {
-  padding: 0.5em 1.5em;
-  border-radius: 1.5em;
-  background: var(--main-accent);
-  color: white;
-  border: none;
-  transition: background 200ms;
-  cursor: pointer;
+.imageContainer {
+  width: calc(12 * 16px);
+  height: calc(12 * 16px);
+  border: 1px solid red;
+  border-radius: 50%;
 }
 
-.control button:hover {
-  background: var(--main-accent-dark);
-}
-
-.inputContainer {
-  overflow: hidden;
-  display: none;
-}
-
-.control input {
-  font-size: 1rem;
-  border-radius: 0.25em;
-  outline: transparent;
-  border: 1px solid transparent;
-  padding: 0.25em;
-  transform: translateX(101%);
-  transition: transform 300ms;
-}
-
-.control input.active {
-  border: 1px solid var(--main-accent);
-  transform: translateX(0%);
-}
-
-.control > img {
-  cursor: pointer;
-  display: none;
-}
-
-.select {
+.details {
+  border: 1px solid red;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
-  color: var(--main-accent);
-  display: none; 
 }
 
-.select p {
-  font-size: 1rem;
-  font-weight: 500;
+.details > div {
+  border: 1px solid red;
+  width: 8em;
+  padding: 1em 0;
+  text-align: center;
 }
 
-.filter {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1em;
-  margin-bottom: 4em;
-  display: none;
-}
-
-.filter button {
-  padding: 0.5em 1.5em;
-  border-radius: 1.5em;
-  cursor: pointer;
-  border: 1px solid var(--main-accent);
-  font-weight: 500;
-  font-size: 1rem;
-  background: transparent;
-  transition: background 200ms;
-}
-
-.filter button.active {
-  background: var(--main-accent);
-  color: white;
-}
-
-.filter button.active:hover {
-  background: var(--main-accent-dark);
-}
-
-.filter button:hover {
-  outline: 1px solid var(--main-accent);
+.description {
+  max-width: 40em;
+  text-align: center;
+  border: 1px solid red;
 }
 
 .wrapper {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid red;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 1em;
 }
 
-.card {
-  width: auto;
-  border-radius: 0.5em;
-  overflow: hidden;
-  transition: all 450ms;
-}
-
-.card:hover {
-  transform: scale(1.015) translateY(-10px);
-}
-
-.imgContainer {
+.sidebar {
+  border: 1px solid red;
   width: 100%;
-  height: 20em;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  max-width: 20em;
+  position: sticky;
+  top: 5em;
+  height: calc(100vh - 5.5em);
+  overflow: auto;
 }
 
-.cardBody {
-  padding: 0.5em 0.25em;
-  background: var(--card-bg);
-  color: white;
+.sidebar2 {
+  display: block;
+  width: 4em;
+  height: calc(100vh - 5.5em);
+  border: 1px solid red;
+  position: sticky;
+  top: 5em;
+  cursor: pointer;
 }
 
-.title {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 1em;
-}
-
-.info {
-  width: 100%;
+.filterHeading {
+  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.5em;
-  padding: 0 1em;
-  gap: 0.25;
-  flex-wrap: wrap;
+  padding: 1em;
+  cursor: pointer;
 }
 
-.price {
-  color: orange;
+.filterHeading > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.attributeFilter .title,
+.priceFilter .title,
+.statusFilter .title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 1em;
+  border-bottom: 2px solid gray;
+  border-top: 2px solid gray;
+}
+
+.statusFilter .filter {
+  border: 1px solid red;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  padding-bottom: 1.5em;
+}
+
+.toggleButton {
+  border: 1px solid red;
+  display: inline-block;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 0.75em;
+  cursor: pointer;
+  padding: 1px;
+}
+
+.toggleButton.active > div {
+  transform: translateX(23px);
+}
+
+.toggleButton > div {
+  width: 20px;
+  height: 20px;
+  border: 1px solid red;
+  border-radius: 50%;
+  transition: transform 250ms;
+}
+
+.priceFilter .filter {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+}
+
+.priceFilter .filterInput {
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.priceFilter .filter > div {
+  border: 1px solid red;
+  width: auto;
+  flex: 1;
+}
+
+.priceFilter .filter input {
+  width: 100%;
+}
+
+.attributeFilter .title {
+  cursor: pointer;
+}
+
+.attribute {
+  max-height: 0em;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+  gap: 1em;
   padding: 0 1em;
 }
 
-.tokenId {
+.attribute.active {
+  max-height: 1000vh;
+  overflow: auto;
+}
+
+.layerTitle {
+  border: 1px solid red;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.layer {
+  border: 1px solid red;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.layer.active {
+  max-height: 10em;
+  overflow: auto;
+}
+
+.layer > div {
+  border: 1px solid red;
+  margin-bottom: 0.5em;
+}
+
+.value {
+  cursor: pointer;
+  overflow: auto;
+  white-space: nowrap;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
-  margin-bottom: 0.5em;
-  padding: 0 1em;
 }
 
-.buttons {
+.value:hover {
+  background: gainsboro;
+}
+
+.main {
+  flex: 1;
+  border: 1px solid red;
+  padding: 1em;
+}
+
+.menu {
+  border: 1px solid red;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  white-space: nowrap;
+}
+
+.filterDisplay {
   width: 100%;
-  border-top: 1px solid gray;
+  border: 1px solid red;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+}
+
+.filteredItem {
+  border: 1px solid red;
+  padding: 0.5em;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5em 1em;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 1.5em;
 }
 
-.buttons button {
-  padding: 0.5em 1.5em;
-  border-radius: 1.5em;
-  font-weight: 500;
-  color: white;
-  border: 1px solid var(--main-accent);
+.filteredItem img {
   cursor: pointer;
 }
 
-.buttons button:hover {
-  outline: 1px solid var(--main-accent);
+.searchAndPriceFilter {
+  width: 100%;
+  border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
 }
 
-.buttons button:first-child {
-  background: var(--main-accent);
-  transition: background 200ms;
+.searchAndPriceFilter input {
+  width: 100%;
+  flex: 1;
+  padding: 0.5em;
 }
 
-.buttons button:first-child:hover {
-  background: var(--main-accent-dark);
+.priceDropdown {
+  position: relative;
+  width: 12em;
+  border: 1px solid red;
+  padding: 0.5em;
+  background: white;
+  border-radius: 0.25em;
 }
 
-.buttons button:last-child {
-  background: transparent;
+.priceDropdown .selectedPrice {
+  cursor: pointer;
 }
 
-@media screen and (max-width: 1200px) {
-  .wrapper {
+.priceDropdown .dropdown{
+  width: 100%;
+  left: 0;
+  position: absolute;
+  background: white;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 250ms;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+
+.priceDropdown .dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(1em);
+}
+
+.priceDropdown .dropdown > div {
+  border: 1px solid red;
+}
+
+@media screen and (max-width: 768px) {
+
+  .menu {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
+    justify-items: center;
   }
-}
 
-@media screen and (max-width: 900px) {
   .wrapper {
-    grid-template-columns: repeat(2, 1fr);
+    flex-direction: column;
   }
-}
 
-@media screen and (max-width: 540px) {
-  .control input,
-  .select,
-  .filter {
+  .sidebar, .sidebar2 {
     display: none;
   }
 
-  .container > input {
-    display: block;
-    margin-bottom: 1em;
+}
+
+@media screen and (max-width: 480px) {
+  .menu {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .searchAndPriceFilter {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+  .priceDropdown {
     width: 100%;
   }
-
-  .card * {
-    font-size: 0.65rem !important;
+  .imageContainer {
+    width: calc(8 * 16px);
+    height: calc(8 * 16px);  
   }
-
-  .imgContainer {
-    height: 20em;
+  .details > div {
+    width: auto;
+    padding: 0.5em;
+    text-align: center;
   }
-
-  .tokenId img {
-    width: 1.5em;
-  }
-
-  .buttons {
-    padding: 0.5em 0.5em;
-  }
-
-  .buttons button {
-    padding: 0.25em 0.5em;
-    border-radius: 1em;
-  }
-
-  .info {
-    padding: 0 0.25em;
-  }
-  
 }
+

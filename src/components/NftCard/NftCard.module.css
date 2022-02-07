@@ -1,0 +1,69 @@
+.card {
+  width: auto;
+  border-radius: 0.5em;
+  overflow: hidden;
+  transition: all 450ms;
+  cursor: pointer;
+  max-width: 16em;
+}
+
+.card:hover {
+  transform: scale(1.015) translateY(-5px);
+}
+
+.card > img {
+  width: 100%;
+}
+
+.cardBody {
+  padding: 0.5em 0.25em;
+  background: var(--card-bg);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.name {
+  width: 100%;
+  text-align: center;
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  padding-left: 1em;
+}
+
+.divider {
+  width: 100%;
+  background: gray;
+  height: 2px;
+}
+
+.owner img {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+}
+
+.price {
+  width: 100%;
+  padding-left: 1em;
+}
+
+@media screen and (max-width: 540px) {
+  .owner img {
+    display: none;
+  }
+
+  .cardBody {
+    gap: 0.5em;
+  }
+
+  .owner, .price {
+    padding-left: 0;
+  }
+}

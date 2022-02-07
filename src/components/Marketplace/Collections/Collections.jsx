@@ -16,17 +16,13 @@ const Collections = () => {
     allCollections: null
   })
   const { collections } = useContext(GenContext)
-
   const { viewAll, allCollections } = state
-
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
-
   const history = useHistory();
 
   useEffect(() => {
-
     const getCollections = async collections => {
       let collectionArr = []
       for (let i = 0; i < collections.length; i++) {
@@ -35,15 +31,16 @@ const Collections = () => {
           collectionObj.name = collections[i].name
           collectionObj.price = collections[i].price
           collectionObj.owner = collections[i].owner
-          collectionObj.description = ''
+          collectionObj.description = collections[i].description
           let { data } = await axios.get(collections[i]['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          console.log('data', data);
           collectionObj.number_of_nfts = data.length
           let { params } = await getAlgoData(data[0])
           let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
           collectionObj.image = response.data.properties.file_url
           collectionArr.push(collectionObj)
         } catch (error) {
-          console.error('|=> --- error --- <=|', error);
+          console.error('get collection result failed');
         }
       }
       return collectionArr

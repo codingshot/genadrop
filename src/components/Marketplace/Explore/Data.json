@@ -1,60 +1,172 @@
 [
-  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-1.png",
-    "thumbnail": "/assets/explore-thumbnail-1.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },
-  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-2.png",
-    "thumbnail": "/assets/explore-thumbnail-2.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-3.png",
-    "thumbnail": "/assets/explore-thumbnail-3.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-4.png",
-    "thumbnail": "/assets/explore-thumbnail-4.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-5.png",
-    "thumbnail": "/assets/explore-thumbnail-5.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-6.png",
-    "thumbnail": "/assets/explore-thumbnail-6.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-7.png",
-    "thumbnail": "/assets/explore-thumbnail-7.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  },  {
-    "name": "scary snoop gang",
-    "price": "5.98 Algo",
-    "collection": "#212 snoop dog scaryzone",
-    "image": "/assets/explore-image-8.png",
-    "thumbnail": "/assets/explore-thumbnail-8.png",
-    "tokenId": "0x7c0c7c...DaD0"
-  }
+	{
+		"name": "_0",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Designer Shirt LV Shirt.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Skin3.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_1",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "squid game track suit.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Ocean Drip.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_2",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Multi Colored Pastel Jacket.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Zombie.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_3",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Multi Colored Pastel Jacket.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Skin1.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_4",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Smoking.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Zombie.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_5",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Designer Hoodie Sex Records Hoodie.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Skin1.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_6",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Bath Robe.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Ocean Drip.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_7",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Tuxedo.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Ocean Drip.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_8",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "squid game track suit.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Skin3.png",
+				"rarity": "1"
+			}
+		]
+	},
+	{
+		"name": "_9",
+		"image": "image.png",
+		"description": "",
+		"attributes": [
+			{
+				"trait_type": "a",
+				"value": "Striped Shirt with Tiger.png",
+				"rarity": "1"
+			},
+			{
+				"trait_type": "b",
+				"value": "Ocean Drip.png",
+				"rarity": "1"
+			}
+		]
+	}
 ]
