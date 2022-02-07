@@ -56,8 +56,6 @@ const SingleMint = () => {
   const fileRef = useRef(null);
   const clipboardRef = useRef(null)
 
-  const mintProps = { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector, priceValue }
-
 
   const handleFileChange = event => {
     if (!event.target.files[0]) return;
@@ -106,7 +104,7 @@ const SingleMint = () => {
   }
 
   const handleAddClick = () => {
-    setAttribute([...attributes, { label: "", description: "" }]);
+    setAttribute([...attributes, { trait_type: "", value: "" }]);
   };
 
   const handleRemoveClick = index => {
@@ -120,11 +118,13 @@ const SingleMint = () => {
     const { name, value } = e.target;
     const list = [...attributes];
     list[index][name] = value;
-    console.log(index, name);
+    console.log(index, name, list);
     setAttribute(list);
   };
 
-  const [attributes, setAttribute] = useState([{ label: "", description: "" }]);
+  const [attributes, setAttribute] = useState([{ trait_type: "", value: "" }]);
+
+  const mintProps = { handleSetState, file, title, description, selectChain, account, connector, priceValue, selectValue, attributes}
 
 
   return (
@@ -228,16 +228,16 @@ const SingleMint = () => {
                 <div className={classes.attributes}>
                   <input
                     className={classes.attribute}
-                    name="label"
+                    name="trait_type"
                     placeholder="E.g Eyes"
-                    value={x.label}
+                    value={x.trait_type}
                     onChange={e => handleInputChange(e, i)}
                   />
                   <input
                     className={classes.attribute}
-                    name="description"
+                    name="value"
                     placeholder="E.g green"
-                    value={x.description}
+                    value={x.value}
                     onChange={e => handleInputChange(e, i)}
                   />
                   <button
