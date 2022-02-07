@@ -20,7 +20,10 @@ const DropItem = ({ dropdown, id, handleSetState, item: { icon, title, content }
                     </button>
                 </div>
             </div>
-            <div className={dropdown === String(id) ? `${classes.answer} ${classes.active}` : classes.answer}>{content}</div>
+            <div className={dropdown === String(id) ? `${classes.answer} ${classes.active}` : classes.answer}>
+                {content}
+
+            </div>
 
         </>
     )

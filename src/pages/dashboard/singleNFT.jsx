@@ -2,7 +2,11 @@ import React from 'react';
 import { useState } from 'react';
 import DropItem from './dropItem/dropItem';
 import classes from './singleNFT.module.css';
+import { CopyBlock, dracula } from "react-code-blocks";
 
+import Search from './history/search';
+import NFT from './collection/nft';
+import Graph from './graph/graph';
 
 const Orgs = () => {
 
@@ -29,7 +33,7 @@ const Orgs = () => {
         {
             icon: "/assets/details-icon.png",
             title: "Details",
-            content: "Connect your wallet and upload your collection zip folder, previously made in the create section of the Genadrop dApp. as json file after which you will now upload your Metadata to ipfs and select the blockchain of your choice, add price and Mint."
+            content: "Connect your wallet and upload your collection zip folder, previously made in the create section of the Genadrop dApp. as json file after which you will now upload your Metametadata to ipfs and select the blockchain of your choice, add price and Mint."
         },
 
     ]
@@ -37,10 +41,176 @@ const Orgs = () => {
     const collectionName = "Mute Aunties Collections";
     const nftName = "Mute Aunties #7289"
 
+    const graphContent = () => {
+        return (
+            <div>
+                ok
+            </div>
+        )
+    }
+
+    const graph = {
+        icon: "/assets/description-icon.png",
+        title: "Description",
+        content: <Graph />
+    }
+    const Attributes = [
+        {
+            title: "Hair",
+            description: "Brown Wig"
+        },
+        {
+            title: "Glasses",
+            description: "Circular Frame"
+        },
+        {
+            title: "Shirt",
+            description: "Blue Top"
+        },
+        {
+            title: "Face",
+            description: "Dotted Brown"
+        },
+        {
+            title: "Background",
+            description: "Matte Green"
+        },
+        {
+            title: "Skin",
+            description: "Brown"
+        },
+
+    ]
+
+    const attributeContent = () => {
+        return (
+            <div className={classes.attributesContainer}>
+                {Attributes.map((attribute) => (
+                    <div className={classes.attribute}>
+                        <span className={classes.title}>{attribute.title}</span>
+                        <span className={classes.description}>{attribute.description}</span>
+                    </div>
+                ))}
+            </div>
+
+        )
+    }
+
+    const attributesItem = {
+        icon: "/assets/description-icon.png",
+        title: "Attributes",
+        content: attributeContent()
+    }
+
+
+    const History = [
+        { event: "Sale", price: 0.13, quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
+        { event: "Transfer", price: "", quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
+        { event: "Transfer", price: "", quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
+        { event: "Minted", price: "", quantity: 2000, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
+        { event: "Minted", price: "", quantity: 100, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
+        { event: "Sale", price: 0.13, quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
+    ]
+
+    const metadata = {
+        "name": "_52",
+        "image": "image.png",
+        "description": "",
+        "attributes": [
+            {
+                "trait_type": "Bg",
+                "value": "orange.png",
+                "rarity": "1"
+            },
+            {
+                "trait_type": "head",
+                "value": "head.png",
+                "rarity": "1"
+            },
+            {
+                "trait_type": "body",
+                "value": "outfit-2.png",
+                "rarity": "1"
+            },
+            {
+                "trait_type": "hair",
+                "value": "short_hair_4-5.png",
+                "rarity": "1"
+            }
+        ]
+    }
+
+    const nfts = [
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        },
+        {
+            image: "/assets/nft-placeholder.png",
+            itemName: "#2410 Mute Auntie",
+            collectionName: "Mute Aunties",
+            price: "98.20",
+            token: "ALGO"
+        }
+    ]
+
+
 
     return (
-        <div className={classes.main}>
-            <div className={classes.section}>
+        <div className={classes.container}>
+            <div className={classes.section1}>
                 <div className={classes.v_subsection1}>
                     <img className={classes.nft} src="/assets/nft-placeholder.png" alt="" />
 
@@ -80,18 +250,55 @@ const Orgs = () => {
                             </span>
                         </div>
 
-                        <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
-                        <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+                        <div className={classes.btns}>
+                            <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+                            <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
 
+                        </div>
 
                     </div>
-                    <div className={classes.feature}></div>
-                    <div className={classes.feature}></div>
+                    <div className={classes.feature}>
+                        <DropItem key={4} item={graph} id={4} dropdown={dropdown} handleSetState={handleSetState} ></DropItem>
+                    </div>
+                    <div className={classes.feature}>
+                        <DropItem key={5} item={attributesItem} id={5} dropdown={dropdown} handleSetState={handleSetState} ></DropItem>
+
+                    </div>
                 </div>
             </div >
-            <div className={classes.section}></div>
-            <div className={classes.section}></div>
-            <div className={classes.section}></div>
+            <div className={classes.section}>
+                <div className={classes.heading}> <h3><img src="/assets/swap-icon.png" alt="" />Transaction History</h3></div>
+                <div className={classes.tableContainer}>
+                    <Search data={History} />
+                </div>
+            </div>
+            <div className={classes.section}>
+                <div className={classes.heading}> <h3><img src="/assets/swap-icon.png" alt="" />Meta Data</h3></div>
+                <div className={classes.code}>
+                    <CopyBlock
+                        language="json"
+                        text={JSON.stringify(metadata, null, 2)}
+                        showLineNumbers={false}
+                        theme={dracula}
+                        wrapLines={true}
+                        codeBlock
+
+                    />
+                </div>
+
+
+
+            </div>
+            <div className={classes.section}>
+                <div className={classes.heading}> <h3><img src="/assets/swap-icon.png" alt="" />More From Collection</h3></div>
+                <div className={classes.collectionItems}>
+                    <NFT data={nfts} />
+
+                </div>
+                <div className={classes.allCollecitons}>
+                    <button className={classes.btnCollections}>View All Collections</button>
+                </div>
+            </div>
         </div >
     )
 }

@@ -45,7 +45,7 @@ button:focus {
 
 .answer {
   display: none;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
 }
 
 .answer.active {
@@ -55,7 +55,7 @@ button:focus {
   font-weight: light;
   font-size: 0.8rem;
   line-height: 1.5;
-  border-bottom: 1px solid #DEE4F1;
+  /* border-bottom: 1px solid #DEE4F1; */
 
   color: #9EA6AE;
   height: 0%;
