@@ -5,6 +5,7 @@
   transition: all 450ms;
   cursor: pointer;
   max-width: 16em;
+  border: 1px solid gainsboro;
 }
 
 .card:hover {

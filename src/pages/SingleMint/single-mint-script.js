@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
-import { AlgoSingleMint, connectAndMint} from '../../components/utils/arc_ipfs';
-const minter = require('../../components/utils/arc_ipfs')
+import { AlgoSingleMint, connectAndMint} from '../../utils/arc_ipfs';
+const minter = require('../../utils/arc_ipfs')
 
 
 let mintSingle = [

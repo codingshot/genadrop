@@ -46,9 +46,12 @@
   left: 0;
 }
 
+.orgs > img {
+  width: 12em;
+}
+
 .bgIcons img {
   width: 6em;
-  
 }
 
 .bgIcons img:first-child {

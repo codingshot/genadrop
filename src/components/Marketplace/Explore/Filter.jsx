@@ -11,7 +11,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     lowestPrice: '0',
     highestPrice: '0',
     filter: {
-      price: { min: 0, max: 0 },
+      priceRange: { min: 0, max: 0 },
       onlyListed: false,
       attributes: []
     }
@@ -24,7 +24,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   }
 
   const handleApplyPriceFilter = () => {
-    handleSetState({ filter: { ...filter, price: { min: lowestPrice, max: highestPrice } } })
+    handleSetState({ filter: { ...filter, priceRange: { min: lowestPrice, max: highestPrice } } })
   }
 
   const handleStatus = () => {

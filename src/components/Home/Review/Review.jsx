@@ -18,16 +18,10 @@ const Review = () => {
       </div>
 
       <div className={classes.review}>
-        {/* <img src="/assets/tweet1.png" alt="" />
-        <img src="/assets/tweet2.png" alt="" />
-        <img src="/assets/tweet3.png" alt="" />
-        <img src="/assets/tweet4.png" alt="" /> */}
-
-        {reviews.map((tweet) => {
-          return <span className={classes.tweet}><TweetEmbed id={tweet} placeholder={'loading'} /></span>
+        {reviews.map((tweet, idx) => {
+          return <span key={idx} className={classes.tweet}><TweetEmbed id={tweet} placeholder={'loading'} /></span>
 
         })}
-        
       </div>
 
     </div>

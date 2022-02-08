@@ -1,4 +1,4 @@
-import { handleBlankImage } from "../utils";
+import { handleBlankImage } from "../../utils";
 
 export const handleFileChange = props => {
   const { event, traits, layerTitle } = props;

@@ -143,15 +143,15 @@ async function readData() {
   async function fetchCollections(){
 
     let allCollections = await readAllCollection()
-    let allNft = await readAllNft()
-    let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
-    let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+    // let allNft = await readAllNft()
+    // let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+    // let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
 
     return {
       allCollections,
-      allNft,
-      userCollections,
-      allUserNft
+      // allNft,
+      // userCollections,
+      // allUserNft
     }
   }
 
