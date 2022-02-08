@@ -82,6 +82,21 @@ async function writeNft(owner, assetId) {
       return res;
   }
 
+  async function readSingleNft() {
+    let querySnapshot = await db.collection("listed").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      for (const key in doc.data()) {
+        if (Object.hasOwnProperty.call(doc.data(), key)) {
+          if (doc.data()[key].collection === null) {
+            res.push(doc.data()[key]);
+          }
+        }
+      }
+      });
+      return res;
+  }
+
 async function readData() {
   const dbRef = ref(getDatabase());
   // console.log('p0pll0')
@@ -144,8 +159,8 @@ async function readData() {
 
     let allCollections = await readAllCollection()
     let allNft = await readAllNft()
-    let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
-    let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+    let userCollections = await readUserCollection('IXUBUSAZCEPSHTIHFOXMCP34KXYEHDNGCOLREQPS6XEKH6O5MGPZNI63DA')
+    let allUserNft = await readAllUserNft('IXUBUSAZCEPSHTIHFOXMCP34KXYEHDNGCOLREQPS6XEKH6O5MGPZNI63DA')
 
     return {
       allCollections,
@@ -155,6 +170,7 @@ async function readData() {
     }
   }
 
+
 export {
     writeUserData,
     readAllCollection,
@@ -162,7 +178,8 @@ export {
     readUserCollection,
     readAllUserNft,
     fetchCollections,
-    writeNft
+    writeNft,
+    readSingleNft
 }
 
 
