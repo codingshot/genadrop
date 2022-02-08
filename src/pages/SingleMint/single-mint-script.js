@@ -122,7 +122,7 @@ export const handleMint = async props => {
   console.log('opium', attributes)
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await AlgoSingleMint( file, metadata, account, connector);
+      url = await AlgoSingleMint( file, metadata, account, connector, priceValue);
     } else if (selectValue.toLowerCase() === 'celo') {
       url = {'message': "not yet implemented"} // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
     } else if (selectValue.toLowerCase() === 'polygon') {

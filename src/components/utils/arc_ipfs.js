@@ -139,7 +139,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 
 };
 
-const AlgoSingleMint = async (imageFile, metadata, account, connector) => {
+const AlgoSingleMint = async (imageFile, metadata, account, connector, priceValue) => {
   console.log( connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
     // show feedback: uploading to ipfs
@@ -150,7 +150,7 @@ const AlgoSingleMint = async (imageFile, metadata, account, connector) => {
     // FEEDBACK: asset uploaded, minting in progress
     let assetID = await signTx(connector, [txn]);
 
-    await write.writeNft(account, assetID);
+    await write.writeNft(account, assetID, priceValue);
     // FEEDBACK: asset minted
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
   } else {
@@ -289,7 +289,7 @@ async function createNFT(fileData) {
 };
 
 
-async function mintToAlgo(assets, account, connector, name) {
+async function mintToAlgo(assets, account, connector, name, priceValue) {
   console.log('minting...........')
   if (connector.isWalletConnect && connector.chainId === 4160) {
     let collection_id = [];
@@ -314,7 +314,7 @@ async function mintToAlgo(assets, account, connector, name) {
     }
     const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, name, collection_id)
+    await write.writeUserData(account, collectionUrl, name, collection_id, priceValue)
     return `https://testnet.algoexplorer.io/tx/group/${groupId}`
     } else {
       return {'message': "please connect to your alogrand wallet"}

@@ -40,16 +40,16 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-async function writeUserData(owner, collection, name, collection_id) {
+async function writeUserData(owner, collection, name, collection_id, priceValue) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
+    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name, 'price': priceValue}
   }
   db.collection('collections').add({
     name: `${name}`,
     url: `${collection}`,
-    price: 20,
+    price: priceValue,
     owner: owner
   }).then((docRef) => {
     // console.log("Document ID:", docRef.id)
@@ -63,9 +63,9 @@ async function writeUserData(owner, collection, name, collection_id) {
   return;
   }
   
-async function writeNft(owner, assetId) {
+async function writeNft(owner, assetId, priceValue) {
   let updates = {};
-  updates[assetId] = {'id': assetId, 'collection': null}
+  updates[assetId] = {'id': assetId, 'collection': null, 'price': priceValue};
   db.collection('listed').doc(`${owner}`).set({
     ...updates
   }, {merge: true});
