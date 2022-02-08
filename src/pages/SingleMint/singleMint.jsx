@@ -1,8 +1,8 @@
 import classes from './singleMint.module.css';
 import { useRef, useState, useEffect, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { getImageSize } from '../../components/utils';
-import { createNFT } from '../../components/utils/arc_ipfs';
+import { getImageSize } from '../../utils';
+import { createNFT } from '../../utils/arc_ipfs';
 import { handleCopy, handleMint, handleMintFileChange } from './single-mint-script';
 import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
 import { useHistory } from 'react-router-dom';
@@ -27,8 +27,6 @@ const SingleMint = () => {
     selectValue: 'Algo',
     description: '',
     file: null,
-    showCopy: false,
-    iconClicked: false
   })
 
   const {
@@ -57,8 +55,6 @@ const SingleMint = () => {
   const { account, connector, dispatch } = useContext(GenContext);
   const fileRef = useRef(null);
   const clipboardRef = useRef(null)
-
-  const mintProps = { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector, priceValue }
 
 
   const handleFileChange = event => {
@@ -108,7 +104,7 @@ const SingleMint = () => {
   }
 
   const handleAddClick = () => {
-    setAttribute([...attributes, { label: "", description: "" }]);
+    setAttribute([...attributes, { trait_type: "", value: "" }]);
   };
 
   const handleRemoveClick = index => {
@@ -122,11 +118,13 @@ const SingleMint = () => {
     const { name, value } = e.target;
     const list = [...attributes];
     list[index][name] = value;
-    console.log(index, name);
+    console.log(index, name, list);
     setAttribute(list);
   };
 
-  const [attributes, setAttribute] = useState([{ label: "", description: "" }]);
+  const [attributes, setAttribute] = useState([{ trait_type: "", value: "" }]);
+
+  const mintProps = { handleSetState, file, title, description, selectChain, account, connector, priceValue, selectValue, attributes}
 
 
   return (
@@ -223,28 +221,26 @@ const SingleMint = () => {
           <div className={classes.textInput}>
             <h3>Attributes</h3>
             <span>Select your MetaData file and mint to IPFS</span>
-            {attributes.map((x, i) => {
+            {attributes.map((x, idx) => {
               return (
-
-
-                <div className={classes.attributes}>
+                <div key={idx} className={classes.attributes}>
                   <input
                     className={classes.attribute}
-                    name="label"
+                    name="trait_type"
                     placeholder="E.g Eyes"
-                    value={x.label}
-                    onChange={e => handleInputChange(e, i)}
+                    value={x.trait_type}
+                    onChange={e => handleInputChange(e, idx)}
                   />
                   <input
                     className={classes.attribute}
-                    name="description"
+                    name="value"
                     placeholder="E.g green"
-                    value={x.description}
-                    onChange={e => handleInputChange(e, i)}
+                    value={x.value}
+                    onChange={e => handleInputChange(e, idx)}
                   />
                   <button
 
-                    onClick={() => handleRemoveClick(i)}
+                    onClick={() => handleRemoveClick(idx)}
                     className={classes.removeBtn}
                   >
                     X

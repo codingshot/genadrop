@@ -4,18 +4,19 @@
   background-size: cover;
   background-position: center;
   margin-bottom: 4em;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0);
   color: white;
 }
 
 .innerContainer {
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
+  justify-content: space-around;
+  gap: 1em;
   width: 100%;
-  max-width: 1440px;
   margin: auto;
-  padding: 0 2em;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 3em 2em;
 }
 
 .bannerText {
@@ -23,7 +24,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 1em;
+  gap: 2em;
   padding-bottom: 4em;
 }
 
@@ -44,13 +45,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+  gap: 2em;
 }
 
 .pageLinks > button {
   outline: none;
   padding: 0.75em 3em;
-  font-size: 1rem;
+  font-size: 0.85rem;
   border-radius: 0.5em;
   cursor: pointer;
   border: 2px solid transparent;
@@ -75,10 +76,29 @@
   outline: 1px solid white;
 }
 
-.innerContainer img {
-  display: block;
+.imageContainer {
+  width: 30vw;
+}
+
+.imageContainer img {
   width: 100%;
-  max-width: 36em;
+}
+
+.imageDetails {
+  width: 100%;
+  padding: 2em 1em;
+  background: var(--card-bg1);
+}
+
+.imageDetails > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.imageDetails span {
+  color: #FFE161;
 }
 
 .soon {
@@ -95,20 +115,19 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .innerContainer img {
-    max-width: 42vw;
+  .imageContainer {
+    width: 36vw;
   }
- 
   .heading {
     font-size: 4vw;
   }
 }
 
-@media screen and (max-width: 900px) {
-  .innerContainer img {
-    max-width: 52vw;
+@media screen and (max-width: 900px) { 
+  .imageContainer {
+    width: 48vw;
   }
- 
+
   .heading {
     font-size: 4vw;
   }
@@ -118,10 +137,12 @@
   .innerContainer {
     flex-direction: column-reverse;
     align-items: center;
+    padding: 3em 1em;
   }
 
-  .innerContainer img {
-    max-width: 32em;
+  .imageContainer {
+    margin-bottom: 2em;
+    width: 72vw;
   }
  
   .heading {
@@ -134,12 +155,10 @@
 }
 
 @media screen and (max-width: 480px) {
-  .innerContainer {
-    flex-direction: column-reverse;
-    align-items: center;
-    padding: 0 1em;
+  .imageContainer {
+    width: 100%;
   }
- 
+
   .heading {
     font-size: 2rem;
   }

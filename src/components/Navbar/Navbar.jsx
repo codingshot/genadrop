@@ -18,19 +18,19 @@ const Navbar = () => {
 
   return (
     <div className={classes.container}>
-      <img onClick={() => { history.push('/') }} className={classes.logoDesktop} src="/assets/genadrop-logo.png" alt="" />
+      <img onClick={() => { history.push('/') }} className={classes.logoDesktop} src="/assets/genadrop-logo.svg" alt="" />
       <img onClick={() => { history.push('/') }} className={classes.logoMobile} src="/assets/genadrop-logo-mobile.png" alt="" />
       <div className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}>
         {/* <input type="text" /> */}
         <br />
         <ul className={classes.navList}>
-          <Link to="/create">
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/create">
             <li className={`${classes.navItem} ${pathname === '/create' && classes.active}`}>create</li>
           </Link>
-          <Link to="/mint/single-nft">
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/mint/single-nft">
             <li className={`${classes.navItem} ${pathname.includes('/mint') && classes.active}`}>mint</li>
           </Link>
-          <Link to="/marketplace">
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/marketplace">
             <li className={`${classes.navItem} ${pathname === '/marketplace' && classes.active}`}>explore</li>
           </Link>
         </ul>

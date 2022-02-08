@@ -17,7 +17,7 @@
 .heading button {
   cursor: pointer;
   padding: 0.5em 1.5em;
-  border-radius: 1em;
+  border-radius: 0.25em;
   background: var(--main-accent);
   border: none;
   color: white;
@@ -36,8 +36,8 @@
 
 .card {
   width: auto;
-  border-radius: 1em;
-  overflow: hidden;
+  /* border-radius: 0.5em; */
+  /* overflow: hidden; */
   transition: all 650ms;
   cursor: pointer;
 }
@@ -52,6 +52,9 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
+  border: 1px solid gainsboro;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
 }
 
 .cardBody {
@@ -62,6 +65,8 @@
   padding: 1em;
   background: var(--card-bg2);
   color: white;
+  border-bottom-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
 }
 
 .cardBody h3 {

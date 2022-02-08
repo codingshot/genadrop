@@ -8,8 +8,12 @@
   left: 0;
   top: 0;
   background: var(--main-accent);
-  z-index: 10;
+  z-index: 10000000;
   padding: 0.5em 2em;
+}
+
+.logoDesktop {
+  width: 4em;
 }
 
 .logoMobile {
@@ -123,11 +127,11 @@
     top: 3em;
     padding: 0 1em;
     background: rgba(255, 255, 255, 0.95);
-    box-shadow: 1px 5px 5px gray;
+    box-shadow: 1px 5px 5px gainsboro;
     color: black;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 450ms;
+    transition: max-height 650ms;
   }
 
   .wrapper.active {

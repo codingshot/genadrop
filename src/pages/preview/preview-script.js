@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { handleImage } from '../../components/utils';
+import { handleImage } from '../../utils';
 
 export const isUnique = (attributes, attr, rule) => {
   let parseAttrToRule = attr.map(p => ({ layerTitle: p.trait_type, imageName: p.value }))
