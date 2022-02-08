@@ -35,11 +35,11 @@ const CollectionMenu = ({ layer }) => {
         <h3 className={classes.header}>{layerTitle}</h3>
         <div className={classes.wrapper}>
           {
-            traits.map((trait, index) => (
+            traits.map((trait, idx) => (
               <ArtCard
+                key={idx}
                 layerTitle={layerTitle}
                 trait={trait}
-                key={index}
                 setActiveCard={activeCard => handleSetState({ activeCard })}
                 activeCard={activeCard}
               />

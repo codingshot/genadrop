@@ -3,11 +3,10 @@ import classes from './styles.module.css';
 const Invite = () => {
   return (
     <div className={classes.container}>
-      <h3>Let us send you offering</h3>
-      <div>
-        <input type="email" />
-        <button>subscribe</button>
-      </div>
+      <p>Join our community on Discord</p>
+      <button>
+        <a href="https://discord.gg/4vdtmQqz6d">Join</a>
+      </button>
     </div>
   )
 }

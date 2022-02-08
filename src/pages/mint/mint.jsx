@@ -1,7 +1,7 @@
 import classes from './mint.module.css';
 import { useRef, useState, useEffect, useContext } from 'react';
-import { getImageSize } from '../../components/utils';
-import { createNFT } from '../../components/utils/arc_ipfs';
+import { getImageSize } from '../../utils';
+import { createNFT } from '../../utils/arc_ipfs';
 import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
 import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
@@ -277,36 +277,31 @@ const Mint = () => {
             <div className={classes.textInput}>
               <h3>Attributes</h3>
               <span>Select your MetaData file and mint to IPFS</span>
-              {attributes.map((x, i) => {
+              {attributes.map((x, idx) => {
                 return (
-
-
-                  <div className={classes.attributes}>
+                  <div key={idx} className={classes.attributes}>
                     <input
                       className={classes.attribute}
                       name="label"
                       placeholder="E.g Eyes"
                       value={x.label}
-                      onChange={e => handleInputChange(e, i)}
+                      onChange={e => handleInputChange(e, idx)}
                     />
                     <input
                       className={classes.attribute}
                       name="description"
                       placeholder="E.g green"
                       value={x.description}
-                      onChange={e => handleInputChange(e, i)}
+                      onChange={e => handleInputChange(e, idx)}
                     />
                     <button
 
-                      onClick={() => handleRemoveClick(i)}
+                      onClick={() => handleRemoveClick(idx)}
                       className={classes.removeBtn}
                     >
                       X
                     </button>
-
-
-
-
+                    
                   </div>
                 );
               })}

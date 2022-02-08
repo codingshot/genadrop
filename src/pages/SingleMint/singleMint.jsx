@@ -1,8 +1,8 @@
 import classes from './singleMint.module.css';
 import { useRef, useState, useEffect, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { getImageSize } from '../../components/utils';
-import { createNFT } from '../../components/utils/arc_ipfs';
+import { getImageSize } from '../../utils';
+import { createNFT } from '../../utils/arc_ipfs';
 import { handleCopy, handleMint, handleMintFileChange } from './single-mint-script';
 import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
 import { useHistory } from 'react-router-dom';
@@ -221,28 +221,26 @@ const SingleMint = () => {
           <div className={classes.textInput}>
             <h3>Attributes</h3>
             <span>Select your MetaData file and mint to IPFS</span>
-            {attributes.map((x, i) => {
+            {attributes.map((x, idx) => {
               return (
-
-
-                <div className={classes.attributes}>
+                <div key={idx} className={classes.attributes}>
                   <input
                     className={classes.attribute}
                     name="trait_type"
                     placeholder="E.g Eyes"
                     value={x.trait_type}
-                    onChange={e => handleInputChange(e, i)}
+                    onChange={e => handleInputChange(e, idx)}
                   />
                   <input
                     className={classes.attribute}
                     name="value"
                     placeholder="E.g green"
                     value={x.value}
-                    onChange={e => handleInputChange(e, i)}
+                    onChange={e => handleInputChange(e, idx)}
                   />
                   <button
 
-                    onClick={() => handleRemoveClick(i)}
+                    onClick={() => handleRemoveClick(idx)}
                     className={classes.removeBtn}
                   >
                     X

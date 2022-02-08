@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { handleImage } from '../utils';
+import { handleImage } from '../../utils';
 
 export const createDna = layers => {
   const getPercentage = (rarity, total) => {

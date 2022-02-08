@@ -93,7 +93,7 @@ const Rules = ({ show, setRule }) => {
             <div className={cx.filteredList}>
               {
                 filteredAttribute.map(f => (
-                  <div className={cx.filteredItem} key={f.layer}>
+                  <div key={f.layer} className={cx.filteredItem}>
                     <img src={URL.createObjectURL(f.image)} alt="" />
                     <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
                     <i onClick={() => handleRemoveAttribute(f)} className={`${cx.closeIcon} fas fa-times`}></i>
@@ -112,7 +112,7 @@ const Rules = ({ show, setRule }) => {
             <div className={cx.filteredList}>
               {
                 conflict.map(f => (
-                  <div className={cx.filteredItem} key={f.layer}>
+                  <div key={f.layer} className={cx.filteredItem}>
                     <img src={URL.createObjectURL(f.image)} alt="" />
                     <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
                     <i onClick={() => handleRemoveConflict(f)} className={`${cx.closeIcon} fas fa-times`}></i>

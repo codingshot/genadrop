@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import JSZip from 'jszip';
-import { mintToAlgo } from '../../components/utils/arc_ipfs';
-const minter = require('../../components/utils/arc_ipfs')
+import { mintToAlgo } from '../../utils/arc_ipfs';
+const minter = require('../../utils/arc_ipfs')
 
 let mintCollectionAbi = [
   "function createCollection(string memory _name, string memory _symbol) public {}",

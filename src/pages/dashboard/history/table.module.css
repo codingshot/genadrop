@@ -1,0 +1,19 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    /* table-layout : fixed; */
+
+  }
+  
+td, th {
+    border-top: 1px solid #dddddd;
+    text-align: center;
+    padding: 5px;
+
+}
+  
+.table td:first-child, th:first-child{
+    text-align: left;
+    padding-left: 1rem;
+}
