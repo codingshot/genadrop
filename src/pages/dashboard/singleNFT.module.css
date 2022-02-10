@@ -66,16 +66,16 @@
 .nftName{
   display: flex;
   flex-direction: row;
+  width: 100%;
+
+  
 }
 
-.nftId{
-  flex-basis: 80%;
-}
+
 
 .icons{
-  flex-basis: 30%;
-  float: right;
-  justify-content: space-evenly;
+  margin-left: auto;
+  order: 2
 }
 
 .icon{
