@@ -50,6 +50,7 @@ const Orgs = () => {
       .then(res => {
         setAlgoPrice(res.data.data.amount);
       })
+    document.documentElement.scrollTop = 0;
   }, [nftId])
 
   useEffect(() => {
