@@ -66,16 +66,16 @@
 .nftName{
   display: flex;
   flex-direction: row;
+  width: 100%;
+
+  
 }
 
-.nftId{
-  flex-basis: 80%;
-}
+
 
 .icons{
-  flex-basis: 30%;
-  float: right;
-  justify-content: space-evenly;
+  margin-left: auto;
+  order: 2
 }
 
 .icon{
@@ -150,6 +150,11 @@
   width: 15px;
 }
 
+.buy:hover{
+  transform: scale(1.05);
+  transition: all .2s ease-in-out;
+}
+
 .attributesContainer{
   display: grid;
   grid-gap: 5px 5px;
@@ -217,6 +222,11 @@
   border-radius: 5px;
 }
 
+.btnCollections:hover{
+  transform: scale(1.05);
+  transition: all .2s ease-in-out;
+}
+
 
 
 @media screen and (max-width: 1440px) {
@@ -250,6 +260,7 @@
   .v_subsection1{
     width: 100%;
     margin-bottom: 1rem;
+    max-width: 222rem;
   }
   
 }
@@ -262,10 +273,7 @@
     flex-direction: column;
   }
 
-  .v_subsection1 {
-    margin-bottom: 1rem;
-    width: 100%;
-  }
+
 
   .attributesContainer{
     display: grid;
