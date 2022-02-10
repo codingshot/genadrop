@@ -7,7 +7,7 @@
   justify-content: center;
   top: 0;
   left: 0;
-  z-index: 1000000;
+  z-index: 5000;
   overflow: hidden;
 }
 

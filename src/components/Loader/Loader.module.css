@@ -1,0 +1,31 @@
+.container {
+  width: auto;
+  position: fixed;
+  z-index: 2000;
+  right: 10px;
+  top: 4em;
+  background: white;
+  color: black;
+  visibility: hidden;
+  padding: 0.5em 1.5em;
+  border-radius: 0.25em;
+  transition: all 300ms;
+  box-shadow: 0 0 15px gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container.active {
+  visibility: visible;
+  transform: translateY(10px);
+}
+
+.icon {
+  animation: rotate 1000ms infinite;
+}
+
+@keyframes rotate {
+  from{transform: rotate(0deg);}
+  to{transform: rotate(360deg);}
+}

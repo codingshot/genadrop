@@ -1,0 +1,58 @@
+.container {
+  width: 20em;
+  position: fixed;
+  right: 10px;
+  z-index: 3000;
+  background: transparent;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  transition: all 1s;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  background: gainsboro;
+  border-radius: 50%;
+  white-space: nowrap;
+}
+
+.message {
+  flex: 1;
+}
+
+.feedback {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+  animation: slide-out 650ms forwards;
+  background: white;
+  color: var(--card-bg);
+  padding: 1em 2em;
+  border-radius: 0.25em;
+  box-shadow: 0 0 15px gainsboro;
+}
+
+.container.active {
+  visibility: visible;
+  padding: 0.5em;
+}
+
+.container.active .feedback {
+  animation: slide-in 650ms forwards;
+}
+
+@keyframes slide-in {
+  from{transform: translateX(110%);}
+  to{transform: translateX(0);}
+}
+
+@keyframes slide-out {
+  from{transform: translateX(0);}
+  to{transform: translateX(100%);}
+}

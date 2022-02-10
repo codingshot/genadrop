@@ -4,13 +4,42 @@ import { getImageSize } from '../../utils';
 import { createNFT } from '../../utils/arc_ipfs';
 import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
-import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
-import { handleCopy, handleFileChange, handleMint, handleMintFileChange } from './mint-script';
+import { setFeedback, setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
+import { handleFileChange, handleMint, handleMintFileChange } from './mint-script';
 import { useHistory } from 'react-router-dom';
 
 const Mint = () => {
 
   const [attributes, setAttribute] = useState([{ label: "", description: "" }]);
+  const [state, setState] = useState({
+    collections: [],
+    zip: null,
+    ipfsJsonData: [],
+    metadata: [],
+    collectionName: '',
+    mintFileName: '',
+    loading: false,
+    size: { height: 0, width: 0 },
+    selectValue: 'Algo',
+    priceValue: 0
+  })
+
+  const {
+    collections,
+    zip,
+    ipfsJsonData,
+    metadata,
+    collectionName,
+    mintFileName,
+    title,
+    description,
+    loading,
+    size,
+    selectValue,
+    priceValue
+  } = state;
+  const [celoAccount, setCeloAccount] = useState('')
+  const { account, connector, dispatch } = useContext(GenContext);
 
   // handle input change
   const handleInputChange = (e, index) => {
@@ -34,61 +63,36 @@ const Mint = () => {
     setAttribute([...attributes, { label: "", description: "" }]);
   };
 
-  const [state, setState] = useState({
-    collections: [],
-    zip: null,
-    ipfsJsonData: [],
-    metadata: [],
-    collectionName: '',
-    mintFileName: '',
-    loading: false,
-    mintUrl: '',
-    showCopy: false,
-    size: { height: 0, width: 0 },
-    iconClicked: false,
-    selectValue: 'Algo',
-    priceValue: 0
-  })
-
-  const {
-    collections,
-    zip,
-    ipfsJsonData,
-    metadata,
-    collectionName,
-    mintFileName,
-    title,
-    description,
-    loading,
-    mintUrl,
-    showCopy,
-    size,
-    iconClicked,
-    selectValue,
-    priceValue
-  } = state;
-  const [celoAccount, setCeloAccount] = useState('')
-
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const { account, connector, dispatch } = useContext(GenContext);
   const fileRef = useRef(null);
   const jsonFileRef = useRef(null);
-  const clipboardRef = useRef(null)
 
-  const mintProps = { selectValue, handleSetState, window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, account, connector, priceValue }
+  const mintProps = { 
+    selectValue, 
+    handleSetState, 
+    window, 
+    ipfsJsonData, 
+    mintFileName, 
+    celoAccount, 
+    setCeloAccount, 
+    account, 
+    connector, 
+    priceValue,
+    setFeedback,
+    dispatch
+  }
 
   const handleMintUpload = () => {
     jsonFileRef.current.click()
-    handleSetState({ showCopy: false })
   }
 
   const handleExport = async () => {
     try {
       dispatch(setGlobalLoading(true))
-      const ipfs = await createNFT(zip)
+      const ipfs = await createNFT({zip, dispatch, setFeedback})
       dispatch(setGlobalLoading(false))
       let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
       let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
@@ -116,20 +120,7 @@ const Mint = () => {
 
   return (
     <div className={classes.container}>
-      <div className={` ${classes.clipboard} ${showCopy === true ? classes.enter : classes.leave}`}>
-        <div>{mintUrl}</div>
-        <div
-          onMouseDown={() => handleSetState({ iconClicked: true })}
-          onMouseUp={() => handleSetState({ iconClicked: false })}
-          onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={`${classes.icon} ${iconClicked && classes.clicked}`}
-        >
-          copy to clipboard
-        </div>
-        <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={mintUrl} />
-      </div>
-
       <div className={classes.heading}>
-
         <div className={classes.mintOptions}>
           <div className={classes.mintOption}>
             <div onClick={() => history.push('/mint/single-nft')} className={classes.switch}>

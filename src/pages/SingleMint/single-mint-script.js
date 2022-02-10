@@ -1,140 +1,75 @@
 import { ethers } from "ethers";
-import { AlgoSingleMint, connectAndMint} from '../../utils/arc_ipfs';
+import { AlgoSingleMint, connectAndMint } from '../../utils/arc_ipfs';
 const minter = require('../../utils/arc_ipfs')
-
 
 let mintSingle = [
   "function createToken(string memory tokenURI) public {}"
 ];
 
-
-// export async function mintToCelo(celoProps) {
-//   const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount } = celoProps;
-
-//   if (typeof window.ethereum !== 'undefined') {
-//     const contract = await initializeContract(process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, setCeloAccount, celoAccount);
-//     let collection_id = {};
-//     let uris = ipfsJsonData.map((asset) => asset.url);
-//     let ids = ipfsJsonData.map((asset) => {
-//       let uintArray = asset.metadata.data.toLocaleString();
-//       return parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
-//     })
-
-//     let amounts = new Array(ids.length).fill(1);
-//     let tx;
-//     try {
-//       tx = await contract.mintBatch(celoAccount, ids, amounts, uris, '0x');
-//     } catch (error) {
-//       console.log(error);
-//       return;
-//     }
-//     for (let nfts = 0; nfts < ids.length; nfts++) {
-//       collection_id[ids[nfts]] = ipfsJsonData[nfts]['url']
-//     }
-//     const collectionHash = await minter.pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${ids[0]}` } })
-//     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-//     console.log(`collection${ids[0]}`)
-//     await minter.write.writeUserData(`collection${ids[0]}`, collectionUrl)
-//     // alert(`https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`)
-//     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
-//   } else {
-//     alert('download metamask');
-//   }
-// }
-
-// export async function mintToPoly(polyProps) {
-//   console.log("..mintiti")
-//   const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount } = polyProps;
+export async function mintSingleToPoly(singleMintProps) {
+  const { file, metadata, account, connector, dispatch, setLoader } = singleMintProps;
   
-//   if (typeof window.ethereum !== 'undefined') {
-//     console.log('defined....')
-//     const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, setCeloAccount, celoAccount);
-//     console.log('inited..')
-//     let uris = ipfsJsonData.map((asset) => asset.url);
-//     // generate random ids for the nft
-//     let ids = ipfsJsonData.map((asset) => {
-//       let uintArray = asset.metadata.data.toLocaleString();
-//       let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
-//       return id
-//     })
-
-//     let amounts = new Array(ids.length).fill(1);
-//     let tx;
-//     try {
-//       tx = await contract.mintBatch(celoAccount, ids, amounts, uris, '0x');
-//     } catch (error) {
-//       console.log('opolo', error);
-//       return;
-//     }
-//     return `https://mumbai.polygonscan.com/tx/${tx.hash}`
-//   } else {
-//     alert('download metamask');
-//   }
-// }
-
-export async function mintSingleToPoly(imageFile, metadata, account, connector) {
   console.log("..mintiti")
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
-      return {'message': "not yet implemented"}
+      return { 'message': "not yet implemented" }
     } else {
-      return {'message': "please connect to polygon network on your wallet"}
+      return { 'message': "please connect to polygon network on your wallet or select a different network" }
     }
   } else {
     const signer = await connector.getSigner();
-    const asset =  await connectAndMint(imageFile, metadata, imageFile.name)
-    const contract = await new ethers.Contract(process.env.REACT_APP_GENA_SINGLE_ADDRESS, mintSingle, signer)
+    dispatch(setLoader('uploading 1 of 1'))
+    const asset = await connectAndMint(file, metadata, file.name)
+    dispatch(setLoader('minting 1 of 1'))
+    const contract = new ethers.Contract(process.env.REACT_APP_GENA_SINGLE_ADDRESS, mintSingle, signer)
     let txn;
     try {
       txn = await contract.createToken(asset.url);
-      console.log('ttttorium', txn)
     } catch (error) {
       console.log(error)
       return;
     }
-    
-    // console.log('transacton', txn);
-    // let assetID = await signTx(connector, [txn]);
-    // await write.writeNft(account, assetID);
+    dispatch(setLoader(''))
     return `https://mumbai.polygonscan.com/tx/${txn.hash}`;
   }
-    
-  }
-
-export const handleCopy = props => {
-  const { navigator, clipboard } = props;
-  clipboard.select();
-  clipboard.setSelectionRange(0, 99999); /* For mobile devices */
-  navigator.clipboard.writeText(clipboard.value);
 }
 
 export const handleMint = async props => {
-  const { handleSetState, file, title, description, account, connector, selectChain, priceValue, selectValue, attributes } = props;
-  console.log(props);
-  
+  const {
+    dispatch,
+    setFeedback,
+    setClipboard,
+    setLoader,
+    file,
+    title,
+    description,
+    account,
+    connector,
+    selectChain,
+    priceValue,
+    selectValue,
+    attributes } = props;
+
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
   if (!result) return alert('please add a value price')
-
   let url = null;
-  let metadata = {name:title, description:description, attributes}
-  console.log('opium', attributes)
+  let metadata = { name: title, description: description, attributes }
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await AlgoSingleMint( file, metadata, account, connector);
+      url = await AlgoSingleMint({file, metadata, account, connector, dispatch, setFeedback, setClipboard});
     } else if (selectValue.toLowerCase() === 'celo') {
-      url = {'message': "not yet implemented"} // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
+      url = { 'message': "not yet implemented" } // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
     } else if (selectValue.toLowerCase() === 'polygon') {
-      url = await mintSingleToPoly(file, metadata, account, connector)
+      url = await mintSingleToPoly({file, metadata, account, connector, dispatch, setFeedback, setLoader})
     }
     if (typeof url === "object") {
-      alert(`${url.message}`)
-      return;
+      dispatch(setFeedback(url.message))
+    } else {
+      dispatch(setClipboard(url))
     }
-    handleSetState({ showCopy: true })
-    handleSetState({ mintUrl: url })
   } catch (error) {
-    console.log(error)
-    alert('Please connect your account and try again!'.toUpperCase())
+    console.log(error);
+    dispatch(setFeedback('connect your wallet and try again'))
   }
 }
 

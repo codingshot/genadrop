@@ -35,7 +35,7 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className={classes.wallet}>
-          <ConnectWallet>connect</ConnectWallet>
+          <ConnectWallet/>
         </div>
       </div>
       {

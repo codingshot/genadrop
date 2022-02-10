@@ -60,7 +60,7 @@ const Orgs = () => {
     {
       icon: "/assets/details-icon.png",
       title: "Details",
-      content: "Connect your wallet and upload your collection zip folder, previously made in the create section of the Genadrop dApp. as json file after which you will now upload your Metametadata to ipfs and select the blockchain of your choice, add price and Mint."
+      content: "your wallet and upload your collection zip folder, previously made in the create section of the Genadrop dApp. as json file after which you will now upload your Metametadata to ipfs and select the blockchain of your choice, add price and Mint."
     },
 
   ]

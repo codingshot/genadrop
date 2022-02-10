@@ -17,6 +17,9 @@ import { GenContext } from './gen-state/gen.context';
 import { setCollections } from './gen-state/gen.actions';
 import Collection from './pages/collection/collection';
 import Fallback from './pages/fallback/fallback';
+import Notification from './components/Notification/Notification';
+import Clipboard from './components/clipboard/clipboard';
+import Loader from './components/Loader/Loader';
 
 function App() {
   const { dispatch } = useContext(GenContext)
@@ -30,7 +33,6 @@ function App() {
 
   return (
     <div className="App">
-      <Overlay />
       <Navbar />
       <div className="Routes">
         <Switch>
@@ -46,6 +48,11 @@ function App() {
         </Switch>
       </div>
       <Footer />
+
+      <Overlay />
+      <Notification />
+      <Clipboard/>
+      <Loader/>
     </div>
   )
 }

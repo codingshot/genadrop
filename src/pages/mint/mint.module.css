@@ -16,7 +16,6 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  /* margin-top: 3em; */
 }
 
 select#gender option[value="Algo"]   { background-image:url("./algo-logo.png");   }
@@ -258,56 +257,6 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
 .description > div {
   margin-bottom: 0.5em;
   color: var(--icon-color);
-}
-
-
-.clipboard {
-  position: absolute;
-  top: 0em;
-  right: 0;
-  width: auto;
-  min-width: 15em;
-  max-width: 20em;
-  word-wrap: break-word;
-  background: white;
-  padding: 1em;
-  font-size: 14px;
-  border-radius: 0.5em;
-  box-shadow: 1px 1px 5px rgb(155, 153, 153);
-  user-select: none;
-  transform: translateX(200%);
-  transition: all 650ms;
-  z-index: 1000;
-}
-
-.enter {
-  transform: translateX(-148px);
-}
-.leave {
-  transform: translateX(200%);
-}
-
-.clipboard .icon {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  visibility: hidden;
-  cursor: pointer;
-  border: 1px solid gainsboro;
-  border-radius: 0.3em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.15em 1em;
-  background: white;
-}
-
-.clipboard:hover .icon {
-  visibility: visible;
-}
-
-.clipboard .icon.clicked {
-  transform: scale(1.02);
 }
 
 @media screen and (max-width: 1440px) {

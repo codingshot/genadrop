@@ -17,6 +17,7 @@ async function initializeContract(minterAddress, name, provider, account) {
   console.log('granted..')
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
   console.log('habibi', name, account)
+  // feedback: creating collection
   let tx = await collectionContract.createCollection(name, name.toUpperCase())
   console.log(tx.hash)
   await tx.wait();
@@ -29,7 +30,7 @@ async function initializeContract(minterAddress, name, provider, account) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount } = celoProps;
+  const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount, dispatch, setFeedback } = celoProps;
 
   if (typeof window.ethereum !== 'undefined') {
     const contract = await initializeContract(process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, setCeloAccount, celoAccount);
@@ -58,22 +59,26 @@ export async function mintToCelo(celoProps) {
     // alert(`https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`)
     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
   } else {
-    alert('download metamask');
+    dispatch(setFeedback('download metamask'));
   }
 }
 
-export async function mintToPoly(ipfsJsonData, account, connector, mintFileName) {
+export async function mintToPoly(polyProps) {
+  const { ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback } = polyProps;
+
   console.log("..mintiti")
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
-      return {'message': "not yet implemented"}
+      return { 'message': "not yet implemented" }
     } else {
-      return {'message': "please connect to polygon network on your wallet"}
+      return { 'message': "please connect to polygon network on your wallet" }
     }
   } else {
     console.log('defined....')
     const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, connector, account);
     console.log('inited..')
+    // feedback: preparing assets for minting, please wait
+    dispatch(setFeedback('preparing assets for minting, please wait'));
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft
     let ids = ipfsJsonData.map((asset) => {
@@ -91,7 +96,7 @@ export async function mintToPoly(ipfsJsonData, account, connector, mintFileName)
     }
     return `https://mumbai.polygonscan.com/tx/${tx.hash}`
   }
-    
+
 }
 
 export const unzip = async zip => {
@@ -139,35 +144,28 @@ export const handleMintFileChange = props => {
   handleSetState({ mintFileName: content.name })
 }
 
-export const handleCopy = props => {
-  const { navigator, clipboard } = props;
-  clipboard.select();
-  clipboard.setSelectionRange(0, 99999); /* For mobile devices */
-  navigator.clipboard.writeText(clipboard.value);
-}
-
 export const handleMint = async props => {
-  const { selectValue, handleSetState, ipfsJsonData, mintFileName, account, connector, priceValue } = props;
+  const { selectValue, handleSetState, ipfsJsonData, mintFileName, account, connector, priceValue, dispatch, setFeedback } = props;
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if(!result) return alert('please add a value price')
-
+  if (!result) return dispatch(setFeedback('please add a valid price value'));
   let url = null;
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await mintToAlgo(ipfsJsonData, account, connector, mintFileName);
+      url = await mintToAlgo({ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback});
     } else if (selectValue.toLowerCase() === 'celo') {
-      url = await mintToCelo(ipfsJsonData, account, connector, mintFileName)
+      url = await mintToCelo({ ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback })
     } else if (selectValue.toLowerCase() === 'polygon') {
-      url = await mintToPoly(ipfsJsonData, account, connector, mintFileName)
+      url = await mintToPoly({ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback})
     }
     if (typeof url === "object") {
-      alert(`${url.message}`)
-      return;
+      dispatch(setFeedback(url.message))
+    }else {
+      // copy to clipboard
+      console.log('copy to clipboard');
     }
-    handleSetState({ showCopy: true })
-    handleSetState({ mintUrl: url })
   } catch (error) {
     console.log(error)
+    console.log('three');
     alert('Please connect your account and try again!'.toUpperCase())
   }
 }
