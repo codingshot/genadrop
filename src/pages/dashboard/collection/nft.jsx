@@ -1,19 +1,27 @@
 import React from 'react';
 import classes from './nft.module.css';
+import { Link, useRouteMatch } from 'react-router-dom';
+
 const NFT = (data) => {
 
 
+    const match = useRouteMatch();
+    // const newPath = match.url.split('/').slice(0, -1).join('/')
 
     return (
 
-        data.data.map((_, idx) => {
+        data.data.map((nft, idx) => {
+            console.log(match.url);
             return (
-                <div key={idx} className={classes.collectionItem}>
-                    <img src="/assets/nft-placeholder.png" alt="" />
-                    <span className={classes.itemName}>#2410 Mute Auntie</span>
-                    <span className={classes.collectionName}>Mute Aunties Collection</span>
-                    <div className={classes.itemPrice}>Price <span>5.98 ALGO</span></div>
-                </div>
+                <Link to={`${match.url.split('/').slice(0, -1).join('/')}/${nft.name}`} >
+                    <div key={idx} className={classes.collectionItem}>
+                        <img src={nft.image_url} alt="" />
+                        <span className={classes.itemName}>{nft.name}</span>
+                        <span className={classes.collectionName}>{nft.collection_name}</span>
+                        <div className={classes.itemPrice}>Price <span>{nft.price} ALGO</span></div>
+                    </div>
+                </Link>
+
             )
         })
     )

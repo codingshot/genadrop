@@ -55,7 +55,7 @@ button:focus {
   font-weight: light;
   font-size: 0.8rem;
   line-height: 1.5;
-  /* border-bottom: 1px solid #DEE4F1; */
+  overflow-wrap: break-word;
 
   color: #9EA6AE;
   height: 0%;

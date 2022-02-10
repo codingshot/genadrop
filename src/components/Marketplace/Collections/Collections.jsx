@@ -21,7 +21,6 @@ const Collections = () => {
   }
   const history = useHistory();
   const match = useRouteMatch();
-
   useEffect(() => {
     if (Object.keys(collections).length) {
       (async function getResult() {
@@ -52,9 +51,11 @@ const Collections = () => {
           allCollections ? allCollections
             .filter((_, idx) => viewAll ? true : 10 > idx)
             .map(({ name, price, description, owner, number_of_nfts, image_url }, idx) => (
+
               <div key={idx} onClick={() => history.push(`${match.url}/${name}`)} className={classes.card}>
                 <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imgContainer}></div>
                 <div className={classes.cardBody}>
+
                   <img className={classes.thumbnail} src={image_url} alt="" />
                   <h3>{name}</h3>
                   <p>{description}</p>
