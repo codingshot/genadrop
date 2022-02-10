@@ -150,6 +150,11 @@
   width: 15px;
 }
 
+.buy:hover{
+  transform: scale(1.05);
+  transition: all .2s ease-in-out;
+}
+
 .attributesContainer{
   display: grid;
   grid-gap: 5px 5px;
@@ -217,6 +222,11 @@
   border-radius: 5px;
 }
 
+.btnCollections:hover{
+  transform: scale(1.05);
+  transition: all .2s ease-in-out;
+}
+
 
 
 @media screen and (max-width: 1440px) {
@@ -280,6 +290,4 @@
   .nftName{
     flex-direction: column;
   }
-
-  
 }
