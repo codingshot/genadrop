@@ -7,7 +7,7 @@ import axios from 'axios';
 import Search from './history/search';
 import NFT from './collection/nft';
 import Graph from './graph/graph';
-import { useRouteMatch } from 'react-router-dom';
+import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useEffect } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getNftCollection } from '../../utils';
@@ -27,9 +27,9 @@ const Orgs = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const { collections } = useContext(GenContext);
-  const { url } = useRouteMatch();
-
+  const { collections } = useContext(GenContext)
+  const { url } = useRouteMatch()
+  const history = useHistory();
   useEffect(() => {
     if (Object.keys(collections).length) {
       const [, , collectionName, nftId] = url.split('/');
@@ -213,7 +213,7 @@ const Orgs = () => {
 
         </div>
         <div className={classes.allCollecitons}>
-          <button className={classes.btnCollections}>View All Collections</button>
+          <button onClick={() => history.goBack()} className={classes.btnCollections}>View All Collections</button>
         </div>
       </div>
     </div >
