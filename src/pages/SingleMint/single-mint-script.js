@@ -51,7 +51,7 @@ export const handleMint = async props => {
     attributes } = props;
 
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if (!result) return alert('please add a value price')
+  if (!result) return dispatch(setFeedback('please add a valid price value'));
   let url = null;
   let metadata = { name: title, description: description, attributes }
   try {

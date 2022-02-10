@@ -9,19 +9,20 @@
   align-items: center;
   justify-content: center;
   visibility: hidden;
-  transition: all 1s;
+  transition: all 1000ms 500ms;
 }
 
 .icon {
   width: 24px;
   height: 24px;
-  background: gainsboro;
+  background: gray;
   border-radius: 50%;
   white-space: nowrap;
 }
 
 .message {
   flex: 1;
+  text-transform: lowercase;
 }
 
 .feedback {
@@ -30,12 +31,12 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  animation: slide-out 650ms forwards;
-  background: white;
-  color: var(--card-bg);
+  animation: slide-out 650ms 500ms forwards;
+  background: var(--card-bg);
+  color: white;
   padding: 1em 2em;
   border-radius: 0.25em;
-  box-shadow: 0 0 15px gainsboro;
+  box-shadow: 0 0 5px gainsboro;
 }
 
 .container.active {
@@ -44,7 +45,7 @@
 }
 
 .container.active .feedback {
-  animation: slide-in 650ms forwards;
+  animation: slide-in 650ms 500ms forwards;
 }
 
 @keyframes slide-in {

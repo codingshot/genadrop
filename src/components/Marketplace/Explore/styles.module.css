@@ -240,11 +240,17 @@
 }
 
 .menu {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1em;
   white-space: nowrap;
+}
+
+.loader {
+  width: 100%;
+  max-width: 15em;
 }
 
 .filterDisplay {
@@ -344,26 +350,17 @@
   border-bottom: 1px solid gainsboro;
 }
 
-.loadingContainer {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2em;
-}
-
-.loadingContainer > div {
-  min-width: 10em;
-}
-
-
 @media screen and (max-width: 768px) {
+  .main {
+    width: 100%;
+  }
 
-  .loadingContainer,
   .menu {
+    flex-wrap: unset;
+    justify-content: unset;
+    white-space: unset;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1em;
-    justify-items: center;
   }
 
   .wrapper {
@@ -381,7 +378,7 @@
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 540px) {
   .loadingContainer,
   .menu {
     grid-template-columns: repeat(2, 1fr);

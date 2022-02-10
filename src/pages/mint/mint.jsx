@@ -4,7 +4,7 @@ import { getImageSize } from '../../utils';
 import { createNFT } from '../../utils/arc_ipfs';
 import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
-import { setFeedback, setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
+import { setClipboard, setFeedback, setLoader } from '../../gen-state/gen.actions';
 import { handleFileChange, handleMint, handleMintFileChange } from './mint-script';
 import { useHistory } from 'react-router-dom';
 
@@ -82,8 +82,12 @@ const Mint = () => {
     connector, 
     priceValue,
     setFeedback,
+    setClipboard,
+    setLoader,
     dispatch
   }
+
+  
 
   const handleMintUpload = () => {
     jsonFileRef.current.click()
@@ -91,9 +95,7 @@ const Mint = () => {
 
   const handleExport = async () => {
     try {
-      dispatch(setGlobalLoading(true))
-      const ipfs = await createNFT({zip, dispatch, setFeedback})
-      dispatch(setGlobalLoading(false))
+      const ipfs = await createNFT({zip, dispatch, setFeedback, setLoader});
       let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
       let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
         type: 'application/json',
@@ -102,8 +104,7 @@ const Mint = () => {
       saveAs(fileToSave, fileName);
     } catch (error) {
       console.log(error)
-      alert('No pinataApiKey provided!')
-      dispatch(setGlobalLoading(false))
+      dispatch(setFeedback('failed to upload collection. Make sure you are uploading the correct file.'))
     }
   }
 

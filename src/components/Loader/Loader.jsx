@@ -8,7 +8,7 @@ const Loader = () => {
   return (
     <div className={`${classes.container} ${loaderMessage && classes.active}`}>
       <img className={classes.icon} src="/assets/icon-loading-dark.svg" alt="" />
-      <div>{loaderMessage}</div>
+      <div className={classes.message}>{loaderMessage}</div>
     </div>
   )
 }

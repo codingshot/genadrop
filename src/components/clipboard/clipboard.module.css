@@ -3,7 +3,8 @@
   position: fixed;
   z-index: 2000;
   right: 10px;
-  background: white;
+  background: var(--card-bg);
+  color: white;
   visibility: hidden;
   padding: 1em 1.5em;
   border-radius: 0.25em;
@@ -25,6 +26,7 @@
   margin: 0;
   cursor: pointer;
   transition: transform 100ms;
+  filter: invert(1);
 }
 
 .icon:hover {
@@ -47,10 +49,12 @@
   font-size: 0.85rem;
   padding: 0.2em 1em;
   border-radius: 0.25em;
-  background: gainsboro;
+  background: var(--card-bg1);
+  color: white;
   outline: 2px solid transparent;
 }
 
 .copy:hover {
-  outline: 2px solid rgb(187, 186, 186);
+  background: var(--card-bg3);
+  outline: 2px solid var(--card-bg1);
 }

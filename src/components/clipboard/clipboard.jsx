@@ -27,7 +27,7 @@ const Clipboard = () => {
     handleSetState({ clipboardState: 'copied' })
     setTimeout(() => {
       handleSetState({ clipboardState: 'copy' })
-    }, 500);
+    }, 650);
   }
 
   const handleDiscard = () => {
