@@ -11,14 +11,16 @@ let mintAbi = [
   "function mintBatch( address to, uint256[] memory ids, uint256[] memory amounts, string[] memory uris,bytes memory data) public {}"
 ];
 
-async function initializeContract(minterAddress, name, provider, account) {
-  name = name.split('-')[0]
-  const signer = await provider.getSigner();
+async function initializeContract(contractProps) {
+  const { minterAddress, mintFileName, connector, account, dispatch, setLoader} = contractProps;
+  let name = mintFileName.split('-')[0]
+  const signer = await connector.getSigner();
   console.log('granted..')
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
-  console.log('habibi', name, account)
+  console.log('habibi', name, account, collectionContract)
   let tx = await collectionContract.createCollection(name, name.toUpperCase())
   console.log(tx.hash)
+  dispatch(setLoader('minting'))
   await tx.wait();
   let getCollectionAddresses = await collectionContract.collectionsOf(account);
   console.log(getCollectionAddresses)
@@ -29,10 +31,10 @@ async function initializeContract(minterAddress, name, provider, account) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { window, ipfsJsonData, mintFileName, celoAccount, setCeloAccount } = celoProps;
-
+  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = celoProps;
   if (typeof window.ethereum !== 'undefined') {
-    const contract = await initializeContract(process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, setCeloAccount, celoAccount);
+    dispatch(setFeedback('preparing your assets for minting'));
+    const contract = await initializeContract({minterAddress:process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
     let collection_id = {};
     let uris = ipfsJsonData.map((asset) => asset.url);
     let ids = ipfsJsonData.map((asset) => {
@@ -42,10 +44,12 @@ export async function mintToCelo(celoProps) {
 
     let amounts = new Array(ids.length).fill(1);
     let tx;
+    dispatch(setLoader('finalizing'));
     try {
-      tx = await contract.mintBatch(celoAccount, ids, amounts, uris, '0x');
+      tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
     } catch (error) {
       console.log(error);
+      dispatch(setLoader(''))
       return;
     }
     for (let nfts = 0; nfts < ids.length; nfts++) {
@@ -55,25 +59,24 @@ export async function mintToCelo(celoProps) {
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
     console.log(`collection${ids[0]}`)
     await minter.write.writeUserData(`collection${ids[0]}`, collectionUrl)
-    // alert(`https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`)
     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
   } else {
-    alert('download metamask');
+    dispatch(setFeedback('download metamask'));
   }
 }
 
-export async function mintToPoly(ipfsJsonData, account, connector, mintFileName) {
-  console.log("..mintiti")
+export async function mintToPoly(polyProps) {
+  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = polyProps;
+  console.log('ipfsJsonData: ', ipfsJsonData);
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
-      return {'message': "not yet implemented"}
+      return { 'message': "not yet implemented" }
     } else {
-      return {'message': "please connect to polygon network on your wallet"}
+      return { 'message': "please connect to polygon network on your wallet" }
     }
   } else {
-    console.log('defined....')
-    const contract = await initializeContract(process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, connector, account);
-    console.log('inited..')
+    dispatch(setFeedback('preparing your assets for minting'));
+    const contract = await initializeContract({minterAddress: process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft
     let ids = ipfsJsonData.map((asset) => {
@@ -83,15 +86,18 @@ export async function mintToPoly(ipfsJsonData, account, connector, mintFileName)
     })
     let amounts = new Array(ids.length).fill(1);
     let tx;
+    dispatch(setLoader('finalizing'));
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
     } catch (error) {
       console.log('opolo', error);
+      dispatch(setLoader(''))
       return;
     }
+    dispatch(setLoader(''))
+    dispatch(setFeedback('you have successfully minted your NFTs.'))
     return `https://mumbai.polygonscan.com/tx/${tx.hash}`
   }
-    
 }
 
 export const unzip = async zip => {
@@ -102,72 +108,72 @@ export const unzip = async zip => {
 
 export const handleFileChange = async (props) => {
   const { event, handleSetState } = props;
-  if (!event.target.files[0]) return;
-  let content = event.target.files[0];
-  handleSetState({ zip: event.target.files[0] })
-  handleSetState({ loading: true })
-  handleSetState({ collectionName: content.name })
-  let col = [];
-  let unzipped = await unzip(content);
-  for (let file in unzipped.files) {
-    let uint8array = unzipped.files[file]["_data"]["compressedContent"]
-    let string = new TextDecoder().decode(uint8array);
-    let blob = new Blob([new Uint8Array(uint8array).buffer], { type: 'image/png' });
-    try {
-      const meta = JSON.parse(string)
-      handleSetState({ metadata: meta })
-    } catch (error) {
-      let imageFile = new File([blob], file, {
-        type: "image/png"
-      });
-      col.push(imageFile)
+  try {
+    if (!event.target.files[0]) return;
+    let content = event.target.files[0];
+    handleSetState({ zip: event.target.files[0] })
+    handleSetState({ loading: true })
+    handleSetState({ collectionName: content.name })
+    let col = [];
+    let unzipped = await unzip(content);
+    for (let file in unzipped.files) {
+      let uint8array = unzipped.files[file]["_data"]["compressedContent"]
+      let string = new TextDecoder().decode(uint8array);
+      let blob = new Blob([new Uint8Array(uint8array).buffer], { type: 'image/png' });
+      try {
+        const meta = JSON.parse(string)
+        handleSetState({ metadata: meta })
+      } catch (error) {
+        let imageFile = new File([blob], file, {
+          type: "image/png"
+        });
+        col.push(imageFile)
+      }
     }
+    handleSetState({ collections: col })
+    handleSetState({ loading: false })
+  } catch (error) {
+    console.log(error);
   }
-  handleSetState({ collections: col })
-  handleSetState({ loading: false })
 }
 
 export const handleMintFileChange = props => {
   const { event, handleSetState } = props;
-  if (!event?.target?.files[0]) return;
-  let content = event.target.files[0];
-  let fileReader = new FileReader();
-  fileReader.onload = function (evt) {
-    handleSetState({ ipfsJsonData: JSON.parse(evt.target.result) })
-  };
-  fileReader.readAsText(content);
-  handleSetState({ mintFileName: content.name })
-}
-
-export const handleCopy = props => {
-  const { navigator, clipboard } = props;
-  clipboard.select();
-  clipboard.setSelectionRange(0, 99999); /* For mobile devices */
-  navigator.clipboard.writeText(clipboard.value);
+  try {
+    if (!event?.target?.files[0]) return;
+    let content = event.target.files[0];
+    let fileReader = new FileReader();
+    fileReader.onload = function (evt) {
+      handleSetState({ ipfsJsonData: JSON.parse(evt.target.result) })
+    };
+    fileReader.readAsText(content);
+    handleSetState({ mintFileName: content.name })
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export const handleMint = async props => {
-  const { selectValue, handleSetState, ipfsJsonData, mintFileName, account, connector, priceValue } = props;
+  const { selectValue, ipfsJsonData, mintFileName, account, connector, priceValue, dispatch, setFeedback, setClipboard, setLoader, window } = props;
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if(!result) return alert('please add a value price')
-
+  if (!result) return dispatch(setFeedback('please add a valid price value'));
   let url = null;
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await mintToAlgo(ipfsJsonData, account, connector, mintFileName);
+      url = await mintToAlgo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader });
     } else if (selectValue.toLowerCase() === 'celo') {
-      url = await mintToCelo(ipfsJsonData, account, connector, mintFileName)
+      url = await mintToCelo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader })
     } else if (selectValue.toLowerCase() === 'polygon') {
-      url = await mintToPoly(ipfsJsonData, account, connector, mintFileName)
+      url = await mintToPoly({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader })
     }
     if (typeof url === "object") {
-      alert(`${url.message}`)
-      return;
+      dispatch(setFeedback(url.message))
+    } else {
+      dispatch(setClipboard(url))
     }
-    handleSetState({ showCopy: true })
-    handleSetState({ mintUrl: url })
   } catch (error) {
-    console.log(error)
-    alert('Please connect your account and try again!'.toUpperCase())
+    console.error(error)
+    dispatch(setLoader(''))
+    dispatch(setFeedback('Please ensure that your wallet is connected and try again.'))
   }
 }

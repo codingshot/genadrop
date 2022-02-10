@@ -1,37 +1,84 @@
-.button {
-  width: 100%;
+.container {
+  width: auto;
+  position: relative;
+}
+
+.connect {
   padding: 0.5em 1.5em;
   border-radius: 0.25em;
-  font-size: 1rem;
   cursor: pointer;
-  border: none;
-  outline: none;
   background: var(--card-bg);
   color: white;
 }
 
-.condected {
+.icon {
+  width: 8px;
+  height: 8px;
+  background: chartreuse;
+  border-radius: 50%;
+}
+
+.connected {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  padding: 0.5em 1.5em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  background: white;
+  color: var(--card-bg);
+  transition: all 300ms;
+}
+
+.connected:hover {
+  outline: 2px solid gainsboro;
+}
+
+.dropdown {
   width: 100%;
+  position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: relative;
-  font-weight: 500;
-  border: 2px solid green;
-  color: white;
-  outline: none;
-  font-size: 1.2rem;
-  
-  transition: all 0.3s;
+  align-items: flex-end;
+  gap: 1em;
+  padding: 0.25em;
+  visibility: hidden;
+  transition: all 200ms;
+  background: white;
+  box-shadow: 0 0 10px gainsboro;
+  border-radius: 0.25em;
+  opacity: 0;
+  border: 1px solid gainsboro;
+}
+
+.dropdown.active {
+  transform: translateY(1em);
+  visibility: visible;
+  opacity: 1;
+}
+
+.disconnect {
+  display: inline-block;
+  width: auto;
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 0.15em 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  background: var(--card-bg);
+  transition: all 300ms;
+}
+
+.disconnect:hover {
+  outline: 1px solid var(--card-bg1);
 }
 
 .address {
+  width: 100%;
   font-weight: bold;
-  margin: -2px auto 0.2em;
+  font-size: 0.85rem;
+  color: black;
+  text-align: center;
 }
 
-.discornect {
-  font-size: 12px;
-  font-family: monospace;
-  cursor: pointer;
-}

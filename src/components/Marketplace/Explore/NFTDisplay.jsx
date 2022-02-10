@@ -12,17 +12,13 @@ const NFTDisplay = ({ NFTCollection }) => {
             <NftCard key={idx} nft={nft} index={idx} />
           ))
           :
-          <div className={classes.loadingContainer}>
-            {
-              (Array(8).fill(null)).map((_, idx) => (
-                <div key={idx} >
-                  <Skeleton count={1} height={200} />
-                  <br />
-                  <Skeleton count={1} height={40} />
-                </div>
-              ))
-            }
-          </div>
+          (Array(8).fill(null)).map((_, idx) => (
+            <div className={classes.loader} key={idx} >
+              <Skeleton count={1} height={200} />
+              <br />
+              <Skeleton count={1} height={40} />
+            </div>
+          ))
       }
     </div>
   )

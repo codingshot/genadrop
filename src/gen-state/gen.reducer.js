@@ -30,7 +30,10 @@ export const INITIAL_STATE = {
   connector: null,
   isRule: false,
   rule: [],
-  collections: {}
+  collections: {},
+  feedback: '',
+  clipboardMessage: '',
+  loaderMessage: ''
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -181,6 +184,21 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.payload
+      }
+    case genActionTypes.SET_FEEDBACK:
+      return {
+        ...state,
+        feedback: action.payload
+      }
+    case genActionTypes.SET_CLIPBOARD:
+      return {
+        ...state,
+        clipboardMessage: action.payload
+      }
+    case genActionTypes.SET_LOADER:
+      return {
+        ...state,
+        loaderMessage: action.payload
       }
     default:
       return state;

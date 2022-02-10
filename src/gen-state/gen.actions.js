@@ -142,3 +142,18 @@ export const setCollections = collections => ({
   type: genActionTypes.SET_COLLECTIONS,
   payload: collections
 })
+
+export const setFeedback = feedback => ({
+  type: genActionTypes.SET_FEEDBACK,
+  payload: feedback
+})
+
+export const setClipboard = message => ({
+  type: genActionTypes.SET_CLIPBOARD,
+  payload: message
+})
+
+export const setLoader = message => ({
+  type: genActionTypes.SET_LOADER,
+  payload: message
+})

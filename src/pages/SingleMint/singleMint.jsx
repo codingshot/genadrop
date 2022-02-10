@@ -3,8 +3,8 @@ import { useRef, useState, useEffect, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getImageSize } from '../../utils';
 import { createNFT } from '../../utils/arc_ipfs';
-import { handleCopy, handleMint, handleMintFileChange } from './single-mint-script';
-import { setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
+import { handleMint, handleMintFileChange } from './single-mint-script';
+import { setClipboard, setFeedback, setLoader, setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
 import { useHistory } from 'react-router-dom';
 import { saveAs } from 'file-saver';
 
@@ -12,9 +12,6 @@ const SingleMint = () => {
 
   const [state, setState] = useState({
     loading: false,
-    mintUrl: '',
-    showCopy: false,
-    iconClicked: false,
     mintFileName: '',
     collectionName: '',
     metadata: [],
@@ -30,8 +27,6 @@ const SingleMint = () => {
   })
 
   const {
-    mintUrl,
-    iconClicked,
     priceValue,
     collectionName,
     ipfsJsonData,
@@ -44,23 +39,24 @@ const SingleMint = () => {
     mintFileName,
     file,
     selectChain,
-    showCopy,
   } = state;
-  const [celoAccount, setCeloAccount] = useState('')
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
+  const [celoAccount, setCeloAccount] = useState('')
+  const [attributes, setAttribute] = useState([{ trait_type: "", value: "" }]);
+  const { account, connector, feedback, dispatch } = useContext(GenContext);
 
-  const { account, connector, dispatch } = useContext(GenContext);
+  const mintProps = { handleSetState, setFeedback, setClipboard, setLoader, file, title, description, selectChain, account, connector, priceValue, selectValue, attributes, dispatch }
+
   const fileRef = useRef(null);
-  const clipboardRef = useRef(null)
-
+  const history = useHistory();
+  const jsonFileRef = useRef(null);
 
   const handleFileChange = event => {
     if (!event.target.files[0]) return;
     let file = event.target.files[0];
-    console.log(file, file.name);
     handleSetState({ file, collectionName: file.name })
   }
 
@@ -68,39 +64,8 @@ const SingleMint = () => {
     handleSetState({ file: null })
   }
 
-  const history = useHistory();
-
-  useEffect(() => {
-    if (!file) return
-    const run = async () => {
-      const { height, width } = await getImageSize(file);
-      handleSetState({ size: { height, width } })
-    }
-    run()
-  }, [file])
-  const jsonFileRef = useRef(null);
-
-  const handleExport = async () => {
-    try {
-      dispatch(setGlobalLoading(true))
-      const ipfs = await createNFT(file)
-      dispatch(setGlobalLoading(false))
-      let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
-      let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
-        type: 'application/json',
-        name: fileName
-      });
-      saveAs(fileToSave, fileName);
-    } catch (error) {
-      console.log(error)
-      alert('No pinataApiKey provided!')
-      dispatch(setGlobalLoading(false))
-    }
-  }
-
   const handleMintUpload = () => {
     jsonFileRef.current.click()
-    handleSetState({ showCopy: false })
   }
 
   const handleAddClick = () => {
@@ -114,35 +79,24 @@ const SingleMint = () => {
   };
 
   const handleInputChange = (e, index) => {
-    console.log(e.target.value);
     const { name, value } = e.target;
     const list = [...attributes];
     list[index][name] = value;
-    console.log(index, name, list);
     setAttribute(list);
   };
 
-  const [attributes, setAttribute] = useState([{ trait_type: "", value: "" }]);
-
-  const mintProps = { handleSetState, file, title, description, selectChain, account, connector, priceValue, selectValue, attributes}
-
+  useEffect(() => {
+    if (!file) return
+    const run = async () => {
+      const { height, width } = await getImageSize(file);
+      handleSetState({ size: { height, width } })
+    }
+    run()
+  }, [file])
 
   return (
     <div className={classes.container}>
-      <div className={` ${classes.clipboard} ${showCopy === true ? classes.enter : classes.leave}`}>
-        <div>{mintUrl}</div>
-        <div
-          onMouseDown={() => handleSetState({ iconClicked: true })}
-          onMouseUp={() => handleSetState({ iconClicked: false })}
-          onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={`${classes.icon} ${iconClicked && classes.clicked}`}
-        >
-          copy to clipboard
-        </div>
-        <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={mintUrl} />
-      </div>
-
       <div className={classes.heading}>
-
         <div className={classes.mintOptions}>
           <div className={classes.mintOption}>
             <div onClick={() => history.push('/mint/single-nft')} className={`${classes.switch} ${classes.active}`}>
@@ -171,11 +125,6 @@ const SingleMint = () => {
             </div>
             <div className={classes.buttonWrapper}>
               <button className={classes.uploadBtn} onClick={() => fileRef.current.click()}>upload</button>
-              {
-                file
-                  ? <button className={classes.exportBtn} onClick={handleExport}>export</button>
-                  : null
-              }
             </div>
             <input
               style={{ display: 'none' }}

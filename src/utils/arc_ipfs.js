@@ -139,20 +139,27 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 
 };
 
-const AlgoSingleMint = async (imageFile, metadata, account, connector) => {
-  console.log( connector.chainId !== 4160)
+const AlgoSingleMint = async (algoMintProps) => {
+  const {file, metadata, account, connector, dispatch, setFeedback, setClipboard} = algoMintProps;
+  console.log(connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
-    const asset =  await connectAndMint(imageFile, metadata, imageFile.name)
+    dispatch(setFeedback('uploading to ipfs'))
+    // feedback: uploading to ipfs
+    const asset = await connectAndMint(file, metadata, file.name)
     const txn = await createAsset(asset, account);
     console.log('transacton', txn);
+    // feedback: asset uploaded, minting in progress
+    dispatch(setFeedback('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
     await write.writeNft(account, assetID);
+    // feedback: asset minted
+    dispatch(setFeedback('asset minted'))
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
   } else {
-    return {'message': "please connect to your alogrand wallet"}
+    return { 'message': "connect to alogrand network on your wallet or select a different network" }
   }
-  
-  
+
+
 }
 
 const connectAndMint = async (sampleFile, metadata, imgName) => {
@@ -161,6 +168,7 @@ const connectAndMint = async (sampleFile, metadata, imgName) => {
 
   }).catch((err) => {
     console.log(err);
+    alert('We encountered issues uploading your file. Pease check your network and try again')
   });
 }
 
@@ -223,7 +231,7 @@ async function signTx(connector, txns) {
     result = await connector.send(request);
     console.log('result', result)
   } catch (error) {
-    console.log(error);
+    console.log('four');
     alert(error)
     throw error;
   }
@@ -244,7 +252,7 @@ async function signTx(connector, txns) {
   const confirmedTxn = await waitForConfirmation(tx.txId);
 
   console.log('confam', tx.txId)
-  
+
 
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
@@ -259,16 +267,17 @@ async function signTx(connector, txns) {
 }
 
 
-async function createNFT(fileData) {
-
+async function createNFT(props) {
+  const { zip: fileData, dispatch, setFeedback, setLoader } = props;
   let assets = [];
-  console.log('starting....')
-  //zip.loadAsync(fileData).then((data) =>console.log(data.files))
   const data = await zip.loadAsync(fileData)
   const files = data.files['metadata.json']
   const metadataString = await files.async('string')
   const metadata = JSON.parse(metadataString)
+  dispatch(setFeedback('uploading your assets, please do not refresh your page.'))
   for (let i = 0; i < metadata.length; i++) {
+    // feedback: minting i of metadata.length
+    dispatch(setLoader(`uploading ${i+1} of ${metadata.length}`))
     let imgName = `${metadata[i].name}.png`
     console.log(imgName, '-------')
     let imgFile = data.files[imgName]
@@ -278,38 +287,41 @@ async function createNFT(fileData) {
     const asset = await connectAndMint(blob, metadata[i], imgName)
     assets.push(asset);
   }
+  dispatch(setLoader(''))
+  dispatch(setFeedback('uploaded successfully'))
   return assets;
 };
 
 
-async function mintToAlgo(assets, account, connector, name) {
-  console.log('minting...........')
+async function mintToAlgo(algoProps) {
+  const {window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader} = algoProps;
   if (connector.isWalletConnect && connector.chainId === 4160) {
     let collection_id = [];
     let txns = [];
-    for (let i = 0; i < assets.length; i++) {
-      const txn = await createAsset(assets[i], account)
+    dispatch(setFeedback('preparing your assets for minting'))
+    for (let i = 0; i < ipfsJsonData.length; i++) {
+      dispatch(setLoader(`minting ${i+1} of ${ipfsJsonData.length}`))
+      const txn = await createAsset(ipfsJsonData[i], account)
       txns.push(txn)
     }
 
     let txgroup = algosdk.assignGroupID(txns)
-    
+
     let groupId = txgroup[0].group.toString("base64")
+    dispatch(setLoader('finalizing'))
     let assetID = await signTx(connector, txns)
-    // for (let nfts = 0; nfts < txns.length; nfts++) {
-    //   collection_id.push(Buffer.from(hashes[nfts]).toString('hex'))
-    // }
-    for (let nfts = 0; nfts < assets.length; nfts++) {
-      collection_id.push(assetID+nfts)
+    for (let nfts = 0; nfts < ipfsJsonData.length; nfts++) {
+      collection_id.push(assetID + nfts)
     }
     const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, name, collection_id)
+    await write.writeUserData(account, collectionUrl, mintFileName, collection_id)
+    dispatch(setLoader(''))
+    dispatch(setFeedback('you have successfully minted your NFTs'));
     return `https://testnet.algoexplorer.io/tx/group/${groupId}`
-    } else {
-      return {'message': "please connect to your alogrand wallet"}
-    }
-  
+  } else {
+    dispatch(setFeedback('please connect to algorand network on your wallet or select a different network'));
+  }
 }
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 

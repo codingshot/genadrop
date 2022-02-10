@@ -8,7 +8,7 @@
   left: 0;
   top: 0;
   background: var(--main-accent);
-  z-index: 10000000;
+  z-index: 4000;
   padding: 0.5em 2em;
 }
 
