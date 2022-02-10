@@ -273,11 +273,7 @@
     flex-direction: column;
   }
 
-  .v_subsection1 {
-    margin-bottom: 1rem;
-    max-width: 222rem;
-    width: 100%;
-  }
+
 
   .attributesContainer{
     display: grid;

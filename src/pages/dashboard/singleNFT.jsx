@@ -10,7 +10,7 @@ import Graph from './graph/graph';
 import { useRouteMatch } from 'react-router-dom';
 import { useEffect } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { getNftData, getNftCollection } from '../../utils';
+import { getNftCollection } from '../../utils';
 
 const Orgs = () => {
 
@@ -27,8 +27,8 @@ const Orgs = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const { collections } = useContext(GenContext)
-  const { url } = useRouteMatch()
+  const { collections } = useContext(GenContext);
+  const { url } = useRouteMatch();
 
   useEffect(() => {
     if (Object.keys(collections).length) {
@@ -51,13 +51,13 @@ const Orgs = () => {
       })
   }, [collections])
 
-  useEffect(() => {
-    if (!asset) return
-    // you can assess a single nft data inside this function;
-    console.log(collection);
+  // useEffect(() => {
+  //   if (!asset) return
+  //   // you can assess a single nft data inside this function;
+  //   console.log(collection);
 
-    console.log("-------");
-  }, [asset])
+  //   console.log("-------");
+  // }, [asset])
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
@@ -120,74 +120,6 @@ const Orgs = () => {
     { event: "Minted", price: "", quantity: 2000, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
     { event: "Minted", price: "", quantity: 100, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
     { event: "Sale", price: 0.13, quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
-  ]
-
-
-
-  const nfts = [
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    },
-    {
-      image: "/assets/nft-placeholder.png",
-      itemName: "#2410 Mute Auntie",
-      collectionName: "Mute Aunties",
-      price: "98.20",
-      token: "ALGO"
-    }
   ]
 
 
