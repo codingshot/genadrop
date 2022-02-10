@@ -260,6 +260,7 @@
   .v_subsection1{
     width: 100%;
     margin-bottom: 1rem;
+    max-width: 222rem;
   }
   
 }
@@ -274,6 +275,7 @@
 
   .v_subsection1 {
     margin-bottom: 1rem;
+    max-width: 222rem;
     width: 100%;
   }
 
