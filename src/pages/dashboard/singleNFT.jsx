@@ -30,9 +30,10 @@ const Orgs = () => {
   const { collections } = useContext(GenContext)
   const { url } = useRouteMatch()
   const history = useHistory();
+  const [, , collectionName, nftId] = url.split('/');
+
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const [, , collectionName, nftId] = url.split('/');
       const collection = collections.allCollections.find(col => col.name === collectionName);
       (async function getResult() {
 
@@ -49,15 +50,15 @@ const Orgs = () => {
       .then(res => {
         setAlgoPrice(res.data.data.amount);
       })
-  }, [collections])
+  }, [nftId])
 
-  // useEffect(() => {
-  //   if (!asset) return
-  //   // you can assess a single nft data inside this function;
-  //   console.log(collection);
+  useEffect(() => {
+    if (!asset) return
+    // you can assess a single nft data inside this function;
+    console.log(collection);
 
-  //   console.log("-------");
-  // }, [asset])
+    console.log("-------");
+  }, [asset])
 
   if (isLoading) {
     return <div className="App">Loading...</div>;
