@@ -5,31 +5,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  color: white;
   top: 0;
   left: 0;
   z-index: 5000;
   overflow: hidden;
-}
-
-.overlay img {
-  color: white;
-  animation: rotate 1.5s infinite linear;
-}
-
-.overlay div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  gap: 1em;
-  font-family: sans-serif;
   font-style: italic;
-}
-
-@keyframes rotate {
-  from{transform: rotate(0deg);}
-  to{transform: rotate(360deg);}
 }
 
 .overlay.isLoading {

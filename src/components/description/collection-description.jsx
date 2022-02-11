@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
-import { setCurrentDnaLayers, setLoading, setMintAmount, setMintInfo, setNftLayers } from '../../gen-state/gen.actions';
+import { setCurrentDnaLayers, setFeedback, setLoader, setLoading, setMintAmount, setMintInfo, setNftLayers } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import Button from '../button/button';
 import CollectionDetails from '../details/collection-details';
@@ -10,7 +10,7 @@ import ButtonClickEffect from '../button-effect/button-effect';
 import { createDna, createUniqueLayer, generateArt, parseLayers } from './collection-description-script';
 
 const CollectionDescription = () => {
-  const { layers, mintAmount, dispatch, combinations, isLoading, mintInfo, rule, isRule } = useContext(GenContext);
+  const { layers, nftLayers, mintAmount, dispatch, combinations, isLoading, mintInfo, rule, isRule } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   const handleChange = event => {
@@ -28,10 +28,11 @@ const CollectionDescription = () => {
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))
     const dnaLayers = createDna(layers);
-    const uniqueLayers = createUniqueLayer({ layers: dnaLayers, mintAmount, rule });
-    const arts = await generateArt({ layers: uniqueLayers, canvas: canvasRef.current, image: layers[0]['traits'][0]['image'] });
+    const uniqueLayers = createUniqueLayer({ dispatch, setFeedback, setLoader, layers: dnaLayers, mintAmount, rule });
+    const arts = await generateArt({ dispatch, setLoader, layers: uniqueLayers, canvas: canvasRef.current, image: layers[0]['traits'][0]['image'] });
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))
+    dispatch(setFeedback('done! click on the preview button to view assets.'))
     dispatch(setMintInfo("completed"))
     dispatch(setLoading(false))
   }
@@ -62,16 +63,9 @@ const CollectionDescription = () => {
         </div>
       </div>
 
-      <div className={classes.btnWrapper}>
+      <div>
         {
-          mintInfo === "completed" && !isRule
-            ?
-            <Link to="/preview">
-              <ButtonClickEffect>
-                <Button invert>preview</Button>
-              </ButtonClickEffect>
-            </Link>
-            :
+          mintInfo === "completed" && !isRule ? null :
             <div className={`${classes.mintInfo} ${isLoading && classes.isLoading}`}>
               {mintInfo}
             </div>
@@ -84,6 +78,18 @@ const CollectionDescription = () => {
             <Button>generate {mintAmount}</Button>
           </ButtonClickEffect>
         </div>
+      </div>
+
+      <div className={classes.btnWrapper}>
+        {
+          nftLayers.length && (
+            <Link to="/preview">
+              <ButtonClickEffect>
+                <Button invert>preview</Button>
+              </ButtonClickEffect>
+            </Link>
+          )
+        }
       </div>
       <canvas style={{ display: "none" }} ref={canvasRef}></canvas>
     </div>
