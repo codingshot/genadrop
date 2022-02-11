@@ -1,10 +1,17 @@
+.wrapper {
+  width: 100%;
+  padding: 0 1em;
+}
+
 .container {
   width: 100%;
+  max-width: 1440px;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  margin-bottom: 16em;
+  margin: 0 auto;
+  margin-bottom: 4em;
   min-height: 100vh;
 }
 
@@ -13,6 +20,27 @@
   height: auto;
   position: sticky;
   top: 4em;
+}
+
+.arrowBack {
+  padding: 0 1em;
+  margin-left: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em 2em;
+  border-radius: 0.25em;
+  box-shadow: 4px 4px 8px gainsboro;
+  margin-top: 1em;
+  cursor: pointer;
+}
+
+.arrowBack img {
+  transition: all 300ms;
+}
+
+.arrowBack:hover img {
+  transform: translateX(-2px);
 }
 
 .main {
@@ -31,7 +59,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 2em;
-  padding: 1em;
+  padding: 1em 0;
   background: var(--main-bg);
   z-index: 1;
 }
@@ -110,15 +138,15 @@
 
 .preview {
   width: 100%;
-  padding: 0.5em;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 2em;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+  padding: 0 0.5em;
 }
 
 .card {
-  width: calc(16px * 16);
+  min-width: 12em;
+  max-width: 20em;
   position: relative;
 }
 
@@ -127,10 +155,22 @@
   top: 1em;
   right: 1em;
   cursor: pointer;
-  transition: transform 100ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;
+  border-radius: 0.15em;
 }
 
-.card > .iconClose:hover {
+.iconClose img {
+  width: 0.7em;
+  transition: transform 300ms;
+  margin: 0;
+}
+
+.card > .iconClose:hover img {
   transform: scale(1.2);
 }
 
@@ -239,6 +279,50 @@
   background: white;
 }
 
+.paginate {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-bottom: 4em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1em;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
+  padding: 0.25em;
+}
+
+.pageLeft,
+.pageRight {
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  background: var(--card-bg);
+  color: white;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.pageLeft:hover,
+.pageRight:hover {
+  outline: 2px solid gray;
+}
+
+.pageCount {
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1280px) {
+  .preview {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .preview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
 
 @media screen and (max-width: 768px) {
   .container {
@@ -248,5 +332,17 @@
 
   .sidebar {
     width: 100%;
+    position: static;
+  }
+
+  .details {
+    top: 3em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .preview {
+    grid-template-columns: auto;
+    justify-items: center;
   }
 }

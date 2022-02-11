@@ -18,39 +18,6 @@
   gap: 1em;
 }
 
-.ruleSelectButton {
-  position: absolute;
-  top: 1em;
-  left: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-}
-
-.rulesContainer {
-  position: relative;
-  outline: none;
-}
-
-.ruleBtn {
-  background: var(--card-bg);
-  outline: none;
-  padding: 0.45em 1em;
-  border-radius: 0.35em;
-  cursor: pointer;
-  white-space: nowrap;
-  text-transform: capitalize;
-  transition: all 150ms;
-}
-
-.ruleCardWrapper {
-  min-width: 10em;
-  position: absolute;
-  border-radius: 0.35em;
-  z-index: 0;
-}
-
 @media screen and (max-width: 1200px) {
   .container {
     flex-direction: column;
@@ -68,21 +35,7 @@
     margin-top: 6em;
   }
 
-  .ruleSelectButton {
-    top: -4em;
-  }
-
   .layer_overview {
     flex-direction: column;
-  }
-
-  .ruleCardWrapper {
-    transform: translateX(-40%);
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .ruleCardWrapper {
-    transform: translateX(-47%);
   }
 }

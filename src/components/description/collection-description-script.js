@@ -43,8 +43,7 @@ export const isUnique = (attributes, attr, rule) => {
 }
 
 export const createUniqueLayer = props => {
-  const { layers, mintAmount, rule } = props;
-
+  const { dispatch, setLoader, setFeedback, layers, mintAmount, rule } = props;
   const newLayers = [];
   const newAttributes = [];
   let uniqueIndex = 0;
@@ -64,11 +63,14 @@ export const createUniqueLayer = props => {
 
     if (isUnique(newAttributes, attr, rule)) {
       newAttributes.push([...attr])
+      // dispatch(setLoader(`preparing ${newAttributes.length} of ${mintAmount}`))
+      console.log(`preparing ${newAttributes.length} of ${mintAmount}`);
     } else {
       uniqueIndex++;
+      console.log(`removing ${uniqueIndex} duplicates`);
+      // dispatch(setLoader(`removing ${uniqueIndex} duplicates`))
     }
   }
-
   newAttributes.forEach(attr => {
     newLayers.push({
       id: uuid(),
@@ -83,9 +85,10 @@ export const createUniqueLayer = props => {
 }
 
 export const generateArt = async props => {
-  const { layers, canvas, image } = props;
+  const { layers, canvas, image, dispatch, setLoader } = props;
   const uniqueImages = [];
-  for (let { attributes, id } of layers) {
+  for (let [index, { attributes, id }] of layers.entries()) {
+    dispatch(setLoader(`generating ${index + 1} of ${layers.length}`))
     const images = [];
     attributes.forEach(attr => {
       images.push(attr.image)
@@ -94,6 +97,7 @@ export const generateArt = async props => {
     const imageUrl = canvas.toDataURL();
     uniqueImages.push({ id, imageUrl })
   }
+  dispatch(setLoader(''))
   return uniqueImages;
 }
 

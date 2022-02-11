@@ -8,12 +8,7 @@ const Overlay = () => {
 
   return (
     <div className={`${classes.overlay} ${isLoading && classes.isLoading}`}>
-
-      <div>
-        <img src="/assets/icon-loading.svg" alt="" />
-        <p>Do not refresh your page!</p>
-      </div>
-
+      <p>Do not refresh your page!</p>
     </div>
   )
 }
