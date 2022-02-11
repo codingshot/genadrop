@@ -39,9 +39,10 @@ const Preview = () => {
     deleteId: '',
     currentPage: 1,
     paginate: {},
+    currentPageValue: 1,
     editorAction: { index: "", id: "" }
   })
-  const { deleteId, currentPage, paginate } = state;
+  const { deleteId, currentPage, paginate, currentPageValue } = state;
   const didMountRef = useRef(false)
   const ipfsRef = useRef(null);
   const arweaveRef = useRef(null);
@@ -129,12 +130,18 @@ const Preview = () => {
   }
 
   const handlePrev = () => {
-    handleSetState({currentPage: currentPage <= 1 ? currentPage : currentPage-1 });
-    document.documentElement.scrollTop = 0;
+    if (currentPage <= 1) return;
+    handleSetState({ currentPage: currentPage - 1 })
   }
 
   const handleNext = () => {
-    handleSetState({currentPage: currentPage >= Object.keys(paginate).length ? currentPage : currentPage+1 });
+    if (currentPage >= Object.keys(paginate).length) return;
+    handleSetState({ currentPage: currentPage + 1 })
+  }
+
+  const handleGoto = () => {
+    if (currentPageValue < 1 || currentPageValue > Object.keys(paginate).length) return;
+    handleSetState({ currentPage: Number(currentPageValue) })
     document.documentElement.scrollTop = 0;
   }
 
@@ -150,7 +157,7 @@ const Preview = () => {
 
   useEffect(() => {
     let countPerPage = 20;
-    let numberOfPages = Math.floor(nftLayers.length / countPerPage) + 1;
+    let numberOfPages = Math.ceil(nftLayers.length / countPerPage);
     let startIndex = 0;
     let endIndex = startIndex + countPerPage;
     let paginate = {}
@@ -161,6 +168,7 @@ const Preview = () => {
     }
     handleSetState({ paginate })
   }, [nftLayers])
+
 
   return (
     <div className={classes.wrapper}>
@@ -242,9 +250,11 @@ const Preview = () => {
         </main>
       </div>
       <div className={classes.paginate}>
-        <div onClick={handlePrev} className={classes.pageLeft}>prev</div>
+        <div onClick={handlePrev} className={classes.pageControl}>prev</div>
         <div className={classes.pageCount}>{currentPage} of {Object.keys(paginate).length}</div>
-        <div onClick={handleNext} className={classes.pageRight}>next</div>
+        <div onClick={handleNext} className={classes.pageControl}>next</div>
+        <div onClick={handleGoto} className={classes.pageControl}>goto</div>
+        <input type="number" value={currentPageValue} onChange={event => handleSetState({ currentPageValue: event.target.value })} />
       </div>
     </div>
   )

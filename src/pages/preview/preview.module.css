@@ -293,8 +293,14 @@
   padding: 0.25em;
 }
 
-.pageLeft,
-.pageRight {
+.paginate input {
+  padding: 0.65em;
+  max-width: 6em;
+  border: 1px solid gainsboro;
+  border-radius: 0.25em;
+}
+
+.pageControl {
   padding: 0.5em 1em;
   border-radius: 0.25em;
   background: var(--card-bg);
@@ -303,8 +309,7 @@
   transition: all 300ms;
 }
 
-.pageLeft:hover,
-.pageRight:hover {
+.pageControl:hover {
   outline: 2px solid gray;
 }
 
