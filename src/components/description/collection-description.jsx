@@ -27,10 +27,8 @@ const CollectionDescription = () => {
     if (mintAmount > combinations - rule.length) return dispatch(setMintInfo("cannot generate more than the possible combinations"));
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))
-    dispatch(setLoader('preparing assets, do not reload your page'));
     const dnaLayers = createDna(layers);
-    const uniqueLayers = createUniqueLayer({ dispatch, setFeedback, setLoader, layers: dnaLayers, mintAmount, rule, collectionName });
-    dispatch(setLoader(''));
+    const uniqueLayers = await createUniqueLayer({ dispatch, setFeedback, setLoader, layers: dnaLayers, mintAmount, rule, collectionName });
     const arts = await generateArt({ dispatch, setLoader, layers: uniqueLayers, canvas: canvasRef.current, image: layers[0]['traits'][0]['image'] });
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))
