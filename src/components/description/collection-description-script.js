@@ -1,11 +1,12 @@
 import { v4 as uuid } from 'uuid';
-import { handleImage } from '../../utils';
+import { getDefaultDescription, getDefaultName, handleImage } from '../../utils';
 
 export const createDna = layers => {
   const getPercentage = (rarity, total) => {
     let result = (parseInt(rarity) / total) * 100;
-    return Math.floor(result)
+    return Math.floor(result) ? Math.floor(result) : 1
   }
+
   function shuffle(array) {
     for (let i = 0; i < 100; i++) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -15,6 +16,7 @@ export const createDna = layers => {
     }
     return array
   }
+
   const newLayers = layers.map(layer => {
     const totalTraits = (layer.traits.map(trait => parseInt(trait.Rarity))).reduce((acc, curr) => acc + curr);
     const newTraits = (layer.traits.map(trait => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait))).flat();
@@ -43,7 +45,7 @@ export const isUnique = (attributes, attr, rule) => {
 }
 
 export const createUniqueLayer = props => {
-  const { dispatch, setLoader, setFeedback, layers, mintAmount, rule } = props;
+  const { dispatch, setLoader, setFeedback, layers, mintAmount, rule, collectionName } = props;
   const newLayers = [];
   const newAttributes = [];
   let uniqueIndex = 0;
@@ -67,15 +69,19 @@ export const createUniqueLayer = props => {
       console.log(`preparing ${newAttributes.length} of ${mintAmount}`);
     } else {
       uniqueIndex++;
-      console.log(`removing ${uniqueIndex} duplicates`);
+      console.log(`
+
+      removing ${uniqueIndex} duplicates
+      
+      `);
       // dispatch(setLoader(`removing ${uniqueIndex} duplicates`))
     }
   }
-  newAttributes.forEach(attr => {
+  newAttributes.forEach((attr, id) => {
     newLayers.push({
       id: uuid(),
-      name: "",
-      description: "",
+      name: getDefaultName(id + 1),
+      description: getDefaultDescription(collectionName, id + 1),
       image: "image",
       attributes: attr
     })
@@ -93,7 +99,7 @@ export const generateArt = async props => {
     attributes.forEach(attr => {
       images.push(attr.image)
     })
-    await handleImage({images, canvas, image});
+    await handleImage({ images, canvas, image });
     const imageUrl = canvas.toDataURL();
     uniqueImages.push({ id, imageUrl })
   }

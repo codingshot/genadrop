@@ -13,12 +13,11 @@ import {
   setNftLayers,
   setOutputFormat
 } from '../../gen-state/gen.actions';
-import { saveAs } from 'file-saver';
-import JSZip from 'jszip';
 import { generateArt, parseLayers } from '../../components/description/collection-description-script';
-import { createUniqueLayer, getAweaveFormat, getIpfsFormat } from './preview-script';
+import { createUniqueLayer } from './preview-script';
 import TextEditor from './text-editor';
 import { useHistory } from 'react-router-dom';
+import { getDefaultDescription, getDefaultName, handleDownload } from '../../utils';
 
 const Preview = () => {
 
@@ -78,8 +77,11 @@ const Preview = () => {
   }
 
   const handleRename = input => {
-    if (!input.value) return
-    dispatch(renameAsset({ id: input.id, name: input.value }))
+    if (!input.value) {
+      dispatch(renameAsset({ id: input.id, name: getDefaultName(input.index + 1) }))
+    } else {
+      dispatch(renameAsset({ id: input.id, name: input.value }))
+    }
   }
 
   const handleDescription = input => {
@@ -88,35 +90,10 @@ const Preview = () => {
 
   const handleCollectionName = value => {
     dispatch(setCollectionName(value))
-  }
-
-  const handleDownload = () => {
-    const zip = new JSZip();
-    if (outputFormat.toLowerCase() === "arweave") {
-      getAweaveFormat(nftLayers).forEach((data, idx) => {
-        zip.file(data.name ? `${data.name}.json` : `_${idx}.json`, JSON.stringify(data, null, '\t'));
-      });
-    } else {
-      zip.file("metadata.json", JSON.stringify(getIpfsFormat(nftLayers), null, '\t'));
-    }
-    nftLayers.forEach((layer, idx) => {
-      let base64String = layer.image.replace("data:image/png;base64,", "");
-      zip.file(layer.name ? `${layer.name}.png` : `_${idx}.png`, base64String, { base64: true });
-    })
-    zip.generateAsync({ type: "blob" }).then(function (content) {
-      saveAs(content, `${collectionName ? `${collectionName}.zip` : 'collections.zip'}`);
-    });
-  }
-
-  const handleDownloadAsset = input => {
-    const { id, name, nftLayers } = input;
-    let { image } = nftLayers.find(el => el.id === id)
-    let link = document.createElement('a');
-    link.download = `${name || 'asset'}.png`;
-    link.href = image;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    let newLayers = nftLayers.map((asset, idx) => (
+      { ...asset, description: getDefaultDescription(value, idx + 1) })
+    )
+    dispatch(setNftLayers(newLayers))
   }
 
   const handleFormatChange = val => {
@@ -140,6 +117,7 @@ const Preview = () => {
   }
 
   const handleGoto = () => {
+    console.log(paginate);
     if (currentPageValue < 1 || currentPageValue > Object.keys(paginate).length) return;
     handleSetState({ currentPage: Number(currentPageValue) })
     document.documentElement.scrollTop = 0;
@@ -156,6 +134,7 @@ const Preview = () => {
   }, [dispatch, mintAmount])
 
   useEffect(() => {
+    console.log('reloaded');
     let countPerPage = 20;
     let numberOfPages = Math.ceil(nftLayers.length / countPerPage);
     let startIndex = 0;
@@ -195,7 +174,7 @@ const Preview = () => {
               <input ref={arweaveRef} type="radio" name="format" value="arweave" className={`${classes.radioBtn} ${outputFormat === 'arweave' && classes.clicked}`} />
               <p>Arweave</p>
             </label>
-            <button onClick={handleDownload}>Download zip</button>
+            <button onClick={() => handleDownload({ value: nftLayers, name: collectionName, outputFormat })}>Download zip</button>
           </div>
         </aside>
 
@@ -217,34 +196,37 @@ const Preview = () => {
           <div className={classes.preview}>
             {
               Object.keys(paginate).length ?
-                paginate[currentPage].map(({ image, id, name, description }, idx) => (
-                  <div key={idx} className={classes.card}>
-                    <img className={classes.asset} src={image} alt="" />
-                    <div className={classes.cardBody}>
-                      <div className={classes.textWrapper}>
-                        <TextEditor
-                          placeholder={name ? name : `name_${idx}`}
-                          submitHandler={value => handleRename({ value, id })}
+                paginate[currentPage].map((asset, index) => {
+                  const { image, id, name, description } = asset;
+                  return (
+                    <div key={index} className={classes.card}>
+                      <img className={classes.asset} src={image} alt="" />
+                      <div className={classes.cardBody}>
+                        <div className={classes.textWrapper}>
+                          <TextEditor
+                            placeholder={name}
+                            submitHandler={value => handleRename({ value, id, index })}
+                          />
+                        </div>
+                        <textarea
+                          name="description"
+                          value={description}
+                          cols="30"
+                          rows="3"
+                          placeholder='description'
+                          onChange={e => handleDescription({ value: e.target.value, id, index })}
                         />
+                        <div className={classes.buttonContainer}>
+                          <button onClick={() => handleDownload({ value: [asset], name: asset.name, outputFormat })}>Download</button>
+                          <button onClick={() => handleDeleteAndReplace(id)}>Generate New</button>
+                        </div>
                       </div>
-                      <textarea
-                        name="description"
-                        value={description}
-                        cols="30"
-                        rows="3"
-                        placeholder='description'
-                        onChange={e => handleDescription({ value: e.target.value, id })}
-                      />
-                      <div className={classes.buttonContainer}>
-                        <button onClick={() => handleDownloadAsset({ id, name, nftLayers })}>Download</button>
-                        <button onClick={() => handleDeleteAndReplace(id)}>Generate New</button>
+                      <div className={classes.iconClose}>
+                        <img src='/assets/icon-close.svg' alt='' onClick={() => handleDelete(id)} />
                       </div>
                     </div>
-                    <div className={classes.iconClose}>
-                      <img src='/assets/icon-close.svg' alt='' onClick={() => handleDelete(id)} />
-                    </div>
-                  </div>
-                )) : null
+                  )
+                }) : null
             }
           </div>
         </main>
