@@ -1,8 +1,8 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import classes from './text-editor.module.css'
 
 const TextEditor = ({ placeholder, submitHandler }) => {
-
   const [state, setState] = useState({
     value: '',
     editor: false
@@ -34,7 +34,7 @@ const TextEditor = ({ placeholder, submitHandler }) => {
           :
           <div>
             <p>{placeholder}</p>
-            <button type="button" onClick={() => handleSetState({ editor: true })}>
+            <button type="button" onClick={() => handleSetState({ editor: true, value: placeholder })}>
               <img src="/assets/icon-edit.svg" alt="" />
             </button>
           </div>

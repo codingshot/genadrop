@@ -20,6 +20,8 @@
   border-radius: 0.2em;
   transition: all 300ms;
   border: none;
+  background: white;
+  box-shadow: 0 0 5px gainsboro;
 }
 
 .container button * {

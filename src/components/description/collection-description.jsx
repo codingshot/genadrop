@@ -10,7 +10,7 @@ import ButtonClickEffect from '../button-effect/button-effect';
 import { createDna, createUniqueLayer, generateArt, parseLayers } from './collection-description-script';
 
 const CollectionDescription = () => {
-  const { layers, nftLayers, mintAmount, dispatch, combinations, isLoading, mintInfo, rule, isRule } = useContext(GenContext);
+  const { layers, nftLayers, mintAmount, dispatch, combinations, isLoading, mintInfo, rule, isRule, collectionName } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   const handleChange = event => {
@@ -28,7 +28,7 @@ const CollectionDescription = () => {
     dispatch(setNftLayers([]))
     dispatch(setLoading(true))
     const dnaLayers = createDna(layers);
-    const uniqueLayers = createUniqueLayer({ dispatch, setFeedback, setLoader, layers: dnaLayers, mintAmount, rule });
+    const uniqueLayers = await createUniqueLayer({ dispatch, setFeedback, setLoader, layers: dnaLayers, mintAmount, rule, collectionName });
     const arts = await generateArt({ dispatch, setLoader, layers: uniqueLayers, canvas: canvasRef.current, image: layers[0]['traits'][0]['image'] });
     dispatch(setCurrentDnaLayers(dnaLayers))
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))

@@ -134,6 +134,12 @@
   background: var(--main-accent);
   color: white;
   cursor: pointer;
+  transition: all 300ms;
+}
+
+.actionContainer button:hover {
+  background: var(--main-accent-dark);
+  outline: 2px solid var(--main-accent);
 }
 
 .preview {

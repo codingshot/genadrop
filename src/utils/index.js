@@ -1,4 +1,7 @@
 import axios from "axios";
+import { saveAs } from "file-saver";
+import JSZip from "jszip";
+import { getAweaveFormat, getIpfsFormat } from "../pages/preview/preview-script";
 import { getAlgoData } from "../utils/arc_ipfs";
 
 export const getNftCollections = async collections => {
@@ -65,6 +68,26 @@ export const getImageSize = async img => {
   })
 }
 
+export const getDefaultName = id => {
+  id = String(id);
+  if(id.length < 4){
+    let repeatBy = 4 - id.length
+     return `#${'0'.repeat(repeatBy)}${id}`
+  } else {
+     return `#${id}`
+  }    
+}
+
+export const getDefaultDescription = (collectionName, id) => {
+  id = String(id);
+  if(id.length < 4){
+    let repeatBy = 4 - id.length
+     return `${collectionName} #${'0'.repeat(repeatBy)}${id}`
+  } else {
+     return `${collectionName} #${id}`
+  }    
+}
+
 export const handleImage = async props => {
   const { canvas, images, image } = props;
   const { height, width } = await getImageSize(image);
@@ -98,3 +121,22 @@ export const handleBlankImage = async props => {
   });
   image && ctx.drawImage(image, 0, 0, width, height);
 };
+
+export const handleDownload = input => {
+  const {value, name, outputFormat} = input;
+  const zip = new JSZip();
+  if (outputFormat.toLowerCase() === "arweave") {
+    getAweaveFormat(value).forEach((data, idx) => {
+      zip.file(data.name ? `${data.name}.json` : `_${idx}.json`, JSON.stringify(data, null, '\t'));
+    });
+  } else {
+    zip.file("metadata.json", JSON.stringify(getIpfsFormat(value), null, '\t'));
+  }
+  value.forEach((layer, idx) => {
+    let base64String = layer.image.replace("data:image/png;base64,", "");
+    zip.file(layer.name ? `${layer.name}.png` : `_${idx}.png`, base64String, { base64: true });
+  })
+  zip.generateAsync({ type: "blob" }).then(function (content) {
+    saveAs(content, `${name ? `${name}.zip` : 'collections.zip'}`);
+  });
+}

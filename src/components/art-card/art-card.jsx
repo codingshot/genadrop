@@ -43,7 +43,18 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
       }
     })
     handleSetState({ prompt: '' })
-    dispatch(updateImage({ layerTitle, image, traitTitle: inputValue.name, Rarity: inputValue.rarity }))
+    console.log(typeof(inputValue.rarity));
+    dispatch(updateImage({ 
+      layerTitle, 
+      image, 
+      traitTitle: inputValue.name, 
+      Rarity: Number(inputValue.rarity) > 100 
+      ? "100" 
+      : Number(inputValue.rarity) < 1
+      ? "1" 
+      :
+      inputValue.rarity 
+    }))
   }
 
   const handlePrompt = value => {
@@ -114,6 +125,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
                   autoFocus
                   type="number"
                   min="0"
+                  max="100"
                   name="rarity"
                   value={inputValue.rarity}
                   onChange={handleChange}
