@@ -22,6 +22,7 @@
     "firebase": "^9.6.4",
     "image-data-uri": "^2.0.1",
     "ipfs": "^0.60.0",
+    "js-file-download": "^0.4.12",
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "merge-images": "^2.0.0",
@@ -37,6 +38,7 @@
     "react-scripts": "4.0.3",
     "react-tweet-embed": "^1.3.1",
     "reactjs-popup": "^2.0.5",
+    "serve": "^13.0.2",
     "uuid": "^8.3.2",
     "web-vitals": "^1.0.1",
     "web3": "^1.7.0",
@@ -46,7 +48,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prod": "yarn run build && serve build"
   },
   "eslintConfig": {
     "extends": [
