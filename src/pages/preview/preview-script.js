@@ -1,5 +1,4 @@
-import { v4 as uuid } from 'uuid';
-import { handleImage } from '../../utils';
+import { getDefaultDescription, getDefaultName, handleImage } from '../../utils';
 
 export const isUnique = (attributes, attr, rule) => {
   let parseAttrToRule = attr.map(p => ({ layerTitle: p.trait_type, imageName: p.value }))
@@ -20,112 +19,56 @@ export const isUnique = (attributes, attr, rule) => {
   return true
 }
 
-export const createUniqueLayer = props => {
-  const { layers, rule, nftLayers, deleteId } = props;
+export const createUniqueLayer = async props => {
+  const { dispatch, setLoader, layers, rule, nftLayers, collectionName, index, id } = props;
   let newLayersCopy = [...nftLayers];
   let newAttributes = [];
   let uniqueIndex = 1;
   const prevAttributes = newLayersCopy.map(({ attributes }) => attributes);
 
   for (let i = 0; i < uniqueIndex; i++) {
-    let attribute = [];
-    layers.forEach(({ layerTitle, traits }) => {
-      let randNum = Math.floor(Math.random() * traits.length)
-      let { traitTitle, Rarity, image } = traits[randNum]
-      attribute.push({
-        trait_type: layerTitle,
-        value: traitTitle,
-        rarity: Rarity,
-        image: image
-      })
-    })
-
-    if (isUnique(prevAttributes, attribute, rule)) {
-      newAttributes = [...attribute]
-    } else {
-      uniqueIndex++;
-    }
+    const promise = new Promise(resolve => {
+      setTimeout(() => {
+        dispatch(setLoader(`removing ${uniqueIndex} duplicates`))
+        let attribute = [];
+        layers.forEach(({ layerTitle, traits }) => {
+          let randNum = Math.floor(Math.random() * traits.length)
+          let { traitTitle, Rarity, image } = traits[randNum]
+          attribute.push({
+            trait_type: layerTitle,
+            value: traitTitle,
+            rarity: Rarity,
+            image: image
+          })
+        })
+        if (isUnique(prevAttributes, attribute, rule)) {
+          newAttributes = [...attribute];
+        } else {
+          uniqueIndex += 1;
+        }
+        resolve();
+      }, 0);
+    });
+    await promise;
   }
 
-  const _newLayers = newLayersCopy.map(layer => {
-    if (layer.id === deleteId) {
-      return {
-        id: uuid(),
-        image: "image",
-        attributes: newAttributes
-      }
-    } else {
-      return layer
-    }
-  })
-
-  return _newLayers;
+  dispatch(setLoader(''))
+  return {
+    id,
+    name: getDefaultName(index + 1),
+    description: getDefaultDescription(collectionName, index + 1),
+    image: "image",
+    attributes: newAttributes
+  }
 }
 
 export const generateArt = async props => {
-  const { layers, canvas, image } = props;
-  const uniqueImages = [];
-  for (let { attributes, id } of layers) {
-    const images = [];
-    attributes.forEach(attr => {
-      images.push(attr.image)
-    })
-    await handleImage({images, canvas, image});
-    const imageUrl = canvas.toDataURL();
-    uniqueImages.push({ id, imageUrl })
-  }
-  return uniqueImages;
-}
-
-export const parseLayers = props => {
-  const { uniqueLayers, arts } = props;
-  return uniqueLayers.map(layer => {
-    for (let art of arts) {
-      if (art.id === layer.id) {
-        return { ...layer, image: art.imageUrl }
-      }
-    }
-    return layer
+  const { layer, canvas, image } = props;
+  const images = [];
+  layer.attributes.forEach(attr => {
+    images.push(attr.image)
   })
-}
-
-export const getAweaveFormat = nftLayers => {
-  return nftLayers.map((layer, idx) => (
-    {
-      name: layer.name ? layer.name : `_${idx}`,
-      image: "image.png",
-      description: layer.description,
-      attributes: layer.attributes.map(({ trait_type, value, rarity }) => (
-        { trait_type, value, rarity }
-      )),
-      symbol: '',
-      seller_fee_basis_points: '',
-      external_url: "",
-      collection: {
-        name: layer.name ? layer.name : `_${idx}`,
-        family: ""
-      },
-      properties: {
-        creators: [
-          {
-            address: "",
-            share: 100
-          }
-        ]
-      }
-    }
-  ))
-}
-
-export const getIpfsFormat = nftLayers => {
-  return nftLayers.map((layer, idx) => (
-    {
-      name: layer.name ? layer.name : `_${idx}`,
-      image: "image.png",
-      description: layer.description,
-      attributes: layer.attributes.map(({ trait_type, value, rarity }) => (
-        { trait_type, value, rarity }
-      ))
-    }
-  ))
+  await handleImage({ images, canvas, image });
+  const imageUrl = canvas.toDataURL();
+  return { id: layer.id, imageUrl }
 }

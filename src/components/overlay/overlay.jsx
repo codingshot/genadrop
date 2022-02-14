@@ -8,7 +8,7 @@ const Overlay = () => {
 
   return (
     <div className={`${classes.overlay} ${isLoading && classes.isLoading}`}>
-      <p>Do not reload the page...</p>
+      {/* <p>Do not reload the page...</p> */}
     </div>
   )
 }

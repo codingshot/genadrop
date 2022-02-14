@@ -118,7 +118,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_COMBINATIONS:
       return {
         ...state,
-        combinations: Math.ceil((65/100) * Number(action.payload))
+        combinations: Math.ceil((80/100) * Number(action.payload))
       }
     case genActionTypes.SET_LOADING:
       return {
