@@ -233,7 +233,7 @@ ${i + 1} of ${value.length}`
   // saveAs(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
 
   window.requestIdleCallback(() => {
-    fileDownload(content, 'filename.zip');
+    fileDownload(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
   })
 
   dispatch(setLoader(''));
