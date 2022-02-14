@@ -162,7 +162,7 @@ const Preview = () => {
               <input ref={arweaveRef} type="radio" name="format" value="arweave" className={`${classes.radioBtn} ${outputFormat === 'arweave' && classes.clicked}`} />
               <p>Arweave</p>
             </label>
-            <button onClick={() => handleDownload({ dispatch, setLoader, setFeedback, value: nftLayers, name: collectionName, outputFormat })}>Download zip</button>
+            <button onClick={() => handleDownload({ window, dispatch, setLoader, setFeedback, value: nftLayers, name: collectionName, outputFormat })}>Download zip</button>
           </div>
         </aside>
 
@@ -205,7 +205,7 @@ const Preview = () => {
                           onChange={e => handleDescription({ value: e.target.value, id, index })}
                         />
                         <div className={classes.buttonContainer}>
-                          <button onClick={() => handleDownload({ dispatch, setLoader, setFeedback, value: [asset], name: asset.name, outputFormat, single: true })}>Download</button>
+                          <button onClick={() => handleDownload({ window, dispatch, setLoader, setFeedback, value: [asset], name: asset.name, outputFormat, single: true })}>Download</button>
                           <button onClick={() => handleDeleteAndReplace(id, index)}>Generate New</button>
                         </div>
                       </div>

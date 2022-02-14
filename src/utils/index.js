@@ -2,6 +2,7 @@ import axios from "axios";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { getAlgoData } from "../utils/arc_ipfs";
+import fileDownload from 'js-file-download'
 
 export const getNftCollections = async collections => {
   let collectionArr = []
@@ -204,7 +205,7 @@ export const paginate = (input, count) => {
 }
 
 const downloadCallback = async props => {
-  const { value, name, outputFormat, dispatch, setLoader, id, single } = props;
+  const { window, value, name, outputFormat, dispatch, setLoader, id, single } = props;
   const zip = new JSZip();
   if (outputFormat.toLowerCase() === "arweave") {
     const aweave = await getAweaveFormat(value, dispatch, setLoader, id);
@@ -229,7 +230,11 @@ ${i + 1} of ${value.length}`
     await promise;
   }
   const content = await zip.generateAsync({ type: "blob" });
-  saveAs(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
+  // saveAs(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
+
+  window.requestIdleCallback(() => {
+    fileDownload(content, 'filename.zip');
+  })
 
   dispatch(setLoader(''));
 }
@@ -238,7 +243,7 @@ export const handleDownload = async input => {
   const { value, dispatch, setFeedback } = input;
   let paginated = paginate(value, 1000);
   let index = Object.keys(paginated).length;
-  dispatch(setFeedback(`your asset will be downloaded in ${index} ${index === 1 ?'file': 'files'}`));
+  dispatch(setFeedback(`your asset will be downloaded in ${index} ${index === 1 ? 'file' : 'files'}`));
   for (let i = 1; i <= index; i++) {
     const promise = new Promise(resolve => {
       setTimeout(async () => {

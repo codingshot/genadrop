@@ -22,6 +22,7 @@
     "firebase": "^9.6.4",
     "image-data-uri": "^2.0.1",
     "ipfs": "^0.60.0",
+    "js-file-download": "^0.4.12",
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "merge-images": "^2.0.0",
