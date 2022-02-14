@@ -2,7 +2,7 @@ import axios from "axios";
 import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { getAlgoData } from "../utils/arc_ipfs";
-import fileDownload from 'js-file-download'
+// import fileDownload from 'js-file-download'
 
 export const getNftCollections = async collections => {
   let collectionArr = []
@@ -230,10 +230,9 @@ ${i + 1} of ${value.length}`
     await promise;
   }
   const content = await zip.generateAsync({ type: "blob" });
-  // saveAs(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
-
   window.requestIdleCallback(() => {
-    fileDownload(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
+    // fileDownload(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
+      saveAs(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
   })
 
   dispatch(setLoader(''));
