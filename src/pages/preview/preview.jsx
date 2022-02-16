@@ -6,6 +6,7 @@ import {
   deleteAsset,
   renameAsset,
   setCollectionName,
+  setFeedback,
   setLoader,
   setLoading,
   setMintAmount,
@@ -13,8 +14,7 @@ import {
   setNftLayers,
   setOutputFormat
 } from '../../gen-state/gen.actions';
-import { generateArt, parseLayers } from '../../components/description/collection-description-script';
-import { createUniqueLayer } from './preview-script';
+import { createUniqueLayer, generateArt } from './preview-script';
 import TextEditor from './text-editor';
 import { useHistory } from 'react-router-dom';
 import { getDefaultDescription, getDefaultName, handleDownload } from '../../utils';
@@ -35,14 +35,12 @@ const Preview = () => {
   } = useContext(GenContext);
 
   const [state, setState] = useState({
-    deleteId: '',
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
     editorAction: { index: "", id: "" }
   })
-  const { deleteId, currentPage, paginate, currentPageValue } = state;
-  const didMountRef = useRef(false)
+  const { currentPage, paginate, currentPageValue } = state;
   const ipfsRef = useRef(null);
   const arweaveRef = useRef(null);
   const history = useHistory();
@@ -52,28 +50,25 @@ const Preview = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const handleGenerate = async () => {
-    if (mintAmount === combinations) return;
-    dispatch(setMintInfo(""));
-    dispatch(setLoading(true))
-    const uniqueLayers = createUniqueLayer({ layers: currentDnaLayers, rule, nftLayers, deleteId });
-    const arts = await generateArt({ dispatch, setLoader, layers: uniqueLayers, canvas, image: layers[0]['traits'][0]['image'] });
-    dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })))
-    dispatch(setLoading(false))
+  const handleDeleteAndReplace = async (id, index) => {
+    if (!(combinations - mintAmount)) {
+      dispatch(setMintInfo("  cannot generate asset from 0 combination"));
+    } else {
+      dispatch(setLoader('generating...'));
+      dispatch(setMintInfo(""));
+      const newLayer = await createUniqueLayer({ dispatch, setLoader, collectionName, index, layers: currentDnaLayers, rule, nftLayers, id, mintAmount });
+      const art = await generateArt({ dispatch, setLoader, layer: newLayer, canvas, image: layers[0]['traits'][0]['image'] });
+      let newLayers = nftLayers.map(asset => (
+        asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
+      ))
+      dispatch(setLoader(''))
+      dispatch(setNftLayers(newLayers))
+    }
   }
 
   const handleDelete = val => {
     dispatch(deleteAsset(val))
     dispatch(setMintAmount(mintAmount - 1))
-  }
-
-  const handleDeleteAndReplace = id => {
-    handleSetState({ deleteId: id })
-    if (!(combinations - mintAmount)) {
-      dispatch(setMintInfo("  cannot generate asset from 0 combination"));
-    } else {
-      dispatch(setMintInfo(""))
-    }
   }
 
   const handleRename = input => {
@@ -124,17 +119,10 @@ const Preview = () => {
   }
 
   useEffect(() => {
-    if (didMountRef.current) {
-      handleGenerate()
-    } else didMountRef.current = true;
-  }, [deleteId])
-
-  useEffect(() => {
     dispatch(setMintInfo(""))
   }, [dispatch, mintAmount])
 
   useEffect(() => {
-    console.log('reloaded');
     let countPerPage = 20;
     let numberOfPages = Math.ceil(nftLayers.length / countPerPage);
     let startIndex = 0;
@@ -174,7 +162,7 @@ const Preview = () => {
               <input ref={arweaveRef} type="radio" name="format" value="arweave" className={`${classes.radioBtn} ${outputFormat === 'arweave' && classes.clicked}`} />
               <p>Arweave</p>
             </label>
-            <button onClick={() => handleDownload({ value: nftLayers, name: collectionName, outputFormat })}>Download zip</button>
+            <button onClick={() => handleDownload({ window, dispatch, setLoader, setFeedback, value: nftLayers, name: collectionName, outputFormat })}>Download zip</button>
           </div>
         </aside>
 
@@ -217,8 +205,8 @@ const Preview = () => {
                           onChange={e => handleDescription({ value: e.target.value, id, index })}
                         />
                         <div className={classes.buttonContainer}>
-                          <button onClick={() => handleDownload({ value: [asset], name: asset.name, outputFormat })}>Download</button>
-                          <button onClick={() => handleDeleteAndReplace(id)}>Generate New</button>
+                          <button onClick={() => handleDownload({ window, dispatch, setLoader, setFeedback, value: [asset], name: asset.name, outputFormat, single: true })}>Download</button>
+                          <button onClick={() => handleDeleteAndReplace(id, index)}>Generate New</button>
                         </div>
                       </div>
                       <div className={classes.iconClose}>

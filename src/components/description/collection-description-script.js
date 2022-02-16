@@ -44,56 +44,54 @@ export const isUnique = (attributes, attr, rule) => {
   return true
 }
 
-export const create = async fdf => {
-
-}
-
 export const createUniqueLayer = async props => {
-  return new Promise (resolve => {
-    const { dispatch, setLoader, setFeedback, layers, mintAmount, rule, collectionName } = props;
-    const newLayers = [];
-    const newAttributes = [];
-    let uniqueIndex = 0;
-  
-    for (let i = 0; i < (mintAmount + uniqueIndex); i++) {
-      let attr = [];
-      layers.forEach(({ layerTitle, traits }) => {
-        let randNum = Math.floor(Math.random() * traits.length)
-        let { traitTitle, Rarity, image } = traits[randNum]
-        attr.push({
-          trait_type: layerTitle,
-          value: traitTitle,
-          rarity: Rarity,
-          image: image
+  const { dispatch, setLoader, layers, rule, mintAmount, collectionName } = props;
+  const newLayers = [];
+  const newAttributes = [];
+  let uniqueIndex = 0;
+
+  for (let i = 0; i < (mintAmount + uniqueIndex); i++) {
+    const promise = new Promise(resolve => {
+      setTimeout(() => {
+        dispatch(setLoader(
+          `preparing ${newAttributes.length} of ${mintAmount} assets 
+removing ${uniqueIndex} duplicates`
+        ))
+
+        let attr = [];
+        layers.forEach(({ layerTitle, traits }) => {
+          let randNum = Math.floor(Math.random() * traits.length)
+          let { traitTitle, Rarity, image } = traits[randNum]
+          attr.push({
+            trait_type: layerTitle,
+            value: traitTitle,
+            rarity: Rarity,
+            image: image
+          })
         })
-      })
-  
-      if (isUnique(newAttributes, attr, rule)) {
-        newAttributes.push([...attr])
-        // dispatch(setLoader(`preparing ${newAttributes.length} of ${mintAmount}`))
-        // console.log(`preparing ${newAttributes.length} of ${mintAmount}`);
-      } else {
-        uniqueIndex++;
-        // console.log(`
-  
-        // removing ${uniqueIndex} duplicates
-        
-        // `);
-        // dispatch(setLoader(`removing ${uniqueIndex} duplicates`))
-      }
-    }
-    newAttributes.forEach((attr, id) => {
-      newLayers.push({
-        id: uuid(),
-        name: getDefaultName(id + 1),
-        description: getDefaultDescription(collectionName, id + 1),
-        image: "image",
-        attributes: attr
-      })
+      
+        if (isUnique(newAttributes, attr, rule)) {
+          newAttributes.push([...attr])
+        } else {
+          uniqueIndex += 1;
+        }
+        resolve();
+      }, 0);
+    });
+    await promise;
+  }
+
+  newAttributes.forEach((attr, id) => {
+    newLayers.push({
+      id: uuid(),
+      name: getDefaultName(id + 1),
+      description: getDefaultDescription(collectionName, id + 1),
+      image: "image",
+      attributes: attr
     })
-  
-    resolve (newLayers);
   })
+
+  return newLayers;
 }
 
 export const generateArt = async props => {
