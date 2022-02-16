@@ -3,7 +3,7 @@ import { saveAs } from "file-saver";
 import JSZip from "jszip";
 import { getAweaveFormat, getIpfsFormat } from "../pages/preview/preview-script";
 import { getAlgoData } from "../utils/arc_ipfs";
-
+import { readSIngleUserNft } from "../utils/firebase";
 export const getNftCollections = async collections => {
   let collectionArr = []
   for (let i = 0; i < collections.length; i++) {
@@ -37,7 +37,11 @@ export const getNftCollection = async collection => {
       nftObj.price = collection.price
       let { params } = await getAlgoData(data[i])
       nftObj.algo_data = params
+      nftObj.Id = data[i]
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+      let assetInfo = await readSIngleUserNft(collection.owner, data[i])
+      console.log('sold info', assetInfo)
+      nftObj.sold = assetInfo.sold
       nftObj.ipfs_data = response.data
       nftObj.name = response.data.name;
       nftObj.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');

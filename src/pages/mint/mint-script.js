@@ -160,7 +160,7 @@ export const handleMint = async props => {
   let url = null;
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await mintToAlgo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader });
+      url = await mintToAlgo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader, priceValue });
     } else if (selectValue.toLowerCase() === 'celo') {
       url = await mintToCelo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader })
     } else if (selectValue.toLowerCase() === 'polygon') {

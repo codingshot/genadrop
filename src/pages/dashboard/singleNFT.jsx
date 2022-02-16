@@ -11,6 +11,7 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useEffect } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getNftCollection } from '../../utils';
+import { PurchaseNft } from '../../utils/arc_ipfs';
 
 const Orgs = () => {
 
@@ -27,6 +28,7 @@ const Orgs = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
+  const { account, connector } = useContext(GenContext);
   const { collections } = useContext(GenContext)
   const { url } = useRouteMatch()
   const history = useHistory();
@@ -124,6 +126,14 @@ const Orgs = () => {
     { event: "Sale", price: 0.13, quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
   ]
 
+  const buyNft = async () => {
+    let newWindow = window.open('', '_blank')
+    let res = await PurchaseNft(asset, account, connector)
+    console.log('final', res)
+    newWindow.location = res
+    
+  }
+
 
 
   return (
@@ -167,9 +177,11 @@ const Orgs = () => {
                 <span className={classes.usdValue}>(${(asset.price * algoPrice).toFixed(2)})</span>
               </span>
             </div>
+            {(asset.sold ? <div style={{"color": "red"}}>SOLD</div> : null)}
+            
 
             <div className={classes.btns}>
-              <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+              <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
               <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
 
             </div>
