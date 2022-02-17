@@ -127,10 +127,9 @@ const Orgs = () => {
   ]
 
   const buyNft = async () => {
-    let newWindow = window.open('', '_blank')
     let res = await PurchaseNft(asset, account, connector)
     console.log('final', res)
-    newWindow.location = res
+    alert(res)
     
   }
 
@@ -176,14 +175,10 @@ const Orgs = () => {
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>(${(asset.price * algoPrice).toFixed(2)})</span>
               </span>
-            </div>
-            {(asset.sold ? <div style={{"color": "red"}}>SOLD</div> : null)}
-            
+            </div>            
 
             <div className={classes.btns}>
-              <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
-              <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
-
+            {(asset.sold ? <button className={classes.buy} style={{color: 'red'}} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />SOLD!</button> : <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>)}
             </div>
 
           </div>
