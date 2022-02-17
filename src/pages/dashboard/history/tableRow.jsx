@@ -35,10 +35,7 @@ const TableRow = (data) => {
 
     return (
         <tr>
-            <td>
-                <img src={icon()} alt="" />
-                {data.event}
-            </td>
+            <td><span className={classes.icon} ><img src={icon()} alt="" /></span> {data.event} </td>
             <td>{data.price}</td>
             <td>{data.quantity}</td>
             <td>{address(data.from)}</td>

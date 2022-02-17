@@ -1,14 +1,14 @@
 
 .questionwrapper {
-
-  border-bottom: 1px solid #DEE4F1;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0.5rem;
   transition: 1.5s;
 }
 
 .questionwrapper.active{
-  background-color: #E5E8EB;
+  background-color: #F3F4F7;
+  border-radius: 10px 10px 0 0;
+  border-bottom: 1px solid #E5E8EB;
 }
 
 .question {

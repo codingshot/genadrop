@@ -3,7 +3,11 @@
     height: 35px;
     padding: 5px;
     border-radius: 5px;
-    border: 1px solid #707A83;
+    border: 1px solid #F3F4F7;
     font-size: 20px;
-    margin: 1rem;
+    margin: 0.5rem;
+    background: url("./search.png") no-repeat left;
+    background-size: 25px;
+    background-position: 5px;
+
 }
