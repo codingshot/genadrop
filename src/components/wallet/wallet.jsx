@@ -2,12 +2,11 @@ import React, { useContext, useState } from 'react'
 import classes from './wallet.module.css';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
-import { setConnector, setAccount, setFeedback } from '../../gen-state/gen.actions';
+import { setConnector, setAccount, setNotification } from '../../gen-state/gen.actions';
 
 
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
-import { useEffect } from 'react';
 
 
 function ConnectWallet() {
@@ -38,7 +37,7 @@ function ConnectWallet() {
 
   async function disconnect() {
     if (connector) {
-      const clear = await web3Modal.clearCachedProvider();
+      // const clear = await web3Modal.clearCachedProvider();
       dispatch(setAccount(''));
       dispatch(setConnector())
       setDropdown(false)
@@ -53,11 +52,11 @@ function ConnectWallet() {
     let connector
     try {
       connector = await web3Modal.connect();
-      dispatch(setFeedback('connected successfully'))
+      dispatch(setNotification('connected successfully'))
       // feedbacktype: success
       //await web3Modal.toggleModal();
     } catch (error) {
-      dispatch(setFeedback('connection failed'))
+      dispatch(setNotification('connection failed'))
       //   feedbacktype: error
       return
     }
@@ -82,7 +81,7 @@ function ConnectWallet() {
       // Subscribe to connection events
       connector.on("connect", (error, payload) => {
         if (error) {
-          dispatch(setFeedback('No connected'))
+          dispatch(setNotification('No connected'))
           // feedbacktype: warn              
 
           throw error;

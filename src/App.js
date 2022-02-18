@@ -22,7 +22,7 @@ import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
 
 function App() {
-  const { dispatch } = useContext(GenContext)
+  const { dispatch } = useContext(GenContext);
 
   useEffect(() => {
     (async function getCollections() {
@@ -51,8 +51,8 @@ function App() {
 
       <Overlay />
       <Notification />
-      <Clipboard/>
-      <Loader/>
+      <Clipboard />
+      <Loader />
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { GenContext } from '../../gen-state/gen.context';
 import { getImageSize } from '../../utils';
 import { createNFT } from '../../utils/arc_ipfs';
 import { handleMint, handleMintFileChange } from './single-mint-script';
-import { setClipboard, setFeedback, setLoader, setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
+import { setClipboard, setNotification, setLoader, setLoading as setGlobalLoading } from '../../gen-state/gen.actions';
 import { useHistory } from 'react-router-dom';
 import { saveAs } from 'file-saver';
 
@@ -46,9 +46,9 @@ const SingleMint = () => {
   }
   const [celoAccount, setCeloAccount] = useState('')
   const [attributes, setAttribute] = useState([{ trait_type: "", value: "" }]);
-  const { account, connector, feedback, dispatch } = useContext(GenContext);
+  const { account, connector, notification, dispatch } = useContext(GenContext);
 
-  const mintProps = { handleSetState, setFeedback, setClipboard, setLoader, file, title, description, selectChain, account, connector, priceValue, selectValue, attributes, dispatch }
+  const mintProps = { handleSetState, setNotification, setClipboard, setLoader, file, title, description, selectChain, account, connector, priceValue, selectValue, attributes, dispatch }
 
   const fileRef = useRef(null);
   const history = useHistory();

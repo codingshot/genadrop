@@ -1,4 +1,4 @@
-import { getDefaultDescription, getDefaultName, handleImage } from '../../utils';
+import { getDefaultName, handleImage } from '../../utils';
 
 export const isUnique = (attributes, attr, rule) => {
   let parseAttrToRule = attr.map(p => ({ layerTitle: p.trait_type, imageName: p.value }))
@@ -20,7 +20,7 @@ export const isUnique = (attributes, attr, rule) => {
 }
 
 export const createUniqueLayer = async props => {
-  const { dispatch, setLoader, layers, rule, nftLayers, collectionName, index, id } = props;
+  const { dispatch, setLoader, layers, rule, nftLayers, collectionName, collectionDescription, index, currentPage, id } = props;
   let newLayersCopy = [...nftLayers];
   let newAttributes = [];
   let uniqueIndex = 1;
@@ -36,7 +36,7 @@ export const createUniqueLayer = async props => {
           let { traitTitle, Rarity, image } = traits[randNum]
           attribute.push({
             trait_type: layerTitle,
-            value: traitTitle,
+            value: traitTitle.replace(".png", ""),
             rarity: Rarity,
             image: image
           })
@@ -55,8 +55,8 @@ export const createUniqueLayer = async props => {
   dispatch(setLoader(''))
   return {
     id,
-    name: getDefaultName(index + 1),
-    description: getDefaultDescription(collectionName, index + 1),
+    name: `${collectionName} ${getDefaultName(index + 1 + ((currentPage * 20) - 20))}`.trim(),
+    description: collectionDescription,
     image: "image",
     attributes: newAttributes
   }
@@ -69,6 +69,6 @@ export const generateArt = async props => {
     images.push(attr.image)
   })
   await handleImage({ images, canvas, image });
-  const imageUrl = canvas.toDataURL();
+  const imageUrl = canvas.toDataURL('image/webp', 0.1);
   return { id: layer.id, imageUrl }
 }

@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { getDefaultDescription, getDefaultName, handleImage } from '../../utils';
+import { getDefaultName, handleImage } from '../../utils';
 
 export const createDna = layers => {
   const getPercentage = (rarity, total) => {
@@ -64,7 +64,7 @@ removing ${uniqueIndex} duplicates`
           let { traitTitle, Rarity, image } = traits[randNum]
           attr.push({
             trait_type: layerTitle,
-            value: traitTitle,
+            value: traitTitle.replace(".png",""),
             rarity: Rarity,
             image: image
           })
@@ -84,8 +84,8 @@ removing ${uniqueIndex} duplicates`
   newAttributes.forEach((attr, id) => {
     newLayers.push({
       id: uuid(),
-      name: getDefaultName(id + 1),
-      description: getDefaultDescription(collectionName, id + 1),
+      name: `${collectionName} ${getDefaultName(id + 1)}`.trim(),
+      description: "",
       image: "image",
       attributes: attr
     })
@@ -104,7 +104,7 @@ export const generateArt = async props => {
       images.push(attr.image)
     })
     await handleImage({ images, canvas, image });
-    const imageUrl = canvas.toDataURL();
+    const imageUrl = canvas.toDataURL('image/webp', 0.1);
     uniqueImages.push({ id, imageUrl })
   }
   dispatch(setLoader(''))
