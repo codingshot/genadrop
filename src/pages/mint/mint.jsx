@@ -4,7 +4,7 @@ import { getImageSize } from '../../utils';
 import { createNFT } from '../../utils/arc_ipfs';
 import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
-import { setClipboard, setFeedback, setLoader } from '../../gen-state/gen.actions';
+import { setClipboard, setNotification, setLoader } from '../../gen-state/gen.actions';
 import { handleFileChange, handleMint, handleMintFileChange } from './mint-script';
 import { useHistory } from 'react-router-dom';
 
@@ -81,7 +81,7 @@ const Mint = () => {
     account, 
     connector, 
     priceValue,
-    setFeedback,
+    setNotification,
     setClipboard,
     setLoader,
     dispatch
@@ -95,7 +95,7 @@ const Mint = () => {
 
   const handleExport = async () => {
     try {
-      const ipfs = await createNFT({zip, dispatch, setFeedback, setLoader});
+      const ipfs = await createNFT({zip, dispatch, setNotification, setLoader});
       let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
       let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
         type: 'application/json',
@@ -104,7 +104,7 @@ const Mint = () => {
       saveAs(fileToSave, fileName);
     } catch (error) {
       console.log(error)
-      dispatch(setFeedback('failed to upload collection. Make sure you are uploading the correct file.'))
+      dispatch(setNotification('failed to upload collection. Make sure you are uploading the correct file.'))
     }
   }
 

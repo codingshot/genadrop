@@ -3,7 +3,7 @@
   max-width: 20em;
   height: calc(100vh - 7em);
   overflow: auto;
-  padding: 0 0.5em;
+  padding: 0 1em;
   position: sticky;
   top: 5em;
 }
@@ -120,6 +120,9 @@
 @media screen and (max-width: 1200px) {
   .container {
     height: auto;
+    max-width: 54em;
+    align-self: flex-end;
+    margin-top: 2em;
   }
 
   .preview_details {
@@ -129,11 +132,6 @@
 
   .wrapper {
     padding: 0;
-  }
-
-  .container {
-
-    max-width: 100%;
   }
 
   .detailsWrapper {

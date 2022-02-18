@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   visibility: hidden;
-  transition: all 1000ms 500ms;
+  transition: all 1000ms;
 }
 
 .icon {
@@ -25,13 +25,13 @@
   text-transform: lowercase;
 }
 
-.feedback {
+.notification {
   width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  animation: slide-out 650ms 500ms forwards;
+  animation: slide-out 650ms forwards;
   background: var(--card-bg);
   color: white;
   padding: 1em 2em;
@@ -44,8 +44,8 @@
   padding: 0.5em;
 }
 
-.container.active .feedback {
-  animation: slide-in 650ms 500ms forwards;
+.container.active .notification {
+  animation: slide-in 650ms forwards;
 }
 
 @keyframes slide-in {

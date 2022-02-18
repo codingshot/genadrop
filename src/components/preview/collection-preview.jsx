@@ -41,7 +41,7 @@ const CollectionPreview = () => {
     const { width, height } = await getImageSize(layers[0].traits[0].image)
     const canvas = document.createElement("canvas");
     await handleImage(canvas, width, height)
-    let image = canvas.toDataURL();
+    let image = canvas.toDataURL('image/webp', 1);
     let link = document.createElement('a');
     link.download = 'asset.png';
     link.href = image;

@@ -24,6 +24,7 @@ export const INITIAL_STATE = {
   outputFormat: 'ipfs',
   mintInfo: "",
   collectionName: "",
+  collectionDescription: "",
   isLoading: false,
   currentDnaLayers: null,
   account: '',
@@ -31,7 +32,7 @@ export const INITIAL_STATE = {
   isRule: false,
   rule: [],
   collections: {},
-  feedback: '',
+  notification: '',
   clipboardMessage: '',
   loaderMessage: ''
 }
@@ -82,7 +83,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       }
     case genActionTypes.CLEAR_PREVIEW:
       return {
-        ...state, 
+        ...state,
         preview: []
       }
     case genActionTypes.ADD_RULE:
@@ -90,7 +91,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         rule: action.payload
       }
-    case genActionTypes.CLEAR_RULE: 
+    case genActionTypes.CLEAR_RULE:
       return {
         ...state,
         rule: []
@@ -118,7 +119,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_COMBINATIONS:
       return {
         ...state,
-        combinations: Math.ceil((80/100) * Number(action.payload))
+        combinations: Math.ceil((80 / 100) * Number(action.payload))
       }
     case genActionTypes.SET_LOADING:
       return {
@@ -155,6 +156,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         collectionName: action.payload
       }
+    case genActionTypes.SET_COLLECTION_DESCRIPTION:
+      return {
+        ...state,
+        collectionDescription: action.payload
+      }
     case genActionTypes.SET_OUTPUT_FORMAT:
       return {
         ...state,
@@ -180,7 +186,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         rule: deleteRule(state.rule, action.payload)
       }
-    case genActionTypes.SET_COLLECTIONS: 
+    case genActionTypes.SET_COLLECTIONS:
       return {
         ...state,
         collections: action.payload
@@ -188,7 +194,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_FEEDBACK:
       return {
         ...state,
-        feedback: action.payload
+        notification: action.payload
       }
     case genActionTypes.SET_CLIPBOARD:
       return {

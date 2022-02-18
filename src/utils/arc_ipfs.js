@@ -140,20 +140,20 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 };
 
 const AlgoSingleMint = async (algoMintProps) => {
-  const {file, metadata, account, connector, dispatch, setFeedback, setClipboard} = algoMintProps;
+  const {file, metadata, account, connector, dispatch, setNotification, setClipboard} = algoMintProps;
   console.log(connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
-    dispatch(setFeedback('uploading to ipfs'))
-    // feedback: uploading to ipfs
+    dispatch(setNotification('uploading to ipfs'))
+    // notification: uploading to ipfs
     const asset = await connectAndMint(file, metadata, file.name)
     const txn = await createAsset(asset, account);
     console.log('transacton', txn);
-    // feedback: asset uploaded, minting in progress
-    dispatch(setFeedback('asset uploaded, minting in progress'))
+    // notification: asset uploaded, minting in progress
+    dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
     await write.writeNft(account, assetID);
-    // feedback: asset minted
-    dispatch(setFeedback('asset minted'))
+    // notification: asset minted
+    dispatch(setNotification('asset minted'))
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
   } else {
     return { 'message': "connect to alogrand network on your wallet or select a different network" }
@@ -268,15 +268,15 @@ async function signTx(connector, txns) {
 
 
 async function createNFT(props) {
-  const { zip: fileData, dispatch, setFeedback, setLoader } = props;
+  const { zip: fileData, dispatch, setNotification, setLoader } = props;
   let assets = [];
   const data = await zip.loadAsync(fileData)
   const files = data.files['metadata.json']
   const metadataString = await files.async('string')
   const metadata = JSON.parse(metadataString)
-  dispatch(setFeedback('uploading your assets, please do not refresh your page.'))
+  dispatch(setNotification('uploading your assets, please do not refresh your page.'))
   for (let i = 0; i < metadata.length; i++) {
-    // feedback: minting i of metadata.length
+    // notification: minting i of metadata.length
     dispatch(setLoader(`uploading ${i+1} of ${metadata.length}`))
     let imgName = `${metadata[i].name}.png`
     console.log(imgName, '-------')
@@ -288,17 +288,17 @@ async function createNFT(props) {
     assets.push(asset);
   }
   dispatch(setLoader(''))
-  dispatch(setFeedback('uploaded successfully'))
+  dispatch(setNotification('uploaded successfully'))
   return assets;
 };
 
 
 async function mintToAlgo(algoProps) {
-  const {window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader} = algoProps;
+  const {window, ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader} = algoProps;
   if (connector.isWalletConnect && connector.chainId === 4160) {
     let collection_id = [];
     let txns = [];
-    dispatch(setFeedback('preparing your assets for minting'))
+    dispatch(setNotification('preparing your assets for minting'))
     for (let i = 0; i < ipfsJsonData.length; i++) {
       dispatch(setLoader(`minting ${i+1} of ${ipfsJsonData.length}`))
       const txn = await createAsset(ipfsJsonData[i], account)
@@ -317,10 +317,10 @@ async function mintToAlgo(algoProps) {
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
     await write.writeUserData(account, collectionUrl, mintFileName, collection_id)
     dispatch(setLoader(''))
-    dispatch(setFeedback('you have successfully minted your NFTs'));
+    dispatch(setNotification('you have successfully minted your NFTs'));
     return `https://testnet.algoexplorer.io/tx/group/${groupId}`
   } else {
-    dispatch(setFeedback('please connect to algorand network on your wallet or select a different network'));
+    dispatch(setNotification('please connect to algorand network on your wallet or select a different network'));
   }
 }
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))

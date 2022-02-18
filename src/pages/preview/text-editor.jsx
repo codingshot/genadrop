@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useState } from "react";
 import classes from './text-editor.module.css'
 

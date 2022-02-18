@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Link, useRouteMatch } from 'react-router-dom';
 import classes from './NftCard.module.css';
 

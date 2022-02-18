@@ -2,6 +2,9 @@
   width: 20em;
   position: sticky;
   top: 5em;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+  padding: 1em 0;
 }
 
 .container * {
@@ -25,7 +28,7 @@
   justify-content: space-between;
   background: transparent;
   color: white;
-  background: #212529;
+  background: var(--card-bg);
   padding: 0.7em;
   border-radius: 0.25em;
 }
@@ -43,6 +46,7 @@
   font-size: 1rem;
   padding: 0.25em;
   border: 1px solid gainsboro;
+  margin-right: 1em;
 }
 
 .editBtn {
@@ -89,8 +93,9 @@
   padding: 0.5em 1em ;
   padding-right: 2em;
   text-transform: capitalize;
-  background: var(--card-bg1);
+  background: var(--card-bg);
   margin-bottom: 0.5em;
+  border-radius: 0.25em;
 }
 
 .listWrapper {

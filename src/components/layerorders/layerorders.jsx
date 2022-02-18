@@ -2,12 +2,13 @@ import classes from './layerorders.module.css';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { useContext, useState } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
-import { addLayer, orderLayers, setCollectionName } from '../../gen-state/gen.actions';
+import { addLayer, orderLayers, setCollectionName, setLoader, setNotification } from '../../gen-state/gen.actions';
 import { removeLayer } from '../../gen-state/gen.actions';
 import Layer from '../layer/layer';
 import Prompt from '../prompt/prompt';
 import { v4 as uuid } from 'uuid';
 import { getItemStyle, getListStyle } from './layeroders-script';
+import { fetchCollections } from '../../utils/firebase';
 
 const LayerOrders = () => {
 
@@ -43,14 +44,31 @@ const LayerOrders = () => {
     dispatch(removeLayer(layer))
   }
 
-  const handleRename = () => {
-    if (renameAction) {
-      handleSetState({ renameAction: false })
-      handleSetState({ inputValue: "" })
-      dispatch(setCollectionName(inputValue))
-    } else {
-      handleSetState({ renameAction: true })
+  const handleRename = async event => {
+    event.preventDefault();
+    try {
+      dispatch(setLoader("saving..."))
+      let names = await getCollectionsNames();
+      let isUnique = names.find(name => name.toLowerCase() === inputValue.toLowerCase());
+      if (isUnique) {
+        dispatch(setNotification(`${inputValue} already exist. Please choose another name`))
+      } else {
+        handleSetState({ renameAction: false })
+        dispatch(setCollectionName(inputValue))
+      }
+    } catch (error) {
+      dispatch(setNotification('could not save your collection name, please try again.'))
     }
+    dispatch(setLoader(""))
+  }
+
+  const getCollectionsNames = async () => {
+    let collections = await fetchCollections()
+    let names = []
+    collections.allCollections.forEach(col => {
+      names.push(col.name)
+    });
+    return names;
   }
 
   return (
@@ -74,10 +92,10 @@ const LayerOrders = () => {
               ? <div className={classes.nameHeader}>{collectionName}</div>
               : <div className={classes.nameHeader}>Collection Name</div>
           }
-          <div className={classes.editBtn} onClick={handleRename}>
+          <div className={classes.editBtn}>
             {renameAction
-              ? <img src="/assets/icon-mark.svg" alt="" />
-              : <img src="/assets/icon-edit.svg" alt="" />
+              ? <img onClick={handleRename} src="/assets/icon-mark.svg" alt="" />
+              : <img onClick={() => handleSetState({ renameAction: true })} src="/assets/icon-edit.svg" alt="" />
             }
           </div>
         </div>
@@ -136,7 +154,7 @@ const LayerOrders = () => {
                 <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({ prompt })} />
               </div>
               :
-              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>New Layer Name <img src="/assets/icon-plus.svg" alt="" /></button>
+              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>Add Layer <img src="/assets/icon-plus.svg" alt="" /></button>
           }
         </div>
       </div>

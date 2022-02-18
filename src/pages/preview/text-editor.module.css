@@ -14,6 +14,8 @@
 .container form input {
   flex: 1;
   padding: 0.25em;
+  border: none;
+  outline: 1px solid gainsboro;
 }
 
 .container button {

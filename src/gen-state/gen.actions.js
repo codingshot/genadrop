@@ -99,6 +99,11 @@ export const setCollectionName = name => ({
   payload: name
 })
 
+export const setCollectionDescription = description => ({
+  type: genActionTypes.SET_COLLECTION_DESCRIPTION,
+  payload: description
+})
+
 export const addDescription = val => ({
   type: genActionTypes.ADD_DESCRIPTION,
   payload: val
@@ -143,9 +148,9 @@ export const setCollections = collections => ({
   payload: collections
 })
 
-export const setFeedback = feedback => ({
+export const setNotification = notification => ({
   type: genActionTypes.SET_FEEDBACK,
-  payload: feedback
+  payload: notification
 })
 
 export const setClipboard = message => ({
