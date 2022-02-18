@@ -30,38 +30,73 @@ async function initializeContract(contractProps) {
   return contract;
 }
 
-export async function mintToCelo(celoProps) {
-  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = celoProps;
-  if (typeof window.ethereum !== 'undefined') {
+// export async function mintToCel(celoProps) {
+//   const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = celoProps;
+//   if (typeof window.ethereum !== 'undefined') {
+//     dispatch(setFeedback('preparing your assets for minting'));
+//     const contract = await initializeContract({minterAddress:process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
+//     let collection_id = {};
+//     let uris = ipfsJsonData.map((asset) => asset.url);
+//     let ids = ipfsJsonData.map((asset) => {
+//       let uintArray = asset.metadata.data.toLocaleString();
+//       return parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
+//     })
+
+//     let amounts = new Array(ids.length).fill(1);
+//     let tx;
+//     dispatch(setLoader('finalizing'));
+//     try {
+//       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
+//     } catch (error) {
+//       console.log(error);
+//       dispatch(setLoader(''))
+//       return;
+//     }
+//     for (let nfts = 0; nfts < ids.length; nfts++) {
+//       collection_id[ids[nfts]] = ipfsJsonData[nfts]['url']
+//     }
+//     const collectionHash = await minter.pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${ids[0]}` } })
+//     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
+//     console.log(`collection${ids[0]}`)
+//     await minter.write.writeUserData(`collection${ids[0]}`, collectionUrl)
+//     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
+//   } else {
+//     dispatch(setFeedback('download metamask'));
+//   }
+// }
+
+export async function mintToCelo(polyProps) {
+  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = polyProps;
+  console.log('ipfsJsonData: ', ipfsJsonData);
+  if (connector.isWalletConnect) {
+    if (connector.chainId === 137) {
+      return { 'message': "not yet implemented" }
+    } else {
+      return { 'message': "please connect to Celo network on your wallet" }
+    }
+  } else {
     dispatch(setFeedback('preparing your assets for minting'));
-    const contract = await initializeContract({minterAddress:process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
-    let collection_id = {};
+    const contract = await initializeContract({minterAddress: process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
     let uris = ipfsJsonData.map((asset) => asset.url);
+    // generate random ids for the nft
     let ids = ipfsJsonData.map((asset) => {
       let uintArray = asset.metadata.data.toLocaleString();
-      return parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
+      let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
+      return id
     })
-
     let amounts = new Array(ids.length).fill(1);
     let tx;
     dispatch(setLoader('finalizing'));
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
     } catch (error) {
-      console.log(error);
+      console.log('opolo', error);
       dispatch(setLoader(''))
       return;
     }
-    for (let nfts = 0; nfts < ids.length; nfts++) {
-      collection_id[ids[nfts]] = ipfsJsonData[nfts]['url']
-    }
-    const collectionHash = await minter.pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${ids[0]}` } })
-    let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    console.log(`collection${ids[0]}`)
-    await minter.write.writeUserData(`collection${ids[0]}`, collectionUrl)
+    dispatch(setLoader(''))
+    dispatch(setFeedback('you have successfully minted your NFTs.'))
     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
-  } else {
-    dispatch(setFeedback('download metamask'));
   }
 }
 
