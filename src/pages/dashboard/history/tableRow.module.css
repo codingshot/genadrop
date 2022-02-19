@@ -13,10 +13,18 @@ span {
   .end {
     display:inline-flex;
     width: calc(76% - 10.2em);
-    /* justify-content:flex-end; */
+
   }
-  
-img {
+
+tr img {
     width: 15px;
-    margin-right: 10px;
+    /* margin-right: 10px; */
+
+}
+.icon{
+  border-radius: 50%;
+  background-color: rgba(0, 153, 135, 0.12);
+  padding: 8px;
+
+
 }

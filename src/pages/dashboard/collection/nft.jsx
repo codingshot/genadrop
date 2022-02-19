@@ -6,7 +6,6 @@ const NFT = (data) => {
 
 
     const match = useRouteMatch();
-    // const newPath = match.url.split('/').slice(0, -1).join('/')
 
     return (
 
@@ -16,9 +15,19 @@ const NFT = (data) => {
                 <Link to={`${match.url.split('/').slice(0, -1).join('/')}/${nft.name}`} >
                     <div key={idx} className={classes.collectionItem}>
                         <img src={nft.image_url} alt="" />
-                        <span className={classes.itemName}>{nft.name}</span>
                         <span className={classes.collectionName}>{nft.collection_name}</span>
-                        <div className={classes.itemPrice}>Price <span>{nft.price} ALGO</span></div>
+                        <span className={classes.itemName}>{nft.name}</span>
+                        <div className={classes.pricing}>
+                            <img src="/assets/algo-logo.png" alt="" />
+                            <div className={classes.itemPrice}>
+                                <div className={classes.section}>
+                                    <div className={classes.heading}>LIST PRICE</div>
+                                    <div className={classes.price}>{nft.price} <span>ALGO</span></div>
+                                </div>
+                                <button className={classes.buy}>Buy</button>
+                            </div>
+
+                        </div>
                     </div>
                 </Link>
 
