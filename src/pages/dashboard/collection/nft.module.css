@@ -3,10 +3,10 @@
     width: 10rem;
     display: flex;
     flex-direction: column;
-    background-color: #000;
-    color: #fff;
+    color: #4B4B5A;
     border-radius: 0 0 10px 10px;
     margin:   1rem;
+    padding: 0 0.4rem;
   
 }
 
@@ -15,35 +15,72 @@
   transition: all .2s ease-in-out;
   cursor: pointer;
 }  
-  .collectionItem img{
-    width: 10rem;
-  }
+
+.collectionItem img{
+  width: 10rem;
+}
+
+.itemName{
+  font-size: 15px;
+  font-weight: bold;
+  padding: 0 0.4rem;
+  margin-bottom: 1rem;
   
-  .itemName{
-    font-size: 15px;
-    margin-top: 0.5rem;
-    font-weight: bold;
-    padding: 0 0.4rem;
-    
-  }
-  .collectionName{
-    padding: 0.4rem;
-    font-size: 10px;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid #707A83;
-  }
+}
+.collectionName{
+  padding: 0.4rem;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.itemPrice{
+  padding: 5px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  bottom: 0;
+}
+
+
+.section{
+  display: flex;
+  flex-direction: column;
+}
+
+.heading{
+  color: #ADB5BD;
+  font-size: 10px;
+}
+
+.price{
+  color: var(--main-accent);
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.price span{
+  font-size: 12px;
+}
+.pricing img{
+  width: 25px;
+}
+
+
+.buy{
   
-  .itemPrice{
-    padding: 5px;
-    font-size: 15px;
-  
-  }
-  
-  .itemPrice span{
-    font-size: 18px;
-    float: right;
-    color: #FFE161;
-    font-weight: 400;
-  
-  }
+  flex-direction: row;
+  color: white;
+  padding: 0 1rem;
+  height: 35px;
+  border-radius: 5px;
+  background-color: var(--main-accent);
+  font-weight: bold;
+  margin-left: auto;
+  order: 2;
+}
+
+.buy:hover{
+  transform: scale(1.05);
+  transition: all .2s ease-in-out;
+}
