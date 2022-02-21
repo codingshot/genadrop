@@ -64,22 +64,23 @@ const Mint = () => {
   };
 
   const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
+    setState(state => ({ ...state, ...payload }));
+
   }
 
   const fileRef = useRef(null);
   const jsonFileRef = useRef(null);
 
-  const mintProps = { 
-    selectValue, 
-    handleSetState, 
-    window, 
-    ipfsJsonData, 
-    mintFileName, 
-    celoAccount, 
-    setCeloAccount, 
-    account, 
-    connector, 
+  const mintProps = {
+    selectValue,
+    handleSetState,
+    window,
+    ipfsJsonData,
+    mintFileName,
+    celoAccount,
+    setCeloAccount,
+    account,
+    connector,
     priceValue,
     setNotification,
     setClipboard,
@@ -87,7 +88,7 @@ const Mint = () => {
     dispatch
   }
 
-  
+
 
   const handleMintUpload = () => {
     jsonFileRef.current.click()
@@ -95,7 +96,7 @@ const Mint = () => {
 
   const handleExport = async () => {
     try {
-      const ipfs = await createNFT({zip, dispatch, setNotification, setLoader});
+      const ipfs = await createNFT({ zip, dispatch, setNotification, setLoader });
       let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
       let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
         type: 'application/json',
@@ -197,10 +198,10 @@ const Mint = () => {
                       <option value="Polygon">Polygon</option>
                     </select>
                   </div>
-                  <input type="text" value={priceValue} onChange={event => handleSetState({ priceValue: event.target.value })} />
+                  <input type="text" value={priceValue !== 0 ? priceValue : ""} placeholder="0" onChange={event => handleSetState({ priceValue: event.target.value })} />
                   <div>
-                    <p>Price in USSD</p>
-                    <p>Current Algo price: </p>
+                    <p>Price in USD</p>
+                    <p>Current {state.selectValue} price: </p>
                   </div>
                 </div>
 
@@ -266,41 +267,7 @@ const Mint = () => {
               <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
             </div>
 
-            <div className={classes.textInput}>
-              <h3>Attributes</h3>
-              <span>Select your MetaData file and mint to IPFS</span>
-              {attributes.map((x, idx) => {
-                return (
-                  <div key={idx} className={classes.attributes}>
-                    <input
-                      className={classes.attribute}
-                      name="label"
-                      placeholder="E.g Eyes"
-                      value={x.label}
-                      onChange={e => handleInputChange(e, idx)}
-                    />
-                    <input
-                      className={classes.attribute}
-                      name="description"
-                      placeholder="E.g green"
-                      value={x.description}
-                      onChange={e => handleInputChange(e, idx)}
-                    />
-                    <button
 
-                      onClick={() => handleRemoveClick(idx)}
-                      className={classes.removeBtn}
-                    >
-                      X
-                    </button>
-                    
-                  </div>
-                );
-              })}
-              <p className={classes.addBtn} onClick={handleAddClick}>+ Add Attributes</p>
-
-
-            </div>
           </div>
         </div>
       </div>
