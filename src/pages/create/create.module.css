@@ -6,6 +6,7 @@
   justify-content: center;
   gap: 1em;
   padding: 0 1em;
+  padding-top: 2em;
   position: relative;
   margin-bottom: 8em;
 }
@@ -17,6 +18,23 @@
   justify-content: flex-start;
   gap: 1em;
 }
+
+.icon {
+  position: absolute;
+  top: 0.5em;
+  right: 0.15em;
+  width: 1.2em;
+  cursor: pointer;
+  box-shadow: 0 0 15px gainsboro;
+  border-radius: 50%;
+  visibility: hidden;
+}
+
+.icon.active {
+  visibility: visible;
+}
+
+
 
 @media screen and (max-width: 1200px) {
   .container {

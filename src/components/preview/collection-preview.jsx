@@ -3,6 +3,7 @@ import { useEffect, useRef, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getImageSize } from '../../utils';
 import ButtonClickEffect from '../button-effect/button-effect';
+import { useState } from 'react';
 
 const CollectionPreview = () => {
   const { layers, preview } = useContext(GenContext);
@@ -57,6 +58,7 @@ const CollectionPreview = () => {
     }
     imageHandler()
   }, [preview, layers])
+
 
   return (
     <div className={classes.container}>
