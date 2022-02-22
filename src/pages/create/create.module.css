@@ -21,12 +21,11 @@
 }
 
 .icon {
-  position: absolute;
-  top: 0.5em;
+  position: fixed;
+  top: 4.5em;
   right: 0.5em;
-  width: 1.2em;
+  width: 1em;
   cursor: pointer;
-  box-shadow: 0 0 15px gainsboro;
   border-radius: 50%;
   visibility: hidden;
 }

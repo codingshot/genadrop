@@ -34,6 +34,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 0.5em;
+  background: #00CC9B;
 }
 
 .disconnect img {
@@ -43,6 +44,6 @@
 .address {
   padding: 0.5em;
   background: var(--main-accent);
-  /* border: 1px solid red; */
+  color: var(--main-bg);
 }
 
