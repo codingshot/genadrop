@@ -18,10 +18,9 @@ const Navbar = () => {
 
   return (
     <div className={classes.container}>
-      <img onClick={() => { history.push('/') }} className={classes.logoDesktop} src="/assets/genadrop-logo.svg" alt="" />
+      <img onClick={() => { history.push('/') }} className={classes.logoDesktop} src="/assets/genadrop-logo-mobile.png" alt="" />
       <img onClick={() => { history.push('/') }} className={classes.logoMobile} src="/assets/genadrop-logo-mobile.png" alt="" />
       <div className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}>
-        {/* <input type="text" /> */}
         <br />
         <ul className={classes.navList}>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/create">

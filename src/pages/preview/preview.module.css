@@ -1,6 +1,7 @@
 .wrapper {
   width: 100%;
   padding: 0 1em;
+  padding-top: 2em;
 }
 
 .container {
@@ -21,6 +22,7 @@
   position: sticky;
   top: 5em;
   border: 1px solid gainsboro;
+  border-radius: 0.5em;
 }
 
 .arrowBack {
@@ -343,6 +345,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1em;
   border-top: 1px solid gainsboro;
   border-bottom: 1px solid gainsboro;
@@ -371,6 +374,7 @@
 
 .pageCount {
   font-weight: bold;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 1280px) {
@@ -405,5 +409,9 @@
   .preview {
     grid-template-columns: auto;
     justify-items: center;
+  }
+
+  .paginate * {
+    font-size: 0.75rem;
   }
 }

@@ -2,7 +2,6 @@
   overflow-x: auto;
   flex: 1;
   height: auto;
-  min-height: calc(100vh - 8em);
   background: var(--main-bg);
   z-index: 1;
   border: 1px solid gainsboro;
@@ -82,7 +81,8 @@
   font-size: 2rem;
   text-transform: capitalize;
   font-style: italic;
-  padding: 2em 0;
+  /* padding: 2em 0; */
+  min-height: calc(100vh - 5em);
 }
 
 @media screen and (max-width: 1200px) {

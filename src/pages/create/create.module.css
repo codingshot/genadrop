@@ -6,8 +6,10 @@
   justify-content: center;
   gap: 1em;
   padding: 0 1em;
+  padding-top: 2em;
   position: relative;
   margin-bottom: 8em;
+  overflow: hidden;
 }
 
 .layer_overview {
@@ -17,6 +19,22 @@
   justify-content: flex-start;
   gap: 1em;
 }
+
+.icon {
+  position: fixed;
+  top: 4.5em;
+  right: 0.5em;
+  width: 1em;
+  cursor: pointer;
+  border-radius: 50%;
+  visibility: hidden;
+}
+
+.icon.active {
+  visibility: visible;
+}
+
+
 
 @media screen and (max-width: 1200px) {
   .container {

@@ -26,7 +26,8 @@ const GenContextProvider = ({ children }) => {
     notification,
     clipboardMessage,
     loaderMessage,
-    collectionDescription
+    collectionDescription,
+    didMount
   } = state;
 
   // console.log("preview => ", preview);
@@ -47,6 +48,7 @@ const GenContextProvider = ({ children }) => {
   // console.log("clipboardMessage =>", clipboardMessage);
   // console.log("loaderMessage =>", loaderMessage);
   // console.log("collectionDescription =>", collectionDescription);
+  console.log("didMount =>", didMount);
 
   return (
     <GenContext.Provider value={{
@@ -69,6 +71,7 @@ const GenContextProvider = ({ children }) => {
       clipboardMessage,
       loaderMessage,
       collectionDescription,
+      didMount,
       dispatch
     }}>
       {children}

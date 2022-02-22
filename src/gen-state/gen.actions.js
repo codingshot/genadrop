@@ -162,3 +162,8 @@ export const setLoader = message => ({
   type: genActionTypes.SET_LOADER,
   payload: message
 })
+
+export const setDidMout = isMount => ({
+  type: genActionTypes.SET_DID_MOUNT,
+  payload: isMount
+})

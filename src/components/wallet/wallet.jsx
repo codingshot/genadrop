@@ -121,12 +121,11 @@ function ConnectWallet() {
   return (
     (account ?
       <div className={classes.container}>
-        <div onClick={() => setDropdown(!dropdown)} className={classes.connected}><div className={classes.icon} />Connected</div>
-        <div className={`${classes.dropdown} ${dropdown && classes.active}`}>
-          <div className={classes.address}>
-            {breakAddress(account)}
+        <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
+          <div className={classes.disconnect}>
+            <img onClick={disconnect} src="/assets/icon-disconnect.svg" alt='' />
           </div>
-          <div onClick={disconnect} className={classes.disconnect}>disconnet</div>
+          <div className={classes.address}>{breakAddress(account)}</div>
         </div>
       </div>
       :
