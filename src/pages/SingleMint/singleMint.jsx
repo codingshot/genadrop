@@ -245,10 +245,10 @@ const SingleMint = () => {
                       <option value="Polygon">Polygon</option>
                     </select>
                   </div>
-                  <input type="text" value={priceValue} onChange={event => handleSetState({ priceValue: event.target.value })} />
+                  <input type="text" value={priceValue !== 0 ? priceValue : ""} placeholder="0" onChange={event => handleSetState({ priceValue: event.target.value })} />
                   <div>
-                    <p>Price in USSD</p>
-                    <p>Current Algo price: </p>
+                    <p>Price in USD</p>
+                    <p>Current {state.selectValue} price: </p>
                   </div>
                 </div>
 
