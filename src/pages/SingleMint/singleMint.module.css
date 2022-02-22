@@ -277,12 +277,16 @@
   .switch{
     font-size: 13px;
   }
+  .fallback{
+    height: 20rem;
+  }
 }
 .textInput {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  
   gap: 0.5em;
 }
 
@@ -306,9 +310,10 @@
   outline-color: var(--main-accent);
 }
 
-.textInput span {
+.sub{
   font-size: small;
   color: var(--card-bg);
+
 }
 
 .attributes {
