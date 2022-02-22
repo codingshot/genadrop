@@ -1,4 +1,7 @@
+import { useContext } from 'react';
 import { useState } from 'react';
+import { setDidMout } from '../../gen-state/gen.actions';
+import { GenContext } from '../../gen-state/gen.context';
 import classes from './createUseGuide.module.css'
 
 const createGuideIntro = {
@@ -24,8 +27,9 @@ const createUseGuide = {
     "preview": "/assets/create-use-guide3.svg"
   },
   4: {
-    "title": "Input number of arts to generate",
-    "sub-title": "Input the number of arts you want to generate from the total combinations and click the 'generate button' Boom! Your art is ready. Now, you can use the preview button to see your generated Arts/Designs.",
+    "title": "Rename layers and assets",
+    "sub-title": "Click on the edit icon to rename your assets and layers. Also, you can change the asset rarities. Rarities determine how rare each asset will be in a collection.",
+    "more": "Note, Layers, asset names, and rarities are used to build the metadata for an asset/collection and cannot change after running the ‘generate’ command.",
     "preview": "/assets/create-use-guide4.svg"
   },
   5: {
@@ -33,12 +37,23 @@ const createUseGuide = {
     "sub-title": "Setting conflict rules for images means that the selected set of images cannot form a generative art.",
     "preview": "/assets/create-use-guide5.svg"
   },
+  6: {
+    "title": "Input number of arts to generate",
+    "sub-title": "Input the number of arts you want to generate from the total combinations.",
+    "preview": "/assets/create-use-guide6.svg"
+  },
+  7: {
+    "title": "Generate arts",
+    "sub-title": "Click on the generate button to generate your arts. Also, go to the preview by clicking on the preview button, do other checks, and download your asset or collection for minting. Thank you!",
+    "preview": "/assets/create-use-guide7.svg"
+  }
 }
 
 const guideLength = Object.keys(createUseGuide).length;
 
 
 const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
+  const { dispatch } = useContext(GenContext)
   const [state, setState] = useState({
     pointer: 1,
     showGuide: false
@@ -57,6 +72,11 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   const handlePrev = () => {
     if (pointer <= 1) return;
     handleSetState({ pointer: pointer - 1 })
+  }
+
+  const handleCancel = () => {
+    dispatch(setDidMout(true));
+    setGuide(false);
   }
 
   const control = (
@@ -82,6 +102,9 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
     <div className={classes.content}>
       <div className={classes.title}>{createUseGuide[pointer]["title"]}</div>
       <div className={classes.subTitle}>{createUseGuide[pointer]["sub-title"]}</div>
+      {
+        createUseGuide[pointer]["more"] && <div className={classes.more}>{createUseGuide[pointer]["more"]}</div>
+      }
       <img className={classes.preview} src={createUseGuide[pointer]["preview"]} alt="" />
     </div>
   );
@@ -96,15 +119,15 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
 
   const introControl = (
     <div className={classes.introControl}>
-      <button onClick={()=> setGuide(false)}>cancel</button>
-      <button onClick={()=> handleSetState({showGuide: true})}>Get started</button>
+      <button onClick={handleCancel}>cancel</button>
+      <button onClick={() => handleSetState({ showGuide: true })}>Get started</button>
     </div>
   )
 
   return (
     <div className={`${classes.container} ${toggleGuide && classes.active}`}>
       <div className={classes.guideContainer}>
-        {showGuide && <img onClick={() => setGuide(false)} className={classes.close} src="/assets/icon-close.svg" />}
+        {showGuide && <img onClick={handleCancel} className={classes.close} src="/assets/icon-close.svg" alt='' />}
         {showGuide ? content : intro}
         {showGuide ? control : introControl}
       </div>

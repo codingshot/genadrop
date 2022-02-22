@@ -9,6 +9,7 @@
   padding-top: 2em;
   position: relative;
   margin-bottom: 8em;
+  overflow: hidden;
 }
 
 .layer_overview {
@@ -22,7 +23,7 @@
 .icon {
   position: absolute;
   top: 0.5em;
-  right: 0.15em;
+  right: 0.5em;
   width: 1.2em;
   cursor: pointer;
   box-shadow: 0 0 15px gainsboro;

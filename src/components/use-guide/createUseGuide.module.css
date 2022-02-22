@@ -58,8 +58,13 @@
   margin-bottom: 1em;
 }
 
+.more {
+  margin-bottom: 1em;
+}
+
 .preview {
   width: 100%;
+  min-height: 20em;
 }
 
 .introControl,
@@ -135,5 +140,13 @@
   .control .next, .control .prev {
     padding: 0.5em 1em;
     font-size: 0.65rem;
+  }
+
+  .indicator {
+    gap: 0;
+  }
+
+  .indicator > * {
+    margin-right: 0.25em;
   }
 }

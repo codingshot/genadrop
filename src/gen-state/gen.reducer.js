@@ -54,7 +54,8 @@ export const INITIAL_STATE = {
   collections: {},
   notification: '',
   clipboardMessage: '',
-  loaderMessage: ''
+  loaderMessage: '',
+  didMount: false
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -225,6 +226,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loaderMessage: action.payload
+      }
+    case genActionTypes.SET_DID_MOUNT:
+      return {
+        ...state,
+        didMount: action.payload
       }
     default:
       return state;

@@ -4,9 +4,12 @@ import CollectionOverview from '../../components/overview/collection-overview';
 import classes from './create.module.css';
 import CreatePageUseGuide from '../../components/use-guide/createUseGuide';
 import { useState } from 'react';
+import { useContext } from 'react';
+import { GenContext } from '../../gen-state/gen.context';
 
 const Create = () => {
-  const [toggleGuide, setGuide] = useState(true);
+  const { didMount } = useContext(GenContext);
+  const [toggleGuide, setGuide] = useState(!didMount);
 
   return (
     <div className={classes.container}>
