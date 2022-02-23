@@ -3,49 +3,57 @@ import { useState } from 'react';
 import { setDidMout } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './createUseGuide.module.css'
+import image0 from '../../assets/create-use-guide0.svg'
+import image1 from '../../assets/create-use-guide1.svg'
+import image2 from '../../assets/create-use-guide2.svg'
+import image3 from '../../assets/create-use-guide3.svg'
+import image4 from '../../assets/create-use-guide4.svg'
+import image5 from '../../assets/create-use-guide5.svg'
+import image6 from '../../assets/create-use-guide6.svg'
+import image7 from '../../assets/create-use-guide7.svg'
 
 const createGuideIntro = {
   "title": "Welcome to Genadrop",
   "sub-title": "The easy and Robust No Code art generating tool that gives you quality and unique art. Let's work you through the process.",
-  "preview": "/assets/create-use-guide0.svg"
+  "preview": image0
 }
 
 const createUseGuide = {
   1: {
     "title": "Add layers",
     "sub-title": "Click on the 'Add Layer' button to create layers for your art. Examples of layers can be the Eye layer, head layer, background layer, etc. Yep!",
-    "preview": "/assets/create-use-guide1.svg"
+    "preview": image1
   },
   2: {
     "title": "Upload assets",
     "sub-title": " Use the upload button to add the images associated with the layer names you created in the previous step. For example, eyes uploaded to the eye layer, and heads uploaded to the head layer. Yes. Looks simple right?",
-    "preview": "/assets/create-use-guide2.svg"
+    "preview": image2
   },
   3: {
     "title": "Re-order layers",
     "sub-title": "Re-order layers to suit your design/art. You can Re-order layers by simply dragging a layer to the top or bottom on the layers panel and seeing results on the preview panel.",
-    "preview": "/assets/create-use-guide3.svg"
+    "preview": image3
   },
   4: {
     "title": "Rename layers and assets",
     "sub-title": "Click on the edit icon to rename your assets and layers. Also, you can change the asset rarities. Rarities determine how rare each asset will be in a collection.",
     "more": "Note, Layers, asset names, and rarities are used to build the metadata for an asset/collection and cannot change after running the ‘generate’ command.",
-    "preview": "/assets/create-use-guide4.svg"
+    "preview": image4
   },
   5: {
     "title": "Set conflict rule",
     "sub-title": "Setting conflict rules for images means that the selected set of images cannot form a generative art.",
-    "preview": "/assets/create-use-guide5.svg"
+    "preview": image5
   },
   6: {
     "title": "Input number of arts to generate",
     "sub-title": "Input the number of arts you want to generate from the total combinations.",
-    "preview": "/assets/create-use-guide6.svg"
+    "preview": image6
   },
   7: {
     "title": "Generate arts",
     "sub-title": "Click on the generate button to generate your arts. Also, go to the preview by clicking on the preview button, do other checks, and download your asset or collection for minting. Thank you!",
-    "preview": "/assets/create-use-guide7.svg"
+    "preview": image7
   }
 }
 

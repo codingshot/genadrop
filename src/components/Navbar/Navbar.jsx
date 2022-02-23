@@ -3,6 +3,7 @@ import ConnectWallet from '../wallet/wallet';
 import classes from './styles.module.css';
 import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+import logo from '../../assets/genadrop-logo-mobile.png'
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -18,8 +19,8 @@ const Navbar = () => {
 
   return (
     <div className={classes.container}>
-      <img onClick={() => { history.push('/') }} className={classes.logoDesktop} src="/assets/genadrop-logo-mobile.png" alt="" />
-      <img onClick={() => { history.push('/') }} className={classes.logoMobile} src="/assets/genadrop-logo-mobile.png" alt="" />
+      <img onClick={() => { history.push('/') }} className={classes.logoDesktop} src={logo} alt="" />
+      <img onClick={() => { history.push('/') }} className={classes.logoMobile} src={logo} alt="" />
       <div className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}>
         <br />
         <ul className={classes.navList}>
