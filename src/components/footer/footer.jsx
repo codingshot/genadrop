@@ -1,4 +1,9 @@
 import classes from './footer.module.css';
+import logo from "../../assets/genadrop-logo.svg";
+import twitterIcon from "../../assets/icon-twitter.svg";
+import discordIcon from "../../assets/icon-discord.svg";
+import linkedInIcon from "../../assets/icon-linkedin.svg";
+import youTubeIcon from "../../assets/icon-youtube.svg";
 
 const footerLinks = [
   {
@@ -33,23 +38,23 @@ const Footer = () => {
         <div className={classes.wrapper}>
           <div className={classes.topLeft}>
             <a href='/'>
-              <img src="/assets/genadrop-logo.svg" alt="" />
+              <img src={logo} alt="" />
             </a>
             <div className={classes.socialIcons}>
               <a className={classes.icon} href="https://discord.gg/4vdtmQqz6d">
-                <img src="/assets/icon-discord.svg" alt="" />
+                <img src={discordIcon} alt="" />
               </a>
 
               <a className={classes.icon} href="https://twitter.com/minorityprogram">
-                <img src="/assets/icon-twitter.svg" alt="" />
+                <img src={twitterIcon} alt="" />
               </a>
 
               <a className={classes.icon} href="https://linkedin.com/company/minority-programmers/">
-                <img src="/assets/icon-linkedin.svg" alt="" />
+                <img src={linkedInIcon} alt="" />
               </a>
 
               <a className={classes.icon} href="https://youtube.com/c/minorityprogrammers">
-                <img src="/assets/icon-youtube.svg" alt="" />
+                <img src={youTubeIcon} alt="" />
               </a>
             </div>
           </div>
