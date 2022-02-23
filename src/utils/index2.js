@@ -114,7 +114,8 @@ ${i + 1} of ${value.length}`
 }
 
 export const handleDownload = async input => {
-  const { value, dispatch, setNotification } = input;
+  const { value, dispatch, setNotification, name } = input;
+  if(!name) return dispatch(setNotification('please, name your collection and try again.'))
   let paginated = paginate(value, 10000);
   let index = Object.keys(paginated).length;
   dispatch(setNotification(`your asset will be downloaded in ${index} ${index === 1 ? 'file' : 'files'}`));
