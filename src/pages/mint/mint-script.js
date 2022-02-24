@@ -66,7 +66,7 @@ async function initializeContract(contractProps) {
 // }
 
 export async function mintToCelo(polyProps) {
-  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = polyProps;
+  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader } = polyProps;
   console.log('ipfsJsonData: ', ipfsJsonData);
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -75,7 +75,7 @@ export async function mintToCelo(polyProps) {
       return { 'message': "please connect to Celo network on your wallet" }
     }
   } else {
-    dispatch(setFeedback('preparing your assets for minting'));
+    dispatch(setNotification('preparing your assets for minting'));
     const contract = await initializeContract({minterAddress: process.env.REACT_APP_CELO_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft
@@ -95,13 +95,13 @@ export async function mintToCelo(polyProps) {
       return;
     }
     dispatch(setLoader(''))
-    dispatch(setFeedback('you have successfully minted your NFTs.'))
+    dispatch(setNotification('you have successfully minted your NFTs.'))
     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
   }
 }
 
 export async function mintToPoly(polyProps) {
-  const { window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader } = polyProps;
+  const { ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader } = polyProps;
   console.log('ipfsJsonData: ', ipfsJsonData);
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -110,7 +110,7 @@ export async function mintToPoly(polyProps) {
       return { 'message': "please connect to polygon network on your wallet" }
     }
   } else {
-    dispatch(setFeedback('preparing your assets for minting'));
+    dispatch(setNotification('preparing your assets for minting'));
     const contract = await initializeContract({minterAddress: process.env.REACT_APP_POLY_MINTER_ADDRESS, mintFileName, connector, account, dispatch, setLoader});
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft
@@ -130,7 +130,7 @@ export async function mintToPoly(polyProps) {
       return;
     }
     dispatch(setLoader(''))
-    dispatch(setFeedback('you have successfully minted your NFTs.'))
+    dispatch(setNotification('you have successfully minted your NFTs.'))
     return `https://mumbai.polygonscan.com/tx/${tx.hash}`
   }
 }
@@ -189,26 +189,26 @@ export const handleMintFileChange = props => {
 }
 
 export const handleMint = async props => {
-  const { selectValue, ipfsJsonData, mintFileName, account, connector, priceValue, dispatch, setFeedback, setClipboard, setLoader, window } = props;
+  const { selectValue, ipfsJsonData, mintFileName, account, connector, priceValue, dispatch, setNotification, setClipboard, setLoader, window } = props;
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if (!result) return dispatch(setFeedback('please add a valid price value'));
+  if (!result) return dispatch(setNotification('please add a valid price value'));
   let url = null;
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await mintToAlgo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader, priceValue });
+      url = await mintToAlgo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader, priceValue });
     } else if (selectValue.toLowerCase() === 'celo') {
-      url = await mintToCelo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader })
+      url = await mintToCelo({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader })
     } else if (selectValue.toLowerCase() === 'polygon') {
-      url = await mintToPoly({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setFeedback, setLoader })
+      url = await mintToPoly({ window, ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader })
     }
     if (typeof url === "object") {
-      dispatch(setFeedback(url.message))
+      dispatch(setNotification(url.message))
     } else {
       dispatch(setClipboard(url))
     }
   } catch (error) {
     console.error(error)
     dispatch(setLoader(''))
-    dispatch(setFeedback('Please ensure that your wallet is connected and try again.'))
+    dispatch(setNotification('Please ensure that your wallet is connected and try again.'))
   }
 }

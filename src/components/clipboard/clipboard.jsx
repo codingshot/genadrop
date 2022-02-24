@@ -17,7 +17,7 @@ const Clipboard = () => {
   }
   const clipboardRef = useRef(null);
 
-  const { feedback, clipboardMessage, loaderMessage, dispatch } = useContext(GenContext);
+  const { notification, clipboardMessage, loaderMessage, dispatch } = useContext(GenContext);
 
   const handleCopy = props => {
     const { navigator, clipboard } = props;
@@ -42,7 +42,7 @@ const Clipboard = () => {
   }, [clipboardMessage])
 
   return (
-    <div style={{ top: feedback && loaderMessage ? '12em' : loaderMessage ? '7em' : feedback ? '10em' : '4em' }} className={`${classes.container} ${toggleClipboard && classes.active}`}>
+    <div style={{ top: notification && loaderMessage ? '12em' : loaderMessage ? '7em' : notification ? '10em' : '4em' }} className={`${classes.container} ${toggleClipboard && classes.active}`}>
       <img className={classes.icon} onClick={handleDiscard} src="/assets/icon-close.svg" alt="" />
       <div className={classes.message}>
         {clipboardMessage} with some few testing messages and more to see how it can overflow and copy

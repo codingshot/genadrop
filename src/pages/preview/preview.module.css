@@ -1,6 +1,7 @@
 .wrapper {
   width: 100%;
   padding: 0 1em;
+  padding-top: 2em;
 }
 
 .container {
@@ -19,7 +20,9 @@
   width: 20em;
   height: auto;
   position: sticky;
-  top: 4em;
+  top: 5em;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
 }
 
 .arrowBack {
@@ -31,7 +34,7 @@
   padding: 0.25em 2em;
   border-radius: 0.25em;
   box-shadow: 4px 4px 8px gainsboro;
-  margin-top: 1em;
+  margin-bottom: 2em;
   cursor: pointer;
 }
 
@@ -85,17 +88,66 @@
   color: red;
 }
 
-.collectionName {
+.collectionDetail {
   width: 100%;
   padding: 1em;
 }
 
-.collectionName .wrapper {
+.collectionDetail .wrapper {
   width: 100%;
-  padding: 0.5em 1em;
-  background: var(--card-bg1);
-  color: white;
+  padding: 0.5em;
   border-radius: 0.25em;
+  margin-bottom: 2em;
+  border: 1px solid gainsboro;
+}
+
+.collectionDetail img {
+  filter: invert(1);
+}
+
+.collectionDetail textarea {
+  resize: none;
+  width: 100%;
+  border: none;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  border: 1px solid gainsboro;
+}
+
+.collectionDetail textarea:focus {
+  outline: 1px solid gainsboro;
+}
+
+.collectionDetail .tab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+
+.collectionDetail .toggleContainer {
+  width: 36px;
+  border-radius: 0.75em;
+  padding: 0px 0;
+  background: gainsboro;
+  cursor: pointer;
+  padding: 2px 2px;
+  transition: all 300ms;
+}
+
+
+.collectionDetail .toggle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transition: all 300ms;
+  background: gray;
+}
+
+.collectionDetail .toggle.active{
+  transform: translateX(100%);
+  background: var(--main-accent);
 }
 
 .actionContainer {
@@ -293,6 +345,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-wrap: wrap;
   gap: 1em;
   border-top: 1px solid gainsboro;
   border-bottom: 1px solid gainsboro;
@@ -321,6 +374,7 @@
 
 .pageCount {
   font-weight: bold;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 1280px) {
@@ -355,5 +409,9 @@
   .preview {
     grid-template-columns: auto;
     justify-items: center;
+  }
+
+  .paginate * {
+    font-size: 0.75rem;
   }
 }

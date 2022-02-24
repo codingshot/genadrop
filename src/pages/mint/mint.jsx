@@ -4,7 +4,7 @@ import { getImageSize } from '../../utils';
 import { createNFT } from '../../utils/arc_ipfs';
 import { GenContext } from '../../gen-state/gen.context';
 import { saveAs } from 'file-saver';
-import { setClipboard, setFeedback, setLoader } from '../../gen-state/gen.actions';
+import { setClipboard, setNotification, setLoader } from '../../gen-state/gen.actions';
 import { handleFileChange, handleMint, handleMintFileChange } from './mint-script';
 import { useHistory } from 'react-router-dom';
 
@@ -64,30 +64,31 @@ const Mint = () => {
   };
 
   const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
+    setState(state => ({ ...state, ...payload }));
+
   }
 
   const fileRef = useRef(null);
   const jsonFileRef = useRef(null);
 
-  const mintProps = { 
-    selectValue, 
-    handleSetState, 
-    window, 
-    ipfsJsonData, 
-    mintFileName, 
-    celoAccount, 
-    setCeloAccount, 
-    account, 
-    connector, 
+  const mintProps = {
+    selectValue,
+    handleSetState,
+    window,
+    ipfsJsonData,
+    mintFileName,
+    celoAccount,
+    setCeloAccount,
+    account,
+    connector,
     priceValue,
-    setFeedback,
+    setNotification,
     setClipboard,
     setLoader,
     dispatch
   }
 
-  
+
 
   const handleMintUpload = () => {
     jsonFileRef.current.click()
@@ -95,7 +96,7 @@ const Mint = () => {
 
   const handleExport = async () => {
     try {
-      const ipfs = await createNFT({zip, dispatch, setFeedback, setLoader});
+      const ipfs = await createNFT({ zip, dispatch, setNotification, setLoader });
       let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
       let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
         type: 'application/json',
@@ -104,7 +105,7 @@ const Mint = () => {
       saveAs(fileToSave, fileName);
     } catch (error) {
       console.log(error)
-      dispatch(setFeedback('failed to upload collection. Make sure you are uploading the correct file.'))
+      dispatch(setNotification('failed to upload collection. Make sure you are uploading the correct file.'))
     }
   }
 
@@ -197,10 +198,10 @@ const Mint = () => {
                       <option value="Polygon">Polygon</option>
                     </select>
                   </div>
-                  <input type="text" value={priceValue} onChange={event => handleSetState({ priceValue: event.target.value })} />
+                  <input type="text" value={priceValue !== 0 ? priceValue : ""} placeholder="0" onChange={event => handleSetState({ priceValue: event.target.value })} />
                   <div>
-                    <p>Price in USSD</p>
-                    <p>Current Algo price: </p>
+                    <p>Price in USD</p>
+                    <p>Current {state.selectValue} price: </p>
                   </div>
                 </div>
 
@@ -266,41 +267,7 @@ const Mint = () => {
               <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
             </div>
 
-            <div className={classes.textInput}>
-              <h3>Attributes</h3>
-              <span>Select your MetaData file and mint to IPFS</span>
-              {attributes.map((x, idx) => {
-                return (
-                  <div key={idx} className={classes.attributes}>
-                    <input
-                      className={classes.attribute}
-                      name="label"
-                      placeholder="E.g Eyes"
-                      value={x.label}
-                      onChange={e => handleInputChange(e, idx)}
-                    />
-                    <input
-                      className={classes.attribute}
-                      name="description"
-                      placeholder="E.g green"
-                      value={x.description}
-                      onChange={e => handleInputChange(e, idx)}
-                    />
-                    <button
 
-                      onClick={() => handleRemoveClick(idx)}
-                      className={classes.removeBtn}
-                    >
-                      X
-                    </button>
-                    
-                  </div>
-                );
-              })}
-              <p className={classes.addBtn} onClick={handleAddClick}>+ Add Attributes</p>
-
-
-            </div>
           </div>
         </div>
       </div>

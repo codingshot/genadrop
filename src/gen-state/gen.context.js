@@ -23,9 +23,11 @@ const GenContextProvider = ({ children }) => {
     rule,
     isRule,
     collections,
-    feedback,
+    notification,
     clipboardMessage,
-    loaderMessage
+    loaderMessage,
+    collectionDescription,
+    didMount
   } = state;
 
   // console.log("preview => ", preview);
@@ -42,9 +44,11 @@ const GenContextProvider = ({ children }) => {
   // console.log("rule =>", rule)
   // console.log("isRule =>", isRule)
   // console.log("collections =>", collections)
-  // console.log("feedback =>", feedback);
+  // console.log("notification =>", notification);
   // console.log("clipboardMessage =>", clipboardMessage);
   // console.log("loaderMessage =>", loaderMessage);
+  // console.log("collectionDescription =>", collectionDescription);
+  console.log("didMount =>", didMount);
 
   return (
     <GenContext.Provider value={{
@@ -63,9 +67,11 @@ const GenContextProvider = ({ children }) => {
       rule,
       isRule,
       collections,
-      feedback,
+      notification,
       clipboardMessage,
       loaderMessage,
+      collectionDescription,
+      didMount,
       dispatch
     }}>
       {children}

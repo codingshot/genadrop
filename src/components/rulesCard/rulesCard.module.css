@@ -3,7 +3,7 @@
   color: black;
   border-radius: 0.25em;
   background: var(--main-bg);
-  box-shadow: 1px 1px 5px gray;
+  box-shadow: 0px 0px 2px gray;
   padding: 0.5em;
 }
 
@@ -50,12 +50,13 @@
 .icon {
   cursor: pointer;
   color: var(--card-bg1);
-  font-size: 0.65rem;
-  padding: 0 0.5em;
+  filter: invert(0);
+  transform: scale(0.9);
+  transition: all 300ms;
 }
 
 .icon:hover {
-  transform: scale(1.2);
+  transform: scale(1);
 }
 
 .image {
@@ -87,38 +88,11 @@
   cursor: pointer;
   font-size: 0.85em;
   text-transform: capitalize;
+  border: 1px solid var(--card-bg);
 }
 
 .notification {
   width: 100%;
   text-align: center;
   font-style: italic;
-}
-
-/* width */
-::-webkit-scrollbar {
-  width: inherit;
-  height: 6px;
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  border-radius: 0px;
-  background: #F1F1F1;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #C1C1C1; 
-  border-radius: 0px;
-}
-
-::-webkit-scrollbar-corner {
-  border-radius: 0px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #b1b1b1; 
 }

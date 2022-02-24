@@ -7,7 +7,7 @@ class UserInput extends React.Component {
     }
     render() {
         return (<div>
-            <input className={classes.input} placeholder="Search Record..." onChange={(e) => this.props.update(e)} />
+            <input className={classes.input} placeholder="" onChange={(e) => this.props.update(e)} />
         </div>)
     }
 }

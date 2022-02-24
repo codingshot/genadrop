@@ -1,9 +1,10 @@
 import axios from "axios";
-import { saveAs } from "file-saver";
-import JSZip from "jszip";
 import { getAlgoData } from "../utils/arc_ipfs";
 import { readSIngleUserNft } from "../utils/firebase";
 // import fileDownload from 'js-file-download'
+import fileDownload from 'js-file-download'
+
+import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
 
 export const getNftCollections = async collections => {
   let collectionArr = []
@@ -83,16 +84,6 @@ export const getDefaultName = id => {
   }
 }
 
-export const getDefaultDescription = (collectionName, id) => {
-  id = String(id);
-  if (id.length < 4) {
-    let repeatBy = 4 - id.length
-    return `${collectionName} #${'0'.repeat(repeatBy)}${id}`
-  } else {
-    return `${collectionName} #${id}`
-  }
-}
-
 export const handleImage = async props => {
   const { canvas, images, image } = props;
   const { height, width } = await getImageSize(image);
@@ -127,136 +118,66 @@ export const handleBlankImage = async props => {
   image && ctx.drawImage(image, 0, 0, width, height);
 };
 
-export const getAweaveFormat = async (nftLayers, dispatch, setLoader, id) => {
-  let clone = [];
-  for (let i = 0; i < nftLayers.length; i++) {
-    const promise = new Promise(resolve => {
-      setTimeout(() => {
-        dispatch(setLoader(
-          `getting metadata ready for download
-${i + 1} of ${nftLayers.length}`
-        ));
-        clone.push({
-          name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
-          image: "image.png",
-          description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => (
-            { trait_type, value, rarity }
-          )),
-          symbol: '',
-          seller_fee_basis_points: '',
-          external_url: "",
-          collection: {
-            name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
-            family: ""
-          },
-          properties: {
-            creators: [
-              {
-                address: "",
-                share: 100
-              }
-            ]
-          }
-        })
-        resolve();
-      }, 0);
-    });
-    await promise;
-  }
-  dispatch(setLoader(''));
-  return clone;
-}
 
-export const getIpfsFormat = async (nftLayers, dispatch, setLoader, id) => {
-  let clone = [];
-  for (let i = 0; i < nftLayers.length; i++) {
-    const promise = new Promise(resolve => {
-      setTimeout(() => {
-        dispatch(setLoader(
-          `getting metadata ready for download
-${i + 1} of ${nftLayers.length}`
-        ));
-        clone.push({
-          name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
-          image: "image.png",
-          description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => (
-            { trait_type, value, rarity }
-          ))
-        })
-        resolve();
-      }, 0);
-    });
-    await promise;
-  }
-  dispatch(setLoader(''))
-  return clone;
-}
+export const getMockValue = async () => {
+  const pickerOpts = {
+    types: [
+      {
+        description: 'Images',
+        accept: {
+          'image/*': ['.png']
+        }
+      },
+    ],
+    excludeAcceptAllOption: true,
+    multiple: false
+  };
 
-export const paginate = (input, count) => {
-  let countPerPage = count;
-  let numberOfPages = Math.ceil(input.length / countPerPage);
-  let startIndex = 0;
-  let endIndex = startIndex + countPerPage;
-  let paginate = {}
-  for (let i = 1; i <= numberOfPages; i++) {
-    paginate[i] = input.slice(startIndex, endIndex);
-    startIndex = endIndex;
-    endIndex = startIndex + countPerPage
+  async function getTheFile() {
+    let [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+    const fileData = await fileHandle.getFile();
+    return fileData
   }
 
-  return paginate
-}
-
-const downloadCallback = async props => {
-  const { window, value, name, outputFormat, dispatch, setLoader, id, single } = props;
-  const zip = new JSZip();
-  if (outputFormat.toLowerCase() === "arweave") {
-    const aweave = await getAweaveFormat(value, dispatch, setLoader, id);
-    aweave.forEach((data, idx) => {
-      zip.file(data.name ? `${data.name}.json` : `_${idx}.json`, JSON.stringify(data, null, '\t'));
-    });
-  } else {
-    zip.file("metadata.json", JSON.stringify(await getIpfsFormat(value, dispatch, setLoader, id), null, '\t'));
-  }
-  for (let i = 0; i < value.length; i++) {
-    const promise = new Promise(resolve => {
-      setTimeout(() => {
-        dispatch(setLoader(
-          `getting assets ready for download
-${i + 1} of ${value.length}`
-        ));
-        let base64String = value[i].image.replace("data:image/png;base64,", "");
-        zip.file(value[i].name ? `${value[i].name}.png` : `_${i}.png`, base64String, { base64: true });
-        resolve()
-      }, 0);
-    });
-    await promise;
-  }
-  const content = await zip.generateAsync({ type: "blob" });
-  window.requestIdleCallback(() => {
-    // fileDownload(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
-      saveAs(content, `${name ? `${name}${single ? '' : `_${id}`}.zip` : 'collections.zip'}`);
-  })
-
-  dispatch(setLoader(''));
-}
-
-export const handleDownload = async input => {
-  const { value, dispatch, setFeedback } = input;
-  let paginated = paginate(value, 1000);
-  let index = Object.keys(paginated).length;
-  dispatch(setFeedback(`your asset will be downloaded in ${index} ${index === 1 ? 'file' : 'files'}`));
-  for (let i = 1; i <= index; i++) {
-    const promise = new Promise(resolve => {
-      setTimeout(async () => {
-        await downloadCallback({ ...input, id: i, value: paginated[i] })
-        resolve();
-      }, 0);
+  async function getBase64(file) {
+    return new Promise(resolve => {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        resolve(reader.result)
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
     })
-    await promise;
   }
 
-  dispatch(setFeedback('downloaded successfully'));
+  let value = Array(500).fill(
+    {
+      attributes: [
+        {
+          image: await getTheFile(),
+          rarity: "1",
+          trait_type: "a",
+          value: "Red Lips.png"
+        }
+      ],
+      description: " #0001",
+      id: Date.now(),
+      image: await getBase64(await getTheFile()),
+      name: ""
+    }
+  );
+
+  value = value.map((v, id) => ({ ...v, name: '#' + id, description: `description ${id + 1}` }))
+
+  return value;
+}
+
+export const handleDownloadWithWorker = async props => {
+  const { window, dispatch, setLoader, setNotification, value, name, outputFormat } = props;
+  const mockValue = await getMockValue();
+  const instance = worker()
+  const content = await instance.downloadCallback({value: mockValue, name, outputFormat})
+  fileDownload(content, `${'name' ? `${'name'}${true ? '' : `_${'id'}`}.zip` : 'collections.zip'}`);
 }

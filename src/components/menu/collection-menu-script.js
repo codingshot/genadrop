@@ -33,8 +33,8 @@ export const dataURItoBlob = dataURI => {
 export const handleAddBlank = async props => {
   const { canvas, img, traits, layerTitle } = props;
   await handleBlankImage({ canvas, img })
-  const imageUrl = canvas.toDataURL();
-  let imageFile = new File([dataURItoBlob(imageUrl)], "blank_image");
+  const imageUrl = canvas.toDataURL('image/webp', 0.1);
+  let imageFile = new File([dataURItoBlob(imageUrl)], "");
   let uniqueImageFile = [...traits];
   let filterArr = traits.map(({ image }) => image.name);
   if (!filterArr.includes(imageFile.name)) {

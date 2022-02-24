@@ -1,11 +1,11 @@
 import { useEffect, useRef, useContext, useState } from 'react';
-import { setFeedback } from '../../gen-state/gen.actions';
+import { setNotification } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './Notification.module.css';
 
 const Notification = () => {
   const feedbackRef = useRef(null);
-  const { feedback, loaderMessage, dispatch } = useContext(GenContext);
+  const { notification, loaderMessage, dispatch } = useContext(GenContext);
   const [state, setState] = useState({
     toggleFeedback: false
   });
@@ -15,28 +15,26 @@ const Notification = () => {
   }
 
   useEffect(() => {
-    if (!feedback) return;
+    if (!notification) return;
     handleSetState({ toggleFeedback: true })
     setTimeout(() => {
       handleSetState({ toggleFeedback: false })
     }, 5000);
-  }, [feedback]);
+  }, [notification]);
 
   useEffect(() => {
     feedbackRef.current.onanimationend = e => {
       if (e.animationName.includes('slide-out')) {
-        dispatch(setFeedback(''))
+        dispatch(setNotification(''))
       }
     }
   }, [])
 
-
-
   return (
-    <div style={{top: loaderMessage ? '7em' : '4em'}} className={`${classes.container} ${toggleFeedback && classes.active}`}>
-      <div ref={feedbackRef} className={classes.feedback}>
+    <div style={{top: loaderMessage ? '8em' : '4em'}} className={`${classes.container} ${toggleFeedback && classes.active}`}>
+      <div ref={feedbackRef} className={classes.notification}>
         <div className={classes.icon}></div>
-        <div className={classes.message}>{feedback}</div>
+        <div className={classes.message}>{notification}</div>
       </div>
     </div>
   );

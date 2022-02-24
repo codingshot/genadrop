@@ -12,12 +12,13 @@ class Table extends React.Component {
                 <table className={classes.table}>
                     <tbody>
                         <tr>
-                            <th>Event</th>
-                            <th>Unit Price</th>
-                            <th>Quantity</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Date</th>
+                            <th>TRANSACTION TYPE</th>
+                            <th>NAME</th>
+                            <th>TRANSACTION ID</th>
+                            <th>TIME</th>
+                            <th>UNIT PRICE</th>
+                            <th>BUYER</th>
+                            <th>SELLER</th>
                         </tr>
                         {this.props.data.map(function (d, i) {
                             return <TableRow key={i}

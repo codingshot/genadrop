@@ -37,7 +37,7 @@ export async function mintSingleToPoly(singleMintProps) {
 export const handleMint = async props => {
   const {
     dispatch,
-    setFeedback,
+    setNotification,
     setClipboard,
     setLoader,
     file,
@@ -51,25 +51,25 @@ export const handleMint = async props => {
     attributes } = props;
 
   const result = /^[0-9]\d*(\.\d+)?$/.test(priceValue);
-  if (!result) return dispatch(setFeedback('please add a valid price value'));
+  if (!result) return dispatch(setNotification('please add a valid price value'));
   let url = null;
   let metadata = { name: title, description: description, attributes }
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await AlgoSingleMint({file, metadata, account, connector, dispatch, setFeedback, setClipboard, priceValue});
+      url = await AlgoSingleMint({file, metadata, account, connector, dispatch, setNotification, setClipboard, priceValue});
     } else if (selectValue.toLowerCase() === 'celo') {
       url = { 'message': "not yet implemented" } // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
     } else if (selectValue.toLowerCase() === 'polygon') {
-      url = await mintSingleToPoly({file, metadata, account, connector, dispatch, setFeedback, setLoader})
+      url = await mintSingleToPoly({file, metadata, account, connector, dispatch, setNotification, setLoader})
     }
     if (typeof url === "object") {
-      dispatch(setFeedback(url.message))
+      dispatch(setNotification(url.message))
     } else {
       dispatch(setClipboard(url))
     }
   } catch (error) {
     console.log(error);
-    dispatch(setFeedback('connect your wallet and try again'))
+    dispatch(setNotification('connect your wallet and try again'))
   }
 }
 

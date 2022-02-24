@@ -15,6 +15,26 @@ import {
   deleteRule
 } from './gen.utils';
 
+// const getFile = async () => {
+//   let res = await fetch('/assets/banner-image-2.png');
+//   let blob = await res.blob();
+//   console.log(blob);
+//   let file = new File([blob], 'MinorityNft.png')
+//   return file;
+// }
+
+// let defaultLayer = { "id": Date.now(), "traitsAmount": 1, "layerTitle": 'Test-Layer', traits: [{
+//   Rarity: "1",
+//   traitTitle: "MinorityNft",
+//   image: getFile()
+// }] }
+
+// let defaultPreview = {
+//   imageFile: getFile(),
+//   imageName: "MinorityNft",
+//   layerTitle: "Test-Layer"
+// }
+
 export const INITIAL_STATE = {
   layers: [],
   preview: [],
@@ -24,6 +44,7 @@ export const INITIAL_STATE = {
   outputFormat: 'ipfs',
   mintInfo: "",
   collectionName: "",
+  collectionDescription: "",
   isLoading: false,
   currentDnaLayers: null,
   account: '',
@@ -31,9 +52,10 @@ export const INITIAL_STATE = {
   isRule: false,
   rule: [],
   collections: {},
-  feedback: '',
+  notification: '',
   clipboardMessage: '',
-  loaderMessage: ''
+  loaderMessage: '',
+  didMount: false
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -82,7 +104,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       }
     case genActionTypes.CLEAR_PREVIEW:
       return {
-        ...state, 
+        ...state,
         preview: []
       }
     case genActionTypes.ADD_RULE:
@@ -90,7 +112,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         rule: action.payload
       }
-    case genActionTypes.CLEAR_RULE: 
+    case genActionTypes.CLEAR_RULE:
       return {
         ...state,
         rule: []
@@ -118,7 +140,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_COMBINATIONS:
       return {
         ...state,
-        combinations: Math.ceil((80/100) * Number(action.payload))
+        combinations: Math.ceil((80 / 100) * Number(action.payload))
       }
     case genActionTypes.SET_LOADING:
       return {
@@ -155,6 +177,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         collectionName: action.payload
       }
+    case genActionTypes.SET_COLLECTION_DESCRIPTION:
+      return {
+        ...state,
+        collectionDescription: action.payload
+      }
     case genActionTypes.SET_OUTPUT_FORMAT:
       return {
         ...state,
@@ -180,7 +207,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         rule: deleteRule(state.rule, action.payload)
       }
-    case genActionTypes.SET_COLLECTIONS: 
+    case genActionTypes.SET_COLLECTIONS:
       return {
         ...state,
         collections: action.payload
@@ -188,7 +215,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_FEEDBACK:
       return {
         ...state,
-        feedback: action.payload
+        notification: action.payload
       }
     case genActionTypes.SET_CLIPBOARD:
       return {
@@ -199,6 +226,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         loaderMessage: action.payload
+      }
+    case genActionTypes.SET_DID_MOUNT:
+      return {
+        ...state,
+        didMount: action.payload
       }
     default:
       return state;

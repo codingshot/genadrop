@@ -1,5 +1,6 @@
 import classes from './styles.module.css'
 import { useHistory } from 'react-router-dom'
+import banner from "../../../assets/home-banner-image.svg";
 
 const Banner = () => {
   const history = useHistory()
@@ -15,7 +16,7 @@ const Banner = () => {
           Generate all combinations from your art assets, preview and edit meta data, upload to ipfs, mint, and list to multiple blockchains with NO CODE.          </p>
         <button onClick={() => history.push('./create')}>Generate Collection</button>
       </div>
-      <img src='/assets/home-banner-image.svg' alt='' />
+      <img src={banner} alt='' />
     </div>
   )
 }

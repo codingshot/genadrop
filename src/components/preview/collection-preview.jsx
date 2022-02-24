@@ -3,6 +3,7 @@ import { useEffect, useRef, useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getImageSize } from '../../utils';
 import ButtonClickEffect from '../button-effect/button-effect';
+import { useState } from 'react';
 
 const CollectionPreview = () => {
   const { layers, preview } = useContext(GenContext);
@@ -41,7 +42,7 @@ const CollectionPreview = () => {
     const { width, height } = await getImageSize(layers[0].traits[0].image)
     const canvas = document.createElement("canvas");
     await handleImage(canvas, width, height)
-    let image = canvas.toDataURL();
+    let image = canvas.toDataURL('image/webp', 1);
     let link = document.createElement('a');
     link.download = 'asset.png';
     link.href = image;
@@ -57,6 +58,7 @@ const CollectionPreview = () => {
     }
     imageHandler()
   }, [preview, layers])
+
 
   return (
     <div className={classes.container}>

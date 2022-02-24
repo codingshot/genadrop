@@ -31,7 +31,7 @@ const RulesCard = () => {
                   ))
                 }
               </div>
-              <i onClick={() => handleDelete(rl)} className={`fas fa-times ${classes.icon}`} ></i>
+              <img onClick={() => handleDelete(rl)} className={classes.icon} src="/assets/icon-close.svg" alt='' />
             </div>
           ))
         }
