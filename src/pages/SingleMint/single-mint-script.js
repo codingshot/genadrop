@@ -56,7 +56,7 @@ export const handleMint = async props => {
   let metadata = { name: title, description: description, attributes }
   try {
     if (selectValue.toLowerCase() === 'algo') {
-      url = await AlgoSingleMint({file, metadata, account, connector, dispatch, setNotification, setClipboard});
+      url = await AlgoSingleMint({file, metadata, account, connector, dispatch, setNotification, setClipboard, priceValue});
     } else if (selectValue.toLowerCase() === 'celo') {
       url = { 'message': "not yet implemented" } // await mintToCelo({ window,  title, description, celoAccount, setCeloAccount })
     } else if (selectValue.toLowerCase() === 'polygon') {

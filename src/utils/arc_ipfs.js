@@ -16,6 +16,8 @@ const FormData = require('form-data');
 const write = require('./firebase');
 const zip = new JSZip();
 
+console.log(process.env.REACT_APP_MNEMONIC)
+
 const algodClient = new algosdk.Algodv2(
   algoToken,
   algoAddress,
@@ -140,7 +142,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 };
 
 const AlgoSingleMint = async (algoMintProps) => {
-  const {file, metadata, account, connector, dispatch, setNotification, setClipboard} = algoMintProps;
+  const {file, metadata, account, connector, dispatch, setNotification, setClipboard, priceValue} = algoMintProps;
   console.log(connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setNotification('uploading to ipfs'))
@@ -151,9 +153,10 @@ const AlgoSingleMint = async (algoMintProps) => {
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
-    await write.writeNft(account, assetID);
+    await write.writeNft(account, undefined, assetID, priceValue);
     // notification: asset minted
     dispatch(setNotification('asset minted'))
+    
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
   } else {
     return { 'message': "connect to alogrand network on your wallet or select a different network" }
@@ -184,7 +187,7 @@ async function createAsset(asset, account) {
   const managerAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
-  const clawbackAddr = undefined;
+  const clawbackAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
   const decimals = 0;
   const total = 1;
   const metadata = asset.metadata;
@@ -266,6 +269,78 @@ async function signTx(connector, txns) {
   return assetID;
 }
 
+async function PurchaseNft(asset, account, connector) {
+  const params = await algodClient.getTransactionParams().do();
+  const enc = new TextEncoder();
+  const note = enc.encode("Nft Purchase");
+  const note2 = enc.encode("Platform fee");
+  let txns = [];
+  if (!connector) {
+    alert("Please connect your wallet")
+    return;
+  }
+
+  let userBalance = await algodClient.accountInformation(account).do()
+  console.log('accountInfo', userBalance, userBalance.amount)
+  if (algosdk.microalgosToAlgos(userBalance.amount) <= asset.price) {
+    alert("insufficent fund to cover cost")
+    return false;
+  }
+  
+  let optTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: account,
+    closeRemainderTo: undefined,
+    amount: 0,
+    assetIndex: asset.Id,
+    suggestedParams: params,
+  })
+  txns.push(optTxn);
+  let platformFee = asset.price*10/100
+  let sellerFee = asset.price - platformFee
+
+  console.log('fees', platformFee, sellerFee)
+
+  let txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: asset.owner,
+    amount: sellerFee*1000000,
+    note: note,
+    suggestedParams: params,
+  })
+  let txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: process.env.REACT_APP_GENA_MANAGER_ADDRESS,
+    amount: platformFee*1000000,
+    note: note2,
+    suggestedParams: params,
+  })
+  txns.push(txn);
+  txns.push(txn2);
+  let signedTxn;
+  let txgroup = algosdk.assignGroupID(txns)
+  try {
+    signedTxn = await signTx(connector, txns)
+  } catch (error) {
+    alert(error.message)
+    console.log('errors', error.message['message'])
+    return;
+  }
+
+  console.log('optal', signedTxn)
+  let rtxn = algosdk.makeAssetTransferTxnWithSuggestedParams(process.env.REACT_APP_GENA_MANAGER_ADDRESS, account, undefined, asset.owner, 1, note, asset.Id, params);
+  let manager = algosdk.mnemonicToSecretKey(process.env.REACT_APP_MNEMONIC)
+  let rawSignedTxn = rtxn.signTxn(manager.sk)
+  let tx = await algodClient.sendRawTransaction(rawSignedTxn).do();
+  const confirmedTxn = await waitForConfirmation(tx.txId);
+  console.log('raw claw', tx.txId)
+  await write.writeNft(asset.owner, asset.collection_name, asset.Id, asset.price, true, account, new Date())
+  // const ret = await signTx(connector, txn)
+  return `https://testnet.algoexplorer.io/tx/${tx.txId}`
+
+
+}
+
 
 async function createNFT(props) {
   const { zip: fileData, dispatch, setNotification, setLoader } = props;
@@ -294,7 +369,7 @@ async function createNFT(props) {
 
 
 async function mintToAlgo(algoProps) {
-  const {window, ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader} = algoProps;
+  const {ipfsJsonData, account, connector, mintFileName, dispatch, setNotification, setLoader, priceValue} = algoProps;
   if (connector.isWalletConnect && connector.chainId === 4160) {
     let collection_id = [];
     let txns = [];
@@ -315,7 +390,7 @@ async function mintToAlgo(algoProps) {
     }
     const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, mintFileName, collection_id)
+    await write.writeUserData(account, collectionUrl, mintFileName, collection_id, priceValue)
     dispatch(setLoader(''))
     dispatch(setNotification('you have successfully minted your NFTs'));
     return `https://testnet.algoexplorer.io/tx/group/${groupId}`
@@ -330,12 +405,15 @@ async function getAlgoData(id) {
   return data
 }
 
+// getAlgoData("PZHUPW42QGOSDZPP3UHZ3ZCMFU3S7IB7WB3HOQXLY2FPXUZL5KUNX7PGQQ").then(function (data) {console.log('dt', data)})
+
 export {
   getAlgoData,
   createNFT,
   mintToAlgo,
   AlgoSingleMint,
   connectAndMint,
+  PurchaseNft,
   pinata,
   write
 }
