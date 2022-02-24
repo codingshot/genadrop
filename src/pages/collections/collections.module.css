@@ -1,0 +1,83 @@
+.container {
+  padding: 1em;
+  padding-bottom: 4em;
+  background: #E5E5E5;
+}
+
+.header {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-bottom: 2.5em;
+}
+
+.header h1 {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 0.5em;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.search {
+  flex: 1;
+  padding: 0.25em;
+  font-size: 1rem;
+  min-width: 20em;
+}
+
+.sort {
+  width: 12em;
+  padding: 0.25em;
+  border: 1px solid gray;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  gap: 2em;
+}
+
+.skeleton {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2em;
+}
+
+@media screen and (max-width: 1280px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .heading h3 {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

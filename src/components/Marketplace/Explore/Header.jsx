@@ -13,11 +13,11 @@ const Header = ({ collection }) => {
       <div className={classes.creator}>created by {owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`}</div>
       <div className={classes.details}>
         <div> {numberOfNfts} <br /> total nfts</div>
-        <div>1 <br /> owner</div>
+        <div> {owner && 1} <br /> owner</div>
         <div> {price} <br /> floor price</div>
       </div>
       <div className={classes.description}>
-        {description || 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae mollitia libero qui totam, laboriosam dolor nisi porro natus harum dolores excepturi architecto commodi ipsam saepe, animi, magnam expedita veniam? Quidem.'}
+        {description || "Your childhood memories brought back in one piece of art! 1753 living memories inside the Solana Blockchain."}
       </div>
     </header>
   )

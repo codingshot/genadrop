@@ -1,13 +1,12 @@
 import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { GenContext } from '../../../gen-state/gen.context';
 import classes from './collections.module.css';
-import { useHistory, useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
-import { getNftCollections } from '../../../utils';
-import CollectionsCard from '../collectionsCard/collectionsCard';
+import { getNftCollections } from '../../utils';
+import { GenContext } from '../../gen-state/gen.context';
+import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 
 const Collections = () => {
 
@@ -19,10 +18,6 @@ const Collections = () => {
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
-  const history = useHistory();
-  const match = useRouteMatch();
-
-  console.log('match: ', match);
 
   useEffect(() => {
     if (Object.keys(collections).length) {
@@ -37,9 +32,12 @@ const Collections = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>
-        <h3>Top Collections</h3>
-        <button onClick={() => history.push(`${match.url}/all-collections`)}>view all</button>
+      <div className={classes.header}>
+        <h1 >Collections</h1>
+        <div className={classes.filter}>
+          <input className={classes.search} type="text" />
+          <div className={classes.sort}>sort by</div>
+        </div>
       </div>
 
       {

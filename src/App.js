@@ -20,6 +20,7 @@ import Fallback from './pages/fallback/fallback';
 import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
+import Collections from './pages/collections/Collections';
 
 function App() {
   const { dispatch } = useContext(GenContext);
@@ -38,8 +39,10 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/marketplace" component={Marketplace} />
+          <Route exact path="/marketplace/all-collections" component={Collections} />
           <Route exact path="/marketplace/:collectionName" component={Collection} />
-          <Route exact path="/marketplace/:collectionName/:nftId" component={SingleNFT} />
+          <Route exact path="/marketplace/all-collections/:collectionName" component={Collection} />
+          <Route exact path="/marketplace/all-collections/:collectionName/:nftId" component={SingleNFT} />
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint/nft-collection" component={Mint} />

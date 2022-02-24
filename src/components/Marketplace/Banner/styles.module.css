@@ -1,11 +1,6 @@
 .container {
   width: 100%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
   margin-bottom: 4em;
-  background: rgba(0, 0, 0);
-  color: white;
 }
 
 .innerContainer {
@@ -15,8 +10,8 @@
   gap: 1em;
   width: 100%;
   margin: auto;
-  background: rgba(0, 0, 0, 0.6);
   padding: 3em 2em;
+  background: var(--card-bg);
 }
 
 .bannerText {
@@ -31,6 +26,7 @@
 .heading {
   font-size: 3.6em;
   margin-bottom: 0.25em;
+  color: #EEE9DB;
 }
 
 .heading span {
@@ -39,6 +35,7 @@
 
 .description {
   max-width: 36em;
+  color: white;
 }
 
 .pageLinks {
@@ -69,7 +66,7 @@
 
 .pageLinks button:last-child {
   background: transparent;
-  border: 1px solid white;
+  border: 1px solid var(--main-accent);
 }
 
 .pageLinks button:last-child:hover {
@@ -77,46 +74,16 @@
 }
 
 .imageContainer {
-  width: 30vw;
+  width: 24vw;
 }
 
 .imageContainer img {
   width: 100%;
 }
 
-.imageDetails {
-  width: 100%;
-  padding: 2em 1em;
-  background: var(--card-bg1);
-}
-
-.imageDetails > div:first-child {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1em;
-}
-
-.imageDetails span {
-  color: #FFE161;
-}
-
-.soon {
-  position: fixed;
-  width: 100%;
-  left: 0;
-  text-align: center;
-  color: black;
-  font-style: italic;
-  z-index: 100;
-  padding: 4em;
-  background: rgba(255, 255, 255, 0.432);
-  text-transform: uppercase;
-}
-
 @media screen and (max-width: 1200px) {
   .imageContainer {
-    width: 36vw;
+    width: 28vw;
   }
   .heading {
     font-size: 4vw;
@@ -125,7 +92,7 @@
 
 @media screen and (max-width: 900px) { 
   .imageContainer {
-    width: 48vw;
+    width: 42vw;
   }
 
   .heading {
@@ -173,6 +140,7 @@
   }
 
   .bannerText {
+    padding: 0 1em;
     padding-bottom: 2em;
   }
 

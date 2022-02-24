@@ -6,7 +6,7 @@ import Demo from '../../components/Marketplace/Demo/Demo'
 // import Demo2 from '../../components/Marketplace/Demo2/Demo2'
 // import SingleNft from '../../components/SingleNft/SingleNft'
 import Invite from '../../components/Marketplace/Invite/Invite'
-import classes from './styles.module.css'
+import classes from './Marketplace.module.css'
 
 const Marketplace = () => {
   return (

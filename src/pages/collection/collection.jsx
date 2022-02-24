@@ -2,11 +2,9 @@ import { useParams } from 'react-router-dom';
 import Explore from '../../components/Marketplace/Explore/Explore';
 
 const Collection = () => {
-  const {collectionName} = useParams();
+  const { collectionName } = useParams();
   return (
-    <div>
-      <Explore collectionName={collectionName}/>
-    </div>
+    <Explore collectionName={collectionName} />
   )
 }
 

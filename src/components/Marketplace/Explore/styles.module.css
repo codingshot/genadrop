@@ -15,7 +15,7 @@
 }
 
 .imageLoadingContainer {
-  background: gainsboro;
+  background: #f1f1f1;
 }
 
 .imageLoadingContainer,
@@ -31,7 +31,7 @@
 }
 
 .details > div {
-  border: 1px solid gray;
+  border: 1px solid gainsboro;
   width: 8em;
   padding: 0.5em 0;
   text-align: center;
@@ -53,7 +53,7 @@
 }
 
 .sidebar {
-  border: 1px solid gray;
+  border: 1px solid gainsboro;
   width: 100%;
   max-width: 20em;
   position: sticky;
@@ -68,7 +68,7 @@
   align-items: flex-start;
   padding: 1em 1.25em;
   height: calc(100vh - 5.5em);
-  border: 1px solid gray;
+  border: 1px solid gainsboro;
   position: sticky;
   top: 5em;
   cursor: pointer;
@@ -114,8 +114,8 @@
   justify-content: flex-start;
   gap: 1em;
   padding: 1em;
-  border-bottom: 2px solid gray;
-  border-top: 2px solid gray;
+  border-bottom: 2px solid gainsboro;
+  border-top: 2px solid gainsboro;
 }
 
 .statusFilter .filter {
@@ -127,7 +127,7 @@
 }
 
 .toggleButton {
-  background: gray;
+  background: gainsboro;
   display: inline-block;
   width: 48px;
   display: flex;
@@ -147,7 +147,7 @@
   height: 20px;
   border-radius: 50%;
   transition: transform 250ms;
-  background: gainsboro;
+  background: white;
 }
 
 .priceFilter .filter {
@@ -193,7 +193,7 @@
 
 .layerTitle {
   cursor: pointer;
-  border: 1px solid var(--card-bg);
+  border: 1px solid gainsboro;
   border-radius: 0.25em;
   padding: 0;
   padding: 1em;
@@ -266,7 +266,7 @@
 }
 
 .filteredItem {
-  border: 1px solid gray;
+  border: 1px solid gainsboro;
   padding: 0.5em;
   display: flex;
   align-items: center;
@@ -294,7 +294,8 @@
   padding: 0.5em;
   transition: all 300ms;
   border-radius: 0.25em;
-  border: 1px solid gray;
+  border: 1px solid gainsboro;
+  outline: 1px solid transparent;
 }
 
 .searchAndPriceFilter input:focus {
