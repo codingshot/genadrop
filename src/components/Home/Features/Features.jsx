@@ -3,7 +3,6 @@ import classes from './Features.module.css';
 
 const Features = ({ data }) => {
   const { heading, headingAccent, image, description, feature } = data;
-  console.log(data);
   return (
     <div className={classes.container}>
       <div className={classes.heading}>{heading} <span>{headingAccent}</span></div>

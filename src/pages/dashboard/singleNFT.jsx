@@ -11,6 +11,9 @@ import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useEffect } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getNftCollection } from '../../utils';
+import { PurchaseNft } from '../../utils/arc_ipfs';
+import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from 'react-loading-skeleton'
 
 const Orgs = () => {
 
@@ -27,7 +30,8 @@ const Orgs = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const { collections } = useContext(GenContext);
+  const { account, connector } = useContext(GenContext);
+  const { collections } = useContext(GenContext)
   const { url } = useRouteMatch()
   const history = useHistory();
   const [, , collectionName, nftId] = url.split('/');
@@ -62,7 +66,37 @@ const Orgs = () => {
   // }, [asset])
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return (
+      < div className={classes.menu}>
+
+
+        <div className={classes.left} >
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={40} />
+          <br />
+          <Skeleton count={1} height={40} />
+        </div>
+
+
+        <div className={classes.right} >
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={40} />
+          <br />
+          <Skeleton count={1} height={40} />
+        </div>
+
+        <div className={classes.fullLegnth} >
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={200} />
+
+        </div>
+
+      </div>
+
+    )
   }
 
   const description = {
@@ -106,6 +140,13 @@ const Orgs = () => {
     { event: "Minted", price: "", quantity: 100, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
     { event: "Sale", price: 0.13, quantity: 1, from: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", to: "0x14dC79964da2C08b23698B3D3cc7Ca32193d9955", date: "7 hours ago" },
   ]
+
+  const buyNft = async () => {
+    let res = await PurchaseNft(asset, account, connector)
+    console.log('final', res)
+    alert(res)
+
+  }
 
 
   return (
@@ -153,7 +194,9 @@ const Orgs = () => {
             </div>
 
             <div className={classes.btns}>
-              <button className={classes.buy}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+              {(asset.sold ?
+                <button className={classes.sold} disabled={asset.sold} ><img src="/assets/wallet-icon.png" alt="" />SOLD!</button> :
+                <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>)}
               <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
 
             </div>
@@ -197,7 +240,7 @@ const Orgs = () => {
       <div className={classes.section}>
         <div className={classes.heading}><h3>More from this collection</h3></div>
         <div className={classes.collectionItems}>
-          <NFT data={collection} />
+          <NFT data={collection.filter(e => e.name !== asset.name)} />
 
         </div>
         <div className={classes.allCollecitons}>

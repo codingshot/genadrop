@@ -12,7 +12,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
     },
     previousValue: '',
   })
-  const { prompt, inputValue, previousValue } = state;
+  const { prompt, inputValue, previousValue, newImage} = state;
   const { image, traitTitle, Rarity } = trait;
   const { dispatch, preview, isRule } = useContext(GenContext);
 
@@ -43,7 +43,6 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
       }
     })
     handleSetState({ prompt: '' })
-    console.log(typeof(inputValue.rarity));
     dispatch(updateImage({ 
       layerTitle, 
       image, 

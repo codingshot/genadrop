@@ -99,7 +99,7 @@ const Preview = () => {
       } else {
         dispatch(setCollectionName(value))
         let newLayers = nftLayers.map((asset, idx) => (
-          { ...asset, name: `${value} ${getDefaultName(idx + 1)}` })
+          { ...asset, name: `${value} ${getDefaultName(idx + 1)}`.trim() })
         )
         dispatch(setNftLayers(newLayers))
       }
@@ -108,15 +108,7 @@ const Preview = () => {
     }
     dispatch(setLoader(""))
   }
-
-  // const handleCollectionName = value => {
-  //   dispatch(setCollectionName(value))
-  //   let newLayers = nftLayers.map((asset, idx) => (
-  //     { ...asset, name: `${value} ${getDefaultName(idx + 1)}` })
-  //   )
-  //   dispatch(setNftLayers(newLayers))
-  // }
-
+  
   const handleCollectionDescription = event => {
     if (enableAllDescription) {
       let newLayers = nftLayers.map(asset => (

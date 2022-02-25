@@ -96,31 +96,3 @@
   text-align: center;
   font-style: italic;
 }
-
-/* width */
-::-webkit-scrollbar {
-  width: inherit;
-  height: 6px;
-  width: 10px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  border-radius: 0px;
-  background: #F1F1F1;
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #C1C1C1; 
-  border-radius: 0px;
-}
-
-::-webkit-scrollbar-corner {
-  border-radius: 0px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #b1b1b1; 
-}
