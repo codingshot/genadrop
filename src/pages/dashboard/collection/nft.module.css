@@ -67,19 +67,26 @@
 }
 
 
-.buy{
+.buy, .sold{
   
   flex-direction: row;
   color: white;
   padding: 0 1rem;
   height: 35px;
   border-radius: 5px;
-  background-color: var(--main-accent);
   font-weight: bold;
   margin-left: auto;
   order: 2;
 }
 
+.buy{
+  background-color: var(--main-accent);
+
+}
+.sold {
+  background-color: #4B4B5A;
+
+}
 .buy:hover{
   transform: scale(1.05);
   transition: all .2s ease-in-out;

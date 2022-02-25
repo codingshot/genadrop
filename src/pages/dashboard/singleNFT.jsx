@@ -12,6 +12,8 @@ import { useEffect } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import { getNftCollection } from '../../utils';
 import { PurchaseNft } from '../../utils/arc_ipfs';
+import 'react-loading-skeleton/dist/skeleton.css'
+import Skeleton from 'react-loading-skeleton'
 
 const Orgs = () => {
 
@@ -56,7 +58,37 @@ const Orgs = () => {
   }, [collections, nftId])
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return (
+      < div className={classes.menu}>
+
+
+        <div className={classes.left} >
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={40} />
+          <br />
+          <Skeleton count={1} height={40} />
+        </div>
+
+
+        <div className={classes.right} >
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={40} />
+          <br />
+          <Skeleton count={1} height={40} />
+        </div>
+
+        <div className={classes.fullLegnth} >
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={200} />
+
+        </div>
+
+      </div>
+
+    )
   }
 
   const description = {
@@ -104,7 +136,7 @@ const Orgs = () => {
     let res = await PurchaseNft(asset, account, connector)
     console.log('final', res)
     alert(res)
-    
+
   }
 
 
@@ -150,10 +182,12 @@ const Orgs = () => {
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>(${(asset.price * algoPrice).toFixed(2)})</span>
               </span>
-            </div>            
+            </div>
 
             <div className={classes.btns}>
-            {(asset.sold ? <button className={classes.buy} style={{color: 'red'}} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />SOLD!</button> : <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>)}
+              {(asset.sold ?
+                <button className={classes.sold} disabled={asset.sold} ><img src="/assets/wallet-icon.png" alt="" />SOLD!</button> :
+                <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>)}
               <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
 
             </div>
@@ -197,7 +231,7 @@ const Orgs = () => {
       <div className={classes.section}>
         <div className={classes.heading}><h3>More from this collection</h3></div>
         <div className={classes.collectionItems}>
-          <NFT data={collection} />
+          <NFT data={collection.filter(e => e.name !== asset.name)} />
 
         </div>
         <div className={classes.allCollecitons}>
