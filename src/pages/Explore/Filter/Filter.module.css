@@ -1,0 +1,201 @@
+.sidebar {
+  border: 1px solid gainsboro;
+  width: 100%;
+  max-width: 20em;
+  position: sticky;
+  top: 5em;
+  height: calc(100vh - 5.5em);
+  overflow: auto;
+}
+
+.filterHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.filterHeading > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.filterHeading span {
+  color: var(--main-accent);
+}
+
+.filter button{
+  background: var(--main-accent);
+  color: white;
+  padding: 1em;
+  border-radius: 0.25em;
+  transition: all 300ms;
+}
+
+.filter button:hover {
+  background: var(--main-accent-dark);
+  outline: 2px solid var(--main-accent);
+}
+
+.attributeFilter .title,
+.priceFilter .title,
+.statusFilter .title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 1em;
+  border-bottom: 2px solid gainsboro;
+  border-top: 2px solid gainsboro;
+}
+
+.statusFilter .filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1em;
+  padding-bottom: 1.5em;
+}
+
+.toggleButton {
+  background: gainsboro;
+  display: inline-block;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 0.75em;
+  cursor: pointer;
+  padding: 2px;
+  border: 1px solid transparent;
+  transition: all 300ms;
+}
+
+.toggleButton.active {
+  background: white;
+  border: 1px solid gainsboro;
+}
+
+.toggleButton.active .toggle {
+  transform: translateX(23px);
+  background: var(--main-accent);
+}
+
+.toggleButton .toggle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: all 300ms;
+  background: white;
+}
+
+.priceFilter .filter {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+}
+
+.priceFilter .filterInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.priceFilter .filter > div {
+  width: auto;
+  flex: 1;
+}
+
+.priceFilter .filter input {
+  width: 100%;
+}
+
+.attributeFilter .title {
+  cursor: pointer;
+}
+
+.attribute {
+  max-height: 0em;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.attribute.active {
+  max-height: 1000vh;
+  padding: 1em;
+  overflow: auto;
+}
+
+.layerWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 1em;
+  border-radius: 0.25em;
+  border: 1px solid gainsboro;
+}
+
+.layer {
+  border: 1px solid gray;
+  max-height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: all 250ms;
+  border-radius: 0.25em;
+}
+
+.layer.active {
+  max-height: 10em;
+  overflow: auto;
+  visibility: visible;
+  transform: translateY(4px);
+}
+
+.layer > div {
+  margin-bottom: 0.5em;
+  border: 1px solid gainsboro;
+  padding: 0.25em;
+}
+
+.value {
+  cursor: pointer;
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.value:hover {
+  background: gainsboro;
+}
+
+.sidebar2 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1em 1.25em;
+  height: calc(100vh - 5.5em);
+  border: 1px solid gainsboro;
+  position: sticky;
+  top: 5em;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  
+  .sidebar, .sidebar2 {
+    display: none;
+  }
+
+}
