@@ -15,7 +15,7 @@ import SingleNFT from './pages/dashboard/singleNFT';
 import { fetchCollections } from './utils/firebase';
 import { GenContext } from './gen-state/gen.context';
 import { setCollections } from './gen-state/gen.actions';
-import Collection from './pages/collection/collection';
+import Explore from './pages/Explore/Explore';
 import Fallback from './pages/fallback/fallback';
 import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
@@ -39,10 +39,9 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/marketplace" component={Marketplace} />
-          <Route exact path="/marketplace/all-collections" component={Collections} />
-          <Route exact path="/marketplace/:collectionName" component={Collection} />
-          <Route exact path="/marketplace/all-collections/:collectionName" component={Collection} />
-          <Route exact path="/marketplace/all-collections/:collectionName/:nftId" component={SingleNFT} />
+          <Route exact path="/marketplace/collections" component={Collections} />
+          <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
+          <Route exact path="/marketplace/collections/:collectionName/:nftId" component={SingleNFT} />
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint/nft-collection" component={Mint} />

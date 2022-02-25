@@ -2,7 +2,7 @@
   width: 100%;
   max-width: 18em;
   padding: 0.25em;
-  border-radius: 0.25em;
+  border-radius: 0.5em;
   background: white;
   transition: all 250ms;
 }

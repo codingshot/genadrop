@@ -22,8 +22,6 @@ const Collections = () => {
   const history = useHistory();
   const match = useRouteMatch();
 
-  console.log('match: ', match);
-
   useEffect(() => {
     if (Object.keys(collections).length) {
       (async function getResult() {
@@ -39,7 +37,7 @@ const Collections = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <h3>Top Collections</h3>
-        <button onClick={() => history.push(`${match.url}/all-collections`)}>view all</button>
+        <button onClick={() => history.push(`${match.url}/collections`)}>view all</button>
       </div>
 
       {

@@ -7,7 +7,7 @@ const CollectionsCard = ({ collection }) => {
   const match = useRouteMatch();
 
   return (
-    <div onClick={() => history.push(`${match.url}/${name}`)} className={classes.card}>
+    <div onClick={() => history.push(`/marketplace/collections/${name}`)} className={classes.card}>
       <div style={{backgroundImage: `url(${image_url})`}} className={classes.imageContainer} />
       <div className={classes.body}>
         <div className={classes.thumbnail}>

@@ -1,29 +1,77 @@
 .container {
-  padding: 1em;
+  width: 100%;
+  padding: 0 1em;
   padding-top: 2em;
-  padding-bottom: 4em;
+  padding-bottom: 6em;
+  position: relative;
   background: #E5E5E5;
 }
 
-.header {
-  width: 100%;
+.displayContainer {
   max-width: 1440px;
   margin: 0 auto;
-  margin-bottom: 2.5em;
-}
-
-.header h1 {
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 1em;
-}
-
-.filter {
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 1em;
+  box-shadow: 0 0 15px gainsboro;
+  background: white;
+  border-radius: 0.5em;
+}
+
+.displayWrapper {
+  border: 1px solid gainsboro;
+  flex: 1;
+  padding: 1em;
+}
+
+.filterDisplay {
+  width: 100%;
+  margin-bottom: 1em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-bottom: 2em;
+}
+
+.filteredItem {
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 1.5em;
+}
+
+.closeIcon {
+  width: 1.2em;
+  height: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.closeIcon img {
+  width: 1em;
+  transition: all 100ms;
+}
+
+.closeIcon:hover img {
+  width: 0.85em;
+}
+
+.clearFilter {
+  cursor: pointer;
+  margin-left: 1em;
+  transition: all 100ms;
+}
+
+.clearFilter:hover {
+  color: var(--main-accent);
 }
 
 .searchAndPriceFilter {
@@ -98,42 +146,15 @@
   border-bottom: 1px solid gainsboro;
 }
 
-.wrapper {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  justify-items: center;
-  gap: 2em;
-}
-
-.skeleton {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 2em;
-}
-
-@media screen and (max-width: 1280px) {
-  .wrapper, .skeleton {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .wrapper, .skeleton {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media screen and (max-width: 768px) {
-  .wrapper, .skeleton {
-    grid-template-columns: repeat(2, 1fr);
+  .displayWrapper {
+    width: 100%;
   }
 
-  .heading h3 {
-    font-size: 1.6rem;
+  .displayContainer {
+    flex-direction: column;
   }
+
 }
 
 @media screen and (max-width: 540px) {
@@ -144,11 +165,7 @@
 
   .priceDropdown {
     width: 100%;
-  } 
+  }
+  
 }
 
-@media screen and (max-width: 480px) {
-  .wrapper, .skeleton {
-    grid-template-columns: repeat(1, 1fr);
-  }
-}

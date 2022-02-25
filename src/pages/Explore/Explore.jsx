@@ -1,14 +1,16 @@
 import { useContext, useState, useEffect } from 'react';
-import { GenContext } from '../../../gen-state/gen.context';
-import classes from './styles.module.css';
+import { GenContext } from '../../gen-state/gen.context';
+import { useParams } from 'react-router-dom';
+import classes from './Explore.module.css';
 import 'react-loading-skeleton/dist/skeleton.css'
-import Filter from './Filter';
-import Header from './Header';
-import NFTDisplay from './NFTDisplay';
+import Filter from './Filter/Filter';
+import Header from './Header/Header';
 import { mapAttributeToFilter } from './Explore-script';
-import { getNftCollection } from '../../../utils';
+import { getNftCollection } from '../../utils';
+import Menu from './Menu/Menu';
 
-const Explore = ({ collectionName }) => {
+const Explore = () => {
+
   const [state, setState] = useState({
     togglePriceFilter: false,
     NFTCollection: null,
@@ -22,14 +24,16 @@ const Explore = ({ collectionName }) => {
     },
   })
   const { collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection } = state;
-  const { collections } = useContext(GenContext)
+  const { collections } = useContext(GenContext);
+
+  const { collectionName } = useParams();
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
 
   const handleFilter = _filter => {
-    handleSetState({ filter: {...filter, ..._filter} })
+    handleSetState({ filter: { ...filter, ..._filter } })
   }
 
   useEffect(() => {
@@ -48,17 +52,47 @@ const Explore = ({ collectionName }) => {
   useEffect(() => {
     if (!NFTCollection) return
     handleSetState({
-      attributes: mapAttributeToFilter(NFTCollection)
+      attributes: mapAttributeToFilter(NFTCollection),
+      FilteredCollection: NFTCollection
     })
-  }, [NFTCollection])
+  }, [NFTCollection]);
 
   useEffect(() => {
-    if(!NFTCollection) return;
+    if (!NFTCollection) return;
     let filtered = NFTCollection.filter(col => {
-      return col.name.includes(filter.searchValue)
+      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
     })
-    handleSetState({FilteredCollection: filtered})
-  }, [filter, NFTCollection])
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.searchValue]);
+
+  useEffect(() => {
+    if (!NFTCollection) return;
+    let filtered = null;
+    if (filter.price === "low") {
+      filtered = NFTCollection.sort((a, b) => Number(a.price) - Number(b.price))
+    } else {
+      filtered = NFTCollection.sort((a, b) => Number(b.price) - Number(a.price))
+    }
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.price]);
+
+  useEffect(() => {
+    if (!NFTCollection) return;
+    let filtered = NFTCollection.filter(col => {
+      return Number(col.price) >= Number(filter.priceRange.min) && Number(col.price) <= Number(filter.priceRange.max);
+    });
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.priceRange]);
+
+  useEffect(() => {
+    if (!NFTCollection) return;
+    let filtered = NFTCollection.filter(col => {
+      return filter.attributes.every(el => {
+        return JSON.stringify(col.ipfs_data.properties).includes(JSON.stringify(el));
+      });
+    });
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.attributes]);
 
   return (
     <div className={classes.container}>
@@ -70,9 +104,10 @@ const Explore = ({ collectionName }) => {
           && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url
       }}
       />
-      <div className={classes.wrapper}>
+
+      <div className={classes.displayContainer}>
         <Filter handleFilter={handleFilter} filterToDelete={filterToDelete} attributes={attributes} />
-        <main className={classes.main}>
+        <main className={classes.displayWrapper}>
           <div className={classes.searchAndPriceFilter}>
             <input
               type="search"
@@ -96,12 +131,19 @@ const Explore = ({ collectionName }) => {
               filter?.attributes && filter.attributes.map((f, idx) => (
                 <div key={idx} className={classes.filteredItem}>
                   <span>{`${f.trait_type}: ${f.value}`}</span>
-                  <img onClick={() => handleSetState({ filterToDelete: f })} src="/assets/icon-close.svg" alt="" />
+                  <div onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon}>
+                    <img src="/assets/icon-close.svg" alt="" />
+                  </div>
                 </div>
               ))
             }
+            {
+              filter?.attributes && filter.attributes.length
+                ? <div onClick={() => handleSetState({ filterToDelete: [] })} className={classes.clearFilter}>clear all</div>
+                : null
+            }
           </div>
-          <NFTDisplay NFTCollection={FilteredCollection} />
+          <Menu NFTCollection={FilteredCollection} />
         </main>
       </div>
     </div>
