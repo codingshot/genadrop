@@ -157,19 +157,19 @@ const SingleMint = () => {
           <div className={classes.textInput}>
 
             <h3>Title</h3>
-            <span>Item Name</span>
+            <div className={classes.sub}>Item Name</div>
             <input type="text" value={title} onChange={event => handleSetState({ title: event.target.value })} />
           </div>
 
           <div className={classes.textInput}>
             <h3>Description</h3>
-            <span>The description will be included on the item's details underneath its image</span>
+            <div className={classes.sub}>The description will be included on the item's details underneath its image</div>
             <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
           </div>
 
           <div className={classes.textInput}>
             <h3>Attributes</h3>
-            <span>Select your MetaData file and mint to IPFS</span>
+            <div className={classes.sub}>Select your MetaData file and mint to IPFS</div>
             {attributes.map((x, idx) => {
               return (
                 <div key={idx} className={classes.attributes}>

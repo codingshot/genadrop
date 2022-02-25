@@ -294,6 +294,13 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
   .switch{
     font-size: 13px;
   }
+  .fallback{
+    width: 100%;
+    height: 20rem;
+  }
+  .itemDescription{
+    width: 100%;
+  }
 }
 
 
@@ -326,7 +333,7 @@ select#gender option[value="Algo"]   { background-image:url("./algo-logo.png"); 
   outline-color: var(--main-accent);
 }
 
-.textInput span {
+.sub {
   font-size: small;
   color: var(--card-bg);
 }
