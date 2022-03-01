@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   visibility: hidden;
-  transition: all 1000ms;
+  transition: all 650ms;
 }
 
 .icon {
@@ -34,18 +34,17 @@
   animation: slide-out 650ms forwards;
   background: var(--card-bg);
   color: white;
-  padding: 1em 2em;
+  padding: 1em;
   border-radius: 0.25em;
   box-shadow: 0 0 5px gainsboro;
 }
 
 .container.active {
   visibility: visible;
-  padding: 0.5em;
 }
 
 .container.active .notification {
-  animation: slide-in 650ms forwards;
+  animation: slide-in 450ms forwards;
 }
 
 @keyframes slide-in {

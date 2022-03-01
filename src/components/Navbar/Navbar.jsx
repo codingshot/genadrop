@@ -27,7 +27,7 @@ const Navbar = () => {
           <Link onClick={() => handleSetState({ dropdown: false })} to="/create">
             <li className={`${classes.navItem} ${pathname.includes('/create') && classes.active}`}>create</li>
           </Link>
-          <Link onClick={() => handleSetState({ dropdown: false })} to="/mint/single-nft">
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/mint">
             <li className={`${classes.navItem} ${pathname.includes('/mint') && classes.active}`}>mint</li>
           </Link>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/marketplace">

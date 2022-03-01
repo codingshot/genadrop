@@ -25,6 +25,8 @@
 
 .icon {
   animation: rotate 1000ms infinite;
+  width: 1em;
+  margin-right: 0.5em;
 }
 
 .message {
