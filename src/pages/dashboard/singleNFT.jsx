@@ -194,11 +194,18 @@ const Orgs = () => {
             </div>
 
             <div className={classes.btns}>
-              {(asset.sold ?
-                <button className={classes.sold} disabled={asset.sold} ><img src="/assets/wallet-icon.png" alt="" />SOLD!</button> :
-                <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>)}
-              <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
-
+              {
+                (asset.sold ?
+                  <>
+                    <button className={classes.sold} disabled={asset.sold} ><img src="/assets/wallet-icon.png" alt="" />SOLD!</button>
+                    {/* <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button> */}
+                  </>
+                  :
+                  <>
+                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+                    <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
+                  </>
+                )}
             </div>
 
           </div>
