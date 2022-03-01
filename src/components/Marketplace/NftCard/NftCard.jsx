@@ -3,11 +3,11 @@ import classes from './NftCard.module.css';
 
 const NftCard = ({ nft }) => {
 
-  const { collection_name, name, price, image_url } = nft;
-  const  match = useRouteMatch();
-
+  const { Id, collection_name, name, price, image_url } = nft;
+  const match = useRouteMatch();
+  console.log("+++>", nft);
   return (
-    <Link to={`${match.url}/${name}`}>
+    <Link to={`${match.url}/${Id}`}>
       <div className={classes.card}>
         <div className={classes.imageContainer}>
           <img src={image_url} alt="" />

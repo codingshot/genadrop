@@ -42,8 +42,10 @@ const Orgs = () => {
       (async function getResult() {
 
         let collectionData = await getNftCollection(collection)
+
         setCollection(collectionData)
-        let result = collectionData.find(asset => asset.name === nftId);
+        let result = collectionData.find(asset => asset.Id === Number(nftId));
+
         handleSetState({
           asset: result,
         })
