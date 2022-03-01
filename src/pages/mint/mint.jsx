@@ -25,16 +25,17 @@ const Mint = () => {
     let file = event.target.files[0];
     if (!file) return;
     
-    let fileName = file.name;
-    let fileType = fileName.split('.')[1];
+    let name = file.name.split('.')
+    let fileName = name[0];
+    let fileType = name[1];
     let supportedTypes = ['zip', 'png', 'jpeg', 'jpg', 'webp'];
     if(!supportedTypes.includes(fileType)) return;
 
     if (fileType === 'zip') {
-      handleSetState({ zip: file })
+      handleSetState({ zip: file, fileName })
       handleZipFile({ file, handleSetState });
     } else {
-      handleSetState({ file: [file], fileName: file.name });
+      handleSetState({ file: [file], fileName });
     }
   }
 

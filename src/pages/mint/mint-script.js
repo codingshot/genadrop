@@ -3,7 +3,7 @@ import JSZip from 'jszip';
 export const handleZipFile = async arg => {
   const { file, handleSetState } = arg;
   const { metadata, collection } = await extractZip(file);
-  handleSetState({ file: collection, metadata, fileName: file.name })
+  handleSetState({ file: collection, metadata })
 }
 
 export const extractZip = async zip => {

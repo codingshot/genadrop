@@ -119,12 +119,18 @@ const AssetPreview = ({ data, changeFile }) => {
                     onClick={() => handleSetState({ preview: true })}
                     className={classes.showPreview}
                   >
-                    click to view more {file.length}
+                    view all collections
                   </div>
                   : null
               }
               <img src={URL.createObjectURL(file[0])} alt="" />
               <button onClick={changeFile}>Change asset</button>
+            </section>
+
+            <section className={classes.type}>
+              <div>
+                {file.length > 1 ? 'Collection Mint' : 'Single Mint'}
+              </div>
             </section>
 
             <section className={classes.details}>

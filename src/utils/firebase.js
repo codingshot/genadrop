@@ -40,16 +40,16 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-async function writeUserData(owner, collection, name, collection_id) {
+async function writeUserData(owner, collection, name, collection_id, priceValue) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name}
+    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name, 'price': priceValue}
   }
   db.collection('collections').add({
     name: `${name}`,
     url: `${collection}`,
-    price: 20,
+    price: priceValue,
     owner: owner
   }).then((docRef) => {
     // console.log("Document ID:", docRef.id)
@@ -63,13 +63,14 @@ async function writeUserData(owner, collection, name, collection_id) {
   return;
   }
   
-async function writeNft(owner, assetId) {
+async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold) {
   let updates = {};
-  updates[assetId] = {'id': assetId, 'collection': null}
+  updates[assetId] = {'id': assetId, 'collection': collection ? collection : null, 'sold': sold ? true : false, 'Buyer': buyer, 'price': price, 'dateSold': dateSold}
   db.collection('listed').doc(`${owner}`).set({
     ...updates
   }, {merge: true});
 }
+
 
 
   async function readAllNft() {
@@ -99,8 +100,16 @@ async function readData() {
 
   async function readAllUserNft(userAddress) {
     let querySnapshot = await db.collection("listed").doc(userAddress).get()
+    console.log('datum', querySnapshot.data())
     // console.log(Object.values(querySnapshot.data()));
     return Object.values(querySnapshot.data())
+  }
+
+  async function readSIngleUserNft(userAddress, assetId) {
+    let querySnapshot = await db.collection("listed").doc(userAddress).get()
+    console.log('datum', querySnapshot.data())
+    // console.log(Object.values(querySnapshot.data()));
+    return Object.values(querySnapshot.data()).find(asset => asset.id === assetId)
   }
 
   async function readAllCollection() {
@@ -155,12 +164,15 @@ async function readData() {
     }
   }
 
+// readAllUserNft("PZHUPW42QGOSDZPP3UHZ3ZCMFU3S7IB7WB3HOQXLY2FPXUZL5KUNX7PGQQ").then((data) =>console.log('nts', data))
+
 export {
     writeUserData,
     readAllCollection,
     readAllNft,
     readUserCollection,
     readAllUserNft,
+    readSIngleUserNft,
     fetchCollections,
     writeNft
 }

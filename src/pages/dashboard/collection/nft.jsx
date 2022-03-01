@@ -10,7 +10,7 @@ const NFT = (data) => {
     return (
 
         data.data.map((nft, idx) => {
-            console.log(match.url);
+
             return (
                 <Link to={`${match.url.split('/').slice(0, -1).join('/')}/${nft.name}`} >
                     <div key={idx} className={classes.collectionItem}>
@@ -24,7 +24,11 @@ const NFT = (data) => {
                                     <div className={classes.heading}>LIST PRICE</div>
                                     <div className={classes.price}>{nft.price} <span>ALGO</span></div>
                                 </div>
-                                <button className={classes.buy}>Buy</button>
+                                {
+                                    nft.sold ?
+                                        <button className={classes.sold}>Sold</button> :
+                                        <button className={classes.buy}>Buy</button>
+                                }
                             </div>
 
                         </div>

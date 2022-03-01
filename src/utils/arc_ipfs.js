@@ -16,6 +16,8 @@ const axios = require('axios');
 const FormData = require('form-data');
 const write = require('./firebase');
 
+console.log(process.env.REACT_APP_MNEMONIC)
+
 const algodClient = new algosdk.Algodv2(
   algoToken,
   algoAddress,
@@ -158,7 +160,7 @@ export const connectAndMint = async (file, metadata, imgName) => {
 }
 
 export async function mintSingleToAlgo(algoMintProps) {
-  const { file, metadata, account, connector, dispatch, setNotification } = algoMintProps;
+  const { file, metadata, account, connector, dispatch, setNotification, price } = algoMintProps;
   console.log(connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setNotification('uploading to ipfs'))
@@ -169,7 +171,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
-    await write.writeNft(account, assetID);
+    await write.writeNft(account, undefined, assetID, price);
     // notification: asset minted
     dispatch(setNotification('asset minted successfully'))
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
@@ -217,7 +219,7 @@ async function createAsset(asset, account) {
   const managerAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
-  const clawbackAddr = undefined;
+  const clawbackAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
   const decimals = 0;
   const total = 1;
   const metadata = asset.metadata;
@@ -435,11 +437,83 @@ export async function mintToPoly(polyProps) {
   }
 }
 
+export async function PurchaseNft(asset, account, connector) {
+  const params = await algodClient.getTransactionParams().do();
+  const enc = new TextEncoder();
+  const note = enc.encode("Nft Purchase");
+  const note2 = enc.encode("Platform fee");
+  let txns = [];
+  if (!connector) {
+    alert("Please connect your wallet")
+    return;
+  }
+
+  let userBalance = await algodClient.accountInformation(account).do()
+  console.log('accountInfo', userBalance, userBalance.amount)
+  if (algosdk.microalgosToAlgos(userBalance.amount) <= asset.price) {
+    alert("insufficent fund to cover cost")
+    return false;
+  }
+  
+  let optTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: account,
+    closeRemainderTo: undefined,
+    amount: 0,
+    assetIndex: asset.Id,
+    suggestedParams: params,
+  })
+  txns.push(optTxn);
+  let platformFee = asset.price*10/100
+  let sellerFee = asset.price - platformFee
+
+  console.log('fees', platformFee, sellerFee)
+
+  let txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: asset.owner,
+    amount: sellerFee*1000000,
+    note: note,
+    suggestedParams: params,
+  })
+  let txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: process.env.REACT_APP_GENA_MANAGER_ADDRESS,
+    amount: platformFee*1000000,
+    note: note2,
+    suggestedParams: params,
+  })
+  txns.push(txn);
+  txns.push(txn2);
+  let signedTxn;
+  let txgroup = algosdk.assignGroupID(txns)
+  try {
+    signedTxn = await signTx(connector, txns)
+  } catch (error) {
+    alert(error.message)
+    console.log('errors', error.message['message'])
+    return;
+  }
+
+  console.log('optal', signedTxn)
+  let rtxn = algosdk.makeAssetTransferTxnWithSuggestedParams(process.env.REACT_APP_GENA_MANAGER_ADDRESS, account, undefined, asset.owner, 1, note, asset.Id, params);
+  let manager = algosdk.mnemonicToSecretKey(process.env.REACT_APP_MNEMONIC)
+  let rawSignedTxn = rtxn.signTxn(manager.sk)
+  let tx = await algodClient.sendRawTransaction(rawSignedTxn).do();
+  const confirmedTxn = await waitForConfirmation(tx.txId);
+  console.log('raw claw', tx.txId)
+  await write.writeNft(asset.owner, asset.collection_name, asset.Id, asset.price, true, account, new Date())
+  // const ret = await signTx(connector, txn)
+  return `https://testnet.algoexplorer.io/tx/${tx.txId}`
+}
+
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 export async function getAlgoData(id) {
   let data = await algodClient.getAssetByID(id).do()
   return data
 }
+
+// getAlgoData("PZHUPW42QGOSDZPP3UHZ3ZCMFU3S7IB7WB3HOQXLY2FPXUZL5KUNX7PGQQ").then(function (data) {console.log('dt', data)})
 
 export {
   pinata,

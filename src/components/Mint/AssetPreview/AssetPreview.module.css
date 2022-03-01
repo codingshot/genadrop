@@ -66,6 +66,16 @@
   cursor: pointer;
 }
 
+.type {
+  width: 100%;
+  font-size: 1.2rem;
+}
+
+.type div {
+  display: inline-block;
+  border-bottom: 2px solid gray;
+}
+
 .details {
   width: 100%;
 }
