@@ -60,10 +60,7 @@ function ConnectWallet() {
       //   feedbacktype: error
       return
     }
-
-
-    console.log('ec2? Meta??', connector)
-
+    
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     console.log('info', provider, signer)

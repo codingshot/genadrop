@@ -1,282 +1,98 @@
 import classes from './mint.module.css';
-import { useRef, useState, useEffect, useContext } from 'react';
-import { getImageSize } from '../../utils';
-import { createNFT } from '../../utils/arc_ipfs';
-import { GenContext } from '../../gen-state/gen.context';
-import { saveAs } from 'file-saver';
-import { setClipboard, setNotification, setLoader } from '../../gen-state/gen.actions';
-import { handleFileChange, handleMint, handleMintFileChange } from './mint-script';
-import { useHistory } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { handleZipFile } from './mint-script';
+import AssetPreview from '../../components/Mint/AssetPreview/AssetPreview';
 
 const Mint = () => {
 
-  const [attributes, setAttribute] = useState([{ label: "", description: "" }]);
+  const fileRef = useRef(null);
+  const dropRef = useRef(null);
+
   const [state, setState] = useState({
-    collections: [],
-    zip: null,
-    ipfsJsonData: [],
-    metadata: [],
-    collectionName: '',
-    mintFileName: '',
-    loading: false,
-    size: { height: 0, width: 0 },
-    selectValue: 'Algo',
-    priceValue: 0
-  })
+    fileName: '',
+    file: null,
+    metadata: null,
+    zip: null
+  });
 
-  const {
-    collections,
-    zip,
-    ipfsJsonData,
-    metadata,
-    collectionName,
-    mintFileName,
-    title,
-    description,
-    loading,
-    size,
-    selectValue,
-    priceValue
-  } = state;
-  const [celoAccount, setCeloAccount] = useState('')
-  const { account, connector, dispatch } = useContext(GenContext);
-
-  // handle input change
-  const handleInputChange = (e, index) => {
-    console.log(e.target.value);
-    const { name, value } = e.target;
-    const list = [...attributes];
-    list[index][name] = value;
-    console.log(index, name);
-    setAttribute(list);
-  };
-
-  // handle click event of the Remove button
-  const handleRemoveClick = index => {
-    const list = [...attributes];
-    list.splice(index, 1);
-    setAttribute(list);
-  };
-
-  // handle click event of the Add button
-  const handleAddClick = () => {
-    setAttribute([...attributes, { label: "", description: "" }]);
-  };
+  const { fileName, file, metadata, zip } = state;
 
   const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }));
-
+    setState(state => ({ ...state, ...payload }))
   }
 
-  const fileRef = useRef(null);
-  const jsonFileRef = useRef(null);
+  const handleFileChange = event => {
+    let file = event.target.files[0];
+    if (!file) return;
+    
+    let name = file.name.split('.')
+    let fileName = name[0];
+    let fileType = name[1];
+    let supportedTypes = ['zip', 'png', 'jpeg', 'jpg', 'webp'];
+    if(!supportedTypes.includes(fileType)) return;
 
-  const mintProps = {
-    selectValue,
-    handleSetState,
-    window,
-    ipfsJsonData,
-    mintFileName,
-    celoAccount,
-    setCeloAccount,
-    account,
-    connector,
-    priceValue,
-    setNotification,
-    setClipboard,
-    setLoader,
-    dispatch
-  }
-
-
-
-  const handleMintUpload = () => {
-    jsonFileRef.current.click()
-  }
-
-  const handleExport = async () => {
-    try {
-      const ipfs = await createNFT({ zip, dispatch, setNotification, setLoader });
-      let fileName = `${collectionName.split('.zip').join('-ipfs')}.json`;
-      let fileToSave = new Blob([JSON.stringify(ipfs, null, '\t')], {
-        type: 'application/json',
-        name: fileName
-      });
-      saveAs(fileToSave, fileName);
-    } catch (error) {
-      console.log(error)
-      dispatch(setNotification('failed to upload collection. Make sure you are uploading the correct file.'))
+    if (fileType === 'zip') {
+      handleSetState({ zip: file, fileName })
+      handleZipFile({ file, handleSetState });
+    } else {
+      handleSetState({ file: [file], fileName });
     }
   }
-
-  const history = useHistory()
 
   useEffect(() => {
-    if (!collections.length) return
-    const run = async () => {
-      const { height, width } = await getImageSize(collections[0]);
-      handleSetState({ size: { height, width } })
+    if (!dropRef.current) return
+    dropRef.current.ondragover = e => {
+      e.preventDefault();
+      document.querySelector('#drop-area').style.border = '2px dashed green'
     }
-    run()
-  }, [collections])
+    dropRef.current.ondragleave = e => {
+      e.preventDefault();
+      document.querySelector('#drop-area').style.border = '1px dashed gainsboro'
+    }
+    dropRef.current.ondrop = e => {
+      e.preventDefault();
+      document.querySelector('#drop-area').style.border = '1px dashed gainsboro'
+      handleFileChange({ target: e.dataTransfer });
+    }
+  }, [file]);
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>
-        <div className={classes.mintOptions}>
-          <div className={classes.mintOption}>
-            <div onClick={() => history.push('/mint/single-nft')} className={classes.switch}>
-              Mint 1 of 1
-            </div>
-
-            <div onClick={() => history.push('/mint/nft-collection')} className={`${classes.switch} ${classes.active}`}>
-              Collection
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={classes.wrapper}>
-        <div className={classes.uploadSection}>
-          <h3>Mint Your Nfts</h3>
-          <p>Upload you NFT collection and its metadata, mint and list it on the blockchain of your choice</p>
-
-
-          <div className={classes.upload}>
-            <h4>Upload File</h4>
-            <span>File types supported: Zip. Max size 100MB </span>
-            <div className={classes.uploadInfo}>
-              <img src="/assets/icon-upload.svg" alt="" />
-              <div>{collectionName}</div>
-            </div>
-            <div className={classes.buttonWrapper}>
-              <button className={classes.uploadBtn} onClick={() => fileRef.current.click()}>upload</button>
-              {
-                collections.length
-                  ? <button className={classes.exportBtn} onClick={handleExport}>export</button>
-                  : null
-              }
-            </div>
-            <input
-              style={{ display: 'none' }}
-              onChange={event => handleFileChange({ event, handleSetState })}
-              ref={fileRef}
-              type="file"
-              accept=".zip,.rar,.7zip"
-            />
-          </div>
-
-          <div className={classes.upload}>
-            <h4>Mint with IPFS.json</h4>
-            <div className={classes.uploadInfo}>
-              <img src="/assets/icon-upload.svg" alt="" />
-              <div>{mintFileName}</div>
-            </div>
-            <div className={classes.buttonWrapper}>
-              <button className={classes.uploadBtn} onClick={handleMintUpload}>upload</button>
-            </div>
-            <input
-              style={{ display: 'none' }}
-              onChange={event => handleMintFileChange({ event, handleSetState })}
-              ref={jsonFileRef}
-              type="file"
-              accept=".json"
-            />
-          </div>
-
-          {
-            ipfsJsonData.length
-              ?
-              <>
-                <div className={classes.details}>
-                  <div className={classes.heading}>
-                    <h4>Fixed Price -In </h4>
-
-                    <select value={selectValue} onChange={event => handleSetState({ selectValue: event.target.value })}>
-                      <option value="Algo">Algo</option>
-                      <option value="Celo">Celo</option>
-                      <option value="Polygon">Polygon</option>
-                    </select>
-                  </div>
-                  <input type="text" value={priceValue !== 0 ? priceValue : ""} placeholder="0" onChange={event => handleSetState({ priceValue: event.target.value })} />
-                  <div>
-                    <p>Price in USD</p>
-                    <p>Current {state.selectValue} price: </p>
-                  </div>
-                </div>
-
-                <button className={classes.exportBtn} onClick={() => handleMint(mintProps)}>mint</button>
-              </>
-              : null
-          }
-        </div>
-        <div>
-          {
-            collections.length
-              ?
-              <div className={classes.previewSection}>
-                <div className={classes.preview}>
-                  {
-                    collections
-                      .map((image, idx) => (
-                        <img key={idx} src={URL.createObjectURL(image)} alt="" />
-                      ))
-                  }
-                </div>
-                <div className={classes.description}>
-                  <h3>Description</h3>
-                  <div><span>Collection Name: </span> {collectionName}</div>
-                  <div><span>Number Of Pictures: </span> {collections.length}</div>
-                  <div><span>Layers: </span> {
-                    metadata.length
-                      ?
-                      <span className={classes.layers}>
-                        {
-                          metadata[0]?.attributes.map(({ trait_type }, idx) => (
-                            <span key={idx}>{trait_type}; </span>
-                          ))
-                        }
-                      </span>
-                      : null
-                  }</div>
-                  <div><span>Size: </span> {size.width}{" x "}{size.height}</div>
-                </div>
+      {
+        file ?
+          <AssetPreview
+            data={{ file, fileName, metadata, zip }}
+            changeFile={() => handleSetState({
+              fileName: '',
+              file: null,
+              metadata: null,
+              zip: null
+            })} />
+          :
+          <div className={classes.wrapper}>
+            <h1 className={classes.title}>Mint Your NFTs</h1>
+            <p className={classes.description}>
+              Upload an asset or a collection to create NFT
+            </p>
+            <div ref={dropRef} className={classes.uploadWrapper}>
+              <div>
+                <p id='drop-area' className={classes.dropArea}>Drag and Drop you files</p>
+                <p>Supported file types: zip, png, jpeg, jpg, webp</p>
               </div>
-              :
-              <div className={classes.fallback}>
-                {
-                  loading
-                    ? <i className="fas fa-spinner"></i>
-                    : "nothing to preview"
-                }
-
-              </div>
-
-          }
-          <div className={classes.itemDescription}>
-            <div className={classes.textInput}>
-
-              <h3>Title</h3>
-              <div className={classes.sub}>Item Name</div>
-              <input type="text" value={title} onChange={event => handleSetState({ title: event.target.value })} />
+              <p>or</p>
+              <button onClick={() => fileRef.current.click()}>Browse files</button>
+              <input
+                style={{ display: 'none' }}
+                onChange={handleFileChange}
+                ref={fileRef}
+                type="file"
+                accept=".jpg, .jpeg, .png, .webp, .zip"
+              />
             </div>
-
-            <div className={classes.textInput}>
-              <h3>Description</h3>
-              <div className={classes.sub}>The description will be included on the item's details underneath its image</div>
-              <textarea value={description} onChange={event => handleSetState({ description: event.target.value })} cols="30" rows="10"></textarea>
-            </div>
-
-
           </div>
-        </div>
-      </div>
-
+      }
     </div>
   )
 }
 
 export default Mint;
-
-
-

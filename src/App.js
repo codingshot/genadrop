@@ -10,7 +10,6 @@ import Mint from './pages/mint/mint';
 import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
 import Home from './pages/home/home';
-import SingleMint from './pages/SingleMint/singleMint';
 import SingleNFT from './pages/dashboard/singleNFT';
 import { fetchCollections } from './utils/firebase';
 import { GenContext } from './gen-state/gen.context';
@@ -30,7 +29,7 @@ function App() {
       let collections = await fetchCollections()
       dispatch(setCollections(collections))
     }())
-  }, [])
+  }, []);
 
   return (
     <div className="App">
@@ -44,8 +43,7 @@ function App() {
           <Route exact path="/marketplace/collections/:collectionName/:nftId" component={SingleNFT} />
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
-          <Route exact path="/mint/nft-collection" component={Mint} />
-          <Route exact path="/mint/single-nft" component={SingleMint} />
+          <Route exact path="/mint" component={Mint} />
           <Route path="" component={Fallback} />
         </Switch>
       </div>

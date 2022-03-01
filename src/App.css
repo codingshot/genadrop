@@ -41,8 +41,9 @@ a {
 }
 
 *{
-  font-family: 'Frank Ruhl Libre', serif;
+  /* font-family: 'Frank Ruhl Libre', serif; */
   font-family: 'Roboto', sans-serif;
+  /* font-family: 'Poppins', sans-serif; */
 }
 
 /* width */
