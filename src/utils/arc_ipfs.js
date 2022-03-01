@@ -8,7 +8,6 @@ const algodClientPort = config.algodClientPort;
 const algoToken = config.algodClientToken;
 const pinataApiKey = process.env.REACT_APP_PINATA_API_KEY;
 const pinataApiSecret = process.env.REACT_APP_PINATA_SECRET_KEY;
-console.log('pins', pinataApiKey, pinataApiSecret);
 const pinataSDK = require('@pinata/sdk');
 const pinata = pinataSDK(pinataApiKey, pinataApiSecret);
 const axios = require('axios');
@@ -16,7 +15,6 @@ const FormData = require('form-data');
 const write = require('./firebase');
 const zip = new JSZip();
 
-console.log(process.env.REACT_APP_MNEMONIC)
 
 const algodClient = new algosdk.Algodv2(
   algoToken,
@@ -50,12 +48,10 @@ const pinFileToIPFS = async (pinataApiKey, pinataSecretApiKey, file, metadata, o
       }
     })
     .then(function (response) {
-      console.log('goal', response, response.data)
       return response.data;
     })
     .catch(function (error) {
       //handle error here
-      console.log('error', error)
     });
 };
 
@@ -70,12 +66,6 @@ const waitForConfirmation = async function (txId) {
       pendingInfo["confirmed-round"] !== null &&
       pendingInfo["confirmed-round"] > 0
     ) {
-      console.log(
-        "Transaction " +
-        txId +
-        " confirmed in round " +
-        pendingInfo["confirmed-round"]
-      );
       break;
     }
     lastround++;
@@ -128,7 +118,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   metadata.image_integrity = `${integrity.base64}`;;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
 
-  console.log(metadata)
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, { pinataMetadata: { name: asset.name } });
   let jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash)
@@ -143,13 +132,11 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 
 const AlgoSingleMint = async (algoMintProps) => {
   const {file, metadata, account, connector, dispatch, setNotification, setClipboard, priceValue} = algoMintProps;
-  console.log(connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setNotification('uploading to ipfs'))
     // notification: uploading to ipfs
     const asset = await connectAndMint(file, metadata, file.name)
     const txn = await createAsset(asset, account);
-    console.log('transacton', txn);
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
@@ -170,7 +157,6 @@ const connectAndMint = async (sampleFile, metadata, imgName) => {
     return uploadToIpfs(sampleFile, imgName, metadata)
 
   }).catch((err) => {
-    console.log(err);
     alert('We encountered issues uploading your file. Pease check your network and try again')
   });
 }
@@ -208,7 +194,6 @@ async function createAsset(asset, account) {
     reserve: reserveAddr,
     suggestedParams: params,
   });
-  console.log('s there?')
   return txn;
 
 }
@@ -230,41 +215,22 @@ async function signTx(connector, txns) {
   try {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
     alert('please check wallet to confirm transaction')
-    console.log(connector, request)
     result = await connector.send(request);
-    console.log('result', result)
   } catch (error) {
-    console.log('four');
     alert(error)
     throw error;
   }
 
-
-
   const decodedResult = result.map(element => {
     return element ? new Uint8Array(Buffer.from(element, "base64")) : null;
   });
-  console.log(decodedResult)
   let tx = await algodClient.sendRawTransaction(decodedResult).do();
-  console.log('transaction', tx);
   // const decoded = algosdk.decodeSignedTransaction(decodedResult);
-  // console.log('decoded', decoded);
   // const fromdc = decoded.txn.from
-  // console.log('fromdc', fromdc);
-  // console.log('address', algosdk.encodeAddress(fromdc.publicKey))
   const confirmedTxn = await waitForConfirmation(tx.txId);
-
-  console.log('confam', tx.txId)
-
 
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
-  console.log('asset id', Buffer.from(decodedResult[0]).toString('hex'));
-
-
-
-  // console.log('Account: ',account,' Has created ASA with ID: ', assetID);
-
 
   return assetID;
 }
@@ -281,7 +247,6 @@ async function PurchaseNft(asset, account, connector) {
   }
 
   let userBalance = await algodClient.accountInformation(account).do()
-  console.log('accountInfo', userBalance, userBalance.amount)
   if (algosdk.microalgosToAlgos(userBalance.amount) <= asset.price) {
     alert("insufficent fund to cover cost")
     return false;
@@ -299,7 +264,6 @@ async function PurchaseNft(asset, account, connector) {
   let platformFee = asset.price*10/100
   let sellerFee = asset.price - platformFee
 
-  console.log('fees', platformFee, sellerFee)
 
   let txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: account,
@@ -323,18 +287,16 @@ async function PurchaseNft(asset, account, connector) {
     signedTxn = await signTx(connector, txns)
   } catch (error) {
     alert(error.message)
-    console.log('errors', error.message['message'])
     return;
   }
 
-  console.log('optal', signedTxn)
   let rtxn = algosdk.makeAssetTransferTxnWithSuggestedParams(process.env.REACT_APP_GENA_MANAGER_ADDRESS, account, undefined, asset.owner, 1, note, asset.Id, params);
   let manager = algosdk.mnemonicToSecretKey(process.env.REACT_APP_MNEMONIC)
   let rawSignedTxn = rtxn.signTxn(manager.sk)
   let tx = await algodClient.sendRawTransaction(rawSignedTxn).do();
   const confirmedTxn = await waitForConfirmation(tx.txId);
-  console.log('raw claw', tx.txId)
   await write.writeNft(asset.owner, asset.collection_name, asset.Id, asset.price, true, account, new Date())
+  await write.recordTransaction(asset.Id, "Sale", account, asset.owner, asset.price, tx.txID)
   // const ret = await signTx(connector, txn)
   return `https://testnet.algoexplorer.io/tx/${tx.txId}`
 
@@ -354,9 +316,7 @@ async function createNFT(props) {
     // notification: minting i of metadata.length
     dispatch(setLoader(`uploading ${i+1} of ${metadata.length}`))
     let imgName = `${metadata[i].name}.png`
-    console.log(imgName, '-------')
     let imgFile = data.files[imgName]
-    console.log(imgFile, data.files)
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: "image/png" });
     const asset = await connectAndMint(blob, metadata[i], imgName)
@@ -398,14 +358,12 @@ async function mintToAlgo(algoProps) {
     dispatch(setNotification('please connect to algorand network on your wallet or select a different network'));
   }
 }
-// console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
 
 async function getAlgoData(id) {
   let data = await algodClient.getAssetByID(id).do()
   return data
 }
 
-// getAlgoData("PZHUPW42QGOSDZPP3UHZ3ZCMFU3S7IB7WB3HOQXLY2FPXUZL5KUNX7PGQQ").then(function (data) {console.log('dt', data)})
 
 export {
   getAlgoData,
