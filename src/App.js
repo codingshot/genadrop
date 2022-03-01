@@ -10,16 +10,16 @@ import Mint from './pages/mint/mint';
 import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
 import Home from './pages/home/home';
-import SingleMint from './pages/SingleMint/singleMint';
 import SingleNFT from './pages/dashboard/singleNFT';
 import { fetchCollections } from './utils/firebase';
 import { GenContext } from './gen-state/gen.context';
 import { setCollections } from './gen-state/gen.actions';
-import Collection from './pages/collection/collection';
+import Explore from './pages/Explore/Explore';
 import Fallback from './pages/fallback/fallback';
 import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
+import Collections from './pages/collections/Collections';
 
 function App() {
   const { dispatch } = useContext(GenContext);
@@ -29,7 +29,7 @@ function App() {
       let collections = await fetchCollections()
       dispatch(setCollections(collections))
     }())
-  }, [])
+  }, []);
 
   return (
     <div className="App">
@@ -38,12 +38,12 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/marketplace" component={Marketplace} />
-          <Route exact path="/marketplace/:collectionName" component={Collection} />
-          <Route exact path="/marketplace/:collectionName/:nftId" component={SingleNFT} />
+          <Route exact path="/marketplace/collections" component={Collections} />
+          <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
+          <Route exact path="/marketplace/collections/:collectionName/:nftId" component={SingleNFT} />
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
-          <Route exact path="/mint/nft-collection" component={Mint} />
-          <Route exact path="/mint/single-nft" component={SingleMint} />
+          <Route exact path="/mint" component={Mint} />
           <Route path="" component={Fallback} />
         </Switch>
       </div>

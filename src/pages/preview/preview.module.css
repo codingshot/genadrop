@@ -136,6 +136,10 @@
   transition: all 300ms;
 }
 
+.collectionDetail .toggleContainer.active {
+  background: white;
+  border: 1px solid gainsboro;
+}
 
 .collectionDetail .toggle {
   width: 16px;

@@ -1,8 +1,8 @@
 import Skeleton from 'react-loading-skeleton';
-import NftCard from '../../NftCard/NftCard';
-import classes from './styles.module.css';
+import NftCard from '../../../components/Marketplace/NftCard/NftCard'
+import classes from './Menu.module.css';
 
-const NFTDisplay = ({ NFTCollection }) => {
+const Menu = ({ NFTCollection }) => {
 
   return (
     <div className={classes.menu}>
@@ -24,4 +24,4 @@ const NFTDisplay = ({ NFTCollection }) => {
   )
 }
 
-export default NFTDisplay;
+export default Menu;

@@ -34,16 +34,18 @@ const Orgs = () => {
   const { collections } = useContext(GenContext)
   const { url } = useRouteMatch()
   const history = useHistory();
-  const [, , collectionName, nftId] = url.split('/');
-  useEffect(() => {
+  const [, , , collectionName, nftId] = url.split('/');
 
+  useEffect(() => {
     if (Object.keys(collections).length) {
       const collection = collections.allCollections.find(col => col.name === collectionName);
       (async function getResult() {
 
         let collectionData = await getNftCollection(collection)
+
         setCollection(collectionData)
-        let result = collectionData.find(asset => asset.name === nftId);
+        let result = collectionData.find(asset => asset.Id === Number(nftId));
+
         handleSetState({
           asset: result,
         })
@@ -56,14 +58,6 @@ const Orgs = () => {
       })
     document.documentElement.scrollTop = 0;
   }, [collections, nftId])
-
-  // useEffect(() => {
-  //   if (!asset) return
-  //   // you can assess a single nft data inside this function;
-  //   console.log(collection);
-
-  //   console.log("-------");
-  // }, [asset])
 
   if (isLoading) {
     return (
@@ -121,7 +115,6 @@ const Orgs = () => {
           </div>
         ))}
       </div>
-
     )
   }
 

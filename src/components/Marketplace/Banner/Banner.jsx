@@ -1,13 +1,12 @@
 import classes from './styles.module.css'
 import { useHistory } from 'react-router-dom'
-const bgImage = { backgroundImage: 'url(/assets/Banner-background-image.png)' }
+import banner from "../../../assets/marketplace-banner.png";
 
 const Banner = () => {
   const history = useHistory()
 
   return (
-    <div style={bgImage} className={classes.container}>
-      {/* <div className={classes.soon}>This page will be available shortly. <br />Thank you!</div> */}
+    <div className={classes.container}>
       <div className={classes.innerContainer}>
         <div className={classes.bannerText}>
           <h4 className={classes.heading}>
@@ -24,14 +23,7 @@ const Banner = () => {
           </div>
         </div>
         <div className={classes.imageContainer}>
-          <img src='/assets/banner-image-2.png' alt='' />
-          <div className={classes.imageDetails}>
-            <div>
-              <div>#9212 MinorityNFT</div>
-              <span>5.98 ALGO</span>
-            </div>
-            <div>MinorityNFTCollection</div>
-          </div>
+          <img src={banner} alt='' />
         </div>
       </div>
     </div>

@@ -25,13 +25,13 @@ const Navbar = () => {
         <br />
         <ul className={classes.navList}>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/create">
-            <li className={`${classes.navItem} ${pathname === '/create' && classes.active}`}>create</li>
+            <li className={`${classes.navItem} ${pathname.includes('/create') && classes.active}`}>create</li>
           </Link>
-          <Link onClick={() => handleSetState({ dropdown: false })} to="/mint/single-nft">
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/mint">
             <li className={`${classes.navItem} ${pathname.includes('/mint') && classes.active}`}>mint</li>
           </Link>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/marketplace">
-            <li className={`${classes.navItem} ${pathname === '/marketplace' && classes.active}`}>explore</li>
+            <li className={`${classes.navItem} ${pathname.includes('/marketplace') && classes.active}`}>explore</li>
           </Link>
         </ul>
         <div className={classes.wallet}>

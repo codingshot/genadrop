@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
-import classes from './styles.module.css';
+import classes from './Filter.module.css';
 
 const Filter = ({ attributes, handleFilter, filterToDelete }) => {
 
@@ -49,9 +49,13 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   }, [filter])
 
   useEffect(() => {
-    let strVal = JSON.stringify(filterToDelete)
-    let newAttributes = filter.attributes.filter(attr => JSON.stringify(attr) !== strVal)
-    handleSetState({ filter: { ...filter, attributes: newAttributes } })
+    if (Array.isArray(filterToDelete) && !filterToDelete.length) {
+      handleSetState({ filter: { ...filter, attributes: [] } })
+    } else {
+      let strVal = JSON.stringify(filterToDelete)
+      let newAttributes = filter.attributes.filter(attr => JSON.stringify(attr) !== strVal)
+      handleSetState({ filter: { ...filter, attributes: newAttributes } })
+    }
   }, [filterToDelete])
 
   return (
@@ -74,7 +78,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
               <div className={classes.filter}>
                 <span>show only listed item</span>
                 <div onClick={handleStatus} className={`${classes.toggleButton} ${filter.onlyListed && classes.active}`}>
-                  <div></div>
+                  <div className={classes.toggle} />
                 </div>
               </div>
             </div>
@@ -107,19 +111,24 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                 {
                   attributes && attributes.map((attr, idx) => (
                     <div key={idx}>
-                      <div className={classes.layerTitle} onClick={() => handleSetState({ toggleLayer: idx === toggleLayer ? -1 : idx })} key={idx}>{attr.trait_type}</div>
+                      <div onClick={() => handleSetState({ toggleLayer: idx === toggleLayer ? -1 : idx })} key={idx} className={classes.layerWrapper}>
+                        <div>{attr.trait_type}</div>
+                        <div>{attr.value.length}</div>
+                      </div>
                       <div className={`${classes.layer} ${toggleLayer === idx && classes.active}`}>
                         {
-                          attr.value.map((val, idx) => (
-                            <div
-                              key={idx}
-                              onClick={() => handleAddToFilterAttribute({ trait_type: attr.trait_type, value: val })}
-                              className={classes.value}
-                            >
-                              <span>{isSelected({ trait_type: attr.trait_type, value: val }) ? <img src="/assets/icon-mark-dark.svg" alt="" /> : ''}</span>
-                              <span>{val}</span>
-                            </div>
-                          ))
+                          attr.value.map((val, idx) => {
+                            return (
+                              <div
+                                key={idx}
+                                onClick={() => handleAddToFilterAttribute({ trait_type: attr.trait_type, value: val, rarity: attr.rarity })}
+                                className={classes.value}
+                              >
+                                <span>{isSelected({ trait_type: attr.trait_type, value: val, rarity: attr.rarity }) ? <img src="/assets/icon-mark-dark.svg" alt="" /> : ''}</span>
+                                <span>{val}</span>
+                              </div>
+                            )
+                          })
                         }
                       </div>
                     </div>

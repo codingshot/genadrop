@@ -1,0 +1,154 @@
+.container {
+  padding: 1em;
+  padding-top: 2em;
+  padding-bottom: 4em;
+  background: #E5E5E5;
+}
+
+.header {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-bottom: 2.5em;
+}
+
+.header h1 {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 1em;
+}
+
+.filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.searchAndPriceFilter {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 0.5em;
+}
+
+.searchAndPriceFilter input {
+  width: 100%;
+  flex: 1;
+  padding: 0.5em;
+  transition: all 300ms;
+  border-radius: 0.25em;
+  border: 1px solid gainsboro;
+  outline: 1px solid transparent;
+}
+
+.searchAndPriceFilter input:focus {
+  outline: 1px solid gray;
+}
+
+.priceDropdown {
+  position: relative;
+  width: 12em;
+  background: white;
+  border-radius: 0.25em;
+  z-index: 10;
+}
+
+.priceDropdown .selectedPrice {
+  cursor: pointer;
+  background: var(--main-accent);
+  color: white;
+  padding: 0.5em 1.5em;
+  border-radius: 0.25em;
+  transition: all 300ms;
+}
+
+.priceDropdown .selectedPrice:hover {
+  outline: 2px solid var(--main-accent);
+  background: var(--main-accent-dark);
+}
+
+.priceDropdown .dropdown{
+  width: 100%;
+  left: 0;
+  position: absolute;
+  background: white;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 250ms;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  border: 2px solid var(--main-accent);
+}
+
+.priceDropdown .dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(1em);
+}
+
+.priceDropdown .dropdown > div {
+  border-bottom: 1px solid gainsboro;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-items: center;
+  gap: 2em;
+}
+
+.skeleton {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2em;
+}
+
+@media screen and (max-width: 1280px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .heading h3 {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .searchAndPriceFilter {
+    flex-direction: column;
+    gap: 0.5em;
+  }
+
+  .priceDropdown {
+    width: 100%;
+  } 
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

@@ -58,14 +58,14 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  border: 1px solid rgb(228, 228, 228);
+  border: 1px solid #cecece;
   padding: 1em;
   border-radius: 0.25em;
-  cursor: pointer;
+  transition: all 300ms;
 }
 
 .card:hover {
-  background: #F3F1FF;
+  background: #dad8d8;
 }
 
 .operation {

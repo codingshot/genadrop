@@ -48,7 +48,7 @@ const GenContextProvider = ({ children }) => {
   // console.log("clipboardMessage =>", clipboardMessage);
   // console.log("loaderMessage =>", loaderMessage);
   // console.log("collectionDescription =>", collectionDescription);
-  console.log("didMount =>", didMount);
+  // console.log("didMount =>", didMount);
 
   return (
     <GenContext.Provider value={{
