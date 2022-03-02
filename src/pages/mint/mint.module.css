@@ -25,6 +25,23 @@
 .description, p {
   color: gray;
   text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.description span {
+  color: var(--main-accent);
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 0.25em;
+  padding: 0 1em;
+  position: relative;
+}
+
+.description span img {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -0.25em;
 }
 
 .uploadWrapper {

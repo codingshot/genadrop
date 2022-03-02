@@ -2,6 +2,7 @@ import classes from './mint.module.css';
 import { useRef, useState, useEffect } from 'react';
 import { handleZipFile } from './mint-script';
 import AssetPreview from '../../components/Mint/AssetPreview/AssetPreview';
+import lineIcon from '../../assets/icon-line.svg';
 
 const Mint = () => {
 
@@ -72,7 +73,7 @@ const Mint = () => {
           <div className={classes.wrapper}>
             <h1 className={classes.title}>Mint Your NFTs</h1>
             <p className={classes.description}>
-              Upload an asset or a collection to create NFT
+              Upload an <span> <img src={lineIcon} alt="" /> asset</span> or a <span> <img src={lineIcon} alt="" /> collection</span> to create NFT
             </p>
             <div ref={dropRef} className={classes.uploadWrapper}>
               <div>

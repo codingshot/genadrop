@@ -5,6 +5,7 @@ import { useState } from "react";
 import { setClipboard } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from './clipboard.module.css';
+import linkIcon from '../../assets/icon-link.svg';
 
 const Clipboard = () => {
   const [state, setState] = useState({
@@ -45,9 +46,12 @@ const Clipboard = () => {
     <div style={{ top: notification && loaderMessage ? '10em' : loaderMessage ? '6em' : notification ? '8em' : '4em' }} className={`${classes.container} ${toggleClipboard && classes.active}`}>
       <img className={classes.icon} onClick={handleDiscard} src="/assets/icon-close.svg" alt="" />
       <div className={classes.message}>
-        {clipboardMessage} with some few testing messages and more to see how it can overflow and copy
+        {clipboardMessage}
       </div>
-      <div className={classes.copy} onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}>{clipboardState}</div>
+      <div className={classes.action}>
+        <div className={classes.copy} onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}>{clipboardState}</div>
+        <a href={clipboardMessage} target="_blank" rel="noreferrer" ><img src={linkIcon} alt="" /></a>
+      </div>
       <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={clipboardMessage} />
     </div>
   )
