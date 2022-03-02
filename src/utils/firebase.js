@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import firebase from "firebase/compat/app";
 import 'firebase/compat/firestore';
+import { nanoid } from 'nanoid';
 const { getDatabase, ref, get, child, push, update} = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -45,6 +46,7 @@ async function writeUserData(owner, collection, name, collection_id, priceValue)
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
     updates[collection_id[i]] = {'id': collection_id[i], 'collection': name, 'price': priceValue}
+    await recordTransaction(collection_id[i], "Minting", owner, null, null, null)
   }
   db.collection('collections').add({
     name: `${name}`,
@@ -62,6 +64,21 @@ async function writeUserData(owner, collection, name, collection_id, priceValue)
   
   return;
   }
+
+async function recordTransaction(assetId, type, buyer, seller, price, txId) {
+  let updates = {};
+  updates[nanoid()] = {'type': type, 'buyer': buyer, 'seller': seller, 'price': price, 'txId': txId, 'txDate': new Date()}
+  db.collection('transactions').doc(`${assetId}`).set({
+    ...updates
+  }, {merge: true});
+}
+
+async function readNftTransaction(assetId) {
+  let querySnapshot = await db.collection("transactions").doc(`${assetId}`).get()
+  console.log('datum', Object.values(querySnapshot.data()))
+  // console.log(Object.values(querySnapshot.data()));
+  return Object.values(querySnapshot.data())
+}
   
 async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold) {
   let updates = {};
@@ -164,7 +181,7 @@ async function readData() {
     }
   }
 
-// readAllUserNft("PZHUPW42QGOSDZPP3UHZ3ZCMFU3S7IB7WB3HOQXLY2FPXUZL5KUNX7PGQQ").then((data) =>console.log('nts', data))
+// readNftTransaction(75481560).then((data) =>console.log('nts', data))
 
 export {
     writeUserData,
@@ -174,7 +191,9 @@ export {
     readAllUserNft,
     readSIngleUserNft,
     fetchCollections,
-    writeNft
+    writeNft,
+    recordTransaction,
+    readNftTransaction
 }
 
 
