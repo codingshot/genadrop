@@ -43,9 +43,7 @@ const Orgs = () => {
 
         let collectionData = await getNftCollection(collection)
         setCollection(collectionData)
-        console.log('col data', collectionData)
         let result = collectionData.find(asset => asset.name === nftId);
-        console.log('results', result)
         handleSetState({
           asset: result,
         })
@@ -93,8 +91,6 @@ const Orgs = () => {
     )
   }
 
-  console.log('assets', asset)
-
   const description = {
     icon: "/assets/details.png",
     title: "Description",
@@ -138,6 +134,7 @@ const Orgs = () => {
 
   const buyNft = async () => {
     let res = await PurchaseNft(asset, account, connector)
+    console.log('final', res)
     alert(res)
 
   }
