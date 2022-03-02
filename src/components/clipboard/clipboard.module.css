@@ -43,8 +43,19 @@
   padding: 0.25em;
 }
 
+.action {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.action img {
+  filter: invert(1);
+  margin-left: 4px;
+  width: 1em;
+}
+
 .copy {
-  float: right;
   cursor: pointer;
   font-size: 0.85rem;
   padding: 0.2em 1em;
