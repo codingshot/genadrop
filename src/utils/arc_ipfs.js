@@ -16,7 +16,6 @@ const axios = require('axios');
 const FormData = require('form-data');
 const write = require('./firebase');
 
-console.log(process.env.REACT_APP_MNEMONIC)
 
 const algodClient = new algosdk.Algodv2(
   algoToken,
@@ -63,12 +62,10 @@ const pinFileToIPFS = async (pinataApiKey, pinataSecretApiKey, file, metadata, o
       }
     })
     .then(function (response) {
-      console.log('goal', response, response.data)
       return response.data;
     })
     .catch(function (error) {
       //handle error here
-      console.log('error', error)
     });
 };
 
@@ -83,12 +80,6 @@ const waitForConfirmation = async function (txId) {
       pendingInfo["confirmed-round"] !== null &&
       pendingInfo["confirmed-round"] > 0
     ) {
-      console.log(
-        "Transaction " +
-        txId +
-        " confirmed in round " +
-        pendingInfo["confirmed-round"]
-      );
       break;
     }
     lastround++;
@@ -167,7 +158,6 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: uploading to ipfs
     const asset = await connectAndMint(file, metadata, file.name)
     const txn = await createAsset(asset, account);
-    console.log('transacton', txn);
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
@@ -260,25 +250,17 @@ async function signTx(connector, txns) {
   try {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
     alert('please check wallet to confirm transaction')
-    console.log(connector, request)
     result = await connector.send(request);
-    console.log('result', result)
   } catch (error) {
-    console.log('four');
     alert(error)
     throw error;
   }
   const decodedResult = result.map(element => {
     return element ? new Uint8Array(Buffer.from(element, "base64")) : null;
   });
-  console.log(decodedResult)
   let tx = await algodClient.sendRawTransaction(decodedResult).do();
-  console.log('transaction', tx);
   // const decoded = algosdk.decodeSignedTransaction(decodedResult);
-  // console.log('decoded', decoded);
   // const fromdc = decoded.txn.from
-  // console.log('fromdc', fromdc);
-  // console.log('address', algosdk.encodeAddress(fromdc.publicKey))
   const confirmedTxn = await waitForConfirmation(tx.txId);
   console.log('confam', tx.txId)
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
@@ -356,7 +338,7 @@ export async function mintToAlgo(algoProps) {
     }
     const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, fileName, collection_id)
+    await write.writeUserData(account, collectionUrl, fileName, collection_id, price)
     dispatch(setLoader(''))
     dispatch(setNotification('you have successfully minted your NFTs'));
     return `https://testnet.algoexplorer.io/tx/group/${groupId}`
@@ -370,7 +352,6 @@ export async function mintToCelo(celoProps) {
   if (typeof window.ethereum !== 'undefined') {
     dispatch(setNotification('preparing assets for minting'));
     const contract = await initializeContract({ minterAddress: process.env.REACT_APP_CELO_MINTER_ADDRESS, fileName, connector, account, dispatch, setLoader });
-    let collection_id = {};
     let uris = ipfsJsonData.map((asset) => asset.url);
     let ids = ipfsJsonData.map((asset) => {
       let uintArray = asset.metadata.data.toLocaleString();
@@ -387,13 +368,8 @@ export async function mintToCelo(celoProps) {
       dispatch(setLoader(''))
       return;
     }
-    for (let nfts = 0; nfts < ids.length; nfts++) {
-      collection_id[ids[nfts]] = ipfsJsonData[nfts]['url']
-    }
-    const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection${ids[0]}` } })
-    let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    console.log(`collection${ids[0]}`)
-    await write.writeUserData(`collection${ids[0]}`, collectionUrl)
+    dispatch(setLoader(''))
+    dispatch(setNotification('NFTs successfully minted.'))
     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`
   } else {
     dispatch(setNotification('download metamask'));
@@ -449,7 +425,6 @@ export async function PurchaseNft(asset, account, connector) {
   }
 
   let userBalance = await algodClient.accountInformation(account).do()
-  console.log('accountInfo', userBalance, userBalance.amount)
   if (algosdk.microalgosToAlgos(userBalance.amount) <= asset.price) {
     alert("insufficent fund to cover cost")
     return false;
@@ -467,7 +442,6 @@ export async function PurchaseNft(asset, account, connector) {
   let platformFee = asset.price*10/100
   let sellerFee = asset.price - platformFee
 
-  console.log('fees', platformFee, sellerFee)
 
   let txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: account,
@@ -491,18 +465,16 @@ export async function PurchaseNft(asset, account, connector) {
     signedTxn = await signTx(connector, txns)
   } catch (error) {
     alert(error.message)
-    console.log('errors', error.message['message'])
     return;
   }
 
-  console.log('optal', signedTxn)
   let rtxn = algosdk.makeAssetTransferTxnWithSuggestedParams(process.env.REACT_APP_GENA_MANAGER_ADDRESS, account, undefined, asset.owner, 1, note, asset.Id, params);
   let manager = algosdk.mnemonicToSecretKey(process.env.REACT_APP_MNEMONIC)
   let rawSignedTxn = rtxn.signTxn(manager.sk)
   let tx = await algodClient.sendRawTransaction(rawSignedTxn).do();
   const confirmedTxn = await waitForConfirmation(tx.txId);
-  console.log('raw claw', tx.txId)
   await write.writeNft(asset.owner, asset.collection_name, asset.Id, asset.price, true, account, new Date())
+  await write.recordTransaction(asset.Id, "Sale", account, asset.owner, asset.price, tx.txID)
   // const ret = await signTx(connector, txn)
   return `https://testnet.algoexplorer.io/tx/${tx.txId}`
 }
@@ -513,7 +485,6 @@ export async function getAlgoData(id) {
   return data
 }
 
-// getAlgoData("PZHUPW42QGOSDZPP3UHZ3ZCMFU3S7IB7WB3HOQXLY2FPXUZL5KUNX7PGQQ").then(function (data) {console.log('dt', data)})
 
 export {
   pinata,

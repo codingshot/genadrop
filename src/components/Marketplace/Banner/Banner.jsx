@@ -12,7 +12,7 @@ const Banner = () => {
           <h4 className={classes.heading}>
             Discover, <br />
             Create & Sell Your <br />
-            Awesome <span>Nfts</span>
+            Awesome <span>NFTs</span>
           </h4>
           <p className={classes.description}>
             The first NFT marketplace that enables creators to create their generative NFTs and embed licenses when they mint NFTs. Creators know what they are selling, collectors know what they are buying.
