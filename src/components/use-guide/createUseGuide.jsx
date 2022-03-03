@@ -85,6 +85,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   const handleCancel = () => {
     dispatch(setDidMout(true));
     setGuide(false);
+    handleSetState({pointer: 1})
   }
 
   const control = (

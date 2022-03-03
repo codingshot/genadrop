@@ -84,7 +84,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
   const setMint = () => {
     const result = /^[0-9]\d*(\.\d+)?$/.test(price);
-    if (!result) return dispatch(setNotification('please add a valid price value'));
+    if (!result) return dispatch(setNotification('please add a valid price'));
     if (file.length > 1) {
       handleMint(mintProps)
     } else {

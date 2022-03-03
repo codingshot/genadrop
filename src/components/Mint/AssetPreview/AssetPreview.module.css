@@ -73,7 +73,10 @@
 
 .type div {
   display: inline-block;
-  border-bottom: 2px solid gray;
+  color: var(--main-accent);
+  border-bottom: 2px solid var(--main-accent);
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.6rem;
 }
 
 .details {
@@ -232,4 +235,10 @@
 
 .assetWrapper img {
   width: 100%;
+}
+
+@media screen and (max-width: 480px) {
+  .type div {
+    font-size: 1.2rem;
+  }
 }

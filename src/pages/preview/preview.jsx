@@ -92,7 +92,6 @@ const Preview = () => {
     try {
       dispatch(setLoader("saving..."))
       let names = await getCollectionsNames();
-      console.log(names);
       let isUnique = names.find(name => name.toLowerCase() === value.toLowerCase());
       if (isUnique) {
         dispatch(setNotification(`${value} already exist. Please choose another name`))
@@ -189,6 +188,7 @@ const Preview = () => {
               <TextEditor
                 placeholder={collectionName ? collectionName : `collectionName`}
                 submitHandler={handleCollectionName}
+                invert
               />
             </div>
 

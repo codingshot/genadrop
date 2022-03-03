@@ -1,7 +1,7 @@
 import { useState } from "react";
 import classes from './text-editor.module.css'
 
-const TextEditor = ({ placeholder, submitHandler }) => {
+const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const [state, setState] = useState({
     value: '',
     editor: false
@@ -20,7 +20,7 @@ const TextEditor = ({ placeholder, submitHandler }) => {
   }
 
   return (
-    <div className={classes.container}>
+    <div className={`${classes.container} ${invert && classes.invert}`}>
       {
         editor
           ?

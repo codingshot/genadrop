@@ -1,17 +1,16 @@
-import { createNFT, mintSingleToAlgo, mintSingleToPoly, mintToAlgo, mintToCelo, mintToPoly } from "../../../utils/arc_ipfs";
+import { mintSingleToAlgo, mintSingleToPoly, mintToAlgo, mintToCelo, mintToPoly } from "../../../utils/arc_ipfs";
 
 export const handleMint = async args => {
-  const { account, connector, chain, dispatch, setNotification, setLoader, setClipboard } = args;
+  const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
   if (!account) return dispatch(setNotification('connect your wallet and try again.'));
-  const ipfsJsonData = await createNFT({ ...args });
   let url = null;
   try {
     if (chain.toLowerCase() === 'algo') {
-      url = await mintToAlgo({ ...args, ipfsJsonData });
+      url = await mintToAlgo({ ...args });
     } else if (chain.toLowerCase() === 'celo') {
-      url = await mintToCelo({ ...args, ipfsJsonData })
+      url = await mintToCelo({ ...args })
     } else if (chain.toLowerCase() === 'polygon') {
-      url = await mintToPoly({ ...args, ipfsJsonData })
+      url = await mintToPoly({ ...args })
     } else {
       dispatch(setNotification('please, select a chain.'))
     }
