@@ -161,7 +161,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
-    await write.writeNft(account, undefined, assetID, price);
+    await write.writeNft(account, undefined, assetID, price, false, null, null);
     // notification: asset minted
     dispatch(setNotification('asset minted successfully'))
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
@@ -206,10 +206,10 @@ async function createAsset(asset, account) {
   const assetName = `${asset.name}@arc3`;
   const url = asset.url;
 
-  const managerAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
+  const managerAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
-  const clawbackAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
+  const clawbackAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
   const decimals = 0;
   const total = 1;
   const metadata = asset.metadata;

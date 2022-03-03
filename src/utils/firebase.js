@@ -151,6 +151,16 @@ async function readData() {
     // console.log(res)
     return res;
   }
+
+  async function readAllSingleNft() {
+    let querySnapshot = await db.collection("listed").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, " => ", doc.data());
+      res.push(...Object.values(doc.data()));
+      });
+      return res.filter(asset => asset.collection === null);
+  }
 //   .then((querySnapshot) => {
 //     let res = [];
 //     querySnapshot.forEach((doc) => {
@@ -181,8 +191,6 @@ async function readData() {
     }
   }
 
-// readNftTransaction(75481560).then((data) =>console.log('nts', data))
-
 export {
     writeUserData,
     readAllCollection,
@@ -193,7 +201,6 @@ export {
     fetchCollections,
     writeNft,
     recordTransaction,
-    readNftTransaction
+    readNftTransaction,
+    readAllSingleNft
 }
-
-
