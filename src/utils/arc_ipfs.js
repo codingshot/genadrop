@@ -404,14 +404,16 @@ export async function mintToPoly(polyProps) {
     dispatch(setLoader('finalizing'));
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
+      await tx.wait();
     } catch (error) {
       console.log('opolo', error);
       dispatch(setLoader(''))
+      dispatch(setNotification(`${error.message}`))
       return;
     }
     dispatch(setLoader(''))
     dispatch(setNotification('NFTs successfully minted.'))
-    return `https://mumbai.polygonscan.com/tx/${tx.hash}`
+    return `https://polygonscan.com/tx/${tx.hash}`
   }
 }
 
