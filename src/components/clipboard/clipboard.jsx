@@ -32,13 +32,14 @@ const Clipboard = () => {
   }
 
   const handleDiscard = () => {
-    handleSetState({ toggleClipboard: false })
-    dispatch(setClipboard(''))
+    handleSetState({ toggleClipboard: false });
+    setTimeout(() => {
+      dispatch(setClipboard(''))
+    }, 500);
   }
 
   useEffect(() => {
     if (!clipboardMessage) return;
-    console.log(clipboardMessage);
     handleSetState({ toggleClipboard: true });
   }, [clipboardMessage])
 

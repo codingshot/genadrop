@@ -119,7 +119,7 @@ export const handleBlankImage = async props => {
 };
 
 
-export const getMockValue = async () => {
+export const getMockValue = async val => {
   const pickerOpts = {
     types: [
       {
@@ -152,7 +152,7 @@ export const getMockValue = async () => {
     })
   }
 
-  let value = Array(500).fill(
+  let value = Array(val).fill(
     {
       attributes: [
         {
@@ -176,7 +176,7 @@ export const getMockValue = async () => {
 
 export const handleDownloadWithWorker = async props => {
   const { window, dispatch, setLoader, setNotification, value, name, outputFormat } = props;
-  const mockValue = await getMockValue();
+  const mockValue = await getMockValue(500);
   const instance = worker()
   const content = await instance.downloadCallback({value: mockValue, name, outputFormat})
   fileDownload(content, `${'name' ? `${'name'}${true ? '' : `_${'id'}`}.zip` : 'collections.zip'}`);

@@ -104,7 +104,7 @@ export const generateArt = async props => {
       images.push(attr.image)
     })
     await handleImage({ images, canvas, image });
-    const imageUrl = canvas.toDataURL('image/webp', 0.1);
+    const imageUrl = canvas.toDataURL('image/webp', 1);
     uniqueImages.push({ id, imageUrl })
   }
   dispatch(setLoader(''))
