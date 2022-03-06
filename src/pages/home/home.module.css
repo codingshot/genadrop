@@ -7,6 +7,40 @@
   margin-bottom: 8em;
 }
 
+
+.share{
+  position: fixed;
+  width: 15rem;
+  height: 7rem;
+  top: 0;
+  margin:auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2rem;
+  background-color: white;
+  z-index: 10000;
+  border-radius: 20px;
+  box-shadow: 0 0 15px gray;
+
+}
+
+.shareContent{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  width: 10rem;
+  margin:  1rem  0;
+}
+.shareicon, .icon{
+  width: 1rem;
+  margin-left: 4px;
+}
+.copy{
+  display: flex;
+  flex-direction: row;
+}
+
 @media screen and (max-width: 1440px) {
   .container {
     max-width: 1200px;

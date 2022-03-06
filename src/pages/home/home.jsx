@@ -9,16 +9,22 @@ import { Collectors, creators } from './home-script';
 // import Notification from '../../components/Notification/Notifications';
 
 const Home = () => {
+
   return (
     <div className={classes.container}>
+
       <Banner />
+
       <Orgs />
       <Features data={creators} />
       <Features data={Collectors} />
       <Review />
       <FAQ />
       {/* <Notification/> */}
-    </div>
+
+
+
+    </div >
   )
 }
 

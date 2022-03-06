@@ -22,7 +22,7 @@ class Search extends React.Component {
 
         if (searchString.length > 0) {
 
-            records = records.filter((e) => e.event.toLowerCase().match(searchString));
+            records = records.filter((e) => e.type.toLowerCase().match(searchString));
         }
 
         return (
