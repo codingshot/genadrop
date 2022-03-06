@@ -140,17 +140,29 @@ async function readAllCollection() {
   return res;
 }
 
-async function readUserCollection(userAddress) {
-  let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
-  let res = [];
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    // console.log(doc.id, " => ", doc.data());
-    res.push(doc.data())
-  });
-  // console.log(res)
-  return res;
-}
+
+  async function readUserCollection(userAddress) {
+    let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      // console.log(doc.id, " => ", doc.data());
+      res.push(doc.data())
+    });
+    // console.log(res)
+    return res;
+  }
+
+  async function readAllSingleNft() {
+    let querySnapshot = await db.collection("listed").get()
+    let res = [];
+    querySnapshot.forEach((doc) => {
+      // console.log(doc.id, " => ", doc.data());
+      res.push(...Object.values(doc.data()));
+      });
+      return res.filter(asset => asset.collection === null);
+  }
+
 //   .then((querySnapshot) => {
 //     let res = [];
 //     querySnapshot.forEach((doc) => {
@@ -181,19 +193,18 @@ async function fetchCollections() {
   }
 }
 
-// readNftTransaction(75481560).then((data) =>console.log('nts', data))
-
 export {
-  writeUserData,
-  readAllCollection,
-  readAllNft,
-  readUserCollection,
-  readAllUserNft,
-  readSIngleUserNft,
-  fetchCollections,
-  writeNft,
-  recordTransaction,
-  readNftTransaction
+
+    writeUserData,
+    readAllCollection,
+    readAllNft,
+    readUserCollection,
+    readAllUserNft,
+    readSIngleUserNft,
+    fetchCollections,
+    writeNft,
+    recordTransaction,
+    readNftTransaction,
+    readAllSingleNft
+
 }
-
-

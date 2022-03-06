@@ -161,7 +161,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'))
     let assetID = await signTx(connector, [txn]);
-    await write.writeNft(account, undefined, assetID, price);
+    await write.writeNft(account, undefined, assetID, price, false, null, null);
     // notification: asset minted
     dispatch(setNotification('asset minted successfully'))
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
@@ -206,10 +206,10 @@ async function createAsset(asset, account) {
   const assetName = `${asset.name}@arc3`;
   const url = asset.url;
 
-  const managerAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
+  const managerAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
-  const clawbackAddr = process.env.REACT_APP_GENA_MANAGER_ADDRESS;
+  const clawbackAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
   const decimals = 0;
   const total = 1;
   const metadata = asset.metadata;
@@ -317,8 +317,9 @@ export async function initializeContract(contractProps) {
 }
 
 export async function mintToAlgo(algoProps) {
-  const { ipfsJsonData, price, account, connector, fileName, dispatch, setNotification, setLoader } = algoProps;
+  const { price, account, connector, fileName, dispatch, setNotification, setLoader } = algoProps;
   if (connector.isWalletConnect && connector.chainId === 4160) {
+    const ipfsJsonData = await createNFT({ ...algoProps });
     let collection_id = [];
     let txns = [];
     dispatch(setNotification('preparing assets for minting'));
@@ -348,8 +349,9 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { ipfsJsonData, price, account, connector, fileName, dispatch, setNotification, setLoader } = celoProps;
+  const { price, account, connector, fileName, dispatch, setNotification, setLoader } = celoProps;
   if (typeof window.ethereum !== 'undefined') {
+    const ipfsJsonData = await createNFT({ ...celoProps });
     dispatch(setNotification('preparing assets for minting'));
     const contract = await initializeContract({ minterAddress: process.env.REACT_APP_CELO_MINTER_ADDRESS, fileName, connector, account, dispatch, setLoader });
     let uris = ipfsJsonData.map((asset) => asset.url);
@@ -377,7 +379,7 @@ export async function mintToCelo(celoProps) {
 }
 
 export async function mintToPoly(polyProps) {
-  const { ipfsJsonData, price, account, connector, fileName, dispatch, setNotification, setLoader } = polyProps;
+  const { price, account, connector, fileName, dispatch, setNotification, setLoader } = polyProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
       return { 'message': "not yet implemented" }
@@ -385,9 +387,9 @@ export async function mintToPoly(polyProps) {
       return { 'message': "connect wallet to polygon network or select a different chain" }
     }
   } else {
+    const ipfsJsonData = await createNFT({ ...polyProps });
     dispatch(setNotification('preparing assets for minting'));
     const contract = await initializeContract({ minterAddress: process.env.REACT_APP_POLY_MINTER_ADDRESS, fileName, connector, account, dispatch, setLoader });
-    console.log('ipfsJsonData: ', ipfsJsonData);
     // return;
     let uris = ipfsJsonData.map((asset) => asset.url);
     // generate random ids for the nft

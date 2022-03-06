@@ -42,4 +42,9 @@
 .container div p {
   flex: 1;
   padding: 0.15em;
+  color: white;
+}
+
+.container.invert div p {
+  color: var(--card-bg);
 }
