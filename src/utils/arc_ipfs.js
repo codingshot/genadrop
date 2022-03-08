@@ -141,6 +141,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 };
 
 export const connectAndMint = async (file, metadata, imgName) => {
+  console.log(file, metadata);
   try {
     await pinata.testAuthentication();
     return await uploadToIpfs(file, imgName, metadata);

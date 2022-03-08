@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import DropItem from './dropItem/dropItem';
-import classes from './singleNFT.module.css';
+import classes from './collectionNFT.module.css';
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from 'axios';
 import Search from './history/search';
@@ -15,7 +15,7 @@ import { PurchaseNft } from '../../utils/arc_ipfs';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton from 'react-loading-skeleton'
 
-const Orgs = () => {
+const CollectionNFT = () => {
 
   const [state, setState] = useState({
     dropdown: '',
@@ -62,8 +62,6 @@ const Orgs = () => {
   if (isLoading) {
     return (
       < div className={classes.menu}>
-
-
         <div className={classes.left} >
           <Skeleton count={1} height={200} />
           <br />
@@ -71,7 +69,6 @@ const Orgs = () => {
           <br />
           <Skeleton count={1} height={40} />
         </div>
-
 
         <div className={classes.right} >
           <Skeleton count={1} height={200} />
@@ -251,4 +248,4 @@ const Orgs = () => {
   )
 }
 
-export default Orgs;
+export default CollectionNFT;
