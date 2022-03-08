@@ -7,8 +7,14 @@ import Demo from '../../components/Marketplace/Demo/Demo'
 // import SingleNft from '../../components/SingleNft/SingleNft'
 import Invite from '../../components/Marketplace/Invite/Invite'
 import classes from './Marketplace.module.css'
+import { useContext } from 'react';
+import { GenContext } from '../../gen-state/gen.context';
+import { getPolygonNfts } from "../../utils/arc_ipfs";
+
 
 const Marketplace = () => {
+  const { account, connector } = useContext(GenContext);
+  getPolygonNfts(connector).then((data) => {console.log('rp', data)})
   return (
     <div className={classes.container}>
       <Banner />
