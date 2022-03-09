@@ -5,6 +5,7 @@
   border-radius: 0.5em;
   background: white;
   transition: all 250ms;
+  border: 1px solid gainsboro;
 }
 
 .card:hover {

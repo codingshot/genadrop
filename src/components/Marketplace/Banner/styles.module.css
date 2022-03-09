@@ -36,6 +36,7 @@
 .description {
   max-width: 36em;
   color: white;
+  text-align: left;
 }
 
 .pageLinks {

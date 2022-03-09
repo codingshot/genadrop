@@ -22,7 +22,7 @@
   font-size: 3rem;
 }
 
-.description, p {
+.description {
   color: gray;
   text-align: center;
   font-family: 'Poppins', sans-serif;
