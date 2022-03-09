@@ -18,7 +18,7 @@ const Banner = () => {
             The first NFT marketplace that enables creators to create their generative NFTs and embed licenses when they mint NFTs. Creators know what they are selling, collectors know what they are buying.
           </p>
           <div className={classes.pageLinks}>
-            <button onClick={() => history.push('./mint/single-nft')}>Mint</button>
+            <button onClick={() => history.push('./mint')}>Mint</button>
             <button onClick={() => history.push('./create')}>Create</button>
           </div>
         </div>

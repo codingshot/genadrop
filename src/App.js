@@ -10,25 +10,31 @@ import Mint from './pages/mint/mint';
 import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
 import Home from './pages/home/home';
-import SingleNFT from './pages/dashboard/singleNFT';
-import { fetchCollections } from './utils/firebase';
+import CollectionNFT from './pages/collectionNFT/collectionNFT';
+import { fetchCollections, readAllSingleNft } from './utils/firebase';
 import { GenContext } from './gen-state/gen.context';
-import { setCollections } from './gen-state/gen.actions';
+import { setCollections, setSingleNfts } from './gen-state/gen.actions';
 import Explore from './pages/Explore/Explore';
 import Fallback from './pages/fallback/fallback';
 import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
 import Collections from './pages/collections/Collections';
+import SingleNFT from './pages/singleNFT/singleNFT';
 
 function App() {
   const { dispatch } = useContext(GenContext);
 
   useEffect(() => {
     (async function getCollections() {
-      let collections = await fetchCollections()
+      let collections = await fetchCollections();
       dispatch(setCollections(collections))
-    }())
+    }());
+
+    (async function readAllSingle() {
+      let singleNfts = await readAllSingleNft();
+      dispatch(setSingleNfts(singleNfts))
+    }());
   }, []);
 
   return (
@@ -40,7 +46,8 @@ function App() {
           <Route exact path="/marketplace" component={Marketplace} />
           <Route exact path="/marketplace/collections" component={Collections} />
           <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
-          <Route exact path="/marketplace/collections/:collectionName/:nftId" component={SingleNFT} />
+          <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />
+          <Route exact path="/marketplace/:nftId" component={SingleNFT} />
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint" component={Mint} />

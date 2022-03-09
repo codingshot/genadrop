@@ -115,6 +115,7 @@
   order: 2;
 }
 
+
 .icon{
   background-color: #FFF ;
   margin-right: 3px;
@@ -122,6 +123,10 @@
   height: 2rem;
   border: 1px solid #E5E8EB;
   padding: 3px;
+}
+
+.icon:hover{
+  cursor: pointer;
 }
 
 .refresh{
@@ -355,8 +360,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding-left: 2rem;
-  background-color: gray;
+  padding: 2rem;
+  background-color: white;
   z-index: 10000;
   border-radius: 20px;
   box-shadow: 0 0 15px gray;
@@ -371,10 +376,20 @@
   margin:  1rem  0;
 }
 .shareicon{
-  width: 20px;
+  width: 1rem;
+
   margin-left: 4px;
+}
+
+.shareIcon{
+  border-radius: 50%;
+
 }
 .copy{
   display: flex;
   flex-direction: row;
+}
+
+.textArea{
+  width: 20rem;
 }

@@ -75,7 +75,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
 
 async function readNftTransaction(assetId) {
   let querySnapshot = await db.collection("transactions").doc(`${assetId}`).get()
-  console.log('datum', Object.values(querySnapshot.data()))
+  // console.log('datum', Object.values(querySnapshot.data()))
   // console.log(Object.values(querySnapshot.data()));
   return Object.values(querySnapshot.data())
 }
@@ -140,29 +140,27 @@ async function readAllCollection() {
   return res;
 }
 
+async function readUserCollection(userAddress) {
+  let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+    res.push(doc.data())
+  });
+  // console.log(res)
+  return res;
+}
 
-  async function readUserCollection(userAddress) {
-    let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
-    let res = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
-      res.push(doc.data())
-    });
-    // console.log(res)
-    return res;
-  }
-
-  async function readAllSingleNft() {
-    let querySnapshot = await db.collection("listed").get()
-    let res = [];
-    querySnapshot.forEach((doc) => {
-      // console.log(doc.id, " => ", doc.data());
-      res.push(...Object.values(doc.data()));
-      });
-      return res.filter(asset => asset.collection === null);
-  }
-
+async function readAllSingleNft() {
+  let querySnapshot = await db.collection("listed").get()
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    // console.log(doc.id, " => ", doc.data());
+    res.push(...Object.values(doc.data()));
+  });
+  return res.filter(asset => asset.collection === null);
+}
 //   .then((querySnapshot) => {
 //     let res = [];
 //     querySnapshot.forEach((doc) => {
@@ -194,17 +192,15 @@ async function fetchCollections() {
 }
 
 export {
-
-    writeUserData,
-    readAllCollection,
-    readAllNft,
-    readUserCollection,
-    readAllUserNft,
-    readSIngleUserNft,
-    fetchCollections,
-    writeNft,
-    recordTransaction,
-    readNftTransaction,
-    readAllSingleNft
-
+  writeUserData,
+  readAllCollection,
+  readAllNft,
+  readUserCollection,
+  readAllUserNft,
+  readSIngleUserNft,
+  fetchCollections,
+  writeNft,
+  recordTransaction,
+  readNftTransaction,
+  readAllSingleNft
 }
