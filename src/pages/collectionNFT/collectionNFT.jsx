@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { useState } from 'react';
-import DropItem from './dropItem/dropItem';
+import DropItem from '../../components/Nft-details/dropItem/dropItem';
 import classes from './collectionNFT.module.css';
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from 'axios';
-import Search from './history/search';
-import NFT from './collection/nft';
-import Graph from './graph/graph';
+import Search from '../../components/Nft-details/history/search';
+import NFT from '../../components/Nft-details/collection/nft';
+import Graph from '../../components/Nft-details/graph/graph';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { useEffect } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
