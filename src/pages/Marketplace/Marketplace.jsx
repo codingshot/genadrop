@@ -8,6 +8,7 @@ import SingleNft from '../../components/Marketplace/SingleNft/SingleNft'
 // import Invite from '../../components/Marketplace/Invite/Invite'
 import classes from './Marketplace.module.css'
 
+
 const Marketplace = () => {
   return (
     <div className={classes.container}>
