@@ -414,7 +414,7 @@ export async function mintToPoly(polyProps) {
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
       await tx.wait();
-      let listingTx = await marketContract.createMarketItem(contract.address, ids, String(price*10**18), amounts, 'General', account)
+      let listingTx = await marketContract.createBulkMarketItem(contract.address, ids, String(price*10**18), amounts, 'General', account)
     } catch (error) {
       console.log('opolo', error);
       dispatch(setLoader(''))
@@ -502,9 +502,36 @@ export async function getAlgoData(id) {
 export async function getPolygonNfts() {
   let provider = new ethers.providers.AlchemyProvider("maticmum", process.env.REACT_APP_ALCHEMY_KEY)
   let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
-  const contract = new ethers.Contract("0x8390702dE1cDADC17D49aD7e68568c420658AB8a", marketAbi, wallet)
+  const contract = new ethers.Contract(process.env.REACT_APP_GENADROP_MARKET_ADDRESS, marketAbi, wallet)
   let art = await contract.getMarketItems()
   return art;
+}
+
+export async function getPolygonUserPurchasedNfts(connector) {
+  //let provider = new ethers.providers.AlchemyProvider("maticmum", process.env.REACT_APP_ALCHEMY_KEY)
+  // let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
+  if (!connector) {
+    return []
+  }
+  const contract = new ethers.Contract(process.env.REACT_APP_GENADROP_MARKET_ADDRESS, marketAbi, connector.getSigner())
+  let art = await contract.fetchPurchasedNFTs()
+  return art;
+}
+
+export async function purchasePolygonNfts(connector, itemId, price) {
+  //let provider = new ethers.providers.AlchemyProvider("maticmum", process.env.REACT_APP_ALCHEMY_KEY)
+  // let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
+  if (!connector) {
+    return;
+  }
+  const contract = new ethers.Contract(process.env.REACT_APP_GENADROP_MARKET_ADDRESS, marketAbi, connector.getSigner())
+  try {
+    let art = await contract.nftSale(itemId, {value: price})
+  } catch (error) {
+    console.log(error)
+  }
+  return true;
+  
 }
 
 
