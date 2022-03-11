@@ -151,7 +151,7 @@ const SingleNFT = () => {
   const graph = {
     icon: "/assets/details.png",
     title: "Price History",
-    content: <Graph details={""} />,
+    content: <Graph />,
   };
 
   const attributeContent = () => {
@@ -172,28 +172,6 @@ const SingleNFT = () => {
     title: "Attributes",
     content: attributeContent(),
     // content: "attributeContent()"
-  };
-
-  const details = () => {
-    return (
-      <div className={classes.detailContent}>
-        <div className={classes.row}>
-          Mint Address <span>sdfgs</span>
-        </div>
-        <div className={classes.row}>
-          Token Address <span>sdgds</span>
-        </div>
-        <div className={classes.row}>
-          Owner <span>sdgds</span>
-        </div>
-      </div>
-    );
-  };
-
-  const detailsItem = {
-    icon: "/assets/description-icon.png",
-    title: "Details",
-    content: details(),
   };
 
   const buyNft = async () => {
@@ -272,7 +250,14 @@ const SingleNFT = () => {
               </div>
             </div>
             <div className={classes.priceSection}>
-              <span className={classes.title}>Owned by you</span>
+              <span className={classes.title}>Current price</span>
+              <span className={classes.price}>
+                <img src="/assets/algo-logo.png" alt="" />
+                <p className={classes.tokenValue}>{nftDetails.price}</p>
+                <span className={classes.usdValue}>
+                  (${(nftDetails.price * algoPrice).toFixed(2)})
+                </span>
+              </span>
             </div>
 
             <div className={classes.btns}>
@@ -280,7 +265,7 @@ const SingleNFT = () => {
                 <>
                   <button className={classes.sold} disabled={nftDetails.sold}>
                     <img src="/assets/wallet-icon.png" alt="" />
-                    Listed!
+                    SOLD!
                   </button>
                   {/* <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button> */}
                 </>
@@ -292,7 +277,11 @@ const SingleNFT = () => {
                     onClick={buyNft}
                   >
                     <img src="/assets/wallet-icon.png" alt="" />
-                    List
+                    Buy now
+                  </button>
+                  <button className={classes.bid}>
+                    <img src="/assets/bid.png" alt="" />
+                    Place Bid
                   </button>
                 </>
               )}
@@ -313,16 +302,6 @@ const SingleNFT = () => {
               key={3}
               item={description}
               id={3}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            ></DropItem>
-          </div>
-
-          <div className={classes.feature}>
-            <DropItem
-              key={4}
-              item={detailsItem}
-              id={4}
               dropdown={dropdown}
               handleSetState={handleSetState}
             ></DropItem>

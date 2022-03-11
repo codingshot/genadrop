@@ -94,6 +94,7 @@ const Listed = () => {
           <img src="/assets/link.svg" alt="" />
         </div>
       </div>
+      <button className={classes.view}>View Item</button>
     </div>
   );
 };
