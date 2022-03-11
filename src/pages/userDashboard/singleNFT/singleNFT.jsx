@@ -1,19 +1,19 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../utils";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNft, getSingleNftDetails } from "../../../utils";
 import classes from "./singleNFT.module.css";
 import Skeleton from "react-loading-skeleton";
-import Graph from "../../components/Nft-details/graph/graph";
-import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import Search from "../../components/Nft-details/history/search";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import Graph from "../../../components/Nft-details/graph/graph";
+import DropItem from "../../../components/Nft-details/dropItem/dropItem";
+import Search from "../../../components/Nft-details/history/search";
+import { PurchaseNft } from "../../../utils/arc_ipfs";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
-import { readNftTransaction } from "../../utils/firebase";
-import { getNftCollection } from "../../utils";
+import { readNftTransaction } from "../../../utils/firebase";
+import { getNftCollection } from "../../../utils";
 
-import { getAlgoData } from "../../utils/arc_ipfs";
+import { getAlgoData } from "../../../utils/arc_ipfs";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 const SingleNFT = () => {
@@ -193,8 +193,8 @@ const SingleNFT = () => {
   const detailsItem = {
     icon: "/assets/description-icon.png",
     title: "Details",
-    content: details(),
-  };
+    content: details()
+  }
 
   const buyNft = async () => {
     let res = await PurchaseNft(nftDetails, account, connector);
@@ -273,6 +273,7 @@ const SingleNFT = () => {
             </div>
             <div className={classes.priceSection}>
               <span className={classes.title}>Owned by you</span>
+              
             </div>
 
             <div className={classes.btns}>

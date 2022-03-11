@@ -66,6 +66,8 @@ export const getSingleNftDetails = async nft => {
       nftDetails.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       nftDetails.name = response.data.name
       nftDetails.description = response.data.description
+      nftDetails.properties = response.data.properties
+
     } catch (error) {
       console.error('get collection result failed');
     }
@@ -75,6 +77,7 @@ export const getSingleNftDetails = async nft => {
 export const getNftCollection = async collection => {
   let nftArr = []
   let { data } = await axios.get(collection['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+  console.log("...",data);
   for (let i = 0; i < data.length; i++) {
     try {
       let nftObj = {}
@@ -97,6 +100,7 @@ export const getNftCollection = async collection => {
   }
   return nftArr
 }
+
 
 export const getNftData = async (collection, assetName) => {
   let collectionData = await getNftCollection(collection)
