@@ -15,14 +15,14 @@ const Collections = () => {
   const [state, setState] = useState({
     allCollections: null,
     togglePriceFilter: false,
-    FilteredCollection: null,
+    filteredCollection: null,
     filter: {
       searchValue: '',
       price: 'high',
     }
   });
 
-  const { allCollections, filter, togglePriceFilter, FilteredCollection } = state;
+  const { allCollections, filter, togglePriceFilter, filteredCollection } = state;
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
@@ -31,80 +31,82 @@ const Collections = () => {
   useEffect(() => {
     if (Object.keys(collections).length) {
       (async function getResult() {
-        let result = await getNftCollections(collections.allCollections)
+        let result = await getNftCollections(collections)
         handleSetState({
           allCollections: result,
-          FilteredCollection: result
+          filteredCollection: result
         })
       }())
     }
-  }, [collections])
+  }, [collections]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!allCollections) return;
 
     let filtered = allCollections.filter(col => {
       return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
     });
-    handleSetState({ FilteredCollection: filtered });
-  },[filter.searchValue]);
+    handleSetState({ filteredCollection: filtered });
+  }, [filter.searchValue]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!allCollections) return;
     let filtered = null;
-    if(filter.price === "low") {
+    if (filter.price === "low") {
       filtered = allCollections.sort((a, b) => Number(a.price) - Number(b.price))
-    }else {
+    } else {
       filtered = allCollections.sort((a, b) => Number(b.price) - Number(a.price))
     }
-    handleSetState({ FilteredCollection: filtered });
-  },[filter.price]);
+    handleSetState({ filteredCollection: filtered });
+  }, [filter.price]);
 
   return (
     <div className={classes.container}>
-      <div className={classes.header}>
-        <h1 >Collections</h1>
-        <div className={classes.searchAndPriceFilter}>
-          <input
-            type="search"
-            onChange={event => handleSetState({ filter: { ...filter, searchValue: event.target.value } })}
-            value={filter.searchValue}
-            placeholder='search'
-          />
-          <div className={classes.priceDropdown}>
-            <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
-              {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
-            </div>
-            <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-              <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: !togglePriceFilter })}>price: low to high</div>
-              <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: !togglePriceFilter })}>Price: high to low</div>
+      <div className={classes.innerContainer}>
+        <div className={classes.header}>
+          <h1 >Collections</h1>
+          <div className={classes.searchAndPriceFilter}>
+            <input
+              type="search"
+              onChange={event => handleSetState({ filter: { ...filter, searchValue: event.target.value } })}
+              value={filter.searchValue}
+              placeholder='search'
+            />
+            <div className={classes.priceDropdown}>
+              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
+                {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+              </div>
+              <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: !togglePriceFilter })}>price: low to high</div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: !togglePriceFilter })}>Price: high to low</div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {
-        FilteredCollection ?
-          <div className={classes.wrapper}>
-            {
-              FilteredCollection
-                .filter((_, idx) => 10 > idx)
-                .map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} />
+        {
+          filteredCollection ?
+            <div className={classes.wrapper}>
+              {
+                filteredCollection
+                  .filter((_, idx) => 10 > idx)
+                  .map((collection, idx) => (
+                    <CollectionsCard key={idx} collection={collection} />
+                  ))
+              }
+            </div>
+            :
+            <div className={classes.skeleton}>
+              {
+                (Array(5).fill(null)).map((_, idx) => (
+                  <div key={idx}>
+                    <Skeleton count={1} height={300} />
+                  </div>
                 ))
-            }
-          </div>
-          :
-          <div className={classes.skeleton}>
-            {
-              (Array(6).fill(null)).map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={400} />
-                </div>
-              ))
-            }
-          </div>
-      }
+              }
+            </div>
+        }
+      </div>
     </div>
   )
 }

@@ -25,13 +25,14 @@ const Collections = () => {
   useEffect(() => {
     if (Object.keys(collections).length) {
       (async function getResult() {
-        let result = await getNftCollections(collections.allCollections)
+        let result = await getNftCollections(collections);
+        console.log(result);
         handleSetState({
           allCollections: result
         })
-      }())
+      }());
     }
-  }, [collections])
+  }, [collections]);
 
   return (
     <div className={classes.container}>
@@ -54,7 +55,7 @@ const Collections = () => {
           :
           <div className={classes.skeleton}>
             {
-              (Array(6).fill(null)).map((_, idx) => (
+              (Array(5).fill(null)).map((_, idx) => (
                 <div key={idx}>
                   <Skeleton count={1} height={400} />
                 </div>

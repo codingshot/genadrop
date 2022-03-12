@@ -38,7 +38,8 @@ const Explore = () => {
 
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const collection = collections.allCollections.find(col => col.name === collectionName);
+      console.log(collections);
+      const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
         let result = await getNftCollection(collection)
         handleSetState({

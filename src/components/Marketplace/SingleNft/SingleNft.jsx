@@ -47,7 +47,7 @@ const SingleNft = () => {
               <NftCard key={idx} nft={nft} />
             ))
             :
-            (Array(6).fill(null)).map((_, idx) => (
+            (Array(5).fill(null)).map((_, idx) => (
               <div key={idx}>
                 <Skeleton count={1} height={200} />
                 <Skeleton count={3} height={40} />

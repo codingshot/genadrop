@@ -7,9 +7,9 @@ import userIcon from '../../assets/user.svg';
 import switchIcon from '../../assets/icon-switch.svg';
 import copyIcon from '../../assets/icon-copy.svg';
 import disconnectIcon from '../../assets/icon-disconnect.svg';
-
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
+import { useHistory } from 'react-router-dom';
 
 
 function ConnectWallet() {
@@ -136,11 +136,13 @@ function ConnectWallet() {
     }, 850);
   }
 
+  const history = useHistory();
+
   return (
     (account ?
       <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
-        <div className={classes.user}>
-          <img src={userIcon} alt='' />
+        <div onClick={()=> history.push(`/me/${account}`)} className={classes.user}>
+            <img src={userIcon} alt='' />
         </div>
         <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>{breakAddress(account)}</div>
         <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
@@ -148,9 +150,9 @@ function ConnectWallet() {
             <div>{clipboardState}</div> <img src={copyIcon} alt="" />
             <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={account} />
           </div>
-          {/* <div className={classes.option}>
+          <div className={classes.option}>
             <div onClick={handleSwitch}>Switch Wallet</div> <img src={switchIcon} alt="" />
-          </div> */}
+          </div>
           <div onClick={disconnect} className={classes.option}>
             <div>Disconnect</div> <img src={disconnectIcon} alt="" />
           </div>

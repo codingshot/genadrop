@@ -1,7 +1,9 @@
 .container {
   width: 100%;
   margin-bottom: 4em;
-  padding: 1em;
+  padding: 2em;
+  background: white;
+  border-radius: 1em;
 }
 
 .heading {
@@ -104,6 +106,10 @@
 }
 
 @media screen and (max-width: 540px) {
+  .container {
+    padding: 1em;
+  }
+  
   .operations {
     grid-template-columns: auto;
   }
