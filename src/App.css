@@ -1,4 +1,83 @@
-body{
-background-color: black;
-overflow:hidden ;
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap');
+
+:root {
+  --main-bg: #ffffff;
+  --main-accent: #009987;
+  --main-accent-dark:#037568;
+  --text-color: #000000;
+  --card-bg: #3d3d3d;
+  --card-bg1: #27292C;
+  --card-bg2: #242435;
+  --card-bg3: #000000;
 }
+
+li {
+  list-style-type: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+a {
+  text-decoration: none;
+  color: unset;
+}
+
+.App {
+  width: 100%;
+}
+
+.App * {
+  transition: width max-width font-size 150ms;
+}
+
+.Routes {
+  width: 100%;
+  margin-top: 4em;
+}
+
+*{
+  /* font-family: 'Frank Ruhl Libre', serif; */
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Poppins', sans-serif; */
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: inherit;
+  height: 6px;
+  width: 10px;
+  border-radius: 1em;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 0px;
+  background: #F1F1F1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #C1C1C1; 
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-corner {
+  border-radius: 0px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #b1b1b1; 
+}
+
+@media screen and (max-width: 768px) {
+  .Routes {
+    margin-top: 3em;
+  }
+}
+
