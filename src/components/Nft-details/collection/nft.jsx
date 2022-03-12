@@ -12,7 +12,7 @@ const NFT = (data) => {
         data.data.map((nft, idx) => {
 
             return (
-                <Link to={`${match.url.split('/').slice(0, -1).join('/')}/${nft.name}`} >
+                <Link to={`${match.url.split('/').slice(0, -1).join('/')}/${nft.Id}`} >
                     <div key={idx} className={classes.collectionItem}>
                         <img src={nft.image_url} alt="" />
                         <span className={classes.collectionName}>{nft.collection_name}</span>

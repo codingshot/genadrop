@@ -4,8 +4,8 @@ import Banner from '../../components/Marketplace/Banner/Banner'
 import Collections from '../../components/Marketplace/Collections/Collections'
 import Demo from '../../components/Marketplace/Demo/Demo'
 // import Demo2 from '../../components/Marketplace/Demo2/Demo2'
-// import SingleNft from '../../components/SingleNft/SingleNft'
-import Invite from '../../components/Marketplace/Invite/Invite'
+import SingleNft from '../../components/Marketplace/SingleNft/SingleNft'
+// import Invite from '../../components/Marketplace/Invite/Invite'
 import classes from './Marketplace.module.css'
 
 
@@ -16,11 +16,11 @@ const Marketplace = () => {
       <div className={classes.wrapper}>
         {/* <Category /> */}
         <Collections/>
-        {/* <SingleNft/> */}
+        <SingleNft/>
         <Demo/>
         {/* <Academy/> */}
         {/* <Demo2/> */}
-        <Invite/>
+        {/* <Invite/> */}
       </div>
     </div>
   )

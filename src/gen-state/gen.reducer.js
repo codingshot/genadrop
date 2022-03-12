@@ -15,26 +15,6 @@ import {
   deleteRule
 } from './gen.utils';
 
-// const getFile = async () => {
-//   let res = await fetch('/assets/banner-image-2.png');
-//   let blob = await res.blob();
-//   console.log(blob);
-//   let file = new File([blob], 'MinorityNft.png')
-//   return file;
-// }
-
-// let defaultLayer = { "id": Date.now(), "traitsAmount": 1, "layerTitle": 'Test-Layer', traits: [{
-//   Rarity: "1",
-//   traitTitle: "MinorityNft",
-//   image: getFile()
-// }] }
-
-// let defaultPreview = {
-//   imageFile: getFile(),
-//   imageName: "MinorityNft",
-//   layerTitle: "Test-Layer"
-// }
-
 export const INITIAL_STATE = {
   layers: [],
   preview: [],
@@ -52,6 +32,7 @@ export const INITIAL_STATE = {
   isRule: false,
   rule: [],
   collections: {},
+  singleNfts: [],
   notification: '',
   clipboardMessage: '',
   loaderMessage: '',
@@ -211,6 +192,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.payload
+      }
+    case genActionTypes.SET_SINGLE_NFTS:
+      return {
+        ...state,
+        singleNfts: action.payload
       }
     case genActionTypes.SET_FEEDBACK:
       return {

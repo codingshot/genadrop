@@ -2,7 +2,7 @@
 import firebase from "firebase/compat/app";
 import 'firebase/compat/firestore';
 import { nanoid } from 'nanoid';
-const { getDatabase, ref, get, child, push, update} = require("firebase/database")
+const { getDatabase, ref, get, child, push, update } = require("firebase/database")
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -45,7 +45,7 @@ async function writeUserData(owner, collection, name, collection_id, priceValue)
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
-    updates[collection_id[i]] = {'id': collection_id[i], 'collection': name, 'price': priceValue}
+    updates[collection_id[i]] = { 'id': collection_id[i], 'collection': name, 'price': priceValue }
     await recordTransaction(collection_id[i], "Minting", owner, null, null, null)
   }
   db.collection('collections').add({
@@ -60,46 +60,46 @@ async function writeUserData(owner, collection, name, collection_id, priceValue)
   });
   db.collection('listed').doc(`${owner}`).set({
     ...updates
-  }, {merge: true});
-  
+  }, { merge: true });
+
   return;
-  }
+}
 
 async function recordTransaction(assetId, type, buyer, seller, price, txId) {
   let updates = {};
-  updates[nanoid()] = {'type': type, 'buyer': buyer, 'seller': seller, 'price': price, 'txId': txId, 'txDate': new Date()}
+  updates[nanoid()] = { 'type': type, 'buyer': buyer, 'seller': seller, 'price': price, 'txId': txId, 'txDate': new Date() }
   db.collection('transactions').doc(`${assetId}`).set({
     ...updates
-  }, {merge: true});
+  }, { merge: true });
 }
 
 async function readNftTransaction(assetId) {
   let querySnapshot = await db.collection("transactions").doc(`${assetId}`).get()
-  console.log('datum', Object.values(querySnapshot.data()))
+  // console.log('datum', Object.values(querySnapshot.data()))
   // console.log(Object.values(querySnapshot.data()));
   return Object.values(querySnapshot.data())
 }
-  
+
 async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold) {
   let updates = {};
-  updates[assetId] = {'id': assetId, 'collection': collection ? collection : null, 'sold': sold ? true : false, 'Buyer': buyer, 'price': price, 'dateSold': dateSold}
+  updates[assetId] = { 'id': assetId, 'collection': collection ? collection : null, 'sold': sold ? true : false, 'Buyer': buyer, 'price': price, 'dateSold': dateSold }
   db.collection('listed').doc(`${owner}`).set({
     ...updates
-  }, {merge: true});
-  await recordTransaction(assetId, "Minting", owner, null, null, null)
+  }, { merge: true });
+
 }
 
 
 
-  async function readAllNft() {
-    let querySnapshot = await db.collection("listed").get()
-    let res = [];
-    querySnapshot.forEach((doc) => {
-      // console.log(doc.id, " => ", doc.data());
-      res.push(...Object.values(doc.data()));
-      });
-      return res;
-  }
+async function readAllNft() {
+  let querySnapshot = await db.collection("listed").get()
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    // console.log(doc.id, " => ", doc.data());
+    res.push(...Object.values(doc.data()));
+  });
+  return res;
+}
 
 async function readData() {
   const dbRef = ref(getDatabase());
@@ -116,52 +116,52 @@ async function readData() {
   return;
 }
 
-  async function readAllUserNft(userAddress) {
-    let querySnapshot = await db.collection("listed").doc(userAddress).get()
-    console.log('datum', querySnapshot.data())
-    // console.log(Object.values(querySnapshot.data()));
-    return Object.values(querySnapshot.data())
-  }
+async function readAllUserNft(userAddress) {
+  let querySnapshot = await db.collection("listed").doc(userAddress).get()
+  console.log('datum', querySnapshot.data())
+  // console.log(Object.values(querySnapshot.data()));
+  return Object.values(querySnapshot.data())
+}
 
-  async function readSIngleUserNft(userAddress, assetId) {
-    let querySnapshot = await db.collection("listed").doc(userAddress).get()
-    console.log('datum', querySnapshot.data())
-    // console.log(Object.values(querySnapshot.data()));
-    return Object.values(querySnapshot.data()).find(asset => asset.id === assetId)
-  }
+async function readSIngleUserNft(userAddress, assetId) {
+  let querySnapshot = await db.collection("listed").doc(userAddress).get()
+  console.log('datum', querySnapshot.data())
+  // console.log(Object.values(querySnapshot.data()));
+  return Object.values(querySnapshot.data()).find(asset => asset.id === assetId)
+}
 
-  async function readAllCollection() {
-    let querySnapshot = await db.collection("collections").get()
-    let res = [];
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        // console.log(doc.id, " => ", doc.data());
-        res.push(doc.data());
-    });
-    return res;
-  }
+async function readAllCollection() {
+  let querySnapshot = await db.collection("collections").get()
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+    res.push(doc.data());
+  });
+  return res;
+}
 
-  async function readUserCollection(userAddress) {
-    let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
-    let res = [];
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      // console.log(doc.id, " => ", doc.data());
-      res.push(doc.data())
-    });
-    // console.log(res)
-    return res;
-  }
+async function readUserCollection(userAddress) {
+  let querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get()
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+    res.push(doc.data())
+  });
+  // console.log(res)
+  return res;
+}
 
-  async function readAllSingleNft() {
-    let querySnapshot = await db.collection("listed").get()
-    let res = [];
-    querySnapshot.forEach((doc) => {
-      // console.log(doc.id, " => ", doc.data());
-      res.push(...Object.values(doc.data()));
-      });
-      return res.filter(asset => asset.collection === null);
-  }
+async function readAllSingleNft() {
+  let querySnapshot = await db.collection("listed").get()
+  let res = [];
+  querySnapshot.forEach((doc) => {
+    // console.log(doc.id, " => ", doc.data());
+    res.push(...Object.values(doc.data()));
+  });
+  return res.filter(asset => asset.collection === null);
+}
 //   .then((querySnapshot) => {
 //     let res = [];
 //     querySnapshot.forEach((doc) => {
@@ -173,35 +173,35 @@ async function readData() {
 //     return res;
 // });
 
-  // readAllUserNft("X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4").then((data) => {
-  //   console.log(data)
-  // });
+// readAllUserNft("X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4").then((data) => {
+//   console.log(data)
+// });
 
-  async function fetchCollections(){
+async function fetchCollections() {
 
-    let allCollections = await readAllCollection()
-    // let allNft = await readAllNft()
-    // let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
-    // let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+  let allCollections = await readAllCollection()
+  // let allNft = await readAllNft()
+  // let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
+  // let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
 
-    return {
-      allCollections,
-      // allNft,
-      // userCollections,
-      // allUserNft
-    }
+  return {
+    allCollections,
+    // allNft,
+    // userCollections,
+    // allUserNft
   }
+}
 
 export {
-    writeUserData,
-    readAllCollection,
-    readAllNft,
-    readUserCollection,
-    readAllUserNft,
-    readSIngleUserNft,
-    fetchCollections,
-    writeNft,
-    recordTransaction,
-    readNftTransaction,
-    readAllSingleNft
+  writeUserData,
+  readAllCollection,
+  readAllNft,
+  readUserCollection,
+  readAllUserNft,
+  readSIngleUserNft,
+  fetchCollections,
+  writeNft,
+  recordTransaction,
+  readNftTransaction,
+  readAllSingleNft
 }

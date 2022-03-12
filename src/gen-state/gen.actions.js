@@ -148,6 +148,11 @@ export const setCollections = collections => ({
   payload: collections
 })
 
+export const setSingleNfts = nfts => ({
+  type: genActionTypes.SET_SINGLE_NFTS,
+  payload: nfts
+})
+
 export const setNotification = notification => ({
   type: genActionTypes.SET_FEEDBACK,
   payload: notification

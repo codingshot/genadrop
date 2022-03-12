@@ -13,7 +13,7 @@ class Table extends React.Component {
                     <tbody>
                         <tr>
                             <th>TRANSACTION TYPE</th>
-                            <th>NAME</th>
+                            {/* <th>NAME</th> */}
                             <th>TRANSACTION ID</th>
                             <th>TIME</th>
                             <th>UNIT PRICE</th>
@@ -22,12 +22,13 @@ class Table extends React.Component {
                         </tr>
                         {this.props.data.map(function (d, i) {
                             return <TableRow key={i}
-                                event={d.event}
+                                event={d.type}
                                 price={d.price}
-                                quantity={d.quantity}
-                                from={d.from}
-                                to={d.to}
-                                date={d.date}
+                                quantity={1}
+                                from={d.seller}
+                                to={d.buyer}
+                                date={d.txDate}
+                                txId={d.txId}
                             />
                         })}
                     </tbody>

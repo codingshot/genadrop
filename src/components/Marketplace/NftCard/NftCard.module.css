@@ -15,10 +15,13 @@
 
 .imageContainer {
   width: 100%;
-  padding: 0.25em;
   border: 1px solid gainsboro;
   border-top-left-radius: 0.25em;
   border-top-right-radius: 0.25em;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .imageContainer img {
@@ -29,7 +32,6 @@
   width: 100%;
   padding: 0.5em;
   margin-top: 2px;
-  background: #E5E5E5;
   border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
 }

@@ -26,7 +26,7 @@ const footerLinks = [
     "title": "Support",
     "content": [
       { "name": "FAQ", "link": "/" },
-      { "name": "Contact Us", "link": "/" },
+      { "name": "Contact Us", "link": "https://linktr.ee/MinorityProgrammers" },
     ]
   }
 ]

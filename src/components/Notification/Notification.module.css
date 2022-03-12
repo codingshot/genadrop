@@ -13,8 +13,8 @@
 }
 
 .icon {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
   background: gray;
   border-radius: 50%;
   white-space: nowrap;
@@ -36,7 +36,6 @@
   color: white;
   padding: 1em;
   border-radius: 0.25em;
-  box-shadow: 0 0 5px gainsboro;
 }
 
 .container.active {

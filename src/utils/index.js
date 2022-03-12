@@ -28,6 +28,50 @@ export const getNftCollections = async collections => {
   return collectionArr
 }
 
+export const getSingleNfts = async nfts => {
+  let nftArr = []
+  for (let i = 0; i < nfts.length; i++) {
+    try {
+      let nftObj = {}
+      nftObj.Id = nfts[i].id
+      nftObj.price = nfts[i].price
+      nftObj.buyer = nfts[i].buyer
+      nftObj.sold = nfts[i].sold
+      nftObj.dateSold = nfts[i].dateSold
+      nftObj.description = nfts[i].description
+      let { params } = await getAlgoData(nfts[i].id)
+      let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+      nftObj.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      nftObj.name = response.data.name
+      nftObj.description = response.data.description
+      nftArr.push(nftObj)
+    } catch (error) {
+      console.error('get collection result failed');
+    }
+  }
+  return nftArr
+}
+
+export const getSingleNftDetails = async nft => {
+  let nftDetails = {}
+  try {
+      nftDetails.Id = nft.id
+      nftDetails.price = nft.price
+      nftDetails.buyer = nft.buyer
+      nftDetails.sold = nft.sold
+      nftDetails.dateSold = nft.dateSold
+      nftDetails.description = nft.description
+      let { params } = await getAlgoData(nft.id)
+      let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+      nftDetails.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
+      nftDetails.name = response.data.name
+      nftDetails.description = response.data.description
+    } catch (error) {
+      console.error('get collection result failed');
+    }
+  return nftDetails
+}
+
 export const getNftCollection = async collection => {
   let nftArr = []
   let { data } = await axios.get(collection['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
@@ -42,7 +86,6 @@ export const getNftCollection = async collection => {
       nftObj.Id = data[i]
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
       let assetInfo = await readSIngleUserNft(collection.owner, data[i])
-      console.log('sold info', assetInfo)
       nftObj.sold = assetInfo.sold
       nftObj.ipfs_data = response.data
       nftObj.name = response.data.name;

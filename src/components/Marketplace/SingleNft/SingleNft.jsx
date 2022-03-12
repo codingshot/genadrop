@@ -1,18 +1,31 @@
-import { useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNfts } from '../../../utils';
 import NftCard from '../NftCard/NftCard';
 import classes from './SingleNft.module.css';
 
 const SingleNft = () => {
   const [state, setState] = useState({
     viewAll: false,
-  })
-
-  const { viewAll } = state
-
+    allSingleNfts: null
+  });
+  const { viewAll, allSingleNfts } = state
   const handleSetState = payload => {
-    setState(state => ({...state, ...payload}))
+    setState(state => ({ ...state, ...payload }))
   }
+  const { singleNfts } = useContext(GenContext);
+
+  useEffect(() => {
+    if (singleNfts.length) {
+      (async function getResult() {
+        let result = await getSingleNfts(singleNfts);
+        handleSetState({
+          allSingleNfts: result
+        })
+      }())
+    }
+  }, [singleNfts])
 
   return (
     <div className={classes.container}>
@@ -28,10 +41,10 @@ const SingleNft = () => {
       </div>
       <div className={classes.wrapper}>
         {
-          true ? (Array(20).fill({ name: 'name', price: '10 algo', owner: 'owner', image_url: '/assets/explore-image-2.png' }))
+          allSingleNfts ? allSingleNfts
             .filter((_, idx) => viewAll ? true : 10 > idx)
             .map((nft, idx) => (
-              <NftCard key={idx} nft={nft}/>
+              <NftCard key={idx} nft={nft} />
             ))
             :
             (Array(6).fill(null)).map((_, idx) => (

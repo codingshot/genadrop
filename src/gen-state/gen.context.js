@@ -23,6 +23,7 @@ const GenContextProvider = ({ children }) => {
     rule,
     isRule,
     collections,
+    singleNfts,
     notification,
     clipboardMessage,
     loaderMessage,
@@ -44,6 +45,7 @@ const GenContextProvider = ({ children }) => {
   // console.log("rule =>", rule)
   // console.log("isRule =>", isRule)
   // console.log("collections =>", collections)
+    // console.log("singleNfts =>", singleNfts)
   // console.log("notification =>", notification);
   // console.log("clipboardMessage =>", clipboardMessage);
   // console.log("loaderMessage =>", loaderMessage);
@@ -72,6 +74,7 @@ const GenContextProvider = ({ children }) => {
       loaderMessage,
       collectionDescription,
       didMount,
+      singleNfts,
       dispatch
     }}>
       {children}
