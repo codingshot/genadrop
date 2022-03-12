@@ -1,0 +1,154 @@
+.container {
+  width: 20em;
+  position: sticky;
+  top: 5em;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+  padding: 1em 0;
+}
+
+.container * {
+  color: white;
+}
+
+.container i {
+  font-size: 14px;
+  padding: 0 0.5em;
+}
+
+.collectionNameContainer {
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+}
+
+.collectionName {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  color: white;
+  background: var(--card-bg);
+  padding: 0.7em;
+  border-radius: 0.25em;
+}
+
+.collectionName form {
+  flex: 1;
+  height: 100%;
+  display: flex;
+}
+
+.collectionName input {
+  background: transparent;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  padding: 0.25em;
+  border: 1px solid gainsboro;
+  margin-right: 1em;
+}
+
+.editBtn {
+  cursor: pointer;
+  padding: 0.1em;
+}
+
+.nameHeader {
+  width: 90%;
+  word-wrap: break-word;
+  text-align: center;
+  font-weight: 300;
+  font-size: 1.2rem;
+}
+ 
+.layerorder {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  background:  var(--main-bg);
+  overflow: hidden;
+}
+
+.layerHeadWrapper {
+  width: 100%;
+}
+
+.layerorderHeader {
+  width: 100%;
+  padding: 0.5em 1em;
+  color: black;
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.layer_trait {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em ;
+  padding-right: 2em;
+  text-transform: capitalize;
+  background: var(--card-bg);
+  margin-bottom: 0.5em;
+  border-radius: 0.25em;
+}
+
+.listWrapper {
+  width: 100%;
+  padding: 0.25em 1em;
+}
+
+.list {
+  width: 100%;
+  min-height: 18em;
+  max-height: 20em;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1em;
+}
+
+.list::-webkit-scrollbar {
+  display: none;
+}
+
+.list {
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+.promptWrapper {
+  width: 100%;
+}
+
+.addBtn {
+  width: 100%;
+  background:  var(--main-accent);
+  border: none;
+  cursor: pointer;
+  padding: 0.75em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  transition: all 300ms;
+}
+
+.addBtn:hover {
+  background: var(--main-accent-dark);
+  outline: 2px solid var(--main-accent);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+    position: static;
+  }
+}

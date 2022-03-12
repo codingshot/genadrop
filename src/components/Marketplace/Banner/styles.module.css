@@ -1,0 +1,148 @@
+.container {
+  width: 100%;
+  margin-bottom: 4em;
+}
+
+.innerContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 1em;
+  width: 100%;
+  margin: auto;
+  padding: 3em 2em;
+  background: var(--card-bg);
+}
+
+.bannerText {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+  padding-bottom: 4em;
+}
+
+.heading {
+  font-size: 3.6em;
+  margin-bottom: 0.25em;
+  color: #EEE9DB;
+}
+
+.heading span {
+  color: var(--main-accent);
+}
+
+.description {
+  max-width: 36em;
+  color: white;
+  text-align: left;
+}
+
+.pageLinks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
+.pageLinks > button {
+  outline: none;
+  padding: 0.75em 3em;
+  font-size: 0.85rem;
+  border-radius: 0.5em;
+  cursor: pointer;
+  border: 2px solid transparent;
+  color: white;
+  transition: all 200ms;
+}
+
+.pageLinks button:first-child {
+  background: var(--main-accent);
+}
+
+.pageLinks button:first-child:hover {
+  background: var(--main-accent-dark);
+}
+
+.pageLinks button:last-child {
+  background: transparent;
+  border: 1px solid var(--main-accent);
+}
+
+.pageLinks button:last-child:hover {
+  outline: 1px solid white;
+}
+
+.imageContainer {
+  width: 24vw;
+}
+
+.imageContainer img {
+  width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .imageContainer {
+    width: 28vw;
+  }
+  .heading {
+    font-size: 4vw;
+  }
+}
+
+@media screen and (max-width: 900px) { 
+  .imageContainer {
+    width: 42vw;
+  }
+
+  .heading {
+    font-size: 4vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .innerContainer {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 3em 1em;
+  }
+
+  .imageContainer {
+    margin-bottom: 2em;
+    width: 72vw;
+  }
+ 
+  .heading {
+    font-size: 2.5rem;
+  }
+
+  .bannerText {
+    padding-bottom: 3em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .imageContainer {
+    width: 100%;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .pageLinks {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .pageLinks button {
+    flex: 1;
+  }
+
+  .bannerText {
+    padding: 0 1em;
+    padding-bottom: 2em;
+  }
+
+}

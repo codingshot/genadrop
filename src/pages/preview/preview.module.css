@@ -1,0 +1,424 @@
+.wrapper {
+  width: 100%;
+  padding: 0 1em;
+  padding-top: 2em;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+  margin: 0 auto;
+  margin-bottom: 4em;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 20em;
+  height: auto;
+  position: sticky;
+  top: 5em;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+}
+
+.arrowBack {
+  padding: 0 1em;
+  margin-left: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em 2em;
+  border-radius: 0.25em;
+  box-shadow: 4px 4px 8px gainsboro;
+  margin-bottom: 2em;
+  cursor: pointer;
+}
+
+.arrowBack img {
+  transition: all 300ms;
+}
+
+.arrowBack:hover img {
+  transform: translateX(-2px);
+}
+
+.main {
+  flex: 1;
+  height: auto;
+  background: var(--main-bg);
+  z-index: 1;
+}
+
+.details {
+  width: 100%;
+  position: sticky;
+  top: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  padding: 1em;
+  background: var(--main-bg);
+  z-index: 1;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.details div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.65em 1em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  background: var(--card-bg);
+  color: white;
+}
+
+.details div span:last-child {
+  border: 1px solid white;
+  padding: 0 1em;
+}
+
+.details div i {
+  color: red;
+}
+
+.collectionDetail {
+  width: 100%;
+  padding: 1em;
+}
+
+.collectionDetail .wrapper {
+  width: 100%;
+  padding: 0.5em;
+  border-radius: 0.25em;
+  margin-bottom: 2em;
+  border: 1px solid gainsboro;
+}
+
+.collectionDetail img {
+  filter: invert(1);
+}
+
+.collectionDetail textarea {
+  resize: none;
+  width: 100%;
+  border: none;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  border: 1px solid gainsboro;
+}
+
+.collectionDetail textarea:focus {
+  outline: 1px solid gainsboro;
+}
+
+.collectionDetail .tab {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5em;
+}
+
+.collectionDetail .toggleContainer {
+  width: 36px;
+  border-radius: 0.75em;
+  padding: 0px 0;
+  background: gainsboro;
+  cursor: pointer;
+  padding: 2px 2px;
+  transition: all 300ms;
+}
+
+.collectionDetail .toggleContainer.active {
+  background: white;
+  border: 1px solid gainsboro;
+}
+
+.collectionDetail .toggle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  transition: all 300ms;
+  background: gray;
+}
+
+.collectionDetail .toggle.active{
+  transform: translateX(100%);
+  background: var(--main-accent);
+}
+
+.actionContainer {
+  padding: 1em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.actionContainer h3 {
+  width: 100%;
+}
+
+.actionContainer label {
+  width: 100%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.75em;
+  border-radius: 0.25em;
+  background: var(--card-bg1);
+  color: white;
+}
+
+.actionContainer button {
+  width: 100%;
+  margin-top: 2em;
+  border: none;
+  padding: 0.75em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  background: var(--main-accent);
+  color: white;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.actionContainer button:hover {
+  background: var(--main-accent-dark);
+  outline: 2px solid var(--main-accent);
+}
+
+.preview {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+  padding: 0 0.5em;
+}
+
+.card {
+  min-width: 12em;
+  max-width: 20em;
+  position: relative;
+}
+
+.iconClose {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;
+  border-radius: 0.15em;
+}
+
+.iconClose img {
+  width: 0.7em;
+  transition: transform 300ms;
+  margin: 0;
+}
+
+.card > .iconClose:hover img {
+  transform: scale(1.2);
+}
+
+.asset {
+  display: inline-block;
+  width: 100%;
+  border-top-right-radius: 0.5em;
+  border-top-left-radius: 0.5em;
+  border: 1px solid gainsboro;
+}
+
+.cardBody {
+  background: var(--card-bg1);
+  box-shadow: 1px 1px 5px rgb(201, 201, 201);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 1em;
+  border-bottom-right-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
+}
+
+.cardBody .textWrapper {
+  width: 100%;
+  color: black;
+}
+
+.cardBody .textWrapper {
+  color: white;
+}
+
+.cardBody textarea {
+  width: 100%;
+  background: var(--card-bg3);
+  border: 1px solid black;
+  color: white;
+  padding: 0.25em;
+  resize: none;
+  border-radius: 0.25em;
+}
+
+.cardBody textarea:focus {
+  outline: 2px solid var(--card-bg);
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.buttonContainer button {
+  flex: 1;
+  padding: 0.5em 0em;
+  white-space: nowrap;
+  border-radius: 0.25em;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: all 150ms;
+  outline: 1px solid transparent;
+}
+
+.buttonContainer button:first-child {
+  background: var(--main-accent);
+}
+
+.buttonContainer button:last-child {
+  background: var(--card-bg);
+}
+
+.buttonContainer button:first-child:hover {
+  background: var(--main-accent-dark);
+  outline: 1px solid var(--main-accent);
+}
+
+.buttonContainer button:last-child:hover {
+  background: var(--card-bg3);
+  outline: 2px solid var(--card-bg);
+}
+
+.radioBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radioBtn::before {
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  background: black;
+  position: absolute;
+  content: '';
+  outline: 2px solid white;
+  outline-offset: 2px;
+}
+
+.radioBtn.clicked::before {
+  background: white;
+}
+
+.paginate {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  margin-bottom: 4em;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
+  padding: 0.25em;
+}
+
+.paginate input {
+  padding: 0.65em;
+  max-width: 6em;
+  border: 1px solid gainsboro;
+  border-radius: 0.25em;
+}
+
+.pageControl {
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  background: var(--card-bg);
+  color: white;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.pageControl:hover {
+  outline: 2px solid gray;
+}
+
+.pageCount {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 1280px) {
+  .preview {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .preview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sidebar {
+    width: 100%;
+    position: static;
+  }
+
+  .details {
+    top: 3em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .preview {
+    grid-template-columns: auto;
+    justify-items: center;
+  }
+
+  .paginate * {
+    font-size: 0.75rem;
+  }
+}

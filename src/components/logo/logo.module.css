@@ -1,0 +1,22 @@
+.container {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 5em;
+}
+
+@media screen and (max-width: 768px) {
+  .logo {
+    width: 4em;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .logo {
+    width: 3em;
+  }
+}

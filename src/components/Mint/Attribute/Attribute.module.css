@@ -1,0 +1,25 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.container button {
+  border: 1px solid gainsboro;
+  padding: 0.5em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25em;
+  background: var(--card-bg);
+}
+
+.container input::placeholder {
+  color: gainsboro;
+}
+
+.container img {
+  filter: invert(1);
+}

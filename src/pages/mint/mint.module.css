@@ -1,0 +1,110 @@
+.container {
+  width: 100%;
+  padding: 1em;
+  background: #ececec;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background: white;
+  padding: 1em;
+  border-radius: 0.5em;
+}
+
+.title {
+  text-align: center;
+  font-size: 3rem;
+}
+
+.description {
+  color: gray;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.description span {
+  color: var(--main-accent);
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 0.25em;
+  padding: 0 1em;
+  position: relative;
+}
+
+.description span img {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -0.25em;
+}
+
+.uploadWrapper {
+  width: 100%;
+  max-width: 48em;
+  height: 24em;
+  border-radius: 0.5em;
+  transition: all 300ms;
+  box-shadow: 0 0 15px gainsboro;
+  margin: 4em 0;
+  margin-top: 2em;
+  padding: 0.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+}
+
+.uploadWrapper * {
+  text-align: center;
+}
+
+.uploadWrapper:hover {
+  box-shadow: 0 0 45px gainsboro;
+}
+
+.uploadWrapper button {
+  padding: 0.5em 2em;
+  border-radius: 0.25em;
+  font-size: 1rem;
+  background: var(--main-accent);
+  color: white;
+  border: 2px solid var(--main-accent-dark);
+  transition: all 300ms;
+  cursor: pointer;
+}
+
+.uploadWrapper button:hover {
+  background: var(--main-accent-dark);
+  border: 2px solid var(--main-accent);
+}
+
+.dropArea {
+  display: inline-block;
+  border: 1px dashed gray;
+  padding: 1em;
+  margin-bottom: 0.5em;
+}
+
+.dropArea.active {
+  border: 1px solid black;
+}
+
+@media screen and (max-width: 768px) {
+  .title {
+    font-size: 2rem;
+    margin-bottom: 0.5em;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .title {
+    font-size: 1.4rem;
+  }
+}

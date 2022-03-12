@@ -1,0 +1,33 @@
+.container {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border: 1px solid rgba(128, 128, 128, 0.233);
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
+.container button {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  padding: 0.15em 0.75em;
+  cursor: pointer;
+  outline: none;
+  font-size: 12px;
+  border-radius: 0.2em;
+  transition: all 300ms;
+  border: none;
+  background: white;
+  box-shadow: 0 0 5px gainsboro;
+}
+
+.container button * {
+  color: black;
+}
+
+.container button:hover {
+  transform: translateY(1px);
+}

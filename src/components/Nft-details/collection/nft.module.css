@@ -1,0 +1,93 @@
+
+.collectionItem{
+    width: 10rem;
+    display: flex;
+    flex-direction: column;
+    color: #4B4B5A;
+    border-radius: 0 0 10px 10px;
+    margin:   1rem;
+    padding: 0 0.4rem;
+  
+}
+
+.collectionItem:hover{
+  transform: scale(1.02);
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+}  
+
+.collectionItem img{
+  width: 10rem;
+}
+
+.itemName{
+  font-size: 15px;
+  font-weight: bold;
+  padding: 0 0.4rem;
+  margin-bottom: 1rem;
+  
+}
+.collectionName{
+  padding: 0.4rem;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.itemPrice{
+  padding: 5px;
+  font-size: 15px;
+  display: flex;
+  flex-direction: row;
+  bottom: 0;
+}
+
+
+.section{
+  display: flex;
+  flex-direction: column;
+}
+
+.heading{
+  color: #ADB5BD;
+  font-size: 10px;
+}
+
+.price{
+  color: var(--main-accent);
+  font-size: 20px;
+  font-weight: bold;
+
+}
+
+.price span{
+  font-size: 12px;
+}
+.pricing img{
+  width: 25px;
+}
+
+
+.buy, .sold{
+  
+  flex-direction: row;
+  color: white;
+  padding: 0 1rem;
+  height: 35px;
+  border-radius: 5px;
+  font-weight: bold;
+  margin-left: auto;
+  order: 2;
+}
+
+.buy{
+  background-color: var(--main-accent);
+
+}
+.sold {
+  background-color: #4B4B5A;
+
+}
+.buy:hover{
+  transform: scale(1.05);
+  transition: all .2s ease-in-out;
+}

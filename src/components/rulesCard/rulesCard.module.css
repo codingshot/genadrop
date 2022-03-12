@@ -1,0 +1,98 @@
+.container {
+  width: 100%;
+  color: black;
+  border-radius: 0.25em;
+  background: var(--main-bg);
+  box-shadow: 0px 0px 2px gray;
+  padding: 0.5em;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  max-height: 16em;
+  overflow: auto;
+}
+
+.conflictCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  align-items: center;
+  padding: 0.25em;
+  border-bottom: 1px solid var(--icon-color);
+  border-bottom: 1px solid gainsboro;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  white-space: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.85rem;
+  gap: 1em;
+  overflow: auto;
+  cursor: default;
+}
+
+.content:hover {
+  background: var(--sidebar-bg);
+  background: var(--sidebar-bg);
+}
+
+.conflict {
+  font-style: italic;
+}
+
+.icon {
+  cursor: pointer;
+  color: var(--card-bg1);
+  filter: invert(0);
+  transform: scale(0.9);
+  transition: all 300ms;
+}
+
+.icon:hover {
+  transform: scale(1);
+}
+
+.image {
+  display: inline-flex;
+  width: 4em;
+  height: 4em;
+  border-radius: 0.25em;
+  border: 1px solid gainsboro;
+}
+
+.innerContent {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.clearBtnContainer {
+  margin: 2em 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clearBtnContainer > button {
+  border-radius: 0.25em;
+  padding: 0.25em 1em;
+  cursor: pointer;
+  font-size: 0.85em;
+  text-transform: capitalize;
+  border: 1px solid var(--card-bg);
+}
+
+.notification {
+  width: 100%;
+  text-align: center;
+  font-style: italic;
+}

@@ -1,0 +1,137 @@
+.container {
+  width: 14em;
+  cursor: pointer;
+  position:  relative;
+  border-radius: 0.25em;
+  overflow: hidden;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 1px 1px 5px rgb(201, 201, 201);
+  border: 1px solid transparent;
+}
+
+.container.active {
+  box-shadow: 1px 1px 5px black;
+}
+
+.container.inActive {
+  border-color: transparent;
+}
+
+.container.active .addRuleBtn {
+  color: var(--main-accent);
+}
+
+.container * {
+  transition: all 150ms;
+}
+
+.imageContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-bg1);
+}
+
+.imageContainer:hover .image{
+  transform: scale(1.01);
+}
+
+.image {
+  width: 100%;
+}
+
+.action {
+  width: 100%;
+  top: 0;  
+  left: 0;
+  background: var(--main-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em;
+}
+
+.action i {
+  font-weight: bold;
+  color: var(--icon-color);
+}
+
+.action i:hover {
+  color: var(--icon-color-dark);
+}
+
+.details {
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  color: black;
+  background:var(--main-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  padding: 0.5em;
+}
+
+.editInput,
+.inputText {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.editInput form {
+  flex: 1;
+}
+
+.editInput input,
+.inputText div {
+  flex: 1;
+  text-align: center;
+}
+
+.container i {
+  cursor: pointer;
+  font-size: 0.7rem;
+}
+
+.reset {
+ background: var(--main-accent);
+}
+
+.reset * {
+  animation: bounce 650ms infinite alternate linear;
+}
+
+@keyframes bounce {
+  from{transform: translateY(4px);}
+  to{transform: translateY(0);}
+}
+
+.details input {
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  padding: 0.25em;
+  color: black;
+  border: 1px solid gainsboro;
+}
+
+.details input:focus {
+  outline: none;
+}
+
+.promptWrapper {
+  display: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.promptWrapper.show {
+  display: block;
+}

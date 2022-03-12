@@ -1,0 +1,14 @@
+.button {
+  width: auto;
+  transition: transform 10ms;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button.clicked {
+  transform: scale(1.01);
+}
+
+

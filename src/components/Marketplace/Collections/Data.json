@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Defi summer",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis sem orci morbi venenatis, libero pulvinar. Id vivamus quam eget facilisis in faucibus. ",
+    "nfts": "10,000",
+    "price": "3.5 Algo",
+    "image": "/assets/collections-image-1.png"
+  },
+  {
+    "name": "Cryptopumps",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis sem orci morbi venenatis, libero pulvinar. Id vivamus quam eget facilisis in faucibus. ",
+    "nfts": "10,000",
+    "price": "3.5 Algo",
+    "image": "/assets/collections-image-2.png"
+  },
+  {
+    "name": "Crazy aunties",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis sem orci morbi venenatis, libero pulvinar. Id vivamus quam eget facilisis in faucibus. ",
+    "nfts": "10,000",
+    "price": "3.5 Algo",
+    "image": "/assets/collections-image-3.png"
+  }
+]

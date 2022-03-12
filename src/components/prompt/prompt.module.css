@@ -1,0 +1,48 @@
+.form {
+  width: 100%;
+  background: transparent;
+  margin-bottom: 0.25em;
+}
+
+.form input {
+  width: 100%;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+  padding: 0.25em;
+  color: black;
+  background: white;
+  outline: none;
+  border-radius: 0.25em;
+  border: 1px solid var(--card-bg);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+.buttons button {
+  background: white;
+  color: black;
+  outline: none;
+  padding: 0.25em 1.5em;
+  border-radius: 0.25em;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 1px solid #151616;
+}
+
+.buttons button:first-child {
+  background:  #151616;
+  color: white;
+}
+
+.buttons button:hover {
+  outline: 1px solid var(--main-accent);
+}
+
+.buttons button:first-child:hover {
+  background: #303333;
+}

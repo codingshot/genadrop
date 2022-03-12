@@ -1,0 +1,39 @@
+.container {
+  width: 100%;
+  height: 8em;
+  overflow: auto;
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  border-radius: 0.25em;
+}
+
+.container h4 {
+  margin-bottom: 0.5em;
+  font-weight: 500;
+  color: black;
+}
+
+.container p {
+  margin-bottom: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-self: flex-start;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.container p > span {
+  font-size: 0.85rem;
+  color: black;
+}
+
+@media screen and (max-width: 1200px) {
+  .container{
+    height: auto;
+    max-height: 16em;
+  }
+
+  .container h4 {
+    margin-bottom: 1em;
+  }
+}

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Art",
+    "image": "/assets/category-image-1.png",
+    "link": ""
+  },
+  {
+    "name": "Collectibles",
+    "image": "/assets/category-image-2.png",
+    "link": ""
+  },
+  {
+    "name": "Sports",
+    "image": "/assets/category-image-3.png",
+    "link": ""
+  },
+  {
+    "name": "Virtual Worlds",
+    "image": "/assets/category-image-4.png",
+    "link": ""
+  },
+  {
+    "name": "Photography",
+    "image": "/assets/category-image-5.png",
+    "link": ""
+  }
+]

@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+}
+
+.container form{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.container form textarea,
+.container form input {
+  flex: 1;
+  padding: 0.25em;
+  border: none;
+  outline: 1px solid gainsboro;
+}
+
+.container button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+.container button img {
+  color: white;
+}
+
+.container div {
+  width: 100%;
+  display: flex;
+  align-items: ce;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.container div p {
+  flex: 1;
+  padding: 0.15em;
+  color: white;
+}
+
+.container.invert div p {
+  color: var(--card-bg);
+}

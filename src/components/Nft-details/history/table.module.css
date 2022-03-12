@@ -1,0 +1,29 @@
+table {
+    border: 1px solid #F3F4F7;
+    width: 97%;
+    margin: 0.5rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px; 
+    overflow: hidden;
+    overflow-x: hidden;
+}
+
+
+th {
+    font-size: 10px;
+    background-color: #F3F4F7;
+}
+
+  
+td, th {
+    border-top: 1px solid #F3F4F7;
+    text-align: center;
+    padding: 10px;
+
+}
+
+.table td:first-child, th:first-child{
+    text-align: left;
+    padding-left: 1rem;
+}
