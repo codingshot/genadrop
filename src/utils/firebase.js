@@ -177,20 +177,25 @@ async function readAllSingleNft() {
 //   console.log(data)
 // });
 
+let demoAcc = 'NJJZVXK537GLPXK2BW47LGLSVKW3VPN42CY7DOK2UR23NUGV4QBV2DXO4Y';
+
 async function fetchCollections() {
-
-  let allCollections = await readAllCollection()
-  // let allNft = await readAllNft()
-  // let userCollections = await readUserCollection('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
-  // let allUserNft = await readAllUserNft('X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4')
-
-  return {
-    allCollections,
-    // allNft,
-    // userCollections,
-    // allUserNft
-  }
+  return await readAllCollection()
 }
+
+async function fetchUserCollections(account) {
+  return await readUserCollection(demoAcc)
+}
+
+async function fetchUserNfts(account) {
+  return await readAllUserNft(demoAcc)
+}
+
+async function fetchAllNfts(account) {
+  return await readAllNft(demoAcc)
+}
+
+// X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4
 
 export {
   writeUserData,
@@ -200,6 +205,9 @@ export {
   readAllUserNft,
   readSIngleUserNft,
   fetchCollections,
+  fetchUserCollections,
+  fetchUserNfts,
+  fetchAllNfts,
   writeNft,
   recordTransaction,
   readNftTransaction,

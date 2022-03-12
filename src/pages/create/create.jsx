@@ -6,6 +6,7 @@ import CreatePageUseGuide from '../../components/use-guide/createUseGuide';
 import { useState } from 'react';
 import { useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
+import iconHelp from '../../assets/icon-help.svg';
 
 const Create = () => {
   const { didMount } = useContext(GenContext);
@@ -13,7 +14,9 @@ const Create = () => {
 
   return (
     <div className={classes.container}>
-      <img onClick={() => setGuide(true)} className={`${classes.icon} ${!toggleGuide && classes.active}`} src="/assets/icon-help.svg" alt='' />
+      <div onClick={() => setGuide(true)} className={`${classes.iconContainer} ${!toggleGuide && classes.active}`}>
+        <img className={classes.icon} src={iconHelp} alt='' />
+      </div>
       <CreatePageUseGuide toggleGuide={toggleGuide} setGuide={setGuide} />
       <div className={classes.layer_overview}>
         <LayerOrders />

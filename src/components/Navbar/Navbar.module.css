@@ -1,0 +1,234 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: white;
+  box-shadow: 0 0 5px gainsboro;
+  z-index: 4000;
+  padding: 0.5em 2em;
+}
+
+.logoContainer {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.drop {
+  width: 1em;
+  position: absolute;
+  bottom: 0.5em;
+  right: 0.75em;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.logoContainer:hover .drop {
+  transform: translateY(100%);
+  animation: drop 650ms;
+}
+
+.logoContainer:hover .logoDesktop, 
+.logoContainer:hover .logoMobile {
+  transform: translate(1px, 1px);
+}
+
+.logoMobile,
+.logoDesktop {
+  transition: all 650ms;
+}
+
+@keyframes drop {
+  from{transform: translateY(0%);opacity: 0; visibility: hidden;}
+  to{transform: translateY(200%);opacity: 1; visibility: visible;}
+}
+
+.logoDesktop {
+  width: 4em;
+}
+
+.logoMobile {
+  display: none;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+}
+
+.wrapper input {
+  background: transparent;
+  border: 1px solid white;
+  width: 100%;
+  max-width: 28em;
+  outline-color: transparent;
+  padding: 0.25em;
+  font-size: 1rem;
+  border-radius: 0.25em;
+  display: none;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  font-size: 1rem;
+  text-transform: capitalize;
+  margin-right: 2em;
+}
+
+.navItem {
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  padding: 0.5em 1em;
+  font-weight: 500;
+  transition: all 300ms;
+  border-radius: 0.25em;
+}
+
+.navItem:hover {
+  background: var(--main-hover);
+}
+
+.navItem.active {
+  border-radius: 0;
+  background: var(--main-hover);
+  border-radius: 0.25em;
+}
+
+.iconClose,
+.iconOpen {
+  display: none;
+  cursor: pointer;
+}
+
+.wallet {
+  min-width: 12em;
+  text-align: right;
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    gap: 2em;
+  }
+
+  .container input {
+    max-width: 20em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container input {
+    max-width: 12em;
+  }
+
+  .navList {
+    margin-right: 0;
+  }
+}
+
+.logoDesktop{
+  height: 3em;
+}
+
+@media screen and (max-width: 768px) {
+
+  .container {
+    background: var(--main-bg);
+  }
+
+  .logoDesktop {
+    display: none;
+  }
+
+  .logoMobile {
+    display: block;
+    width: 3em;
+  }
+
+  .iconClose,
+  .iconOpen {
+    display: block;
+  }
+
+  .wrapper {
+    width: 95%;
+    margin-right: 2.5%;
+    position: absolute;
+    flex-direction: column-reverse;
+    gap: 2em;
+    right: 0;
+    top: 3em;
+    padding: 0 1em;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 650ms;
+    border-bottom-right-radius: 1em;
+    border-bottom-left-radius: 1em;
+  }
+
+  .wrapper.active {
+    max-height: 100vh;
+    box-shadow: 0 0 15px gainsboro;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wrapper input {
+    display: block;
+    max-width: 100%;
+    border: 1px solid gray;
+    outline: transparent;
+    color: black;
+    margin-top: 2em;
+  }
+
+  .wrapper input:hover {
+    outline: 1px solid gray;
+  }
+
+  .navList {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+  }
+
+  .navList > * {
+    width: 100%;
+  }
+
+  .navItem {
+    width: 100%;
+    text-align: center;
+    font-weight: 700;
+    border: 1px solid gainsboro;
+    border-radius: 0.5em;
+  }
+
+  .wallet {
+    width: 100%;
+    margin-top: 1em;
+  }
+
+  .drop {
+    bottom: 0;
+    right: 0.5em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    max-width: 100%;
+    right: 0;
+  }
+}

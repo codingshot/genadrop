@@ -21,6 +21,9 @@ import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
 import Collections from './pages/collections/Collections';
 import SingleNFT from './pages/singleNFT/singleNFT';
+import Profile from './pages/profile/profile';
+import Dashboard from './pages/dashboard/dashboard';
+import List from './pages/listNFT/list'
 
 function App() {
   const { dispatch } = useContext(GenContext);
@@ -51,6 +54,9 @@ function App() {
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint" component={Mint} />
+          <Route exact path="/me/:userId/settings" component={Profile} />
+          <Route exact path="/me/:userId/:nftId" component={List} />
+          <Route exact path="/me/:userId" component={Dashboard} />
           <Route path="" component={Fallback} />
         </Switch>
       </div>

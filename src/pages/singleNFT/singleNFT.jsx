@@ -12,16 +12,14 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import axios from 'axios';
 import { readNftTransaction } from '../../utils/firebase';
 
-
 import CopyToClipboard from 'react-copy-to-clipboard';
 
 
 const SingleNFT = () => {
 
-  const { account, connector } = useContext(GenContext);
-
+  const { account, connector, singleNfts } = useContext(GenContext);
   const { params: { nftId } } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+
   const { url } = useRouteMatch()
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
@@ -44,14 +42,10 @@ const SingleNFT = () => {
 
   useEffect(() => {
     const nft = singleNfts.filter(nft => String(nft.id) === nftId)[0];
-    console.log("+++", nft);
     (async function getNftDetails() {
       let nftDetails = await getSingleNftDetails(nft);
       // const tHistory = await readNftTransaction(nftId);
-
       handleSetState({ nftDetails, isLoading: false });
-
-
     }());
     console.log(nftDetails);
     // handleSetState({ })
