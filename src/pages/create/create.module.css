@@ -19,21 +19,29 @@
   gap: 1em;
 }
 
-.icon {
+.iconContainer {
+  background: var(--main-accent-dark);
   position: fixed;
   top: 4.5em;
   right: 0.5em;
-  width: 1em;
+  width: 2em;
+  height: 2em;
   cursor: pointer;
   border-radius: 50%;
   visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
-.icon.active {
+.iconContainer.active {
   visibility: visible;
 }
 
-
+.icon {
+  width: 40%;
+}
 
 @media screen and (max-width: 1200px) {
   .container {

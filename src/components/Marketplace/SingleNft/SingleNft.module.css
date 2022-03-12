@@ -3,7 +3,10 @@
   max-width: 1440px;
   margin: 0 auto;
   margin-bottom: 4em;
-  padding: 0 1em;
+  padding: 2em;
+  background: white;
+  border-radius: 1em;
+  overflow: auto;
 }
 
 .container > input {
@@ -55,6 +58,10 @@
 }
 
 @media screen and (max-width: 540px) {
+  .container {
+    padding: 1em;
+  }
+
   .wrapper {
     grid-template-columns: repeat(2, 1fr);
   }

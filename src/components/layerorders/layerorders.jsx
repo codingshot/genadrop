@@ -65,7 +65,7 @@ const LayerOrders = () => {
   const getCollectionsNames = async () => {
     let collections = await fetchCollections()
     let names = []
-    collections.allCollections.forEach(col => {
+    collections.forEach(col => {
       names.push(col.name)
     });
     return names;

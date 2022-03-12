@@ -14,7 +14,7 @@
   justify-content: flex-start;
   background: white;
   padding: 1em;
-  border-radius: 0.5em;
+  border-radius: 1em;
 }
 
 .title {
@@ -48,7 +48,7 @@
   width: 100%;
   max-width: 48em;
   height: 24em;
-  border-radius: 0.5em;
+  border-radius: 1em;
   transition: all 300ms;
   box-shadow: 0 0 15px gainsboro;
   margin: 4em 0;

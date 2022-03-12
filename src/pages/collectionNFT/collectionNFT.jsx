@@ -46,7 +46,7 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const collection = collections.allCollections.find(col => col.name === collectionName);
+      const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
 
         let collectionData = await getNftCollection(collection)
