@@ -1,44 +1,111 @@
 .container {
-  padding: 1em;
-  padding-top: 2em;
-  padding-bottom: 4em;
+  width: 100%;
   background: #E5E5E5;
+  padding: 2em 1em;
 }
 
-.innerContainer {
+.wrapper {
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2em;
+  padding: 2em;
+  background: white;
+  border-radius: 1em;
+  margin-bottom: 2em;
+}
+
+.profile {
+  color: var(--main-accent);
+}
+
+.details {
+  width: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  gap: 4em;
+  padding: 1em;
+  border-radius: 0.25em;
+  background: rgba(0, 153, 135, 0.1);
+  cursor: pointer;
+  color: var(--main-accent);
+  transition: all 100ms;
+}
+
+.detail p {
+  font-size: 1.2rem;
+  transition: all 100ms;
+}
+
+.detail span {
+  min-width: 2.5em;
+  min-height: 2.5em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 153, 135, 0.15);
+  padding: 0.25em;
+  font-weight: bold;
+  transition: all 100ms;
+}
+
+.detail:hover {
+  background: var(--card-bg);
+  color: white;
+}
+
+.detail:hover span {
+  background: gray;
+}
+
+.detail.active {
+  background: var(--main-accent);
+  color: white;
+}
+
+.detail.active span {
+  background: white;
+  color: var(--main-accent);
+}
+
+.imageContainer {
+  width: calc(12 * 16px);
+  height: calc(12 * 16px);
+  border-radius: 50%;
+  box-shadow: 0px 5px 5px gainsboro;
+}
+
+.main {
   background: white;
   padding: 2em;
   border-radius: 1em;
 }
 
-.header {
-  width: 100%;
-  margin-bottom: 2.5em;
-}
-
-.header h1 {
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 1em;
-}
-
-.filter {
-  display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  flex-wrap: wrap;
-  gap: 1em;
-}
-
 .searchAndPriceFilter {
+  width: unset;
   width: 100%;
   display: flex;
   align-items: stretch;
   justify-content: space-between;
   gap: 1em;
-  margin-bottom: 0.5em;
+  margin-bottom: 2em;
 }
 
 .searchAndPriceFilter input {
@@ -104,8 +171,10 @@
   border-bottom: 1px solid gainsboro;
 }
 
-.wrapper {
+.overview {
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   justify-items: center;
@@ -119,28 +188,55 @@
 }
 
 @media screen and (max-width: 1280px) {
-  .wrapper, .skeleton {
+  .overview, .skeleton {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media screen and (max-width: 1000px) {
-  .wrapper, .skeleton {
+  .overview, .skeleton {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .detail {
+    padding: 1em;
+  }
+
+  .detail p {
+    font-size: 1rem;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .wrapper, .skeleton {
+  .overview, .skeleton {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .heading h3 {
     font-size: 1.6rem;
   }
+
+  .detail {
+    padding: 0.5em;
+    gap: 2em;
+  }
+
+  .detail p {
+    font-size: 1rem;
+  }
+
+  .detail span {
+    min-width: 2em;
+    min-height: 2em;
+  }
+
+  .imageContainer {
+    width: calc(8 * 16px);
+    height: calc(8 * 16px);  
+  }
 }
 
-@media screen and (max-width: 540px) {
+@media screen and (max-width: 480px) {
   .searchAndPriceFilter {
     flex-direction: column;
     gap: 0.5em;
@@ -149,10 +245,17 @@
   .priceDropdown {
     width: 100%;
   } 
-}
 
-@media screen and (max-width: 480px) {
-  .wrapper, .skeleton {
+  .overview, .skeleton {
     grid-template-columns: repeat(1, 1fr);
+  }
+
+  .imageContainer {
+    width: calc(8 * 16px);
+    height: calc(8 * 16px);  
+  }
+
+  .details {
+    gap: 1em;
   }
 }

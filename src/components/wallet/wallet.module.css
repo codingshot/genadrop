@@ -1,7 +1,7 @@
 .connect {
   display: inline-block;
   padding: 0.5em 1.5em;
-  border-radius: 0.5em;
+  border-radius: 0.35em;
   cursor: pointer;
   background: var(--card-bg);
   color: white;
@@ -18,7 +18,6 @@
 
 .user {
   align-self: stretch;
-  background: white;
   border: 1px solid transparent;
   cursor: pointer;
   display: flex;
@@ -27,8 +26,8 @@
   padding: 0 0.5em;
   background: #EAFFFC;
   border: 1px solid var(--main-accent);
-  border-top-left-radius: 0.5em;
-  border-bottom-left-radius: 0.5em;
+  border-top-left-radius: 0.35em;
+  border-bottom-left-radius: 0.35em;
 }
 
 .user img {
@@ -80,7 +79,7 @@
 }
 
 .option:hover {
-  background: #eff5f4;
+  background: var(--main-hover);
 }
 
 .option div {
