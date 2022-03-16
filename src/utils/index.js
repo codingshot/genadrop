@@ -18,7 +18,7 @@ export const getNftCollections = async collections => {
       collectionObj.description = collections[i].description
       let { data } = await axios.get(collections[i]['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
       collectionObj.number_of_nfts = data.length
-      let { params } = await getAlgoData(data[0])
+      let { asset: { params} } = await getAlgoData(data[0])
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
       collectionObj.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       collectionArr.push(collectionObj)
@@ -39,7 +39,7 @@ export const getNftCollection = async collection => {
       nftObj.collection_name = collection.name
       nftObj.owner = collection.owner
       nftObj.price = collection.price
-      let { params } = await getAlgoData(data[i])
+      let { asset: { params} } = await getAlgoData(data[i])
       nftObj.algo_data = params
       nftObj.Id = data[i]
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
@@ -63,7 +63,7 @@ export const getUserNftCollection = async data => {
       let nftObj = {}
       nftObj.collection_name = data[i].collection
       nftObj.price = data[i].price
-      let { params } = await getAlgoData(data[i].id)
+      let { asset: { params} } = await getAlgoData(data[i].id)
       nftObj.algo_data = params
       nftObj.Id = data[i].id
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
@@ -89,7 +89,7 @@ export const getSingleNfts = async nfts => {
       nftObj.sold = nfts[i].sold
       nftObj.dateSold = nfts[i].dateSold
       nftObj.description = nfts[i].description
-      let { params } = await getAlgoData(nfts[i].id)
+      let { asset: { params} } = await getAlgoData(nfts[i].id)
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
       nftObj.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       nftObj.name = response.data.name
@@ -111,7 +111,7 @@ export const getSingleNftDetails = async nft => {
       nftDetails.sold = nft.sold
       nftDetails.dateSold = nft.dateSold
       nftDetails.description = nft.description
-      let { params } = await getAlgoData(nft.id)
+      let { asset: { params} } = await getAlgoData(nft.id)
       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
       nftDetails.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       nftDetails.name = response.data.name

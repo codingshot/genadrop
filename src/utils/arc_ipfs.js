@@ -146,7 +146,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
 };
 
 export const connectAndMint = async (file, metadata, imgName) => {
-  console.log(file, metadata);
   try {
     await pinata.testAuthentication();
     return await uploadToIpfs(file, imgName, metadata);
@@ -158,7 +157,6 @@ export const connectAndMint = async (file, metadata, imgName) => {
 
 export async function mintSingleToAlgo(algoMintProps) {
   const { file, metadata, account, connector, dispatch, setNotification, price } = algoMintProps;
-  console.log(connector.chainId !== 4160)
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setNotification('uploading to ipfs'))
     // notification: uploading to ipfs
@@ -179,7 +177,6 @@ export async function mintSingleToAlgo(algoMintProps) {
 export async function mintSingleToPoly(singleMintProps) {
   const { file, metadata, connector, dispatch, setLoader } = singleMintProps;
   if (connector.isWalletConnect) {
-    console.log('welcome');
     if (connector.chainId === 137) {
       return { 'message': "not yet implemented" }
     } else {
@@ -268,10 +265,8 @@ async function signTx(connector, txns) {
   // const decoded = algosdk.decodeSignedTransaction(decodedResult);
   // const fromdc = decoded.txn.from
   const confirmedTxn = await waitForConfirmation(tx.txId);
-  console.log('confam', tx.txId)
   const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
-  console.log('asset id', Buffer.from(decodedResult[0]).toString('hex'));
   // console.log('Account: ',account,' Has created ASA with ID: ', assetID);
   return assetID;
 }
@@ -288,7 +283,6 @@ export async function createNFT(createProps) {
 
   dispatch(setNotification('uploading assets, please do not refresh your page.'))
   for (let i = 0; i < metadata.length; i++) {
-    console.log(`uploading ${i + 1} of ${metadata.length}`);
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
     let imgName = `${metadata[i].name}.png`
     let imgFile = data.files[imgName]
@@ -306,9 +300,7 @@ export async function initializeContract(contractProps) {
   const { minterAddress, fileName, connector, account, dispatch, setLoader } = contractProps;
   let name = fileName.split('-')[0]
   const signer = await connector.getSigner();
-  console.log('granted..')
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
-  console.log('habibi', name, account, collectionContract);
   let tx = await collectionContract.createCollection(name, name.substring(0, 3).toUpperCase(), process.env.REACT_APP_GENADROP_MARKET_ADDRESS)
   // console.log(tx.hash)
   dispatch(setLoader('minting'))
