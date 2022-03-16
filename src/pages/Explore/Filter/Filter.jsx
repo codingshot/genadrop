@@ -97,7 +97,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                     <label>highest</label>
                     <input value={highestPrice} onChange={event => handleSetState({ highestPrice: event.target.value })} type="number" />
                   </div>
-                  <img src="/assets/icon-eth.svg" alt="" />
+                  {/* <img src="/assets/icon-eth.svg" alt="" /> */}
                 </div>
                 <button onClick={handleApplyPriceFilter}>Apply</button>
               </div>

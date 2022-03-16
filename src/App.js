@@ -13,6 +13,7 @@ import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
 import ErrorBoundary from './components/error-boundary/error-boundary';
+import Loading from './pages/loading/loading';
 
 const Home = lazy(() => import('./pages/home/home'));
 const Create = lazy(() => import('./pages/create/create'));
@@ -48,7 +49,7 @@ function App() {
       <div className="Routes">
         <Switch>
           <ErrorBoundary>
-            <Suspense fallback={<div>...Loading</div>}>
+            <Suspense fallback={<Loading/>}>
               <Route exact path="/" component={Home} />
               <Route exact path="/create" component={Create} />
               <Route exact path="/preview" component={Preview} />
@@ -57,11 +58,11 @@ function App() {
               <Route exact path="/marketplace/collections" component={Collections} />
               <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
               <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />
-              <Route exact path="/marketplace/:nftId" component={SingleNFT} />
-              <Route exact path="/me/:userId/settings" component={Profile} />
+              <Route exact path="/marketplace/nft/:nftId" component={SingleNFT} />
+              <Route exact path="/me/:userId/profile/settings" component={Profile} />
               <Route exact path="/me/:userId/:nftId" component={List} />
               <Route exact path="/me/:userId" component={Dashboard} />
-              <Route path="" component={Fallback} />
+              {/* <Route path="" component={Fallback} /> */}
             </Suspense>
           </ErrorBoundary>
         </Switch>

@@ -7,7 +7,6 @@ import fileDownload from 'js-file-download'
 import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
 
 export const getNftCollections = async collections => {
-  console.log('collections: ', collections);
   let collectionArr = []
   for (let i = 0; i < collections.length; i++) {
     try {
@@ -26,7 +25,6 @@ export const getNftCollections = async collections => {
       console.log(error);
     }
   }
-  return
   return collectionArr
 }
 

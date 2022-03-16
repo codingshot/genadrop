@@ -1,76 +1,123 @@
-import { useContext } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useState } from 'react';
 import classes from './collections.module.css';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { getNftCollections } from '../../utils';
-import { GenContext } from '../../gen-state/gen.context';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import { getPolygonNfts } from '../../utils/arc_ipfs';
-import { chainIcon } from './collection-script';
+import { chainIcon, transformArrayOfArraysToArrayOfObjects } from './collection-script';
+import { fetchCollections } from '../../utils/firebase';
+import dropdownIcon from '../../assets/icon-dropdown.svg';
+import axios from 'axios';
 
 const Collections = () => {
-
-  const { collections } = useContext(GenContext);
+  const domMountRef = useRef(false);
 
   const [state, setState] = useState({
-    allCollections: null,
+    algoCollection: null,
     togglePriceFilter: false,
     toggleChainFilter: false,
-    filteredCollection: null,
+    filteredCollection: [],
+    algoCollection: null,
+    polyCollection: null,
+    celoCollection: null,
+    nearCollection: null,
     filter: {
       searchValue: '',
       price: 'high',
-      chain: 'All Chains'
+      chain: 'Algorand'
     }
   });
 
-  const { allCollections, filter, togglePriceFilter, toggleChainFilter, filteredCollection } = state;
+  const {
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+    filter,
+    togglePriceFilter,
+    toggleChainFilter,
+    filteredCollection
+  } = state;
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  useEffect(() => {
-    if (Object.keys(collections).length) {
-      (async function getResult() {
-        let result = await getNftCollections(collections)
-        handleSetState({
-          allCollections: result,
-          filteredCollection: result
-        })
-      }())
+  const getCollectionToFilter = () => {
+    switch (filter.chain) {
+      case 'Algorand':
+        return algoCollection
+      case 'Polygon':
+        return polyCollection
+      case 'Celo':
+        return celoCollection
+      case 'Near':
+        return nearCollection
+      default:
+        break;
     }
-  }, [collections]);
+  }
 
   useEffect(() => {
-    if (!allCollections) return;
+    try {
+      (async function getAlgoCollection() {
+        let collections = await fetchCollections();
+        let result = await getNftCollections(collections)
+        console.log('result: ', result);
+        handleSetState({ algoCollection: result })
+      }())
+    } catch (error) {
+      console.log(error);
+    }
 
-    let filtered = allCollections.filter(col => {
+    try {
+      (async function getPolygonCollection() {
+        const result = await getPolygonNfts();
+        let data = transformArrayOfArraysToArrayOfObjects(result);
+
+        for (let d of data) {
+          let response = await axios.get(d['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          // console.log(response);
+        }
+        // handleSetState({ polyCollection: result });
+        // console.log(result);
+      }())
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!algoCollection) return;
+    let filtered = algoCollection.filter(col => {
       return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
     });
     handleSetState({ filteredCollection: filtered });
   }, [filter.searchValue]);
 
   useEffect(() => {
-    if (!allCollections) return;
+    if (!algoCollection) return;
     let filtered = null;
     if (filter.price === "low") {
-      filtered = allCollections.sort((a, b) => Number(a.price) - Number(b.price))
+      filtered = algoCollection.sort((a, b) => Number(a.price) - Number(b.price))
     } else {
-      filtered = allCollections.sort((a, b) => Number(b.price) - Number(a.price))
+      filtered = algoCollection.sort((a, b) => Number(b.price) - Number(a.price))
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.price]);
 
-  useEffect(()=> {
-    (async function getPolygonCollections(){
-      console.log('calling you ');
-      const res = await getPolygonNfts();
-      console.log(res);
-    }());
-  },[]);
+  useEffect(() => {
+    if (domMountRef.current) {
+      console.log('mounted');
+      let filteredCollection = getCollectionToFilter();
+      handleSetState({ filteredCollection })
+    } else {
+      domMountRef.current = true;
+    }
+    console.log('dom');
+  }, [filter.chain, algoCollection, polyCollection, celoCollection, nearCollection]);
 
   return (
     <div className={classes.container}>
@@ -86,34 +133,37 @@ const Collections = () => {
             />
 
             <div className={classes.priceDropdown}>
-              <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter, togglePriceFilter: false })} className={classes.selectedPrice}>
-                <img src={chainIcon[filter.chain]} alt="" />
-                <span>{filter.chain}</span>
+              <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter, togglePriceFilter: false })} className={classes.selectedChain}>
+                <div>
+                  <img src={chainIcon[filter.chain]} alt="" />
+                  <span>{filter.chain}</span>
+                </div>
+                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Polygon' }, toggleChainFilter: false })}>
-                  <img src={chainIcon.Polygon} alt="" />
-                  <span>Polygon</span>
-                </div>
                 <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Algorand' }, toggleChainFilter: false })}>
                   <img src={chainIcon.Algorand} alt="" />
                   <span>Algorand</span>
+                </div>
+                <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Polygon' }, toggleChainFilter: false })}>
+                  <img src={chainIcon.Polygon} alt="" />
+                  <span>Polygon</span>
                 </div>
                 <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Near' }, toggleChainFilter: false })}>
                   <img src={chainIcon.Near} alt="" />
                   <span>Near</span>
                 </div>
                 <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Celo' }, toggleChainFilter: false })}>
-                  <img src={chainIcon.CeloIcon} alt="" />
+                  <img src={chainIcon.Celo} alt="" />
                   <span>Celo</span>
                 </div>
-                <div onClick={() => handleSetState({ filter: { ...filter, chain: 'All Chains' }, toggleChainFilter: false })}>All Chains</div>
               </div>
             </div>
 
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
                 {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>price: low to high</div>
@@ -124,7 +174,7 @@ const Collections = () => {
         </div>
 
         {
-          filteredCollection ?
+          filteredCollection?.length ?
             <div className={classes.wrapper}>
               {
                 filteredCollection
@@ -135,15 +185,19 @@ const Collections = () => {
               }
             </div>
             :
-            <div className={classes.skeleton}>
-              {
-                (Array(4).fill(null)).map((_, idx) => (
-                  <div key={idx}>
-                    <Skeleton count={1} height={300} />
-                  </div>
-                ))
-              }
-            </div>
+            !filteredCollection
+              ?
+              <div className={classes.noResult}>not result found</div>
+              :
+              <div className={classes.skeleton}>
+                {
+                  (Array(4).fill(null)).map((_, idx) => (
+                    <div key={idx}>
+                      <Skeleton count={1} height={300} />
+                    </div>
+                  ))
+                }
+              </div>
         }
       </div>
     </div>

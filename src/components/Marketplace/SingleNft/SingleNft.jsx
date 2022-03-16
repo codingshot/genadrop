@@ -44,7 +44,7 @@ const SingleNft = () => {
           allSingleNfts ? allSingleNfts
             .filter((_, idx) => viewAll ? true : 10 > idx)
             .map((nft, idx) => (
-              <NftCard key={idx} nft={nft} />
+              <NftCard key={idx} nft={nft} extend='/nft' />
             ))
             :
             (Array(5).fill(null)).map((_, idx) => (
