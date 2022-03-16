@@ -12,13 +12,13 @@ contract NftCollection{
     mapping(address => address[]) private _collectionAddresses;
     event CollectionCreated(address collectionAddress, address indexed collectionOwner);
     
-    function createCollection(string memory _name, string memory _symbol) public {
-        address collection = address (new NftMinter(_name, _symbol, msg.sender));
+    function createCollection(string memory _name, string memory _symbol, address manager) public {
+        address collection = address (new NftMinter(_name, _symbol, msg.sender, manager));
         _collectionAddresses[msg.sender].push(collection);
         emit CollectionCreated(collection, msg.sender);
     }
     
     function collectionsOf(address user) public view returns (address[] memory) {
         return _collectionAddresses[user];
-    }
+    } 
 }
