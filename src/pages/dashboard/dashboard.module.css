@@ -25,6 +25,9 @@
 
 .profile {
   color: var(--main-accent);
+  border: 2px solid var(--main-accent);
+  border-radius: 0.5em;
+  padding: 0.5em 1em;
 }
 
 .details {

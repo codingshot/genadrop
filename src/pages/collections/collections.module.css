@@ -9,7 +9,7 @@
   max-width: 1440px;
   margin: 0 auto;
   background: white;
-  padding: 2em;
+  padding: 2em; 
   border-radius: 1em;
 }
 
@@ -65,16 +65,22 @@
 
 .priceDropdown .selectedPrice {
   cursor: pointer;
-  background: var(--main-accent);
-  color: white;
-  padding: 0.5em 1.5em;
-  border-radius: 0.25em;
+  background: white;
+  color: #000000;
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em;
   transition: all 300ms;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
 }
 
 .priceDropdown .selectedPrice:hover {
-  outline: 2px solid var(--main-accent);
-  background: var(--main-accent-dark);
+  border: 1px solid gray;
+  background: gainsboro;
 }
 
 .priceDropdown .dropdown{
@@ -87,50 +93,55 @@
   transition: all 250ms;
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  padding: 1em;
-  border-radius: 0.25em;
   cursor: pointer;
-  border: 2px solid var(--main-accent);
+  transform: translateY(-0.5em);
 }
 
 .priceDropdown .dropdown.active {
   visibility: visible;
   opacity: 1;
-  transform: translateY(1em);
+  transform: translateY(0em);
 }
 
 .priceDropdown .dropdown > div {
-  border-bottom: 1px solid gainsboro;
+  padding: 0.5em;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.priceDropdown .dropdown > div:hover {
+  background: gainsboro
+}
+
+.priceDropdown .dropdown > div:last-child {
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
 }
 
 .wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   gap: 2em;
 }
 
 .skeleton {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2em;
 }
 
-@media screen and (max-width: 1280px) {
-  .wrapper, .skeleton {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   .wrapper, .skeleton {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .wrapper, .skeleton {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -149,9 +160,7 @@
   .priceDropdown {
     width: 100%;
   } 
-}
 
-@media screen and (max-width: 480px) {
   .wrapper, .skeleton {
     grid-template-columns: repeat(1, 1fr);
   }

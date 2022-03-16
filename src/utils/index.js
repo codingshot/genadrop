@@ -7,6 +7,7 @@ import fileDownload from 'js-file-download'
 import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
 
 export const getNftCollections = async collections => {
+  console.log('collections: ', collections);
   let collectionArr = []
   for (let i = 0; i < collections.length; i++) {
     try {
@@ -22,9 +23,10 @@ export const getNftCollections = async collections => {
       collectionObj.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       collectionArr.push(collectionObj)
     } catch (error) {
-      console.error('get collection result failed');
+      console.log(error);
     }
   }
+  return
   return collectionArr
 }
 

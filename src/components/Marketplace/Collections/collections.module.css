@@ -33,30 +33,24 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   gap: 2em;
 }
 
 .skeleton {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 2em;
 }
 
-@media screen and (max-width: 1280px) {
-  .wrapper, .skeleton {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   .wrapper, .skeleton {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
   .wrapper, .skeleton {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -66,7 +60,7 @@
   }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 540px) {
   .container {
     padding: 1em;
   }
@@ -74,7 +68,9 @@
   .wrapper, .skeleton {
     grid-template-columns: repeat(1, 1fr);
   }
+}
 
+@media screen and (max-width: 480px) {
   .heading h3 {
     font-size: 1rem;
   }

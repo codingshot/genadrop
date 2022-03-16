@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { GenContext } from '../../../gen-state/gen.context';
-import classes from './collections.module.css';
+import classes from './Collections.module.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -54,9 +54,9 @@ const Collections = () => {
           :
           <div className={classes.skeleton}>
             {
-              (Array(5).fill(null)).map((_, idx) => (
+              (Array(4).fill(null)).map((_, idx) => (
                 <div key={idx}>
-                  <Skeleton count={1} height={400} />
+                  <Skeleton count={1} height={300} />
                 </div>
               ))
             }
