@@ -3,6 +3,7 @@ import listIcon from '../../../assets/icon-list.svg';
 import stackIcon from '../../../assets/icon-stack.svg';
 import tradeIcon from '../../../assets/icon-trade.svg';
 import Skeleton from 'react-loading-skeleton';
+import Copy from '../../../components/copy/copy';
 
 const Header = ({ collection }) => {
 
@@ -17,7 +18,10 @@ const Header = ({ collection }) => {
           </div>
         }
         <div className={classes.collectionName}>{name}</div>
-        <div className={classes.creator}>created by {owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`}</div>
+        <div className={classes.creator}>
+          created by
+          <Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} />
+        </div>
         <div className={classes.description}>
           {description || "Your childhood memories brought back in one piece of art! 1753 living memories inside the Solana Blockchain."}
         </div>
@@ -35,7 +39,7 @@ const Header = ({ collection }) => {
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>TOTAL VOLUME TRADED</div>
-            <div className={classes.price}> </div>
+            <div className={classes.price}>0</div>
           </div>
           <img src={tradeIcon} alt="" />
         </div>

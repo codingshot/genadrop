@@ -41,14 +41,15 @@ const Explore = () => {
       console.log(collections);
       const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
-        let result = await getNftCollection(collection)
+        let result = await getNftCollection(collection);
+        console.log('nft result: ', result);
         handleSetState({
           collection,
           NFTCollection: result
         })
       }())
     }
-  }, [collections])
+  }, [collections]);
 
   useEffect(() => {
     if (!NFTCollection) return

@@ -30,6 +30,11 @@
   border-bottom-left-radius: 0.35em;
 }
 
+.user:hover {
+  background: #c9fff7;
+  transition: all 300ms;
+}
+
 .user img {
   width: 0.85em;
 }
@@ -40,6 +45,11 @@
   color: var(--main-bg);
   border-top-right-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
+  transition: all 300ms;
+}
+
+.address:hover {
+  background: var(--main-accent-dark);
 }
 
 .dropdown {
