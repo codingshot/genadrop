@@ -8,7 +8,7 @@ import Overlay from './components/overlay/overlay';
 import { fetchCollections, readAllSingleNft } from './utils/firebase';
 import { GenContext } from './gen-state/gen.context';
 import { setCollections, setSingleNfts } from './gen-state/gen.actions';
-import Fallback from './pages/fallback/fallback';
+// import Fallback from './pages/fallback/fallback';
 import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
