@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { GenContext } from '../../../gen-state/gen.context';
-import classes from './Collections.module.css';
+import classes from './collections.module.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
