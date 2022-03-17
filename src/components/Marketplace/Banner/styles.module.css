@@ -5,13 +5,13 @@
 
 .innerContainer {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-around;
   gap: 1em;
   width: 100%;
   margin: auto;
-  padding: 3em 2em;
-  background: var(--card-bg);
+  padding: 2em;
+  background: var(--card-bg2);
 }
 
 .bannerText {
@@ -25,7 +25,6 @@
 
 .heading {
   font-size: 3.6em;
-  margin-bottom: 0.25em;
   color: #EEE9DB;
 }
 
@@ -34,48 +33,52 @@
 }
 
 .description {
-  max-width: 36em;
+  max-width: 24em;
   color: white;
   text-align: left;
+  font-size: 1.2rem;
 }
 
 .pageLinks {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
   gap: 2em;
 }
 
-.pageLinks > button {
+.createBtn, .mintBtn {
   outline: none;
-  padding: 0.75em 3em;
+  padding: 1em 4em;
   font-size: 0.85rem;
   border-radius: 0.5em;
   cursor: pointer;
   border: 2px solid transparent;
   color: white;
   transition: all 200ms;
+  font-size: 1rem;
 }
 
-.pageLinks button:first-child {
+.createBtn {
   background: var(--main-accent);
 }
 
-.pageLinks button:first-child:hover {
+.createBtn:hover {
   background: var(--main-accent-dark);
 }
 
-.pageLinks button:last-child {
+.mintBtn {
   background: transparent;
   border: 1px solid var(--main-accent);
 }
 
-.pageLinks button:last-child:hover {
-  outline: 1px solid white;
+.mintBtn:hover {
+  background: #171a1d;
 }
 
 .imageContainer {
-  width: 24vw;
+  width: 42vw;
+  overflow: hidden;
 }
 
 .imageContainer img {
@@ -84,7 +87,7 @@
 
 @media screen and (max-width: 1200px) {
   .imageContainer {
-    width: 28vw;
+    width: 40vw;
   }
   .heading {
     font-size: 4vw;
@@ -93,11 +96,19 @@
 
 @media screen and (max-width: 900px) { 
   .imageContainer {
-    width: 42vw;
+    width: 48vw;
   }
 
   .heading {
     font-size: 4vw;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .createBtn, .mintBtn {
+    padding: 0.75em 3em;
   }
 }
 
@@ -134,6 +145,7 @@
   .pageLinks {
     width: 100%;
     justify-content: center;
+    gap: 1em;
   }
 
   .pageLinks button {

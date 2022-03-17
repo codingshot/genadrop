@@ -1,12 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { Link, useRouteMatch } from 'react-router-dom';
+import Copy from '../../components/copy/copy';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
 import { GenContext } from '../../gen-state/gen.context';
 import { getNftCollection, getNftCollections, getUserNftCollection } from '../../utils';
 import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from '../../utils/firebase';
 import classes from './dashboard.module.css';
+import avatar from '../../assets/avatar.png';
 
 const Dashboard = () => {
 
@@ -51,7 +53,7 @@ const Dashboard = () => {
 
     (async function getCollections() {
       let userNftCollections = await fetchAllNfts(account);
-      console.log(userNftCollections);
+      // console.log(userNftCollections);
       let result = await getUserNftCollection(userNftCollections);
       // console.log('result: ', result);
       // handleSetState({ createdNfts })
@@ -96,7 +98,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!account) return;
     let filteredCollection = getCollectionToFilter();
-    if (!filteredCollection) return;
+    // if (!filteredCollection) return;
     handleSetState({ filteredCollection })
   }, [activeDetail, createdNfts, collectedNfts, myCollections])
 
@@ -106,9 +108,14 @@ const Dashboard = () => {
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <section className={classes.header}>
-          <div className={classes.imageContainer}></div>
-          <div className={classes.address}>{breakAddress(account)}</div>
-          <Link to={`${url}/settings`}>
+          <div className={classes.imageContainer}>
+            <img src={avatar} alt="" />
+          </div>
+
+          <div className={classes.address}>
+            <Copy message={account} placeholder={breakAddress(account)}/>
+          </div>
+          <Link to={`${url}/profile/settings`}>
             <div className={classes.profile}>Edit Profile</div>
           </Link>
           <div className={classes.details}>

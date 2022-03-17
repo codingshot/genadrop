@@ -1,4 +1,4 @@
-# GenaDrop
+# GenaDrop - The Ultimate No-code NFT solution
 
 ### NFT Generative Drop Builder + Marketplace
 Create generative drops, upload to IPFS, mint on demand, and resell all on the same dApp

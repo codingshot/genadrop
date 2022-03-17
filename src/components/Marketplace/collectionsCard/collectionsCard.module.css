@@ -1,7 +1,6 @@
 .card {
   width: 100%;
   max-width: 18em;
-  padding: 0.25em;
   border-radius: 0.5em;
   background: white;
   transition: all 250ms;
@@ -20,7 +19,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 10em;
+  height: 12em;
 }
 
 .body {
