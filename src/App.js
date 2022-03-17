@@ -22,7 +22,7 @@ const Marketplace = lazy(() => import('./pages/Marketplace/Marketplace'));
 const Preview = lazy(() => import('./pages/preview/preview'));
 const Explore = lazy(() => import('./pages/Explore/Explore'));
 const CollectionNFT = lazy(() => import('./pages/collectionNFT/collectionNFT'));
-const Collections = lazy(() => import('./pages/collections/Collections'));
+const Collections = lazy(() => import('./pages/collections/collections-check'));
 const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
 const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
