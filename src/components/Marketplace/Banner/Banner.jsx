@@ -1,6 +1,7 @@
 import classes from './styles.module.css'
 import { useHistory } from 'react-router-dom'
-import banner from "../../../assets/marketplace-banner.png";
+// import banner from "../../../assets/marketplace-banner.png";
+import banner from "../../../assets/banner.gif";
 
 const Banner = () => {
   const history = useHistory()

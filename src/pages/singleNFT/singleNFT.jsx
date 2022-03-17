@@ -6,14 +6,9 @@ import classes from "./singleNFT.module.css";
 import Skeleton from "react-loading-skeleton";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import Search from "../../components/Nft-details/history/search";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
-import { readNftTransaction } from "../../utils/firebase";
-import { getNftCollection } from "../../utils";
-
-import { getAlgoData } from "../../utils/arc_ipfs";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 const SingleNFT = () => {

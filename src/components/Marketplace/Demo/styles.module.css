@@ -1,7 +1,9 @@
 .container {
   width: 100%;
   margin-bottom: 4em;
-  padding: 1em;
+  padding: 2em;
+  background: white;
+  border-radius: 1em;
 }
 
 .heading {
@@ -62,10 +64,11 @@
   padding: 1em;
   border-radius: 0.25em;
   transition: all 300ms;
+  cursor: default;
 }
 
 .card:hover {
-  background: #dad8d8;
+  background: #f8f8f8;
 }
 
 .operation {
@@ -103,6 +106,10 @@
 }
 
 @media screen and (max-width: 540px) {
+  .container {
+    padding: 1em;
+  }
+  
   .operations {
     grid-template-columns: auto;
   }

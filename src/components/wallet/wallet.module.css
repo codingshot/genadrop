@@ -1,43 +1,36 @@
-.container {
-  display: inline-block;
-  width: auto;
-  position: relative;
-}
-
 .connect {
   display: inline-block;
   padding: 0.5em 1.5em;
-  border-radius: 0.25em;
+  border-radius: 0.35em;
   cursor: pointer;
   background: var(--card-bg);
   color: white;
 }
 
 .connected {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   color: white;
-  transition: all 300ms;
-  border-radius: 0.25em;
-  overflow: hidden;
-  box-shadow: 0 0 15px gainsboro;
-  cursor: default;
+  cursor: pointer;
+  position: relative;
 }
 
-.disconnect {
+.user {
   align-self: stretch;
-  background: white;
   border: 1px solid transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 0.5em;
-  background: #00CC9B;
+  background: #EAFFFC;
+  border: 1px solid var(--main-accent);
+  border-top-left-radius: 0.35em;
+  border-bottom-left-radius: 0.35em;
 }
 
-.disconnect img {
+.user img {
   width: 0.85em;
 }
 
@@ -45,5 +38,52 @@
   padding: 0.5em;
   background: var(--main-accent);
   color: var(--main-bg);
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
 }
+
+.dropdown {
+  width: 16em;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background: white;
+  position: absolute;
+  top: 2em;
+  right: 0;
+  color: black;
+  border-radius: 0.5em;
+  border: 1px solid var(--main-accent);
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 5px gainsboro;
+  transition: all 300ms;
+  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  top: 2.5em;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6em;
+  padding: 0.5em 1em;
+  transition: all 300ms;
+}
+
+.option:hover {
+  background: var(--main-hover);
+}
+
+.option div {
+  white-space: nowrap;
+}
+
 

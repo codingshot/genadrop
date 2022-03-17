@@ -3,9 +3,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 3em 4em;
-  background: black;
-  color: white;
-  border-radius: 0.5em;
+  background: white;
+  border-radius: 1em;
 }
 
 .container p {

@@ -5,8 +5,9 @@ import Collections from '../../components/Marketplace/Collections/Collections'
 import Demo from '../../components/Marketplace/Demo/Demo'
 // import Demo2 from '../../components/Marketplace/Demo2/Demo2'
 import SingleNft from '../../components/Marketplace/SingleNft/SingleNft'
-// import Invite from '../../components/Marketplace/Invite/Invite'
+import Invite from '../../components/Marketplace/Invite/Invite'
 import classes from './Marketplace.module.css'
+
 
 const Marketplace = () => {
   return (
@@ -19,7 +20,7 @@ const Marketplace = () => {
         <Demo/>
         {/* <Academy/> */}
         {/* <Demo2/> */}
-        {/* <Invite/> */}
+        <Invite/>
       </div>
     </div>
   )

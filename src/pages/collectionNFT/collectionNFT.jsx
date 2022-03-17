@@ -46,7 +46,7 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const collection = collections.allCollections.find(col => col.name === collectionName);
+      const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
 
         let collectionData = await getNftCollection(collection)
@@ -135,6 +135,7 @@ const CollectionNFT = () => {
 
 
   const buyNft = async () => {
+    console.log("buying...");
     let res = await PurchaseNft(asset, account, connector)
     console.log('final', res)
     alert(res)
@@ -244,7 +245,7 @@ const CollectionNFT = () => {
                   </>
                   :
                   <>
-                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}>Buy now</button>
                     <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
                   </>
                 )}
