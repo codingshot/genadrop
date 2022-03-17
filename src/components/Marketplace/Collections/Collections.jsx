@@ -26,7 +26,6 @@ const Collections = () => {
     if (Object.keys(collections).length) {
       (async function getResult() {
         let result = await getNftCollections(collections);
-        console.log(result);
         handleSetState({
           allCollections: result
         })

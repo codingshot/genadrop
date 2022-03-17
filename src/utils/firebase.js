@@ -119,7 +119,7 @@ async function readData() {
 
 async function readAllUserNft(userAddress) {
   let querySnapshot = await db.collection("listed").doc(userAddress).get()
-  // console.log('datum', querySnapshot.data())
+  console.log('datum', querySnapshot.data())
   // console.log(Object.values(querySnapshot.data()));
   return Object.values(querySnapshot.data())
 }

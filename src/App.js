@@ -11,7 +11,7 @@ import Preview from './pages/preview/preview';
 import Overlay from './components/overlay/overlay';
 import Home from './pages/home/home';
 import CollectionNFT from './pages/collectionNFT/collectionNFT';
-import { fetchCollections, fetchUserCollections, fetchUserNfts, readAllSingleNft } from './utils/firebase';
+import { fetchCollections, readAllSingleNft } from './utils/firebase';
 import { GenContext } from './gen-state/gen.context';
 import { setCollections, setSingleNfts } from './gen-state/gen.actions';
 import Explore from './pages/Explore/Explore';
@@ -23,9 +23,10 @@ import Collections from './pages/collections/Collections';
 import SingleNFT from './pages/singleNFT/singleNFT';
 import Profile from './pages/profile/profile';
 import Dashboard from './pages/dashboard/dashboard';
+import List from './pages/listNFT/list'
 
 function App() {
-  const { dispatch, account } = useContext(GenContext);
+  const { dispatch } = useContext(GenContext);
 
   useEffect(() => {
     (async function getCollections() {
@@ -53,9 +54,9 @@ function App() {
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint" component={Mint} />
-          <Route exact path="/me/:userId/settings" component={Profile}/>
-          <Route exact path="/me/:userId/list" render={()=> (<>list page</>)}/>
-          <Route exact path="/me/:userId" component={Dashboard}/>
+          <Route exact path="/me/:userId/settings" component={Profile} />
+          <Route exact path="/me/:userId/:nftId" component={List} />
+          <Route exact path="/me/:userId" component={Dashboard} />
           <Route path="" component={Fallback} />
         </Switch>
       </div>

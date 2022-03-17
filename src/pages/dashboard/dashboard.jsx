@@ -51,6 +51,7 @@ const Dashboard = () => {
 
     (async function getCollections() {
       let userNftCollections = await fetchAllNfts(account);
+      console.log(userNftCollections);
       let result = await getUserNftCollection(userNftCollections);
       // console.log('result: ', result);
       // handleSetState({ createdNfts })
@@ -178,7 +179,7 @@ const Dashboard = () => {
                   :
                   <div className={classes.skeleton}>
                     {
-                      (Array(6).fill(null)).map((_, idx) => (
+                      (Array(5).fill(null)).map((_, idx) => (
                         <div key={idx}>
                           <Skeleton count={1} height={300} />
                         </div>
