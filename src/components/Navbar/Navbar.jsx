@@ -39,7 +39,7 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className={classes.wallet}>
-          <ConnectWallet />
+          <ConnectWallet setToggleNav={state => handleSetState({ dropdown: state })} />
         </div>
       </div>
       {

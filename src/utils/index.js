@@ -22,7 +22,7 @@ export const getNftCollections = async collections => {
       collectionObj.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       collectionArr.push(collectionObj)
     } catch (error) {
-      console.error('get collection result failed');
+      console.log(error);
     }
   }
   return collectionArr

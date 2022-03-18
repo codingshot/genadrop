@@ -12,7 +12,7 @@ const List = () => {
 
   const {
     params: { nftId },
-    
+
   } = useRouteMatch();
   const match = useRouteMatch();
 
@@ -32,9 +32,9 @@ const List = () => {
     handleSetState({ price: event.target.value });
   };
 
-  const listNFT = async () => { 
-    if(!price) alert("price can't be empty");
-    let res = await writeNft(nftDetails.algo_data.creator, nftDetails.collection_name, nftDetails.Id, nftDetails.price, null, null, null );
+  const listNFT = async () => {
+    if (!price) alert("price can't be empty");
+    let res = await writeNft(nftDetails.algo_data.creator, nftDetails.collection_name, nftDetails.Id, nftDetails.price, null, null, null);
 
   }
 
@@ -42,10 +42,10 @@ const List = () => {
     (async function getUserCollection() {
       let userNftCollections = await fetchAllNfts(account);
       let result = await getUserNftCollection(userNftCollections);
-      
+
       const nft = result.filter((nft) => String(nft.Id) === nftId)[0];
-      
-      handleSetState({ nftDetails:nft, isLoading: false, image_url:nft.image_url });
+
+      handleSetState({ nftDetails: nft, isLoading: false, image_url: nft.image_url });
     }());
     document.documentElement.scrollTop = 0;
   }, []);
@@ -54,6 +54,9 @@ const List = () => {
     if (!nftDetails) return;
     console.log("==>", nftDetails);
   }, [nftDetails]);
+
+
+
 
   if (isLoading) {
     return (
@@ -98,8 +101,10 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-    <Link to={{ pathname: `${match.url}/listed`, state :{image_url}}}>
-    <button
+            {
+              price ? 
+              <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
+              <button
                 className={classes.buy}
                 disabled={nftDetails.sold}
                 onClick={listNFT}
@@ -110,8 +115,20 @@ const List = () => {
                 </div>
                 <span>Sell the NFT at a fixed price</span>
               </button>
-</Link>
-             
+            </Link>
+            :
+            <button
+              className={classes.buy}
+              onClick={listNFT}
+            >
+              <div>
+                <img src="/assets/price-tage.svg" alt="" />
+                SET PRICE
+              </div>
+              <span>Sell the NFT at a fixed price</span>
+            </button>
+            }
+
               {/* <button
                 className={classes.bid}
                 disabled={nftDetails.sold}
@@ -136,7 +153,7 @@ const List = () => {
               <div className={classes.priceDescription}>
                 Check the
                 <a href="#" target="_blank">
-                  Collection Floor price 
+                  Collection Floor price
                 </a>
                 to give you an idea of the average price of the NFT at the
                 moment
@@ -168,7 +185,6 @@ const List = () => {
         </div>
       </div>
       {price ? (
-
         <div className={classes.feature}>
           <div className={classes.mainDetails}>
             <div className={classes.collectionHeader}>
