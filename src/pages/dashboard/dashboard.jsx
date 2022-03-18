@@ -40,12 +40,15 @@ const Dashboard = () => {
     (async function readAllSingle() {
       let userCollections = await fetchUserCollections(account);
       let myCollections = await getNftCollections(userCollections);
+      console.log("===>", myCollections);
       handleSetState({ myCollections });
     }());
 
     (async function getCollections() {
       let userNftCollections = await fetchUserNfts(account);
       let createdNfts = await getUserNftCollection(userNftCollections);
+      console.log("===>", createdNfts);
+
       handleSetState({ createdNfts });
     }());
 

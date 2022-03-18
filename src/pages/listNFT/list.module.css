@@ -1,0 +1,237 @@
+/* Accordion */
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 1em;
+  padding-top: 2em;
+  margin: 0 auto;
+  margin-bottom: 8em;
+  /* padding: 3rem; */
+  display: flex;
+  flex-direction: column;
+}
+
+.menu {
+  margin: 5rem 0;
+
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  white-space: nowrap;
+}
+
+.left {
+  width: 30%;
+  max-width: 25em;
+}
+
+.right {
+  width: 50%;
+  max-width: 50em;
+}
+
+.fullLegnth {
+  width: 100%;
+  max-width: 75em;
+  margin: 5rem;
+}
+.section1 {
+  display: flex;
+  /* flex-direction: column; */
+}
+
+.v_subsection1 {
+  margin-right: 1rem;
+  max-width: 20rem;
+}
+
+.nft {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.v_subsection2 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.feature {
+  margin-bottom: 1rem;
+  border: solid 1px #e5e8eb;
+  border-radius: 10px;
+}
+
+.mainDetails {
+  padding: 0.8rem 0.5rem;
+  border-bottom: 1px solid #e5e8eb;
+  display: flex;
+  flex-direction: row;
+  background-color: #f3f4f7;
+  border-radius: 10px 10px 0 0;
+}
+
+.collectionHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.collectionName {
+  color: #009987;
+  font-size: 0.5rem;
+}
+
+.nftId {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.btns {
+  padding-left: 1rem;
+}
+
+.buy,
+.bid {
+  flex-direction: row;
+  margin: 1rem 0.5rem 1rem 0;
+  color: white;
+  padding: 0.3rem 1rem;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.buy {
+  background-color: var(--main-accent);
+}
+
+.bid {
+  border: 1px solid var(--main-accent);
+  color: var(--main-accent);
+}
+
+.buy img,
+.bid img {
+  width: 14px;
+  margin-right: 3px;
+}
+
+.buy:hover,
+.bid:hover {
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.heading {
+  padding: 0.5rem;
+  border-bottom: 1px solid #e5e8eb;
+  background-color: #f3f4f7;
+}
+
+@media screen and (max-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 540px;
+    padding: 0 2em;
+  }
+
+  .section1 {
+    flex-direction: column;
+  }
+
+  .v_subsection1 {
+    width: 100%;
+    margin-bottom: 1rem;
+    max-width: 222rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0 0.5em;
+  }
+  .section1 {
+    flex-direction: column;
+  }
+
+  .buy,
+  .bid {
+    width: 95%;
+  }
+
+  .nftName {
+    flex-direction: column;
+  }
+}
+
+.chain {
+  display: flex;
+}
+.row {
+  border-bottom: 1px solid #707a83;
+  margin-bottom: 1rem;
+}
+
+.row span {
+  float: right;
+}
+
+.mintOptions,
+.detailContent {
+  padding: 1rem;
+}
+
+.priceDescription {
+  margin-bottom: 1rem;
+}
+
+.inputWrapper {
+  margin-bottom: 1.5em;
+}
+
+.inputWrapper input,
+.inputWrapper select {
+  display: block;
+  padding: 0.25em;
+  resize: none;
+  border: 1px solid gainsboro;
+  border-radius: 0.25em;
+  font-size: 1rem;
+}
+
+.inputWrapper input {
+  margin-left: 1rem;
+  width: 100%;
+}
+
+.inputWrapper input:focus,
+.inputWrapper select:focus {
+  outline: 1px solid gray;
+}
+
+.inputWrapper button {
+  transition: all 300ms;
+}
+
+.inputWrapper button:hover {
+  text-shadow: 2px 2px 2px grey;
+}

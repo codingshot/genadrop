@@ -1,14 +1,19 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../utils";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNft, getSingleNftDetails } from "../../../utils";
 import classes from "./singleNFT.module.css";
 import Skeleton from "react-loading-skeleton";
-import Graph from "../../components/Nft-details/graph/graph";
-import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import Graph from "../../../components/Nft-details/graph/graph";
+import DropItem from "../../../components/Nft-details/dropItem/dropItem";
+import Search from "../../../components/Nft-details/history/search";
+import { PurchaseNft } from "../../../utils/arc_ipfs";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
+import { readNftTransaction } from "../../../utils/firebase";
+import { getNftCollection } from "../../../utils";
+
+import { getAlgoData } from "../../../utils/arc_ipfs";
 import CopyToClipboard from "react-copy-to-clipboard";
 
 const SingleNFT = () => {
@@ -146,7 +151,7 @@ const SingleNFT = () => {
   const graph = {
     icon: "/assets/details.png",
     title: "Price History",
-    content: <Graph />,
+    content: <Graph details={""} />,
   };
 
   const attributeContent = () => {
@@ -168,6 +173,28 @@ const SingleNFT = () => {
     content: attributeContent(),
     // content: "attributeContent()"
   };
+
+  const details = () => {
+    return (
+      <div className={classes.detailContent}>
+        <div className={classes.row}>
+          Mint Address <span>sdfgs</span>
+        </div>
+        <div className={classes.row}>
+          Token Address <span>sdgds</span>
+        </div>
+        <div className={classes.row}>
+          Owner <span>sdgds</span>
+        </div>
+      </div>
+    );
+  };
+
+  const detailsItem = {
+    icon: "/assets/description-icon.png",
+    title: "Details",
+    content: details()
+  }
 
   const buyNft = async () => {
     let res = await PurchaseNft(nftDetails, account, connector);
@@ -245,14 +272,8 @@ const SingleNFT = () => {
               </div>
             </div>
             <div className={classes.priceSection}>
-              <span className={classes.title}>Current price</span>
-              <span className={classes.price}>
-                <img src="/assets/algo-logo.png" alt="" />
-                <p className={classes.tokenValue}>{nftDetails.price}</p>
-                <span className={classes.usdValue}>
-                  (${(nftDetails.price * algoPrice).toFixed(2)})
-                </span>
-              </span>
+              <span className={classes.title}>Owned by you</span>
+              
             </div>
 
             <div className={classes.btns}>
@@ -260,7 +281,7 @@ const SingleNFT = () => {
                 <>
                   <button className={classes.sold} disabled={nftDetails.sold}>
                     <img src="/assets/wallet-icon.png" alt="" />
-                    SOLD!
+                    Listed!
                   </button>
                   {/* <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button> */}
                 </>
@@ -272,11 +293,7 @@ const SingleNFT = () => {
                     onClick={buyNft}
                   >
                     <img src="/assets/wallet-icon.png" alt="" />
-                    Buy now
-                  </button>
-                  <button className={classes.bid}>
-                    <img src="/assets/bid.png" alt="" />
-                    Place Bid
+                    List
                   </button>
                 </>
               )}
@@ -297,6 +314,16 @@ const SingleNFT = () => {
               key={3}
               item={description}
               id={3}
+              dropdown={dropdown}
+              handleSetState={handleSetState}
+            ></DropItem>
+          </div>
+
+          <div className={classes.feature}>
+            <DropItem
+              key={4}
+              item={detailsItem}
+              id={4}
               dropdown={dropdown}
               handleSetState={handleSetState}
             ></DropItem>

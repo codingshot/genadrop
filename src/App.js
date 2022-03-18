@@ -23,6 +23,8 @@ import Collections from './pages/collections/Collections';
 import SingleNFT from './pages/singleNFT/singleNFT';
 import Profile from './pages/profile/profile';
 import Dashboard from './pages/dashboard/dashboard';
+import List from './pages/listNFT/list'
+import Listed from './pages/listNFT/listed'
 
 function App() {
   const { dispatch, account } = useContext(GenContext);
@@ -53,8 +55,9 @@ function App() {
           <Route exact path="/create" component={Create} />
           <Route exact path="/preview" component={Preview} />
           <Route exact path="/mint" component={Mint} />
-          <Route exact path="/me/:userId/settings" component={Profile}/>
-          <Route exact path="/me/:userId/list" render={()=> (<>list page</>)}/>
+          <Route exact path="/me/:userId/settings" component={Profile}/>        
+          <Route exact path="/me/:userId/:nftId" component={List} />
+          <Route exact path="/me/:userId/:nftId/listed" component={Listed} />
           <Route exact path="/me/:userId" component={Dashboard}/>
           <Route path="" component={Fallback} />
         </Switch>

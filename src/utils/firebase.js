@@ -88,6 +88,8 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   }, { merge: true });
   await recordTransaction(assetId, "Minting", owner, null, null, null)
 
+  return true;
+
 }
 
 
@@ -178,22 +180,22 @@ async function readAllSingleNft() {
 //   console.log(data)
 // });
 
-let demoAcc = 'NJJZVXK537GLPXK2BW47LGLSVKW3VPN42CY7DOK2UR23NUGV4QBV2DXO4Y';
+// let demoAcc = 'NJJZVXK537GLPXK2BW47LGLSVKW3VPN42CY7DOK2UR23NUGV4QBV2DXO4Y';
 
 async function fetchCollections() {
   return await readAllCollection()
 }
 
 async function fetchUserCollections(account) {
-  return await readUserCollection(demoAcc)
+  return await readUserCollection(account)
 }
 
 async function fetchUserNfts(account) {
-  return await readAllUserNft(demoAcc)
+  return await readAllUserNft(account)
 }
 
 async function fetchAllNfts(account) {
-  return await readAllNft(demoAcc)
+  return await readAllNft(account)
 }
 
 // X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4
