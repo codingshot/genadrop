@@ -6,7 +6,7 @@
   top: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.171);
+  background: rgba(0, 0, 0, 0.1);
   align-items: center;
   justify-content: center;
   padding: 1em;
@@ -84,11 +84,11 @@
 
 .introControl > button,
 .control .next, .control .prev {
-  padding: 0.5em 2em;
-  border-radius: 0.5em;
+  padding: 0.5em 1em;
+  border-radius: 1em;
   font-size: 0.85rem;
-  box-shadow: 0 0 15px gainsboro;
   transition: all 150ms;
+  border: 1px solid gainsboro;
   outline: 2px solid transparent;
   display: flex;
   align-items: center;
@@ -98,12 +98,29 @@
 }
 
 .introControl > button:hover,
-.control > button:hover, .control > button:hover {
+.control > button:hover {
   outline: 2px solid gainsboro;
 }
 
+.control > button img {
+  transition: all 300ms;
+}
+
+.control > .next.active:hover img {
+  transform: translateX(5px);
+}
+
+.control > .prev.active:hover img {
+  transform: translateX(-5px);
+}
+
 .control .prev.active {
-  color: var(--main-accent);
+  border: 1px solid var(--main-accent);
+}
+
+.control .next {
+  background: gray;
+  color: white;
 }
 
 .control .next.active {

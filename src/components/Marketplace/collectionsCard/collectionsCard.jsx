@@ -15,7 +15,7 @@ const CollectionsCard = ({ collection }) => {
         </div>
         <div className={classes.name}>{name}</div>
         <div className={classes.description}>
-          {description}
+          { description.length < 100 ? description : `${description.substring(0, 100)}...`}
         </div>
         <div className={classes.wrapper}>
           <div className={classes.floorPrice}>
