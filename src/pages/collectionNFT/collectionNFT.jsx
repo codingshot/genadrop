@@ -68,7 +68,6 @@ const CollectionNFT = () => {
           collection: collectionData,
           isLoading: false
         })
-        console.log("==>", tHistory);
 
       }())
     }
@@ -120,7 +119,7 @@ const CollectionNFT = () => {
   const graph = {
     icon: detailsIcon,
     title: "Price History",
-    content: <Graph />
+    content: <Graph details= {transactionHistory} />
   }
 
   const attributeContent = () => {
@@ -144,6 +143,7 @@ const CollectionNFT = () => {
 
 
   const buyNft = async () => {
+    console.log("buying...");
     let res = await PurchaseNft(asset, account, connector)
     console.log('final', res)
     alert(res)

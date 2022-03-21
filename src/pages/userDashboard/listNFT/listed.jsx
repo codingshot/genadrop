@@ -1,28 +1,33 @@
 import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch, useParams, Link } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../utils";
+import { useRouteMatch } from "react-router-dom";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNftDetails } from "../../../utils";
 import classes from "./listed.module.css";
 import Skeleton from "react-loading-skeleton";
 
-const Listed = ({location}) => {
-  const { image_url = 'no image found!' } = location.state || {}
+const Listed = () => {
+  const { account, connector } = useContext(GenContext);
 
   const {
-    params: { userId },
+    params: { nftId },
   } = useRouteMatch();
+  const { singleNfts } = useContext(GenContext);
 
   const [state, setState] = useState({
     isLoading: true,
   });
-  const { isLoading } = state;
+  const { nftDetails, isLoading } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
 
   useEffect(() => {
-    handleSetState({ isLoading: false });
+    const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
+    (async function getNftDetails() {
+      let nftDetails = await getSingleNftDetails(nft);
+      handleSetState({ nftDetails, isLoading: false });
+    })();
     document.documentElement.scrollTop = 0;
   }, []);
 
@@ -54,28 +59,10 @@ const Listed = ({location}) => {
     );
   }
 
-  const icons = [
-    {
-      icon: "/assets/facebook-clear.svg",
-      link: "https://www.facebook.com/mpa",
-    },
-    {
-      icon: "/assets/telegram.svg",
-      link: "https://t.co/XUHAJEPLoA",
-    },
-    {
-      icon: "/assets/twitter-clear.svg",
-      link: "https://twitter.com/minorityprogram",
-    },
-    // {
-    //   icon: "/assets/link.svg",
-    //   link: "https://www.twitter.com/mpa",
-    // },
-  ];
   return (
     <div className={classes.container}>
       <span>Your item is now listed for sale</span>
-      <img className={classes.nft} src={image_url} alt="" />
+      <img className={classes.nft} src={nftDetails.image_url} alt="" />
 
       <div className={classes.feature}>
         <div className={classes.mainDetails}>
@@ -89,9 +76,7 @@ const Listed = ({location}) => {
             Enter your email address in your account settings so we can let you
             know, when your listing sells or receives offers
           </div>
-          <Link to={`/me/${userId}/settings`}>
           <button className={classes.buy}>Profile Settings</button>
-          </Link>
         </div>
       </div>
 
@@ -103,13 +88,10 @@ const Listed = ({location}) => {
         </div>
 
         <div className={classes.detailContent}>
-          {icons.map((icon) => {
-           return (
-            <a href={icon.link} target="_blank">
-            <img src={icon.icon} alt="" />  
-              </a>
-           )
-          })}
+          <img src="/assets/twitter-clear.svg" alt="" />
+          <img src="/assets/facebook-clear.svg" alt="" />
+          <img src="/assets/telegram.svg" alt="" />
+          <img src="/assets/link.svg" alt="" />
         </div>
       </div>
       <button className={classes.view}>View Item</button>

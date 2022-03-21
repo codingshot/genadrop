@@ -1,25 +1,20 @@
 import { useContext, useEffect, useState, useRef } from "react";
 import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../utils";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNft, getSingleNftDetails } from "../../../utils";
 import classes from "./singleNFT.module.css";
 import Skeleton from "react-loading-skeleton";
-import Graph from "../../components/Nft-details/graph/graph";
-import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import Graph from "../../../components/Nft-details/graph/graph";
+import DropItem from "../../../components/Nft-details/dropItem/dropItem";
+import Search from "../../../components/Nft-details/history/search";
+import { PurchaseNft } from "../../../utils/arc_ipfs";
 import { CopyBlock, dracula } from "react-code-blocks";
-import axios from 'axios';
-import { readNftTransaction } from '../../utils/firebase';
-import bidIcon from '../../assets/bid.png';
-import copiedIcon from '../../assets/copied.svg';
-import copyIcon from '../../assets/copy-solid.svg';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import walletIcon from '../../assets/wallet-icon.png';
-import twitterIcon from '../../assets/twitter.svg';
-import facebookIcon from '../../assets/facebook.svg';
-import instagramIcon from '../../assets/instagram.svg';
-import descriptionIcon from '../../assets/description-icon.png';
-import detailsIcon from '../../assets/details.png';
+import axios from "axios";
+import { readNftTransaction } from "../../../utils/firebase";
+import { getNftCollection } from "../../../utils";
+
+import { getAlgoData } from "../../../utils/arc_ipfs";
+import CopyToClipboard from "react-copy-to-clipboard";
 
 const SingleNFT = () => {
   const { account, connector } = useContext(GenContext);
@@ -99,16 +94,16 @@ const SingleNFT = () => {
 
   const icons = [
     {
-      icon: facebookIcon,
-      link: "https://www.facebook.com"
+      icon: "/assets/facebook.svg",
+      link: "https://www.facebook.com",
     },
     {
-      icon: instagramIcon,
-      link: "https://www.instagram.com"
+      icon: "/assets/instagram.svg",
+      link: "https://www.instagram.com",
     },
     {
-      icon: twitterIcon,
-      link: "https://www.twitter.com/mpa"
+      icon: "/assets/twitter.svg",
+      link: "https://www.twitter.com/mpa",
     },
   ];
 
@@ -148,15 +143,15 @@ const SingleNFT = () => {
   }
 
   const description = {
-    icon: detailsIcon,
+    icon: "/assets/details.png",
     title: "Description",
     content: `${nftDetails.description}`,
   };
 
   const graph = {
-    icon: detailsIcon,
+    icon: "/assets/details.png",
     title: "Price History",
-    content: <Graph />,
+    content: <Graph details={""} />,
   };
 
   const attributeContent = () => {
@@ -173,11 +168,33 @@ const SingleNFT = () => {
   };
 
   const attributesItem = {
-    icon: descriptionIcon,
+    icon: "/assets/description-icon.png",
     title: "Attributes",
     content: attributeContent(),
     // content: "attributeContent()"
   };
+
+  const details = () => {
+    return (
+      <div className={classes.detailContent}>
+        <div className={classes.row}>
+          Mint Address <span>sdfgs</span>
+        </div>
+        <div className={classes.row}>
+          Token Address <span>sdgds</span>
+        </div>
+        <div className={classes.row}>
+          Owner <span>sdgds</span>
+        </div>
+      </div>
+    );
+  };
+
+  const detailsItem = {
+    icon: "/assets/description-icon.png",
+    title: "Details",
+    content: details()
+  }
 
   const buyNft = async () => {
     let res = await PurchaseNft(nftDetails, account, connector);
@@ -255,28 +272,31 @@ const SingleNFT = () => {
               </div>
             </div>
             <div className={classes.priceSection}>
-              <span className={classes.title}>Current price</span>
-              <span className={classes.price}>
-                <img src="/assets/algo-logo.png" alt="" />
-                <p className={classes.tokenValue}>{nftDetails.price}</p>
-                <span className={classes.usdValue}>
-                  (${(nftDetails.price * algoPrice).toFixed(2)})
-                </span>
-              </span>
+              <span className={classes.title}>Owned by you</span>
+              
             </div>
 
             <div className={classes.btns}>
-              {
-                (nftDetails.sold ?
-                  <>
-                    <button className={classes.sold} disabled={nftDetails.sold} ><img src={walletIcon} alt="" />SOLD!</button>
-                  </>
-                  :
-                  <>
-                    <button className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}><img src={walletIcon} alt="" />Buy now</button>
-                    <button className={classes.bid}><img src={bidIcon} alt="" />Place Bid</button>
-                  </>
-                )}
+              {nftDetails.sold ? (
+                <>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
+                    <img src="/assets/wallet-icon.png" alt="" />
+                    Listed!
+                  </button>
+                  {/* <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button> */}
+                </>
+              ) : (
+                <>
+                  <button
+                    className={classes.buy}
+                    disabled={nftDetails.sold}
+                    onClick={buyNft}
+                  >
+                    <img src="/assets/wallet-icon.png" alt="" />
+                    List
+                  </button>
+                </>
+              )}
             </div>
           </div>
           {/* PRICE HISTORY */}
@@ -294,6 +314,16 @@ const SingleNFT = () => {
               key={3}
               item={description}
               id={3}
+              dropdown={dropdown}
+              handleSetState={handleSetState}
+            ></DropItem>
+          </div>
+
+          <div className={classes.feature}>
+            <DropItem
+              key={4}
+              item={detailsItem}
+              id={4}
               dropdown={dropdown}
               handleSetState={handleSetState}
             ></DropItem>
@@ -330,44 +360,32 @@ const SingleNFT = () => {
         </div>
       </div>
 
-      {
-
-
-        showSocial ?
-        <div>
-          <div ref={wrapperRef} className={classes.share}>
-
-            <div className={classes.copy} >
-              <input
-                type="text"
-                value={url}
-                readOnly
-                className={classes.textArea}
-              />
-              <CopyToClipboard text={url} onCopy={onCopyText}>
-                <div className={classes.copy_area}>
-                  {
-                    !isCopied ?
-                      <img
-                        className={classes.shareicon} src={copyIcon} alt="" />
-                      :
-                      <img className={classes.shareicon} src={copiedIcon} alt="" />
-                  }
-
-                </div>
-              </CopyToClipboard>
-
-            </div>
-            <div className={classes.shareContent}>
-              {icons.map((icon) => {
-                return (
-                  <a href={icon.link} target="_blank">
-                    < img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
-                  </a>
-
-                )
-              })}
-            </div>
+      {showSocial ? (
+        <div ref={wrapperRef} className={classes.share}>
+          <div className={classes.copy}>
+            <input
+              type="text"
+              value={url}
+              readOnly
+              className={classes.textArea}
+            />
+            <CopyToClipboard text={url} onCopy={onCopyText}>
+              <div className={classes.copy_area}>
+                {!isCopied ? (
+                  <img
+                    className={classes.shareicon}
+                    src="/assets/copy-solid.svg"
+                    alt=""
+                  />
+                ) : (
+                  <img
+                    className={classes.shareicon}
+                    src="/assets/copied.svg"
+                    alt=""
+                  />
+                )}
+              </div>
+            </CopyToClipboard>
           </div>
           <div className={classes.shareContent}>
             {icons.map((icon) => {
@@ -384,7 +402,7 @@ const SingleNFT = () => {
             })}
           </div>
         </div>
-       : (
+      ) : (
         ""
       )}
     </div>

@@ -41,7 +41,7 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
-async function writeUserData(owner, collection, name, collection_id, priceValue) {
+async function writeUserData(owner, collection, name, collection_id, priceValue, description) {
   name = name.split('-')[0]
   let updates = {};
   for (let i = 0; i < collection_id.length; i++) {
@@ -52,7 +52,8 @@ async function writeUserData(owner, collection, name, collection_id, priceValue)
     name: `${name}`,
     url: `${collection}`,
     price: priceValue,
-    owner: owner
+    owner: owner,
+    description: description
   }).then((docRef) => {
     // console.log("Document ID:", docRef.id)
   }).catch((error) => {
@@ -67,6 +68,7 @@ async function writeUserData(owner, collection, name, collection_id, priceValue)
 
 async function recordTransaction(assetId, type, buyer, seller, price, txId) {
   let updates = {};
+  console.log(txId)
   updates[nanoid()] = { 'type': type, 'buyer': buyer, 'seller': seller, 'price': price, 'txId': txId, 'txDate': new Date() }
   db.collection('transactions').doc(`${assetId}`).set({
     ...updates
@@ -86,7 +88,11 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   db.collection('listed').doc(`${owner}`).set({
     ...updates
   }, { merge: true });
-  await recordTransaction(assetId, "Minting", owner, null, null, null)
+  if (!sold) {
+    await recordTransaction(assetId, "Minting", owner, null, null, null)
+  }
+
+  return true;
 
 }
 
@@ -178,22 +184,22 @@ async function readAllSingleNft() {
 //   console.log(data)
 // });
 
-let demoAcc = 'NJJZVXK537GLPXK2BW47LGLSVKW3VPN42CY7DOK2UR23NUGV4QBV2DXO4Y';
+// let demoAcc = 'NJJZVXK537GLPXK2BW47LGLSVKW3VPN42CY7DOK2UR23NUGV4QBV2DXO4Y';
 
 async function fetchCollections() {
   return await readAllCollection()
 }
 
 async function fetchUserCollections(account) {
-  return await readUserCollection(demoAcc)
+  return await readUserCollection(account)
 }
 
 async function fetchUserNfts(account) {
-  return await readAllUserNft(demoAcc)
+  return await readAllUserNft(account)
 }
 
 async function fetchAllNfts(account) {
-  return await readAllNft(demoAcc)
+  return await readAllNft(account)
 }
 
 // X3EPW56NIIYT37OYHHOH5YBEIO7I7XJY4SAE57REQLGAMI2TUFPRA6IJA4

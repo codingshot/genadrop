@@ -1,31 +1,27 @@
-import { useContext, useEffect, useState } from "react";
-import { useRouteMatch, Link } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNfts, getUserNftCollection } from "../../utils";
+import { useContext, useEffect, useState, useRef } from "react";
+import { useRouteMatch } from "react-router-dom";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNft, getSingleNftDetails } from "../../../utils";
 import classes from "./list.module.css";
 import Skeleton from "react-loading-skeleton";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import { PurchaseNft } from "../../../utils/arc_ipfs";
 import axios from "axios";
-import { fetchAllNfts, writeNft } from "../../utils/firebase";
-import bidIcon from '../../assets/bid.png';
 
 const List = () => {
   const { account, connector } = useContext(GenContext);
 
   const {
     params: { nftId },
-
   } = useRouteMatch();
-  const match = useRouteMatch();
+  const { singleNfts } = useContext(GenContext);
 
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
     chain: "Algo",
     price: "",
-    image_url: ""
   });
-  const { nftDetails, isLoading, price, chain, image_url } = state;
+  const { nftDetails, isLoading, price, chain } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -34,21 +30,25 @@ const List = () => {
     handleSetState({ price: event.target.value });
   };
 
-  const listNFT = async () => {
-    if (!price) alert("price can't be empty");
-    let res = await writeNft(nftDetails.algo_data.creator, nftDetails.collection_name, nftDetails.Id, nftDetails.price, null, null, null);
-
-  }
+  const buyNft = async () => {
+    let res = await PurchaseNft(nftDetails, account, connector);
+    console.log("final", res);
+    alert(res);
+  };
 
   useEffect(() => {
-    (async function getUserCollection() {
-      let userNftCollections = await fetchAllNfts(account);
-      let result = await getUserNftCollection(userNftCollections);
+    const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
+    (async function getNftDetails() {
+      let nftDetails = await getSingleNftDetails(nft);
+      handleSetState({ nftDetails, isLoading: false });
+      console.log("-->", nftDetails);
+    })();
 
-      const nft = result.filter((nft) => String(nft.Id) === nftId)[0];
-
-      handleSetState({ nftDetails: nft, isLoading: false, image_url: nft.image_url });
-    }());
+    axios
+      .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount });
+      });
     document.documentElement.scrollTop = 0;
   }, []);
 
@@ -56,9 +56,6 @@ const List = () => {
     if (!nftDetails) return;
     console.log("==>", nftDetails);
   }, [nftDetails]);
-
-
-
 
   if (isLoading) {
     return (
@@ -103,13 +100,10 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-            {
-              price ? 
-              <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
               <button
                 className={classes.buy}
                 disabled={nftDetails.sold}
-                onClick={listNFT}
+                onClick={buyNft}
               >
                 <div>
                   <img src="/assets/price-tage.svg" alt="" />
@@ -117,31 +111,17 @@ const List = () => {
                 </div>
                 <span>Sell the NFT at a fixed price</span>
               </button>
-            </Link>
-            :
-            <button
-              className={classes.buy}
-              onClick={listNFT}
-            >
-              <div>
-                <img src="/assets/price-tage.svg" alt="" />
-                SET PRICE
-              </div>
-              <span>Sell the NFT at a fixed price</span>
-            </button>
-            }
-
-              {/* <button
+              <button
                 className={classes.bid}
                 disabled={nftDetails.sold}
                 onClick={buyNft}
               >
                 <div>
-                  <img src={bidIcon} alt="" />
+                  <img src="/assets/bid.png" alt="" />
                   HIGHEST BID
                 </div>
                 <span>Auction to the highest Bider</span>
-              </button> */}
+              </button>
             </div>
           </div>
           {/* PRICE HISTORY */}
@@ -175,10 +155,10 @@ const List = () => {
                 </div>
                 <div className={classes.inputWrapper}>
                   <input
+                    type="text"
                     value={price}
                     onChange={handlePrice}
                     placeholder="E.g. 10"
-                    type="number" min="1" step="1"
                   />
                 </div>
               </div>
@@ -203,7 +183,7 @@ const List = () => {
               Genadrop <span>10%</span>
             </div>
             <div className={classes.row}>
-              {nftDetails.name ? nftDetails.name : ""} <span>7%</span>
+              {nftDetails.name} <span>7%</span>
             </div>
             <div className={classes.row}>
               Total <span>17%</span>

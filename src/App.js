@@ -28,6 +28,8 @@ const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
 const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
 const SingleNFT = lazy(() => import('./pages/singleNFT/singleNFT'));
+const Listed = lazy( () => import('./pages/listNFT/listed'))
+// import Listed from './pages/listNFT/listed'
 
 function App() {
   const { dispatch } = useContext(GenContext);

@@ -115,6 +115,8 @@ export const getSingleNftDetails = async nft => {
       nftDetails.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
       nftDetails.name = response.data.name
       nftDetails.description = response.data.description
+      nftDetails.properties = response.data.properties
+
     } catch (error) {
       console.error('get collection result failed');
     }

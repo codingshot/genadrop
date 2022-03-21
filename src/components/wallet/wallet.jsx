@@ -29,7 +29,7 @@ function ConnectWallet({ setToggleNav }) {
       options: {
         rpc: {
           137: 'https://polygon-mumbai.g.alchemy.com/v2/sjbvWTjbyKXxvfJ1HkHIdEDHc2u8wNym',
-          4160: "https://api.testnet.algoexplorer.io",
+          4160: "https://node.testnet.algoexplorerapi.io",
         },
         rpcUrl: ""
       }
@@ -70,12 +70,21 @@ function ConnectWallet({ setToggleNav }) {
 
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
-    console.log('info', provider, signer)
+    
+
 
     if (provider.connection.url === 'metamask') {
       await dispatch(setConnector(provider));
       const account = await signer.getAddress();
       dispatch(setAccount(account));
+      connector.on("accountsChanged", (accounts) => {
+        dispatch(setAccount(accounts[0]));
+      });
+      connector.on("chainChanged", (chainId) => {
+        console.log(connector)
+        const provider = new ethers.providers.Web3Provider(connector);
+        dispatch(setConnector(provider));;
+      });
     } else {
       await dispatch(setConnector(connector));
       if (!connector.connected) {
@@ -84,7 +93,9 @@ function ConnectWallet({ setToggleNav }) {
       }
       // Subscribe to connection events
       connector.on("connect", (error, payload) => {
+        console.log("connecting flight")
         if (error) {
+          
           dispatch(setNotification('No connected'))
           // feedbacktype: warn              
 
@@ -108,7 +119,6 @@ function ConnectWallet({ setToggleNav }) {
       });
 
       if (connector.connected) {
-        console.log('ppp', provider, signer)
         const { accounts } = connector;
         dispatch(setAccount(accounts[0]));
       }

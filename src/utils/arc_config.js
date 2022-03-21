@@ -2,6 +2,7 @@
 
 module.exports = {
     algodClientUrl: "https://algoindexer.testnet.algoexplorerapi.io",
+    algodNodeUrl: "https://node.testnet.algoexplorerapi.io",
     algodClientPort: "",
     algodClientToken: "",
     pinataApiKey: process.env.REACT_APP_PINATA_API_KEY,
