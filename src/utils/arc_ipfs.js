@@ -358,10 +358,11 @@ async function signTx(connector, txns) {
   let tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
   // const decoded = algosdk.decodeSignedTransaction(decodedResult);
   // const fromdc = decoded.txn.from
-  console.log('afeter tx')
+  console.log('afeter tx', tx)
   const confirmedTxn = await waitForConfirmation(tx.txId);
-  const ptx = await algodClient.pendingTransactionInformation(tx.txId).do();
+  const ptx = await algodTxnClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
+  console.log('final', ptx, assetID);
   // console.log('Account: ',account,' Has created ASA with ID: ', assetID);
   return assetID;
 }
@@ -410,7 +411,7 @@ export async function initializeContract(contractProps) {
 }
 
 export async function mintToAlgo(algoProps) {
-  const { price, account, connector, fileName, dispatch, setNotification, setLoader } = algoProps;
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader } = algoProps;
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps });
     let collection_id = [];
@@ -436,7 +437,7 @@ export async function mintToAlgo(algoProps) {
     }
     const collectionHash = await pinata.pinJSONToIPFS(collection_id, { pinataMetadata: { name: `collection` } })
     let collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, fileName, collection_id, price)
+    await write.writeUserData(account, collectionUrl, fileName, collection_id, price, description)
     dispatch(setLoader(''))
     dispatch(setNotification('you have successfully minted your NFTs'));
     return `https://testnet.algoexplorer.io/tx/group/${groupId}`
@@ -594,7 +595,7 @@ export async function PurchaseNft(asset, account, connector) {
   let tx = await algodTxnClient.sendRawTransaction(rawSignedTxn).do();
   const confirmedTxn = await waitForConfirmation(tx.txId);
   await write.writeNft(asset.owner, asset.collection_name, asset.Id, asset.price, true, account, new Date())
-  await write.recordTransaction(asset.Id, "Sale", account, asset.owner, asset.price, tx.txID)
+  await write.recordTransaction(asset.Id, "Sale", account, asset.owner, asset.price, tx.txId)
   // const ret = await signTx(connector, txn)
   return `https://testnet.algoexplorer.io/tx/${tx.txId}`
 }
