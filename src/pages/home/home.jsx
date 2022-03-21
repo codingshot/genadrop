@@ -6,24 +6,16 @@ import FAQ from '../../components/Home/FAQ/FAQ';
 import Orgs from '../../components/Home/Orgs/Orgs';
 import classes from './home.module.css';
 import { Collectors, creators } from './home-script';
-// import Notification from '../../components/Notification/Notifications';
 
 const Home = () => {
-
   return (
     <div className={classes.container}>
-
       <Banner />
-
       <Orgs />
       <Features data={creators} />
       <Features data={Collectors} />
       <Review />
       <FAQ />
-      {/* <Notification/> */}
-
-
-
     </div >
   )
 }

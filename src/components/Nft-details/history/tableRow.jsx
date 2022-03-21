@@ -10,9 +10,9 @@ const TableRow = (data) => {
 
     const icons = ["/assets/sale-icon.png", "/assets/transfer-icon.png", "/assets/mint-icon.png"]
     const getDate = () => {
-        const date = new Date(data.date * 1000)
+        const date = new Date(data.date.seconds * 1000)
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const formattedDate = months[date.getMonth()] + " " + date.getDay() + ", " + date.getFullYear();
+        const formattedDate = months[date.getMonth()] + " " + date.getDate() + ", " + date.getFullYear();
         return formattedDate
     }
     const icon = () => {

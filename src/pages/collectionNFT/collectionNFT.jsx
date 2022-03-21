@@ -60,7 +60,6 @@ const CollectionNFT = () => {
           collection: collectionData,
           isLoading: false
         })
-        console.log("==>", tHistory);
 
       }())
     }
@@ -112,7 +111,7 @@ const CollectionNFT = () => {
   const graph = {
     icon: "/assets/details.png",
     title: "Price History",
-    content: <Graph />
+    content: <Graph details= {transactionHistory} />
   }
 
   const attributeContent = () => {
@@ -136,6 +135,7 @@ const CollectionNFT = () => {
 
 
   const buyNft = async () => {
+    console.log("buying...");
     let res = await PurchaseNft(asset, account, connector)
     console.log('final', res)
     alert(res)
@@ -245,7 +245,7 @@ const CollectionNFT = () => {
                   </>
                   :
                   <>
-                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
+                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}>Buy now</button>
                     <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
                   </>
                 )}

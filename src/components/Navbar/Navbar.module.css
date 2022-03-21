@@ -15,6 +15,7 @@
 .logoContainer {
   position: relative;
   cursor: pointer;
+  overflow: hidden;
 }
 
 .drop {
@@ -28,7 +29,7 @@
 
 .logoContainer:hover .drop {
   transform: translateY(100%);
-  animation: drop 650ms 2 alternate;
+  animation: drop 650ms;
 }
 
 .logoContainer:hover .logoDesktop, 
@@ -43,7 +44,7 @@
 
 @keyframes drop {
   from{transform: translateY(0%);opacity: 0; visibility: hidden;}
-  to{transform: translateY(100%);opacity: 1; visibility: visible;}
+  to{transform: translateY(200%);opacity: 1; visibility: visible;}
 }
 
 .logoDesktop {

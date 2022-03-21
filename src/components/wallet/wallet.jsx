@@ -4,7 +4,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
 import { setConnector, setAccount, setNotification } from '../../gen-state/gen.actions';
 import userIcon from '../../assets/user.svg';
-import switchIcon from '../../assets/icon-switch.svg';
+// import switchIcon from '../../assets/icon-switch.svg';
 import copyIcon from '../../assets/icon-copy.svg';
 import disconnectIcon from '../../assets/icon-disconnect.svg';
 import { ethers } from "ethers";
@@ -12,7 +12,7 @@ import Web3Modal from "web3modal";
 import { useHistory } from 'react-router-dom';
 
 
-function ConnectWallet() {
+function ConnectWallet({ setToggleNav }) {
   const { dispatch, connector, account } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -47,7 +47,8 @@ function ConnectWallet() {
       // const clear = await web3Modal.clearCachedProvider();
       dispatch(setAccount(''));
       dispatch(setConnector())
-      setDropdown(false)
+      setDropdown(false);
+      setToggleDropdown(false)
     }
   }
 
@@ -151,8 +152,8 @@ function ConnectWallet() {
   return (
     (account ?
       <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
-        <div onClick={()=> history.push(`/me/${account}`)} className={classes.user}>
-            <img src={userIcon} alt='' />
+        <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
+          <img src={userIcon} alt='' />
         </div>
         <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>{breakAddress(account)}</div>
         <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
@@ -160,9 +161,9 @@ function ConnectWallet() {
             <div>{clipboardState}</div> <img src={copyIcon} alt="" />
             <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={account} />
           </div>
-          <div className={classes.option}>
+          {/* <div className={classes.option}>
             <div onClick={handleSwitch}>Switch Wallet</div> <img src={switchIcon} alt="" />
-          </div>
+          </div> */}
           <div onClick={disconnect} className={classes.option}>
             <div>Disconnect</div> <img src={disconnectIcon} alt="" />
           </div>

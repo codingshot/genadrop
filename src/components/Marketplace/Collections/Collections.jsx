@@ -26,7 +26,6 @@ const Collections = () => {
     if (Object.keys(collections).length) {
       (async function getResult() {
         let result = await getNftCollections(collections);
-        console.log(result);
         handleSetState({
           allCollections: result
         })
@@ -55,9 +54,9 @@ const Collections = () => {
           :
           <div className={classes.skeleton}>
             {
-              (Array(5).fill(null)).map((_, idx) => (
+              (Array(4).fill(null)).map((_, idx) => (
                 <div key={idx}>
-                  <Skeleton count={1} height={400} />
+                  <Skeleton count={1} height={300} />
                 </div>
               ))
             }

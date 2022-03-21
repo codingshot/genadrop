@@ -1,11 +1,11 @@
 import { Link, useRouteMatch } from 'react-router-dom';
 import classes from './NftCard.module.css';
 
-const NftCard = ({ nft, list }) => {
+const NftCard = ({ nft, list, extend }) => {
   const { Id, collection_name, name, price, image_url } = nft;
   const match = useRouteMatch();
   return (
-    <Link to={list ? `${match.url}/list` : `${match.url}/${Id}`}>
+    <Link to={`${match.url}${extend ? `${extend}/` : '/'}${Id}`}>
       <div className={classes.card}>
         <div className={classes.imageContainer}>
           <img src={image_url} alt="" />
