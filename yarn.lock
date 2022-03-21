@@ -4304,6 +4304,131 @@
     "@walletconnect/browser-utils" "^1.6.1"
     "@walletconnect/mobile-registry" "^1.4.0"
     "@walletconnect/types" "^1.6.1"
+<<<<<<< HEAD
+    copy-to-clipboard "^3.3.1"
+    preact "10.4.1"
+    qrcode "1.4.4"
+
+algosdk@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/algosdk/-/algosdk-1.14.0.tgz#729dada87cec141f8204fc77788a01a318fd6ea7"
+  integrity sha512-IaaomouKmuCnK+xLuz27X8DQro0ZjVyw4zHvV8HJap9PPDOQKbvpm+UIIsEf0CmC0xWPXIxfFbmlJ0y5CeGlqQ==
+  dependencies:
+    algo-msgpack-with-bigint "^2.1.1"
+    buffer "^6.0.2"
+    hi-base32 "^0.5.1"
+    js-sha256 "^0.9.0"
+    js-sha3 "^0.8.0"
+    js-sha512 "^0.8.0"
+    json-bigint "^1.0.0"
+    superagent "^6.1.0"
+    tweetnacl "^1.0.3"
+    url-parse "^1.5.1"
+
+alphanum-sort@^1.0.0:
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/alphanum-sort/-/alphanum-sort-1.0.2.tgz"
+  integrity sha1-l6ERlkmyEa0zaR2fn0hqjsn74KM=
+
+ansi-align@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/ansi-align/-/ansi-align-3.0.1.tgz"
+  integrity sha512-IOfwwBF5iczOjp/WeY4YxyjqAFMQoZufdQWDd19SEExbVLNXqvpzSJ/M7Za4/sCPmQ0+GRquoA7bGcINcxew6w==
+  dependencies:
+    string-width "^4.1.0"
+
+ansi-colors@^3.0.0:
+  version "3.2.4"
+  resolved "https://registry.npmjs.org/ansi-colors/-/ansi-colors-3.2.4.tgz"
+  integrity sha512-hHUXGagefjN2iRrID63xckIvotOXOojhQKWIPUZ4mNUZ9nLZW+7FMNoE1lOkEhNWYsx/7ysGIuJYCiMAA9FnrA==
+
+ansi-colors@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmjs.org/ansi-colors/-/ansi-colors-4.1.1.tgz"
+  integrity sha512-JoX0apGbHaUJBNl6yF+p6JAFYZ666/hhCGKN5t9QFjbJQKUU/g8MNbFDbvfrgKXvI1QpZplPOnwIo99lX/AAmA==
+
+ansi-escape-sequences@^4.0.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/ansi-escape-sequences/-/ansi-escape-sequences-4.1.0.tgz"
+  integrity sha512-dzW9kHxH011uBsidTXd14JXgzye/YLb2LzeKZ4bsgl/Knwx8AtbSFkkGxagdNOoh0DlqHCmfiEjWKBaqjOanVw==
+  dependencies:
+    array-back "^3.0.1"
+
+ansi-escapes@^4.2.1, ansi-escapes@^4.3.1:
+  version "4.3.2"
+  resolved "https://registry.npmjs.org/ansi-escapes/-/ansi-escapes-4.3.2.tgz"
+  integrity sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==
+  dependencies:
+    type-fest "^0.21.3"
+
+ansi-html@0.0.7, ansi-html@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npmjs.org/ansi-html/-/ansi-html-0.0.7.tgz"
+  integrity sha1-gTWEAhliqenm/QOflA0S9WynhZ4=
+
+ansi-regex@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-2.1.1.tgz"
+  integrity sha1-w7M6te42DYbg5ijwRorn7yfWVN8=
+
+ansi-regex@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-3.0.0.tgz"
+  integrity sha1-7QMXwyIGT3lGbAKWa922Bas32Zg=
+
+ansi-regex@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-4.1.0.tgz"
+  integrity sha512-1apePfXM1UOSqw0o9IiFAovVz9M5S1Dg+4TrDwfMewQ6p/rmMueb7tWZjQ1rx4Loy1ArBggoqGpfqqdI4rondg==
+
+ansi-regex@^5.0.0, ansi-regex@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz"
+  integrity sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==
+
+ansi-styles@^3.2.0, ansi-styles@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-3.2.1.tgz"
+  integrity sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==
+  dependencies:
+    color-convert "^1.9.0"
+
+ansi-styles@^4.0.0, ansi-styles@^4.1.0:
+  version "4.3.0"
+  resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz"
+  integrity sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==
+  dependencies:
+    color-convert "^2.0.1"
+
+ansi-styles@^5.0.0:
+  version "5.2.0"
+  resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-5.2.0.tgz"
+  integrity sha512-Cxwpt2SfTzTtXcfOlzGEee8O+c+MmUgGrNiBcXnuWxuFJHe6a5Hz7qwhwe5OgaSYI0IJvkLqWX1ASG+cJOkEiA==
+
+any-signal@^2.1.0, any-signal@^2.1.1, any-signal@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.npmjs.org/any-signal/-/any-signal-2.1.2.tgz"
+  integrity sha512-B+rDnWasMi/eWcajPcCWSlYc7muXOrcYrqgyzcdKisl2H/WTlQ0gip1KyQfr0ZlxJdsuWCj/LWwQm7fhyhRfIQ==
+  dependencies:
+    abort-controller "^3.0.0"
+    native-abort-controller "^1.0.3"
+
+anymatch@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/anymatch/-/anymatch-2.0.0.tgz"
+  integrity sha512-5teOsQWABXHHBFP9y3skS5P3d/WfWXpv3FUpy+LorMrNYaT9pI4oLMQX7jzQ2KklNpGpWHzdCXTDT2Y3XGlZBw==
+  dependencies:
+    micromatch "^3.1.4"
+    normalize-path "^2.1.1"
+
+anymatch@^3.0.0, anymatch@^3.0.3, anymatch@~3.1.2:
+  version "3.1.2"
+  resolved "https://registry.npmjs.org/anymatch/-/anymatch-3.1.2.tgz"
+  integrity sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg==
+  dependencies:
+    normalize-path "^3.0.0"
+    picomatch "^2.0.4"
+=======
     "copy-to-clipboard" "^3.3.1"
     "preact" "10.4.1"
     "qrcode" "1.4.4"
@@ -4426,6 +4551,7 @@
   dependencies:
     "micromatch" "^3.1.4"
     "normalize-path" "^2.1.1"
+>>>>>>> 80857e599ec65ae290c8c78fe9eccd0987136ac2
 
 "anymatch@^3.0.0", "anymatch@^3.0.3", "anymatch@~3.1.2":
   "integrity" "sha512-P43ePfOAIupkguHUycrc4qJ9kz8ZiuOUijaETwX7THt0Y/GNK7v0aa8rY816xWjZ7rJdA5XdMcpVFTKMq+RvWg=="

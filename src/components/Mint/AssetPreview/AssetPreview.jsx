@@ -215,6 +215,7 @@ const AssetPreview = ({ data, changeFile }) => {
                   <option value="Algo">Algo</option>
                   <option value="Celo">Celo</option>
                   <option value="Polygon">Polygon</option>
+                  <option value="Near">Near</option>
                 </select>
               </div>
             </section>
