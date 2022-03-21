@@ -86,7 +86,6 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   db.collection('listed').doc(`${owner}`).set({
     ...updates
   }, { merge: true });
-  await recordTransaction(assetId, "Minting", owner, null, null, null)
 
 }
 
