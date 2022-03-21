@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  margin-bottom: 4em;
+  margin-bottom: 8em;
 }
 
 .heading {
@@ -34,8 +34,8 @@
 
 .main > img {
   width: 42em;
-  
-  box-shadow: 1px 1px 10px gray;
+  box-shadow: 1px 1px 10px gainsboro;
+  border-radius: 1em;
 }
 
 .main > div {

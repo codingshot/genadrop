@@ -4,17 +4,31 @@ import stackIcon from '../../../assets/icon-stack.svg';
 import tradeIcon from '../../../assets/icon-trade.svg';
 import Skeleton from 'react-loading-skeleton';
 import Copy from '../../../components/copy/copy';
+import { useEffect, useRef } from 'react';
 
-const Header = ({ collection }) => {
-
+const Header = ({ collection, getHeight }) => {
+  const headerRef = useRef(null)
   const { name, owner, price, imageUrl, numberOfNfts, description } = collection;
 
+  useEffect(() => {
+    try {
+      window.addEventListener("resize", e => {
+        let res = headerRef.current.getBoundingClientRect().height;
+        getHeight(res)
+      });
+      let res = headerRef.current.getBoundingClientRect().height;
+      getHeight(res + 50);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
-    <header className={classes.container}>
+    <header ref={headerRef} className={classes.container}>
       <div className={classes.wrapper}>
         {
           imageUrl ? <img className={classes.imageContainer} src={imageUrl} alt="asset" /> : <div className={classes.imageLoadingContainer}>
-            <Skeleton count={1} height={200}/>
+            <Skeleton count={1} height={200} />
           </div>
         }
         <div className={classes.collectionName}>{name}</div>
@@ -23,7 +37,7 @@ const Header = ({ collection }) => {
           <Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} />
         </div>
         <div className={classes.description}>
-          {description || "Your childhood memories brought back in one piece of art! 1753 living memories inside the Solana Blockchain."}
+          {description}
         </div>
       </div>
 

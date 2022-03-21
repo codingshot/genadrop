@@ -7,6 +7,7 @@ import Skeleton from "react-loading-skeleton";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import axios from "axios";
 import { fetchAllNfts } from "../../utils/firebase";
+import bidIcon from '../../assets/bid.png';
 
 const List = () => {
   const { account, connector } = useContext(GenContext);
@@ -120,7 +121,7 @@ const List = () => {
                 onClick={buyNft}
               >
                 <div>
-                  <img src="/assets/bid.png" alt="" />
+                  <img src={bidIcon} alt="" />
                   HIGHEST BID
                 </div>
                 <span>Auction to the highest Bider</span>

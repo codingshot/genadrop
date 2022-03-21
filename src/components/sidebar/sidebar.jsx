@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import classes from './sidebar.module.css';
 import Logo from '../../components/logo/logo';
+import mintIcon from '../../assets/gena-mint-icon.png';
+import createIcon from '../../assets/gena-create-icon.png';
+import searchIcon from '../../assets/gena-search-icon.png';
 
 const Navbar = () => {
   const [activeNav, setActiveNav] = useState("");
@@ -15,7 +18,7 @@ const Navbar = () => {
       <div className={classes.navItems}>
         <Link to="/create">
           <div onClick={() => setActiveNav("create")} className={`${classes.navItem} ${activeNav === "create" && classes.active}`}>
-            <img src="/assets/gena-create-icon.png" alt="icon" />
+            <img src={createIcon} alt="icon" />
             <p>create</p>
             <div className={classes.effect}></div>
           </div>
@@ -23,7 +26,7 @@ const Navbar = () => {
 
         <Link to="/mint">
           <div onClick={() => setActiveNav("mint")} className={`${classes.navItem} ${activeNav === "mint" && classes.active}`}>
-            <img src="/assets/gena-mint-icon.png" alt="icon" />
+            <img src={mintIcon} alt="icon" />
             <p>mint</p>
             <div className={classes.effect}></div>
           </div>
@@ -31,7 +34,7 @@ const Navbar = () => {
 
         <Link to="/explore">
           <div onClick={() => setActiveNav("explore")} className={`${classes.navItem} ${activeNav === "explore" && classes.active}`}>
-            <img src="/assets/gena-search-icon.png" alt="icon" />
+            <img src={searchIcon} alt="icon" />
             <p>explore</p>
             <div className={classes.effect}></div>
           </div>

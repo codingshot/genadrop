@@ -4,6 +4,7 @@ const Loading = () => {
   return (
     <div className={classes.container}>
       <img src={loadingIcon} alt="" />
+      <p>Loading...</p>
     </div>
   )
 }

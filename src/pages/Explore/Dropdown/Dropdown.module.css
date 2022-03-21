@@ -1,0 +1,36 @@
+.container {
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75em 1em;
+  cursor: pointer;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
+}
+
+.textWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.content {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.content.active {
+  max-height: 1000vh;
+}
+
+.dropdownIcon {
+  transform: rotate(0);
+}
+
+.dropdownIcon.active {
+  transform: rotate(180deg);
+}

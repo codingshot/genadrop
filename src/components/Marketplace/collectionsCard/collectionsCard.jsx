@@ -15,7 +15,7 @@ const CollectionsCard = ({ collection }) => {
         </div>
         <div className={classes.name}>{name}</div>
         <div className={classes.description}>
-          {description || "Your childhood memories brought back in one piece of art! 1753 living memories inside the Solana Blockchain."}
+          {description}
         </div>
         <div className={classes.wrapper}>
           <div className={classes.floorPrice}>

@@ -1,6 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import classes from './share.module.css';
+import copiedIcon from '../../assets/copied.svg';
+import copyIcon from '../..assets/copy-solid.svg';
+import twitterIcon from '../../assets/twitter.svg';
+import facebookIcon from '../../assets/facebook.svg';
+import instagramIcon from '../../assets/instagramIcon';
 
 const Share = ({ url }) => {
 
@@ -40,15 +45,15 @@ const Share = ({ url }) => {
 
     const icons = [
         {
-            icon: "assets/facebook.svg",
+            icon: facebookIcon,
             link: "https://www.facebook.com"
         },
         {
-            icon: "assets/instagram.svg",
+            icon: instagramIcon,
             link: "https://www.instagram.com"
         },
         {
-            icon: "assets/twitter.svg",
+            icon: twitterIcon,
             link: "https://www.twitter.com/mpa"
         },
 
@@ -77,9 +82,9 @@ const Share = ({ url }) => {
                         {
                             !isCopied ?
                                 <img
-                                    className={classes.shareicon} src="assets/copy-solid.svg" alt="" />
+                                    className={classes.shareicon} src={copyIcon} alt="" />
                                 :
-                                <img className={classes.shareicon} src="assets/copied.svg" alt="" />
+                                <img className={classes.shareicon} src={copiedIcon} alt="" />
                         }
 
                     </div>

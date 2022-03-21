@@ -33,13 +33,13 @@
   opacity: 0.8;
 }
 
-button {
+.btn {
   background-color: transparent;
   border: none;
   cursor: pointer;
 }
 
-button:focus {
+.btn:focus {
   outline: none;
 }
 

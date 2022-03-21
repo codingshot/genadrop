@@ -4,6 +4,7 @@ import { GenContext } from '../../../gen-state/gen.context';
 import Attribute from '../Attribute/Attribute';
 import { handleMint, handleSingleMint } from './AssetPreview-script';
 import classes from './AssetPreview.module.css';
+import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -99,7 +100,7 @@ const AssetPreview = ({ data, changeFile }) => {
           ?
           <div className={classes.previewWrapper}>
             <div onClick={() => handleSetState({ preview: false })} className={classes.cancelPreview}>
-              <img src="/assets/icon-arrow-left.svg" alt='' /> Back
+              <img src={arrowIconLeft} alt='' /> Back
             </div>
             {
               file.map((f, idx) => (

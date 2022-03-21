@@ -3,6 +3,7 @@ import { getAlgoData } from "../utils/arc_ipfs";
 import { readSIngleUserNft } from "../utils/firebase";
 // import fileDownload from 'js-file-download'
 import fileDownload from 'js-file-download'
+import blankImage from '../assets/blank.png';
 
 import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
 
@@ -175,7 +176,7 @@ export const handleBlankImage = async props => {
   const ctx = canvas.getContext("2d");
   const image = await new Promise(resolve => {
     const image = new Image();
-    image.src = "/assets/blank.png";
+    image.src = blankImage;
     image.onload = () => {
       resolve(image);
     };

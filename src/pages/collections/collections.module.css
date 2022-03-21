@@ -79,6 +79,13 @@
   gap: 1em;
 }
 
+.selectedPrice span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
 .selectedChain {
   display: flex;
   padding: 0.25em 0.5em;
@@ -131,7 +138,7 @@
   border: 1px solid gainsboro;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 1em;
 }
 
@@ -145,7 +152,6 @@
 }
 
 .dropdownIcon {
-  justify-self: flex-end;
   transition: all 250ms;
 }
 

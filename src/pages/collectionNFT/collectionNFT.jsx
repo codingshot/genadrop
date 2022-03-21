@@ -13,8 +13,16 @@ import { PurchaseNft } from '../../utils/arc_ipfs';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Skeleton from 'react-loading-skeleton';
 import { readNftTransaction } from '../../utils/firebase';
-
+import bidIcon from '../../assets/bid.png';
+import copiedIcon from '../../assets/copied.svg';
+import copyIcon from '../../assets/copy-solid.svg';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import walletIcon from '../../assets/wallet-icon.png';
+import twitterIcon from '../../assets/twitter.svg';
+import facebookIcon from '../../assets/facebook.svg';
+import instagramIcon from '../../assets/instagram.svg';
+import descriptionIcon from '../../assets/description-icon.png';
+import detailsIcon from '../../assets/details.png';
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
@@ -104,13 +112,13 @@ const CollectionNFT = () => {
 
 
   const description = {
-    icon: "/assets/details.png",
+    icon: detailsIcon,
     title: "Description",
     content: `${asset.ipfs_data.description}`
   }
 
   const graph = {
-    icon: "/assets/details.png",
+    icon: detailsIcon,
     title: "Price History",
     content: <Graph />
   }
@@ -129,7 +137,7 @@ const CollectionNFT = () => {
   }
 
   const attributesItem = {
-    icon: "/assets/description-icon.png",
+    icon: descriptionIcon,
     title: "Attributes",
     content: attributeContent()
   }
@@ -167,15 +175,15 @@ const CollectionNFT = () => {
 
   const icons = [
     {
-      icon: "/assets/facebook.svg",
+      icon: facebookIcon,
       link: "https://www.facebook.com"
     },
     {
-      icon: "/assets/instagram.svg",
+      icon: instagramIcon,
       link: "https://www.instagram.com"
     },
     {
-      icon: "/assets/twitter.svg",
+      icon: twitterIcon,
       link: "https://www.twitter.com/mpa"
     },
 
@@ -240,13 +248,12 @@ const CollectionNFT = () => {
               {
                 (asset.sold ?
                   <>
-                    <button className={classes.sold} disabled={asset.sold} ><img src="/assets/wallet-icon.png" alt="" />SOLD!</button>
-                    {/* <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button> */}
+                    <button className={classes.sold} disabled={asset.sold} ><img src={walletIcon} alt="" />SOLD!</button>
                   </>
                   :
                   <>
-                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src="/assets/wallet-icon.png" alt="" />Buy now</button>
-                    <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button>
+                    <button className={classes.buy} disabled={asset.sold} onClick={buyNft}><img src={walletIcon} alt="" />Buy now</button>
+                    <button className={classes.bid}><img src={bidIcon} alt="" />Place Bid</button>
                   </>
                 )}
             </div>
@@ -316,9 +323,9 @@ const CollectionNFT = () => {
                   {
                     !isCopied ?
                       <img
-                        className={classes.shareicon} src="/assets/copy-solid.svg" alt="" />
+                        className={classes.shareicon} src={copyIcon} alt="" />
                       :
-                      <img className={classes.shareicon} src="/assets/copied.svg" alt="" />
+                      <img className={classes.shareicon} src={copiedIcon} alt="" />
                   }
 
                 </div>

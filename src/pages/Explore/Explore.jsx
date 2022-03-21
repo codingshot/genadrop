@@ -5,9 +5,13 @@ import classes from './Explore.module.css';
 import 'react-loading-skeleton/dist/skeleton.css'
 import Filter from './Filter/Filter';
 import Header from './Header/Header';
-import { mapAttributeToFilter } from './Explore-script';
+import { groupAttributesByTraitType, mapAttributeToFilter } from './Explore-script';
 import { getNftCollection } from '../../utils';
 import Menu from './Menu/Menu';
+import closeIcon from '../../assets/icon-close.svg';
+import dropdownIcon from '../../assets/icon-dropdown.svg';
+import arrowDown from '../../assets/icon-arrow-down-long.svg';
+import arrowUp from '../../assets/icon-arrow-up-long.svg';
 
 const Explore = () => {
 
@@ -18,12 +22,13 @@ const Explore = () => {
     collection: null,
     attributes: null,
     filterToDelete: null,
+    headerHeight: 0,
     filter: {
       searchValue: '',
       price: 'high',
     },
   })
-  const { collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection } = state;
+  const { collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection, headerHeight } = state;
   const { collections } = useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -36,13 +41,15 @@ const Explore = () => {
     handleSetState({ filter: { ...filter, ..._filter } })
   }
 
+  const getHeight = res => {
+    handleSetState({headerHeight: res})
+  }
+
   useEffect(() => {
     if (Object.keys(collections).length) {
-      console.log(collections);
       const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
         let result = await getNftCollection(collection);
-        console.log('nft result: ', result);
         handleSetState({
           collection,
           NFTCollection: result
@@ -88,17 +95,23 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
+    let groupedAttributes = groupAttributesByTraitType(filter.attributes);
     let filtered = NFTCollection.filter(col => {
-      return filter.attributes.every(el => {
-        return JSON.stringify(col.ipfs_data.properties).includes(JSON.stringify(el));
+      return Object.keys(groupedAttributes).every(attributeKey => {
+        return groupedAttributes[attributeKey].some(el => {
+          return JSON.stringify(col.ipfs_data.properties).includes(JSON.stringify(el));
+        });
       });
     });
     handleSetState({ FilteredCollection: filtered });
+    console.log(headerHeight);
+    document.documentElement.scrollTop = headerHeight;
+
   }, [filter.attributes]);
 
   return (
     <div className={classes.container}>
-      <Header collection={{
+      <Header getHeight={getHeight} collection={{
         ...collection,
         numberOfNfts: NFTCollection
           && NFTCollection.length,
@@ -118,12 +131,15 @@ const Explore = () => {
               placeholder='search'
             />
             <div className={classes.priceDropdown}>
-              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
-                {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
+                <span>price {filter.price === 'low' ? <img src={arrowUp} alt="" /> : <img src={arrowDown} alt="" />}</span>
+                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: !togglePriceFilter })}>price: low to high</div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: !togglePriceFilter })}>Price: high to low</div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
+                  price <img src={arrowUp} alt="" /></div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
+                  price <img src={arrowDown} alt="" /></div>
               </div>
             </div>
           </div>
@@ -134,7 +150,7 @@ const Explore = () => {
                 <div key={idx} className={classes.filteredItem}>
                   <span>{`${f.trait_type}: ${f.value}`}</span>
                   <div onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon}>
-                    <img src="/assets/icon-close.svg" alt="" />
+                    <img src={closeIcon} alt="" />
                   </div>
                 </div>
               ))

@@ -10,6 +10,8 @@ import { chainIcon, transformArrayOfArraysToArrayOfObjects } from './collection-
 import { fetchCollections } from '../../utils/firebase';
 import dropdownIcon from '../../assets/icon-dropdown.svg';
 import axios from 'axios';
+import arrowDown from '../../assets/icon-arrow-down-long.svg';
+import arrowUp from '../../assets/icon-arrow-up-long.svg';
 
 const Collections = () => {
   const domMountRef = useRef(false);
@@ -162,12 +164,14 @@ const Collections = () => {
 
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+                <span>price {filter.price === 'low' ? <img src={arrowUp} alt="" /> : <img src={arrowDown} alt="" />}</span>
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>price: low to high</div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>Price: high to low</div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
+                  price <img src={arrowUp} alt="" /></div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
+                  price <img src={arrowDown} alt="" /></div>
               </div>
             </div>
           </div>

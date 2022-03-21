@@ -2,6 +2,10 @@ import { useState, useContext } from 'react';
 import { updateLayer } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './layer.module.css';
+import deleteIcon from '../../assets/icon-delete.svg';
+import dragIcon from '../../assets/icon-drag.svg';
+import editIcon from '../../assets/icon-edit.svg';
+import markIconDark from '../../assets/icon-mark.svg';
 
 const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
   const [state, setState] = useState({
@@ -30,7 +34,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
     <div className={classes.item}>
       <div className={classes._name}>
         <div className={classes.line}>
-          <img src="/assets/icon-drag.svg" alt="" />
+          <img src={dragIcon} alt="" />
         </div>
         <div className={classes.renameBtn}>
           {activeInput === name
@@ -49,15 +53,15 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           }
           <div className={classes.editBtn} >
             {activeInput === name
-              ? <img onClick={handleRename} src="/assets/icon-mark.svg" alt="" />
-              : <img onClick={() => handleEdit(name)} src="/assets/icon-edit.svg" alt="" />
+              ? <img onClick={handleRename} src={markIconDark} alt="" />
+              : <img onClick={() => handleEdit(name)} src={editIcon} alt="" />
             }
           </div>
         </div>
       </div>
       <div className={classes.trait}>{trait}</div>
       <div onClick={click} className={classes.icon}>
-        <img src="/assets/icon-delete.svg" alt="" />
+        <img src={deleteIcon} alt="" />
       </div>
     </div>
   )

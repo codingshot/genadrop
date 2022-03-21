@@ -56,7 +56,11 @@ const Collections = () => {
             {
               (Array(4).fill(null)).map((_, idx) => (
                 <div key={idx}>
-                  <Skeleton count={1} height={300} />
+                  <Skeleton count={1} height={250} />
+                  <br />
+                  <Skeleton count={1} height={30} />
+                  <br />
+                  <Skeleton count={1} height={30} />
                 </div>
               ))
             }

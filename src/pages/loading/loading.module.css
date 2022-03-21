@@ -4,12 +4,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 1em;
 }
 
 .container img {
-  animation: rotate 1000ms infinite;
-  width: 1em;
-  margin-right: 0.5em;
+  animation: rotate 1600ms infinite;
+  width: 1.6em;
+}
+
+.container p {
+  font-size: 1.2rem;
 }
 
 @keyframes rotate {

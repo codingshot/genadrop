@@ -5,6 +5,7 @@
   background: white;
   transition: all 250ms;
   border: 1px solid gainsboro;
+  overflow: hidden;
 }
 
 .card:hover {

@@ -1,4 +1,6 @@
 import classes from './FAQCard.module.css';
+import closeIcon from '../../../assets/close-icon.svg';
+import openIcon from '../../../assets/open-icon.svg';
 
 const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) => {
 
@@ -12,7 +14,7 @@ const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) =>
       <div onClick={handleDropdown} className={classes.question}>
         <span>Q.</span>
         <p>{question}</p>
-        <span>{dropdown === String(id) ? <img src="/assets/close-icon.svg" alt="" /> : <img src="/assets/open-icon.svg" alt="" />}</span>
+        <span>{dropdown === String(id) ? <img src={closeIcon} alt="" /> : <img src={openIcon} alt="" />}</span>
       </div>
       <div className={`${classes.answer} ${dropdown === String(id) && classes.dropdown}`}>
         <span>A.</span>

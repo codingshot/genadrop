@@ -5,6 +5,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 import logo from '../../assets/genadrop-logo-mobile.png';
 import drop from '../../assets/drop.svg';
+import closeIcon from '../../assets/icon-close.svg';
+import hamburgerIcon from '../../assets/icon-hamburger.svg';
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -44,8 +46,8 @@ const Navbar = () => {
       </div>
       {
         dropdown
-          ? <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconClose} src="/assets/icon-close.svg" alt="" />
-          : <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconOpen} src="/assets/icon-hamburger.svg" alt="" />
+          ? <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconClose} src={closeIcon} alt="" />
+          : <img onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.iconOpen} src={hamburgerIcon} alt="" />
       }
     </div>
   )
