@@ -162,7 +162,7 @@ const Collections = () => {
 
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+                {filter.price === 'low' ? 'Price: Low to High' : 'Price: High to Low'}
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>

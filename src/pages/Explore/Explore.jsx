@@ -119,11 +119,11 @@ const Explore = () => {
             />
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
-                {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+                {filter.price === 'low' ? 'Price: Low to High' : 'Price: High to Low'}
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: !togglePriceFilter })}>price: low to high</div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: !togglePriceFilter })}>Price: high to low</div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: !togglePriceFilter })}>Price: Low to High</div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: !togglePriceFilter })}>Price: High to Low</div>
               </div>
             </div>
           </div>

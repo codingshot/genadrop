@@ -73,7 +73,8 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   }
 
   const handleNext = () => {
-    if (pointer >= guideLength) return;
+    if (pointer == guideLength) 
+      return handleCancel();
     handleSetState({ pointer: pointer + 1 })
   }
 
