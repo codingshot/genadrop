@@ -1,4 +1,4 @@
-import { mintSingleToAlgo, mintSingleToPoly, mintToAlgo, mintToCelo, mintToPoly } from "../../../utils/arc_ipfs";
+import { mintSingleToAlgo, mintSingleToPoly, mintToAlgo, mintToCelo, mintToPoly, mintToNear, mintSingleToCelo, mintSingleToNear } from "../../../utils/arc_ipfs";
 
 export const handleMint = async args => {
   const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
@@ -11,6 +11,8 @@ export const handleMint = async args => {
       url = await mintToCelo({ ...args })
     } else if (chain.toLowerCase() === 'polygon') {
       url = await mintToPoly({ ...args })
+    } else if (chain.toLowerCase() === 'near') {
+      url = await mintToNear({ ...args })
     } else {
       dispatch(setNotification('please, select a chain.'))
     }
@@ -36,10 +38,12 @@ export const handleSingleMint = async args => {
     if (chain.toLowerCase() === 'algo') {
       url = await mintSingleToAlgo({ ...args });
     } else if (chain.toLowerCase() === 'celo') {
-      // url = await mintSingleToCelo({ ...args })
-      url = { 'message': "not yet implemented" }
+      url = await mintSingleToCelo({ ...args })
+      //url = { 'message': "not yet implemented" }
     } else if (chain.toLowerCase() === 'polygon') {
       url = await mintSingleToPoly({ ...args })
+    } else if (chain.toLowerCase() === 'near') {
+      url = await mintSingleToNear({ ...args })
     } else {
       dispatch(setNotification('please, select a chain.'))
     }

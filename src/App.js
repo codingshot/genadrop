@@ -27,6 +27,8 @@ const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
 const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
 const SingleNFT = lazy(() => import('./pages/singleNFT/singleNFT'));
+const Listed = lazy( () => import('./pages/listNFT/listed'))
+// import Listed from './pages/listNFT/listed'
 
 function App() {
   const { dispatch } = useContext(GenContext);
@@ -61,6 +63,7 @@ function App() {
               <Route exact path="/marketplace/nft/:nftId" component={SingleNFT} />
               <Route exact path="/me/:userId/profile/settings" component={Profile} />
               <Route exact path="/me/:userId/:nftId" component={List} />
+             <Route exact path="/me/:userId/:nftId/listed" component={Listed} />
               <Route exact path="/me/:userId" component={Dashboard} />
               {/* <Route path="" component={Fallback} /> */}
             </Suspense>
