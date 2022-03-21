@@ -16,7 +16,9 @@ const Banner = () => {
           Generate all combinations from your art assets, preview and edit meta data, upload to ipfs, mint, and list to multiple blockchains with NO CODE.          </p>
         <button onClick={() => history.push('./create')}>Generate Collection</button>
       </div>
-      <img src={banner} alt='' />
+      <div className={classes.imageContainer}>
+        <img src={banner} alt='' />
+      </div>
     </div>
   )
 }

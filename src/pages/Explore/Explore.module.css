@@ -14,13 +14,11 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  /* box-shadow: 0 0 15px gainsboro; */
   background: white;
   border-radius: 1em;
 }
 
 .displayWrapper {
-  border: 1px solid gainsboro;
   flex: 1;
   padding: 1em;
 }
@@ -105,18 +103,31 @@
   z-index: 10;
 }
 
-.priceDropdown .selectedPrice {
+.selectedPrice {
   cursor: pointer;
-  background: var(--main-accent);
-  color: white;
-  padding: 0.5em 1.5em;
-  border-radius: 0.25em;
+  background: white;
+  color: #000000;
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em;
   transition: all 300ms;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: capitalize;
+  gap: 1em;
 }
 
-.priceDropdown .selectedPrice:hover {
-  outline: 2px solid var(--main-accent);
-  background: var(--main-accent-dark);
+.selectedPrice span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.selectedPrice:hover {
+  background: rgb(240, 240, 240);
 }
 
 .priceDropdown .dropdown{
@@ -129,21 +140,41 @@
   transition: all 250ms;
   display: flex;
   flex-direction: column;
-  gap: 1em;
-  padding: 1em;
-  border-radius: 0.25em;
   cursor: pointer;
-  border: 2px solid var(--main-accent);
+  transform: translateY(-0.5em);
+  text-transform: capitalize;
 }
 
 .priceDropdown .dropdown.active {
   visibility: visible;
   opacity: 1;
-  transform: translateY(1em);
+  transform: translateY(0em);
 }
 
 .priceDropdown .dropdown > div {
-  border-bottom: 1px solid gainsboro;
+  padding: 0.5em;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.priceDropdown .dropdown > div:hover {
+  background: rgb(240, 240, 240);
+}
+
+.priceDropdown .dropdown > div:last-child {
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
+}
+
+.dropdownIcon {
+  transition: all 250ms;
+}
+
+.dropdownIcon.active {
+  transform: rotate(180deg);
 }
 
 @media screen and (max-width: 768px) {

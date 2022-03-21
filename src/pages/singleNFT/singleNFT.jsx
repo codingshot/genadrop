@@ -8,8 +8,18 @@ import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import { CopyBlock, dracula } from "react-code-blocks";
-import axios from "axios";
-import CopyToClipboard from "react-copy-to-clipboard";
+import axios from 'axios';
+import { readNftTransaction } from '../../utils/firebase';
+import bidIcon from '../../assets/bid.png';
+import copiedIcon from '../../assets/copied.svg';
+import copyIcon from '../../assets/copy-solid.svg';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import walletIcon from '../../assets/wallet-icon.png';
+import twitterIcon from '../../assets/twitter.svg';
+import facebookIcon from '../../assets/facebook.svg';
+import instagramIcon from '../../assets/instagram.svg';
+import descriptionIcon from '../../assets/description-icon.png';
+import detailsIcon from '../../assets/details.png';
 
 const SingleNFT = () => {
   const { account, connector } = useContext(GenContext);
@@ -89,16 +99,16 @@ const SingleNFT = () => {
 
   const icons = [
     {
-      icon: "/assets/facebook.svg",
-      link: "https://www.facebook.com",
+      icon: facebookIcon,
+      link: "https://www.facebook.com"
     },
     {
-      icon: "/assets/instagram.svg",
-      link: "https://www.instagram.com",
+      icon: instagramIcon,
+      link: "https://www.instagram.com"
     },
     {
-      icon: "/assets/twitter.svg",
-      link: "https://www.twitter.com/mpa",
+      icon: twitterIcon,
+      link: "https://www.twitter.com/mpa"
     },
   ];
 
@@ -138,13 +148,13 @@ const SingleNFT = () => {
   }
 
   const description = {
-    icon: "/assets/details.png",
+    icon: detailsIcon,
     title: "Description",
     content: `${nftDetails.description}`,
   };
 
   const graph = {
-    icon: "/assets/details.png",
+    icon: detailsIcon,
     title: "Price History",
     content: <Graph />,
   };
@@ -163,7 +173,7 @@ const SingleNFT = () => {
   };
 
   const attributesItem = {
-    icon: "/assets/description-icon.png",
+    icon: descriptionIcon,
     title: "Attributes",
     content: attributeContent(),
     // content: "attributeContent()"
@@ -256,30 +266,17 @@ const SingleNFT = () => {
             </div>
 
             <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    <img src="/assets/wallet-icon.png" alt="" />
-                    SOLD!
-                  </button>
-                  {/* <button className={classes.bid}><img src="/assets/bid.png" alt="" />Place Bid</button> */}
-                </>
-              ) : (
-                <>
-                  <button
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={buyNft}
-                  >
-                    <img src="/assets/wallet-icon.png" alt="" />
-                    Buy now
-                  </button>
-                  <button className={classes.bid}>
-                    <img src="/assets/bid.png" alt="" />
-                    Place Bid
-                  </button>
-                </>
-              )}
+              {
+                (nftDetails.sold ?
+                  <>
+                    <button className={classes.sold} disabled={nftDetails.sold} ><img src={walletIcon} alt="" />SOLD!</button>
+                  </>
+                  :
+                  <>
+                    <button className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}><img src={walletIcon} alt="" />Buy now</button>
+                    <button className={classes.bid}><img src={bidIcon} alt="" />Place Bid</button>
+                  </>
+                )}
             </div>
           </div>
           {/* PRICE HISTORY */}
@@ -333,32 +330,44 @@ const SingleNFT = () => {
         </div>
       </div>
 
-      {showSocial ? (
-        <div ref={wrapperRef} className={classes.share}>
-          <div className={classes.copy}>
-            <input
-              type="text"
-              value={url}
-              readOnly
-              className={classes.textArea}
-            />
-            <CopyToClipboard text={url} onCopy={onCopyText}>
-              <div className={classes.copy_area}>
-                {!isCopied ? (
-                  <img
-                    className={classes.shareicon}
-                    src="/assets/copy-solid.svg"
-                    alt=""
-                  />
-                ) : (
-                  <img
-                    className={classes.shareicon}
-                    src="/assets/copied.svg"
-                    alt=""
-                  />
-                )}
-              </div>
-            </CopyToClipboard>
+      {
+
+
+        showSocial ?
+        <div>
+          <div ref={wrapperRef} className={classes.share}>
+
+            <div className={classes.copy} >
+              <input
+                type="text"
+                value={url}
+                readOnly
+                className={classes.textArea}
+              />
+              <CopyToClipboard text={url} onCopy={onCopyText}>
+                <div className={classes.copy_area}>
+                  {
+                    !isCopied ?
+                      <img
+                        className={classes.shareicon} src={copyIcon} alt="" />
+                      :
+                      <img className={classes.shareicon} src={copiedIcon} alt="" />
+                  }
+
+                </div>
+              </CopyToClipboard>
+
+            </div>
+            <div className={classes.shareContent}>
+              {icons.map((icon) => {
+                return (
+                  <a href={icon.link} target="_blank">
+                    < img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
+                  </a>
+
+                )
+              })}
+            </div>
           </div>
           <div className={classes.shareContent}>
             {icons.map((icon) => {
@@ -375,7 +384,7 @@ const SingleNFT = () => {
             })}
           </div>
         </div>
-      ) : (
+       : (
         ""
       )}
     </div>

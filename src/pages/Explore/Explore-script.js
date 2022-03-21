@@ -5,19 +5,32 @@ export const mapAttributeToFilter = data => {
       if (attr.trait_type in attributes) {
         let obj = {}
         let newValue = [...attributes[attr.trait_type].value, attr.value]
+        let newRarity = [...attributes[attr.trait_type].rarity, attr.rarity]
         obj['trait_type'] = attr.trait_type
         obj['value'] = newValue
-        obj['rarity'] = attr.rarity
+        obj['rarity'] = newRarity
         attributes[attr.trait_type] = obj
       } else {
         let obj = {}
         obj['trait_type'] = attr.trait_type
         obj['value'] = [attr.value]
-        obj['rarity'] = attr.rarity
+        obj['rarity'] = [attr.rarity]
         attributes[attr.trait_type] = obj
       }
     })
   })
-
   return Object.keys(attributes).map(key => attributes[key]);
+}
+
+
+export const groupAttributesByTraitType = attributes => {
+  let obj = {};
+  attributes && attributes.length && attributes.forEach(attr => {
+    try {
+      obj[attr.trait_type] = [...obj[attr.trait_type], attr]
+    } catch (error) {
+      obj[attr.trait_type] = [attr]
+    }
+  });
+  return obj;
 }

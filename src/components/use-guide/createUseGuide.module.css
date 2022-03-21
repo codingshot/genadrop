@@ -90,6 +90,11 @@
   box-shadow: 0 0 15px gainsboro;
   transition: all 150ms;
   outline: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  text-transform: capitalize;
 }
 
 .introControl > button:hover,

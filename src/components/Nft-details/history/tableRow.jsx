@@ -1,5 +1,9 @@
 import React from 'react';
 import classes from './tableRow.module.css';
+import saleIcon from '../../../assets/sale-icon.png';
+import transferIcon from '../../../assets/transfer-icon.png';
+import mintIcon from '../../../assets/mint-icon.png';
+
 const TableRow = (data) => {
 
     function breakAddress(address = "", width = 6) {
@@ -8,7 +12,7 @@ const TableRow = (data) => {
         return `${address.slice(0, width)}...${address.slice(-width)}`
     }
 
-    const icons = ["/assets/sale-icon.png", "/assets/transfer-icon.png", "/assets/mint-icon.png"]
+    const icons = [saleIcon, transferIcon, mintIcon]
     const getDate = () => {
         const date = new Date(data.date.seconds * 1000)
         var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];

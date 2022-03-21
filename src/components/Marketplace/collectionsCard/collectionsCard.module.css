@@ -5,6 +5,7 @@
   background: white;
   transition: all 250ms;
   border: 1px solid gainsboro;
+  overflow: hidden;
 }
 
 .card:hover {
@@ -58,6 +59,8 @@
 .description {
   text-align: center;
   margin-bottom: 2em;
+  height: 4em;
+  overflow: auto;
 }
 
 .wrapper {
@@ -65,9 +68,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.floorPrice {
 }
 
 .floor {

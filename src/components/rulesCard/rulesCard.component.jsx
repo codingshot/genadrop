@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import { clearRule, deleteRule } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './rulesCard.module.css';
+import closeIcon from '../../assets/icon-close.svg';
 
 const RulesCard = () => {
   const { dispatch, rule } = useContext(GenContext)
@@ -31,7 +32,7 @@ const RulesCard = () => {
                   ))
                 }
               </div>
-              <img onClick={() => handleDelete(rl)} className={classes.icon} src="/assets/icon-close.svg" alt='' />
+              <img onClick={() => handleDelete(rl)} className={classes.icon} src={closeIcon} alt='' />
             </div>
           ))
         }

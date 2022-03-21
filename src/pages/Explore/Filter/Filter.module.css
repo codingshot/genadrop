@@ -4,6 +4,10 @@
   max-width: 20em;
   position: sticky;
   top: 5em;
+}
+
+.sideOverflowWrapper {
+  width: 100%;
   height: calc(100vh - 5.5em);
   overflow: auto;
 }
@@ -27,22 +31,7 @@
   color: var(--main-accent);
 }
 
-.filter button{
-  background: var(--main-accent);
-  color: white;
-  padding: 1em;
-  border-radius: 0.25em;
-  transition: all 300ms;
-}
-
-.filter button:hover {
-  background: var(--main-accent-dark);
-  outline: 2px solid var(--main-accent);
-}
-
-.attributeFilter .title,
-.priceFilter .title,
-.statusFilter .title {
+.attributeFilter .title  {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -52,7 +41,7 @@
   border-top: 2px solid gainsboro;
 }
 
-.statusFilter .filter {
+.statusFilter {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,7 +81,7 @@
   background: white;
 }
 
-.priceFilter .filter {
+.priceFilter {
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -106,13 +95,32 @@
   gap: 1em;
 }
 
-.priceFilter .filter > div {
+.priceFilter .filterInput input {
+  padding: 0.75em;
+  border-radius: 0.5em;
+  border: 1px solid gainsboro;
+}
+
+.priceFilter > div {
   width: auto;
   flex: 1;
 }
 
-.priceFilter .filter input {
+.priceFilter input {
   width: 100%;
+}
+
+.priceFilter button{
+  background: var(--main-accent);
+  color: white;
+  padding: 1em;
+  border-radius: 0.25em;
+  transition: all 300ms;
+}
+
+.priceFilter button:hover {
+  background: var(--main-accent-dark);
+  outline: 2px solid var(--main-accent);
 }
 
 .attributeFilter .title {
@@ -144,13 +152,27 @@
   border: 1px solid gainsboro;
 }
 
+.layerIcon {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+}
+
+.layerIcon img {
+  transform: rotate(0deg);
+}
+
+.layerIcon.active img {
+  transform: rotate(180deg);
+}
+
 .layer {
-  border: 1px solid gray;
   max-height: 0;
   overflow: hidden;
   visibility: hidden;
-  transition: all 250ms;
   border-radius: 0.25em;
+  background: gainsboro;
 }
 
 .layer.active {
@@ -161,9 +183,12 @@
 }
 
 .layer > div {
-  margin-bottom: 0.5em;
-  border: 1px solid gainsboro;
-  padding: 0.25em;
+  border: 1px solid white;
+  padding: 0.5em 0.25em;
+}
+
+.layer > div:hover {
+  background: gray;
 }
 
 .value {

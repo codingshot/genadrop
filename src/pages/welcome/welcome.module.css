@@ -1,0 +1,105 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100000;
+  /* background: #101824; */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-position: top;
+  background-size: 120% 120%;
+  background-repeat: no-repeat;
+  background-image: linear-gradient( to bottom, rgba(0,0,0, 1),rgba(0,0,0, 0.925)),
+  /* url('https://cdn.arstechnica.net/wp-content/uploads/2014/04/Water.jpg'); */
+  url('https://images.pexels.com/photos/1231622/pexels-photo-1231622.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500');
+  /* url('https://cdn.pixabay.com/photo/2014/12/24/05/02/drop-of-water-578897__480.jpg'); */
+  /* animation: wave 10s infinite alternate; */
+}
+
+.gena, .drop {
+  /* border: 1px solid red; */
+  font-size: 6rem;
+  font-weight: bold;
+  visibility: hidden;
+}
+
+.gena {
+  animation: enter-from-right 1.5s 300ms forwards;
+}
+
+.drop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: enter-from-left 1.5s 300ms forwards;
+}
+
+.imageContainer {
+  width: 0;
+  animation: open 1s 1s forwards;
+}
+
+.image {
+  /* border: 1px solid red; */
+  transform: translateY(-100%);
+  width: 0.75em;
+  visibility: hidden;
+  animation: drop 5s 2s forwards;
+}
+
+@keyframes enter-from-right {
+  from {transform: translate(0%, 15px); visibility: hidden;}
+  to {transform: translate(-30%, 15px); visibility: visible;}
+}
+
+@keyframes enter-from-left {
+  from {transform: translate(0%, -15px); visibility: hidden;;}
+  to {transform: translate(30%, -15px); visibility: visible;}
+}
+
+@keyframes open {
+  from {width: 0;}
+  to {width: 0.75em;}
+}
+
+@keyframes drop {
+  0% {transform: translateY(-200%); visibility: hidden;}
+  40%, 45% {transform: translateY(35px); visibility: visible;}
+  70% {transform: translateY(-5px); visibility: hidden;}
+  100% {transform: translateY(25px); visibility: visible;}
+}
+
+@keyframes wave {
+  0% {background-position: top left;}
+  25% {background-position: center;}
+  100% {background-position: bottom right;}
+}
+
+@media screen and (max-width: 540px) {
+  .gena, .drop {
+    font-size: 4rem;
+  }
+
+  @keyframes enter-from-right {
+    from {transform: translate(0%, 10px); visibility: hidden;}
+    to {transform: translate(-30%, 10px); visibility: visible;}
+  }
+  
+  @keyframes enter-from-left {
+    from {transform: translate(0%, -10px); visibility: hidden;;}
+    to {transform: translate(30%, -10px); visibility: visible;}
+  }
+
+  @keyframes drop {
+    0% {transform: translateY(-150%); visibility: hidden;}
+    40%, 45% {transform: translateY(30px); visibility: visible;}
+    70% {transform: translateY(-5px); visibility: hidden;}
+    100% {transform: translateY(20px); visibility: visible;}
+  }
+}
+

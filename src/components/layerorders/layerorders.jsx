@@ -9,6 +9,9 @@ import Prompt from '../prompt/prompt';
 import { v4 as uuid } from 'uuid';
 import { getItemStyle, getListStyle } from './layeroders-script';
 import { fetchCollections } from '../../utils/firebase';
+import editIcon from '../../assets/icon-edit.svg';
+import markIcon from '../../assets/icon-mark.svg';
+import plusIcon from '../../assets/icon-plus.svg';
 
 const LayerOrders = () => {
 
@@ -94,8 +97,8 @@ const LayerOrders = () => {
           }
           <div className={classes.editBtn}>
             {renameAction
-              ? <img onClick={handleRename} src="/assets/icon-mark.svg" alt="" />
-              : <img onClick={() => handleSetState({ renameAction: true })} src="/assets/icon-edit.svg" alt="" />
+              ? <img onClick={handleRename} src={markIcon} alt="" />
+              : <img onClick={() => handleSetState({ renameAction: true })} src={editIcon} alt="" />
             }
           </div>
         </div>
@@ -154,7 +157,7 @@ const LayerOrders = () => {
                 <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({ prompt })} />
               </div>
               :
-              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>Add Layer <img src="/assets/icon-plus.svg" alt="" /></button>
+              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>Add Layer <img src={plusIcon} alt="" /></button>
           }
         </div>
       </div>

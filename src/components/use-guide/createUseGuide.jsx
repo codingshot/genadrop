@@ -11,6 +11,9 @@ import image4 from '../../assets/create-use-guide4.svg'
 import image5 from '../../assets/create-use-guide5.svg'
 import image6 from '../../assets/create-use-guide6.svg'
 import image7 from '../../assets/create-use-guide7.svg'
+import closeIcon from '../../assets/icon-close.svg';
+import rightArrow from '../../assets/icon-arrow-right-long.svg';
+import leftArrow from '../../assets/icon-arrow-left-long.svg';
 
 const createGuideIntro = {
   "title": "Welcome to Genadrop",
@@ -102,8 +105,10 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
           ))
         }
       </div>
-      <button onClick={handlePrev} className={`${classes.prev} ${pointer > 1 && classes.active}`}>prev</button>
-      <button onClick={handleNext} className={`${classes.next} ${pointer < guideLength && classes.active}`}>next</button>
+      <button onClick={handlePrev} className={`${classes.prev} ${pointer > 1 && classes.active}`}>
+        <img src={leftArrow} alt="" />prev </button> 
+      <button onClick={handleNext} className={`${classes.next} ${pointer < guideLength && classes.active}`}>
+        next <img src={rightArrow} alt="" /></button>
     </div>
   );
 
@@ -136,7 +141,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   return (
     <div className={`${classes.container} ${toggleGuide && classes.active}`}>
       <div className={classes.guideContainer}>
-        {showGuide && <img onClick={handleCancel} className={classes.close} src="/assets/icon-close.svg" alt='' />}
+        {showGuide && <img onClick={handleCancel} className={classes.close} src={closeIcon} alt='' />}
         {showGuide ? content : intro}
         {showGuide ? control : introControl}
       </div>

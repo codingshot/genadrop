@@ -20,6 +20,9 @@ import { useHistory } from 'react-router-dom';
 import { getDefaultName } from '../../utils';
 import { handleDownload } from '../../utils/index2';
 import { fetchCollections } from '../../utils/firebase';
+import arrowIconLeft from '../../assets/icon-arrow-left.svg';
+import closeIcon from '../../assets/icon-close.svg';
+import warnIcon from '../../assets/icon-warn.svg';
 
 const Preview = () => {
 
@@ -176,7 +179,7 @@ const Preview = () => {
   return (
     <div className={classes.wrapper}>
       <div onClick={() => history.goBack()} className={classes.arrowBack}>
-        <img src="/assets/icon-arrow-left.svg" alt='' />
+        <img src={arrowIconLeft} alt='' />
       </div>
       <div className={classes.container}>
         <aside className={classes.sidebar}>
@@ -233,7 +236,7 @@ const Preview = () => {
             </div>
             <div>
               {
-                mintInfo ? <img src="/assets/icon-warn.svg" alt="" /> : null
+                mintInfo ? <img src={warnIcon} alt="" /> : null
               }
               <span>Unused Combinations</span>
               <span>{combinations - mintAmount - rule.length}</span>
@@ -269,7 +272,7 @@ const Preview = () => {
                         </div>
                       </div>
                       <div className={classes.iconClose}>
-                        <img src='/assets/icon-close.svg' alt='' onClick={() => handleDelete(id)} />
+                        <img src={closeIcon} alt='' onClick={() => handleDelete(id)} />
                       </div>
                     </div>
                   )

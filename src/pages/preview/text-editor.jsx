@@ -1,5 +1,7 @@
 import { useState } from "react";
 import classes from './text-editor.module.css'
+import editIcon from '../../assets/icon-edit.svg';
+import markIcon from '../../assets/icon-mark.svg';
 
 const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const [state, setState] = useState({
@@ -27,14 +29,14 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
           <form onSubmit={handleSubmit}>
             <input autoFocus type="text" value={value} onChange={e => handleSetState({ value: e.target.value })} />
             <button>
-            <img src="/assets/icon-mark.svg" alt="" />
+            <img src={markIcon} alt="" />
             </button>
           </form>
           :
           <div>
             <p>{placeholder}</p>
             <button type="button" onClick={() => handleSetState({ editor: true, value: placeholder })}>
-              <img src="/assets/icon-edit.svg" alt="" />
+              <img src={editIcon} alt="" />
             </button>
           </div>
       }

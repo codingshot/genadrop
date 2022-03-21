@@ -4,6 +4,9 @@ import { GenContext } from '../../../gen-state/gen.context';
 import { getSingleNfts } from '../../../utils';
 import NftCard from '../NftCard/NftCard';
 import classes from './SingleNft.module.css';
+import chevronDownIcon from '../../../assets/icon-chevron-down.svg';
+import chevronUpIcon from '../../../assets/icon-chevron-up.svg';
+import blank from '../../../assets/blank.png';
 
 const SingleNft = () => {
   const [state, setState] = useState({
@@ -34,8 +37,8 @@ const SingleNft = () => {
         <button onClick={() => handleSetState({ viewAll: !viewAll })}>
           view all {
             viewAll
-              ? <img src="/assets/icon-chevron-up.svg" alt="" />
-              : <img src="/assets/icon-chevron-down.svg" alt="" />
+              ? <img src={chevronUpIcon} alt="" />
+              : <img src={chevronDownIcon} alt="" />
           }
         </button>
       </div>
