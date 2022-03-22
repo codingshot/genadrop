@@ -150,7 +150,7 @@ const Dashboard = () => {
             />
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                <span>price {filter.price === 'low' ? <img src={arrowUp} alt="" /> : <img src={arrowDown} alt="" />}</span>
+              <span>price: {filter.price === 'low' ? "Low to High" : "High to Low"} </span>
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>

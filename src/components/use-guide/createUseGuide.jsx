@@ -76,7 +76,8 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   }
 
   const handleNext = () => {
-    if (pointer >= guideLength) return;
+    if (pointer == guideLength) 
+      return handleCancel();
     handleSetState({ pointer: pointer + 1 })
   }
 
@@ -152,7 +153,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   return (
     <div className={`${classes.container} ${toggleGuide && classes.active}`}>
       <div className={classes.guideContainer}>
-        {showGuide && <img onClick={handleCancel} className={classes.close} src={closeIcon} alt='' />}
+        {showGuide && <div className={classes.closeIconContainer}><img onClick={handleCancel} className={classes.close} src={closeIcon} alt='' /></div>}
         {showGuide ? content : intro}
         {showGuide ? control : introControl}
       </div>

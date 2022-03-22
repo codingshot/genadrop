@@ -51,7 +51,7 @@ const CollectionDescription = () => {
 
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Generate Amount</label>
+          <label htmlFor="generate amout"># to Generate</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>

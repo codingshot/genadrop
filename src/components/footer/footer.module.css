@@ -20,6 +20,10 @@
   padding: 2em;
 }
 
+.bottom .wrapper:hover {
+  text-decoration: underline;
+}
+
 .topLeft {
   width: auto;
   display: flex;
@@ -45,13 +49,12 @@
   padding: 0.5em;
   transition: all 300ms;
   border-radius: 0.25em;
-  background: #00CC9B;
+  background: #00cc9b;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0.5em;
   height: 2rem;
-
 }
 
 .socialIcons .icon:hover {
@@ -85,7 +88,7 @@
 
 .bottom {
   width: 100%;
-  background: #00CC9B;
+  background: #00cc9b;
   padding: 1em;
   color: white;
 }
