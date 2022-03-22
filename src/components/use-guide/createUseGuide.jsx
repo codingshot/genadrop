@@ -88,7 +88,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
   const handleCancel = () => {
     dispatch(setDidMout(true));
     setGuide(false);
-    handleSetState({pointer: 1})
+    handleSetState({ pointer: 1 })
   }
 
   const control = (
@@ -105,10 +105,21 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
           ))
         }
       </div>
-      <button onClick={handlePrev} className={`${classes.prev} ${pointer > 1 && classes.active}`}>
-        <img src={leftArrow} alt="" />prev </button> 
-      <button onClick={handleNext} className={`${classes.next} ${pointer < guideLength && classes.active}`}>
-        next <img src={rightArrow} alt="" /></button>
+      {
+        pointer > 1 && (
+          <button onClick={handlePrev} className={`${classes.prev} ${pointer > 1 && classes.active}`}>
+            <img src={leftArrow} alt="" />prev </button>
+        )
+      }
+
+      {
+        (pointer < guideLength) ?
+          <button onClick={handleNext} className={`${classes.next} ${pointer < guideLength && classes.active}`}>
+            next <img src={rightArrow} alt="" /></button>
+          :
+          <button onClick={handleCancel} className={`${classes.next} ${pointer < guideLength && classes.active}`}>
+            close </button>
+      }
     </div>
   );
 

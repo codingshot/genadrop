@@ -213,7 +213,7 @@ const AssetPreview = ({ data, changeFile }) => {
               <div className={classes.inputWrapper}>
                 <label>Chain</label>
                 <select value={chain} onChange={event => handleSetState({ chain: event.target.value })}>
-                  <option value="Algo">Algo</option>
+                  <option value="Algo">Algorand</option>
                   <option value="Celo">Celo</option>
                   <option value="Polygon">Polygon</option>
                   <option value="Near">Near</option>

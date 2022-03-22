@@ -78,10 +78,10 @@ const Collections = () => {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
         let data = transformArrayOfArraysToArrayOfObjects(result);
-
+        console.log('data: ', data);
         for (let d of data) {
           let response = await axios.get(d['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
-          // console.log(response);
+          console.log('response', response);
         }
         // handleSetState({ polyCollection: result });
         // console.log(result);
@@ -191,7 +191,7 @@ const Collections = () => {
             :
             !filteredCollection
               ?
-              <div className={classes.noResult}>not result found</div>
+              <div className={classes.noResult}>no result found</div>
               :
               <div className={classes.skeleton}>
                 {

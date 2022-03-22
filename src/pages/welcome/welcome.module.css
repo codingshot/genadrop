@@ -10,13 +10,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-position: bottom;
-  background-size: 120% 120%;
-  background-repeat: no-repeat;
   background: white;
-  /* background-image: linear-gradient( to bottom, rgba(255,255,255, 0.95),rgba(255,255,255, 0.95)),
-  url('https://cdn.pixabay.com/photo/2014/12/24/05/02/drop-of-water-578897__480.jpg');
-  animation: wave 4s 1.5s forwards; */
 }
 
 .gena, .drop {
@@ -45,7 +39,7 @@
   transform: translateY(-100%);
   width: 0.75em;
   visibility: hidden;
-  animation: drop 2s 1.5s forwards;
+  animation: drop 2150ms 1650ms forwards;
 }
 
 @keyframes enter-from-right {
@@ -64,17 +58,10 @@
 }
 
 @keyframes drop {
-  0% {transform: translateY(-200%); visibility: hidden;}
-  40%, 45% {transform: translateY(35px); visibility: visible;}
+  0% {transform: translateY(-100%); visibility: hidden;}
+  60% {transform: translateY(35px); visibility: visible;}
   70% {transform: translateY(-5px); visibility: hidden;}
   100% {transform: translateY(25px); visibility: visible;}
-}
-
-@keyframes wave {
-  0% {background-position: bottom;}
-  25% {background-position: top;}
-  75% {background-position: bottom;}
-  100% {background-position: top;}
 }
 
 @media screen and (max-width: 540px) {

@@ -134,7 +134,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                     onClick={() => handleFilterAttribute({ trait_type: attr.trait_type, value: val, rarity: attr.rarity[idx] })}
                                     className={classes.value}
                                   >
-                                    <span>{isSelected({ trait_type: attr.trait_type, value: val, rarity: attr.rarity[idx] }) ? '+' : '-'}</span>
+                                    <span className={classes.statusIcon}>{isSelected({ trait_type: attr.trait_type, value: val, rarity: attr.rarity[idx] }) ? '+' : '-'}</span>
                                     <span>{val}</span>
                                   </div>
                                 )
@@ -150,11 +150,9 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
             </div>
           </aside>
           :
-          <aside
-            onClick={() => handleSetState({ toggleFilter: !toggleFilter })}
-            className={classes.sidebar2}
+          <aside className={classes.sidebar2}
           >
-            <img src={arrowIconRight} alt="" />
+            <img onClick={() => handleSetState({ toggleFilter: !toggleFilter })} src={arrowIconRight} alt="" />
           </aside>
       }
     </>

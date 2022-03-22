@@ -4,9 +4,10 @@
   margin: 0 auto;
   margin-bottom: 4em;
   padding: 2em;
-  background: white;
   border-radius: 1em;
   overflow: auto;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;  
 }
 
 .container > input {

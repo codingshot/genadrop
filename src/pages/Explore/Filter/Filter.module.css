@@ -1,9 +1,11 @@
 .sidebar {
-  border: 1px solid gainsboro;
+  border-right: 1px solid gainsboro;
   width: 100%;
   max-width: 20em;
   position: sticky;
   top: 5em;
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
 }
 
 .sideOverflowWrapper {
@@ -18,6 +20,11 @@
   justify-content: space-between;
   padding: 1em;
   cursor: pointer;
+  transition: all 300ms;
+}
+
+.filterHeading:hover {
+  background: var(--main-hover);
 }
 
 .filterHeading > div {
@@ -201,20 +208,38 @@
   gap: 0.5em;
 }
 
-.value:hover {
-  background: gainsboro;
+.statusIcon {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.15em;
+  background: rgb(161, 160, 160);
 }
 
 .sidebar2 {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 1em 1.25em;
   height: calc(100vh - 5.5em);
-  border: 1px solid gainsboro;
+  border-right: 1px solid gainsboro;
   position: sticky;
   top: 5em;
   cursor: pointer;
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
+  overflow: hidden;
+}
+
+.sidebar2 img {
+  width: 100%;
+  padding: 1em;
+  transition: all 300ms;
+}
+
+.sidebar2 img:hover {
+  background: var(--main-hover);
 }
 
 @media screen and (max-width: 768px) {

@@ -119,7 +119,7 @@
 }
 
 .control .next {
-  background: gray;
+  background: var(--main-accent);
   color: white;
 }
 

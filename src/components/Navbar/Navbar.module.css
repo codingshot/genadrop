@@ -88,20 +88,27 @@
 .navItem {
   font-weight: 500;
   border-bottom: 2px solid transparent;
-  padding: 0.5em 1em;
   font-weight: 500;
-  transition: all 300ms;
-  border-radius: 0.25em;
+  transition: all 100ms;
 }
 
-.navItem:hover {
-  background: var(--main-hover);
+.navItem li {
+  padding: 0.5em 1em;
 }
 
-.navItem.active {
-  border-radius: 0;
-  background: var(--main-hover);
-  border-radius: 0.25em;
+.line {
+  width: 0%;
+  background: var(--main-accent);
+  height: 2.5px;
+  transition: all 650ms;
+}
+
+.navItem:hover .line {
+  width: 60%;
+}
+
+.navItem.active .line {
+  width: 100%;
 }
 
 .iconClose,
@@ -213,6 +220,14 @@
     font-weight: 700;
     border: 1px solid gainsboro;
     border-radius: 0.5em;
+  }
+
+  .navItem:hover {
+    background: var(--main-hover);
+  }
+
+  .line {
+    display: none;
   }
 
   .wallet {

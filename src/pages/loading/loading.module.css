@@ -1,23 +1,43 @@
-.container {
+.wrapper {
   width: 100%;
-  min-height: 60vh;
+  height: 26em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
+.loader {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   gap: 1em;
 }
 
-.container img {
-  animation: rotate 1600ms infinite;
-  width: 1.6em;
+.dotOne, .dotTwo, .dotThree {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  background: var(--main-accent-dark);
+  animation: blink 300ms infinite alternate linear;
 }
 
-.container p {
-  font-size: 1.2rem;
+.dotOne {
+  animation-delay: 0ms;
 }
 
-@keyframes rotate {
-  from{transform: rotate(0deg);}
-  to{transform: rotate(360deg);}
+.dotTwo {
+  animation-delay: 150ms;
+}
+
+.dotThree {
+  animation-delay: 300ms;
+}
+
+
+@keyframes blink {
+  from {background: white}
+  to {background: var(--main-accent)}
 }

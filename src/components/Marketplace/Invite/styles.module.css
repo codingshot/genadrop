@@ -3,8 +3,9 @@
   align-items: center;
   justify-content: space-between;
   padding: 3em 4em;
-  background: white;
   border-radius: 1em;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;
 }
 
 .container p {

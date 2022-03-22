@@ -7,20 +7,21 @@ import Copy from '../../../components/copy/copy';
 import { useEffect, useRef } from 'react';
 
 const Header = ({ collection, getHeight }) => {
+
+  const domMountRef = useRef(false)
   const headerRef = useRef(null)
   const { name, owner, price, imageUrl, numberOfNfts, description } = collection;
 
   useEffect(() => {
-    try {
-      window.addEventListener("resize", e => {
+    window.addEventListener("resize", e => {
+      if (domMountRef.current) {
         let res = headerRef.current.getBoundingClientRect().height;
         getHeight(res)
-      });
-      let res = headerRef.current.getBoundingClientRect().height;
-      getHeight(res + 50);
-    } catch (error) {
-      console.log(error);
-    }
+      } else {
+        domMountRef.current = true;
+      }
+    });
+    getHeight(500)
   }, []);
 
   return (
@@ -33,11 +34,26 @@ const Header = ({ collection, getHeight }) => {
         }
         <div className={classes.collectionName}>{name}</div>
         <div className={classes.creator}>
-          created by
-          <Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} />
+          {
+            owner ?
+              <div>
+                Created by <span className={classes.address}><Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} /></span>
+              </div>
+              :
+              <div className={classes.skeleton}>
+                <Skeleton count={1} height={16} />
+              </div>
+          }
         </div>
         <div className={classes.description}>
-          {description}
+          {
+            description ?
+              description
+              :
+              <div className={classes.skeleton}>
+                <Skeleton count={2} height={20} />
+              </div>
+          }
         </div>
       </div>
 
