@@ -9,6 +9,9 @@ import { getNftCollection, getNftCollections, getUserNftCollection } from '../..
 import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from '../../utils/firebase';
 import classes from './dashboard.module.css';
 import avatar from '../../assets/avatar.png';
+import dropdownIcon from '../../assets/icon-dropdown.svg';
+import arrowDown from '../../assets/icon-arrow-down-long.svg';
+import arrowUp from '../../assets/icon-arrow-up-long.svg';
 
 const Dashboard = () => {
 
@@ -79,7 +82,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!account) return
-    if(!filteredCollection) return
+    if (!filteredCollection) return
     let filtered = getCollectionToFilter().filter(col => {
       return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
     });
@@ -88,7 +91,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!account) return
-    if(!filteredCollection) return
+    if (!filteredCollection) return
     let filtered = null;
     if (filter.price === "low") {
       filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price))
@@ -116,7 +119,7 @@ const Dashboard = () => {
           </div>
 
           <div className={classes.address}>
-            <Copy message={account} placeholder={breakAddress(account)}/>
+            <Copy message={account} placeholder={breakAddress(account)} />
           </div>
           <Link to={`${url}/profile/settings`}>
             <div className={classes.profile}>Edit Profile</div>
@@ -146,12 +149,15 @@ const Dashboard = () => {
               placeholder='search'
             />
             <div className={classes.priceDropdown}>
-              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
-                {filter.price === 'low' ? 'Price: low to high' : 'Price: high to low'}
+              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
+              <span>price: {filter.price === 'low' ? "Low to High" : "High to Low"} </span>
+                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: !togglePriceFilter })}>price: low to high</div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: !togglePriceFilter })}>Price: high to low</div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
+                  price <img src={arrowUp} alt="" /></div>
+                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
+                  price <img src={arrowDown} alt="" /></div>
               </div>
             </div>
           </div>

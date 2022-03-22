@@ -2,15 +2,16 @@
   padding: 1em;
   padding-top: 2em;
   padding-bottom: 4em;
-  background: #E5E5E5;
+  background: white;
 }
 
 .innerContainer {
   max-width: 1440px;
   margin: 0 auto;
-  background: white;
   padding: 2em; 
   border-radius: 1em;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;
 }
 
 .header {

@@ -47,19 +47,21 @@
   align-items: center;
   justify-content: space-between;
   padding: 1em;
-  border-radius: 0.25em;
+  border-radius: 0.5em;
   gap: 1em;
+  border: 1px solid gainsboro;
 }
 
 .detailContentWrapper img {
   width: 1.4em;
 }
 
-.creator {
+.address {
   transition: all 300ms;
+  font-size: 0.85rem;
 }
 
-.creator:hover {
+.address:hover {
   color: var(--main-accent);
 }
 
@@ -78,8 +80,18 @@
 }
 
 .description {
-  max-width: 40em;
+  width: 100%;
+  max-width: 48em;
   text-align: center;
+}
+
+.creator .skeleton {
+  width: 16em;
+  padding: 0;
+}
+
+.description .skeleton {
+  width: 100%;
 }
 
 @media screen and (max-width: 768px) {

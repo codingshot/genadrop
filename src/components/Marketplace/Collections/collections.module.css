@@ -2,8 +2,9 @@
   width: 100%;
   padding: 2em;
   margin-bottom: 4em;
-  background: white;
   border-radius: 1em;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;
 }
 
 .heading {

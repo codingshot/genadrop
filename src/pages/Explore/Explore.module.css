@@ -4,7 +4,7 @@
   padding-top: 2em;
   padding-bottom: 6em;
   position: relative;
-  background: #E5E5E5;
+  background: white;
 }
 
 .displayContainer {
@@ -14,8 +14,9 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  background: white;
   border-radius: 1em;
+  background: white;
+  box-shadow: 0 0 15px gainsboro;
 }
 
 .displayWrapper {

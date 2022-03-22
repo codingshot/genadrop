@@ -76,7 +76,9 @@ const Footer = () => {
       </div>
       <div className={classes.bottom}>
         <div className={classes.wrapper}>
+          <a href="https://www.minorityprogrammers.com/" target="_blank" rel="noopener noreferrer">
           <div className={classes.build}>Built with <span>&#x2764;</span> by the Minority Programmers Association</div>
+          </a>
           <div className={classes.bottomRight}>
             <a href='/'>Privacy Policy</a>
             <a href='/'>Terms of Use</a>

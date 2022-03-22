@@ -78,10 +78,10 @@ const Collections = () => {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
         let data = transformArrayOfArraysToArrayOfObjects(result);
-
+        console.log('data: ', data);
         for (let d of data) {
           let response = await axios.get(d['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
-          // console.log(response);
+          console.log('response', response);
         }
         // handleSetState({ polyCollection: result });
         // console.log(result);
@@ -164,7 +164,7 @@ const Collections = () => {
 
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                <span>price {filter.price === 'low' ? <img src={arrowUp} alt="" /> : <img src={arrowDown} alt="" />}</span>
+                {filter.price === 'low' ? 'Price: Low to High' : 'Price: High to Low'}
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
@@ -191,7 +191,7 @@ const Collections = () => {
             :
             !filteredCollection
               ?
-              <div className={classes.noResult}>not result found</div>
+              <div className={classes.noResult}>no result found</div>
               :
               <div className={classes.skeleton}>
                 {

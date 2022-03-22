@@ -1,10 +1,15 @@
 import classes from './loading.module.css';
-import loadingIcon from '../../assets/icon-loading-dark.svg'
+import drop from '../../assets/drop.svg'
+
 const Loading = () => {
   return (
-    <div className={classes.container}>
-      <img src={loadingIcon} alt="" />
-      <p>Loading...</p>
+    <div className={classes.wrapper}>
+      <img src={drop} alt="" />
+      <div className={classes.loader}>
+        <div className={classes.dotOne}></div>
+        <div className={classes.dotTwo}></div>
+        <div className={classes.dotThree}></div>
+      </div>
     </div>
   )
 }
