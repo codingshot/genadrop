@@ -25,6 +25,7 @@
 
 .imageContainer img {
   width: 100%;
+  /* height: 100%; */
 }
 
 .cardBody {
@@ -43,6 +44,11 @@
 .name {
   margin-bottom: 1em;
   overflow: auto;
+}
+
+.usdPrice {
+  font-size: 0.7rem;
+  font-weight: lighter;
 }
 
 .wrapper {
