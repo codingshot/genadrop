@@ -30,7 +30,7 @@ const Mint = () => {
     let fileName = name[0];
     let fileType = name[1];
     let supportedTypes = ['zip', 'png', 'jpeg', 'jpg', 'webp'];
-    if(!supportedTypes.includes(fileType)) return;
+    if(!supportedTypes.includes(fileType.toLowerCase())) return;
 
     if (fileType === 'zip') {
       handleSetState({ zip: file, fileName })

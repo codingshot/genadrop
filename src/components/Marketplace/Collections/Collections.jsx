@@ -20,7 +20,7 @@ const Collections = () => {
     setState(state => ({ ...state, ...payload }))
   }
   const history = useHistory();
-  const match = useRouteMatch();
+  const { url } = useRouteMatch();
 
   useEffect(() => {
     if (Object.keys(collections).length) {
@@ -37,7 +37,7 @@ const Collections = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <h3>Top Collections</h3>
-        <button onClick={() => history.push(`${match.url}/collections`)}>view all</button>
+        <button onClick={() => history.push(`${url}/collections`)}>view all</button>
       </div>
 
       {

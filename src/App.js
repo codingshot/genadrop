@@ -27,6 +27,7 @@ const Collections = lazy(() => import('./pages/collections/collections'));
 const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
 const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
+const SingleNftCollection = lazy(() => import('./pages/singleMintCollection/singleNftCollection'));
 const SingleNFT = lazy(() => import('./pages/singleNFT/singleNFT'));
 const Listed = lazy(() => import('./pages/listNFT/listed'))
 // import Listed from './pages/listNFT/listed'
@@ -62,7 +63,8 @@ function App() {
                 <Route exact path="/preview" component={Preview} />
                 <Route exact path="/mint" component={Mint} />
                 <Route exact path="/marketplace" component={Marketplace} />
-                <Route exact path="/marketplace/nft/:nftId" component={SingleNFT} />
+                <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />  
+                <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} />
                 <Route exact path="/marketplace/collections" component={Collections} />
                 <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
                 <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />

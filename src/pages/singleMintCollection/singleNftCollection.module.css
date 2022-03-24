@@ -1,11 +1,13 @@
 .container {
+  width: 100%;
   padding: 1em;
   padding-top: 2em;
   padding-bottom: 4em;
   background: white;
 }
 
-.innerContainer {
+.innerContainer  {
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   padding: 2em; 
@@ -14,15 +16,19 @@
   box-shadow: 0 0 15px gainsboro;
 }
 
-.header {
-  width: 100%;
-  margin-bottom: 2.5em;
+.innerContainer > input {
+  display: none;
 }
 
-.header h1 {
-  font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 1em;
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+}
+
+.heading h3 {
+  font-size: 2rem;
 }
 
 .searchAndPriceFilter {
@@ -36,6 +42,7 @@
 
 .searchAndPriceFilter input {
   width: 100%;
+  min-width: 10em;
   flex: 1;
   padding: 0.5em;
   transition: all 300ms;
@@ -56,7 +63,7 @@
   z-index: 1 !important;
 }
 
-.chainDropdown,
+.chainDropdown, 
 .priceDropdown {
   position: relative;
   width: 12em;
@@ -82,13 +89,6 @@
   align-items: center;
   justify-content: space-between;
   text-transform: capitalize;
-  gap: 1em;
-}
-
-.selectedPrice span {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
   gap: 1em;
 }
 
@@ -118,7 +118,7 @@
   background: rgb(240, 240, 240);
 }
 
-.chainDropdown .dropdown,
+.chainDropdown .dropdown, 
 .priceDropdown .dropdown{
   width: 100%;
   left: 0;
@@ -134,14 +134,14 @@
   text-transform: capitalize;
 }
 
-.chainDropdown .dropdown.active,
+.chainDropdown .dropdown.active, 
 .priceDropdown .dropdown.active {
   visibility: visible;
   opacity: 1;
   transform: translateY(0em);
 }
 
-.chainDropdown .dropdown > div,
+.chainDropdown .dropdown > div, 
 .priceDropdown .dropdown > div {
   padding: 0.5em;
   border: 1px solid gainsboro;
@@ -151,12 +151,12 @@
   gap: 1em;
 }
 
-.chainDropdown .dropdown >div:hover,
+.chainDropdown .dropdown > div:hover, 
 .priceDropdown .dropdown > div:hover {
   background: rgb(240, 240, 240);
 }
 
-.chainDropdown .dropdown > div:last-child,
+.chainDropdown .dropdown > div:last-child, 
 .priceDropdown .dropdown > div:last-child {
   border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;
@@ -173,24 +173,23 @@
 .wrapper {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
-  gap: 2em;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1em;
 }
 
 .skeleton {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 2em;
 }
 
-.noResult {
-  width: 100%;
-  height: 12em;
-  text-transform: capitalize;
+@media screen and (max-width: 1200px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1000px) {
   .wrapper, .skeleton {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -198,11 +197,17 @@
 
 @media screen and (max-width: 900px) {
   .wrapper, .skeleton {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .heading h3 {
     font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper, .skeleton {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -227,3 +232,5 @@
     padding: 2em 1em;
   }
 }
+
+

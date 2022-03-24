@@ -39,7 +39,8 @@
   transform: translateY(-100%);
   width: 0.75em;
   visibility: hidden;
-  animation: drop 2150ms 1650ms forwards;
+  opacity: 0;
+  animation: drop 1650ms 1650ms forwards;
 }
 
 @keyframes enter-from-right {
@@ -58,10 +59,10 @@
 }
 
 @keyframes drop {
-  0% {transform: translateY(-100%); visibility: hidden;}
-  60% {transform: translateY(35px); visibility: visible;}
-  70% {transform: translateY(-5px); visibility: hidden;}
-  100% {transform: translateY(25px); visibility: visible;}
+  0% {transform: translateY(-100%); visibility: hidden; opacity: 0;}
+  60% {transform: translateY(35px); visibility: visible; opacity: 1;}
+  70% {transform: translateY(-5px); visibility: hidden; opacity: 1;}
+  100% {transform: translateY(25px); visibility: visible; opacity: 1;}
 }
 
 @media screen and (max-width: 540px) {
@@ -80,10 +81,10 @@
   }
 
   @keyframes drop {
-    0% {transform: translateY(-150%); visibility: hidden;}
-    40%, 45% {transform: translateY(30px); visibility: visible;}
-    70% {transform: translateY(-5px); visibility: hidden;}
-    100% {transform: translateY(20px); visibility: visible;}
+    0% {transform: translateY(-150%); visibility: hidden; opacity: 0;}
+    40%, 45% {transform: translateY(30px); visibility: visible; opacity: 1;}
+    70% {transform: translateY(-5px); visibility: hidden; opacity: 1;}
+    100% {transform: translateY(20px); visibility: visible; opacity: 1;}
   }
 }
 
