@@ -108,7 +108,7 @@ const SingleNftCollection = () => {
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         <div className={classes.heading}>
-          <h3>Single Mint</h3>
+          <h3>1 of 1s</h3>
         </div>
         <div className={classes.searchAndPriceFilter}>
           <input
