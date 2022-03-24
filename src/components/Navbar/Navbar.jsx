@@ -11,8 +11,8 @@ import hamburgerIcon from '../../assets/icon-hamburger.svg';
 const Navbar = () => {
   const [state, setState] = useState({
     dropdown: false
-  })
-  const { dropdown } = state
+  });
+  const { dropdown } = state;
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }

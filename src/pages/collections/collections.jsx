@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import classes from './collections.module.css';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -17,7 +16,6 @@ const Collections = () => {
   const domMountRef = useRef(false);
 
   const [state, setState] = useState({
-    algoCollection: null,
     togglePriceFilter: false,
     toggleChainFilter: false,
     filteredCollection: [],
@@ -67,7 +65,6 @@ const Collections = () => {
       (async function getAlgoCollection() {
         let collections = await fetchCollections();
         let result = await getNftCollections(collections)
-        console.log('result: ', result);
         handleSetState({ algoCollection: result })
       }())
     } catch (error) {
@@ -134,7 +131,7 @@ const Collections = () => {
               placeholder='search'
             />
 
-            <div className={classes.priceDropdown}>
+            <div className={classes.chainDropdown}>
               <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter, togglePriceFilter: false })} className={classes.selectedChain}>
                 <div>
                   <img src={chainIcon[filter.chain]} alt="" />
@@ -164,14 +161,14 @@ const Collections = () => {
 
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                {filter.price === 'low' ? 'Price: Low to High' : 'Price: High to Low'}
+                Price{filter.price === 'low' ? <span>Low to High</span> : <span>High to Low</span>}
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                  price <img src={arrowUp} alt="" /></div>
+                  price <span>Low to High</span> <img src={arrowUp} alt="" /></div>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                  price <img src={arrowDown} alt="" /></div>
+                  price <span>High to Low</span> <img src={arrowDown} alt="" /></div>
               </div>
             </div>
           </div>
@@ -182,7 +179,6 @@ const Collections = () => {
             <div className={classes.wrapper}>
               {
                 filteredCollection
-                  .filter((_, idx) => 10 > idx)
                   .map((collection, idx) => (
                     <CollectionsCard key={idx} collection={collection} />
                   ))
@@ -197,7 +193,11 @@ const Collections = () => {
                 {
                   (Array(4).fill(null)).map((_, idx) => (
                     <div key={idx}>
-                      <Skeleton count={1} height={300} />
+                      <Skeleton count={1} height={250} />
+                      <br />
+                      <Skeleton count={1} height={30} />
+                      <br />
+                      <Skeleton count={1} height={30} />
                     </div>
                   ))
                 }

@@ -13,6 +13,11 @@
   max-width: 15em;
 }
 
+.nftCardWrapper {
+  width: 100%;
+  max-width: 15em;
+}
+
 @media screen and (max-width: 768px) {
   .displayWrapper {
     width: 100%;
