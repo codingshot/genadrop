@@ -35,11 +35,11 @@ const FQA = () => {
     },
     {
       question: "Can I resell my art after its been minted on Genadrop ?",
-      answer: "Yes NFTs can be transfer and resold that have been minted on the respective public blockchains"
+      answer: "Yes NFTs can be transfer and resell arts that have been minted on the respective public blockchains"
     },
     {
       question: "How many editions of an NFT can create ?",
-      answer: "You can select how many NFTs (must be less than possible combinations that can be produced"
+      answer: "You can select how many NFTs (must be less than possible combinations that can be produced)"
     },
     {
       question: "What are some features of GenaDrop art generation tool ?",
