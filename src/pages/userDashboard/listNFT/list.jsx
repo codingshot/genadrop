@@ -32,7 +32,6 @@ const List = () => {
 
   const buyNft = async () => {
     let res = await PurchaseNft(nftDetails, account, connector);
-    console.log("final", res);
     alert(res);
   };
 
@@ -41,7 +40,6 @@ const List = () => {
     (async function getNftDetails() {
       let nftDetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails, isLoading: false });
-      console.log("-->", nftDetails);
     })();
 
     axios
@@ -54,7 +52,6 @@ const List = () => {
 
   useEffect(() => {
     if (!nftDetails) return;
-    console.log("==>", nftDetails);
   }, [nftDetails]);
 
   if (isLoading) {

@@ -42,7 +42,7 @@ const Explore = () => {
   }
 
   const getHeight = res => {
-    handleSetState({headerHeight: res})
+    handleSetState({ headerHeight: res })
   }
 
   useEffect(() => {
@@ -104,7 +104,6 @@ const Explore = () => {
       });
     });
     handleSetState({ FilteredCollection: filtered });
-    console.log(headerHeight);
     document.documentElement.scrollTop = headerHeight;
 
   }, [filter.attributes]);
