@@ -98,6 +98,9 @@ export const getSingleNfts = async nfts => {
       console.error('get collection result failed');
     }
   }
+
+  console.log("=====>", nftArr);
+
   return nftArr
 }
 
