@@ -36,8 +36,7 @@ let mintCollectionAbi = [
 ];
 
 let mintSingle = [
-  "function createToken(address to, string memory uri) public {}",
-  "event TokenInfo(address indexed _recipient, uint256 _id)"
+  "function mint(address to, uint256 id, uint256 amount, string memory uri, bytes memory data) public {}",
 ];
 
 let marketAi = [
@@ -194,18 +193,16 @@ export async function mintSingleToPoly(singleMintProps) {
     const signer = await connector.getSigner();
     dispatch(setLoader('uploading 1 of 1'))
     const asset = await connectAndMint(file, metadata, file.name);
+    let uintArray = asset.metadata.toLocaleString();
+    let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
     dispatch(setLoader('minting 1 of 1'))
     const contract = new ethers.Contract(process.env.REACT_APP_GENA_SINGLE_ADDRESS, mintSingle, signer)
     let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector)
     const marketContract = new ethers.Contract(process.env.REACT_APP_GENADROP_POLY_MARKET_ADDRESS, marketAbi, wallet)
     let txn;
     try {
-      txn = await contract.createToken(account, asset.url);
-      contract.on("TokenInfo", (_recipient, _id) => {
-        if (_recipient === account) {
-          let listingTx = marketContract.createMarketplaceItem(contract.address, _id, String(price*10**18), 'General', account)
-        }
-      })
+      txn = await contract.mint(account, id, 1, asset.url, '0x');
+      let listingTx = await marketContract.createMarketplaceItem(contract.address, id, String(price*10**18), 'General', account)
       dispatch(setLoader(''))
       return `https://mumbai.polygonscan.com/tx/${txn.hash}`;
     } catch (error) {
@@ -230,19 +227,16 @@ export async function mintSingleToCelo(singleMintProps) {
     const signer = await connector.getSigner();
     dispatch(setLoader('uploading 1 of 1'))
     const asset = await connectAndMint(file, metadata, file.name);
+    let uintArray = asset.metadata.toLocaleString();
+    let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
     dispatch(setLoader('minting 1 of 1'))
     const contract = new ethers.Contract(process.env.REACT_APP_CELO_SINGLE_ADDRESS, mintSingle, signer)
     let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector)
     const marketContract = new ethers.Contract(process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS, marketAbi, wallet)
     let txn;
     try {
-      txn = await contract.createToken(account, asset.url);
-      contract.on("TokenInfo", (_recipient, _id) => {
-        console.log(_recipient === account, _id.toString())
-        if (_recipient === account) {
-          let listingTx = marketContract.createMarketplaceItem(contract.address, 7, "100000000000000", 'General', account)
-        }
-      })
+      txn = await contract.mint(account, id, 1, asset.url, '0x');
+      // let listingTx = await marketContract.createMarketplaceItem(contract.address, id, String(price*10**18), 'General', account)
       dispatch(setLoader(''))
       return `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
     } catch (error) {
@@ -267,18 +261,16 @@ export async function mintSingleToNear(singleMintProps) {
     const signer = await connector.getSigner();
     dispatch(setLoader('uploading 1 of 1'))
     const asset = await connectAndMint(file, metadata, file.name);
+    let uintArray = asset.metadata.toLocaleString();
+    let id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
     dispatch(setLoader('minting 1 of 1'))
     const contract = new ethers.Contract(process.env.REACT_APP_AURORA_SINGLE_ADDRESS, mintSingle, signer)
     let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector)
     const marketContract = new ethers.Contract(process.env.REACT_APP_GENADROP_NEAR_MARKET_ADDRESS, marketAbi, wallet)
     let txn;
     try {
-      txn = await contract.createToken(account, asset.url);
-      contract.on("TokenInfo", (_recipient, _id) => {
-        if (_recipient === account) {
-          let listingTx = marketContract.createMarketplaceItem(contract.address, _id, String(price*10**18), 'General', account)
-        }
-      })
+      txn = await contract.mint(account, id, 1, asset.url, '0x');
+      let listingTx = await marketContract.createMarketplaceItem(contract.address, id, String(price*10**18), 'General', account)
       dispatch(setLoader(''))
       return `https://testnet.aurorascan.dev/tx/${txn.hash}`;
     } catch (error) {
