@@ -53,9 +53,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prod": "yarn run build && serve build",
-    "lint": "eslint \"./**/*.{js,jsx}\"",
-    "lint:fix": "npm run lint -- --fix"
+    "prod": "yarn run build && serve build"
   },
   "eslintConfig": {
     "extends": [
@@ -76,12 +74,16 @@
     ]
   },
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "eslint": "^8.4.1",
-    "eslint-config-airbnb": "^19.0.2",
-    "eslint-plugin-import": "^2.25.3",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.27.1",
-    "eslint-plugin-react-hooks": "^4.3.0"
+    "eslint": "8.2.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-node": "^4.1.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-jsx-a11y": "6.5.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.29.4",
+    "eslint-plugin-react-hooks": "4.3.0",
+    "prettier": "^2.6.1"
   }
 }
