@@ -112,6 +112,61 @@ function App() {
       </div>
     );
   }
+  return (
+    <div className="App">
+      <Navbar />
+      <div className="Routes">
+        <Switch>
+          <ErrorBoundary>
+            <Suspense fallback={<Loading />}>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/create" component={Create} />
+              <Route exact path="/preview" component={Preview} />
+              <Route exact path="/mint" component={Mint} />
+              <Route exact path="/marketplace" component={Marketplace} />
+              <Route
+                exact
+                path="/marketplace/single-mint"
+                component={SingleNftCollection}
+              />
+              <Route
+                exact
+                path="/marketplace/single-mint/:nftId"
+                component={SingleNFT}
+              />
+              <Route
+                exact
+                path="/marketplace/collections"
+                component={Collections}
+              />
+              <Route
+                exact
+                path="/marketplace/collections/:collectionName"
+                component={Explore}
+              />
+              <Route
+                exact
+                path="/marketplace/collections/:collectionName/:nftId"
+                component={CollectionNFT}
+              />
+              <Route exact path="/me/:userId" component={Dashboard} />
+              <Route exact path="/me/:userId/:nftId" component={List} />
+              <Route
+                exact
+                path="/me/:userId/profile/settings"
+                component={Profile}
+              />
+            </Suspense>
+          </ErrorBoundary>
+        </Switch>
+      </div>
+      <Footer />
+      <Overlay />
+      <Notification />
+      <Clipboard />
+      <Loader />
+    </div>
+  );
 }
 
 export default App;
