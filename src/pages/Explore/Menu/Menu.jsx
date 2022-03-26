@@ -9,7 +9,9 @@ const Menu = ({ NFTCollection }) => {
       {
         NFTCollection ?
           NFTCollection.map((nft, idx) => (
-            <NftCard key={idx} nft={nft} index={idx} />
+            <div className={classes.nftCardWrapper}>
+              <NftCard key={idx} nft={nft} index={idx} />
+            </div>
           ))
           :
           (Array(8).fill(null)).map((_, idx) => (

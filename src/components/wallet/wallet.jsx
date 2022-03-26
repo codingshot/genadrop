@@ -4,7 +4,7 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
 import { setConnector, setAccount, setNotification } from '../../gen-state/gen.actions';
 import userIcon from '../../assets/user.svg';
-// import switchIcon from '../../assets/icon-switch.svg';
+import switchIcon from '../../assets/icon-switch.svg';
 import copyIcon from '../../assets/icon-copy.svg';
 import disconnectIcon from '../../assets/icon-disconnect.svg';
 import { ethers } from "ethers";
@@ -17,6 +17,8 @@ function ConnectWallet({ setToggleNav }) {
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState('Copy Address');
+  const [network, setNetwork] = useState('mainnet');
+
   const clipboardRef = useRef(null);
 
   function breakAddress(address = "", width = 6) {
@@ -70,7 +72,7 @@ function ConnectWallet({ setToggleNav }) {
 
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
-    
+
 
 
     if (provider.connection.url === 'metamask') {
@@ -95,7 +97,7 @@ function ConnectWallet({ setToggleNav }) {
       connector.on("connect", (error, payload) => {
         console.log("connecting flight")
         if (error) {
-          
+
           dispatch(setNotification('No connected'))
           // feedbacktype: warn              
 
@@ -133,7 +135,12 @@ function ConnectWallet({ setToggleNav }) {
   };
 
   const handleSwitch = async () => {
-    // implement switch account functionality
+    if (network === 'mainnet') {
+      setNetwork('testnet')
+    } else {
+      setNetwork('mainnet')
+    }
+    setToggleDropdown(!toggleDropdown)
   }
 
   const handleCopy = props => {
@@ -151,23 +158,28 @@ function ConnectWallet({ setToggleNav }) {
 
   return (
     (account ?
-      <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
-        <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
-          <img src={userIcon} alt='' />
-        </div>
-        <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>{breakAddress(account)}</div>
-        <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
-          <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
-            <div>{clipboardState}</div> <img src={copyIcon} alt="" />
-            <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={account} />
+      <div className={classes.container}>
+        <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
+          <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
+            <img src={userIcon} alt='' />
           </div>
-          {/* <div className={classes.option}>
-            <div onClick={handleSwitch}>Switch Wallet</div> <img src={switchIcon} alt="" />
-          </div> */}
-          <div onClick={disconnect} className={classes.option}>
-            <div>Disconnect</div> <img src={disconnectIcon} alt="" />
+          <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
+            <span>{breakAddress(account)}</span>
+          </div>
+          <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
+            <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
+              <div>{clipboardState}</div> <img src={copyIcon} alt="" />
+              <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={account} />
+            </div>
+            <div onClick={handleSwitch} className={classes.option}>
+              <div>Switch to {network === "mainnet" ? "Testnet" : "Mainnet"}</div> <img src={switchIcon} alt="" />
+            </div>
+            <div onClick={disconnect} className={classes.option}>
+              <div>Disconnect</div> <img src={disconnectIcon} alt="" />
+            </div>
           </div>
         </div>
+        <div className={classes.network}>{network === 'mainnet' ? "Mainnet" : "Testnet"}</div>
       </div>
       :
       <div className={classes.connect} onClick={toggleWallet}>Connect Wallet</div>

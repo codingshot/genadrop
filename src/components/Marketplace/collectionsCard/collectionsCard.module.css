@@ -1,6 +1,6 @@
 .card {
   width: 100%;
-  max-width: 18em;
+  /* max-width: 18em; */
   border-radius: 0.5em;
   background: white;
   transition: all 250ms;

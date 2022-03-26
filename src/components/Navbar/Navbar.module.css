@@ -100,7 +100,7 @@
   width: 0%;
   background: var(--main-accent);
   height: 2.5px;
-  transition: all 650ms;
+  transition: all 300ms;
 }
 
 .navItem:hover .line {
@@ -118,7 +118,6 @@
 }
 
 .wallet {
-  min-width: 12em;
   text-align: right;
 }
 
