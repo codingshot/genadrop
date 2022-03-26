@@ -22,8 +22,8 @@ const Dashboard = () => {
       price: 'high',
     },
     activeDetail: 'created',
-    collectedNfts: null,
-    createdNfts: null,
+    collectedNfts: 0,
+    createdNfts: 0,
     myCollections: null,
     filteredCollection: null
   });
