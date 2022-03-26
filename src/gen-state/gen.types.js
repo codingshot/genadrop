@@ -33,7 +33,7 @@ const genActionTypes = {
   SET_FEEDBACK: 'SET_FEEDBACK',
   SET_CLIPBOARD: 'SET_CLIPBOARD',
   SET_LOADER: 'SET_LOADER',
-  SET_DID_MOUNT: 'SET_DID_MOUNT'
-}
+  SET_DID_MOUNT: 'SET_DID_MOUNT',
+};
 
 export default genActionTypes;
