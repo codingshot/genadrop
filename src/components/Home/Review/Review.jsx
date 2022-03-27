@@ -14,9 +14,9 @@ const Review = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>Some people think we’re <span>Pretty Cool.</span></div>
+      <div className={classes.heading}>Keep Up To Date for<span>Early Access.</span></div>
       <div className={classes.description}>
-        See what people on twitter are saying about GenaDrop.
+        See what the buzz about GenaDrop is on twitter.
       </div>
 
       <div className={classes.review}>
