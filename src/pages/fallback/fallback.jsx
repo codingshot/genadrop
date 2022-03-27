@@ -7,7 +7,7 @@ import homeWhite from "../../assets/home-white.svg";
 import { useState } from "react";
 
 const Fallback = () => {
-  const [changeImage, setChangeImage] = useState(home);
+  const [changeImage, setChangeImage] = useState(homeWhite);
   const history = useHistory();
   return (
     <div className={classes.container}>
