@@ -42,19 +42,19 @@ const Footer = () => {
             </a>
             <div className={classes.socialIcons}>
               <a className={classes.icon} href="https://discord.gg/4vdtmQqz6d">
-                <img src={discordIcon} alt="" />
+                <img src={discordIcon} alt="Minority Programmers Discord" />
               </a>
 
               <a className={classes.icon} href="https://twitter.com/minorityprogram">
-                <img src={twitterIcon} alt="" />
+                <img src={twitterIcon} alt="Minority Programmers Twitter" />
               </a>
 
               <a className={classes.icon} href="https://linkedin.com/company/minority-programmers/">
-                <img src={linkedInIcon} alt="" />
+                <img src={linkedInIcon} alt="Minoirty Programmers LinkedIn" />
               </a>
 
               <a className={classes.icon} href="https://youtube.com/c/minorityprogrammers">
-                <img src={youTubeIcon} alt="" />
+                <img src={youTubeIcon} alt="Minority Programmers Youtube" />
               </a>
             </div>
           </div>
@@ -65,7 +65,7 @@ const Footer = () => {
                   <div className={classes.title}>{link.title}</div>
                   {
                     link.content.map((link, idx) => (
-                      <a href={link.link} key={idx}>{link.name}</a>
+                      <a href={link.link} key={idx} target="_blank" rel="noopener noreferrer">{link.name}</a>
                     ))
                   }
                 </div>
