@@ -81,7 +81,13 @@
   width: 20px;
   height: 20px;
   margin-right: 10px;
+  transition: 0.4s;
   margin-bottom: 3px;
+  background: none;
+}
+
+.home img:hover {
+  background-color: var(--main-accent);
 }
 
 @media screen and (max-width: 768px) {
