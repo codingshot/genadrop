@@ -86,10 +86,6 @@
   background: none;
 }
 
-.home img:hover {
-  background-color: var(--main-accent);
-}
-
 @media screen and (max-width: 768px) {
   .container {
     padding-top: 2em;
