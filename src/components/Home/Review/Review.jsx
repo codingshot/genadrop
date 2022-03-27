@@ -4,10 +4,11 @@ import TweetEmbed from 'react-tweet-embed';
 const Review = () => {
 
   const reviews = [
-    "1473516385691062273",
-    "1484327197854736391",
+    "1473516385691062273", // near announcement
+//     "1484327197854736391",
     "1484447708668649475",
     "1473516385691062273",
+    "1507735586190381056", // feedback form tweet
   ]
 
   return (
