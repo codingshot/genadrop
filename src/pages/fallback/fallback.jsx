@@ -19,12 +19,14 @@ const Fallback = () => {
         </div>
       </div>
       <div className={classes["button-container"]}>
-        <button onClick={() => history.goBack()} className={classes["go-back"]}>
+        <div onClick={() => history.goBack()} className={classes["go-back"]}>
+          <img src={left} alt="" />
           Go Back
-        </button>
-        <button onClick={() => history.push("/")} className={classes["home"]}>
-          Take me Home
-        </button>
+        </div>
+        <div onClick={() => history.push("/")} className={classes["home"]}>
+          <img src={home} alt="" />
+          Take Me Home
+        </div>
       </div>
     </div>
   );

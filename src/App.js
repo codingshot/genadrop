@@ -21,10 +21,10 @@ const Mint = lazy(() => import("./pages/mint/mint"));
 const Marketplace = lazy(() => import("./pages/Marketplace/Marketplace"));
 const Preview = lazy(() => import("./pages/preview/preview"));
 const Explore = lazy(() => import("./pages/Explore/Explore"));
+const Fallback = lazy(() => import("./pages/fallback/fallback"));
 const CollectionNFT = lazy(() => import("./pages/collectionNFT/collectionNFT"));
 const Collections = lazy(() => import("./pages/collections/collections"));
 const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
-const pageNotFound = lazy(() => import("./pages/fallback/fallback"));
 const List = lazy(() => import("./pages/listNFT/list"));
 const Profile = lazy(() => import("./pages/profile/profile"));
 const SingleNftCollection = lazy(() =>
@@ -97,14 +97,13 @@ function App() {
                   path="/me/:userId/profile/settings"
                   component={Profile}
                 />
-                <Route exact path="/*" component={pageNotFound} />
+                <Route exact path="/404" component={Fallback} />
+                <Redirect to="/404" />
               </Suspense>
             </ErrorBoundary>
-            <Redirect to="/404" />
           </Switch>
         </div>
         <Footer />
-
         <Overlay />
         <Notification />
         <Clipboard />
@@ -112,61 +111,6 @@ function App() {
       </div>
     );
   }
-  return (
-    <div className="App">
-      <Navbar />
-      <div className="Routes">
-        <Switch>
-          <ErrorBoundary>
-            <Suspense fallback={<Loading />}>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/create" component={Create} />
-              <Route exact path="/preview" component={Preview} />
-              <Route exact path="/mint" component={Mint} />
-              <Route exact path="/marketplace" component={Marketplace} />
-              <Route
-                exact
-                path="/marketplace/single-mint"
-                component={SingleNftCollection}
-              />
-              <Route
-                exact
-                path="/marketplace/single-mint/:nftId"
-                component={SingleNFT}
-              />
-              <Route
-                exact
-                path="/marketplace/collections"
-                component={Collections}
-              />
-              <Route
-                exact
-                path="/marketplace/collections/:collectionName"
-                component={Explore}
-              />
-              <Route
-                exact
-                path="/marketplace/collections/:collectionName/:nftId"
-                component={CollectionNFT}
-              />
-              <Route exact path="/me/:userId" component={Dashboard} />
-              <Route exact path="/me/:userId/:nftId" component={List} />
-              <Route
-                exact
-                path="/me/:userId/profile/settings"
-                component={Profile}
-              />
-            </Suspense>
-          </ErrorBoundary>
-        </Switch>
-      </div>
-      <Footer />
-      <Overlay />
-      <Notification />
-      <Clipboard />
-      <Loader />
-    </div>
-  );
 }
 
 export default App;

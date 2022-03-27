@@ -37,6 +37,10 @@
 .go-back {
   width: 200px;
   height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   background: none;
   margin-right: 40px;
   color: var(--main-accent);
@@ -60,14 +64,24 @@
   color: white;
   font-size: 20px;
   transition: 0.4s;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   border: 1px solid var(--main-accent);
   font-weight: 600;
   border-radius: 100px;
 }
-
 .go-back img {
-  width: 24px;
-  height: 24px;
+  width: 25px;
+  height: 20px;
+  margin-right: 10px;
+}
+.home img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  margin-bottom: 3px;
 }
 
 @media screen and (max-width: 768px) {
@@ -89,7 +103,7 @@
   }
   .go-back,
   .home {
-    width: 150px;
+    width: 170px;
     height: 50px;
     font-size: 17px;
   }
