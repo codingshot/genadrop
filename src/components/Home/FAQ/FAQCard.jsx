@@ -13,7 +13,7 @@ const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) =>
     <div className={classes.container}>
       <div onClick={handleDropdown} className={classes.question}>
         <span>Q.</span>
-        <p>{question}</p>
+        <p className={classes.title}>{question}</p>
         <span>{dropdown === String(id) ? <img src={closeIcon} alt="" /> : <img src={openIcon} alt="" />}</span>
       </div>
       <div className={`${classes.answer} ${dropdown === String(id) && classes.dropdown}`}>

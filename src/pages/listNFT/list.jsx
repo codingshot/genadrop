@@ -54,7 +54,6 @@ const List = () => {
 
   useEffect(() => {
     if (!nftDetails) return;
-    console.log("==>", nftDetails);
   }, [nftDetails]);
 
 

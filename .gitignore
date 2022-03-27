@@ -10,6 +10,7 @@
 
 # production
 /build
+/Pull_Request_Template.md
 
 # misc
 .env

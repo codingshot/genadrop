@@ -12,7 +12,7 @@ import {
   renameAsset,
   updateLayer,
   addDescription,
-  deleteRule
+  deleteRule,
 } from './gen.utils';
 
 export const INITIAL_STATE = {
@@ -22,9 +22,9 @@ export const INITIAL_STATE = {
   combinations: 0,
   mintAmount: 0,
   outputFormat: 'ipfs',
-  mintInfo: "",
-  collectionName: "",
-  collectionDescription: "",
+  mintInfo: '',
+  collectionName: '',
+  collectionDescription: '',
   isLoading: false,
   currentDnaLayers: null,
   account: '',
@@ -36,189 +36,189 @@ export const INITIAL_STATE = {
   notification: '',
   clipboardMessage: '',
   loaderMessage: '',
-  didMount: false
-}
+  didMount: false,
+};
 
 export const genReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case genActionTypes.ORDER_LAYERS:
       return {
         ...state,
-        layers: action.payload
-      }
+        layers: action.payload,
+      };
     case genActionTypes.ADD_LAYER:
       return {
         ...state,
-        layers: addLayer(state.layers, action.payload)
-      }
+        layers: addLayer(state.layers, action.payload),
+      };
     case genActionTypes.REMOVE_LAYER:
       return {
         ...state,
-        layers: removeLayer(state.layers, action.payload)
-      }
+        layers: removeLayer(state.layers, action.payload),
+      };
     case genActionTypes.UPDATE_LAYER:
       return {
         ...state,
-        layers: updateLayer(state.layers, action.payload)
-      }
+        layers: updateLayer(state.layers, action.payload),
+      };
     case genActionTypes.ADD_IMAGE:
       return {
         ...state,
-        layers: addImage(state.layers, action.payload)
-      }
+        layers: addImage(state.layers, action.payload),
+      };
     case genActionTypes.REMOVE_IMAGE:
       return {
         ...state,
-        layers: removeImage(state.layers, action.payload)
-      }
+        layers: removeImage(state.layers, action.payload),
+      };
 
     case genActionTypes.UPDATE_IMAGE:
       return {
         ...state,
-        layers: updateImage(state.layers, action.payload)
-      }
+        layers: updateImage(state.layers, action.payload),
+      };
 
     case genActionTypes.ADD_PREVIEW:
       return {
         ...state,
-        preview: addPreview(state.preview, action.payload)
-      }
+        preview: addPreview(state.preview, action.payload),
+      };
     case genActionTypes.CLEAR_PREVIEW:
       return {
         ...state,
-        preview: []
-      }
+        preview: [],
+      };
     case genActionTypes.ADD_RULE:
       return {
         ...state,
-        rule: action.payload
-      }
+        rule: action.payload,
+      };
     case genActionTypes.CLEAR_RULE:
       return {
         ...state,
-        rule: []
-      }
+        rule: [],
+      };
     case genActionTypes.REMOVE_PREVIEW:
       return {
         ...state,
-        preview: removePreview(state.preview, action.payload)
-      }
+        preview: removePreview(state.preview, action.payload),
+      };
     case genActionTypes.UPDATE_PREVIEW:
       return {
         ...state,
-        preview: updatePreview(state.preview, action.payload)
-      }
+        preview: updatePreview(state.preview, action.payload),
+      };
     case genActionTypes.SET_MINT_AMOUNT:
       return {
         ...state,
-        mintAmount: action.payload
-      }
+        mintAmount: action.payload,
+      };
     case genActionTypes.SET_NFT_LAYERS:
       return {
         ...state,
-        nftLayers: action.payload
-      }
+        nftLayers: action.payload,
+      };
     case genActionTypes.SET_COMBINATIONS:
       return {
         ...state,
-        combinations: Math.ceil((80 / 100) * Number(action.payload))
-      }
+        combinations: Math.ceil((80 / 100) * Number(action.payload)),
+      };
     case genActionTypes.SET_LOADING:
       return {
         ...state,
-        isLoading: action.payload
-      }
+        isLoading: action.payload,
+      };
     case genActionTypes.SET_MINT_INFO:
       return {
         ...state,
-        mintInfo: action.payload
-      }
+        mintInfo: action.payload,
+      };
     case genActionTypes.DELETE_ASSET:
       return {
         ...state,
-        nftLayers: deleteAsset(state.nftLayers, action.payload)
-      }
+        nftLayers: deleteAsset(state.nftLayers, action.payload),
+      };
     case genActionTypes.SET_CURRENT_DNA_LAYERS:
       return {
         ...state,
-        currentDnaLayers: action.payload
-      }
+        currentDnaLayers: action.payload,
+      };
     case genActionTypes.RENAME_ASSET:
       return {
         ...state,
-        nftLayers: renameAsset(state.nftLayers, action.payload)
-      }
+        nftLayers: renameAsset(state.nftLayers, action.payload),
+      };
     case genActionTypes.ADD_DESCRIPTION:
       return {
         ...state,
-        nftLayers: addDescription(state.nftLayers, action.payload)
-      }
+        nftLayers: addDescription(state.nftLayers, action.payload),
+      };
     case genActionTypes.SET_COLLECTION_NAME:
       return {
         ...state,
-        collectionName: action.payload
-      }
+        collectionName: action.payload,
+      };
     case genActionTypes.SET_COLLECTION_DESCRIPTION:
       return {
         ...state,
-        collectionDescription: action.payload
-      }
+        collectionDescription: action.payload,
+      };
     case genActionTypes.SET_OUTPUT_FORMAT:
       return {
         ...state,
-        outputFormat: action.payload
-      }
+        outputFormat: action.payload,
+      };
     case genActionTypes.SET_ACCOUNT:
       return {
         ...state,
-        account: action.payload
-      }
+        account: action.payload,
+      };
     case genActionTypes.SET_CONNECTOR:
       return {
         ...state,
-        connector: action.payload
-      }
+        connector: action.payload,
+      };
     case genActionTypes.SET_CONFLICT_RULE:
       return {
         ...state,
-        isRule: action.payload
-      }
+        isRule: action.payload,
+      };
     case genActionTypes.DELETE_RULE:
       return {
         ...state,
-        rule: deleteRule(state.rule, action.payload)
-      }
+        rule: deleteRule(state.rule, action.payload),
+      };
     case genActionTypes.SET_COLLECTIONS:
       return {
         ...state,
-        collections: action.payload
-      }
+        collections: action.payload,
+      };
     case genActionTypes.SET_SINGLE_NFTS:
       return {
         ...state,
-        singleNfts: action.payload
-      }
+        singleNfts: action.payload,
+      };
     case genActionTypes.SET_FEEDBACK:
       return {
         ...state,
-        notification: action.payload
-      }
+        notification: action.payload,
+      };
     case genActionTypes.SET_CLIPBOARD:
       return {
         ...state,
-        clipboardMessage: action.payload
-      }
+        clipboardMessage: action.payload,
+      };
     case genActionTypes.SET_LOADER:
       return {
         ...state,
-        loaderMessage: action.payload
-      }
+        loaderMessage: action.payload,
+      };
     case genActionTypes.SET_DID_MOUNT:
       return {
         ...state,
-        didMount: action.payload
-      }
+        didMount: action.payload,
+      };
     default:
       return state;
   }
-}
+};

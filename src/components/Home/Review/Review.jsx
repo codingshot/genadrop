@@ -4,17 +4,19 @@ import TweetEmbed from 'react-tweet-embed';
 const Review = () => {
 
   const reviews = [
-    "1473516385691062273",
-    "1484327197854736391",
+    "1473516385691062273", // near announcement
+//     "1484327197854736391",
     "1484447708668649475",
-    "1473516385691062273",
+    "1486289656203427845,"
+//     "1473516385691062273",
+    "1507735586190381056", // feedback form tweet
   ]
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>Some people think we’re <span>Pretty Cool.</span></div>
+      <div className={classes.heading}>Keep Up To Date for<span>Early Access.</span></div>
       <div className={classes.description}>
-        See what people on twitter are saying about GenaDrop.
+        See what the buzz about GenaDrop is on twitter.
       </div>
 
       <div className={classes.review}>
