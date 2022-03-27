@@ -7,10 +7,10 @@ import youTubeIcon from "../../assets/icon-youtube.svg";
 
 const footerLinks = [
   {
-    "title": "Tools",
+    "title": "App",
     "content": [
       { "name": "Create", "link": "/create" },
-      { "name": "Mint", "link": "/mint/single-mint" },
+      { "name": "Mint", "link": "/mint" },
       { "name": "Marketplace", "link": "/marketplace" }
     ]
   },
@@ -19,13 +19,13 @@ const footerLinks = [
     "content": [
       { "name": "DAO", "link": "https://snapshot.org/#/minorityprogrammers.eth" },
       { "name": "MPA", "link": "https://www.minorityprogrammers.org" },
-      { "name": "MinorityNFT", "link": "https://www.minoritynft.com" }
+      { "name": "HERDrop", "link": "https://www.herdrop.com" }
     ]
   },
   {
     "title": "Support",
     "content": [
-      { "name": "FAQ", "link": "/" },
+      { "name": "Docs", "link": "https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs" },
       { "name": "Contact Us", "link": "https://linktr.ee/MinorityProgrammers" },
     ]
   }
@@ -41,19 +41,19 @@ const Footer = () => {
               <img src={logo} alt="" />
             </a>
             <div className={classes.socialIcons}>
-              <a className={classes.icon} href="https://discord.gg/4vdtmQqz6d">
+              <a className={classes.icon} href="https://discord.gg/4vdtmQqz6d" target="_blank" rel="noopener noreferrer">
                 <img src={discordIcon} alt="Minority Programmers Discord" />
               </a>
 
-              <a className={classes.icon} href="https://twitter.com/minorityprogram">
+              <a className={classes.icon} href="https://twitter.com/minorityprogram" target="_blank" rel="noopener noreferrer">
                 <img src={twitterIcon} alt="Minority Programmers Twitter" />
               </a>
 
-              <a className={classes.icon} href="https://linkedin.com/company/minority-programmers/">
+              <a className={classes.icon} href="https://linkedin.com/company/minority-programmers/" target="_blank" rel="noopener noreferrer">
                 <img src={linkedInIcon} alt="Minoirty Programmers LinkedIn" />
               </a>
 
-              <a className={classes.icon} href="https://youtube.com/c/minorityprogrammers">
+              <a className={classes.icon} href="https://youtube.com/c/minorityprogrammers" target="_blank" rel="noopener noreferrer">
                 <img src={youTubeIcon} alt="Minority Programmers Youtube" />
               </a>
             </div>
