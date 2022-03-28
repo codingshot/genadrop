@@ -87,7 +87,7 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOOR PRICE</div>
-            <div className={classes.price}>{price} <span className={classes.chain}>Algo ({dollarPrice} USD)</span></div>
+            <div className={classes.price}>{price} <span className={classes.chain}>Algo ({dollarPrice.toFixed(2)} USD)</span></div>
           </div>
           <img src={stackIcon} alt="" />
         </div>

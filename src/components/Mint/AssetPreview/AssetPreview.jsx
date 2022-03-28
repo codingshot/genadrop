@@ -255,7 +255,7 @@ const AssetPreview = ({ data, changeFile }) => {
                   chainId ?
                     <div className={classes.price}>
                       <input type="number" value={price} onChange={handlePrice} />
-                      <span>{dollarPrice} {getUintByChain[chain?.label]}</span>
+                      <span>{dollarPrice.toFixed(2)} {getUintByChain[chain?.label]}</span>
                     </div>
                     :
                     <span className={classes.warn}>Connect wallet to add price</span>
