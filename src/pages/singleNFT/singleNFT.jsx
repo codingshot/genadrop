@@ -101,15 +101,15 @@ const SingleNFT = () => {
   const icons = [
     {
       icon: facebookIcon,
-      link: "https://www.facebook.com"
+      link: "https://www.facebook.com/MinorityProgrammers"
     },
     {
       icon: instagramIcon,
-      link: "https://www.instagram.com"
+      link: "https://www.instagram.com/minorityprogrammers/"
     },
     {
       icon: twitterIcon,
-      link: "https://www.twitter.com/mpa"
+      link: "https://twitter.com/minorityprogram"
     },
   ];
 
@@ -340,11 +340,11 @@ const SingleNFT = () => {
               <div className={classes.copy} >
                 <input
                   type="text"
-                  value={url}
+                  value={window.location.href}
                   readOnly
                   className={classes.textArea}
                 />
-                <CopyToClipboard text={url} onCopy={onCopyText}>
+                <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                   <div className={classes.copy_area}>
                     {
                       !isCopied ?
