@@ -4,15 +4,29 @@ import stackIcon from '../../../assets/icon-stack.svg';
 import tradeIcon from '../../../assets/icon-trade.svg';
 import Skeleton from 'react-loading-skeleton';
 import Copy from '../../../components/copy/copy';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 const Header = ({ collection, getHeight }) => {
 
   const domMountRef = useRef(false)
   const headerRef = useRef(null)
   const { name, owner, price, imageUrl, numberOfNfts, description } = collection;
+  const [state, setState] = useState({ algoPrice: 0 })
+
+  const { algoPrice } = state;
+
+  const handleSetState = payload => {
+    setState(state => ({ ...state, ...payload }))
+  }
 
   useEffect(() => {
+    axios.get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .then(res => {
+        handleSetState({ algoPrice: res.data.data.amount * price })
+      })
+    document.documentElement.scrollTop = 0;
+
     window.addEventListener("resize", e => {
       if (domMountRef.current) {
         let res = headerRef.current.getBoundingClientRect().height;
@@ -61,7 +75,7 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOOR PRICE</div>
-            <div className={classes.price}>{price} <span className={classes.chain}>Algo</span></div>
+            <div className={classes.price}>{price} <span className={classes.chain}>Algo</span>  <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span></div>
           </div>
           <img src={stackIcon} alt="" />
         </div>
