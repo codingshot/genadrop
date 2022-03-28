@@ -120,18 +120,18 @@ const AssetPreview = ({ data, changeFile }) => {
     console.log('chainId: ', chainId);
     if (chainId) {
       const c = chains.find(c => c.networkId == chainId);
-      if (!c) return handleSetState({chain: {label: 'unsupported chain'}})
+      if (!c) return handleSetState({ chain: { label: 'unsupported chain' } })
       handleSetState({ chain: c })
-      if(c.symbol === 'NEAR'){
-      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`)
-        .then(res => {
-          handleSetState({ dollarPrice: res.data.near.usd * price })
-        })
-      }else {
-      axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`)
-        .then(res => {
-          handleSetState({ dollarPrice: res.data.data.amount * price })
-        })        
+      if (c.symbol === 'NEAR') {
+        axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`)
+          .then(res => {
+            handleSetState({ dollarPrice: price / res.data.near.usd })
+          })
+      } else {
+        axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`)
+          .then(res => {
+            handleSetState({ dollarPrice: price / res.data.data.amount })
+          })
       }
     }
   }, [price, chainId]);
@@ -255,7 +255,7 @@ const AssetPreview = ({ data, changeFile }) => {
                   chainId ?
                     <div className={classes.price}>
                       <input type="number" value={price} onChange={handlePrice} />
-                      <span>{dollarPrice} {getUintByChain[chain?.label]}</span>
+                      <span>~{dollarPrice.toFixed(3)} {getUintByChain[chain?.label]}</span>
                     </div>
                     :
                     <span className={classes.warn}>Connect wallet to add price</span>
