@@ -19,6 +19,7 @@ const GenContextProvider = ({ children }) => {
     collectionName,
     outputFormat,
     connector,
+    chainId,
     account,
     rule,
     isRule,
@@ -32,32 +33,31 @@ const GenContextProvider = ({ children }) => {
   } = state;
 
   return (
-    <GenContext.Provider
-      value={{
-        layers,
-        preview,
-        mintAmount,
-        nftLayers,
-        combinations,
-        isLoading,
-        mintInfo,
-        currentDnaLayers,
-        collectionName,
-        outputFormat,
-        connector,
-        account,
-        rule,
-        isRule,
-        collections,
-        notification,
-        clipboardMessage,
-        loaderMessage,
-        collectionDescription,
-        didMount,
-        singleNfts,
-        dispatch,
-      }}
-    >
+    <GenContext.Provider value={{
+      layers,
+      preview,
+      mintAmount,
+      nftLayers,
+      combinations,
+      isLoading,
+      mintInfo,
+      currentDnaLayers,
+      collectionName,
+      outputFormat,
+      connector,
+      chainId,
+      account,
+      rule,
+      isRule,
+      collections,
+      notification,
+      clipboardMessage,
+      loaderMessage,
+      collectionDescription,
+      didMount,
+      singleNfts,
+      dispatch
+    }}>
       {children}
     </GenContext.Provider>
   );

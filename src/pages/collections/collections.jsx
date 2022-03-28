@@ -11,6 +11,7 @@ import dropdownIcon from '../../assets/icon-dropdown.svg';
 import axios from 'axios';
 import arrowDown from '../../assets/icon-arrow-down-long.svg';
 import arrowUp from '../../assets/icon-arrow-up-long.svg';
+import NotFound from '../../components/not-found/notFound';
 
 const Collections = () => {
   const domMountRef = useRef(false);
@@ -45,7 +46,7 @@ const Collections = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const getCollectionToFilter = () => {
+  const getCollectionByChain = () => {
     switch (filter.chain) {
       case 'Algorand':
         return algoCollection
@@ -60,6 +61,7 @@ const Collections = () => {
     }
   }
 
+  // *************************get results from different blockchains**************************************
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
@@ -86,36 +88,51 @@ const Collections = () => {
       console.log(error);
     }
   }, []);
+  // **************************************************************************************************
 
+
+
+  // ***************************** get search result for different blockchains ************************
   useEffect(() => {
-    if (!algoCollection) return;
-    let filtered = algoCollection.filter(col => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
-    handleSetState({ filteredCollection: filtered });
+      let collection = getCollectionByChain();
+      if (!collection) return;
+      let filtered = collection.filter(col => {
+        return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
+      });
+      if (filtered.length) {
+        handleSetState({ filteredCollection: filtered });
+      } else {
+        handleSetState({ filteredCollection: null });
+      }
   }, [filter.searchValue]);
+  // ************************************************************************************************
 
-  useEffect(() => {
-    if (!algoCollection) return;
-    let filtered = null;
+
+
+  // ************************* sort by price function for different blockchains *********************
+  const sortPrice = collection => {
+    if (!collection) return handleSetState({ filteredCollection: null });
+    let sorted = [];
     if (filter.price === "low") {
-      filtered = algoCollection.sort((a, b) => Number(a.price) - Number(b.price))
+      sorted = collection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      filtered = algoCollection.sort((a, b) => Number(b.price) - Number(a.price))
+      sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
     }
-    handleSetState({ filteredCollection: filtered });
-  }, [filter.price]);
+    handleSetState({ filteredCollection: sorted });
+  }
+  // ************************************************************************************************
 
+
+
+  // ********************************* render blockchains *******************************************
   useEffect(() => {
     if (domMountRef.current) {
-      console.log('mounted');
-      let filteredCollection = getCollectionToFilter();
-      handleSetState({ filteredCollection })
+      sortPrice(getCollectionByChain());
     } else {
       domMountRef.current = true;
     }
-    console.log('dom');
-  }, [filter.chain, algoCollection, polyCollection, celoCollection, nearCollection]);
+  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, nearCollection]);
+  // **************************************************************************************************
 
   return (
     <div className={classes.container}>
@@ -186,7 +203,7 @@ const Collections = () => {
             :
             !filteredCollection
               ?
-              <div className={classes.noResult}>no result found</div>
+              <NotFound />
               :
               <div className={classes.skeleton}>
                 {

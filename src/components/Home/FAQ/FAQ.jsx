@@ -18,11 +18,7 @@ const FQA = () => {
       answer: "genadrop.com/docs"
     },
     {
-      question: "How do I start using GenaDrop?",
-      answer: "When you’re making a generative NFT collection, each final image will be made out of different traits that can be mixed and matched. First of all you must have basic assets for layers combination generation. Example: the main background layer, body, and few traits."
-    },
-    {
-      question: "what are the requirements for each asset?",
+      question: "what are the requirements for each asset ?",
       answer: "Each layer in the image represents a trait (Hair, Outfit, etc), and each trait will have many variants (Short Purple Hair, Long Purple Hair, etc). Draw each variant on a transparent .PNG file so all the layers will be visible. Each image should be the same size, You can add conflict rules to selected layers. Preview and download your collection."
     },
     {

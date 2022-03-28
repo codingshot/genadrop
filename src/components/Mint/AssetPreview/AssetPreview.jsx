@@ -5,19 +5,29 @@ import Attribute from '../Attribute/Attribute';
 import { handleMint, handleSingleMint } from './AssetPreview-script';
 import classes from './AssetPreview.module.css';
 import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
+import axios from 'axios';
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
-  const { dispatch, connector, account } = useContext(GenContext);
+  const { dispatch, connector, account, chainId } = useContext(GenContext);
   const [state, setState] = useState({
     attributes: { [Date.now()]: { trait_type: '', value: '' } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : '',
     price: '',
-    chain: 'Algo',
-    preview: false
+    chain: null,
+    preview: false,
+    dollarPrice: 0
   });
-  const { attributes, fileName, description, price, chain, preview } = state;
+  const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
+
+  const chains = [
+    { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
+    { label: 'Celo', networkId: 42220, symbol: "CGLD" },
+    { label: 'Polygon', networkId: 137, symbol: "MATIC" },
+    { label: 'Polygon Testnet', networkId: 80001, symbol: "MATIC" },
+    { label: 'Near', networkId: 1313161555, symbol: "NEAR" },
+  ]
 
   const mintProps = {
     dispatch,
@@ -26,11 +36,13 @@ const AssetPreview = ({ data, changeFile }) => {
     setClipboard,
     description,
     account,
+    chainId,
     connector,
     file: zip,
     fileName,
     price,
-    chain
+    chain: chain?.label,
+    dollarPrice
   };
 
   const singleMintProps = {
@@ -39,16 +51,26 @@ const AssetPreview = ({ data, changeFile }) => {
     setNotification,
     setClipboard,
     account,
+    chainId,
     connector,
     file: file[0],
     metadata: { name: fileName, description, attributes: Object.values(attributes) },
     fileName,
     price,
-    chain
+    chain: chain?.label,
+    dollarPrice
   };
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }));
+  }
+
+  const getUintByChain = {
+    'Algo': 'Algo',
+    'Celo': 'CGLD',
+    'Polygon': 'Matic',
+    'Polygon Testnet': 'Matic',
+    'Near': 'Near'
   }
 
   const handleAddAttribute = () => {
@@ -80,18 +102,40 @@ const AssetPreview = ({ data, changeFile }) => {
   }
 
   const handlePrice = event => {
-    handleSetState({ price: event.target.value })
+    handleSetState({ price: event.target.value });
   }
 
   const setMint = () => {
-    const result = /^[0-9]\d*(\.\d+)?$/.test(price);
-    if (!result) return dispatch(setNotification('please add a valid price'));
+    if (!chainId) return dispatch(setNotification('connect wallet and try again'));
+    const c = chains.find(c => c.networkId == chainId);
+    if (!c) return dispatch(setNotification('unsupported chain detected'));;
     if (file.length > 1) {
       handleMint(mintProps)
     } else {
       handleSingleMint(singleMintProps)
     }
   }
+
+  useEffect(() => {
+    console.log('chainId: ', chainId);
+    if (chainId) {
+      const c = chains.find(c => c.networkId == chainId);
+      if (!c) return handleSetState({chain: {label: 'unsupported chain'}})
+      handleSetState({ chain: c })
+      if(c.symbol === 'NEAR'){
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`)
+        .then(res => {
+          handleSetState({ dollarPrice: res.data.near.usd * price })
+        })
+      }else {
+      axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`)
+        .then(res => {
+          handleSetState({ dollarPrice: res.data.data.amount * price })
+        })        
+      }
+    }
+  }, [price, chainId]);
+
 
   return (
     <div className={classes.container}>
@@ -137,7 +181,7 @@ const AssetPreview = ({ data, changeFile }) => {
             <section className={classes.details}>
 
               <div className={classes.inputWrapper}>
-                <label> Title </label>
+                <label> Title <span className={classes.required}>*</span></label>
                 <input
                   style={metadata ? { pointerEvents: 'none' } : {}}
                   type="text"
@@ -147,7 +191,7 @@ const AssetPreview = ({ data, changeFile }) => {
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Description</label>
+                <label>Description <span className={classes.required}>*</span></label>
                 <textarea
                   style={metadata?.length === 1 ? { pointerEvents: 'none' } : {}}
                   rows="5"
@@ -157,7 +201,7 @@ const AssetPreview = ({ data, changeFile }) => {
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Attributes</label>
+                <label>Attributes <span className={classes.required}>*</span></label>
                 {
                   !metadata
                     ?
@@ -206,18 +250,21 @@ const AssetPreview = ({ data, changeFile }) => {
             <section className={classes.mintOptions}>
 
               <div className={classes.inputWrapper}>
-                <label>Price</label>
-                <input type="text" value={price} onChange={handlePrice} />
+                <label>Price (USD) <span className={classes.required}>*</span></label>
+                {
+                  chainId ?
+                    <div className={classes.price}>
+                      <input type="number" value={price} onChange={handlePrice} />
+                      <span>{dollarPrice} {getUintByChain[chain?.label]}</span>
+                    </div>
+                    :
+                    <span className={classes.warn}>Connect wallet to add price</span>
+                }
+
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Chain</label>
-                <select value={chain} onChange={event => handleSetState({ chain: event.target.value })}>
-                  <option value="Algo">Algorand</option>
-                  <option value="Celo">Celo</option>
-                  <option value="Polygon">Polygon</option>
-                  <option value="Near">Near</option>
-                </select>
+                <label>Chain: {chainId ? <span className={classes.chain} > {chain?.label}</span> : "---"} </label>
               </div>
             </section>
 

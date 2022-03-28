@@ -6,7 +6,6 @@ import FAQ from '../../components/Home/FAQ/FAQ';
 import Orgs from '../../components/Home/Orgs/Orgs';
 import classes from './home.module.css';
 import { Collectors, creators } from './home-script';
-import drop from '../../assets/drop.svg';
 
 const Home = () => {
   return (
