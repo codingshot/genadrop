@@ -27,6 +27,7 @@ export const INITIAL_STATE = {
   collectionDescription: '',
   isLoading: false,
   currentDnaLayers: null,
+  chainId: '',
   account: '',
   connector: null,
   isRule: false,
@@ -172,8 +173,13 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_ACCOUNT:
       return {
         ...state,
-        account: action.payload,
-      };
+        account: action.payload
+      }
+    case genActionTypes.SET_CHAIN_ID:
+    return {
+      ...state,
+      chainId: action.payload
+    }
     case genActionTypes.SET_CONNECTOR:
       return {
         ...state,

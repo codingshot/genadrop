@@ -1,57 +1,79 @@
 .container {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
   gap: 0.5em;
 }
 
 .connect {
-  display: inline-block;
+  width: 100%;
   padding: 0.5em 1.5em;
   border-radius: 0.35em;
   cursor: pointer;
   background: var(--card-bg);
   color: white;
+  text-align: center;
 }
 
 .connected {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5em;
   color: white;
   cursor: pointer;
   position: relative;
+  background: var(--main-accent);
+  transition: all 300ms;
+  padding: 0.25em 0.25em;
+  border-radius: 2em;
+}
+
+.connected:hover {
+  background: var(--main-accent-dark);
 }
 
 .user {
+  border: 1px solid var(--main-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0.25em;
+  cursor: pointer;
+}
+
+.user img {
+  width: 1em;
+  height: 1em;
+}
+
+.chain {
+  min-height: 1.5em;
+  min-width: 1.5em;
   align-self: stretch;
   border: 1px solid transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 0.5em;
-  background: #EAFFFC;
-  border: 1px solid var(--main-accent);
-  border-top-left-radius: 0.25em;
-  border-bottom-left-radius: 0.25em;
+  background: white;
+  border-radius: 50%;
 }
 
-.user:hover {
+.chain:hover {
   background: #c9fff7;
   transition: all 300ms;
 }
 
-.user img {
-  width: 0.85em;
+.chain img {
+  width: 100%;
 }
 
 .address {
-  padding: 0.5em;
-  background: var(--main-accent);
+  flex: 1;
   color: var(--main-bg);
-  border-top-right-radius: 0.25em;
-  border-bottom-right-radius: 0.25em;
-  transition: all 300ms;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -63,12 +85,9 @@
   font-size: 0.85rem;
 }
 
-.address:hover {
-  background: var(--main-accent-dark);
-}
-
 .dropdown {
-  width: 16em;
+  width: 100%;
+  min-width: 16em;
   display: flex;
   flex-direction: column;
   align-items: stretch;

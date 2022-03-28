@@ -1,14 +1,14 @@
-import { useContext, useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { GenContext } from '../../gen-state/gen.context';
 import { getSingleNfts } from '../../utils';
 import classes from './singleNftCollection.module.css';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
 import { chainIcon } from './singleNftCollection.script';
 import dropdownIcon from '../../assets/icon-dropdown.svg';
-import axios from 'axios';
 import arrowDown from '../../assets/icon-arrow-down-long.svg';
 import arrowUp from '../../assets/icon-arrow-up-long.svg';
+import { readAllSingleNft } from '../../utils/firebase';
+import NotFound from '../../components/not-found/notFound';
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
@@ -21,7 +21,6 @@ const SingleNftCollection = () => {
     polyCollection: null,
     celoCollection: null,
     nearCollection: null,
-    allSingleNfts: null,
     filter: {
       searchValue: '',
       price: 'high',
@@ -30,7 +29,6 @@ const SingleNftCollection = () => {
   });
 
   const {
-    allSingleNfts,
     algoCollection,
     polyCollection,
     celoCollection,
@@ -41,7 +39,7 @@ const SingleNftCollection = () => {
     filteredCollection
   } = state;
 
-  const getCollectionToFilter = () => {
+  const getCollectionByChain = () => {
     switch (filter.chain) {
       case 'Algorand':
         return algoCollection
@@ -55,53 +53,73 @@ const SingleNftCollection = () => {
         break;
     }
   }
-  
+
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const { singleNfts } = useContext(GenContext);
-
+  // ****************************** get singleNft collections for all the blockchains ******************
   useEffect(() => {
-    if (singleNfts.length) {
-      (async function getResult() {
-        let result = await getSingleNfts(singleNfts);
+    try {
+      (async function getAlgoSingleNftCollection() {
+        const singleNftCollections = await readAllSingleNft();
+        const result = await getSingleNfts(singleNftCollections);
+        console.log('single result: ', result);
         handleSetState({
-          allSingleNfts: result
+          algoCollection: result
         })
       }())
+    } catch (error) {
+      console.log(error)
     }
-  }, [singleNfts]);
 
-  // useEffect(() => {
-  //   if (!algoCollection) return;
-  //   let filtered = algoCollection.filter(col => {
-  //     return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-  //   });
-  //   handleSetState({ filteredCollection: filtered });
-  // }, [filter.searchValue]);
+    // get singleNftCollection for other chains: polygon|celo|near
+  }, []);
+  // **************************************************************************************************
 
-  // useEffect(() => {
-  //   if (!algoCollection) return;
-  //   let filtered = null;
-  //   if (filter.price === "low") {
-  //     filtered = algoCollection.sort((a, b) => Number(a.price) - Number(b.price))
-  //   } else {
-  //     filtered = algoCollection.sort((a, b) => Number(b.price) - Number(a.price))
-  //   }
-  //   handleSetState({ filteredCollection: filtered });
-  // }, [filter.price]);
 
-  // useEffect(() => {
-  //   if (domMountRef.current) {
-  //     console.log('mounted');
-  //     let filteredCollection = getCollectionToFilter();
-  //     handleSetState({ filteredCollection })
-  //   } else {
-  //     domMountRef.current = true;
-  //   }
-  //   console.log('dom');
-  // }, [filter.chain, algoCollection, polyCollection, celoCollection, nearCollection]);
+
+  // ***************************** get search result for different blockchains ************************
+  useEffect(() => {
+    let collection = getCollectionByChain();
+    if (!collection) return;
+    let filtered = collection.filter(col => {
+      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
+    });
+    if (filtered.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  }, [filter.searchValue]);
+  // ************************************************************************************************
+
+
+
+  // ************************* sort by price function for different blockchains *********************
+  const sortPrice = collection => {
+    if (!collection) return handleSetState({ filteredCollection: null });
+    let sorted = [];
+    if (filter.price === "low") {
+      sorted = collection.sort((a, b) => Number(a.price) - Number(b.price));
+    } else {
+      sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
+    }
+    handleSetState({ filteredCollection: sorted });
+  }
+  // ************************************************************************************************
+
+
+
+  // ********************************* render blockchains *******************************************
+  useEffect(() => {
+    if (domMountRef.current) {
+      sortPrice(getCollectionByChain());
+    } else {
+      domMountRef.current = true;
+    }
+  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, nearCollection]);
+  // **************************************************************************************************
 
 
   return (
@@ -159,21 +177,32 @@ const SingleNftCollection = () => {
             </div>
           </div>
         </div>
-        <div className={classes.wrapper}>
-          {
-            allSingleNfts ? allSingleNfts
-              .map((nft, idx) => (
-                <NftCard key={idx} nft={nft} />
-              ))
+        {
+          filteredCollection?.length ?
+            <div className={classes.wrapper}>
+              {
+                filteredCollection
+                  .map((nft, idx) => (
+                    <NftCard key={idx} nft={nft} />
+                  ))
+              }
+            </div>
+            :
+            !filteredCollection
+              ?
+              <NotFound />
               :
-              (Array(5).fill(null)).map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={200} />
-                  <Skeleton count={3} height={40} />
-                </div>
-              ))
-          }
-        </div>
+              <div className={classes.skeleton}>
+                {
+                  (Array(5).fill(null)).map((_, idx) => (
+                    <div key={idx}>
+                      <Skeleton count={1} height={200} />
+                      <Skeleton count={3} height={40} />
+                    </div>
+                  ))
+                }
+              </div>
+        }
       </div>
     </div>
   )

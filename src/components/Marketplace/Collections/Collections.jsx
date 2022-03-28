@@ -1,21 +1,22 @@
-import { useContext } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useState } from 'react';
-import { GenContext } from '../../../gen-state/gen.context';
 import classes from './collections.module.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { getNftCollections } from '../../../utils';
 import CollectionsCard from '../collectionsCard/collectionsCard';
+import { fetchCollections } from '../../../utils/firebase';
+import NotFound from '../../not-found/notFound';
+import { GenContext } from '../../../gen-state/gen.context';
 
 const Collections = () => {
 
   const [state, setState] = useState({
-    allCollections: null
+    algoCollection: []
   })
   const { collections, mainnet } = useContext(GenContext)
-  const { allCollections } = state
+  const { algoCollection } = state
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
@@ -23,19 +24,18 @@ const Collections = () => {
   const { url } = useRouteMatch();
 
   useEffect(() => {
-    console.log('nipghkeys', Object.keys(collections).length)
-    if (Object.keys(collections).length) {
-      (async function getResult() {
-        let result = await getNftCollections(collections, mainnet);
-        console.log(result)
-        handleSetState({
-          allCollections: result
-        })
-      }());
-    } else {
-      handleSetState({
-        allCollections: []
-      })
+    try {
+      (async function getAlgoCollection() {
+        //let collections = await fetchCollections();
+        if (collections?.length) {
+          let result = await getNftCollections(collections, mainnet)
+          handleSetState({ algoCollection: result })
+        } else {
+          handleSetState({ algoCollection: null })
+        }
+      }())
+    } catch (error) {
+      console.log(error);
     }
   }, [collections]);
 
@@ -47,10 +47,10 @@ const Collections = () => {
       </div>
 
       {
-        allCollections ?
+        algoCollection?.length ?
           <div className={classes.wrapper}>
             {
-              allCollections
+              algoCollection
                 .filter((_, idx) => 10 > idx)
                 .map((collection, idx) => (
                   <CollectionsCard key={idx} collection={collection} />
@@ -58,19 +58,23 @@ const Collections = () => {
             }
           </div>
           :
-          <div className={classes.skeleton}>
-            {
-              (Array(4).fill(null)).map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={250} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                </div>
-              ))
-            }
-          </div>
+          !algoCollection
+            ?
+            <h1 className={classes.noResult}> No Result Found.</h1>
+            :
+            <div className={classes.skeleton}>
+              {
+                (Array(4).fill(null)).map((_, idx) => (
+                  <div key={idx}>
+                    <Skeleton count={1} height={250} />
+                    <br />
+                    <Skeleton count={1} height={30} />
+                    <br />
+                    <Skeleton count={1} height={30} />
+                  </div>
+                ))
+              }
+            </div>
       }
     </div>
   )

@@ -756,7 +756,7 @@ export async function PurchaseNft(asset, account, connector, mainnet) {
 }
 
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
-export async function getAlgoData(id) {
+export async function getAlgoData(mainnet, id) {
   initAlgoClients(mainnet);
   let data = await algodClient.getAssetByID(id).do();
   return data;

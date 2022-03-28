@@ -82,7 +82,7 @@
   gap: 1em;
   font-size: 1rem;
   text-transform: capitalize;
-  margin-right: 2em;
+  margin-right: 10vw;
 }
 
 .navItem {
@@ -118,6 +118,7 @@
 }
 
 .wallet {
+  width: 100%;
   text-align: right;
 }
 
@@ -131,24 +132,18 @@
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 768px) {
+
+  .container {
+    background: var(--main-bg);
+  }
+
   .container input {
     max-width: 12em;
   }
 
   .navList {
     margin-right: 0;
-  }
-}
-
-.logoDesktop{
-  height: 3em;
-}
-
-@media screen and (max-width: 768px) {
-
-  .container {
-    background: var(--main-bg);
   }
 
   .logoDesktop {

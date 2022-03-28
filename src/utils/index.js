@@ -125,6 +125,7 @@ export const getSingleNfts = async (mainnet, nfts) => {
       nftObj.name = response.data.name;
       nftObj.description = response.data.description;
       nftArr.push(nftObj);
+      return nftArr;
     } catch (error) {
       console.error('get collection result failed');
     }

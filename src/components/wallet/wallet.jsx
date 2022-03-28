@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react'
 import classes from './wallet.module.css';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
-import { setConnector, setAccount, setNotification, setMainnet } from '../../gen-state/gen.actions';
+import { setConnector, setAccount, setNotification, setChainId, setMainnet } from '../../gen-state/gen.actions';
 import userIcon from '../../assets/user.svg';
 import switchIcon from '../../assets/icon-switch.svg';
 import copyIcon from '../../assets/icon-copy.svg';
@@ -10,10 +10,30 @@ import disconnectIcon from '../../assets/icon-disconnect.svg';
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { useHistory } from 'react-router-dom';
+import polygonIcon from '../../assets/icon-polygon.svg';
+import algoIcon from '../../assets/icon-algo.svg';
+import nearIcon from '../../assets/icon-near.svg';
+import celoIcon from '../../assets/icon-celo.svg';
 
+const chainIcon = {
+  "Polygon": polygonIcon,
+  "Polygon Testnet": polygonIcon,
+  "Algorand": algoIcon,
+  "Near": nearIcon,
+  "Celo": celoIcon
+}
+
+const chains = [
+  { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
+  { label: 'Celo', networkId: 42220, symbol: "CGLD" },
+  { label: 'Polygon', networkId: 137, symbol: "MATIC" },
+  { label: 'Polygon Testnet', networkId: 80001, symbol: "MATIC" },
+  { label: 'Near', networkId: 1313161555, symbol: "NEAR" },
+]
 
 function ConnectWallet({ setToggleNav }) {
-  const { dispatch, connector, account, mainnet } = useContext(GenContext);
+  const history = useHistory();
+  const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState('Copy Address');
@@ -49,7 +69,9 @@ function ConnectWallet({ setToggleNav }) {
       // const clear = await web3Modal.clearCachedProvider();
       dispatch(setAccount(''));
       dispatch(setConnector())
+      dispatch(setChainId(''))
       setDropdown(false);
+      // history.push('/marketplace');
       setToggleDropdown(false)
     }
   }
@@ -76,17 +98,22 @@ function ConnectWallet({ setToggleNav }) {
 
 
     if (provider.connection.url === 'metamask') {
+
       await dispatch(setConnector(provider));
+      await dispatch(setChainId(window.ethereum.networkVersion))
       const account = await signer.getAddress();
       dispatch(setAccount(account));
       connector.on("accountsChanged", (accounts) => {
         dispatch(setAccount(accounts[0]));
       });
       connector.on("chainChanged", (chainId) => {
-        console.log(connector)
         const provider = new ethers.providers.Web3Provider(connector);
         dispatch(setConnector(provider));;
       });
+      connector.on("networkChanged", (networkId) => {
+        dispatch(setChainId(networkId));
+      });
+
     } else {
       await dispatch(setConnector(connector));
       if (!connector.connected) {
@@ -122,6 +149,8 @@ function ConnectWallet({ setToggleNav }) {
 
       if (connector.connected) {
         const { accounts } = connector;
+        dispatch(setChainId(connector.chainId));
+
         dispatch(setAccount(accounts[0]));
       }
 
@@ -156,14 +185,18 @@ function ConnectWallet({ setToggleNav }) {
     }, 850);
   }
 
-  const history = useHistory();
+  const getConnectedChain = () => {
+    const c = chains.find(c => c.networkId == chainId);
+    if (!c) return 
+    return c.label
+  }
 
   return (
     (account ?
       <div className={classes.container}>
         <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
-          <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
-            <img src={userIcon} alt='' />
+          <div onClick={() => { setToggleDropdown(false); setToggleNav(false) }} className={classes.chain}>
+            <img src={chainIcon[getConnectedChain()]} alt='' />
           </div>
           <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
             <span>{breakAddress(account)}</span>
@@ -182,6 +215,9 @@ function ConnectWallet({ setToggleNav }) {
           </div>
         </div>
         <div className={classes.network}>{network === 'mainnet' ? "Mainnet" : "Testnet"}</div>
+        <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
+          <img src={userIcon} alt='' />
+        </div>
       </div>
       :
       <div className={classes.connect} onClick={toggleWallet}>Connect Wallet</div>
