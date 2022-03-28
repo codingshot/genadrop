@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom';
 
 
 function ConnectWallet({ setToggleNav }) {
+  const history = useHistory();
   const { dispatch, connector, account } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -50,6 +51,7 @@ function ConnectWallet({ setToggleNav }) {
       dispatch(setAccount(''));
       dispatch(setConnector())
       setDropdown(false);
+      history.push('./marketplace')
       setToggleDropdown(false)
     }
   }
@@ -153,8 +155,6 @@ function ConnectWallet({ setToggleNav }) {
       setClipboardState('Copy Address')
     }, 850);
   }
-
-  const history = useHistory();
 
   return (
     (account ?

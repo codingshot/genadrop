@@ -5,6 +5,7 @@ import Attribute from '../Attribute/Attribute';
 import { handleMint, handleSingleMint } from './AssetPreview-script';
 import classes from './AssetPreview.module.css';
 import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
+import axios from 'axios';
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -92,6 +93,13 @@ const AssetPreview = ({ data, changeFile }) => {
       handleSingleMint(singleMintProps)
     }
   }
+
+  useEffect(()=> {
+    axios.get(`https://api.coinbase.com/v2/prices/CGLD-USD/spot`)
+      .then(res => {
+        console.log('res: ', res);
+      })
+  },[])
 
   return (
     <div className={classes.container}>

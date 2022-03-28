@@ -1,20 +1,23 @@
 .container {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
   gap: 0.5em;
 }
 
 .connect {
-  display: inline-block;
+  width: 100%;
   padding: 0.5em 1.5em;
   border-radius: 0.35em;
   cursor: pointer;
   background: var(--card-bg);
   color: white;
+  text-align: center;
 }
 
 .connected {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
   color: white;
@@ -46,6 +49,7 @@
 }
 
 .address {
+  flex: 1;
   padding: 0.5em;
   background: var(--main-accent);
   color: var(--main-bg);
@@ -68,7 +72,8 @@
 }
 
 .dropdown {
-  width: 16em;
+  width: 100%;
+  min-width: 16em;
   display: flex;
   flex-direction: column;
   align-items: stretch;
