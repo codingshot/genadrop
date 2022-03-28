@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react'
 import classes from './wallet.module.css';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
-import { setConnector, setAccount, setNotification } from '../../gen-state/gen.actions';
+import { setConnector, setAccount, setNotification, setMainnet } from '../../gen-state/gen.actions';
 import userIcon from '../../assets/user.svg';
 import switchIcon from '../../assets/icon-switch.svg';
 import copyIcon from '../../assets/icon-copy.svg';
@@ -13,7 +13,7 @@ import { useHistory } from 'react-router-dom';
 
 
 function ConnectWallet({ setToggleNav }) {
-  const { dispatch, connector, account } = useContext(GenContext);
+  const { dispatch, connector, account, mainnet } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState('Copy Address');
@@ -137,8 +137,10 @@ function ConnectWallet({ setToggleNav }) {
   const handleSwitch = async () => {
     if (network === 'mainnet') {
       setNetwork('testnet')
+      dispatch(setMainnet(false))
     } else {
       setNetwork('mainnet')
+      dispatch(setMainnet(true))
     }
     setToggleDropdown(!toggleDropdown)
   }

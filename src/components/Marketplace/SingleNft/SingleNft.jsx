@@ -15,7 +15,8 @@ const SingleNft = () => {
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
-  const { singleNfts } = useContext(GenContext);
+  const { singleNfts, mainnet } = useContext(GenContext);
+  console.log('seeia', singleNfts)
 
   const { url } = useRouteMatch();
   const history = useHistory();
@@ -23,11 +24,15 @@ const SingleNft = () => {
   useEffect(() => {
     if (singleNfts.length) {
       (async function getResult() {
-        let result = await getSingleNfts(singleNfts);
+        let result = await getSingleNfts(mainnet, singleNfts);
         handleSetState({
           allSingleNfts: result
         })
       }())
+    }else {
+      handleSetState({
+        allSingleNfts: []
+      })
     }
   }, [singleNfts])
 

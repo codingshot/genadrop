@@ -29,7 +29,7 @@ const Dashboard = () => {
   });
 
   const { filter, togglePriceFilter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
-  const { account } = useContext(GenContext);
+  const { account, mainnet } = useContext(GenContext);
 
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
@@ -44,14 +44,14 @@ const Dashboard = () => {
 
     (async function readAllSingle() {
       let userCollections = await fetchUserCollections(account);
-      let myCollections = await getNftCollections(userCollections);
+      let myCollections = await getNftCollections(userCollections, mainnet);
       console.log("===>", myCollections);
       handleSetState({ myCollections });
     }());
 
     (async function getCollections() {
       let userNftCollections = await fetchUserNfts(account);
-      let createdNfts = await getUserNftCollection(userNftCollections);
+      let createdNfts = await getUserNftCollection(userNftCollections, mainnet);
       console.log("===>", createdNfts);
 
       handleSetState({ createdNfts });
@@ -60,7 +60,7 @@ const Dashboard = () => {
     (async function getCollections() {
       let userNftCollections = await fetchAllNfts(account);
       // console.log(userNftCollections);
-      let result = await getUserNftCollection(userNftCollections);
+      let result = await getUserNftCollection(userNftCollections, mainnet);
       // console.log('result: ', result);
       // handleSetState({ createdNfts })
     }());

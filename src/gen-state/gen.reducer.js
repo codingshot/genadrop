@@ -36,7 +36,8 @@ export const INITIAL_STATE = {
   notification: '',
   clipboardMessage: '',
   loaderMessage: '',
-  didMount: false
+  didMount: false,
+  mainnet: true
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -217,6 +218,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         didMount: action.payload
+      }
+    case genActionTypes.SET_MAINNET:
+      return {
+        ...state,
+        mainnet: action.payload
       }
     default:
       return state;

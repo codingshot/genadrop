@@ -14,7 +14,7 @@ const Collections = () => {
   const [state, setState] = useState({
     allCollections: null
   })
-  const { collections } = useContext(GenContext)
+  const { collections, mainnet } = useContext(GenContext)
   const { allCollections } = state
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
@@ -23,13 +23,19 @@ const Collections = () => {
   const { url } = useRouteMatch();
 
   useEffect(() => {
+    console.log('nipghkeys', Object.keys(collections).length)
     if (Object.keys(collections).length) {
       (async function getResult() {
-        let result = await getNftCollections(collections);
+        let result = await getNftCollections(collections, mainnet);
+        console.log(result)
         handleSetState({
           allCollections: result
         })
       }());
+    } else {
+      handleSetState({
+        allCollections: []
+      })
     }
   }, [collections]);
 

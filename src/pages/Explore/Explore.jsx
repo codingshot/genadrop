@@ -29,7 +29,7 @@ const Explore = () => {
     },
   })
   const { collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection, headerHeight } = state;
-  const { collections } = useContext(GenContext);
+  const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -49,7 +49,7 @@ const Explore = () => {
     if (Object.keys(collections).length) {
       const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
-        let result = await getNftCollection(collection);
+        let result = await getNftCollection(collection, mainnet);
         handleSetState({
           collection,
           NFTCollection: result

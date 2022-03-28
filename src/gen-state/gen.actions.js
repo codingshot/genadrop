@@ -172,3 +172,8 @@ export const setDidMout = isMount => ({
   type: genActionTypes.SET_DID_MOUNT,
   payload: isMount
 })
+
+export const setMainnet = mainnet => ({
+  type: genActionTypes.SET_MAINNET,
+  payload: mainnet
+})

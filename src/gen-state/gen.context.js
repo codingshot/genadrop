@@ -28,7 +28,8 @@ const GenContextProvider = ({ children }) => {
     clipboardMessage,
     loaderMessage,
     collectionDescription,
-    didMount
+    didMount,
+    mainnet,
   } = state;
 
   // console.log("preview => ", preview);
@@ -74,6 +75,7 @@ const GenContextProvider = ({ children }) => {
       loaderMessage,
       collectionDescription,
       didMount,
+      mainnet,
       singleNfts,
       dispatch
     }}>

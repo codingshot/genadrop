@@ -8,7 +8,8 @@ import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
-  const { dispatch, connector, account } = useContext(GenContext);
+  const { dispatch, connector, account, mainnet } = useContext(GenContext);
+  console.log('mainnet', mainnet);
   const [state, setState] = useState({
     attributes: { [Date.now()]: { trait_type: '', value: '' } },
     fileName: fName,
@@ -30,7 +31,8 @@ const AssetPreview = ({ data, changeFile }) => {
     file: zip,
     fileName,
     price,
-    chain
+    chain,
+    mainnet
   };
 
   const singleMintProps = {
@@ -44,7 +46,8 @@ const AssetPreview = ({ data, changeFile }) => {
     metadata: { name: fileName, description, attributes: Object.values(attributes) },
     fileName,
     price,
-    chain
+    chain,
+    mainnet
   };
 
   const handleSetState = payload => {

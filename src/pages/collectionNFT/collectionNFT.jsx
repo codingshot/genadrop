@@ -45,7 +45,7 @@ const CollectionNFT = () => {
     setState(state => ({ ...state, ...payload }))
   }
 
-  const { account, connector } = useContext(GenContext);
+  const { account, connector, mainnet } = useContext(GenContext);
   const { collections } = useContext(GenContext)
   const { url } = useRouteMatch()
   const history = useHistory();
@@ -57,7 +57,7 @@ const CollectionNFT = () => {
       const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
 
-        let collectionData = await getNftCollection(collection)
+        let collectionData = await getNftCollection(collection, mainnet)
 
 
         let result = collectionData.find(asset => asset.Id === Number(nftId));
@@ -144,7 +144,7 @@ const CollectionNFT = () => {
 
   const buyNft = async () => {
     console.log("buying...");
-    let res = await PurchaseNft(asset, account, connector)
+    let res = await PurchaseNft(asset, account, connector, mainnet)
     console.log('final', res)
     alert(res)
 
