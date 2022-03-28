@@ -20,6 +20,7 @@ import facebookIcon from '../../assets/facebook.svg';
 import instagramIcon from '../../assets/instagram.svg';
 import descriptionIcon from '../../assets/description-icon.png';
 import detailsIcon from '../../assets/details.png';
+import Search from "../../components/Nft-details/history/search";
 
 const SingleNFT = () => {
   const { account, connector } = useContext(GenContext);
@@ -56,9 +57,13 @@ const SingleNFT = () => {
 
   useEffect(() => {
     const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
+
     (async function getNftDetails() {
+      const tHistory = await readNftTransaction(nftId);
+
       let nftDetails = await getSingleNftDetails(nft);
-      handleSetState({ nftDetails, isLoading: false });
+      handleSetState({ nftDetails, isLoading: false, transactionHistory: tHistory });
+
     })();
 
     axios
@@ -304,8 +309,8 @@ const SingleNFT = () => {
           <h3>Transaction History</h3>
         </div>
         <div className={classes.tableContainer}>
-          {/* <Search data={History} /> */}
-          Coming soon...
+          <Search data={transactionHistory} />
+          {/* Coming soon... */}
         </div>
       </div>
 
