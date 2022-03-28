@@ -172,7 +172,13 @@ async function readData() {
 
 async function readAllUserNft(userAddress) {
   let querySnapshot = await db.collection('listed').doc(userAddress).get();
-  return Object.values(querySnapshot.data());
+  try {
+    let res = Object.values(querySnapshot.data());
+    return res
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 async function readSIngleUserNft(userAddress, assetId) {
