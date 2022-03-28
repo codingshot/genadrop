@@ -5,19 +5,28 @@ import Attribute from '../Attribute/Attribute';
 import { handleMint, handleSingleMint } from './AssetPreview-script';
 import classes from './AssetPreview.module.css';
 import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
+import axios from 'axios';
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
-  const { dispatch, connector, account } = useContext(GenContext);
+  const { dispatch, connector, account, chainId } = useContext(GenContext);
   const [state, setState] = useState({
     attributes: { [Date.now()]: { trait_type: '', value: '' } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : '',
     price: '',
-    chain: 'Algo',
-    preview: false
+    chain: '',
+    preview: false,
+    dollarPrice: 0
   });
-  const { attributes, fileName, description, price, chain, preview } = state;
+  const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
+
+  const chains = [
+    { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
+    { label: 'Celo', networkId: 42220, symbol: "CGLD" },
+    { label: 'Polygon', networkId: 137, symbol: "MATIC" },
+    { label: 'Near', networkId: 1313161555, symbol: "NEAR" },
+  ]
 
   const mintProps = {
     dispatch,
@@ -26,11 +35,13 @@ const AssetPreview = ({ data, changeFile }) => {
     setClipboard,
     description,
     account,
+    chainId,
     connector,
     file: zip,
     fileName,
     price,
-    chain
+    chain,
+    dollarPrice
   };
 
   const singleMintProps = {
@@ -39,12 +50,14 @@ const AssetPreview = ({ data, changeFile }) => {
     setNotification,
     setClipboard,
     account,
+    chainId,
     connector,
     file: file[0],
     metadata: { name: fileName, description, attributes: Object.values(attributes) },
     fileName,
     price,
-    chain
+    chain,
+    dollarPrice
   };
 
   const handleSetState = payload => {
@@ -93,6 +106,18 @@ const AssetPreview = ({ data, changeFile }) => {
     }
   }
 
+  useEffect(() => {
+    console.log(chainId);
+    if (chainId) {
+      const c = chains.find(c => c.networkId == chainId);
+      if (!c) return "invalid chain"
+      handleSetState({ chain: c })
+      axios.get(`https://api.coinbase.com/v2/prices/${chain.symbol}-USD/spot`)
+        .then(res => {
+          handleSetState({ dollarPrice: res.data.data.amount * price })
+        })
+    }
+  }, [price, chainId])
   return (
     <div className={classes.container}>
       {
@@ -207,17 +232,18 @@ const AssetPreview = ({ data, changeFile }) => {
 
               <div className={classes.inputWrapper}>
                 <label>Price</label>
-                <input type="text" value={price} onChange={handlePrice} />
+                <div className={classes.price}>
+                  <input type="number" value={0} onChange={handlePrice} />
+                  {chainId ? <span>({dollarPrice} USD)</span> : "Connect wallet see USD price"}
+                </div>
               </div>
 
               <div className={classes.inputWrapper}>
                 <label>Chain</label>
-                <select value={chain} onChange={event => handleSetState({ chain: event.target.value })}>
-                  <option value="Algo">Algorand</option>
-                  <option value="Celo">Celo</option>
-                  <option value="Polygon">Polygon</option>
-                  <option value="Near">Near</option>
-                </select>
+                {chainId ? <select value={chain} disabled={true} >
+                  <option value={chain.label} > {chain.label}</option>
+
+                </select> : ""}
               </div>
             </section>
 

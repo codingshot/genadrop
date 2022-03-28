@@ -1,8 +1,9 @@
 import classes from './mint.module.css';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import { handleZipFile } from './mint-script';
 import AssetPreview from '../../components/Mint/AssetPreview/AssetPreview';
 import lineIcon from '../../assets/icon-line.svg';
+import { GenContext } from '../../gen-state/gen.context';
 
 const Mint = () => {
 
@@ -25,12 +26,12 @@ const Mint = () => {
   const handleFileChange = event => {
     let file = event.target.files[0];
     if (!file) return;
-    
+
     let name = file.name.split('.')
     let fileName = name[0];
     let fileType = name[1];
     let supportedTypes = ['zip', 'png', 'jpeg', 'jpg', 'webp'];
-    if(!supportedTypes.includes(fileType.toLowerCase())) return;
+    if (!supportedTypes.includes(fileType.toLowerCase())) return;
 
     if (fileType === 'zip') {
       handleSetState({ zip: file, fileName })
@@ -55,7 +56,10 @@ const Mint = () => {
       document.querySelector('#drop-area').style.border = '1px dashed gainsboro'
       handleFileChange({ target: e.dataTransfer });
     }
+
   }, [file]);
+
+
 
   return (
     <div className={classes.container}>
