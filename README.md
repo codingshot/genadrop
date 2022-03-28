@@ -1,5 +1,11 @@
 # GenaDrop - The Ultimate No-code NFT solution
 
+## USER DOCUMENTATION
+https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs
+
+## TECHNICAL DOCUMENTATION
+https://docs.google.com/document/d/1ZYpUnSBJqeGJmmtlkuSD1FSMFJmHrl53c3iyHomj8rs/edit
+
 ### NFT Generative Drop Builder + Marketplace
 Create and sell NFTs easily. 💧GenaDrop💧  is a multi-chain, no code generative art creator, minter, and marketplace.  
 

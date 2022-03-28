@@ -5,7 +5,7 @@ const Invite = () => {
     <div className={classes.container}>
       <p>Join our community on Discord</p>
       <button>
-        <a href="https://discord.gg/4vdtmQqz6d">Join</a>
+        <a href="https://discord.gg/4vdtmQqz6d" target="_blank" rel="noopener noreferrer">Join</a>
       </button>
     </div>
   )

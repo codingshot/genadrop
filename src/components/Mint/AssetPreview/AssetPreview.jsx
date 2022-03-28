@@ -133,7 +133,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
             <section className={classes.type}>
               <div>
-                {file.length > 1 ? 'Collection Mint' : 'Single Mint'}
+                {file.length > 1 ? 'Collection Mint' : 'Mint 1 of 1s'}
               </div>
             </section>
 

@@ -39,7 +39,7 @@ const SingleNft = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <h3>Single Mint</h3>
+        <h3>1 of 1s</h3>
         <button onClick={() => history.push(`${url}/single-mint`)}>view all</button>
       </div>
       <div className={classes.wrapper}>

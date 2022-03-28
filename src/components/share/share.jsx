@@ -46,15 +46,15 @@ const Share = ({ url }) => {
     const icons = [
         {
             icon: facebookIcon,
-            link: "https://www.facebook.com"
+            link: "https://www.facebook.com/MinorityProgrammers"
         },
         {
             icon: instagramIcon,
-            link: "https://www.instagram.com"
+            link: "https://www.instagram.com/minorityprogrammers/"
         },
         {
             icon: twitterIcon,
-            link: "https://www.twitter.com/mpa"
+            link: "https://www.twitter.com/minorityprogram"
         },
 
     ]
@@ -95,7 +95,7 @@ const Share = ({ url }) => {
                 {icons.map((icon) => {
                     return (
                         <a href={icon.link} target="_blank">
-                            < img className={classes.icon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
+                            < img className={classes.icon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="Social Icon" />
                         </a>
 
                     )

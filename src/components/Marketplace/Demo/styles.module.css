@@ -73,6 +73,12 @@
   background: #f8f8f8;
 }
 
+.label {
+  color: var(--main-accent);
+  align-self: flex-end;
+  bottom: 0;
+}
+
 .operation {
   width: 100%;
   display: flex;
@@ -111,7 +117,7 @@
   .container {
     padding: 1em;
   }
-  
+
   .operations {
     grid-template-columns: auto;
   }

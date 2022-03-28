@@ -1,5 +1,3 @@
-
-
 module.exports = {
     algodClientUrl: "https://algoindexer.testnet.algoexplorerapi.io",
     algodNodeUrl: "https://node.testnet.algoexplorerapi.io",

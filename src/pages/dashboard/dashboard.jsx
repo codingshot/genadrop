@@ -22,8 +22,8 @@ const Dashboard = () => {
       price: 'high',
     },
     activeDetail: 'created',
-    collectedNfts: null,
-    createdNfts: null,
+    collectedNfts: 0,
+    createdNfts: 0,
     myCollections: null,
     filteredCollection: null
   });
@@ -59,10 +59,8 @@ const Dashboard = () => {
 
     (async function getCollections() {
       let userNftCollections = await fetchAllNfts(account);
-      // console.log(userNftCollections);
       let result = await getUserNftCollection(userNftCollections, mainnet);
-      // console.log('result: ', result);
-      // handleSetState({ createdNfts })
+
     }());
 
   }, [account]);
@@ -150,7 +148,7 @@ const Dashboard = () => {
             />
             <div className={classes.priceDropdown}>
               <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-              <span>price: {filter.price === 'low' ? "Low to High" : "High to Low"} </span>
+                <span>price: {filter.price === 'low' ? "Low to High" : "High to Low"} </span>
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>

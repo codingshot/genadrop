@@ -65,7 +65,7 @@ function ConnectWallet({ setToggleNav }) {
       // feedbacktype: success
       //await web3Modal.toggleModal();
     } catch (error) {
-      dispatch(setNotification('connection failed'))
+      dispatch(setNotification('connection failed ❌️'))
       //   feedbacktype: error
       return
     }

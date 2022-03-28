@@ -61,7 +61,6 @@ const SingleNFT = () => {
       console.log('consula', singleNfts, nft)
       let nftDetails = await getSingleNftDetails(mainnet, nft);
       handleSetState({ nftDetails, isLoading: false });
-      console.log("-->", nftDetails);
     })();
     // handleSetState({ })
 
@@ -75,7 +74,6 @@ const SingleNFT = () => {
 
   useEffect(() => {
     if (!nftDetails) return;
-    console.log("==>", nftDetails);
   }, [nftDetails]);
 
   function useOutsideAlerter(ref) {
@@ -182,7 +180,6 @@ const SingleNFT = () => {
 
   const buyNft = async () => {
     let res = await PurchaseNft(nftDetails, account, connector, mainnet);
-    console.log("final", res);
     alert(res);
   };
 
@@ -335,59 +332,59 @@ const SingleNFT = () => {
 
 
         showSocial ?
-        <div>
-          <div ref={wrapperRef} className={classes.share}>
+          <div>
+            <div ref={wrapperRef} className={classes.share}>
 
-            <div className={classes.copy} >
-              <input
-                type="text"
-                value={url}
-                readOnly
-                className={classes.textArea}
-              />
-              <CopyToClipboard text={url} onCopy={onCopyText}>
-                <div className={classes.copy_area}>
-                  {
-                    !isCopied ?
-                      <img
-                        className={classes.shareicon} src={copyIcon} alt="" />
-                      :
-                      <img className={classes.shareicon} src={copiedIcon} alt="" />
-                  }
+              <div className={classes.copy} >
+                <input
+                  type="text"
+                  value={url}
+                  readOnly
+                  className={classes.textArea}
+                />
+                <CopyToClipboard text={url} onCopy={onCopyText}>
+                  <div className={classes.copy_area}>
+                    {
+                      !isCopied ?
+                        <img
+                          className={classes.shareicon} src={copyIcon} alt="" />
+                        :
+                        <img className={classes.shareicon} src={copiedIcon} alt="" />
+                    }
 
-                </div>
-              </CopyToClipboard>
+                  </div>
+                </CopyToClipboard>
 
+              </div>
+              <div className={classes.shareContent}>
+                {icons.map((icon) => {
+                  return (
+                    <a href={icon.link} target="_blank">
+                      < img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
+                    </a>
+
+                  )
+                })}
+              </div>
             </div>
             <div className={classes.shareContent}>
               {icons.map((icon) => {
                 return (
                   <a href={icon.link} target="_blank">
-                    < img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
+                    <img
+                      className={classes.shareIcon}
+                      onClick={() => handleSetState({ text: icon.link })}
+                      src={icon.icon}
+                      alt=""
+                    />
                   </a>
-
-                )
+                );
               })}
             </div>
           </div>
-          <div className={classes.shareContent}>
-            {icons.map((icon) => {
-              return (
-                <a href={icon.link} target="_blank">
-                  <img
-                    className={classes.shareIcon}
-                    onClick={() => handleSetState({ text: icon.link })}
-                    src={icon.icon}
-                    alt=""
-                  />
-                </a>
-              );
-            })}
-          </div>
-        </div>
-       : (
-        ""
-      )}
+          : (
+            ""
+          )}
     </div>
   );
 };
