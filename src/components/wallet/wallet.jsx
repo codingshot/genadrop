@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react'
 import classes from './wallet.module.css';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { GenContext } from '../../gen-state/gen.context';
-import { setConnector, setAccount, setNotification } from '../../gen-state/gen.actions';
+import { setConnector, setAccount, setNotification, setChainId } from '../../gen-state/gen.actions';
 import userIcon from '../../assets/user.svg';
 import switchIcon from '../../assets/icon-switch.svg';
 import copyIcon from '../../assets/icon-copy.svg';
@@ -13,8 +13,7 @@ import { useHistory } from 'react-router-dom';
 
 
 function ConnectWallet({ setToggleNav }) {
-  const history = useHistory();
-  const { dispatch, connector, account } = useContext(GenContext);
+  const { dispatch, connector, account, chainId } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState('Copy Address');
@@ -50,6 +49,7 @@ function ConnectWallet({ setToggleNav }) {
       // const clear = await web3Modal.clearCachedProvider();
       dispatch(setAccount(''));
       dispatch(setConnector())
+      dispatch(setChainId(''))
       setDropdown(false);
       history.push('./marketplace')
       setToggleDropdown(false)
@@ -78,17 +78,22 @@ function ConnectWallet({ setToggleNav }) {
 
 
     if (provider.connection.url === 'metamask') {
+
       await dispatch(setConnector(provider));
+      await dispatch(setChainId(window.ethereum.networkVersion))
       const account = await signer.getAddress();
       dispatch(setAccount(account));
       connector.on("accountsChanged", (accounts) => {
         dispatch(setAccount(accounts[0]));
       });
       connector.on("chainChanged", (chainId) => {
-        console.log(connector)
         const provider = new ethers.providers.Web3Provider(connector);
         dispatch(setConnector(provider));;
       });
+      connector.on("networkChanged", (networkId) => {
+        dispatch(setChainId(networkId));
+      });
+
     } else {
       await dispatch(setConnector(connector));
       if (!connector.connected) {
@@ -124,6 +129,8 @@ function ConnectWallet({ setToggleNav }) {
 
       if (connector.connected) {
         const { accounts } = connector;
+        dispatch(setChainId(connector.chainId));
+
         dispatch(setAccount(accounts[0]));
       }
 

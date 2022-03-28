@@ -246,7 +246,7 @@ const CollectionNFT = () => {
               {
                 (asset.sold ?
                   <>
-                    <button className={classes.sold} disabled={asset.sold} ><img src={walletIcon} alt="" />SOLD!</button>
+                    <button className={classes.sold} disabled={asset.sold} >SOLD!</button>
                   </>
                   :
                   <>

@@ -38,8 +38,15 @@
 }
 
 @keyframes shade {
-  0%, 40% {background: rgb(255, 255, 255, 1); color: black;}
-  100% {background: rgb(255, 255, 255, 0); color: transparent;}
+  0%,
+  40% {
+    background: rgb(255, 255, 255, 1);
+    color: black;
+  }
+  100% {
+    background: rgb(255, 255, 255, 0);
+    color: transparent;
+  }
 }
 
 .showPreview:hover {
@@ -79,7 +86,7 @@
   display: inline-block;
   color: var(--main-accent);
   border-bottom: 2px solid var(--main-accent);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-size: 1.6rem;
 }
 
@@ -109,7 +116,18 @@
   border-radius: 0.25em;
   font-size: 1rem;
 }
-
+.price {
+  display: flex;
+  flex-direction: row;
+}
+.price input {
+  width: 10rem;
+  margin-right: 1rem;
+}
+.price span {
+  color: var(--main-accent);
+  font-weight: bold;
+}
 .inputWrapper textarea:focus,
 .inputWrapper input:focus,
 .inputWrapper select:focus {
