@@ -432,13 +432,10 @@ export async function mintToAlgo(algoProps) {
       dispatch(setLoader(`minting ${i + 1} of ${ipfsJsonData.length}`))
       const txn = await createAsset(ipfsJsonData[i], account)
       txns.push(txn)
-      console.log('tixn', txn)
     }
-    console.log('freee')
 
     let txgroup = algosdk.assignGroupID(txns)
 
-    console.log('consoling...', txgroup, txns)
 
     let groupId = txgroup[0].group.toString("base64")
     dispatch(setLoader('finalizing'))
@@ -466,7 +463,6 @@ export async function mintToCelo(celoProps) {
     const contract = await initializeContract({ minterAddress: mainnet ? process.env.REACT_APP_CELO_MAINNET_MINTER_ADDRESS : process.env.REACT_APP_CELO_MINTER_ADDRESS, marketAddress: mainnet ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS : process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS, fileName, connector, account, dispatch, setLoader });
     let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector)
     const signer = await connector.getSigner();
-    console.log(wallet, signer)
     const marketContract = new ethers.Contract(mainnet ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS : process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS, marketAbi, wallet)
     let uris = ipfsJsonData.map((asset) => asset.url);
     console.log(ipfsJsonData)
