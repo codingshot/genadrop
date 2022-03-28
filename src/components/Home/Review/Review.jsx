@@ -14,7 +14,7 @@ const Review = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>Keep Up To Date for<span>Early Access.</span></div>
+      <div className={classes.heading}>Keep Up To Date for <span>Early Access</span></div>
       <div className={classes.description}>
         See what the buzz about GenaDrop is on twitter.
       </div>
