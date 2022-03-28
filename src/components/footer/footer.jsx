@@ -8,10 +8,10 @@ import youTubeIcon from '../../assets/icon-youtube.svg';
 
 const footerLinks = [
   {
-    title: 'Tools',
+    title: 'App',
     content: [
       { name: 'Create', link: '/create' },
-      { name: 'Mint', link: '/mint/single-mint' },
+      { name: 'Mint', link: '/mint' },
       { name: 'Marketplace', link: '/marketplace' },
     ],
   },
@@ -20,13 +20,13 @@ const footerLinks = [
     content: [
       { name: 'DAO', link: 'https://snapshot.org/#/minorityprogrammers.eth' },
       { name: 'MPA', link: 'https://www.minorityprogrammers.org' },
-      { name: 'MinorityNFT', link: 'https://www.minoritynft.com' },
+      { name: 'HERDrop', link: 'https://www.herdrop.com' },
     ],
   },
   {
     title: 'Support',
     content: [
-      { name: 'FAQ', link: '/' },
+      { name: 'Docs', link: 'https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs' },
       { name: 'Contact Us', link: 'https://linktr.ee/MinorityProgrammers' },
     ],
   },

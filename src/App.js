@@ -1,9 +1,7 @@
 import React, {
-  useContext, useEffect, lazy, Suspense, useState,
+  useContext, useEffect, lazy, useState,
 } from 'react';
-import {
-  Switch, Route, Redirect, Router,
-} from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 
 import './App.css';
 import Footer from './components/footer/footer';
@@ -16,8 +14,6 @@ import Notification from './components/Notification/Notification';
 import Clipboard from './components/clipboard/clipboard';
 import Loader from './components/Loader/Loader';
 import ErrorBoundary from './components/error-boundary/error-boundary';
-import Loading from './pages/loading/loading';
-// import Fallback from "./pages/fallback/fallback";
 import Welcome from './pages/welcome/welcome';
 
 const Home = lazy(() => import('./pages/home/home'));
@@ -34,8 +30,7 @@ const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
 const SingleNftCollection = lazy(() => import('./pages/singleMintCollection/singleNftCollection'));
 const SingleNFT = lazy(() => import('./pages/singleNFT/singleNFT'));
-const Listed = lazy(() => import('./pages/listNFT/listed'));
-// import Listed from './pages/listNFT/listed'
+// const Listed = lazy(() => import('./pages/listNFT/listed'));
 
 function App() {
   const { dispatch } = useContext(GenContext);

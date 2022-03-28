@@ -1,4 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import
+React, {
+  useRef, useState, useEffect,
+} from 'react';
 import classes from './mint.module.css';
 import { handleZipFile } from './mint-script';
 import AssetPreview from '../../components/Mint/AssetPreview/AssetPreview';
@@ -24,20 +27,20 @@ const Mint = () => {
   };
 
   const handleFileChange = (event) => {
-    const uploadedFile = event.target.files[0];
-    if (!uploadedFile) return;
+    const upladedFile = event.target.files[0];
+    if (!file) return;
 
-    const name = uploadedFile.name.split('.');
-    const uploadedFileName = name[0];
+    const name = upladedFile.name.split('.');
+    const upladedFileName = name[0];
     const fileType = name[1];
     const supportedTypes = ['zip', 'png', 'jpeg', 'jpg', 'webp'];
     if (!supportedTypes.includes(fileType.toLowerCase())) return;
 
     if (fileType === 'zip') {
-      handleSetState({ zip: uploadedFile, uploadedFileName });
-      handleZipFile({ uploadedFile, handleSetState });
+      handleSetState({ zip: upladedFile, upladedFileName });
+      handleZipFile({ upladedFile, handleSetState });
     } else {
-      handleSetState({ file: [uploadedFile], uploadedFileName });
+      handleSetState({ file: [upladedFile], upladedFileName });
     }
   };
 

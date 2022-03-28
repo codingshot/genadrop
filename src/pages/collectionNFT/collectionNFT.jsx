@@ -277,30 +277,27 @@ const CollectionNFT = () => {
             </div>
 
             <div className={classes.btns}>
-              {asset.sold ? (
-                <>
-                  <button type="button" className={classes.sold} disabled={asset.sold}>
-                    <img src={walletIcon} alt="" />
-                    SOLD!
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={asset.sold}
-                    onClick={buyNft}
-                  >
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
-                  <button type="button" className={classes.bid}>
-                    <img src={bidIcon} alt="" />
-                    Place Bid
-                  </button>
-                </>
-              )}
+              {
+                (asset.sold
+                  ? (
+                    <>
+                      <button type="button" className={classes.sold} disabled={asset.sold}>SOLD!</button>
+                    </>
+                  )
+                  : (
+                    <>
+                      <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
+                        <img src={walletIcon} alt="" />
+                        Buy now
+                      </button>
+                      <button type="button" className={classes.bid}>
+                        <img src={bidIcon} alt="" />
+                        Place Bid
+                      </button>
+                    </>
+                  )
+                )
+}
             </div>
           </div>
           {/* PRICE HISTORY */}

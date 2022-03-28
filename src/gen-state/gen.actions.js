@@ -119,7 +119,12 @@ export const setConnector = (connector) => ({
   payload: connector,
 });
 
-export const setAccount = (account) => ({
+export const setChainId = chainId => ({
+  type: genActionTypes.SET_CHAIN_ID,
+  payload: chainId
+})
+
+export const setAccount = account => ({
   type: genActionTypes.SET_ACCOUNT,
   payload: account,
 });

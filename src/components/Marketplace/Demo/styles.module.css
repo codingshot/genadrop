@@ -17,7 +17,6 @@
 
 .wrapper {
   width: 100%;
-  height: 24em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -27,28 +26,23 @@
 .videoContainer {
   width: 100%;
   max-width: 36em;
-  height: 100%;
+  height: 24em;
   flex: 1;
   background: black;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
   border-radius: 1em;
-}
-
-.videoContainer img {
-  position: absolute;
+  overflow: hidden;
 }
 
 .videoContainer video {
-  display: inline-block;
   width: 100%;
+  height: 100%;
 }
 
 .operations {
   flex: 1;
-  height: 100%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1em;
@@ -56,7 +50,6 @@
 
 .card {
   width: auto;
-  height: auto;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -97,15 +90,14 @@
   }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1000px) {
   .wrapper {
     flex-direction: column;
-    height: auto;
   }
 
   .videoContainer {
     max-width: 100%;
-    min-height: 20em;
+    flex: auto;
   }
 
   .operations {
@@ -114,11 +106,25 @@
 }
 
 @media screen and (max-width: 540px) {
+  .videoContainer {
+    height: 16em;
+  }
+
   .container {
     padding: 1em;
   }
 
   .operations {
     grid-template-columns: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .videoContainer {
+    height: 12em;
+  }
+
+  .heading {
+    font-size: 1.2rem;
   }
 }
