@@ -1,16 +1,13 @@
-import { useContext, useEffect, useState } from "react";
-import { useRouteMatch, Link } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNfts, getUserNftCollection } from "../../utils";
-import classes from "./list.module.css";
-import Skeleton from "react-loading-skeleton";
-import { PurchaseNft } from "../../utils/arc_ipfs";
-import axios from "axios";
-import { fetchAllNfts, writeNft } from "../../utils/firebase";
-import bidIcon from '../../assets/bid.png';
+import React, { useContext, useEffect, useState } from 'react';
+import { useRouteMatch, Link } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { GenContext } from '../../gen-state/gen.context';
+import { getUserNftCollection } from '../../utils';
+import classes from './list.module.css';
+import { fetchAllNfts, writeNft } from '../../utils/firebase';
 
 const List = () => {
-  const { account, connector } = useContext(GenContext);
+  const { account } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -21,31 +18,46 @@ const List = () => {
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
-    chain: "Algo",
-    price: "",
-    image_url: ""
+    chain: 'Algo',
+    price: '',
+    image_url: '',
   });
-  const { nftDetails, isLoading, price, chain, image_url } = state;
+  const {
+    nftDetails, isLoading, price, chain, image_url,
+  } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
   const handlePrice = (event) => {
     handleSetState({ price: event.target.value });
   };
 
   const listNFT = async () => {
+    // eslint-disable-next-line no-alert
     if (!price) alert("price can't be empty");
-    let res = await writeNft(nftDetails.algo_data.creator, nftDetails.collection_name, nftDetails.Id, nftDetails.price, null, null, null);
+    await writeNft(
+      nftDetails.algo_data.creator,
+      nftDetails.collection_name,
 
-  }
+      nftDetails.Id,
+
+      nftDetails.price,
+
+      null,
+
+      null,
+
+      null,
+    );
+  };
 
   useEffect(() => {
     (async function getUserCollection() {
-      let userNftCollections = await fetchAllNfts(account);
-      let result = await getUserNftCollection(userNftCollections);
+      const userNftCollections = await fetchAllNfts(account);
+      const result = await getUserNftCollection(userNftCollections);
 
-      const nft = result.filter((nft) => String(nft.Id) === nftId)[0];
+      const nft = result.filter((Nft) => String(Nft.Id) === nftId)[0];
 
       handleSetState({ nftDetails: nft, isLoading: false, image_url: nft.image_url });
     }());
@@ -53,11 +65,7 @@ const List = () => {
   }, []);
 
   useEffect(() => {
-    if (!nftDetails) return;
   }, [nftDetails]);
-
-
-
 
   if (isLoading) {
     return (
@@ -102,32 +110,37 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-            {
-              price ? 
-              <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
-              <button
-                className={classes.buy}
-                disabled={nftDetails.sold}
-                onClick={listNFT}
-              >
-                <div>
-                  <img src="/assets/price-tage.svg" alt="" />
-                  SET PRICE
-                </div>
-                <span>Sell the NFT at a fixed price</span>
-              </button>
-            </Link>
-            :
-            <button
-              className={classes.buy}
-              onClick={listNFT}
-            >
-              <div>
-                <img src="/assets/price-tage.svg" alt="" />
-                SET PRICE
-              </div>
-              <span>Sell the NFT at a fixed price</span>
-            </button>
+              {
+              price
+                ? (
+                  <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
+                    <button
+                      type="button"
+                      className={classes.buy}
+                      disabled={nftDetails.sold}
+                      onClick={listNFT}
+                    >
+                      <div>
+                        <img src="/assets/price-tage.svg" alt="" />
+                        SET PRICE
+                      </div>
+                      <span>Sell the NFT at a fixed price</span>
+                    </button>
+                  </Link>
+                )
+                : (
+                  <button
+                    type="button"
+                    className={classes.buy}
+                    onClick={listNFT}
+                  >
+                    <div>
+                      <img src="/assets/price-tage.svg" alt="" />
+                      SET PRICE
+                    </div>
+                    <span>Sell the NFT at a fixed price</span>
+                  </button>
+                )
             }
 
               {/* <button
@@ -163,9 +176,7 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <select
                     value={chain}
-                    onChange={(event) =>
-                      handleSetState({ chain: event.target.value })
-                    }
+                    onChange={(event) => handleSetState({ chain: event.target.value })}
                   >
                     <option value="Algo">Algo</option>
                     <option value="Celo">Celo</option>
@@ -177,7 +188,9 @@ const List = () => {
                     value={price}
                     onChange={handlePrice}
                     placeholder="E.g. 10"
-                    type="number" min="1" step="1"
+                    type="number"
+                    min="1"
+                    step="1"
                   />
                 </div>
               </div>
@@ -199,18 +212,24 @@ const List = () => {
               deducted
             </div>
             <div className={classes.row}>
-              Genadrop <span>10%</span>
+              Genadrop
+              {' '}
+              <span>10%</span>
             </div>
             <div className={classes.row}>
-              {nftDetails.name ? nftDetails.name : ""} <span>7%</span>
+              {nftDetails.name ? nftDetails.name : ''}
+              {' '}
+              <span>7%</span>
             </div>
             <div className={classes.row}>
-              Total <span>17%</span>
+              Total
+              {' '}
+              <span>17%</span>
             </div>
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
     </div>
   );

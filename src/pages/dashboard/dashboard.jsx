@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { Link, useRouteMatch } from 'react-router-dom';
 import Copy from '../../components/copy/copy';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
 import { GenContext } from '../../gen-state/gen.context';
-import { getNftCollection, getNftCollections, getUserNftCollection } from '../../utils';
+import { getNftCollections, getUserNftCollection } from '../../utils';
 import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from '../../utils/firebase';
 import classes from './dashboard.module.css';
 import avatar from '../../assets/avatar.png';
@@ -14,7 +14,6 @@ import arrowDown from '../../assets/icon-arrow-down-long.svg';
 import arrowUp from '../../assets/icon-arrow-up-long.svg';
 
 const Dashboard = () => {
-
   const [state, setState] = useState({
     togglePriceFilter: false,
     filter: {
@@ -25,84 +24,83 @@ const Dashboard = () => {
     collectedNfts: 0,
     createdNfts: 0,
     myCollections: null,
-    filteredCollection: null
+    filteredCollection: null,
   });
 
-  const { filter, togglePriceFilter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
+  const {
+    filter, togglePriceFilter, activeDetail, myCollections,
+    createdNfts, collectedNfts, filteredCollection,
+  } = state;
   const { account } = useContext(GenContext);
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
 
-  const breakAddress = (address = "", width = 6) => {
-    return `${address.slice(0, width)}...${address.slice(-width)}`
-  }
+  const breakAddress = (address = '', width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
     if (!account) return;
 
     (async function readAllSingle() {
-      let userCollections = await fetchUserCollections(account);
-      let myCollections = await getNftCollections(userCollections);
-      handleSetState({ myCollections });
+      const userCollections = await fetchUserCollections(account);
+      const mycollections = await getNftCollections(userCollections);
+      handleSetState({ mycollections });
     }());
 
     (async function getCollections() {
-      let userNftCollections = await fetchUserNfts(account);
-      let createdNfts = await getUserNftCollection(userNftCollections);
+      const userNftCollections = await fetchUserNfts(account);
+      const createdNFTs = await getUserNftCollection(userNftCollections);
 
-      handleSetState({ createdNfts });
+      handleSetState({ createdNFTs });
     }());
 
     (async function getCollections() {
-      let userNftCollections = await fetchAllNfts(account);
-      let result = await getUserNftCollection(userNftCollections);
-
+      const userNftCollections = await fetchAllNfts(account);
+      await getUserNftCollection(userNftCollections);
     }());
-
   }, [account]);
 
   const getCollectionToFilter = () => {
     switch (activeDetail) {
       case 'collected':
-        return collectedNfts
+        return collectedNfts;
       case 'created':
-        return createdNfts
+        return createdNfts;
       case 'collections':
-        return myCollections
+        return myCollections;
       default:
         break;
     }
-  }
+  };
 
   useEffect(() => {
-    if (!account) return
-    if (!filteredCollection) return
-    let filtered = getCollectionToFilter().filter(col => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    if (!account) return;
+    if (!filteredCollection) return;
+    const filtered = getCollectionToFilter().filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     handleSetState({ filteredCollection: filtered });
   }, [filter.searchValue]);
 
   useEffect(() => {
-    if (!account) return
-    if (!filteredCollection) return
+    if (!account) return;
+    if (!filteredCollection) return;
     let filtered = null;
-    if (filter.price === "low") {
-      filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price))
+    if (filter.price === 'low') {
+      filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      filtered = getCollectionToFilter().sort((a, b) => Number(b.price) - Number(a.price))
+      filtered = getCollectionToFilter().sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.price]);
 
   useEffect(() => {
     if (!account) return;
-    let filteredCollection = getCollectionToFilter();
+    const filteredCollections = getCollectionToFilter();
     // if (!filteredCollection) return;
-    handleSetState({ filteredCollection })
-  }, [activeDetail, createdNfts, collectedNfts, myCollections])
+    handleSetState({ filteredCollections });
+  }, [activeDetail, createdNfts, collectedNfts, myCollections]);
 
   const { url } = useRouteMatch();
 
@@ -121,15 +119,15 @@ const Dashboard = () => {
             <div className={classes.profile}>Edit Profile</div>
           </Link>
           <div className={classes.details}>
-            <div onClick={() => handleSetState({ activeDetail: 'created' })} className={`${classes.detail} ${activeDetail === "created" && classes.active}`}>
+            <div onClick={() => handleSetState({ activeDetail: 'created' })} className={`${classes.detail} ${activeDetail === 'created' && classes.active}`}>
               <p>Created NFT</p>
               <span>{createdNfts && createdNfts.length}</span>
             </div>
-            <div onClick={() => handleSetState({ activeDetail: 'collected' })} className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}>
+            <div onClick={() => handleSetState({ activeDetail: 'collected' })} className={`${classes.detail} ${activeDetail === 'collected' && classes.active}`}>
               <p>Collected NFTs</p>
               <span>{collectedNfts && collectedNfts.length}</span>
             </div>
-            <div onClick={() => handleSetState({ activeDetail: 'collections' })} className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}>
+            <div onClick={() => handleSetState({ activeDetail: 'collections' })} className={`${classes.detail} ${activeDetail === 'collections' && classes.active}`}>
               <p>My Collections</p>
               <span>{myCollections && myCollections.length}</span>
             </div>
@@ -140,69 +138,94 @@ const Dashboard = () => {
           <div className={classes.searchAndPriceFilter}>
             <input
               type="search"
-              onChange={event => handleSetState({ filter: { ...filter, searchValue: event.target.value } })}
+              onChange={(event) => handleSetState(
+                { filter: { ...filter, searchValue: event.target.value } },
+              )}
               value={filter.searchValue}
-              placeholder='search'
+              placeholder="search"
             />
             <div className={classes.priceDropdown}>
-              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                <span>price: {filter.price === 'low' ? "Low to High" : "High to Low"} </span>
+              <div
+                onClick={() => handleSetState(
+                  { togglePriceFilter: !togglePriceFilter, toggleChainFilter: false },
+                )}
+                className={classes.selectedPrice}
+              >
+                <span>
+                  price:
+                  {' '}
+                  {filter.price === 'low' ? 'Low to High' : 'High to Low'}
+                  {' '}
+                </span>
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                  price <img src={arrowUp} alt="" /></div>
+                  price
+                  {' '}
+                  <img src={arrowUp} alt="" />
+
+                </div>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                  price <img src={arrowDown} alt="" /></div>
+                  price
+                  {' '}
+                  <img src={arrowDown} alt="" />
+
+                </div>
               </div>
             </div>
           </div>
 
           {
-            filteredCollection && activeDetail === 'collections' ?
-              <div className={classes.overview}>
-                {
+            filteredCollection && activeDetail === 'collections'
+              ? (
+                <div className={classes.overview}>
+                  {
                   filteredCollection
                     .map((collection, idx) => (
                       <CollectionsCard key={idx} collection={collection} />
                     ))
                 }
-              </div>
-              :
-              filteredCollection && activeDetail === 'created' ?
-                <div className={classes.overview}>
-                  {
-                    filteredCollection
-                      .map((nft, idx) => (
-                        <NftCard key={idx} nft={nft} list={true} />
-                      ))
-                  }
                 </div>
-                :
-                filteredCollection && activeDetail === 'collected' ?
+              )
+              : filteredCollection && activeDetail === 'created'
+                ? (
                   <div className={classes.overview}>
                     {
+                    filteredCollection
+                      .map((nft, idx) => (
+                        <NftCard key={idx} nft={nft} list />
+                      ))
+                  }
+                  </div>
+                )
+                : filteredCollection && activeDetail === 'collected'
+                  ? (
+                    <div className={classes.overview}>
+                      {
                       filteredCollection
                         .map((nft, idx) => (
-                          <NftCard key={idx} nft={nft} list={true} />
+                          <NftCard key={idx} nft={nft} list />
                         ))
                     }
-                  </div>
-                  :
-                  <div className={classes.skeleton}>
-                    {
+                    </div>
+                  )
+                  : (
+                    <div className={classes.skeleton}>
+                      {
                       (Array(5).fill(null)).map((_, idx) => (
                         <div key={idx}>
                           <Skeleton count={1} height={300} />
                         </div>
                       ))
                     }
-                  </div>
+                    </div>
+                  )
           }
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Dashboard;

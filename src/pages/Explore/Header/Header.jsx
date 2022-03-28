@@ -1,58 +1,65 @@
+import Skeleton from 'react-loading-skeleton';
+import React, { useEffect, useRef } from 'react';
 import classes from './Header.module.css';
 import listIcon from '../../../assets/icon-list.svg';
 import stackIcon from '../../../assets/icon-stack.svg';
 import tradeIcon from '../../../assets/icon-trade.svg';
-import Skeleton from 'react-loading-skeleton';
 import Copy from '../../../components/copy/copy';
-import { useEffect, useRef } from 'react';
 
 const Header = ({ collection, getHeight }) => {
-
-  const domMountRef = useRef(false)
-  const headerRef = useRef(null)
-  const { name, owner, price, imageUrl, numberOfNfts, description } = collection;
+  const domMountRef = useRef(false);
+  const headerRef = useRef(null);
+  const {
+    name, owner, price, imageUrl, numberOfNfts, description,
+  } = collection;
 
   useEffect(() => {
-    window.addEventListener("resize", e => {
+    window.addEventListener('resize', () => {
       if (domMountRef.current) {
-        let res = headerRef.current.getBoundingClientRect().height;
-        getHeight(res)
+        const res = headerRef.current.getBoundingClientRect().height;
+        getHeight(res);
       } else {
         domMountRef.current = true;
       }
     });
-    getHeight(500)
+    getHeight(500);
   }, []);
 
   return (
     <header ref={headerRef} className={classes.container}>
       <div className={classes.wrapper}>
         {
-          imageUrl ? <img className={classes.imageContainer} src={imageUrl} alt="asset" /> : <div className={classes.imageLoadingContainer}>
-            <Skeleton count={1} height={200} />
-          </div>
+          imageUrl ? <img className={classes.imageContainer} src={imageUrl} alt="asset" /> : (
+            <div className={classes.imageLoadingContainer}>
+              <Skeleton count={1} height={200} />
+            </div>
+          )
         }
         <div className={classes.collectionName}>{name}</div>
         <div className={classes.creator}>
           {
-            owner ?
-              <div>
-                Created by <span className={classes.address}><Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} /></span>
-              </div>
-              :
-              <div className={classes.skeleton}>
-                <Skeleton count={1} height={16} />
-              </div>
+            owner
+              ? (
+                <div>
+                  Created by
+                  {' '}
+                  <span className={classes.address}><Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} /></span>
+                </div>
+              )
+              : (
+                <div className={classes.skeleton}>
+                  <Skeleton count={1} height={16} />
+                </div>
+              )
           }
         </div>
         <div className={classes.description}>
           {
-            description ?
-              description
-              :
-              <div className={classes.skeleton}>
-                <Skeleton count={2} height={20} />
-              </div>
+            description || (
+            <div className={classes.skeleton}>
+              <Skeleton count={2} height={20} />
+            </div>
+            )
           }
         </div>
       </div>
@@ -61,7 +68,11 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOOR PRICE</div>
-            <div className={classes.price}>{price} <span className={classes.chain}>Algo</span></div>
+            <div className={classes.price}>
+              {price}
+              {' '}
+              <span className={classes.chain}>Algo</span>
+            </div>
           </div>
           <img src={stackIcon} alt="" />
         </div>
@@ -84,7 +95,7 @@ const Header = ({ collection, getHeight }) => {
       </div>
 
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import axios from 'axios';
 import classes from './collections.module.css';
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
+import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../utils';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import { getPolygonNfts } from '../../utils/arc_ipfs';
 import { chainIcon, transformArrayOfArraysToArrayOfObjects } from './collection-script';
 import { fetchCollections } from '../../utils/firebase';
 import dropdownIcon from '../../assets/icon-dropdown.svg';
-import axios from 'axios';
 import arrowDown from '../../assets/icon-arrow-down-long.svg';
 import arrowUp from '../../assets/icon-arrow-up-long.svg';
 
@@ -26,8 +26,8 @@ const Collections = () => {
     filter: {
       searchValue: '',
       price: 'high',
-      chain: 'Algorand'
-    }
+      chain: 'Algorand',
+    },
   });
 
   const {
@@ -38,35 +38,35 @@ const Collections = () => {
     filter,
     togglePriceFilter,
     toggleChainFilter,
-    filteredCollection
+    filteredCollection,
   } = state;
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
   const getCollectionToFilter = () => {
     switch (filter.chain) {
       case 'Algorand':
-        return algoCollection
+        return algoCollection;
       case 'Polygon':
-        return polyCollection
+        return polyCollection;
       case 'Celo':
-        return celoCollection
+        return celoCollection;
       case 'Near':
-        return nearCollection
+        return nearCollection;
       default:
         break;
     }
-  }
+  };
 
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        let collections = await fetchCollections();
-        let result = await getNftCollections(collections)
-        handleSetState({ algoCollection: result })
-      }())
+        const collections = await fetchCollections();
+        const result = await getNftCollections(collections);
+        handleSetState({ algoCollection: result });
+      }());
     } catch (error) {
       console.log(error);
     }
@@ -74,14 +74,15 @@ const Collections = () => {
     try {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
-        let data = transformArrayOfArraysToArrayOfObjects(result);
-        for (let d of data) {
-          let response = await axios.get(d['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
-
+        const data = transformArrayOfArraysToArrayOfObjects(result);
+        // eslint-disable-next-line no-restricted-syntax
+        for (const d of data) {
+          // eslint-disable-next-line no-await-in-loop
+          await axios.get(d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'));
         }
         // handleSetState({ polyCollection: result });
         // console.log(result);
-      }())
+      }());
     } catch (error) {
       console.log(error);
     }
@@ -89,19 +90,19 @@ const Collections = () => {
 
   useEffect(() => {
     if (!algoCollection) return;
-    let filtered = algoCollection.filter(col => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = algoCollection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     handleSetState({ filteredCollection: filtered });
   }, [filter.searchValue]);
 
   useEffect(() => {
     if (!algoCollection) return;
     let filtered = null;
-    if (filter.price === "low") {
-      filtered = algoCollection.sort((a, b) => Number(a.price) - Number(b.price))
+    if (filter.price === 'low') {
+      filtered = algoCollection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      filtered = algoCollection.sort((a, b) => Number(b.price) - Number(a.price))
+      filtered = algoCollection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.price]);
@@ -109,29 +110,35 @@ const Collections = () => {
   useEffect(() => {
     if (domMountRef.current) {
       console.log('mounted');
-      let filteredCollection = getCollectionToFilter();
-      handleSetState({ filteredCollection })
+      const filteredCollections = getCollectionToFilter();
+      handleSetState({ filteredCollections });
     } else {
       domMountRef.current = true;
     }
-    console.log('dom');
   }, [filter.chain, algoCollection, polyCollection, celoCollection, nearCollection]);
 
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         <div className={classes.header}>
-          <h1 >Collections</h1>
+          <h1>Collections</h1>
           <div className={classes.searchAndPriceFilter}>
             <input
               type="search"
-              onChange={event => handleSetState({ filter: { ...filter, searchValue: event.target.value } })}
+              onChange={(event) => handleSetState(
+                { filter: { ...filter, searchValue: event.target.value } },
+              )}
               value={filter.searchValue}
-              placeholder='search'
+              placeholder="search"
             />
 
             <div className={classes.chainDropdown}>
-              <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter, togglePriceFilter: false })} className={classes.selectedChain}>
+              <div
+                onClick={() => handleSetState(
+                  { toggleChainFilter: !toggleChainFilter, togglePriceFilter: false },
+                )}
+                className={classes.selectedChain}
+              >
                 <div>
                   <img src={chainIcon[filter.chain]} alt="" />
                   <span>{filter.chain}</span>
@@ -159,37 +166,55 @@ const Collections = () => {
             </div>
 
             <div className={classes.priceDropdown}>
-              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                Price{filter.price === 'low' ? <span>Low to High</span> : <span>High to Low</span>}
+              <div
+                onClick={() => handleSetState(
+                  { togglePriceFilter: !togglePriceFilter, toggleChainFilter: false },
+                )}
+                className={classes.selectedPrice}
+              >
+                Price
+                {filter.price === 'low' ? <span>Low to High</span> : <span>High to Low</span>}
                 <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
               </div>
               <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                  price <span>Low to High</span> <img src={arrowUp} alt="" /></div>
+                  price
+                  {' '}
+                  <span>Low to High</span>
+                  {' '}
+                  <img src={arrowUp} alt="" />
+
+                </div>
                 <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                  price <span>High to Low</span> <img src={arrowDown} alt="" /></div>
+                  price
+                  {' '}
+                  <span>High to Low</span>
+                  {' '}
+                  <img src={arrowDown} alt="" />
+
+                </div>
               </div>
             </div>
           </div>
         </div>
 
         {
-          filteredCollection?.length ?
-            <div className={classes.wrapper}>
-              {
+          filteredCollection?.length
+            ? (
+              <div className={classes.wrapper}>
+                {
                 filteredCollection
                   .map((collection, idx) => (
                     <CollectionsCard key={idx} collection={collection} />
                   ))
               }
-            </div>
-            :
-            !filteredCollection
-              ?
-              <div className={classes.noResult}>no result found</div>
-              :
-              <div className={classes.skeleton}>
-                {
+              </div>
+            )
+            : !filteredCollection
+              ? <div className={classes.noResult}>no result found</div>
+              : (
+                <div className={classes.skeleton}>
+                  {
                   (Array(4).fill(null)).map((_, idx) => (
                     <div key={idx}>
                       <Skeleton count={1} height={250} />
@@ -200,11 +225,12 @@ const Collections = () => {
                     </div>
                   ))
                 }
-              </div>
+                </div>
+              )
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Collections
+export default Collections;
