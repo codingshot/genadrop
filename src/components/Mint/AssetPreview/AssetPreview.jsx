@@ -15,10 +15,11 @@ const AssetPreview = ({ data, changeFile }) => {
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : '',
     price: '',
+    calcPrice: '0',
     chain: 'Algo',
     preview: false
   });
-  const { attributes, fileName, description, price, chain, preview } = state;
+  const { attributes, fileName, description, price, chain, preview, calcPrice } = state;
 
   const mintProps = {
     dispatch,
@@ -52,6 +53,13 @@ const AssetPreview = ({ data, changeFile }) => {
     setState(state => ({ ...state, ...payload }));
   }
 
+  const getUintByChain = {
+    'Algo': 'Algo',
+    'Celo': 'CGLD',
+    'Polygon': 'Matic',
+    'Near': 'Near'
+  }
+
   const handleAddAttribute = () => {
     handleSetState({
       attributes: {
@@ -81,12 +89,35 @@ const AssetPreview = ({ data, changeFile }) => {
   }
 
   const handlePrice = event => {
-    handleSetState({ price: event.target.value })
+    let price = event.target.value;
+    handleSetState({ price });
+
+    const formatResult = amount => {
+      let calcPrice = Number(price) * Number(amount);
+      if (isNaN(calcPrice)) {
+        dispatch(setNotification('please add a valid price'));
+        handleSetState({ calcPrice: 0 })
+      } else {
+        handleSetState({ calcPrice: calcPrice.toFixed(2) })
+      }
+    }
+
+    if (chain === 'Near') {
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`)
+        .then(res => {
+          let amount = res.data.near.usd;
+          formatResult(amount)
+        })
+    } else {
+      axios.get(`https://api.coinbase.com/v2/prices/${getUintByChain[chain]}-USD/spot`)
+        .then(res => {
+          let amount = res.data.data.amount;
+          formatResult(amount)
+        })
+    }
   }
 
   const setMint = () => {
-    const result = /^[0-9]\d*(\.\d+)?$/.test(price);
-    if (!result) return dispatch(setNotification('please add a valid price'));
     if (file.length > 1) {
       handleMint(mintProps)
     } else {
@@ -94,12 +125,9 @@ const AssetPreview = ({ data, changeFile }) => {
     }
   }
 
-  useEffect(()=> {
-    axios.get(`https://api.coinbase.com/v2/prices/CGLD-USD/spot`)
-      .then(res => {
-        console.log('res: ', res);
-      })
-  },[])
+  useEffect(() => {
+    handlePrice({target: {value: 0}})
+  },[chain])
 
   return (
     <div className={classes.container}>
@@ -145,7 +173,7 @@ const AssetPreview = ({ data, changeFile }) => {
             <section className={classes.details}>
 
               <div className={classes.inputWrapper}>
-                <label> Title </label>
+                <label> Title <span className={classes.required}>*</span></label>
                 <input
                   style={metadata ? { pointerEvents: 'none' } : {}}
                   type="text"
@@ -155,7 +183,7 @@ const AssetPreview = ({ data, changeFile }) => {
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Description</label>
+                <label>Description <span className={classes.required}>*</span></label>
                 <textarea
                   style={metadata?.length === 1 ? { pointerEvents: 'none' } : {}}
                   rows="5"
@@ -165,7 +193,7 @@ const AssetPreview = ({ data, changeFile }) => {
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Attributes</label>
+                <label>Attributes <span className={classes.required}>*</span></label>
                 {
                   !metadata
                     ?
@@ -214,12 +242,18 @@ const AssetPreview = ({ data, changeFile }) => {
             <section className={classes.mintOptions}>
 
               <div className={classes.inputWrapper}>
-                <label>Price</label>
-                <input type="text" value={price} onChange={handlePrice} />
+                <label>Price (USD) <span className={classes.required}>*</span></label>
+                <div className={classes.priceInput}>
+                  <input type="text" value={price} onChange={handlePrice} />
+                  <div className={classes.calcPrice}>
+                    <div>{calcPrice}</div>
+                    <div>{getUintByChain[chain]}</div>
+                  </div>
+                </div>
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Chain</label>
+                <label>Chain <span className={classes.required}>*</span></label>
                 <select value={chain} onChange={event => handleSetState({ chain: event.target.value })}>
                   <option value="Algo">Algorand</option>
                   <option value="Celo">Celo</option>

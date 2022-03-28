@@ -33,6 +33,10 @@
   font-family: sans-serif;
 }
 
+.required {
+  color: red;
+}
+
 @keyframes shade {
   0%, 40% {background: rgb(255, 255, 255, 1); color: black;}
   100% {background: rgb(255, 255, 255, 0); color: transparent;}
@@ -205,6 +209,21 @@
   border: 1px solid gainsboro;
   padding: 0.25em;
   border-radius: 0.25em;
+}
+
+.priceInput {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 1em;
+}
+
+.calcPrice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  font-size: 0.85rem;
 }
 
 /* ------------------------------------------full preview section ----------------------------------------------------*/
