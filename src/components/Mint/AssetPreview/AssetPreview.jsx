@@ -15,7 +15,7 @@ const AssetPreview = ({ data, changeFile }) => {
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : '',
     price: '',
-    chain: '',
+    chain: null,
     preview: false,
     dollarPrice: 0
   });
@@ -25,6 +25,7 @@ const AssetPreview = ({ data, changeFile }) => {
     { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
     { label: 'Celo', networkId: 42220, symbol: "CGLD" },
     { label: 'Polygon', networkId: 137, symbol: "MATIC" },
+    { label: 'Polygon Testnet', networkId: 80001, symbol: "MATIC" },
     { label: 'Near', networkId: 1313161555, symbol: "NEAR" },
   ]
 
@@ -40,7 +41,7 @@ const AssetPreview = ({ data, changeFile }) => {
     file: zip,
     fileName,
     price,
-    chain,
+    chain: chain?.label,
     dollarPrice
   };
 
@@ -56,7 +57,7 @@ const AssetPreview = ({ data, changeFile }) => {
     metadata: { name: fileName, description, attributes: Object.values(attributes) },
     fileName,
     price,
-    chain,
+    chain: chain?.label,
     dollarPrice
   };
 
@@ -68,6 +69,7 @@ const AssetPreview = ({ data, changeFile }) => {
     'Algo': 'Algo',
     'Celo': 'CGLD',
     'Polygon': 'Matic',
+    'Polygon Testnet': 'Matic',
     'Near': 'Near'
   }
 
@@ -100,35 +102,13 @@ const AssetPreview = ({ data, changeFile }) => {
   }
 
   const handlePrice = event => {
-    let price = event.target.value;
-    handleSetState({ price });
-
-    const formatResult = amount => {
-      let calcPrice = Number(price) * Number(amount);
-      if (isNaN(calcPrice)) {
-        dispatch(setNotification('please add a valid price'));
-        handleSetState({ calcPrice: 0 })
-      } else {
-        handleSetState({ calcPrice: calcPrice.toFixed(2) })
-      }
-    }
-
-    if (chain === 'Near') {
-      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`)
-        .then(res => {
-          let amount = res.data.near.usd;
-          formatResult(amount)
-        })
-    } else {
-      axios.get(`https://api.coinbase.com/v2/prices/${getUintByChain[chain]}-USD/spot`)
-        .then(res => {
-          let amount = res.data.data.amount;
-          formatResult(amount)
-        })
-    }
+    handleSetState({ price: event.target.value });
   }
 
   const setMint = () => {
+    if (!chainId) return dispatch(setNotification('connect wallet and try again'));
+    const c = chains.find(c => c.networkId == chainId);
+    if (!c) return dispatch(setNotification('unsupported chain detected'));;
     if (file.length > 1) {
       handleMint(mintProps)
     } else {
@@ -137,17 +117,26 @@ const AssetPreview = ({ data, changeFile }) => {
   }
 
   useEffect(() => {
-    console.log(chainId);
+    console.log('chainId: ', chainId);
     if (chainId) {
       const c = chains.find(c => c.networkId == chainId);
-      if (!c) return "invalid chain"
+      if (!c) return handleSetState({chain: {label: 'unsupported chain'}})
       handleSetState({ chain: c })
-      axios.get(`https://api.coinbase.com/v2/prices/${chain.symbol}-USD/spot`)
+      if(c.symbol === 'NEAR'){
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`)
+        .then(res => {
+          handleSetState({ dollarPrice: res.data.near.usd * price })
+        })
+      }else {
+      axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`)
         .then(res => {
           handleSetState({ dollarPrice: res.data.data.amount * price })
-        })
+        })        
+      }
     }
-  }, [price, chainId])
+  }, [price, chainId]);
+
+
   return (
     <div className={classes.container}>
       {
@@ -261,19 +250,21 @@ const AssetPreview = ({ data, changeFile }) => {
             <section className={classes.mintOptions}>
 
               <div className={classes.inputWrapper}>
-                <label>Price</label>
-                <div className={classes.price}>
-                  <input type="number" value={0} onChange={handlePrice} />
-                  {chainId ? <span>({dollarPrice} USD)</span> : "Connect wallet see USD price"}
-                </div>
+                <label>Price (USD) <span className={classes.required}>*</span></label>
+                {
+                  chainId ?
+                    <div className={classes.price}>
+                      <input type="number" value={price} onChange={handlePrice} />
+                      <span>{dollarPrice} {getUintByChain[chain?.label]}</span>
+                    </div>
+                    :
+                    <span className={classes.warn}>Connect wallet to add price</span>
+                }
+
               </div>
 
               <div className={classes.inputWrapper}>
-                <label>Chain</label>
-                {chainId ? <select value={chain} disabled={true} >
-                  <option value={chain.label} > {chain.label}</option>
-
-                </select> : ""}
+                <label>Chain: {chainId ? <span className={classes.chain} > {chain?.label}</span> : "---"} </label>
               </div>
             </section>
 

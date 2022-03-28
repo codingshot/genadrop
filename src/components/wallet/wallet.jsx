@@ -10,9 +10,29 @@ import disconnectIcon from '../../assets/icon-disconnect.svg';
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import { useHistory } from 'react-router-dom';
+import polygonIcon from '../../assets/icon-polygon.svg';
+import algoIcon from '../../assets/icon-algo.svg';
+import nearIcon from '../../assets/icon-near.svg';
+import celoIcon from '../../assets/icon-celo.svg';
 
+const chainIcon = {
+  "Polygon": polygonIcon,
+  "Polygon Testnet": polygonIcon,
+  "Algorand": algoIcon,
+  "Near": nearIcon,
+  "Celo": celoIcon
+}
+
+const chains = [
+  { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
+  { label: 'Celo', networkId: 42220, symbol: "CGLD" },
+  { label: 'Polygon', networkId: 137, symbol: "MATIC" },
+  { label: 'Polygon Testnet', networkId: 80001, symbol: "MATIC" },
+  { label: 'Near', networkId: 1313161555, symbol: "NEAR" },
+]
 
 function ConnectWallet({ setToggleNav }) {
+  const history = useHistory();
   const { dispatch, connector, account, chainId } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -51,7 +71,7 @@ function ConnectWallet({ setToggleNav }) {
       dispatch(setConnector())
       dispatch(setChainId(''))
       setDropdown(false);
-      history.push('./marketplace')
+      // history.push('/marketplace');
       setToggleDropdown(false)
     }
   }
@@ -163,12 +183,18 @@ function ConnectWallet({ setToggleNav }) {
     }, 850);
   }
 
+  const getConnectedChain = () => {
+    const c = chains.find(c => c.networkId == chainId);
+    if (!c) return 
+    return c.label
+  }
+
   return (
     (account ?
       <div className={classes.container}>
         <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
-          <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
-            <img src={userIcon} alt='' />
+          <div onClick={() => { setToggleDropdown(false); setToggleNav(false) }} className={classes.chain}>
+            <img src={chainIcon[getConnectedChain()]} alt='' />
           </div>
           <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
             <span>{breakAddress(account)}</span>
@@ -187,6 +213,9 @@ function ConnectWallet({ setToggleNav }) {
           </div>
         </div>
         <div className={classes.network}>{network === 'mainnet' ? "Mainnet" : "Testnet"}</div>
+        <div onClick={() => { setToggleDropdown(false); history.push(`/me/${account}`); setToggleNav(false) }} className={classes.user}>
+          <img src={userIcon} alt='' />
+        </div>
       </div>
       :
       <div className={classes.connect} onClick={toggleWallet}>Connect Wallet</div>

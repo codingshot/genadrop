@@ -244,6 +244,17 @@
   font-size: 0.85rem;
 }
 
+.chain {
+  background: gainsboro;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  margin-left: 1em;
+}
+
+.warn {
+  color: red;
+}
+
 /* ------------------------------------------full preview section ----------------------------------------------------*/
 
 .previewWrapper {
