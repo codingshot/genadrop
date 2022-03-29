@@ -38,7 +38,7 @@ export const INITIAL_STATE = {
   clipboardMessage: '',
   loaderMessage: '',
   didMount: false,
-  mainnet: true
+  mainnet: null
 }
 
 export const genReducer = (state = INITIAL_STATE, action) => {
