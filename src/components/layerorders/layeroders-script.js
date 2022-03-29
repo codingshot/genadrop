@@ -1,11 +1,11 @@
 export const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: "none",
+  userSelect: 'none',
   marginBottom: 8,
   // background: isDragging ? "lightgreen" : "grey",
-  ...draggableStyle
+  ...draggableStyle,
 });
 
-export const getListStyle = isDraggingOver => ({
+export const getListStyle = (isDraggingOver) => ({
   // background: isDraggingOver ? "lightblue" : "lightgrey",
-  width: "100%"
+  width: '100%',
 });

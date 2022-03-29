@@ -1,14 +1,14 @@
 import JSZip from 'jszip';
 
 export const getAweaveFormat = async (nftLayers) => {
-  let clone = [];
-  for (let i = 0; i < nftLayers.length; i++) {
+  const clone = [];
+  for (let i = 0; i < nftLayers.length; i + 1) {
     clone.push({
       name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
       image: 'image.png',
       description: nftLayers[i].description,
       attributes: nftLayers[i].attributes.map(
-        ({ trait_type, value, rarity }) => ({ trait_type, value, rarity })
+        ({ trait_type, value, rarity }) => ({ trait_type, value, rarity }),
       ),
       symbol: '',
       seller_fee_basis_points: '',
@@ -31,14 +31,14 @@ export const getAweaveFormat = async (nftLayers) => {
 };
 
 export const getIpfsFormat = async (nftLayers) => {
-  let clone = [];
-  for (let i = 0; i < nftLayers.length; i++) {
+  const clone = [];
+  for (let i = 0; i < nftLayers.length; i + 1) {
     clone.push({
       name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
       image: 'image.png',
       description: nftLayers[i].description,
       attributes: nftLayers[i].attributes.map(
-        ({ trait_type, value, rarity }) => ({ trait_type, value, rarity })
+        ({ trait_type, value, rarity }) => ({ trait_type, value, rarity }),
       ),
     });
   }
@@ -46,12 +46,12 @@ export const getIpfsFormat = async (nftLayers) => {
 };
 
 export const paginate = (input, count) => {
-  let countPerPage = count;
-  let numberOfPages = Math.ceil(input.length / countPerPage);
+  const countPerPage = count;
+  const numberOfPages = Math.ceil(input.length / countPerPage);
   let startIndex = 0;
   let endIndex = startIndex + countPerPage;
-  let paginate = {};
-  for (let i = 1; i <= numberOfPages; i++) {
+  const paginate = {};
+  for (let i = 1; i <= numberOfPages; i + 1) {
     paginate[i] = input.slice(startIndex, endIndex);
     startIndex = endIndex;
     endIndex = startIndex + countPerPage;
@@ -68,21 +68,21 @@ export const downloadCallback = async (props) => {
     aweave.forEach((data, idx) => {
       zip.file(
         data.name ? `${data.name}.json` : `_${idx}.json`,
-        JSON.stringify(data, null, '\t')
+        JSON.stringify(data, null, '\t'),
       );
     });
   } else {
     zip.file(
       'metadata.json',
-      JSON.stringify(await getIpfsFormat(value), null, '\t')
+      JSON.stringify(await getIpfsFormat(value), null, '\t'),
     );
   }
   for (let i = 0; i < value.length; i++) {
-    let base64String = value[i].image.replace('data:image/png;base64,', '');
+    const base64String = value[i].image.replace('data:image/png;base64,', '');
     zip.file(
       value[i].name ? `${value[i].name}.png` : `_${i}.png`,
       base64String,
-      { base64: true }
+      { base64: true },
     );
   }
   return await zip.generateAsync({ type: 'blob' });
