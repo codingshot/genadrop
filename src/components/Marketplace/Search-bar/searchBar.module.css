@@ -1,0 +1,13 @@
+.searchInput {
+  width: 100%;
+  flex: 1;
+  padding: 0.5em;
+  transition: all 300ms;
+  border-radius: 0.25em;
+  border: 1px solid gainsboro;
+  outline: 1px solid transparent;
+}
+
+.searchInput:focus {
+  outline: 1px solid gray;
+}

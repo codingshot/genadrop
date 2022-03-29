@@ -23,7 +23,7 @@ import detailsIcon from '../../assets/details.png';
 import Search from "../../components/Nft-details/history/search";
 
 const SingleNFT = () => {
-  const { account, connector } = useContext(GenContext);
+  const { account, connector, mainnet } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -58,13 +58,16 @@ const SingleNFT = () => {
   useEffect(() => {
     const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
 
+
     (async function getNftDetails() {
       const tHistory = await readNftTransaction(nftId);
 
       let nftDetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails, isLoading: false, transactionHistory: tHistory });
 
+
     })();
+    // handleSetState({ })
 
     axios
       .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
@@ -181,7 +184,7 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(nftDetails, account, connector);
+    let res = await PurchaseNft(nftDetails, account, connector, mainnet);
     alert(res);
   };
 

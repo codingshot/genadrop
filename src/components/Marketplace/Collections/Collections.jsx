@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import { useState } from 'react';
 import classes from './collections.module.css';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -8,12 +8,14 @@ import { getNftCollections } from '../../../utils';
 import CollectionsCard from '../collectionsCard/collectionsCard';
 import { fetchCollections } from '../../../utils/firebase';
 import NotFound from '../../not-found/notFound';
+import { GenContext } from '../../../gen-state/gen.context';
 
 const Collections = () => {
 
   const [state, setState] = useState({
     algoCollection: []
   })
+  const { collections, mainnet } = useContext(GenContext)
   const { algoCollection } = state
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
@@ -24,9 +26,9 @@ const Collections = () => {
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        let collections = await fetchCollections();
+        //let collections = await fetchCollections();
         if (collections?.length) {
-          let result = await getNftCollections(collections)
+          let result = await getNftCollections(collections, mainnet)
           handleSetState({ algoCollection: result })
         } else {
           handleSetState({ algoCollection: null })
@@ -35,7 +37,7 @@ const Collections = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [collections]);
 
   return (
     <div className={classes.container}>

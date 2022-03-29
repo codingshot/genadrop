@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { getSingleNfts } from '../../../utils';
 import { readAllSingleNft } from '../../../utils/firebase';
 import NftCard from '../NftCard/NftCard';
 import classes from './SingleNft.module.css';
+import { GenContext } from '../../../gen-state/gen.context';
 
 const SingleNft = () => {
 
@@ -15,22 +16,24 @@ const SingleNft = () => {
   const handleSetState = payload => {
     setState(state => ({ ...state, ...payload }))
   }
-
+  const { singleNfts, mainnet } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
 
   useEffect(() => {
     (async function getResult() {
-      let singleNfts = await readAllSingleNft();
+      // let singleNfts = await readAllSingleNft();
+      console.log('siuuu', allSingleNfts, singleNfts);
       if (singleNfts?.length) {
-        let allSingleNfts = await getSingleNfts(singleNfts);
+        let allSingleNfts = await getSingleNfts(mainnet, singleNfts);
         handleSetState({ allSingleNfts })
       } else {
         handleSetState({ allSingleNfts: null })
       }
 
     }())
-  }, [])
+  }, [singleNfts])
+  console.log(allSingleNfts)
 
   return (
     <div className={classes.container}>
