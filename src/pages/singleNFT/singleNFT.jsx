@@ -22,7 +22,7 @@ import descriptionIcon from '../../assets/description-icon.png';
 import detailsIcon from '../../assets/details.png';
 
 const SingleNFT = () => {
-  const { account, connector } = useContext(GenContext);
+  const { account, connector, mainnet } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -56,10 +56,13 @@ const SingleNFT = () => {
 
   useEffect(() => {
     const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
+    
     (async function getNftDetails() {
-      let nftDetails = await getSingleNftDetails(nft);
+      console.log('consula', singleNfts, nft)
+      let nftDetails = await getSingleNftDetails(mainnet, nft);
       handleSetState({ nftDetails, isLoading: false });
     })();
+    // handleSetState({ })
 
     axios
       .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
@@ -176,7 +179,7 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(nftDetails, account, connector);
+    let res = await PurchaseNft(nftDetails, account, connector, mainnet);
     alert(res);
   };
 

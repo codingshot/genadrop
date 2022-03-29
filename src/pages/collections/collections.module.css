@@ -25,149 +25,13 @@
   margin-bottom: 1em;
 }
 
-.searchAndPriceFilter {
+.searchAndFilter {
   width: 100%;
   display: flex;
   align-items: stretch;
   justify-content: space-between;
   gap: 1em;
   margin-bottom: 0.5em;
-}
-
-.searchAndPriceFilter input {
-  width: 100%;
-  flex: 1;
-  padding: 0.5em;
-  transition: all 300ms;
-  border-radius: 0.25em;
-  border: 1px solid gainsboro;
-  outline: 1px solid transparent;
-}
-
-.searchAndPriceFilter input:focus {
-  outline: 1px solid gray;
-}
-
-.chainDropdown {
-  z-index: 2;
-}
-
-.priceDropdown {
-  z-index: 1 !important;
-}
-
-.chainDropdown,
-.priceDropdown {
-  position: relative;
-  width: 12em;
-  background: white;
-  border-radius: 0.25em;
-  z-index: 10;
-}
-
-.priceDropdown span {
-  font-size: 0.85rem;
-}
-
-.selectedPrice {
-  cursor: pointer;
-  background: white;
-  color: #000000;
-  border: 1px solid gainsboro;
-  padding: 0.5em;
-  border-top-left-radius: 0.25em;
-  border-top-right-radius: 0.25em;
-  transition: all 300ms;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-transform: capitalize;
-  gap: 1em;
-}
-
-.selectedPrice span {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1em;
-}
-
-.selectedChain {
-  display: flex;
-  padding: 0.25em 0.5em;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid gainsboro;
-  border-top-left-radius: 0.25em;
-  border-top-right-radius: 0.25em;
-  cursor: pointer;
-}
-
-.selectedChain:hover {
-  background: rgb(240, 240, 240);
-}
-
-.selectedChain > div{
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1em;
-}
-
-.selectedPrice:hover {
-  background: rgb(240, 240, 240);
-}
-
-.chainDropdown .dropdown,
-.priceDropdown .dropdown{
-  width: 100%;
-  left: 0;
-  position: absolute;
-  background: white;
-  visibility: hidden;
-  opacity: 0;
-  transition: all 250ms;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-  transform: translateY(-0.5em);
-  text-transform: capitalize;
-}
-
-.chainDropdown .dropdown.active,
-.priceDropdown .dropdown.active {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0em);
-}
-
-.chainDropdown .dropdown > div,
-.priceDropdown .dropdown > div {
-  padding: 0.5em;
-  border: 1px solid gainsboro;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-}
-
-.chainDropdown .dropdown >div:hover,
-.priceDropdown .dropdown > div:hover {
-  background: rgb(240, 240, 240);
-}
-
-.chainDropdown .dropdown > div:last-child,
-.priceDropdown .dropdown > div:last-child {
-  border-bottom-left-radius: 0.25em;
-  border-bottom-right-radius: 0.25em;
-}
-
-.dropdownIcon {
-  transition: all 250ms;
-}
-
-.dropdownIcon.active {
-  transform: rotate(180deg);
 }
 
 .wrapper {
@@ -207,15 +71,14 @@
 }
 
 @media screen and (max-width: 680px) {
-  .searchAndPriceFilter {
+  .searchAndFilter {
     flex-direction: column;
     gap: 0.5em;
   }
 
-  .chainDropdown, 
-  .priceDropdown {
+  .searchAndFilter > div {
     width: 100%;
-  } 
+  }
 }
 
 @media screen and (max-width: 540px) {
