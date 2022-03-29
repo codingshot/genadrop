@@ -194,13 +194,14 @@ async function readSIngleUserNft(userAddress, assetId) {
 }
 
 async function readAllCollection(mainnet) {
+  console.log('isnuloooo', mainnet)
   let querySnapshot = await db.collection("collections").get();
   let res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
   });
-  console.log('data', res.filter(asset => asset.mainnet === mainnet), mainnet)
-  return res.filter(asset => asset.mainnet === mainnet);
+  let response = mainnet === null ? res : res.filter(asset => asset.mainnet === mainnet);
+  return response;
 }
 
 async function readUserCollection(userAddress) {
@@ -216,12 +217,14 @@ async function readUserCollection(userAddress) {
 }
 
 async function readAllSingleNft(mainnet) {
+  console.log('isnuloooo', mainnet)
   let querySnapshot = await db.collection("listed").get();
   let res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  return res.filter(asset => (asset.collection === null) && (asset.mainnet === mainnet));
+  let response = mainnet === null ? res : res.filter(asset => (asset.collection === null) && (asset.mainnet === mainnet));
+  return response;
 }
 
 async function fetchCollections(mainnet) {
