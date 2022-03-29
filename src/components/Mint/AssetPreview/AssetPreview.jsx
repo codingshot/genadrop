@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
-  const { dispatch, connector, account, chainId } = useContext(GenContext);
+  const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [state, setState] = useState({
     attributes: { [Date.now()]: { trait_type: '', value: '' } },
     fileName: fName,
@@ -41,6 +41,7 @@ const AssetPreview = ({ data, changeFile }) => {
     file: zip,
     fileName,
     price,
+    mainnet,
     chain: chain?.label,
     dollarPrice
   };
@@ -57,6 +58,7 @@ const AssetPreview = ({ data, changeFile }) => {
     metadata: { name: fileName, description, attributes: Object.values(attributes) },
     fileName,
     price,
+    mainnet,
     chain: chain?.label,
     dollarPrice
   };
@@ -255,7 +257,9 @@ const AssetPreview = ({ data, changeFile }) => {
                   chainId ?
                     <div className={classes.price}>
                       <input type="number" value={price} onChange={handlePrice} />
+
                       <span>~{dollarPrice.toFixed(3)} {getUintByChain[chain?.label]}</span>
+
                     </div>
                     :
                     <span className={classes.warn}>Connect wallet to add price</span>

@@ -6,8 +6,12 @@
   gap: 2em;
 }
 
-.container img {
+.imageContainer {
   width: 20vmax;
+}
+
+.imageContainer img {
+  width: 100%;
 }
 
 .container h1 {

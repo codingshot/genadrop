@@ -9,9 +9,8 @@ import { groupAttributesByTraitType, mapAttributeToFilter } from './Explore-scri
 import { getNftCollection } from '../../utils';
 import Menu from './Menu/Menu';
 import closeIcon from '../../assets/icon-close.svg';
-import dropdownIcon from '../../assets/icon-dropdown.svg';
-import arrowDown from '../../assets/icon-arrow-down-long.svg';
-import arrowUp from '../../assets/icon-arrow-up-long.svg';
+import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
+import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
 
 const Explore = () => {
 
@@ -29,7 +28,7 @@ const Explore = () => {
     },
   })
   const { collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection, headerHeight } = state;
-  const { collections } = useContext(GenContext);
+  const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -49,7 +48,7 @@ const Explore = () => {
     if (Object.keys(collections).length) {
       const collection = collections.find(col => col.name === collectionName);
       (async function getResult() {
-        let result = await getNftCollection(collection);
+        let result = await getNftCollection(collection, mainnet);
         handleSetState({
           collection,
           NFTCollection: result
@@ -122,25 +121,9 @@ const Explore = () => {
       <div className={classes.displayContainer}>
         <Filter handleFilter={handleFilter} filterToDelete={filterToDelete} attributes={attributes} />
         <main className={classes.displayWrapper}>
-          <div className={classes.searchAndPriceFilter}>
-            <input
-              type="search"
-              onChange={event => handleSetState({ filter: { ...filter, searchValue: event.target.value } })}
-              value={filter.searchValue}
-              placeholder='search'
-            />
-            <div className={classes.priceDropdown}>
-              <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-                <span>price: {filter.price === 'low' ? "Low to High" : "High to Low"} </span>
-                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
-              </div>
-              <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                  price <img src={arrowUp} alt="" /></div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                  price <img src={arrowDown} alt="" /></div>
-              </div>
-            </div>
+          <div className={classes.searchAndFilter}>
+            <SearchBar onSearch={value => handleSetState({ filter: { ...filter, searchValue: value } })} />
+            <PriceDropdown onPriceFilter={value => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
           <div className={classes.filterDisplay}>

@@ -33,20 +33,23 @@ const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
 const Listed = lazy(() => import("./pages/listNFT/listed"));
 
 function App() {
-  const { dispatch } = useContext(GenContext);
+  const { dispatch, mainnet } = useContext(GenContext);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
   useEffect(() => {
+    
     (async function getCollections() {
-      let collections = await fetchCollections();
-      dispatch(setCollections(collections));
-    })();
+      let collections = await fetchCollections(mainnet);
+      console.log('collect', collections);
+      dispatch(setCollections(collections))
+    }());
 
     (async function readAllSingle() {
-      let singleNfts = await readAllSingleNft();
-      dispatch(setSingleNfts(singleNfts));
-    })();
-  }, []);
+      let singleNfts = await readAllSingleNft(mainnet);
+      console.log('sia', singleNfts)
+      dispatch(setSingleNfts(singleNfts))
+    }());
+  }, [mainnet]);
 
   if (showWelcomeScreen) {
     return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
