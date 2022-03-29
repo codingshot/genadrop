@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
 import classes from './collections.module.css';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -8,6 +8,7 @@ import { getPolygonNfts } from '../../utils/arc_ipfs';
 import { transformArrayOfArraysToArrayOfObjects } from './collection-script';
 import { fetchCollections } from '../../utils/firebase';
 import axios from 'axios';
+import { GenContext } from '../../gen-state/gen.context';
 import NotFound from '../../components/not-found/notFound';
 import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
 import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDropdown';
@@ -15,6 +16,7 @@ import SearchBar from '../../components/Marketplace/Search-bar/searchBar.compone
 
 const Collections = () => {
   const domMountRef = useRef(false);
+  const { mainnet } = useContext(GenContext);
 
   const [state, setState] = useState({
     filteredCollection: [],
@@ -61,8 +63,8 @@ const Collections = () => {
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        let collections = await fetchCollections();
-        let result = await getNftCollections(collections)
+        let collections = await fetchCollections(mainnet);
+        let result = await getNftCollections(collections, mainnet)
         handleSetState({ algoCollection: result })
       }())
     } catch (error) {
