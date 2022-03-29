@@ -73,7 +73,7 @@ export const getNftCollection = async (collection, mainnet) => {
 
 export const getUserNftCollection = async (mainnet, data) => {
   let nftArr = [];
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data?.length; i++) {
     try {
       let nftObj = {};
       nftObj.collection_name = data[i].collection;
