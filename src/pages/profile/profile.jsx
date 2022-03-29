@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './profile.module.css';
 import twitterIcon from '../../assets/icon-twitter-accent.svg';
 import youtubeIcon from '../../assets/icon-youtube-accent.svg';
 import instagramIcon from '../../assets/icon-instagram.svg';
 import discordIcon from '../../assets/icon-discord-accent.svg';
-import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
   const { account } = useContext(GenContext);
@@ -15,17 +15,19 @@ const Profile = () => {
     twitter: '',
     discord: '',
     youtube: '',
-    instagram: ''
+    instagram: '',
   });
-  const { subscribe, email, twitter, discord, youtube, instagram } = state;
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }));
-  }
+  const {
+    subscribe, email, twitter, discord, youtube, instagram,
+  } = state;
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    handleSetState({[name]: value})
-  }
+    handleSetState({ [name]: value });
+  };
 
   const history = useHistory();
 
@@ -36,10 +38,10 @@ const Profile = () => {
       twitter: '',
       discord: '',
       youtube: '',
-      instagram: ''
-    })
+      instagram: '',
+    });
     history.goBack();
-  }
+  };
 
   return (
     <div className={classes.container}>
@@ -54,7 +56,7 @@ const Profile = () => {
 
         <div className={classes.option}>
           <h3>Email</h3>
-          <input type="email" value={email} name="email" onChange={handleInputChange} placeholder='me@gmail.com' />
+          <input type="email" value={email} name="email" onChange={handleInputChange} placeholder="me@gmail.com" />
         </div>
 
         <div className={classes.option}>
@@ -63,7 +65,8 @@ const Profile = () => {
             <div className={classes.toggle} />
           </div>
           <p className={`${classes.warn} ${!subscribe && classes.active}`}>
-            (You won't recieve ANY emails from GenaDrop if do not subscribe - including important ones related to your account security or purchases)
+            (You won&apos;t recieve ANY emails from GenaDrop if do not subscribe
+            - including important ones related to your account security or purchases)
           </p>
         </div>
 
@@ -103,14 +106,14 @@ const Profile = () => {
           </div>
 
           <div className={classes.buttons}>
-            <button className={classes.submit}>Save Changes</button>
-            <button onClick={handleCancel} className={classes.cancel}>Cancel</button>
+            <button type="button" className={classes.submit}>Save Changes</button>
+            <button type="button" onClick={handleCancel} className={classes.cancel}>Cancel</button>
           </div>
         </section>
 
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Profile;

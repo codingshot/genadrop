@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { getSingleNfts } from '../../utils';
 import classes from './singleNftCollection.module.css';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
-import { chainIcon } from './singleNftCollection.script';
+import chainIcon from './singleNftCollection.script';
 import dropdownIcon from '../../assets/icon-dropdown.svg';
 import arrowDown from '../../assets/icon-arrow-down-long.svg';
 import arrowUp from '../../assets/icon-arrow-up-long.svg';
@@ -24,8 +24,8 @@ const SingleNftCollection = () => {
     filter: {
       searchValue: '',
       price: 'high',
-      chain: 'Algorand'
-    }
+      chain: 'Algorand',
+    },
   });
 
   const {
@@ -36,29 +36,30 @@ const SingleNftCollection = () => {
     filter,
     togglePriceFilter,
     toggleChainFilter,
-    filteredCollection
+    filteredCollection,
   } = state;
 
   const getCollectionByChain = () => {
     switch (filter.chain) {
       case 'Algorand':
-        return algoCollection
+        return algoCollection;
       case 'Polygon':
-        return polyCollection
+        return polyCollection;
       case 'Celo':
-        return celoCollection
+        return celoCollection;
       case 'Near':
-        return nearCollection
+        return nearCollection;
       default:
         break;
     }
-  }
+    return null;
+  };
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
 
-  // ****************************** get singleNft collections for all the blockchains ******************
+  // ******************* get singleNft collections for all the blockchains *******************
   useEffect(() => {
     try {
       (async function getAlgoSingleNftCollection() {
@@ -66,52 +67,46 @@ const SingleNftCollection = () => {
         const result = await getSingleNfts(singleNftCollections);
         console.log('single result: ', result);
         handleSetState({
-          algoCollection: result
-        })
-      }())
+          algoCollection: result,
+        });
+      }());
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
 
     // get singleNftCollection for other chains: polygon|celo|near
   }, []);
-  // **************************************************************************************************
+  // *******************************************************************************************
 
-
-
-  // ***************************** get search result for different blockchains ************************
+  // ********************** get search result for different blockchains ************************
   useEffect(() => {
-    let collection = getCollectionByChain();
+    const collection = getCollectionByChain();
     if (!collection) return;
-    let filtered = collection.filter(col => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
   }, [filter.searchValue]);
-  // ************************************************************************************************
+  // *******************************************************************************************
 
-
-
-  // ************************* sort by price function for different blockchains *********************
-  const sortPrice = collection => {
+  // ********************* sort by price function for different blockchains ********************
+  const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
-    if (filter.price === "low") {
+    if (filter.price === 'low') {
       sorted = collection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
       sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
-  }
-  // ************************************************************************************************
+  };
+  // *******************************************************************************************
 
-
-
-  // ********************************* render blockchains *******************************************
+  // *********************************** render blockchains ************************************
   useEffect(() => {
     if (domMountRef.current) {
       sortPrice(getCollectionByChain());
@@ -119,8 +114,7 @@ const SingleNftCollection = () => {
       domMountRef.current = true;
     }
   }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, nearCollection]);
-  // **************************************************************************************************
-
+  // *******************************************************************************************
 
   return (
     <div className={classes.container}>
@@ -131,13 +125,20 @@ const SingleNftCollection = () => {
         <div className={classes.searchAndPriceFilter}>
           <input
             type="search"
-            onChange={event => handleSetState({ filter: { ...filter, searchValue: event.target.value } })}
+            onChange={(event) => handleSetState(
+              { filter: { ...filter, searchValue: event.target.value } },
+            )}
             value={filter.searchValue}
-            placeholder='search'
+            placeholder="search"
           />
 
           <div className={classes.chainDropdown}>
-            <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter, togglePriceFilter: false })} className={classes.selectedChain}>
+            <div
+              onClick={() => handleSetState(
+                { toggleChainFilter: !toggleChainFilter, togglePriceFilter: false },
+              )}
+              className={classes.selectedChain}
+            >
               <div>
                 <img src={chainIcon[filter.chain]} alt="" />
                 <span>{filter.chain}</span>
@@ -165,35 +166,52 @@ const SingleNftCollection = () => {
           </div>
 
           <div className={classes.priceDropdown}>
-            <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter, toggleChainFilter: false })} className={classes.selectedPrice}>
-              Price{filter.price === 'low' ? <span>Low to High</span> : <span>High to Low</span>}
+            <div
+              onClick={() => handleSetState(
+                { togglePriceFilter: !togglePriceFilter, toggleChainFilter: false },
+              )}
+              className={classes.selectedPrice}
+            >
+              Price
+              {filter.price === 'low' ? <span>Low to High</span> : <span>High to Low</span>}
               <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
             </div>
             <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
               <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                price <span>Low to High</span> <img src={arrowUp} alt="" /></div>
+                price
+                {' '}
+                <span>Low to High</span>
+                {' '}
+                <img src={arrowUp} alt="" />
+
+              </div>
               <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                price <span>High to Low</span><img src={arrowDown} alt="" /></div>
+                price
+                {' '}
+                <span>High to Low</span>
+                <img src={arrowDown} alt="" />
+
+              </div>
             </div>
           </div>
         </div>
         {
-          filteredCollection?.length ?
-            <div className={classes.wrapper}>
-              {
+          filteredCollection?.length
+            ? (
+              <div className={classes.wrapper}>
+                {
                 filteredCollection
                   .map((nft, idx) => (
                     <NftCard key={idx} nft={nft} />
                   ))
               }
-            </div>
-            :
-            !filteredCollection
-              ?
-              <NotFound />
-              :
-              <div className={classes.skeleton}>
-                {
+              </div>
+            )
+            : !filteredCollection
+              ? <NotFound />
+              : (
+                <div className={classes.skeleton}>
+                  {
                   (Array(5).fill(null)).map((_, idx) => (
                     <div key={idx}>
                       <Skeleton count={1} height={200} />
@@ -201,11 +219,12 @@ const SingleNftCollection = () => {
                     </div>
                   ))
                 }
-              </div>
+                </div>
+              )
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default SingleNftCollection;

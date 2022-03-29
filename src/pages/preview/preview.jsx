@@ -58,17 +58,27 @@ const Preview = () => {
   const canvas = document.createElement('canvas');
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
-  const handleDeleteAndReplace = async (id, index, currentPage) => {
+  const handleDeleteAndReplace = async (id, index, currentPageD) => {
     if (!(combinations - mintAmount)) {
       dispatch(setMintInfo('  cannot generate asset from 0 combination'));
     } else {
       dispatch(setLoader('generating...'));
       dispatch(setMintInfo(''));
       const newLayer = await createUniqueLayer({
-        dispatch, setLoader, collectionName, collectionDescription, index, currentPage, layers: currentDnaLayers, rule, nftLayers, id, mintAmount,
+        dispatch,
+        setLoader,
+        collectionName,
+        collectionDescription,
+        index,
+        currentPage: currentPageD,
+        layers: currentDnaLayers,
+        rule,
+        nftLayers,
+        id,
+        mintAmount,
       });
       const art = await generateArt({
         dispatch, setLoader, layer: newLayer, canvas, image: layers[0].traits[0].image,
@@ -96,6 +106,14 @@ const Preview = () => {
 
   const handleDescription = (input) => {
     dispatch(addDescription({ id: input.id, description: input.value }));
+  };
+  const getCollectionsNames = async () => {
+    const collections = await fetchCollections();
+    const names = [];
+    collections.forEach((col) => {
+      names.push(col.name);
+    });
+    return names;
   };
 
   const handleCollectionName = async (value) => {
@@ -154,15 +172,6 @@ const Preview = () => {
     document.documentElement.scrollTop = 0;
   };
 
-  const getCollectionsNames = async () => {
-    const collections = await fetchCollections();
-    const names = [];
-    collections.forEach((col) => {
-      names.push(col.name);
-    });
-    return names;
-  };
-
   useEffect(() => {
     dispatch(setMintInfo(''));
   }, [dispatch, mintAmount]);
@@ -173,7 +182,7 @@ const Preview = () => {
     let startIndex = 0;
     let endIndex = startIndex + countPerPage;
     const paginate = {};
-    for (let i = 1; i <= numberOfPages; i++) {
+    for (let i = 1; i <= numberOfPages; i + 1) {
       paginate[i] = nftLayers.slice(startIndex, endIndex);
       startIndex = endIndex;
       endIndex = startIndex + countPerPage;
@@ -230,9 +239,17 @@ const Preview = () => {
               <input ref={arweaveRef} type="radio" name="format" value="arweave" className={`${classes.radioBtn} ${outputFormat === 'arweave' && classes.clicked}`} />
               <p>Arweave</p>
             </label>
-            <button onClick={() => handleDownload({
-              window, dispatch, setLoader, setNotification, value: nftLayers, name: collectionName, outputFormat,
-            })}
+            <button
+              type="button"
+              onClick={() => handleDownload({
+                window,
+                dispatch,
+                setLoader,
+                setNotification,
+                value: nftLayers,
+                name: collectionName,
+                outputFormat,
+              })}
             >
               Download zip
             </button>
@@ -280,13 +297,22 @@ const Preview = () => {
                           onChange={(e) => handleDescription({ value: e.target.value, id, index })}
                         />
                         <div className={classes.buttonContainer}>
-                          <button onClick={() => handleDownload({
-                            window, dispatch, setLoader, setNotification, value: [asset], name: asset.name, outputFormat, single: true,
-                          })}
+                          <button
+                            type="button"
+                            onClick={() => handleDownload({
+                              window,
+                              dispatch,
+                              setLoader,
+                              setNotification,
+                              value: [asset],
+                              name: asset.name,
+                              outputFormat,
+                              single: true,
+                            })}
                           >
                             Download
                           </button>
-                          <button onClick={() => handleDeleteAndReplace(id, index, currentPage)}>Generate New</button>
+                          <button type="button" onClick={() => handleDeleteAndReplace(id, index, currentPage)}>Generate New</button>
                         </div>
                       </div>
                       <div className={classes.iconClose}>
