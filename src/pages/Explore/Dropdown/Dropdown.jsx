@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import classes from './Dropdown.module.css';
 import dropdownIcon from '../../../assets/icon-dropdown.svg';
 import attributeFilterIcon from '../../../assets/icon-attribute-filter.svg';
-import { useState } from 'react';
 
 const Dropdown = ({ children, title }) => {
   const [dropdown, toggleDropdown] = useState(false);
@@ -19,7 +19,7 @@ const Dropdown = ({ children, title }) => {
         {children}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Dropdown;

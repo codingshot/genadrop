@@ -1,9 +1,11 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
-import classes from "./listed.module.css";
-import Skeleton from "react-loading-skeleton";
+import {
+  useContext, useEffect, useState, useRef,
+} from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNftDetails } from '../../../utils';
+import classes from './listed.module.css';
 
 const Listed = () => {
   const { account, connector } = useContext(GenContext);
@@ -11,7 +13,7 @@ const Listed = () => {
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
 
   const [state, setState] = useState({
     isLoading: true,
@@ -23,13 +25,14 @@ const Listed = () => {
   };
 
   useEffect(() => {
+    const singleNfts = await readAllSingleNft(mainnet);
     const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
     (async function getNftDetails() {
-      let nftDetails = await getSingleNftDetails(nft);
+      const nftDetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails, isLoading: false });
-    })();
+    }());
     document.documentElement.scrollTop = 0;
-  }, []);
+  }, [mainnet]);
 
   if (isLoading) {
     return (

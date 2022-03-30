@@ -1,5 +1,5 @@
-import React from 'react';
-import { useReducer, createContext } from 'react';
+import React, { useReducer, createContext } from 'react';
+
 import { genReducer, INITIAL_STATE } from './gen.reducer';
 
 export const GenContext = createContext();
@@ -23,8 +23,6 @@ const GenContextProvider = ({ children }) => {
     account,
     rule,
     isRule,
-    collections,
-    singleNfts,
     notification,
     clipboardMessage,
     loaderMessage,
@@ -50,16 +48,15 @@ const GenContextProvider = ({ children }) => {
       account,
       rule,
       isRule,
-      collections,
       notification,
       clipboardMessage,
       loaderMessage,
       collectionDescription,
       didMount,
       mainnet,
-      singleNfts,
-      dispatch
-    }}>
+      dispatch,
+    }}
+    >
       {children}
     </GenContext.Provider>
   );

@@ -4,9 +4,9 @@ import dropIcon from '../../assets/drop.svg';
 
 const Welcome = ({ showWelcomeScreen }) => {
   useEffect(() => {
-    document.getElementById('dropIcon').onanimationend = e => {
-      showWelcomeScreen(false)
-    }
+    document.getElementById('dropIcon').onanimationend = (e) => {
+      showWelcomeScreen(false);
+    };
   }, []);
 
   return (
@@ -15,12 +15,12 @@ const Welcome = ({ showWelcomeScreen }) => {
       <div className={classes.drop}>
         dr
         <div className={classes.imageContainer}>
-          <img id='dropIcon' className={classes.image} src={dropIcon} alt="" />
+          <img id="dropIcon" className={classes.image} src={dropIcon} alt="" />
         </div>
         p
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Welcome;

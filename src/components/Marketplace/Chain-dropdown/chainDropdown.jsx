@@ -7,27 +7,27 @@ import celoIcon from '../../../assets/icon-celo.svg';
 import dropdownIcon from '../../../assets/icon-dropdown.svg';
 
 const chainIcon = {
-  "Polygon": polygonIcon,
-  "Algorand": algoIcon,
-  "Near": nearIcon,
-  "Celo": celoIcon
-}
+  Polygon: polygonIcon,
+  Algorand: algoIcon,
+  Near: nearIcon,
+  Celo: celoIcon,
+};
 
-const ChainDropdown = ({onChainFilter}) => {
+const ChainDropdown = ({ onChainFilter }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
-    chain: 'Algorand'
+    chain: 'Algorand',
   });
 
   const { toggleChainFilter, chain } = state;
 
-  const handleSetState = payload => {
-    setState(state => ({...state, ...payload}))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-  useEffect(()=> {
-    onChainFilter(chain)
-  },[chain])
+  useEffect(() => {
+    onChainFilter(chain);
+  }, [chain]);
 
   return (
     <div className={classes.chainDropdown}>
@@ -57,7 +57,7 @@ const ChainDropdown = ({onChainFilter}) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ChainDropdown;

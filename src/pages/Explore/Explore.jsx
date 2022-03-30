@@ -1,8 +1,8 @@
 import { useContext, useState, useEffect } from 'react';
-import { GenContext } from '../../gen-state/gen.context';
 import { useParams } from 'react-router-dom';
+import { GenContext } from '../../gen-state/gen.context';
 import classes from './Explore.module.css';
-import 'react-loading-skeleton/dist/skeleton.css'
+import 'react-loading-skeleton/dist/skeleton.css';
 import Filter from './Filter/Filter';
 import Header from './Header/Header';
 import { groupAttributesByTraitType, mapAttributeToFilter } from './Explore-script';
@@ -11,9 +11,9 @@ import Menu from './Menu/Menu';
 import closeIcon from '../../assets/icon-close.svg';
 import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
 import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
+import { fetchCollections } from '../../utils/firebase';
 
 const Explore = () => {
-
   const [state, setState] = useState({
     togglePriceFilter: false,
     NFTCollection: null,
@@ -26,104 +26,98 @@ const Explore = () => {
       searchValue: '',
       price: 'high',
     },
-  })
-  const { collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection, headerHeight } = state;
-  const { collections, mainnet } = useContext(GenContext);
+  });
+  const {
+    collection, NFTCollection, attributes, filter, filterToDelete, togglePriceFilter, FilteredCollection, headerHeight,
+  } = state;
+  const { mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-  const handleFilter = _filter => {
-    handleSetState({ filter: { ...filter, ..._filter } })
-  }
+  const handleFilter = (_filter) => {
+    handleSetState({ filter: { ...filter, ..._filter } });
+  };
 
-  const getHeight = res => {
-    handleSetState({ headerHeight: res })
-  }
+  const getHeight = (res) => {
+    handleSetState({ headerHeight: res });
+  };
 
   useEffect(() => {
-    if (Object.keys(collections).length) {
-      const collection = collections.find(col => col.name === collectionName);
-      (async function getResult() {
-        let result = await getNftCollection(collection, mainnet);
+    (async function getResult() {
+      let collections = await fetchCollections(mainnet);
+      if (Object.keys(collections).length) {
+        const collection = collections.find((col) => col.name === collectionName);
+        const result = await getNftCollection(collection, mainnet);
         handleSetState({
           collection,
-          NFTCollection: result
-        })
-      }())
-    }
-  }, [collections]);
+          NFTCollection: result,
+        });
+      }
+    }());
+  }, [mainnet]);
 
   useEffect(() => {
-    if (!NFTCollection) return
+    if (!NFTCollection) return;
     handleSetState({
       attributes: mapAttributeToFilter(NFTCollection),
-      FilteredCollection: NFTCollection
-    })
+      FilteredCollection: NFTCollection,
+    });
   }, [NFTCollection]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = NFTCollection.filter(col => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    })
+    const filtered = NFTCollection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
     handleSetState({ FilteredCollection: filtered });
   }, [filter.searchValue]);
 
   useEffect(() => {
     if (!NFTCollection) return;
     let filtered = null;
-    if (filter.price === "low") {
-      filtered = NFTCollection.sort((a, b) => Number(a.price) - Number(b.price))
+    if (filter.price === 'low') {
+      filtered = NFTCollection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      filtered = NFTCollection.sort((a, b) => Number(b.price) - Number(a.price))
+      filtered = NFTCollection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ FilteredCollection: filtered });
   }, [filter.price]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = NFTCollection.filter(col => {
-      return Number(col.price) >= Number(filter.priceRange.min) && Number(col.price) <= Number(filter.priceRange.max);
-    });
+    const filtered = NFTCollection.filter((col) => Number(col.price) >= Number(filter.priceRange.min) && Number(col.price) <= Number(filter.priceRange.max));
     handleSetState({ FilteredCollection: filtered });
   }, [filter.priceRange]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let groupedAttributes = groupAttributesByTraitType(filter.attributes);
-    let filtered = NFTCollection.filter(col => {
-      return Object.keys(groupedAttributes).every(attributeKey => {
-        return groupedAttributes[attributeKey].some(el => {
-          return JSON.stringify(col.ipfs_data.properties).includes(JSON.stringify(el));
-        });
-      });
-    });
+    const groupedAttributes = groupAttributesByTraitType(filter.attributes);
+    const filtered = NFTCollection.filter((col) => Object.keys(groupedAttributes).every((attributeKey) => groupedAttributes[attributeKey].some((el) => JSON.stringify(col.ipfs_data.properties).includes(JSON.stringify(el)))));
     handleSetState({ FilteredCollection: filtered });
     document.documentElement.scrollTop = headerHeight;
-
   }, [filter.attributes]);
 
   return (
     <div className={classes.container}>
-      <Header getHeight={getHeight} collection={{
-        ...collection,
-        numberOfNfts: NFTCollection
-          && NFTCollection.length,
-        imageUrl: NFTCollection
-          && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url
-      }}
+      <Header
+        getHeight={getHeight}
+        collection={{
+          ...collection,
+          numberOfNfts: NFTCollection
+            && NFTCollection.length,
+          imageUrl: NFTCollection
+            && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
+        }}
       />
 
       <div className={classes.displayContainer}>
         <Filter handleFilter={handleFilter} filterToDelete={filterToDelete} attributes={attributes} />
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={value => handleSetState({ filter: { ...filter, searchValue: value } })} />
-            <PriceDropdown onPriceFilter={value => handleSetState({ filter: { ...filter, price: value } })} />
+            <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
+            <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
           <div className={classes.filterDisplay}>
@@ -147,7 +141,7 @@ const Explore = () => {
         </main>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Explore
+export default Explore;

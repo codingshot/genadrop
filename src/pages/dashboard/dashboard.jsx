@@ -13,7 +13,6 @@ import SearchBar from '../../components/Marketplace/Search-bar/searchBar.compone
 import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
 
 const Dashboard = () => {
-
   const [state, setState] = useState({
     togglePriceFilter: false,
     filter: {
@@ -24,86 +23,82 @@ const Dashboard = () => {
     collectedNfts: 0,
     createdNfts: 0,
     myCollections: null,
-    filteredCollection: null
+    filteredCollection: null,
   });
 
-  const { filter, togglePriceFilter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
+  const {
+    filter, togglePriceFilter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection,
+  } = state;
   const { account, mainnet } = useContext(GenContext);
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-  const breakAddress = (address = "", width = 6) => {
-    return `${address.slice(0, width)}...${address.slice(-width)}`
-  }
+  const breakAddress = (address = '', width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
     if (!account) return;
 
     (async function readAllSingle() {
-      let userCollections = await fetchUserCollections(account);
-      let myCollections = await getNftCollections(userCollections, mainnet);
-      console.log("===>", myCollections);
+      const userCollections = await fetchUserCollections(account);
+      const myCollections = await getNftCollections(userCollections, mainnet);
+      console.log('===>', myCollections);
       handleSetState({ myCollections });
     }());
 
     (async function getCollections() {
-      let userNftCollections = await fetchUserNfts(account);
-      let createdNfts = await getUserNftCollection(userNftCollections, mainnet);
-      console.log("===>", createdNfts);
+      const userNftCollections = await fetchUserNfts(account);
+      const createdNfts = await getUserNftCollection(userNftCollections, mainnet);
+      console.log('===>', createdNfts);
 
       handleSetState({ createdNfts });
     }());
 
     (async function getCollections() {
-      let userNftCollections = await fetchAllNfts(account);
-      let result = await getUserNftCollection(userNftCollections, mainnet);
-
+      const userNftCollections = await fetchAllNfts(account);
+      const result = await getUserNftCollection(userNftCollections, mainnet);
     }());
-
   }, [account]);
 
   const getCollectionToFilter = () => {
     switch (activeDetail) {
       case 'collected':
-        return collectedNfts
+        return collectedNfts;
       case 'created':
-        return createdNfts
+        return createdNfts;
       case 'collections':
-        return myCollections
+        return myCollections;
       default:
         break;
     }
-  }
+  };
 
   useEffect(() => {
-    if (!account) return
-    if (!filteredCollection) return
-    let filtered = getCollectionToFilter().filter(col => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    if (!account) return;
+    if (!filteredCollection) return;
+    const filtered = getCollectionToFilter().filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
     handleSetState({ filteredCollection: filtered });
   }, [filter.searchValue]);
 
   useEffect(() => {
-    if (!account) return
-    if (!filteredCollection) return
+    if (!account) return;
+    if (!filteredCollection) return;
     let filtered = null;
-    if (filter.price === "low") {
-      filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price))
+    if (filter.price === 'low') {
+      filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      filtered = getCollectionToFilter().sort((a, b) => Number(b.price) - Number(a.price))
+      filtered = getCollectionToFilter().sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.price]);
 
   useEffect(() => {
     if (!account) return;
-    let filteredCollection = getCollectionToFilter();
+    const filteredCollection = getCollectionToFilter();
     // if (!filteredCollection) return;
-    handleSetState({ filteredCollection })
-  }, [activeDetail, createdNfts, collectedNfts, myCollections])
+    handleSetState({ filteredCollection });
+  }, [activeDetail, createdNfts, collectedNfts, myCollections]);
 
   const { url } = useRouteMatch();
 
@@ -122,15 +117,15 @@ const Dashboard = () => {
             <div className={classes.profile}>Edit Profile</div>
           </Link> */}
           <div className={classes.details}>
-            <div onClick={() => handleSetState({ activeDetail: 'created' })} className={`${classes.detail} ${activeDetail === "created" && classes.active}`}>
+            <div onClick={() => handleSetState({ activeDetail: 'created' })} className={`${classes.detail} ${activeDetail === 'created' && classes.active}`}>
               <p>Created NFT</p>
               <span>{createdNfts && createdNfts.length}</span>
             </div>
-            <div onClick={() => handleSetState({ activeDetail: 'collected' })} className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}>
+            <div onClick={() => handleSetState({ activeDetail: 'collected' })} className={`${classes.detail} ${activeDetail === 'collected' && classes.active}`}>
               <p>Collected NFTs</p>
               <span>{collectedNfts && collectedNfts.length}</span>
             </div>
-            <div onClick={() => handleSetState({ activeDetail: 'collections' })} className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}>
+            <div onClick={() => handleSetState({ activeDetail: 'collections' })} className={`${classes.detail} ${activeDetail === 'collections' && classes.active}`}>
               <p>My Collections</p>
               <span>{myCollections && myCollections.length}</span>
             </div>
@@ -139,55 +134,60 @@ const Dashboard = () => {
 
         <section className={classes.main}>
           <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={value => handleSetState({ filter: { ...filter, searchValue: value } })} />
-            <PriceDropdown onPriceFilter={value => handleSetState({ filter: { ...filter, price: value } })} />
+            <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
+            <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
           {
-            filteredCollection && activeDetail === 'collections' ?
-              <div className={classes.overview}>
-                {
+            filteredCollection && activeDetail === 'collections'
+              ? (
+                <div className={classes.overview}>
+                  {
                   filteredCollection
                     .map((collection, idx) => (
                       <CollectionsCard key={idx} collection={collection} />
                     ))
                 }
-              </div>
-              :
-              filteredCollection && activeDetail === 'created' ?
-                <div className={classes.overview}>
-                  {
-                    filteredCollection
-                      .map((nft, idx) => (
-                        <NftCard key={idx} nft={nft} list={true} />
-                      ))
-                  }
                 </div>
-                :
-                filteredCollection && activeDetail === 'collected' ?
+              )
+              : filteredCollection && activeDetail === 'created'
+                ? (
                   <div className={classes.overview}>
                     {
+                    filteredCollection
+                      .map((nft, idx) => (
+                        <NftCard key={idx} nft={nft} list />
+                      ))
+                  }
+                  </div>
+                )
+                : filteredCollection && activeDetail === 'collected'
+                  ? (
+                    <div className={classes.overview}>
+                      {
                       filteredCollection
                         .map((nft, idx) => (
-                          <NftCard key={idx} nft={nft} list={true} />
+                          <NftCard key={idx} nft={nft} list />
                         ))
                     }
-                  </div>
-                  :
-                  <div className={classes.skeleton}>
-                    {
+                    </div>
+                  )
+                  : (
+                    <div className={classes.skeleton}>
+                      {
                       (Array(5).fill(null)).map((_, idx) => (
                         <div key={idx}>
                           <Skeleton count={1} height={300} />
                         </div>
                       ))
                     }
-                  </div>
+                    </div>
+                  )
           }
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Dashboard;

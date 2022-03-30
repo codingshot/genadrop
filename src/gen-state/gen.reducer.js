@@ -32,8 +32,6 @@ export const INITIAL_STATE = {
   connector: null,
   isRule: false,
   rule: [],
-  collections: {},
-  singleNfts: [],
   notification: '',
   clipboardMessage: '',
   loaderMessage: '',
@@ -194,16 +192,6 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         rule: deleteRule(state.rule, action.payload),
-      };
-    case genActionTypes.SET_COLLECTIONS:
-      return {
-        ...state,
-        collections: action.payload,
-      };
-    case genActionTypes.SET_SINGLE_NFTS:
-      return {
-        ...state,
-        singleNfts: action.payload,
       };
     case genActionTypes.SET_FEEDBACK:
       return {

@@ -8,101 +8,102 @@ import facebookIcon from '../../assets/facebook.svg';
 import instagramIcon from '../../assets/instagramIcon';
 
 const Share = ({ url }) => {
+  const path = url;
 
-    const path = url;
+  const [state, setState] = useState({
+    isCopied: false,
+  });
+  const { isCopied } = state;
 
-    const [state, setState] = useState({
-        isCopied: false
-    })
-    const { isCopied } = state;
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-    const handleSetState = payload => {
-        setState(state => ({ ...state, ...payload }))
-    }
+  const wrapperRef = useRef(null);
+  useOutsideAlerter(wrapperRef);
 
-    const wrapperRef = useRef(null);
-    useOutsideAlerter(wrapperRef);
-
-    function useOutsideAlerter(ref) {
-        useEffect(() => {
-            /**
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
              * Alert if clicked on outside of element
              */
-            function handleClickOutside(event) {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    handleSetState({ showSocial: false })
-                }
-            }
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handleSetState({ showSocial: false });
+        }
+      }
 
-            // Bind the event listener
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-                // Unbind the event listener on clean up
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref]);
-    }
+      // Bind the event listener
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  }
 
-    const icons = [
-        {
-            icon: facebookIcon,
-            link: "https://www.facebook.com/MinorityProgrammers"
-        },
-        {
-            icon: instagramIcon,
-            link: "https://www.instagram.com/minorityprogrammers/"
-        },
-        {
-            icon: twitterIcon,
-            link: "https://www.twitter.com/minorityprogram"
-        },
+  const icons = [
+    {
+      icon: facebookIcon,
+      link: 'https://www.facebook.com/MinorityProgrammers',
+    },
+    {
+      icon: instagramIcon,
+      link: 'https://www.instagram.com/minorityprogrammers/',
+    },
+    {
+      icon: twitterIcon,
+      link: 'https://www.twitter.com/minorityprogram',
+    },
 
-    ]
-    // const handleHide = payload => {
-    //   setTimeout(() => { handleSetState(payload); }, 1000)
-    // }
-    const onCopyText = () => {
-        handleSetState({ isCopied: true })
-        setTimeout(() => {
-            handleSetState({ isCopied: false })
-        }, 1000);
-    };
-    return (
-        <div ref={wrapperRef} className={classes.share}>
+  ];
+  // const handleHide = payload => {
+  //   setTimeout(() => { handleSetState(payload); }, 1000)
+  // }
+  const onCopyText = () => {
+    handleSetState({ isCopied: true });
+    setTimeout(() => {
+      handleSetState({ isCopied: false });
+    }, 1000);
+  };
+  return (
+    <div ref={wrapperRef} className={classes.share}>
 
-            <div className={classes.copy} >
-                <input
-                    type="text"
-                    value={path}
-                    readOnly
-                    className={classes.textArea}
-                />
-                <CopyToClipboard text={path} onCopy={onCopyText}>
-                    <div className={classes.copy_area}>
-                        {
-                            !isCopied ?
+      <div className={classes.copy}>
+        <input
+          type="text"
+          value={path}
+          readOnly
+          className={classes.textArea}
+        />
+        <CopyToClipboard text={path} onCopy={onCopyText}>
+          <div className={classes.copy_area}>
+            {
+                            !isCopied
+                              ? (
                                 <img
-                                    className={classes.shareicon} src={copyIcon} alt="" />
-                                :
-                                <img className={classes.shareicon} src={copiedIcon} alt="" />
+                                  className={classes.shareicon}
+                                  src={copyIcon}
+                                  alt=""
+                                />
+                              )
+                              : <img className={classes.shareicon} src={copiedIcon} alt="" />
                         }
 
-                    </div>
-                </CopyToClipboard>
+          </div>
+        </CopyToClipboard>
 
-            </div>
-            <div className={classes.shareContent}>
-                {icons.map((icon) => {
-                    return (
-                        <a href={icon.link} target="_blank">
-                            < img className={classes.icon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="Social Icon" />
-                        </a>
+      </div>
+      <div className={classes.shareContent}>
+        {icons.map((icon) => (
+          <a href={icon.link} target="_blank" rel="noreferrer">
+            <img className={classes.icon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="Social Icon" />
+          </a>
 
-                    )
-                })}
-            </div>
-        </div>
-    )
-}
+        ))}
+      </div>
+    </div>
+  );
+};
 
 export default Share;

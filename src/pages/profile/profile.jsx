@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './profile.module.css';
 import twitterIcon from '../../assets/icon-twitter-accent.svg';
 import youtubeIcon from '../../assets/icon-youtube-accent.svg';
 import instagramIcon from '../../assets/icon-instagram.svg';
 import discordIcon from '../../assets/icon-discord-accent.svg';
-import { useHistory } from 'react-router-dom';
 
 const Profile = () => {
   const { account } = useContext(GenContext);
@@ -15,17 +15,19 @@ const Profile = () => {
     twitter: '',
     discord: '',
     youtube: '',
-    instagram: ''
+    instagram: '',
   });
-  const { subscribe, email, twitter, discord, youtube, instagram } = state;
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }));
-  }
+  const {
+    subscribe, email, twitter, discord, youtube, instagram,
+  } = state;
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-  const handleInputChange = event => {
+  const handleInputChange = (event) => {
     const { name, value } = event.target;
-    handleSetState({[name]: value})
-  }
+    handleSetState({ [name]: value });
+  };
 
   const history = useHistory();
 
@@ -36,10 +38,10 @@ const Profile = () => {
       twitter: '',
       discord: '',
       youtube: '',
-      instagram: ''
-    })
+      instagram: '',
+    });
     history.goBack();
-  }
+  };
 
   return (
     <div className={classes.container}>
@@ -54,7 +56,7 @@ const Profile = () => {
 
         <div className={classes.option}>
           <h3>Email</h3>
-          <input type="email" value={email} name="email" onChange={handleInputChange} placeholder='me@gmail.com' />
+          <input type="email" value={email} name="email" onChange={handleInputChange} placeholder="me@gmail.com" />
         </div>
 
         <div className={classes.option}>
@@ -110,7 +112,7 @@ const Profile = () => {
 
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Profile;

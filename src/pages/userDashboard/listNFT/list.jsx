@@ -1,11 +1,13 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../../utils";
-import classes from "./list.module.css";
-import Skeleton from "react-loading-skeleton";
-import { PurchaseNft } from "../../../utils/arc_ipfs";
-import axios from "axios";
+import {
+  useContext, useEffect, useState, useRef,
+} from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import axios from 'axios';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNft, getSingleNftDetails } from '../../../utils';
+import classes from './list.module.css';
+import { PurchaseNft } from '../../../utils/arc_ipfs';
 
 const List = () => {
   const { account, connector } = useContext(GenContext);
@@ -13,15 +15,17 @@ const List = () => {
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
 
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
-    chain: "Algo",
-    price: "",
+    chain: 'Algo',
+    price: '',
   });
-  const { nftDetails, isLoading, price, chain } = state;
+  const {
+    nftDetails, isLoading, price, chain,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -31,24 +35,25 @@ const List = () => {
   };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(nftDetails, account, connector);
+    const res = await PurchaseNft(nftDetails, account, connector);
     alert(res);
   };
 
   useEffect(() => {
+    const singleNfts = await readAllSingleNft(mainnet);
     const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
     (async function getNftDetails() {
-      let nftDetails = await getSingleNftDetails(nft);
+      const nftDetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails, isLoading: false });
-    })();
+    }());
 
     axios
-      .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
     document.documentElement.scrollTop = 0;
-  }, []);
+  }, [mainnet]);
 
   useEffect(() => {
     if (!nftDetails) return;
@@ -141,9 +146,7 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <select
                     value={chain}
-                    onChange={(event) =>
-                      handleSetState({ chain: event.target.value })
-                    }
+                    onChange={(event) => handleSetState({ chain: event.target.value })}
                   >
                     <option value="Algo">Algo</option>
                     <option value="Celo">Celo</option>
@@ -177,18 +180,24 @@ const List = () => {
               deducted
             </div>
             <div className={classes.row}>
-              Genadrop <span>10%</span>
+              Genadrop
+              {' '}
+              <span>10%</span>
             </div>
             <div className={classes.row}>
-              {nftDetails.name} <span>7%</span>
+              {nftDetails.name}
+              {' '}
+              <span>7%</span>
             </div>
             <div className={classes.row}>
-              Total <span>17%</span>
+              Total
+              {' '}
+              <span>17%</span>
             </div>
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
     </div>
   );

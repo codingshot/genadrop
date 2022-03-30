@@ -1,37 +1,37 @@
-import React from "react";
-import { Chart } from "react-charts";
-import classes from "./graph.module.css";
+import React from 'react';
+import { Chart } from 'react-charts';
+import classes from './graph.module.css';
+
 const Graph = ({ details }) => {
+  // let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-    // let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-    const prices = !details ? null: details.map( (e, i) => { 
-            let date =  new Date(e.txDate *1000)
-           return [date.getMonth(), e.price];
-    })
+  const prices = !details ? null : details.map((e, i) => {
+    const date = new Date(e.txDate * 1000);
+    return [date.getMonth(), e.price];
+  });
 
   const data = React.useMemo(
     () => [
       {
-        label: "Series 1",
-        data: prices
+        label: 'Series 1',
+        data: prices,
       },
     ],
-    []
+    [],
   );
   const series = React.useMemo(
     () => ({
       showPoints: false,
     }),
-    []
+    [],
   );
 
   const axes = React.useMemo(
     () => [
-      { primary: true, type: "linear", position: "bottom" },
-      { type: "linear", position: "left" },
+      { primary: true, type: 'linear', position: 'bottom' },
+      { type: 'linear', position: 'left' },
     ],
-    []
+    [],
   );
 
   const lineChart = (
@@ -43,8 +43,6 @@ const Graph = ({ details }) => {
       )}
     </div>
   );
-
-  
 
   return lineChart;
 };

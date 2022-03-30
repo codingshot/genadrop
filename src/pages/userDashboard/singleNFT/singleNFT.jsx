@@ -1,20 +1,17 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../../utils";
-import classes from "./singleNFT.module.css";
-import Skeleton from "react-loading-skeleton";
-import Graph from "../../../components/Nft-details/graph/graph";
-import DropItem from "../../../components/Nft-details/dropItem/dropItem";
-import Search from "../../../components/Nft-details/history/search";
-import { PurchaseNft } from "../../../utils/arc_ipfs";
-import { CopyBlock, dracula } from "react-code-blocks";
-import axios from "axios";
-import { readNftTransaction } from "../../../utils/firebase";
-import { getNftCollection } from "../../../utils";
-
-import { getAlgoData } from "../../../utils/arc_ipfs";
-import CopyToClipboard from "react-copy-to-clipboard";
+import {
+  useContext, useEffect, useState, useRef,
+} from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { CopyBlock, dracula } from 'react-code-blocks';
+import axios from 'axios';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNftDetails } from '../../../utils';
+import classes from './singleNFT.module.css';
+import Graph from '../../../components/Nft-details/graph/graph';
+import DropItem from '../../../components/Nft-details/dropItem/dropItem';
+import { PurchaseNft } from '../../../utils/arc_ipfs';
 
 const SingleNFT = () => {
   const { account, connector } = useContext(GenContext);
@@ -22,13 +19,13 @@ const SingleNFT = () => {
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
   const { url } = useRouteMatch();
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
   const [state, setState] = useState({
     nftDetails: null,
-    dropdown: "",
+    dropdown: '',
     algoPrice: 0,
     isLoading: true,
     transactionHistory: null,
@@ -38,9 +35,7 @@ const SingleNFT = () => {
   const {
     dropdown,
     nftDetails,
-    algoPrice,
     isLoading,
-    transactionHistory,
     showSocial,
     isCopied,
   } = state;
@@ -50,19 +45,19 @@ const SingleNFT = () => {
   };
 
   useEffect(() => {
+    const singleNfts = await readAllSingleNft(mainnet);
     const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
     (async function getNftDetails() {
-      let nftDetails = await getSingleNftDetails(nft);
+      const nftDetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails, isLoading: false });
-    })();
+    }());
 
     axios
-      .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
-    document.documentElement.scrollTop = 0;
-  }, []);
+  }, [mainnet]);
 
   useEffect(() => {
     if (!nftDetails) return;
@@ -80,26 +75,26 @@ const SingleNFT = () => {
       }
 
       // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
 
   const icons = [
     {
-      icon: "/assets/facebook.svg",
-      link: "https://www.facebook.com",
+      icon: '/assets/facebook.svg',
+      link: 'https://www.facebook.com',
     },
     {
-      icon: "/assets/instagram.svg",
-      link: "https://www.instagram.com",
+      icon: '/assets/instagram.svg',
+      link: 'https://www.instagram.com',
     },
     {
-      icon: "/assets/twitter.svg",
-      link: "https://www.twitter.com/mpa",
+      icon: '/assets/twitter.svg',
+      link: 'https://www.twitter.com/mpa',
     },
   ];
 
@@ -139,61 +134,63 @@ const SingleNFT = () => {
   }
 
   const description = {
-    icon: "/assets/details.png",
-    title: "Description",
+    icon: '/assets/details.png',
+    title: 'Description',
     content: `${nftDetails.description}`,
   };
 
   const graph = {
-    icon: "/assets/details.png",
-    title: "Price History",
-    content: <Graph details={""} />,
+    icon: '/assets/details.png',
+    title: 'Price History',
+    content: <Graph details="" />,
   };
 
-  const attributeContent = () => {
-    return (
-      <div className={classes.attributesContainer}>
-        {nftDetails.properties.map((attribute, idx) => (
-          <div key={idx} className={classes.attribute}>
-            <span className={classes.title}>{attribute.trait_type}</span>
-            <span className={classes.description}>{attribute.value}</span>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const attributeContent = () => (
+    <div className={classes.attributesContainer}>
+      {nftDetails.properties.map((attribute, idx) => (
+        <div key={idx} className={classes.attribute}>
+          <span className={classes.title}>{attribute.trait_type}</span>
+          <span className={classes.description}>{attribute.value}</span>
+        </div>
+      ))}
+    </div>
+  );
 
   const attributesItem = {
-    icon: "/assets/description-icon.png",
-    title: "Attributes",
+    icon: '/assets/description-icon.png',
+    title: 'Attributes',
     content: attributeContent(),
     // content: "attributeContent()"
   };
 
-  const details = () => {
-    return (
-      <div className={classes.detailContent}>
-        <div className={classes.row}>
-          Mint Address <span>sdfgs</span>
-        </div>
-        <div className={classes.row}>
-          Token Address <span>sdgds</span>
-        </div>
-        <div className={classes.row}>
-          Owner <span>sdgds</span>
-        </div>
+  const details = () => (
+    <div className={classes.detailContent}>
+      <div className={classes.row}>
+        Mint Address
+        {' '}
+        <span>sdfgs</span>
       </div>
-    );
-  };
+      <div className={classes.row}>
+        Token Address
+        {' '}
+        <span>sdgds</span>
+      </div>
+      <div className={classes.row}>
+        Owner
+        {' '}
+        <span>sdgds</span>
+      </div>
+    </div>
+  );
 
   const detailsItem = {
-    icon: "/assets/description-icon.png",
-    title: "Details",
-    content: details()
-  }
+    icon: '/assets/description-icon.png',
+    title: 'Details',
+    content: details(),
+  };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(nftDetails, account, connector);
+    const res = await PurchaseNft(nftDetails, account, connector);
     alert(res);
   };
 
@@ -210,7 +207,7 @@ const SingleNFT = () => {
               id={1}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -302,7 +299,7 @@ const SingleNFT = () => {
               id={2}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
           <div className={classes.feature}>
             <DropItem
@@ -311,7 +308,7 @@ const SingleNFT = () => {
               id={3}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
 
           <div className={classes.feature}>
@@ -321,7 +318,7 @@ const SingleNFT = () => {
               id={4}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
       </div>
@@ -349,7 +346,7 @@ const SingleNFT = () => {
             text={JSON.stringify(nftDetails.properties, null, 2)}
             showLineNumbers={false}
             theme={dracula}
-            wrapLines={true}
+            wrapLines
             codeBlock
           />
         </div>
@@ -383,22 +380,20 @@ const SingleNFT = () => {
             </CopyToClipboard>
           </div>
           <div className={classes.shareContent}>
-            {icons.map((icon) => {
-              return (
-                <a href={icon.link} target="_blank">
-                  <img
-                    className={classes.shareIcon}
-                    onClick={() => handleSetState({ text: icon.link })}
-                    src={icon.icon}
-                    alt=""
-                  />
-                </a>
-              );
-            })}
+            {icons.map((icon) => (
+              <a href={icon.link} target="_blank" rel="noreferrer">
+                <img
+                  className={classes.shareIcon}
+                  onClick={() => handleSetState({ text: icon.link })}
+                  src={icon.icon}
+                  alt=""
+                />
+              </a>
+            ))}
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
     </div>
   );
