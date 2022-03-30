@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch, useParams, Link } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../utils";
-import classes from "./listed.module.css";
-import Skeleton from "react-loading-skeleton";
+import React, { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import { useRouteMatch, Link } from 'react-router-dom';
+import classes from './listed.module.css';
 
-const Listed = ({location}) => {
-  const { image_url = 'no image found!' } = location.state || {}
+const Listed = ({ location }) => {
+  const { image_url = 'no image found!' } = location.state || {};
 
   const {
     params: { userId },
@@ -56,21 +54,17 @@ const Listed = ({location}) => {
 
   const icons = [
     {
-      icon: "/assets/facebook-clear.svg",
-      link: "https://www.facebook.com/mpa",
+      icon: '/assets/facebook-clear.svg',
+      link: 'https://www.facebook.com/mpa',
     },
     {
-      icon: "/assets/telegram.svg",
-      link: "https://t.co/XUHAJEPLoA",
+      icon: '/assets/telegram.svg',
+      link: 'https://t.co/XUHAJEPLoA',
     },
     {
-      icon: "/assets/twitter-clear.svg",
-      link: "https://twitter.com/minorityprogram",
+      icon: '/assets/twitter-clear.svg',
+      link: 'https://twitter.com/minorityprogram',
     },
-    // {
-    //   icon: "/assets/link.svg",
-    //   link: "https://www.twitter.com/mpa",
-    // },
   ];
   return (
     <div className={classes.container}>
@@ -90,7 +84,7 @@ const Listed = ({location}) => {
             know, when your listing sells or receives offers
           </div>
           <Link to={`/me/${userId}/settings`}>
-          <button className={classes.buy}>Profile Settings</button>
+            <button className={classes.buy}>Profile Settings</button>
           </Link>
         </div>
       </div>
@@ -104,11 +98,11 @@ const Listed = ({location}) => {
 
         <div className={classes.detailContent}>
           {icons.map((icon) => {
-           return (
-            <a href={icon.link} target="_blank">
-            <img src={icon.icon} alt="" />  
+            return (
+              <a href={icon.link} target="_blank">
+                <img src={icon.icon} alt="" />
               </a>
-           )
+            );
           })}
         </div>
       </div>
