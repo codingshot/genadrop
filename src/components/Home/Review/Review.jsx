@@ -24,7 +24,7 @@ const Review = () => {
       </div>
 
       <div className={classes.review}>
-        {reviews.map((tweet, idx) => <span key={idx} className={classes.tweet}><TweetEmbed id={tweet} placeholder="loading" /></span>)}
+        {reviews.map((tweet) => <span key={tweet} className={classes.tweet}><TweetEmbed id={tweet} placeholder="loading" /></span>)}
       </div>
 
     </div>

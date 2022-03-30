@@ -56,8 +56,9 @@ const GenContextProvider = ({ children }) => {
       collectionDescription,
       didMount,
       singleNfts,
-      dispatch
-    }}>
+      dispatch,
+    }}
+    >
       {children}
     </GenContext.Provider>
   );

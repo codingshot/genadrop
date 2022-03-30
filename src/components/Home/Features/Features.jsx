@@ -17,8 +17,8 @@ const Features = ({ data }) => {
       <div className={classes.main}>
         <div className={classes.featureWrapper}>
           {
-            feature.map((f, index) => (
-              <Feature key={index} item={f} />
+            feature.map((f) => (
+              <Feature key={f.id} item={f} />
             ))
           }
         </div>

@@ -14,6 +14,7 @@ const Collections = () => {
     algoCollection: [],
   });
   const { algoCollection } = state;
+
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -35,7 +36,6 @@ const Collections = () => {
       console.log(error);
     }
   }, []);
-
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
