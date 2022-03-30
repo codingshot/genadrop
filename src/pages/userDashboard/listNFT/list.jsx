@@ -56,7 +56,7 @@ const List = () => {
   }, []);
 
   useEffect(() => {
-    if (!nftDetails) return;
+    // if (!nftDetails) return;
   }, [nftDetails]);
 
   if (isLoading) {

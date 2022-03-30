@@ -91,7 +91,8 @@ const pinFileToIPFS = async (
 const waitForConfirmation = async (txId) => {
   const response = await algodTxnClient.status().do();
   let lastround = response['last-round'];
-  while (true) {
+  const pageInfoCond = true;
+  while (pageInfoCond) {
     const pendingInfo = await algodTxnClient
       .pendingTransactionInformation(txId)
       .do();
@@ -167,6 +168,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   };
 };
 
+// eslint-disable-next-line consistent-return
 export const connectAndMint = async (file, metadata, imgName) => {
   try {
     await pinata.testAuthentication();
@@ -314,7 +316,7 @@ export async function mintSingleToPoly(singleMintProps) {
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, '0x');
-    const listingTx = await marketContract.createMarketplaceItem(
+    await marketContract.createMarketplaceItem(
       contract.address,
       id,
       String(price * 10 ** 18),
@@ -362,6 +364,7 @@ export async function mintSingleToCelo(singleMintProps) {
     process.env.REACT_APP_GENADROP_SERVER_KEY,
     connector,
   );
+  // eslint-disable-next-line no-unused-vars
   const marketContract = new ethers.Contract(
     process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS,
     marketAbi,
@@ -421,7 +424,7 @@ export async function mintSingleToNear(singleMintProps) {
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, '0x');
-    const listingTx = await marketContract.createMarketplaceItem(
+    await marketContract.createMarketplaceItem(
       contract.address,
       id,
       String(price * 10 ** 18),
@@ -456,7 +459,7 @@ export async function createNFT(createProps) {
   dispatch(
     setNotification('uploading assets, please do not refresh your page.'),
   );
-  for (let i = 0; i < metadata.length; i++) {
+  for (let i = 0; i < metadata.length; i + 1) {
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
     const imgName = `${metadata[i].name}.png`;
     const imgFile = data.files[imgName];
@@ -474,7 +477,6 @@ export async function createNFT(createProps) {
 export async function initializeContract(contractProps) {
   const {
     minterAddress,
-    marketAddress,
     fileName,
     connector,
     account,
@@ -509,6 +511,7 @@ export async function initializeContract(contractProps) {
   return contract;
 }
 
+// eslint-disable-next-line consistent-return
 export async function mintToAlgo(algoProps) {
   const {
     price,
@@ -525,7 +528,7 @@ export async function mintToAlgo(algoProps) {
     const collection_id = [];
     const txns = [];
     dispatch(setNotification('preparing assets for minting'));
-    for (let i = 0; i < ipfsJsonData.length; i++) {
+    for (let i = 0; i < ipfsJsonData.length; i + 1) {
       dispatch(setLoader(`minting ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
       txns.push(txn);
@@ -587,7 +590,7 @@ export async function mintToCelo(celoProps) {
       process.env.REACT_APP_GENADROP_SERVER_KEY,
       connector,
     );
-    const signer = await connector.getSigner();
+    await connector.getSigner();
     const marketContract = new ethers.Contract(
       process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS,
       marketAbi,
@@ -605,7 +608,7 @@ export async function mintToCelo(celoProps) {
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
       await tx.wait();
-      const listingTx = await marketContract.createBulkMarketItem(
+      await marketContract.createBulkMarketItem(
         '0x008EeeDFa0B9310960818e94C8Bf1879f1c5da18',
         ['46169'],
         '100000',
@@ -620,6 +623,7 @@ export async function mintToCelo(celoProps) {
     }
     dispatch(setLoader(''));
     dispatch(setNotification('NFTs successfully minted.'));
+    // eslint-disable-next-line consistent-return
     return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
   }
   dispatch(setNotification('download metamask'));
@@ -681,7 +685,7 @@ export async function mintToPoly(polyProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
     await tx.wait();
-    const listingTx = await marketContract.createBulkMarketItem(
+    await marketContract.createBulkMarketItem(
       contract.address,
       ids,
       String(price * 10 ** 18),
@@ -745,10 +749,10 @@ export async function PurchaseNft(asset, account, connector) {
     suggestedParams: params,
   });
   txns.push(txn2);
-  let signedTxn;
-  const txgroup = algosdk.assignGroupID(txns);
+  // let signedTxn;
+  algosdk.assignGroupID(txns);
   try {
-    signedTxn = await signTx(connector, txns);
+    await signTx(connector, txns);
   } catch (error) {
     alert(error.message);
     return;
@@ -767,7 +771,7 @@ export async function PurchaseNft(asset, account, connector) {
   const manager = algosdk.mnemonicToSecretKey(process.env.REACT_APP_MNEMONIC);
   const rawSignedTxn = rtxn.signTxn(manager.sk);
   const tx = await algodTxnClient.sendRawTransaction(rawSignedTxn).do();
-  const confirmedTxn = await waitForConfirmation(tx.txId);
+  await waitForConfirmation(tx.txId);
   await write.writeNft(
     asset.owner,
     asset.collection_name,
@@ -786,6 +790,7 @@ export async function PurchaseNft(asset, account, connector) {
     tx.txId,
   );
   // const ret = await signTx(connector, txn)
+  // eslint-disable-next-line consistent-return
   return `https://testnet.algoexplorer.io/tx/${tx.txId}`;
 }
 
@@ -851,7 +856,7 @@ export async function mintToNear(polyProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
     await tx.wait();
-    const listingTx = await marketContract.createBulkMarketItem(
+    await marketContract.createBulkMarketItem(
       contract.address,
       ids,
       String(price * 10 ** 18),
@@ -916,7 +921,7 @@ export async function purchasePolygonNfts(connector, itemId, price) {
     connector.getSigner(),
   );
   try {
-    const art = await contract.nftSale(itemId, { value: price });
+    await contract.nftSale(itemId, { value: price });
   } catch (error) {
     console.log(error);
   }

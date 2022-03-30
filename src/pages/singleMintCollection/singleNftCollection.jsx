@@ -94,6 +94,7 @@ const SingleNftCollection = () => {
   // *******************************************************************************************
 
   // ********************* sort by price function for different blockchains ********************
+  // eslint-disable-next-line consistent-return
   const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
@@ -212,8 +213,8 @@ const SingleNftCollection = () => {
               : (
                 <div className={classes.skeleton}>
                   {
-                  (Array(5).fill(null)).map((_, idx) => (
-                    <div key={idx}>
+                  ([...new Array(10)].map((_, idx) => idx)).map((id) => (
+                    <div key={id}>
                       <Skeleton count={1} height={200} />
                       <Skeleton count={3} height={40} />
                     </div>

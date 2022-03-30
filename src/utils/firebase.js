@@ -58,12 +58,12 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
 async function writeUserData(
   owner,
   collection,
-  name,
+  fileName,
   collection_id,
   priceValue,
   description,
 ) {
-  name = name.split('-')[0];
+  const name = fileName.split('-')[0];
   const updates = {};
   for (let i = 0; i < collection_id.length; i + 1) {
     updates[collection_id[i]] = {

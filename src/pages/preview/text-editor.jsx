@@ -27,6 +27,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
         editor
           ? (
             <form onSubmit={handleSubmit}>
+              {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
               <input autoFocus type="text" value={value} onChange={(e) => handleSetState({ value: e.target.value })} />
               <button type="button">
                 <img src={markIcon} alt="" />

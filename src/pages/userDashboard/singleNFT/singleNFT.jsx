@@ -84,7 +84,6 @@ const SingleNFT = () => {
   }, []);
 
   useEffect(() => {
-    if (!nftDetails) return;
   }, [nftDetails]);
 
   const icons = [
@@ -195,6 +194,7 @@ const SingleNFT = () => {
 
   const buyNft = async () => {
     const res = await PurchaseNft(nftDetails, account, connector);
+    // eslint-disable-next-line no-alert
     alert(res);
   };
 

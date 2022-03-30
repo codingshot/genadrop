@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import axios from 'axios';
 import fileDownload from 'js-file-download';
+// eslint-disable-next-line import/no-unresolved
 import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
 import { getAlgoData } from './arc_ipfs';
 import { readSIngleUserNft } from './firebase';
@@ -103,7 +104,7 @@ export const getUserNftCollection = async (data) => {
 
 export const getSingleNfts = async (nfts) => {
   const nftArr = [];
-  for (let i = 0; i < nfts.length; i++) {
+  for (let i = 0; i < nfts.length; i + 1) {
     try {
       const nftObj = {};
       nftObj.Id = nfts[i].id;
@@ -180,7 +181,8 @@ export const getImageSize = async (img) => new Promise((resolve) => {
   };
 });
 
-export const getDefaultName = (id) => {
+export const getDefaultName = (nameId) => {
+  let id = nameId;
   id = String(id);
   if (id.length < 4) {
     const repeatBy = 4 - id.length;
@@ -295,6 +297,7 @@ export const handleDownloadWithWorker = async (props) => {
   });
   fileDownload(
     content,
+    // eslint-disable-next-line no-constant-condition
     `${'name' ? `${'name'}${true ? '' : `_${'id'}`}.zip` : 'collections.zip'}`,
   );
 };

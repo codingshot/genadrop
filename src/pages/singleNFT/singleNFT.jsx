@@ -90,7 +90,7 @@ const SingleNFT = () => {
   }, []);
 
   useEffect(() => {
-    if (!nftDetails) return;
+    // if (!nftDetails) return;
   }, [nftDetails]);
 
   const icons = [
@@ -175,6 +175,7 @@ const SingleNFT = () => {
 
   const buyNft = async () => {
     const res = await PurchaseNft(nftDetails, account, connector);
+    // eslint-disable-next-line no-alert
     alert(res);
   };
 
@@ -265,7 +266,7 @@ const SingleNFT = () => {
                 (nftDetails.sold
                   ? (
                     <>
-                      <button className={classes.sold} disabled={nftDetails.sold}>
+                      <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                         <img src={walletIcon} alt="" />
                         SOLD!
                       </button>
@@ -273,11 +274,12 @@ const SingleNFT = () => {
                   )
                   : (
                     <>
-                      <button className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
+                      <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
                         <img src={walletIcon} alt="" />
                         Buy now
                       </button>
-                      {/* <button className={classes.bid}><img src={bidIcon} alt="" />Place Bid</button> */}
+                      {/* <button className={classes.bid}>
+                      <img src={bidIcon} alt="" />Place Bid</button> */}
                     </>
                   )
                 )
@@ -308,7 +310,8 @@ const SingleNFT = () => {
 
       {/* TRANSACTION HISTORY */}
       <div className={classes.section}>
-        {/* <DropItem key={4} item={transactions} id={4} dropdown={dropdown} handleSetState={handleSetState} ></DropItem> */}
+        {/* <DropItem key={4} item={transactions}
+         id={4} dropdown={dropdown} handleSetState={handleSetState} ></DropItem> */}
 
         <div className={classes.heading}>
           <h3>Transaction History</h3>

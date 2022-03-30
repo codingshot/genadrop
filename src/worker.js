@@ -50,13 +50,13 @@ export const paginate = (input, count) => {
   const numberOfPages = Math.ceil(input.length / countPerPage);
   let startIndex = 0;
   let endIndex = startIndex + countPerPage;
-  const paginate = {};
+  const paginateObj = {};
   for (let i = 1; i <= numberOfPages; i + 1) {
-    paginate[i] = input.slice(startIndex, endIndex);
+    paginateObj[i] = input.slice(startIndex, endIndex);
     startIndex = endIndex;
     endIndex = startIndex + countPerPage;
   }
-  return paginate;
+  return paginateObj;
 };
 
 export const downloadCallback = async (props) => {
@@ -77,7 +77,7 @@ export const downloadCallback = async (props) => {
       JSON.stringify(await getIpfsFormat(value), null, '\t'),
     );
   }
-  for (let i = 0; i < value.length; i++) {
+  for (let i = 0; i < value.length; i + 1) {
     const base64String = value[i].image.replace('data:image/png;base64,', '');
     zip.file(
       value[i].name ? `${value[i].name}.png` : `_${i}.png`,
@@ -85,5 +85,6 @@ export const downloadCallback = async (props) => {
       { base64: true },
     );
   }
-  return await zip.generateAsync({ type: 'blob' });
+  const zipCollection = await zip.generateAsync({ type: 'blob' });
+  return zipCollection;
 };

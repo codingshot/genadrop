@@ -181,13 +181,13 @@ const Preview = () => {
     const numberOfPages = Math.ceil(nftLayers.length / countPerPage);
     let startIndex = 0;
     let endIndex = startIndex + countPerPage;
-    const paginate = {};
+    const paginateObj = {};
     for (let i = 1; i <= numberOfPages; i + 1) {
-      paginate[i] = nftLayers.slice(startIndex, endIndex);
+      paginateObj[i] = nftLayers.slice(startIndex, endIndex);
       startIndex = endIndex;
       endIndex = startIndex + countPerPage;
     }
-    handleSetState({ paginate });
+    handleSetState({ paginate: paginateObj });
   }, [nftLayers]);
 
   return (
@@ -279,7 +279,7 @@ const Preview = () => {
                     image, id, name, description,
                   } = asset;
                   return (
-                    <div key={index} className={classes.card}>
+                    <div key={id} className={classes.card}>
                       <img className={classes.asset} src={image} alt="" />
                       <div className={classes.cardBody}>
                         <div className={classes.textWrapper}>

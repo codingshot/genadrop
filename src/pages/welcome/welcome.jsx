@@ -4,7 +4,7 @@ import dropIcon from '../../assets/drop.svg';
 
 const Welcome = ({ showWelcomeScreen }) => {
   useEffect(() => {
-    document.getElementById('dropIcon').onanimationend = (e) => {
+    document.getElementById('dropIcon').onanimationend = () => {
       showWelcomeScreen(false);
     };
   }, []);
