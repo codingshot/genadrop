@@ -1,9 +1,8 @@
-import classes from './collection-preview.module.css';
 import React, { useEffect, useRef, useContext } from 'react';
+import classes from './collection-preview.module.css';
 import { GenContext } from '../../gen-state/gen.context';
 import { getImageSize } from '../../utils';
 import ButtonClickEffect from '../button-effect/button-effect';
-import { useState } from 'react';
 
 const CollectionPreview = () => {
   const { layers, preview } = useContext(GenContext);
@@ -60,7 +59,7 @@ const CollectionPreview = () => {
 
   return (
     <div className={classes.container}>
-      <canvas className={classes.canvas} ref={canvasRef}></canvas>
+      <canvas className={classes.canvas} ref={canvasRef} />
       {preview.length ? (
         <button onClick={handleDownload}>
           <ButtonClickEffect>Download</ButtonClickEffect>
