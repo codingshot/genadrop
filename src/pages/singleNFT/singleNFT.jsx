@@ -22,7 +22,7 @@ import descriptionIcon from '../../assets/description-icon.png';
 import detailsIcon from '../../assets/details.png';
 
 const SingleNFT = () => {
-  const { account, connector } = useContext(GenContext);
+  const { account, connector, mainnet } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -75,11 +75,13 @@ const SingleNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
+    const nft = singleNfts.filter((NFT) => String(NFT.id) === nftId)[0];
+
     (async function getNftDetails() {
-      const nftdetails = await getSingleNftDetails(nft);
-      handleSetState({ nftDetails: nftdetails, isLoading: false });
+      const NFTDetails = await getSingleNftDetails(mainnet, nft);
+      handleSetState({ nftDetails: NFTDetails, isLoading: false });
     }());
+    // handleSetState({ })
 
     axios
       .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
@@ -88,6 +90,9 @@ const SingleNFT = () => {
       });
     document.documentElement.scrollTop = 0;
   }, []);
+
+  useEffect(() => {
+  }, [nftDetails]);
 
   useEffect(() => {
     // if (!nftDetails) return;
@@ -174,7 +179,7 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector);
+    const res = await PurchaseNft(nftDetails, account, connector, mainnet);
     // eslint-disable-next-line no-alert
     alert(res);
   };

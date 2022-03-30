@@ -62,6 +62,7 @@ async function writeUserData(
   collection_id,
   priceValue,
   description,
+  mainnet,
 ) {
   const name = fileName.split('-')[0];
   const updates = {};
@@ -70,6 +71,7 @@ async function writeUserData(
       id: collection_id[i],
       collection: name,
       price: priceValue,
+      mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
     await recordTransaction(
@@ -88,6 +90,7 @@ async function writeUserData(
       price: priceValue,
       owner,
       description,
+      mainnet,
     })
     .then(() => {})
     .catch((error) => {
@@ -120,6 +123,7 @@ async function writeNft(
   sold,
   buyer,
   dateSold,
+  mainnet,
 ) {
   const updates = {};
   updates[assetId] = {
@@ -129,6 +133,7 @@ async function writeNft(
     Buyer: buyer,
     price,
     dateSold,
+    mainnet,
   };
   db.collection('listed')
     .doc(`${owner}`)
@@ -171,7 +176,13 @@ async function readAllNft() {
 
 async function readAllUserNft(userAddress) {
   const querySnapshot = await db.collection('listed').doc(userAddress).get();
-  return Object.values(querySnapshot.data());
+  try {
+    const res = Object.values(querySnapshot.data());
+    return res;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 async function readSIngleUserNft(userAddress, assetId) {
@@ -181,13 +192,15 @@ async function readSIngleUserNft(userAddress, assetId) {
   );
 }
 
-async function readAllCollection() {
+async function readAllCollection(mainnet) {
+  console.log('isnuloooo', mainnet);
   const querySnapshot = await db.collection('collections').get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
   });
-  return res;
+  const response = mainnet === null ? res : res.filter((asset) => asset.mainnet === mainnet);
+  return response;
 }
 
 async function readUserCollection(userAddress) {
@@ -202,17 +215,21 @@ async function readUserCollection(userAddress) {
   return res;
 }
 
-async function readAllSingleNft() {
+async function readAllSingleNft(mainnet) {
+  console.log('isnuloooo', mainnet);
   const querySnapshot = await db.collection('listed').get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  return res.filter((asset) => asset.collection === null);
+  const response = mainnet === null ? res : res.filter(
+    (asset) => (asset.collection === null) && (asset.mainnet === mainnet),
+  );
+  return response;
 }
 
-async function fetchCollections() {
-  const collections = await readAllCollection();
+async function fetchCollections(mainnet) {
+  const collections = await readAllCollection(mainnet);
   return collections;
 }
 

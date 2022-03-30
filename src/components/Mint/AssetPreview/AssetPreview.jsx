@@ -12,7 +12,7 @@ const AssetPreview = ({ data, changeFile }) => {
     file, fileName: fName, metadata, zip,
   } = data;
   const {
-    dispatch, connector, account, chainId,
+    dispatch, connector, account, chainId, mainnet,
   } = useContext(GenContext);
   const [state, setState] = useState({
     attributes: { [Date.now()]: { trait_type: '', value: '' } },
@@ -28,11 +28,27 @@ const AssetPreview = ({ data, changeFile }) => {
   } = state;
 
   const chains = [
-    { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
-    { label: 'Celo', networkId: 42220, symbol: 'CGLD' },
-    { label: 'Polygon', networkId: 137, symbol: 'MATIC' },
-    { label: 'Polygon Testnet', networkId: 80001, symbol: 'MATIC' },
-    { label: 'Near', networkId: 1313161555, symbol: 'NEAR' },
+    {
+      label: 'Algorand', networkId: 4160, symbol: 'ALGO', chain: 'Algorand',
+    },
+    {
+      label: 'Celo', networkId: 42220, symbol: 'CGLD', chain: 'Celo',
+    },
+    {
+      label: 'Celo testnet', networkId: 44787, symbol: 'CGLD', chain: 'Celo',
+    },
+    {
+      label: 'Polygon', networkId: 137, symbol: 'MATIC', chain: 'Polygon',
+    },
+    {
+      label: 'Polygon Testnet', networkId: 80001, symbol: 'MATIC', chain: 'Polygon',
+    },
+    {
+      label: 'Near', networkId: 1313161554, symbol: 'NEAR', chain: 'Near',
+    },
+    {
+      label: 'Near testnet', networkId: 1313161555, symbol: 'NEAR', chain: 'Near',
+    },
   ];
 
   const mintProps = {
@@ -47,7 +63,8 @@ const AssetPreview = ({ data, changeFile }) => {
     file: zip,
     fileName,
     price,
-    chain: chain?.label,
+    mainnet,
+    chain: chain?.chain,
     dollarPrice,
   };
 
@@ -63,7 +80,8 @@ const AssetPreview = ({ data, changeFile }) => {
     metadata: { name: fileName, description, attributes: Object.values(attributes) },
     fileName,
     price,
-    chain: chain?.label,
+    mainnet,
+    chain: chain?.chain,
     dollarPrice,
   };
 
@@ -113,7 +131,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
   const setMint = () => {
     if (!chainId) return dispatch(setNotification('connect wallet and try again'));
-    const c = chains.find((c) => c.networkId == chainId);
+    const c = chains.find((c) => c.networkId === chainId);
     if (!c) return dispatch(setNotification('unsupported chain detected'));
     if (file.length > 1) {
       handleMint(mintProps);
@@ -123,9 +141,8 @@ const AssetPreview = ({ data, changeFile }) => {
   };
 
   useEffect(() => {
-    console.log('chainId: ', chainId);
     if (chainId) {
-      const c = chains.find((c) => c.networkId == chainId);
+      const c = chains.find((e) => e.networkId === chainId);
       if (!c) return handleSetState({ chain: { label: 'unsupported chain' } });
       handleSetState({ chain: c });
       if (c.symbol === 'NEAR') {
@@ -149,9 +166,7 @@ const AssetPreview = ({ data, changeFile }) => {
           ? (
             <div className={classes.previewWrapper}>
               <div
-                onClick={
-                () => handleSetState({ preview: false })
-}
+                onClick={() => handleSetState({ preview: false })}
                 className={classes.cancelPreview}
               >
                 <img src={arrowIconLeft} alt="" />
@@ -301,7 +316,7 @@ const AssetPreview = ({ data, changeFile }) => {
                       <div className={classes.price}>
                         <input type="number" value={price} onChange={handlePrice} />
                         <span>
-                          {dollarPrice}
+                          {dollarPrice.toFixed(2)}
                           {' '}
                           {getUintByChain[chain?.label]}
                         </span>

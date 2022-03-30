@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { Link, useRouteMatch } from 'react-router-dom';
 import Copy from '../../components/copy/copy';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
@@ -9,9 +8,8 @@ import { getNftCollections, getUserNftCollection } from '../../utils';
 import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from '../../utils/firebase';
 import classes from './dashboard.module.css';
 import avatar from '../../assets/avatar.png';
-import dropdownIcon from '../../assets/icon-dropdown.svg';
-import arrowDown from '../../assets/icon-arrow-down-long.svg';
-import arrowUp from '../../assets/icon-arrow-up-long.svg';
+import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
+import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
 
 const Dashboard = () => {
   const [state, setState] = useState({
@@ -28,10 +26,14 @@ const Dashboard = () => {
   });
 
   const {
-    filter, togglePriceFilter, activeDetail, myCollections,
-    createdNfts, collectedNfts, filteredCollection,
+    filter,
+    activeDetail,
+    myCollections,
+    createdNfts,
+    collectedNfts,
+    filteredCollection,
   } = state;
-  const { account } = useContext(GenContext);
+  const { account, mainnet } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -44,23 +46,26 @@ const Dashboard = () => {
 
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
-      const mycollections = await getNftCollections(userCollections);
-      handleSetState({ mycollections });
+      const myNftsCollections = await getNftCollections(userCollections, mainnet);
+      console.log('===>', myNftsCollections);
+      handleSetState({ myCollections: myNftsCollections });
     }());
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
-      const createdNFTs = await getUserNftCollection(userNftCollections);
+      const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
+      console.log('===>', createdUserNfts);
 
-      handleSetState({ createdNFTs });
+      handleSetState({ createdNfts: createdUserNfts });
     }());
 
     (async function getCollections() {
       const userNftCollections = await fetchAllNfts(account);
-      await getUserNftCollection(userNftCollections);
+      await getUserNftCollection(userNftCollections, mainnet);
     }());
   }, [account]);
 
+  // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
     switch (activeDetail) {
       case 'collected':
@@ -98,11 +103,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (!account) return;
     const filteredCollections = getCollectionToFilter();
-    // if (!filteredCollection) return;
     handleSetState({ filteredCollections });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
-
-  const { url } = useRouteMatch();
 
   return (
     <div className={classes.container}>
@@ -115,9 +117,9 @@ const Dashboard = () => {
           <div className={classes.address}>
             <Copy message={account} placeholder={breakAddress(account)} />
           </div>
-          <Link to={`${url}/profile/settings`}>
+          {/* <Link to={`${url}/profile/settings`}>
             <div className={classes.profile}>Edit Profile</div>
-          </Link>
+          </Link> */}
           <div className={classes.details}>
             <div onClick={() => handleSetState({ activeDetail: 'created' })} className={`${classes.detail} ${activeDetail === 'created' && classes.active}`}>
               <p>Created NFT</p>
@@ -135,45 +137,15 @@ const Dashboard = () => {
         </section>
 
         <section className={classes.main}>
-          <div className={classes.searchAndPriceFilter}>
-            <input
-              type="search"
-              onChange={(event) => handleSetState(
-                { filter: { ...filter, searchValue: event.target.value } },
-              )}
-              value={filter.searchValue}
-              placeholder="search"
+          <div className={classes.searchAndFilter}>
+            <SearchBar onSearch={
+              (value) => handleSetState({ filter: { ...filter, searchValue: value } })
+              }
             />
-            <div className={classes.priceDropdown}>
-              <div
-                onClick={() => handleSetState(
-                  { togglePriceFilter: !togglePriceFilter, toggleChainFilter: false },
-                )}
-                className={classes.selectedPrice}
-              >
-                <span>
-                  price:
-                  {' '}
-                  {filter.price === 'low' ? 'Low to High' : 'High to Low'}
-                  {' '}
-                </span>
-                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
-              </div>
-              <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                  price
-                  {' '}
-                  <img src={arrowUp} alt="" />
-
-                </div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                  price
-                  {' '}
-                  <img src={arrowDown} alt="" />
-
-                </div>
-              </div>
-            </div>
+            <PriceDropdown onPriceFilter={
+              (value) => handleSetState({ filter: { ...filter, price: value } })
+              }
+            />
           </div>
 
           {
@@ -213,8 +185,8 @@ const Dashboard = () => {
                   : (
                     <div className={classes.skeleton}>
                       {
-                      (Array(5).fill(null)).map((_, idx) => (
-                        <div key={idx}>
+                      ([...new Array(5)].map((_, idx) => idx)).map((id) => (
+                        <div key={id}>
                           <Skeleton count={1} height={300} />
                         </div>
                       ))

@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
-
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../../utils';
 import CollectionsCard from '../collectionsCard/collectionsCard';
-import { fetchCollections } from '../../../utils/firebase';
-// import NotFound from '../../not-found/notFound';
+import { GenContext } from '../../../gen-state/gen.context';
 
 const Collections = () => {
   const [state, setState] = useState({
     algoCollection: [],
   });
+  const { collections, mainnet } = useContext(GenContext);
   const { algoCollection } = state;
-
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -24,9 +22,9 @@ const Collections = () => {
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        const collections = await fetchCollections();
+        // let collections = await fetchCollections();
         if (collections?.length) {
-          const result = await getNftCollections(collections);
+          const result = await getNftCollections(collections, mainnet);
           handleSetState({ algoCollection: result });
         } else {
           handleSetState({ algoCollection: null });
@@ -35,7 +33,8 @@ const Collections = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [collections]);
+
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
@@ -61,8 +60,8 @@ const Collections = () => {
             : (
               <div className={classes.skeleton}>
                 {
-                (Array(4).fill(null)).map((_, idx) => (
-                  <div key={idx}>
+                ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+                  <div key={id}>
                     <Skeleton count={1} height={250} />
                     <br />
                     <Skeleton count={1} height={30} />

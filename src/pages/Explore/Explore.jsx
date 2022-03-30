@@ -9,9 +9,8 @@ import { groupAttributesByTraitType, mapAttributeToFilter } from './Explore-scri
 import { getNftCollection } from '../../utils';
 import Menu from './Menu/Menu';
 import closeIcon from '../../assets/icon-close.svg';
-import dropdownIcon from '../../assets/icon-dropdown.svg';
-import arrowDown from '../../assets/icon-arrow-down-long.svg';
-import arrowUp from '../../assets/icon-arrow-up-long.svg';
+import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
+import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -28,15 +27,20 @@ const Explore = () => {
     },
   });
   const {
-    collection, NFTCollection, attributes,
-    filter, filterToDelete, togglePriceFilter, FilteredCollection, headerHeight,
+    collection,
+    NFTCollection,
+    attributes,
+    filter,
+    filterToDelete,
+    FilteredCollection,
+    headerHeight,
   } = state;
-  const { collections } = useContext(GenContext);
+  const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleFilter = (_filter) => {
@@ -49,11 +53,11 @@ const Explore = () => {
 
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const collection = collections.find((col) => col.name === collectionName);
+      const collectionsFound = collections.find((col) => col.name === collectionName);
       (async function getResult() {
-        const result = await getNftCollection(collection);
+        const result = await getNftCollection(collectionsFound, mainnet);
         handleSetState({
-          collection,
+          collection: collectionsFound,
           NFTCollection: result,
         });
       }());
@@ -130,47 +134,15 @@ const Explore = () => {
           attributes={attributes}
         />
         <main className={classes.displayWrapper}>
-          <div className={classes.searchAndPriceFilter}>
-            <input
-              type="search"
-              onChange={
-                (event) => handleSetState(
-                  { filter: { ...filter, searchValue: event.target.value } },
-                )
-}
-              value={filter.searchValue}
-              placeholder="search"
+          <div className={classes.searchAndFilter}>
+            <SearchBar onSearch={(value) => handleSetState(
+              { filter: { ...filter, searchValue: value } },
+            )}
             />
-            <div className={classes.priceDropdown}>
-              <div
-                onClick={() => handleSetState(
-                  { togglePriceFilter: !togglePriceFilter, toggleChainFilter: false },
-                )}
-                className={classes.selectedPrice}
-              >
-                <span>
-                  price:
-                  {' '}
-                  {filter.price === 'low' ? 'Low to High' : 'High to Low'}
-                  {' '}
-                </span>
-                <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
-              </div>
-              <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                  price
-                  {' '}
-                  <img src={arrowUp} alt="" />
-
-                </div>
-                <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                  price
-                  {' '}
-                  <img src={arrowDown} alt="" />
-
-                </div>
-              </div>
-            </div>
+            <PriceDropdown onPriceFilter={(value) => handleSetState(
+              { filter: { ...filter, price: value } },
+            )}
+            />
           </div>
 
           <div className={classes.filterDisplay}>

@@ -1,5 +1,6 @@
-/* eslint-disable no-await-in-loop */
+/* eslint-disable consistent-return */
 /* eslint-disable no-alert */
+/* eslint-disable no-await-in-loop */
 import { formatJsonRpcRequest } from '@json-rpc-tools/utils';
 import JSZip from 'jszip';
 import { ethers } from 'ethers';
@@ -15,25 +16,38 @@ const pinata = pinataSDK(pinataApiKey, pinataApiSecret);
 const axios = require('axios');
 const FormData = require('form-data');
 const config = require('./arc_config');
-const write = require('./firebase');
-const marketAbi = require('./marketAbi.json');
 
 const algoAddress = config.algodClientUrl;
 const algoNode = config.algodNodeUrl;
+const algoMainAddress = config.algodMainClientUrl;
+const algoMainNode = config.algodMainNodeUrl;
 const { algodClientPort } = config;
 const algoToken = config.algodClientToken;
 
-const algodClient = new algosdk.Algodv2(
-  algoToken,
-  algoAddress,
-  algodClientPort,
-);
+const write = require('./firebase');
+const marketAbi = require('./marketAbi.json');
 
-const algodTxnClient = new algosdk.Algodv2(
-  algoToken,
-  algoNode,
-  algodClientPort,
-);
+/*
+TODO: change conditional addresses once mainnet address is ready!
+*/
+
+let algodClient;
+
+let algodTxnClient;
+
+function initAlgoClients(mainnet) {
+  algodClient = new algosdk.Algodv2(
+    algoToken,
+    mainnet ? algoMainAddress : algoAddress,
+    algodClientPort,
+  );
+
+  algodTxnClient = new algosdk.Algodv2(
+    algoToken,
+    mainnet ? algoMainNode : algoNode,
+    algodClientPort,
+  );
+}
 
 const mintCollectionAbi = [
   'function createCollection(string memory _name, string memory _symbol, address manager) public {}',
@@ -53,11 +67,11 @@ const mintAbi = [
 // const fromHexString = (hexString) =>
 // new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
 
-// const toHexString = (bytes) =>
-// bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
+// const toHexString = (bytes) => bytes.reduce((str, byte) =>
+// str + byte.toString(16).padStart(2, '0'), '');
 
 const pinFileToIPFS = async (
-  pinataApikey,
+  pinataApiKeyIPFS,
   pinataSecretApiKey,
   file,
   metadata,
@@ -67,8 +81,8 @@ const pinFileToIPFS = async (
   // we gather a local file for this example, but any valid readStream source will work here.
   const data = new FormData();
   data.append('file', file);
-  // You'll need to make sure that the metadata is in the form
-  //  of a JSON object that's been convered to a string
+  // You'll need to make sure that the metadata is in the form of a JSON object that's
+  //  been convered to a string
   // metadata is optional
   data.append('pinataMetadata', metadata);
   // pinataOptions are optional
@@ -78,7 +92,7 @@ const pinFileToIPFS = async (
       maxBodyLength: 'Infinity', // this is needed to prevent axios from erroring out with large files
       headers: {
         // 'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
-        pinata_api_key: pinataApikey,
+        pinata_api_key: pinataApiKeyIPFS,
         pinata_secret_api_key: pinataSecretApiKey,
       },
     })
@@ -91,8 +105,8 @@ const pinFileToIPFS = async (
 const waitForConfirmation = async (txId) => {
   const response = await algodTxnClient.status().do();
   let lastround = response['last-round'];
-  const pageInfoCond = true;
-  while (pageInfoCond) {
+  const pageCond = true;
+  while (pageCond) {
     const pendingInfo = await algodTxnClient
       .pendingTransactionInformation(txId)
       .do();
@@ -103,7 +117,6 @@ const waitForConfirmation = async (txId) => {
       break;
     }
     lastround += 1;
-
     await algodTxnClient.statusAfterBlock(lastround).do();
   }
 };
@@ -168,7 +181,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   };
 };
 
-// eslint-disable-next-line consistent-return
 export const connectAndMint = async (file, metadata, imgName) => {
   try {
     await pinata.testAuthentication();
@@ -244,7 +256,7 @@ async function signTx(connector, txns) {
   const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
   // const decoded = algosdk.decodeSignedTransaction(decodedResult);
   // const fromdc = decoded.txn.from
-  // const confirmedTxn = await waitForConfirmation(tx.txId);
+  await waitForConfirmation(tx.txId);
   const ptx = await algodTxnClient.pendingTransactionInformation(tx.txId).do();
   const assetID = ptx['asset-index'];
   // console.log('Account: ',account,' Has created ASA with ID: ', assetID);
@@ -261,6 +273,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     setNotification,
     price,
   } = algoMintProps;
+  initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setNotification('uploading to ipfs'));
     // notification: uploading to ipfs
@@ -269,7 +282,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setNotification('asset uploaded, minting in progress'));
     const assetID = await signTx(connector, [txn]);
-    await write.writeNft(account, undefined, assetID, price, false, null, null);
+    await write.writeNft(account, undefined, assetID, price, false, null, null, mainnet);
     // notification: asset minted
     dispatch(setNotification('asset minted successfully'));
     return `https://testnet.algoexplorer.io/asset/${assetID}`;
@@ -282,7 +295,7 @@ export async function mintSingleToAlgo(algoMintProps) {
 
 export async function mintSingleToPoly(singleMintProps) {
   const {
-    file, metadata, price, account, connector, dispatch, setLoader,
+    file, metadata, price, account, connector, dispatch, setLoader, mainnet,
   } = singleMintProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -300,7 +313,9 @@ export async function mintSingleToPoly(singleMintProps) {
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
   dispatch(setLoader('minting 1 of 1'));
   const contract = new ethers.Contract(
-    process.env.REACT_APP_GENA_SINGLE_ADDRESS,
+    mainnet
+      ? process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS
+      : process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS,
     mintSingle,
     signer,
   );
@@ -308,23 +323,16 @@ export async function mintSingleToPoly(singleMintProps) {
     process.env.REACT_APP_GENADROP_SERVER_KEY,
     connector,
   );
-  const marketContract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_POLY_MARKET_ADDRESS,
-    marketAbi,
-    wallet,
-  );
+  const marketContract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, '0x');
-    await marketContract.createMarketplaceItem(
-      contract.address,
-      id,
-      String(price * 10 ** 18),
-      'General',
-      account,
-    );
+    await txn.wait();
+    await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), 'General', account);
     dispatch(setLoader(''));
-    return `https://mumbai.polygonscan.com/tx/${txn.hash}`;
+    return mainnet ? `https://polygonscan.com/tx/${txn.hash}` : `https://mumbai.polygonscan.com/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(''));
     console.log(error);
@@ -338,7 +346,7 @@ export async function mintSingleToPoly(singleMintProps) {
 
 export async function mintSingleToCelo(singleMintProps) {
   const {
-    file, metadata, account, connector, dispatch, setLoader,
+    file, metadata, price, account, connector, dispatch, setLoader, mainnet,
   } = singleMintProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -355,28 +363,22 @@ export async function mintSingleToCelo(singleMintProps) {
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
   dispatch(setLoader('minting 1 of 1'));
-  const contract = new ethers.Contract(
-    process.env.REACT_APP_CELO_SINGLE_ADDRESS,
-    mintSingle,
-    signer,
-  );
-  const wallet = new ethers.Wallet(
-    process.env.REACT_APP_GENADROP_SERVER_KEY,
-    connector,
-  );
-  // eslint-disable-next-line no-unused-vars
-  const marketContract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS,
-    marketAbi,
-    wallet,
-  );
+  const contract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS
+    : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS, mintSingle, signer);
+  const wallet = new ethers.Wallet(mainnet
+    ? process.env.REACT_APP_GENADROP_SERVER_KEY
+    : process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const marketContract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, '0x');
-    // let listingTx = await marketContract.createMarketplaceItem(contract.address,
-    // id, String(price*10**18), 'General', account)
+    // let listingTx = await marketContract.createMarketplaceItem(contract.address, id,
+    //  String(price*10**18), 'General', account)
     dispatch(setLoader(''));
-    return `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+    return mainnet ? `https://celo-testnet.org/tx/${txn.hash}` : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(''));
     console.log(error);
@@ -390,7 +392,7 @@ export async function mintSingleToCelo(singleMintProps) {
 
 export async function mintSingleToNear(singleMintProps) {
   const {
-    file, metadata, price, account, connector, dispatch, setLoader,
+    file, metadata, price, account, connector, dispatch, setLoader, mainnet,
   } = singleMintProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -407,32 +409,22 @@ export async function mintSingleToNear(singleMintProps) {
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
   dispatch(setLoader('minting 1 of 1'));
-  const contract = new ethers.Contract(
-    process.env.REACT_APP_AURORA_SINGLE_ADDRESS,
-    mintSingle,
-    signer,
-  );
-  const wallet = new ethers.Wallet(
-    process.env.REACT_APP_GENADROP_SERVER_KEY,
-    connector,
-  );
-  const marketContract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_NEAR_MARKET_ADDRESS,
-    marketAbi,
-    wallet,
-  );
+  const contract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS
+    : process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS, mintSingle, signer);
+  const wallet = new ethers.Wallet(mainnet
+    ? process.env.REACT_APP_GENADROP_SERVER_KEY
+    : process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const marketContract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_NEAR_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_NEAR_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, '0x');
-    await marketContract.createMarketplaceItem(
-      contract.address,
-      id,
-      String(price * 10 ** 18),
-      'General',
-      account,
-    );
+    await txn.wait();
+    await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), 'General', account);
     dispatch(setLoader(''));
-    return `https://testnet.aurorascan.dev/tx/${txn.hash}`;
+    return mainnet ? `https://aurorascan.dev/tx/${txn.hash}` : `https://testnet.aurorascan.dev/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(''));
     console.log(error);
@@ -463,7 +455,6 @@ export async function createNFT(createProps) {
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
     const imgName = `${metadata[i].name}.png`;
     const imgFile = data.files[imgName];
-
     const uint8array = await imgFile.async('uint8array');
     const blob = new File([uint8array], imgName, { type: 'image/png' });
     const asset = await connectAndMint(blob, metadata[i], imgName);
@@ -477,6 +468,7 @@ export async function createNFT(createProps) {
 export async function initializeContract(contractProps) {
   const {
     minterAddress,
+    marketAddress,
     fileName,
     connector,
     account,
@@ -493,7 +485,7 @@ export async function initializeContract(contractProps) {
   const tx = await collectionContract.createCollection(
     name,
     name.substring(0, 3).toUpperCase(),
-    process.env.REACT_APP_GENADROP_MARKET_ADDRESS,
+    marketAddress,
   );
   // console.log(tx.hash)
   dispatch(setLoader('minting'));
@@ -511,7 +503,6 @@ export async function initializeContract(contractProps) {
   return contract;
 }
 
-// eslint-disable-next-line consistent-return
 export async function mintToAlgo(algoProps) {
   const {
     price,
@@ -523,6 +514,7 @@ export async function mintToAlgo(algoProps) {
     setNotification,
     setLoader,
   } = algoProps;
+  initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps });
     const collection_id = [];
@@ -553,6 +545,7 @@ export async function mintToAlgo(algoProps) {
       collection_id,
       price,
       description,
+      mainnet,
     );
     dispatch(setLoader(''));
     dispatch(setNotification('you have successfully minted your NFTs'));
@@ -567,35 +560,31 @@ export async function mintToAlgo(algoProps) {
 
 export async function mintToCelo(celoProps) {
   const {
-    account,
-    connector,
-    fileName,
-    dispatch,
-    setNotification,
-    setLoader,
+    price, account, connector, fileName, dispatch, setNotification, setLoader, mainnet,
   } = celoProps;
   if (typeof window.ethereum !== 'undefined') {
     const ipfsJsonData = await createNFT({ ...celoProps });
     dispatch(setNotification('preparing assets for minting'));
+    // yet to deploy evms on mainnet, so still using testnet addresses for now
     const contract = await initializeContract({
-      minterAddress: process.env.REACT_APP_CELO_MINTER_ADDRESS,
-      marketAddress: process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS,
+      minterAddress: mainnet
+        ? process.env.REACT_APP_CELO_MAINNET_MINTER_ADDRESS
+        : process.env.REACT_APP_CELO_TESTNET_MINTER_ADDRESS,
+      marketAddress: mainnet
+        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
       fileName,
       connector,
       account,
       dispatch,
       setLoader,
     });
-    const wallet = new ethers.Wallet(
-      process.env.REACT_APP_GENADROP_SERVER_KEY,
-      connector,
-    );
+    const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
     await connector.getSigner();
-    const marketContract = new ethers.Contract(
-      process.env.REACT_APP_GENADROP_CELO_MARKET_ADDRESS,
-      marketAbi,
-      wallet,
-    );
+    // eslint-disable-next-line no-unused-vars
+    const marketContract = new ethers.Contract(mainnet
+      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
     const uris = ipfsJsonData.map((asset) => asset.url);
     const ids = ipfsJsonData.map((asset) => {
       const uintArray = asset.metadata.toLocaleString();
@@ -608,14 +597,10 @@ export async function mintToCelo(celoProps) {
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
       await tx.wait();
-      await marketContract.createBulkMarketItem(
-        '0x008EeeDFa0B9310960818e94C8Bf1879f1c5da18',
-        ['46169'],
-        '100000',
-        ['1'],
-        'General',
-        '0xB4bE310666D2f909789Fb1a2FD09a9bEB0Edd99D',
-      );
+      console.log(ids, amounts, account, contract.address, price);
+      // let listingTx = await marketContract.createBulkMarketItem(
+      // "0x008EeeDFa0B9310960818e94C8Bf1879f1c5da18", ["46169"], "100000",
+      //  ["1"], 'General', "0xB4bE310666D2f909789Fb1a2FD09a9bEB0Edd99D")
     } catch (error) {
       console.log(error);
       dispatch(setLoader(''));
@@ -623,8 +608,7 @@ export async function mintToCelo(celoProps) {
     }
     dispatch(setLoader(''));
     dispatch(setNotification('NFTs successfully minted.'));
-    // eslint-disable-next-line consistent-return
-    return `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
+    return mainnet ? `https://blockscout.celo.org/tx/${tx.hash}` : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
   }
   dispatch(setNotification('download metamask'));
 }
@@ -638,6 +622,7 @@ export async function mintToPoly(polyProps) {
     dispatch,
     setNotification,
     setLoader,
+    mainnet,
   } = polyProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -651,23 +636,22 @@ export async function mintToPoly(polyProps) {
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setNotification('preparing assets for minting'));
   const contract = await initializeContract({
-    minterAddress: process.env.REACT_APP_POLY_MINTER_ADDRESS,
-    marketAddress: process.env.REACT_APP_GENADROP_POLY_MARKET_ADDRESS,
+    minterAddress: mainnet
+      ? process.env.REACT_APP_POLY_MAINNET_MINTER_ADDRESS
+      : process.env.REACT_APP_POLY_TESTNET_MINTER_ADDRESS,
+    marketAddress: mainnet
+      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
     fileName,
     connector,
     account,
     dispatch,
     setLoader,
   });
-  const wallet = new ethers.Wallet(
-    process.env.REACT_APP_GENADROP_SERVER_KEY,
-    connector,
-  );
-  const marketContract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_POLY_MARKET_ADDRESS,
-    marketAbi,
-    wallet,
-  );
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const marketContract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
 
   // return;
   const uris = ipfsJsonData.map((asset) => asset.url);
@@ -694,20 +678,28 @@ export async function mintToPoly(polyProps) {
       account,
     );
   } catch (error) {
+    console.log('opolo', error);
     dispatch(setLoader(''));
     dispatch(setNotification(`${error.message}`));
     return;
   }
   dispatch(setLoader(''));
   dispatch(setNotification('NFTs successfully minted.'));
-  return `https://mumbai.polygonscan.com/tx/${tx.hash}`;
+  return mainnet ? `https://polygonscan.com/tx/${tx.hash}` : `https://mumbai.polygonscan.com/tx/${tx.hash}`;
 }
 
-export async function PurchaseNft(asset, account, connector) {
+export async function PurchaseNft(asset, account, connector, mainnet) {
+  initAlgoClients(mainnet);
+  if (!connector.isWalletConnect && !(connector.chainId === 4160)) {
+    alert('connect wallet to algorand network');
+    return;
+  }
   const params = await algodTxnClient.getTransactionParams().do();
+  console.log('parag', asset);
   const enc = new TextEncoder();
   const note = enc.encode('Nft Purchase');
   const note2 = enc.encode('Platform fee');
+  console.log(note2);
   const txns = [];
   if (!connector) {
     alert('Please connect your wallet');
@@ -715,6 +707,7 @@ export async function PurchaseNft(asset, account, connector) {
   }
 
   const userBalance = await algodClient.accountInformation(account).do();
+  console.log(userBalance);
   if (algosdk.microalgosToAlgos(userBalance.account.amount) <= asset.price) {
     alert('insufficent fund to cover cost');
     return false;
@@ -749,7 +742,6 @@ export async function PurchaseNft(asset, account, connector) {
     suggestedParams: params,
   });
   txns.push(txn2);
-  // let signedTxn;
   algosdk.assignGroupID(txns);
   try {
     await signTx(connector, txns);
@@ -780,6 +772,7 @@ export async function PurchaseNft(asset, account, connector) {
     true,
     account,
     new Date(),
+    mainnet,
   );
   await write.recordTransaction(
     asset.Id,
@@ -790,12 +783,12 @@ export async function PurchaseNft(asset, account, connector) {
     tx.txId,
   );
   // const ret = await signTx(connector, txn)
-  // eslint-disable-next-line consistent-return
   return `https://testnet.algoexplorer.io/tx/${tx.txId}`;
 }
 
 // console.log(algodClient.getAssetByID(57861336).do().then(data => {console.log(data)}))
-export async function getAlgoData(id) {
+export async function getAlgoData(mainnet, id) {
+  initAlgoClients(mainnet);
   const data = await algodClient.getAssetByID(id).do();
   return data;
 }
@@ -809,6 +802,7 @@ export async function mintToNear(polyProps) {
     dispatch,
     setNotification,
     setLoader,
+    mainnet,
   } = polyProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -822,23 +816,22 @@ export async function mintToNear(polyProps) {
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setNotification('preparing assets for minting'));
   const contract = await initializeContract({
-    minterAddress: process.env.REACT_APP_AURORA_MINTER_ADDRESS,
-    marketAddress: process.env.REACT_APP_GENADROP_NEAR_MARKET_ADDRESS,
+    minterAddress: mainnet
+      ? process.env.REACT_APP_AURORA_MAINNET_MINTER_ADDRESS
+      : process.env.REACT_APP_AURORA_TESTNET_MINTER_ADDRESS,
+    marketAddress: mainnet
+      ? process.env.REACT_APP_GENADROP_NEAR_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_NEAR_TESTNET_MARKET_ADDRESS,
     fileName,
     connector,
     account,
     dispatch,
     setLoader,
   });
-  const wallet = new ethers.Wallet(
-    process.env.REACT_APP_GENADROP_SERVER_KEY,
-    connector,
-  );
-  const marketContract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_NEAR_MARKET_ADDRESS,
-    marketAbi,
-    wallet,
-  );
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const marketContract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_NEAR_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_NEAR_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
 
   // return;
   const uris = ipfsJsonData.map((asset) => asset.url);
@@ -871,44 +864,34 @@ export async function mintToNear(polyProps) {
   }
   dispatch(setLoader(''));
   dispatch(setNotification('NFTs successfully minted.'));
-  return `https://testnet.aurorascan.dev/tx/${tx.hash}`;
+  return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
 }
 
-export async function getPolygonNfts() {
-  const provider = new ethers.providers.AlchemyProvider(
-    'maticmum',
-    process.env.REACT_APP_ALCHEMY_KEY,
-  );
-  const wallet = new ethers.Wallet(
-    process.env.REACT_APP_GENADROP_SERVER_KEY,
-    provider,
-  );
-  const contract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_MARKET_ADDRESS,
-    marketAbi,
-    wallet,
-  );
+export async function getPolygonNfts(mainnet) {
+  const provider = new ethers.providers.AlchemyProvider('maticmum', process.env.REACT_APP_ALCHEMY_KEY);
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+  const contract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS, marketAbi, wallet);
   const art = await contract.getMarketItems();
   return art;
 }
 
-export async function getPolygonUserPurchasedNfts(connector) {
+export async function getPolygonUserPurchasedNfts(connector, mainnet) {
   // let provider = new ethers.providers.AlchemyProvider("maticmum",
   //  process.env.REACT_APP_ALCHEMY_KEY)
   // let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
   if (!connector) {
     return [];
   }
-  const contract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_MARKET_ADDRESS,
-    marketAbi,
-    connector.getSigner(),
-  );
+  const contract = new ethers.Contract(mainnet
+    ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+    : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS, marketAbi, connector.getSigner());
   const art = await contract.fetchPurchasedNFTs();
   return art;
 }
 
-export async function purchasePolygonNfts(connector, itemId, price) {
+export async function purchasePolygonNfts(connector, mainnet, itemId, price) {
   // let provider = new ethers.providers.AlchemyProvider("maticmum",
   //  process.env.REACT_APP_ALCHEMY_KEY)
   // let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
@@ -916,7 +899,8 @@ export async function purchasePolygonNfts(connector, itemId, price) {
     return;
   }
   const contract = new ethers.Contract(
-    process.env.REACT_APP_GENADROP_MARKET_ADDRESS,
+    mainnet ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
     marketAbi,
     connector.getSigner(),
   );

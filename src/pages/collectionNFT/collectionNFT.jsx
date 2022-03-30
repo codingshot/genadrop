@@ -53,7 +53,7 @@ const CollectionNFT = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { account, connector } = useContext(GenContext);
+  const { account, connector, mainnet } = useContext(GenContext);
   const { collections } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
@@ -83,11 +83,8 @@ const CollectionNFT = () => {
     if (Object.keys(collections).length) {
       const newCollection = collections.find((col) => col.name === collectionName);
       (async function getResult() {
-        const collectionData = await getNftCollection(newCollection);
-
-        const result = collectionData.find(
-          (collectionAsset) => collectionAsset.Id === Number(nftId),
-        );
+        const collectionData = await getNftCollection(newCollection, mainnet);
+        const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
         const tHistory = await readNftTransaction(result.Id);
         handleSetState({
           asset: result,
@@ -163,7 +160,8 @@ const CollectionNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(asset, account, connector);
+    const res = await PurchaseNft(asset, account, connector, mainnet);
+    // eslint-disable-next-line no-alert
     alert(res);
   };
 

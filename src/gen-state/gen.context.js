@@ -30,6 +30,7 @@ const GenContextProvider = ({ children }) => {
     loaderMessage,
     collectionDescription,
     didMount,
+    mainnet,
   } = state;
 
   return (
@@ -55,6 +56,7 @@ const GenContextProvider = ({ children }) => {
       loaderMessage,
       collectionDescription,
       didMount,
+      mainnet,
       singleNfts,
       dispatch,
     }}

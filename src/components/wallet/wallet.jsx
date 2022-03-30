@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 import classes from './wallet.module.css';
 import { GenContext } from '../../gen-state/gen.context';
 import {
-  setConnector, setAccount, setNotification, setChainId,
+  setConnector, setAccount, setNotification, setChainId, setMainnet,
 } from '../../gen-state/gen.actions';
 import userIcon from '../../assets/user.svg';
 import switchIcon from '../../assets/icon-switch.svg';
@@ -36,7 +36,7 @@ const chains = [
 function ConnectWallet({ setToggleNav }) {
   const history = useHistory();
   const {
-    dispatch, connector, account, chainId,
+    dispatch, connector, account, chainId, mainnet,
   } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -121,7 +121,6 @@ function ConnectWallet({ setToggleNav }) {
       }
       // Subscribe to connection events
       connector.on('connect', (error, payload) => {
-        console.log('connecting flight');
         if (error) {
           dispatch(setNotification('No connected'));
           // feedbacktype: warn
@@ -131,7 +130,6 @@ function ConnectWallet({ setToggleNav }) {
 
         // Get provided accounts
         const { accounts } = payload.params[0];
-        console.log(payload.params, accounts);
         dispatch(setAccount(accounts[0]));
       });
 
@@ -152,7 +150,7 @@ function ConnectWallet({ setToggleNav }) {
         dispatch(setAccount(accounts[0]));
       }
 
-      connector.on('disconnect', (error, payload) => {
+      connector.on('disconnect', (error) => {
         if (error) {
           throw error;
         }
@@ -164,8 +162,10 @@ function ConnectWallet({ setToggleNav }) {
   const handleSwitch = async () => {
     if (network === 'mainnet') {
       setNetwork('testnet');
+      dispatch(setMainnet(false));
     } else {
       setNetwork('mainnet');
+      dispatch(setMainnet(true));
     }
     setToggleDropdown(!toggleDropdown);
   };
@@ -182,7 +182,7 @@ function ConnectWallet({ setToggleNav }) {
   };
 
   const getConnectedChain = () => {
-    const c = chains.find((c) => c.networkId === chainId);
+    const c = chains.find((e) => e.networkId === chainId);
     if (!c) return;
     return c.label;
   };

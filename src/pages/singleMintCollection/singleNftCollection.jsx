@@ -3,12 +3,11 @@ import Skeleton from 'react-loading-skeleton';
 import { getSingleNfts } from '../../utils';
 import classes from './singleNftCollection.module.css';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
-import chainIcon from './singleNftCollection.script';
-import dropdownIcon from '../../assets/icon-dropdown.svg';
-import arrowDown from '../../assets/icon-arrow-down-long.svg';
-import arrowUp from '../../assets/icon-arrow-up-long.svg';
 import { readAllSingleNft } from '../../utils/firebase';
 import NotFound from '../../components/not-found/notFound';
+import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
+import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDropdown';
+import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
@@ -23,7 +22,7 @@ const SingleNftCollection = () => {
     nearCollection: null,
     filter: {
       searchValue: '',
-      price: 'high',
+      price: 'low',
       chain: 'Algorand',
     },
   });
@@ -34,8 +33,6 @@ const SingleNftCollection = () => {
     celoCollection,
     nearCollection,
     filter,
-    togglePriceFilter,
-    toggleChainFilter,
     filteredCollection,
   } = state;
 
@@ -65,7 +62,6 @@ const SingleNftCollection = () => {
       (async function getAlgoSingleNftCollection() {
         const singleNftCollections = await readAllSingleNft();
         const result = await getSingleNfts(singleNftCollections);
-        console.log('single result: ', result);
         handleSetState({
           algoCollection: result,
         });
@@ -123,78 +119,16 @@ const SingleNftCollection = () => {
         <div className={classes.heading}>
           <h3>1 of 1s</h3>
         </div>
-        <div className={classes.searchAndPriceFilter}>
-          <input
-            type="search"
-            onChange={(event) => handleSetState(
-              { filter: { ...filter, searchValue: event.target.value } },
-            )}
-            value={filter.searchValue}
-            placeholder="search"
+        <div className={classes.searchAndFilter}>
+          <SearchBar
+            onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
           />
-
-          <div className={classes.chainDropdown}>
-            <div
-              onClick={() => handleSetState(
-                { toggleChainFilter: !toggleChainFilter, togglePriceFilter: false },
-              )}
-              className={classes.selectedChain}
-            >
-              <div>
-                <img src={chainIcon[filter.chain]} alt="" />
-                <span>{filter.chain}</span>
-              </div>
-              <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`} />
-            </div>
-            <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
-              <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Algorand' }, toggleChainFilter: false })}>
-                <img src={chainIcon.Algorand} alt="" />
-                <span>Algorand</span>
-              </div>
-              <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Polygon' }, toggleChainFilter: false })}>
-                <img src={chainIcon.Polygon} alt="" />
-                <span>Polygon</span>
-              </div>
-              <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Near' }, toggleChainFilter: false })}>
-                <img src={chainIcon.Near} alt="" />
-                <span>Near</span>
-              </div>
-              <div onClick={() => handleSetState({ filter: { ...filter, chain: 'Celo' }, toggleChainFilter: false })}>
-                <img src={chainIcon.Celo} alt="" />
-                <span>Celo</span>
-              </div>
-            </div>
-          </div>
-
-          <div className={classes.priceDropdown}>
-            <div
-              onClick={() => handleSetState(
-                { togglePriceFilter: !togglePriceFilter, toggleChainFilter: false },
-              )}
-              className={classes.selectedPrice}
-            >
-              Price
-              {filter.price === 'low' ? <span>Low to High</span> : <span>High to Low</span>}
-              <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
-            </div>
-            <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-              <div onClick={() => handleSetState({ filter: { ...filter, price: 'low' }, togglePriceFilter: false })}>
-                price
-                {' '}
-                <span>Low to High</span>
-                {' '}
-                <img src={arrowUp} alt="" />
-
-              </div>
-              <div onClick={() => handleSetState({ filter: { ...filter, price: 'high' }, togglePriceFilter: false })}>
-                price
-                {' '}
-                <span>High to Low</span>
-                <img src={arrowDown} alt="" />
-
-              </div>
-            </div>
-          </div>
+          <ChainDropdown
+            onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
+          />
+          <PriceDropdown
+            onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
+          />
         </div>
         {
           filteredCollection?.length

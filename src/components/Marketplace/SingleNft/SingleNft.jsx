@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import { getSingleNfts } from '../../../utils';
-import { readAllSingleNft } from '../../../utils/firebase';
 import NftCard from '../NftCard/NftCard';
 import classes from './SingleNft.module.css';
+import { GenContext } from '../../../gen-state/gen.context';
 
 const SingleNft = () => {
   const [state, setState] = useState({
@@ -14,21 +14,20 @@ const SingleNft = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-
+  const { singleNfts, mainnet } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
 
   useEffect(() => {
     (async function getResult() {
-      const singleNfts = await readAllSingleNft();
       if (singleNfts?.length) {
-        const allSingleNFTs = await getSingleNfts(singleNfts);
+        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
         handleSetState({ allSingleNfts: allSingleNFTs });
       } else {
         handleSetState({ allSingleNfts: null });
       }
     }());
-  }, []);
+  }, [singleNfts]);
 
   return (
     <div className={classes.container}>
@@ -53,8 +52,8 @@ const SingleNft = () => {
             : (
               <div className={classes.wrapper}>
                 {
-                (Array(5).fill(null)).map((_, idx) => (
-                  <div key={idx}>
+                ([...new Array(5)].map((_, idx) => idx)).map((id) => (
+                  <div key={id}>
                     <Skeleton count={1} height={200} />
                     <Skeleton count={3} height={40} />
                   </div>
