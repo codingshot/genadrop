@@ -1,32 +1,31 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import cx from './select.module.css';
 
-const Select = ({ heading, selectionList, select, selected }) => {
-
+const Select = ({
+  heading, selectionList, select, selected,
+}) => {
   const [toggle, toggleShow] = useState(false);
   const [inShow, setInShow] = useState(-1);
 
-  const handleClick = id => {
+  const handleClick = (id) => {
     if (inShow === id) {
-      toggleShow(!toggle)
+      toggleShow(!toggle);
     } else {
-      toggleShow(true)
+      toggleShow(true);
     }
-    setInShow(id)
-  }
+    setInShow(id);
+  };
 
-  const getHeight = layer => {
-    return selectionList[layer].length * 3 + 'em'
-  }
+  const getHeight = (layer) => `${selectionList[layer].length * 3}em`;
 
-  const handleAddAttribute = data => {
-    select(data)
-  }
+  const handleAddAttribute = (data) => {
+    select(data);
+  };
 
-  const isSlected = data => {
-    let result = JSON.stringify(selected).includes(JSON.stringify(data))
-    return result
-  }
+  const isSlected = (data) => {
+    const result = JSON.stringify(selected).includes(JSON.stringify(data));
+    return result;
+  };
 
   return (
     <div className={cx.container}>
@@ -37,7 +36,7 @@ const Select = ({ heading, selectionList, select, selected }) => {
             <div key={idx} className={cx.layers}>
               <div onClick={() => handleClick(idx)} className={cx.layer}>
                 <span>{layer}</span>
-                <i className="fas fa-angle-down"></i>
+                <i className="fas fa-angle-down" />
               </div>
               <div style={{ height: inShow === idx && toggle ? getHeight(layer) : '0' }} className={`${cx.attributes}`}>
                 {
@@ -46,12 +45,12 @@ const Select = ({ heading, selectionList, select, selected }) => {
                       <span className={cx.icon}>
                         {
                           isSlected({ layer, attr: data.traitTitle, image: data.image })
-                            ? <i className={`fas fa-times`}></i>
-                            : <i className={`fas fa-minus`}></i>
-                        } 
+                            ? <i className="fas fa-times" />
+                            : <i className="fas fa-minus" />
+                        }
                       </span>
                       <span>{data.traitTitle}</span>
-                      <img src={URL.createObjectURL(data.image)} alt=''/>
+                      <img src={URL.createObjectURL(data.image)} alt="" />
                     </div>
                   ))
                 }
@@ -61,7 +60,7 @@ const Select = ({ heading, selectionList, select, selected }) => {
         }
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Select;
