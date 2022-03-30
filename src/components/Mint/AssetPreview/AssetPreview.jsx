@@ -22,11 +22,13 @@ const AssetPreview = ({ data, changeFile }) => {
   const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
 
   const chains = [
-    { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
-    { label: 'Celo', networkId: 42220, symbol: "CGLD" },
-    { label: 'Polygon', networkId: 137, symbol: "MATIC" },
-    { label: 'Polygon Testnet', networkId: 80001, symbol: "MATIC" },
-    { label: 'Near', networkId: 1313161555, symbol: "NEAR" },
+    { label: 'Algorand', networkId: 4160, symbol: 'ALGO', chain: 'Algorand'},
+    { label: 'Celo', networkId: 42220, symbol: "CGLD", chain: 'Celo' },
+    { label: 'Celo testnet', networkId: 44787, symbol: "CGLD", chain: 'Celo' },
+    { label: 'Polygon', networkId: 137, symbol: "MATIC", chain: 'Polygon' },
+    { label: 'Polygon Testnet', networkId: 80001, symbol: "MATIC", chain: 'Polygon' },
+    { label: 'Near', networkId: 1313161554, symbol: "NEAR", chain: 'Near' },
+    { label: 'Near testnet', networkId: 1313161555, symbol: "NEAR", chain: 'Near' },
   ]
 
   const mintProps = {
@@ -42,7 +44,7 @@ const AssetPreview = ({ data, changeFile }) => {
     fileName,
     price,
     mainnet,
-    chain: chain?.label,
+    chain: chain?.chain,
     dollarPrice
   };
 
@@ -59,7 +61,7 @@ const AssetPreview = ({ data, changeFile }) => {
     fileName,
     price,
     mainnet,
-    chain: chain?.label,
+    chain: chain?.chain,
     dollarPrice
   };
 
@@ -104,6 +106,7 @@ const AssetPreview = ({ data, changeFile }) => {
   }
 
   const handlePrice = event => {
+    console.log('concord', connector)
     handleSetState({ price: event.target.value });
   }
 
