@@ -20,7 +20,6 @@ const SearchBar = ({ onSearch }) => {
     const name = new URLSearchParams(search).get('search');
     if (name) {
       onSearch(name);
-      console.log(name);
       handleSetState({ searchValue: name });
     }
   }, []);

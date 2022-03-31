@@ -1,5 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, {
+  useEffect, useRef, useState, useContext,
+} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -63,10 +65,10 @@ const Collections = () => {
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        let collections = await fetchCollections(mainnet);
-        let result = await getNftCollections(collections, mainnet);
+        const collections = await fetchCollections(mainnet);
+        const result = await getNftCollections(collections, mainnet);
         handleSetState({ algoCollection: result });
-      })();
+      }());
     } catch (error) {
       console.log(error);
     }
@@ -74,32 +76,32 @@ const Collections = () => {
     try {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
-        let data = transformArrayOfArraysToArrayOfObjects(result);
-        for (let d of data) {
-          let response = await axios.get(
-            d['url'].replace('ipfs://', 'https://ipfs.io/ipfs/')
+        const data = transformArrayOfArraysToArrayOfObjects(result);
+        for (const d of data) {
+          const response = await axios.get(
+            d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
           );
         }
         // handleSetState({ polyCollection: result });
         // console.log(result);
-      })();
+      }());
     } catch (error) {
       console.log(error);
     }
   }, []);
   // ***************************** get search result for different blockchains ************************
   useEffect(() => {
-    let collection = getCollectionByChain();
+    const collection = getCollectionByChain();
     if (!collection) return;
-    let filtered = collection.filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = collection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
+
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
   }, [filter.searchValue]);
+
   // ************************* sort by price function for different blockchains *********************
   const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
@@ -127,7 +129,25 @@ const Collections = () => {
     celoCollection,
     nearCollection,
   ]);
+  useEffect(() => {
+    const collection = getCollectionByChain();
+    if (!collection) return handleSetState({ filteredCollection: null });
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
 
+    if (filtered.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+    return null;
+  }, [
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+  ]);
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -135,19 +155,13 @@ const Collections = () => {
           <h1>Collections</h1>
           <div className={classes.searchAndFilter}>
             <SearchBar
-              onSearch={(value) =>
-                handleSetState({ filter: { ...filter, searchValue: value } })
-              }
+              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
             <ChainDropdown
-              onChainFilter={(value) =>
-                handleSetState({ filter: { ...filter, chain: value } })
-              }
+              onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
             />
             <PriceDropdown
-              onPriceFilter={(value) =>
-                handleSetState({ filter: { ...filter, price: value } })
-              }
+              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
             />
           </div>
         </div>
