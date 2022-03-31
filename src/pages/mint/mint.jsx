@@ -78,21 +78,18 @@ const Mint = () => {
         <div className={classes.wrapper}>
           <h1 className={classes.title}>Mint Your NFTs</h1>
           <p className={classes.description}>
-            Upload an{" "}
+            Upload a{" "}
             <Popup
               position="bottom center"
               on={["hover", "focus", "click"]}
               trigger={
                 <span>
                   {" "}
-                  <img src={lineIcon} alt="" /> asset
+                  <img src={lineIcon} alt="" /> file
                 </span>
               }
             >
-              <div className={classes["tooltip"]}>
-                An asset is an individual layer for your generative art in .PNG
-                format (rendered as the same dimensions as your other assets)
-              </div>
+              <div className={classes["tooltip"]}>.png, .jpg, .gif, .mp4</div>
             </Popup>{" "}
             or a{" "}
             <Popup
@@ -105,13 +102,13 @@ const Mint = () => {
                 </span>
               }
             >
-              <div className={classes["tooltip"]}>
+              <div className={classes["col-tooltip"]}>
                 A collection is a rendered batch of generative images that the
                 GenaDrop create app has downloaded as a .ZIP folder with
                 accompanying metadata and all individual images as, PNGs
               </div>
             </Popup>
-            to create NFT
+            to create NFT(s)
           </p>
           <div ref={dropRef} className={classes.uploadWrapper}>
             <div>

@@ -107,6 +107,19 @@
 }
 
 .tooltip {
+  width: auto;
+  font-size: 16px;
+  text-align: center;
+  border: 1px dotted var(--main-accent);
+  border-radius: 16px;
+  margin: 5px 0;
+  padding: 10px;
+  background-color: #4c4f4d;
+  color: white;
+  box-shadow: rgba(100, 100, 111, 0.705) 0px 7px 29px 0px;
+}
+
+.col-tooltip {
   width: 400px;
   font-size: 16px;
   text-align: center;
@@ -117,4 +130,10 @@
   background-color: #4c4f4d;
   color: white;
   box-shadow: rgba(100, 100, 111, 0.705) 0px 7px 29px 0px;
+}
+
+@media screen and (max-width: 500px) {
+  .col-tooltip {
+    width: 60vw;
+  }
 }
