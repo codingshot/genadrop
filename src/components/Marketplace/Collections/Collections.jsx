@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react';
-
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import classes from './collections.module.css';
@@ -40,40 +39,36 @@ const Collections = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <h3>Top Collections</h3>
-        <button type="button" onClick={() => history.push(`${url}/collections`)}>view all</button>
+        <button type="button" onClick={() => history.push(`${url}/collections`)}>
+          view all
+        </button>
       </div>
 
-      {
-        algoCollection?.length
-          ? (
-            <div className={classes.wrapper}>
-              {
-              algoCollection
-                .filter((_, idx) => idx < 10)
-                .map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} />
-                ))
-            }
-            </div>
-          )
-          : !algoCollection
-            ? <h1 className={classes.noResult}> No Result Found.</h1>
-            : (
-              <div className={classes.skeleton}>
-                {
-                ([...new Array(4)].map((_, idx) => idx)).map((id) => (
-                  <div key={id}>
-                    <Skeleton count={1} height={250} />
-                    <br />
-                    <Skeleton count={1} height={30} />
-                    <br />
-                    <Skeleton count={1} height={30} />
-                  </div>
-                ))
-              }
+      {algoCollection?.length ? (
+        <div className={classes.wrapper}>
+          {algoCollection
+            .filter((_, idx) => idx < 10)
+            .map((collection, idx) => (
+              <CollectionsCard key={idx} collection={collection} />
+            ))}
+        </div>
+      ) : !algoCollection ? (
+        <h1 className={classes.noResult}> No Result Found.</h1>
+      ) : (
+        <div className={classes.skeleton}>
+          {
+            ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+              <div key={id}>
+                <Skeleton count={1} height={250} />
+                <br />
+                <Skeleton count={1} height={30} />
+                <br />
+                <Skeleton count={1} height={30} />
               </div>
-            )
-      }
+            ))
+          }
+        </div>
+      )}
     </div>
   );
 };

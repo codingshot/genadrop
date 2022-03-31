@@ -78,7 +78,9 @@ const Collections = () => {
         const result = await getPolygonNfts();
         const data = transformArrayOfArraysToArrayOfObjects(result);
         for (const d of data) {
-          const response = await axios.get(d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'));
+          const response = await axios.get(
+            d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
+          );
         }
         // handleSetState({ polyCollection: result });
         // console.log(result);
@@ -93,7 +95,9 @@ const Collections = () => {
   useEffect(() => {
     const collection = getCollectionByChain();
     if (!collection) return;
-    const filtered = collection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
@@ -123,8 +127,14 @@ const Collections = () => {
     } else {
       domMountRef.current = true;
     }
-  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, nearCollection]);
-  // ***********************************************************************************************
+  }, [
+    filter.chain,
+    filter.price,
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+  ]);
 
   return (
     <div className={classes.container}>
@@ -132,50 +142,40 @@ const Collections = () => {
         <div className={classes.header}>
           <h1>Collections</h1>
           <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={
-              (value) => handleSetState({ filter: { ...filter, searchValue: value } })
-              }
+            <SearchBar
+              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
-            <ChainDropdown onChainFilter={
-              (value) => handleSetState({ filter: { ...filter, chain: value } })
-              }
+            <ChainDropdown
+              onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
             />
-            <PriceDropdown onPriceFilter={
-              (value) => handleSetState({ filter: { ...filter, price: value } })
-              }
+            <PriceDropdown
+              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
             />
           </div>
         </div>
-        {
-          filteredCollection?.length
-            ? (
-              <div className={classes.wrapper}>
-                {
-                filteredCollection
-                  .map((collection, idx) => (
-                    <CollectionsCard key={idx} collection={collection} />
-                  ))
-              }
-              </div>
-            )
-            : !filteredCollection
-              ? <NotFound />
-              : (
-                <div className={classes.skeleton}>
-                  {
-                  ([...new Array(4)].map((_, idx) => idx)).map((id) => (
-                    <div key={id}>
-                      <Skeleton count={1} height={250} />
-                      <br />
-                      <Skeleton count={1} height={30} />
-                      <br />
-                      <Skeleton count={1} height={30} />
-                    </div>
-                  ))
-                }
-                </div>
-              )
+        {filteredCollection?.length ? (
+          <div className={classes.wrapper}>
+            {filteredCollection.map((collection, idx) => (
+              <CollectionsCard key={idx} collection={collection} />
+            ))}
+          </div>
+        ) : !filteredCollection ? (
+          <NotFound />
+        ) : (
+          <div className={classes.skeleton}>
+            {
+          ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+            <div key={id}>
+              <Skeleton count={1} height={250} />
+              <br />
+              <Skeleton count={1} height={30} />
+              <br />
+              <Skeleton count={1} height={30} />
+            </div>
+          ))
         }
+          </div>
+        )}
       </div>
     </div>
   );

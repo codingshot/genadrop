@@ -20,6 +20,7 @@ import facebookIcon from '../../assets/facebook.svg';
 import instagramIcon from '../../assets/instagram.svg';
 import descriptionIcon from '../../assets/description-icon.png';
 import detailsIcon from '../../assets/details.png';
+import Search from '../../components/Nft-details/history/search';
 
 const SingleNFT = () => {
   const { account, connector, mainnet } = useContext(GenContext);
@@ -175,7 +176,6 @@ const SingleNFT = () => {
     icon: descriptionIcon,
     title: 'Attributes',
     content: attributeContent(),
-    // content: "attributeContent()"
   };
 
   const buyNft = async () => {
@@ -237,20 +237,6 @@ const SingleNFT = () => {
                     fill="#707A83"
                   />
                 </svg>
-
-                <svg
-                  className={`${classes.icon} ${classes.dots}`}
-                  width="6"
-                  height="18"
-                  viewBox="0 0 6 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1.59375 13.5938C2 13.1875 2.46875 12.9844 3 12.9844C3.53125 12.9844 4 13.1875 4.40625 13.5938C4.8125 14 5.01562 14.4688 5.01562 15C5.01562 15.5312 4.8125 16 4.40625 16.4062C4 16.8125 3.53125 17.0156 3 17.0156C2.46875 17.0156 2 16.8125 1.59375 16.4062C1.1875 16 0.984375 15.5312 0.984375 15C0.984375 14.4688 1.1875 14 1.59375 13.5938ZM1.59375 7.59375C2 7.1875 2.46875 6.98438 3 6.98438C3.53125 6.98438 4 7.1875 4.40625 7.59375C4.8125 8 5.01562 8.46875 5.01562 9C5.01562 9.53125 4.8125 10 4.40625 10.4062C4 10.8125 3.53125 11.0156 3 11.0156C2.46875 11.0156 2 10.8125 1.59375 10.4062C1.1875 10 0.984375 9.53125 0.984375 9C0.984375 8.46875 1.1875 8 1.59375 7.59375ZM4.40625 4.40625C4 4.8125 3.53125 5.01562 3 5.01562C2.46875 5.01562 2 4.8125 1.59375 4.40625C1.1875 4 0.984375 3.53125 0.984375 3C0.984375 2.46875 1.1875 2 1.59375 1.59375C2 1.1875 2.46875 0.984375 3 0.984375C3.53125 0.984375 4 1.1875 4.40625 1.59375C4.8125 2 5.01562 2.46875 5.01562 3C5.01562 3.53125 4.8125 4 4.40625 4.40625Z"
-                    fill="#707A83"
-                  />
-                </svg>
               </div>
             </div>
             <div className={classes.priceSection}>
@@ -265,30 +251,27 @@ const SingleNFT = () => {
                 </span>
               </span>
             </div>
-
             <div className={classes.btns}>
-              {
-                (nftDetails.sold
-                  ? (
-                    <>
-                      <button type="button" className={classes.sold} disabled={nftDetails.sold}>
-                        <img src={walletIcon} alt="" />
-                        SOLD!
-                      </button>
-                    </>
-                  )
-                  : (
-                    <>
-                      <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
-                        <img src={walletIcon} alt="" />
-                        Buy now
-                      </button>
-                      {/* <button className={classes.bid}>
-                      <img src={bidIcon} alt="" />Place Bid</button> */}
-                    </>
-                  )
-                )
-}
+              {nftDetails.sold ? (
+                <>
+                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
+                    <img src={walletIcon} alt="" />
+                    SOLD!
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className={classes.buy}
+                    disabled={nftDetails.sold}
+                    onClick={buyNft}
+                  >
+                    <img src={walletIcon} alt="" />
+                    Buy now
+                  </button>
+                </>
+              )}
             </div>
           </div>
           {/* PRICE HISTORY */}
@@ -315,16 +298,11 @@ const SingleNFT = () => {
 
       {/* TRANSACTION HISTORY */}
       <div className={classes.section}>
-        {/* <DropItem key={4} item={transactions}
-         id={4} dropdown={dropdown} handleSetState={handleSetState} ></DropItem> */}
-
         <div className={classes.heading}>
           <h3>Transaction History</h3>
         </div>
-        <div className={classes.tableContainer}>
-          {/* <Search data={History} /> */}
-          Coming soon...
-        </div>
+
+        <div className={classes.tableContainer}>Coming soon...</div>
       </div>
 
       <div className={classes.section}>

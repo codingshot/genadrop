@@ -81,11 +81,15 @@ const Preview = () => {
         mintAmount,
       });
       const art = await generateArt({
-        dispatch, setLoader, layer: newLayer, canvas, image: layers[0].traits[0].image,
+        dispatch,
+        setLoader,
+        layer: newLayer,
+        canvas,
+        image: layers[0].traits[0].image,
       });
-      const newLayers = nftLayers.map((asset) => (
-        asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
-      ));
+      const newLayers = nftLayers.map(
+        (asset) => (asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset),
+      );
       dispatch(setLoader(''));
       dispatch(setNftLayers(newLayers));
     }
@@ -98,7 +102,12 @@ const Preview = () => {
 
   const handleRename = (input) => {
     if (!input.value) {
-      dispatch(renameAsset({ id: input.id, name: `${collectionName} ${getDefaultName(input.index + 1)}`.trim() }));
+      dispatch(
+        renameAsset({
+          id: input.id,
+          name: `${collectionName} ${getDefaultName(input.index + 1)}`.trim(),
+        }),
+      );
     } else {
       dispatch(renameAsset({ id: input.id, name: input.value }));
     }
@@ -120,25 +129,37 @@ const Preview = () => {
     try {
       dispatch(setLoader('saving...'));
       const names = await getCollectionsNames();
-      const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
+      const isUnique = names.find(
+        (name) => name.toLowerCase() === value.toLowerCase(),
+      );
       if (isUnique) {
-        dispatch(setNotification(`${value} already exist. Please choose another name`));
+        dispatch(
+          setNotification(`${value} already exist. Please choose another name`),
+        );
       } else {
         dispatch(setCollectionName(value));
-        const newLayers = nftLayers.map((asset, idx) => (
-          { ...asset, name: `${value} ${getDefaultName(idx + 1)}`.trim() }));
+        const newLayers = nftLayers.map((asset, idx) => ({
+          ...asset,
+          name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+        }));
         dispatch(setNftLayers(newLayers));
       }
     } catch (error) {
-      dispatch(setNotification('could not save your collection name, please try again.'));
+      dispatch(
+        setNotification(
+          'could not save your collection name, please try again.',
+        ),
+      );
     }
     dispatch(setLoader(''));
   };
 
   const handleCollectionDescription = (event) => {
     if (enableAllDescription) {
-      const newLayers = nftLayers.map((asset) => (
-        { ...asset, description: event.target.value }));
+      const newLayers = nftLayers.map((asset) => ({
+        ...asset,
+        description: event.target.value,
+      }));
       dispatch(setNftLayers(newLayers));
     }
     dispatch(setCollectionDescription(event.target.value));
@@ -212,10 +233,18 @@ const Preview = () => {
             <div className={classes.tab}>
               <h3>Collection Description </h3>
               <div
-                onClick={() => handleSetState({ enableAllDescription: !enableAllDescription })}
-                className={`${classes.toggleContainer}  ${enableAllDescription && classes.active}`}
+                onClick={() => handleSetState({
+                  enableAllDescription: !enableAllDescription,
+                })}
+                className={`${classes.toggleContainer}  ${
+                  enableAllDescription && classes.active
+                }`}
               >
-                <div className={`${classes.toggle} ${enableAllDescription && classes.active}`} />
+                <div
+                  className={`${classes.toggle} ${
+                    enableAllDescription && classes.active
+                  }`}
+                />
               </div>
             </div>
             <div className={classes.wrapper}>
@@ -227,16 +256,35 @@ const Preview = () => {
                 onChange={handleCollectionDescription}
               />
             </div>
-
           </div>
           <div className={classes.actionContainer}>
             <h3>Use Format</h3>
             <label htmlFor="ipfs" onClick={() => handleFormatChange('ipfs')}>
-              <input ref={ipfsRef} type="radio" name="format" value="ipfs" defaultChecked className={`${classes.radioBtn} ${outputFormat === 'ipfs' && classes.clicked}`} />
+              <input
+                ref={ipfsRef}
+                type="radio"
+                name="format"
+                value="ipfs"
+                defaultChecked
+                className={`${classes.radioBtn} ${
+                  outputFormat === 'ipfs' && classes.clicked
+                }`}
+              />
               <p>IPFS</p>
             </label>
-            <label htmlFor="arweave" onClick={() => handleFormatChange('arweave')}>
-              <input ref={arweaveRef} type="radio" name="format" value="arweave" className={`${classes.radioBtn} ${outputFormat === 'arweave' && classes.clicked}`} />
+            <label
+              htmlFor="arweave"
+              onClick={() => handleFormatChange('arweave')}
+            >
+              <input
+                ref={arweaveRef}
+                type="radio"
+                name="format"
+                value="arweave"
+                className={`${classes.radioBtn} ${
+                  outputFormat === 'arweave' && classes.clicked
+                }`}
+              />
               <p>Arweave</p>
             </label>
             <button
@@ -263,70 +311,82 @@ const Preview = () => {
               <span>{nftLayers.length}</span>
             </div>
             <div>
-              {
-                mintInfo ? <img src={warnIcon} alt="" /> : null
-              }
+              {mintInfo ? <img src={warnIcon} alt="" /> : null}
               <span>Unused Combinations</span>
               <span>{combinations - mintAmount - rule.length}</span>
             </div>
           </div>
 
           <div className={classes.preview}>
-            {
-              Object.keys(paginate).length
-                ? paginate[currentPage].map((asset, index) => {
-                  const {
-                    image, id, name, description,
-                  } = asset;
-                  return (
-                    <div key={id} className={classes.card}>
-                      <img className={classes.asset} src={image} alt="" />
-                      <div className={classes.cardBody}>
-                        <div className={classes.textWrapper}>
-                          <TextEditor
-                            placeholder={name}
-                            submitHandler={(value) => handleRename({ value, id, index })}
-                          />
-                        </div>
-                        <textarea
-                          name="description"
-                          value={description}
-                          cols="30"
-                          rows="3"
-                          placeholder="description"
-                          onChange={(e) => handleDescription({ value: e.target.value, id, index })}
+            {Object.keys(paginate).length
+              ? paginate[currentPage].map((asset, index) => {
+                const {
+                  image, id, name, description,
+                } = asset;
+                return (
+                  <div key={id} className={classes.card}>
+                    <img className={classes.asset} src={image} alt="" />
+                    <div className={classes.cardBody}>
+                      <div className={classes.textWrapper}>
+                        <TextEditor
+                          placeholder={name}
+                          submitHandler={(value) => handleRename({ value, id, index })}
                         />
-                        <div className={classes.buttonContainer}>
-                          <button
-                            type="button"
-                            onClick={() => handleDownload({
-                              window,
-                              dispatch,
-                              setLoader,
-                              setNotification,
-                              value: [asset],
-                              name: asset.name,
-                              outputFormat,
-                              single: true,
-                            })}
-                          >
-                            Download
-                          </button>
-                          <button type="button" onClick={() => handleDeleteAndReplace(id, index, currentPage)}>Generate New</button>
-                        </div>
                       </div>
-                      <div className={classes.iconClose}>
-                        <img src={closeIcon} alt="" onClick={() => handleDelete(id)} />
+                      <textarea
+                        name="description"
+                        value={description}
+                        cols="30"
+                        rows="3"
+                        placeholder="description"
+                        onChange={(e) => handleDescription({
+                          value: e.target.value,
+                          id,
+                          index,
+                        })}
+                      />
+                      <div className={classes.buttonContainer}>
+                        <button
+                          type="button"
+                          onClick={() => handleDownload({
+                            window,
+                            dispatch,
+                            setLoader,
+                            setNotification,
+                            value: [asset],
+                            name: asset.name,
+                            outputFormat,
+                            single: true,
+                          })}
+                        >
+                          Download
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteAndReplace(id, index, currentPage)}
+                        >
+                          Generate New
+                        </button>
                       </div>
                     </div>
-                  );
-                }) : null
-            }
+                    <div className={classes.iconClose}>
+                      <img
+                        src={closeIcon}
+                        alt=""
+                        onClick={() => handleDelete(id)}
+                      />
+                    </div>
+                  </div>
+                );
+              })
+              : null}
           </div>
         </main>
       </div>
       <div className={classes.paginate}>
-        <div onClick={handlePrev} className={classes.pageControl}>prev</div>
+        <div onClick={handlePrev} className={classes.pageControl}>
+          prev
+        </div>
         <div className={classes.pageCount}>
           {currentPage}
           {' '}
@@ -334,9 +394,17 @@ const Preview = () => {
           {' '}
           {Object.keys(paginate).length}
         </div>
-        <div onClick={handleNext} className={classes.pageControl}>next</div>
-        <div onClick={handleGoto} className={classes.pageControl}>goto</div>
-        <input type="number" value={currentPageValue} onChange={(event) => handleSetState({ currentPageValue: event.target.value })} />
+        <div onClick={handleNext} className={classes.pageControl}>
+          next
+        </div>
+        <div onClick={handleGoto} className={classes.pageControl}>
+          goto
+        </div>
+        <input
+          type="number"
+          value={currentPageValue}
+          onChange={(event) => handleSetState({ currentPageValue: event.target.value })}
+        />
       </div>
     </div>
   );

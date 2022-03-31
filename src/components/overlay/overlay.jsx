@@ -6,9 +6,9 @@ const Overlay = () => {
   const { isLoading } = useContext(GenContext);
 
   return (
-    <div className={`${classes.overlay} ${isLoading && classes.isLoading}`}>
-      {/* <p>Do not reload the page...</p> */}
-    </div>
+    <div
+      className={`${classes.overlay} ${isLoading && classes.isLoading}`}
+    />
   );
 };
 

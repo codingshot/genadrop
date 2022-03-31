@@ -175,10 +175,10 @@ export const setLoader = (message) => ({
 
 export const setDidMout = (isMount) => ({
   type: genActionTypes.SET_DID_MOUNT,
-  payload: isMount
-})
+  payload: isMount,
+});
 
-export const setMainnet = mainnet => ({
+export const setMainnet = (mainnet) => ({
   type: genActionTypes.SET_MAINNET,
-  payload: mainnet
-})
+  payload: mainnet,
+});

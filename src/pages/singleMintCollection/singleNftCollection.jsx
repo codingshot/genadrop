@@ -49,7 +49,6 @@ const SingleNftCollection = () => {
       default:
         break;
     }
-    return null;
   };
 
   const handleSetState = (payload) => {
@@ -69,8 +68,6 @@ const SingleNftCollection = () => {
     } catch (error) {
       console.log(error);
     }
-
-    // get singleNftCollection for other chains: polygon|celo|near
   }, []);
   // *******************************************************************************************
 
@@ -110,8 +107,14 @@ const SingleNftCollection = () => {
     } else {
       domMountRef.current = true;
     }
-  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, nearCollection]);
-  // *******************************************************************************************
+  }, [
+    filter.chain,
+    filter.price,
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+  ]);
 
   return (
     <div className={classes.container}>
@@ -130,33 +133,26 @@ const SingleNftCollection = () => {
             onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
           />
         </div>
-        {
-          filteredCollection?.length
-            ? (
-              <div className={classes.wrapper}>
-                {
-                filteredCollection
-                  .map((nft, idx) => (
-                    <NftCard key={idx} nft={nft} />
-                  ))
-              }
-              </div>
-            )
-            : !filteredCollection
-              ? <NotFound />
-              : (
-                <div className={classes.skeleton}>
-                  {
-                  ([...new Array(10)].map((_, idx) => idx)).map((id) => (
-                    <div key={id}>
-                      <Skeleton count={1} height={200} />
-                      <Skeleton count={3} height={40} />
-                    </div>
-                  ))
-                }
+        {filteredCollection?.length ? (
+          <div className={classes.wrapper}>
+            {filteredCollection.map((nft, idx) => (
+              <NftCard key={idx} nft={nft} />
+            ))}
+          </div>
+        ) : !filteredCollection ? (
+          <NotFound />
+        ) : (
+          <div className={classes.skeleton}>
+            {Array(5)
+              .fill(null)
+              .map((_, idx) => (
+                <div key={idx}>
+                  <Skeleton count={1} height={200} />
+                  <Skeleton count={3} height={40} />
                 </div>
-              )
-        }
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

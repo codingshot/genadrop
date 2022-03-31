@@ -3,6 +3,7 @@ import TableRow from './tableRow';
 import classes from './table.module.css';
 
 const Table = (props) => (
+
   <div>
     <table className={classes.table}>
       <tbody>

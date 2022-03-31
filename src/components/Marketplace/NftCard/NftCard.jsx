@@ -1,6 +1,6 @@
-import { Link, useRouteMatch } from 'react-router-dom';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { Link, useRouteMatch } from 'react-router-dom';
 import classes from './NftCard.module.css';
 
 const NftCard = ({ nft, list, extend }) => {
@@ -41,14 +41,12 @@ const NftCard = ({ nft, list, extend }) => {
                 {price}
                 {' '}
                 <span className={classes.chain}>Algo</span>
-                {' '}
                 <span className={classes.usdPrice}>
                   (
                   {algoPrice.toFixed(2)}
                   {' '}
                   USD)
                 </span>
-                {' '}
               </div>
             </div>
             <button type="button" className={classes.button}>{list ? 'List' : 'Buy'}</button>

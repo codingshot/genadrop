@@ -33,7 +33,10 @@ const Notification = () => {
   }, []);
 
   return (
-    <div style={{ top: loaderMessage ? '8em' : '4em' }} className={`${classes.container} ${toggleFeedback && classes.active}`}>
+    <div
+      style={{ top: loaderMessage ? '8em' : '4em' }}
+      className={`${classes.container} ${toggleFeedback && classes.active}`}
+    >
       <div ref={feedbackRef} className={classes.notification}>
         <div className={classes.icon} />
         <div className={classes.message}>{notification}</div>

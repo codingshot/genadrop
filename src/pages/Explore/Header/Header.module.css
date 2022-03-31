@@ -23,6 +23,11 @@
   overflow: hidden;
 }
 
+.usdPrice {
+  font-size: 0.7rem;
+  font-weight: lighter;
+}
+
 .imageLoadingContainer,
 .imageContainer {
   width: calc(12 * 16px);
@@ -98,7 +103,7 @@
   .imageLoadingContainer,
   .imageContainer {
     width: calc(8 * 16px);
-    height: calc(8 * 16px);  
+    height: calc(8 * 16px);
   }
 }
 
@@ -106,7 +111,7 @@
   .imageLoadingContainer,
   .imageContainer {
     width: calc(5 * 16px);
-    height: calc(5 * 16px);  
+    height: calc(5 * 16px);
   }
 
   .detailContentWrapper {
@@ -126,4 +131,3 @@
     width: 1em;
   }
 }
-

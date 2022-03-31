@@ -55,7 +55,6 @@ const Share = ({ url }) => {
       icon: twitterIcon,
       link: 'https://www.twitter.com/minorityprogram',
     },
-
   ];
   // const handleHide = payload => {
   //   setTimeout(() => { handleSetState(payload); }, 1000)
@@ -68,38 +67,28 @@ const Share = ({ url }) => {
   };
   return (
     <div ref={wrapperRef} className={classes.share}>
-
       <div className={classes.copy}>
-        <input
-          type="text"
-          value={path}
-          readOnly
-          className={classes.textArea}
-        />
+        <input type="text" value={path} readOnly className={classes.textArea} />
         <CopyToClipboard text={path} onCopy={onCopyText}>
           <div className={classes.copy_area}>
-            {
-                            !isCopied
-                              ? (
-                                <img
-                                  className={classes.shareicon}
-                                  src={copyIcon}
-                                  alt=""
-                                />
-                              )
-                              : <img className={classes.shareicon} src={copiedIcon} alt="" />
-                        }
-
+            {!isCopied ? (
+              <img className={classes.shareicon} src={copyIcon} alt="" />
+            ) : (
+              <img className={classes.shareicon} src={copiedIcon} alt="" />
+            )}
           </div>
         </CopyToClipboard>
-
       </div>
       <div className={classes.shareContent}>
         {icons.map((icon) => (
           <a href={icon.link} target="_blank" rel="noreferrer">
-            <img className={classes.icon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="Social Icon" />
+            <img
+              className={classes.icon}
+              onClick={() => handleSetState({ text: icon.link })}
+              src={icon.icon}
+              alt="Social Icon"
+            />
           </a>
-
         ))}
       </div>
     </div>

@@ -12,11 +12,15 @@ export const extractZip = async (zip) => {
     const fileType = file.split('.')[1].toLowerCase();
     if (fileType === 'json') {
       string = new TextDecoder().decode(uint8array);
-      blob = new Blob([new Uint8Array(uint8array).buffer], { type: 'application/json' });
+      blob = new Blob([new Uint8Array(uint8array).buffer], {
+        type: 'application/json',
+      });
       metadata = JSON.parse(string);
     } else {
       string = new TextDecoder().decode(uint8array);
-      blob = new Blob([new Uint8Array(uint8array).buffer], { type: `image/${fileType}` });
+      blob = new Blob([new Uint8Array(uint8array).buffer], {
+        type: `image/${fileType}`,
+      });
       const imageFile = new File([blob], file, {
         type: `image/${fileType}`,
       });

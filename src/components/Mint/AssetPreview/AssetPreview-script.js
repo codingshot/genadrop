@@ -1,13 +1,19 @@
 import {
-  mintSingleToAlgo, mintSingleToPoly, mintToAlgo, mintToCelo,
-  mintToPoly, mintToNear, mintSingleToCelo, mintSingleToNear,
+  mintSingleToAlgo,
+  mintSingleToPoly,
+  mintToAlgo,
+  mintToCelo,
+  mintToPoly,
+  mintToNear,
+  mintSingleToCelo,
+  mintSingleToNear,
 } from '../../../utils/arc_ipfs';
 
 export const handleMint = async (args) => {
   const {
     account, chain, dispatch, setNotification, setLoader, setClipboard,
   } = args;
-  if (!account) return dispatch(setNotification('connect your wallet and try again.'));
+  if (!account) { return dispatch(setNotification('connect your wallet and try again.')); }
   let url = null;
   try {
     if (chain.toLowerCase() === 'algo') {
@@ -31,7 +37,9 @@ export const handleMint = async (args) => {
   } catch (error) {
     console.error(error);
     dispatch(setLoader(''));
-    dispatch(setNotification('ensure that your wallet is connected and try again.'));
+    dispatch(
+      setNotification('ensure that your wallet is connected and try again.'),
+    );
   }
 };
 
@@ -39,14 +47,13 @@ export const handleSingleMint = async (args) => {
   const {
     account, chain, dispatch, setNotification, setLoader, setClipboard,
   } = args;
-  if (!account) return dispatch(setNotification('connect your wallet and try again.'));
+  if (!account) { return dispatch(setNotification('connect your wallet and try again.')); }
   let url = null;
   try {
     if (chain.toLowerCase() === 'algo') {
       url = await mintSingleToAlgo({ ...args });
     } else if (chain.toLowerCase() === 'celo') {
       url = await mintSingleToCelo({ ...args });
-      // url = { 'message': "not yet implemented" }
     } else if (chain.toLowerCase() === 'polygon') {
       url = await mintSingleToPoly({ ...args });
     } else if (chain.toLowerCase() === 'near') {
@@ -65,6 +72,8 @@ export const handleSingleMint = async (args) => {
   } catch (error) {
     console.error(error);
     dispatch(setLoader(''));
-    dispatch(setNotification('ensure that your wallet is connected and try again.'));
+    dispatch(
+      setNotification('ensure that your wallet is connected and try again.'),
+    );
   }
 };

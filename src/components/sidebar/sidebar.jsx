@@ -17,7 +17,12 @@ const Navbar = () => {
 
       <div className={classes.navItems}>
         <Link to="/create">
-          <div onClick={() => setActiveNav('create')} className={`${classes.navItem} ${activeNav === 'create' && classes.active}`}>
+          <div
+            onClick={() => setActiveNav('create')}
+            className={`${classes.navItem} ${
+              activeNav === 'create' && classes.active
+            }`}
+          >
             {/* <img src={createIcon} alt="icon" /> */}
             <p>create</p>
             <div className={classes.effect} />
@@ -25,7 +30,12 @@ const Navbar = () => {
         </Link>
 
         <Link to="/mint">
-          <div onClick={() => setActiveNav('mint')} className={`${classes.navItem} ${activeNav === 'mint' && classes.active}`}>
+          <div
+            onClick={() => setActiveNav('mint')}
+            className={`${classes.navItem} ${
+              activeNav === 'mint' && classes.active
+            }`}
+          >
             {/* <img src={mintIcon} alt="icon" /> */}
             <p>mint</p>
             <div className={classes.effect} />
@@ -33,13 +43,17 @@ const Navbar = () => {
         </Link>
 
         <Link to="/explore">
-          <div onClick={() => setActiveNav('explore')} className={`${classes.navItem} ${activeNav === 'explore' && classes.active}`}>
+          <div
+            onClick={() => setActiveNav('explore')}
+            className={`${classes.navItem} ${
+              activeNav === 'explore' && classes.active
+            }`}
+          >
             {/* <img src={searchIcon} alt="icon" /> */}
             <p>explore</p>
             <div className={classes.effect} />
           </div>
         </Link>
-
       </div>
     </div>
   );

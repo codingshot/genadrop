@@ -1,18 +1,19 @@
 import { getDefaultName, handleImage } from '../../utils';
 
 export const isUnique = (attributes, attr, rule) => {
-  const parseAttrToRule = attr.map((p) => ({ layerTitle: p.trait_type, imageName: p.value }));
+  const parseAttrToRule = attr.map((p) => ({
+    layerTitle: p.trait_type,
+    imageName: p.value,
+  }));
   const att_str = JSON.stringify(attr);
   for (const _attr of attributes) {
     const _attr_str = JSON.stringify(_attr);
-    console.log(_attr_str === att_str);
-    console.log(_attr);
     if (_attr_str === att_str) return false;
   }
   let result;
   for (const rl of rule) {
     result = rl.every((el) => {
-      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) return true;
+      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) { return true; }
       return false;
     });
 
@@ -23,8 +24,16 @@ export const isUnique = (attributes, attr, rule) => {
 
 export const createUniqueLayer = async (props) => {
   const {
-    dispatch, setLoader, layers, rule,
-    nftLayers, collectionName, collectionDescription, index, currentPage, id,
+    dispatch,
+    setLoader,
+    layers,
+    rule,
+    nftLayers,
+    collectionName,
+    collectionDescription,
+    index,
+    currentPage,
+    id,
   } = props;
   const newLayersCopy = [...nftLayers];
   let newAttributes = [];
@@ -62,7 +71,9 @@ export const createUniqueLayer = async (props) => {
   dispatch(setLoader(''));
   return {
     id,
-    name: `${collectionName} ${getDefaultName(index + 1 + ((currentPage * 20) - 20))}`.trim(),
+    name: `${collectionName} ${getDefaultName(
+      index + 1 + (currentPage * 20 - 20),
+    )}`.trim(),
     description: collectionDescription,
     image: 'image',
     attributes: newAttributes,

@@ -35,59 +35,51 @@ const CollectionOverview = () => {
   };
 
   const handleAddRule = () => {
-    if (isUnique({ rule, preview }) && preview.length) dispatch(addRule([...rule, preview]));
+    if (isUnique({ rule, preview }) && preview.length) { dispatch(addRule([...rule, preview])); }
     dispatch(clearPreview());
     closeRule();
   };
 
   return (
     <div className={classes.container}>
-      {
-        layers[0]?.traits.length ? (
-          <div className={classes.rules}>
-            {
-              isRule
-                ? (
-                  <>
-                    <button type="button" onClick={handleAddRule} className={classes.addRuleBtn}>Add Rule</button>
-                    <button type="button" onClick={closeRule} className={classes.showRuleBtn}>
-                      Cancel
-                      {' '}
-                      <span>0</span>
-                    </button>
-                  </>
-                )
-                : (
-                  <>
-                    <button type="button" onClick={openRule} className={classes.addRuleBtn}>Set Conflict</button>
-                    <button type="button" onClick={handleRules} className={classes.showRuleBtn}>
-                      Rules
-                      {' '}
-                      <span>{rule.length}</span>
-                    </button>
-                    {
-                    showRule
-                    && (
-                    <div className={classes.ruleCardWrapper}>
-                      <RulesCard />
-                    </div>
-                    )
-                  }
-                  </>
-                )
-            }
+      {layers[0]?.traits.length ? (
+        <div className={classes.rules}>
+          {isRule ? (
+            <>
+              <button type="button" onClick={handleAddRule} className={classes.addRuleBtn}>
+                Add Rule
+              </button>
+              <button type="button" onClick={closeRule} className={classes.showRuleBtn}>
+                Cancel
+                {' '}
+                <span>0</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <button type="button" onClick={openRule} className={classes.addRuleBtn}>
+                Set Conflict
+              </button>
+              <button type="button" onClick={handleRules} className={classes.showRuleBtn}>
+                Rules
+                {' '}
+                <span>{rule.length}</span>
+              </button>
+              {showRule && (
+                <div className={classes.ruleCardWrapper}>
+                  <RulesCard />
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      ) : null}
 
-          </div>
-        ) : null
-      }
-
-      {
-        layers.length ? layers.map((layer) => (
-          <CollectionMenu key={layer.id} layer={layer} />
-        ))
-          : <div className={classes.fallback}>Add layers To generate art</div>
-      }
-
+      {layers.length ? (
+        layers.map((layer) => <CollectionMenu key={layer.id} layer={layer} />)
+      ) : (
+        <div className={classes.fallback}>Add layers To generate art</div>
+      )}
     </div>
   );
 };

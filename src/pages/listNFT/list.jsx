@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useRouteMatch, Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
+import { useRouteMatch, Link } from 'react-router-dom';
 import { GenContext } from '../../gen-state/gen.context';
 import { getUserNftCollection } from '../../utils';
 import classes from './list.module.css';
@@ -11,7 +11,6 @@ const List = () => {
 
   const {
     params: { nftId },
-
   } = useRouteMatch();
   const match = useRouteMatch();
 
@@ -39,15 +38,10 @@ const List = () => {
     await writeNft(
       nftDetails.algo_data.creator,
       nftDetails.collection_name,
-
       nftDetails.Id,
-
       nftDetails.price,
-
       null,
-
       null,
-
       null,
     );
   };
@@ -57,9 +51,13 @@ const List = () => {
       const userNftCollections = await fetchAllNfts(account);
       const result = await getUserNftCollection(userNftCollections);
 
-      const nft = result.filter((Nft) => String(Nft.Id) === nftId)[0];
+      const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
 
-      handleSetState({ nftDetails: nft, isLoading: false, image_url: nft.image_url });
+      handleSetState({
+        nftDetails: nft,
+        isLoading: false,
+        image_url: nft.image_url,
+      });
     }());
     document.documentElement.scrollTop = 0;
   }, []);
@@ -110,28 +108,14 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-              {
-              price
-                ? (
-                  <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
-                    <button
-                      type="button"
-                      className={classes.buy}
-                      disabled={nftDetails.sold}
-                      onClick={listNFT}
-                    >
-                      <div>
-                        <img src="/assets/price-tage.svg" alt="" />
-                        SET PRICE
-                      </div>
-                      <span>Sell the NFT at a fixed price</span>
-                    </button>
-                  </Link>
-                )
-                : (
+              {price ? (
+                <Link
+                  to={{ pathname: `${match.url}/listed`, state: { image_url } }}
+                >
                   <button
                     type="button"
                     className={classes.buy}
+                    disabled={nftDetails.sold}
                     onClick={listNFT}
                   >
                     <div>
@@ -140,20 +124,20 @@ const List = () => {
                     </div>
                     <span>Sell the NFT at a fixed price</span>
                   </button>
-                )
-            }
-
-              {/* <button
-                className={classes.bid}
-                disabled={nftDetails.sold}
-                onClick={buyNft}
-              >
-                <div>
-                  <img src={bidIcon} alt="" />
-                  HIGHEST BID
-                </div>
-                <span>Auction to the highest Bider</span>
-              </button> */}
+                </Link>
+              ) : (
+                <button
+                  type="button"
+                  className={classes.buy}
+                  onClick={listNFT}
+                >
+                  <div>
+                    <img src="/assets/price-tage.svg" alt="" />
+                    SET PRICE
+                  </div>
+                  <span>Sell the NFT at a fixed price</span>
+                </button>
+              )}
             </div>
           </div>
           {/* PRICE HISTORY */}

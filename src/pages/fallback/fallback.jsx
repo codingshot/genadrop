@@ -1,5 +1,5 @@
-import { useHistory } from 'react-router-dom';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import classes from './fallback.module.css';
 import notFound from '../../assets/404.svg';
 import home from '../../assets/home-svg.svg';
@@ -22,10 +22,11 @@ const Fallback = () => {
       </div>
       <div className={classes['button-container']}>
         <div onClick={() => history.goBack()} className={classes['go-back']}>
-          {/* <img src={left} alt="" /> */}
           Go Back
         </div>
         <div
+          onFocus
+          onBlur
           onMouseOver={(e) => setChangeImage((e.currentTarget.src = home))}
           onMouseOut={(e) => setChangeImage((e.currentTarget.src = homeWhite))}
           onClick={() => history.push('/')}

@@ -3,13 +3,12 @@ import { Chart } from 'react-charts';
 import classes from './graph.module.css';
 
 const Graph = ({ details }) => {
-  // let months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-  //  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  const prices = !details ? null : details.map((e) => {
-    const date = new Date(e.txDate * 1000);
-    return [date.getMonth(), e.price];
-  });
+  const prices = !details
+    ? null
+    : details.map((e, i) => {
+      const date = new Date(e.txDate * 1000);
+      return [date.getMonth(), e.price];
+    });
 
   const data = React.useMemo(
     () => [
@@ -20,6 +19,10 @@ const Graph = ({ details }) => {
     ],
     [],
   );
+  const nodata = React.useMemo(() => [{
+    label: 'Series 1',
+    data: [],
+  }]);
   const series = React.useMemo(
     () => ({
       showPoints: false,
@@ -36,13 +39,17 @@ const Graph = ({ details }) => {
   );
 
   const lineChart = (
-    <div className={classes.chart}>
+    <>
       {prices ? (
-        <Chart data={data} series={series} axes={axes} />
+        <div className={classes.chart}>
+          <Chart data={data} series={series} axes={axes} />
+        </div>
       ) : (
-        <img src="/assets/no-chart.svg" alt="" />
+
+        <div className={classes.nodata}>No Price History Available</div>
+
       )}
-    </div>
+    </>
   );
 
   return lineChart;

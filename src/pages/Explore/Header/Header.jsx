@@ -1,6 +1,6 @@
-import Skeleton from 'react-loading-skeleton';
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
+import Skeleton from 'react-loading-skeleton';
 import classes from './Header.module.css';
 import listIcon from '../../../assets/icon-list.svg';
 import stackIcon from '../../../assets/icon-stack.svg';
@@ -24,7 +24,8 @@ const Header = ({ collection, getHeight }) => {
   } = collection;
 
   const getUsdValue = () => {
-    axios.get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
+    axios
+      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
         const amount = res.data.data.amount * price;
         if (isNaN(amount)) {
@@ -54,46 +55,50 @@ const Header = ({ collection, getHeight }) => {
   return (
     <header ref={headerRef} className={classes.container}>
       <div className={classes.wrapper}>
-        {
-          imageUrl ? <img className={classes.imageContainer} src={imageUrl} alt="asset" /> : (
-            <div className={classes.imageLoadingContainer}>
-              <Skeleton count={1} height={200} />
-            </div>
-          )
-        }
+        {imageUrl ? (
+          <img className={classes.imageContainer} src={imageUrl} alt="asset" />
+        ) : (
+          <div className={classes.imageLoadingContainer}>
+            <Skeleton count={1} height={200} />
+          </div>
+        )}
         <div className={classes.collectionName}>{name}</div>
         <div className={classes.creator}>
-          {
-            owner
-              ? (
-                <div>
-                  Created by
-                  {' '}
-                  <span className={classes.address}><Copy message={owner} placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`} /></span>
-                </div>
-              )
-              : (
-                <div className={classes.skeleton}>
-                  <Skeleton count={1} height={16} />
-                </div>
-              )
-          }
+          {owner ? (
+            <div>
+              Created by
+              <span className={classes.address}>
+                <Copy
+                  message={owner}
+                  placeholder={
+                    owner
+                    && `${owner.substring(0, 5)}...${owner.substring(
+                      owner.length - 4,
+                      owner.length,
+                    )}`
+                  }
+                />
+              </span>
+            </div>
+          ) : (
+            <div className={classes.skeleton}>
+              <Skeleton count={1} height={16} />
+            </div>
+          )}
         </div>
         <div className={classes.description}>
-          {
-            description || (
+          {description || (
             <div className={classes.skeleton}>
               <Skeleton count={2} height={20} />
             </div>
-            )
-          }
+          )}
         </div>
       </div>
-
       <div className={classes.details}>
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOOR PRICE</div>
+
             <div className={classes.price}>
               {price}
               <span className={classes.chain}>
@@ -102,7 +107,6 @@ const Header = ({ collection, getHeight }) => {
                 {' '}
                 USD)
               </span>
-
             </div>
           </div>
           <img src={stackIcon} alt="" />
@@ -124,7 +128,6 @@ const Header = ({ collection, getHeight }) => {
           <img src={listIcon} alt="" />
         </div>
       </div>
-
     </header>
   );
 };

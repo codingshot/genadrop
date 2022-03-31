@@ -62,15 +62,11 @@ const CollectionPreview = () => {
   return (
     <div className={classes.container}>
       <canvas className={classes.canvas} ref={canvasRef} />
-      {preview.length
-        ? (
-          <button type="button" onClick={handleDownload}>
-            <ButtonClickEffect>
-              Download
-            </ButtonClickEffect>
-          </button>
-        )
-        : null}
+      {preview.length ? (
+        <button type="button" onClick={handleDownload}>
+          <ButtonClickEffect>Download</ButtonClickEffect>
+        </button>
+      ) : null}
     </div>
   );
 };

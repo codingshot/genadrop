@@ -22,8 +22,17 @@ const Copy = ({ message, placeholder }) => {
       onClick={() => handleCopy({ navigator, copy: copyRef.current })}
     >
       <span>{placeholder}</span>
-      <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />
-      <input style={{ display: 'none' }} ref={copyRef} type="text" defaultValue={message} />
+      <img
+        src={copyIcon}
+        alt=""
+        className={`${classes.copyIcon} ${copied && classes.active}`}
+      />
+      <input
+        style={{ display: 'none' }}
+        ref={copyRef}
+        type="text"
+        defaultValue={message}
+      />
     </div>
   );
 };

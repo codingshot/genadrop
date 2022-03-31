@@ -88,18 +88,24 @@ const Rules = ({ show, setRule }) => {
           <div className={cx.heading}>Filter Attribute</div>
           <div className={cx.filterSection}>
             <div className={cx.filterContainer}>
-              <Select selectionList={collection} select={handleSetAttribute} selected={filteredAttribute} heading="Select Filter" />
+              <Select
+                selectionList={collection}
+                select={handleSetAttribute}
+                selected={filteredAttribute}
+                heading="Select Filter"
+              />
             </div>
             <div className={cx.filteredList}>
-              {
-                filteredAttribute.map((f) => (
-                  <div key={f.layer} className={cx.filteredItem}>
-                    <img src={URL.createObjectURL(f.image)} alt="" />
-                    <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
-                    <i onClick={() => handleRemoveAttribute(f)} className={`${cx.closeIcon} fas fa-times`} />
-                  </div>
-                ))
-              }
+              {filteredAttribute.map((f) => (
+                <div key={f.layer} className={cx.filteredItem}>
+                  <img src={URL.createObjectURL(f.image)} alt="" />
+                  <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
+                  <i
+                    onClick={() => handleRemoveAttribute(f)}
+                    className={`${cx.closeIcon} fas fa-times`}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -107,18 +113,24 @@ const Rules = ({ show, setRule }) => {
           <div className={cx.heading}>Set Conflict</div>
           <div className={cx.filterSection}>
             <div className={cx.filterContainer}>
-              <Select selectionList={conflictModel} select={handleSetConflict} selected={conflict} heading="Select Conflict" />
+              <Select
+                selectionList={conflictModel}
+                select={handleSetConflict}
+                selected={conflict}
+                heading="Select Conflict"
+              />
             </div>
             <div className={cx.filteredList}>
-              {
-                conflict.map((f) => (
-                  <div key={f.layer} className={cx.filteredItem}>
-                    <img src={URL.createObjectURL(f.image)} alt="" />
-                    <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
-                    <i onClick={() => handleRemoveConflict(f)} className={`${cx.closeIcon} fas fa-times`} />
-                  </div>
-                ))
-              }
+              {conflict.map((f) => (
+                <div key={f.layer} className={cx.filteredItem}>
+                  <img src={URL.createObjectURL(f.image)} alt="" />
+                  <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
+                  <i
+                    onClick={() => handleRemoveConflict(f)}
+                    className={`${cx.closeIcon} fas fa-times`}
+                  />
+                </div>
+              ))}
             </div>
           </div>
         </div>

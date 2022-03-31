@@ -10,7 +10,11 @@ export const handleFileChange = (props) => {
 
   imageFiles.forEach((imageFile) => {
     if (!filterArr.includes(imageFile.name)) {
-      uniqueImageFile.push({ traitTitle: imageFile.name, Rarity: '1', image: imageFile });
+      uniqueImageFile.push({
+        traitTitle: imageFile.name,
+        Rarity: '1',
+        image: imageFile,
+      });
       filterArr.push(imageFile.name);
     }
   });
@@ -39,7 +43,11 @@ export const handleAddBlank = async (props) => {
   const uniqueImageFile = [...traits];
   const filterArr = traits.map(({ image }) => image.name);
   if (!filterArr.includes(imageFile.name)) {
-    uniqueImageFile.push({ traitTitle: imageFile.name, Rarity: '1', image: imageFile });
+    uniqueImageFile.push({
+      traitTitle: imageFile.name,
+      Rarity: '1',
+      image: imageFile,
+    });
   }
   return { layerTitle, traits: uniqueImageFile };
 };

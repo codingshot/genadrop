@@ -222,9 +222,11 @@ async function readAllSingleNft(mainnet) {
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  const response = mainnet === null ? res : res.filter(
-    (asset) => (asset.collection === null) && (asset.mainnet === mainnet),
-  );
+  const response = mainnet === null
+    ? res
+    : res.filter(
+      (asset) => asset.collection === null && asset.mainnet === mainnet,
+    );
   return response;
 }
 

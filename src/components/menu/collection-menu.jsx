@@ -6,7 +6,11 @@ import ArtCard from '../art-card/art-card';
 import { GenContext } from '../../gen-state/gen.context';
 import { addImage, setCombinations } from '../../gen-state/gen.actions';
 import ButtonClickEffect from '../button-effect/button-effect';
-import { getCombinations, handleAddBlank, handleFileChange } from './collection-menu-script';
+import {
+  getCombinations,
+  handleAddBlank,
+  handleFileChange,
+} from './collection-menu-script';
 
 const CollectionMenu = ({ layer }) => {
   const [state, setState] = useState({
@@ -24,7 +28,10 @@ const CollectionMenu = ({ layer }) => {
 
   const handleBlank = async () => {
     const res = await handleAddBlank({
-      traits, layerTitle, canvas, img: layers[0].traits[0].image,
+      traits,
+      layerTitle,
+      canvas,
+      img: layers[0].traits[0].image,
     });
     dispatch(addImage(res));
   };
@@ -38,19 +45,15 @@ const CollectionMenu = ({ layer }) => {
       <section className={classes.layer}>
         <h3 className={classes.header}>{layerTitle}</h3>
         <div className={classes.wrapper}>
-          {
-            traits.map((trait, idx) => (
-              <ArtCard
-                key={idx}
-                layerTitle={layerTitle}
-                trait={trait}
-                setActiveCard={
-                  (currentActiveCard) => handleSetState({ activeCard: currentActiveCard })
-                }
-                activeCard={activeCard}
-              />
-            ))
-          }
+          {traits.map((trait, idx) => (
+            <ArtCard
+              key={idx}
+              layerTitle={layerTitle}
+              trait={trait}
+              setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
+              activeCard={activeCard}
+            />
+          ))}
         </div>
         <div className={classes.uploadBtnContainer}>
           <button
@@ -60,19 +63,13 @@ const CollectionMenu = ({ layer }) => {
           >
             upload
           </button>
-          {
-            traits[0] && (
-              <ButtonClickEffect>
-                <button
-                  type="button"
-                  onClick={handleBlank}
-                  className={classes.addBlankBtn}
-                >
-                  Add blank image
-                </button>
-              </ButtonClickEffect>
-            )
-          }
+          {traits[0] && (
+            <ButtonClickEffect>
+              <button type="button" onClick={handleBlank} className={classes.addBlankBtn}>
+                Add blank image
+              </button>
+            </ButtonClickEffect>
+          )}
         </div>
       </section>
 

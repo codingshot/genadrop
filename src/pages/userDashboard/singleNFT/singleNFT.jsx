@@ -1,19 +1,17 @@
 import React, {
   useContext, useEffect, useState, useRef,
 } from 'react';
-import { useRouteMatch } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import { CopyBlock, dracula } from 'react-code-blocks';
 import axios from 'axios';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { useRouteMatch } from 'react-router-dom';
 import { GenContext } from '../../../gen-state/gen.context';
 import { getSingleNftDetails } from '../../../utils';
 import classes from './singleNFT.module.css';
 import Graph from '../../../components/Nft-details/graph/graph';
 import DropItem from '../../../components/Nft-details/dropItem/dropItem';
-// import Search from '../../../components/Nft-details/history/search';
 import { PurchaseNft } from '../../../utils/arc_ipfs';
-// import { readNftTransaction } from '../../../utils/firebase';
 
 const SingleNFT = () => {
   const { account, connector } = useContext(GenContext);
@@ -163,7 +161,6 @@ const SingleNFT = () => {
     icon: '/assets/description-icon.png',
     title: 'Attributes',
     content: attributeContent(),
-    // content: "attributeContent()"
   };
 
   const details = () => (
@@ -269,7 +266,6 @@ const SingleNFT = () => {
             </div>
             <div className={classes.priceSection}>
               <span className={classes.title}>Owned by you</span>
-
             </div>
 
             <div className={classes.btns}>
@@ -279,8 +275,6 @@ const SingleNFT = () => {
                     <img src="/assets/wallet-icon.png" alt="" />
                     Listed!
                   </button>
-                  {/* <button className={classes.bid}>
-                  <img src="/assets/bid.png" alt="" />Place Bid</button> */}
                 </>
               ) : (
                 <>
@@ -331,16 +325,10 @@ const SingleNFT = () => {
 
       {/* TRANSACTION HISTORY */}
       <div className={classes.section}>
-        {/* <DropItem key={4} item={transactions} id={4} dropdown={dropdown}
-         handleSetState={handleSetState} ></DropItem> */}
-
         <div className={classes.heading}>
           <h3>Transaction History</h3>
         </div>
-        <div className={classes.tableContainer}>
-          {/* <Search data={History} /> */}
-          Coming soon...
-        </div>
+        <div className={classes.tableContainer}>Coming soon...</div>
       </div>
 
       <div className={classes.section}>

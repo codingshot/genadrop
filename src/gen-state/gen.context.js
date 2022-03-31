@@ -1,5 +1,4 @@
 import React, { useReducer, createContext } from 'react';
-
 import { genReducer, INITIAL_STATE } from './gen.reducer';
 
 export const GenContext = createContext();
@@ -34,32 +33,33 @@ const GenContextProvider = ({ children }) => {
   } = state;
 
   return (
-    <GenContext.Provider value={{
-      layers,
-      preview,
-      mintAmount,
-      nftLayers,
-      combinations,
-      isLoading,
-      mintInfo,
-      currentDnaLayers,
-      collectionName,
-      outputFormat,
-      connector,
-      chainId,
-      account,
-      rule,
-      isRule,
-      collections,
-      notification,
-      clipboardMessage,
-      loaderMessage,
-      collectionDescription,
-      didMount,
-      mainnet,
-      singleNfts,
-      dispatch,
-    }}
+    <GenContext.Provider
+      value={{
+        layers,
+        preview,
+        mintAmount,
+        nftLayers,
+        combinations,
+        isLoading,
+        mintInfo,
+        currentDnaLayers,
+        collectionName,
+        outputFormat,
+        connector,
+        chainId,
+        account,
+        rule,
+        isRule,
+        collections,
+        notification,
+        clipboardMessage,
+        loaderMessage,
+        collectionDescription,
+        didMount,
+        mainnet,
+        singleNfts,
+        dispatch,
+      }}
     >
       {children}
     </GenContext.Provider>

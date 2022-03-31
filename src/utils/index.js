@@ -181,7 +181,8 @@ export const getImageSize = async (img) => new Promise((resolve) => {
   };
 });
 
-export const getDefaultName = (id) => {
+export const getDefaultName = (nameId) => {
+  let id = nameId;
   id = String(id);
   if (id.length < 4) {
     const repeatBy = 4 - id.length;

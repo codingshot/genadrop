@@ -51,22 +51,37 @@ const Profile = () => {
         <div className={classes.option}>
           <h3>Wallet Address</h3>
           <p>To update your address just change your account in your wallet.</p>
-          <input className={account && classes.wallet} type="text" value={account} disabled />
+          <input
+            className={account && classes.wallet}
+            type="text"
+            value={account}
+            disabled
+          />
         </div>
 
         <div className={classes.option}>
           <h3>Email</h3>
-          <input type="email" value={email} name="email" onChange={handleInputChange} placeholder="me@gmail.com" />
+          <input
+            type="email"
+            value={email}
+            name="email"
+            onChange={handleInputChange}
+            placeholder="me@gmail.com"
+          />
         </div>
 
         <div className={classes.option}>
           <h3>Email Subscription</h3>
-          <div onClick={() => handleSetState({ subscribe: !subscribe })} className={`${classes.toggleButton} ${subscribe && classes.active}`}>
+          <div
+            onClick={() => handleSetState({ subscribe: !subscribe })}
+            className={`${classes.toggleButton} ${subscribe && classes.active}`}
+          >
             <div className={classes.toggle} />
           </div>
           <p className={`${classes.warn} ${!subscribe && classes.active}`}>
-            (You won&apos;t recieve ANY emails from GenaDrop if do not subscribe
-            - including important ones related to your account security or purchases)
+            (You won&apos;t recieve ANY emails from GenaDrop if do not subscribe -
+            including important ones related to your account security or
+            purchases)
           </p>
         </div>
 
@@ -78,7 +93,12 @@ const Profile = () => {
               <img src={twitterIcon} alt="" />
               <div>Twitter</div>
             </label>
-            <input type="text" value={twitter} name="twitter" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={twitter}
+              name="twitter"
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className={classes.option}>
@@ -86,7 +106,12 @@ const Profile = () => {
               <img src={instagramIcon} alt="" />
               <div>Instagram</div>
             </label>
-            <input type="text" value={instagram} name="instagram" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={instagram}
+              name="instagram"
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className={classes.option}>
@@ -94,7 +119,12 @@ const Profile = () => {
               <img src={youtubeIcon} alt="" />
               <div>Youtube</div>
             </label>
-            <input type="text" value={youtube} name="youtube" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={youtube}
+              name="youtube"
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className={classes.option}>
@@ -102,15 +132,21 @@ const Profile = () => {
               <img src={discordIcon} alt="" />
               <div>Discord</div>
             </label>
-            <input type="text" value={discord} name="discord" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={discord}
+              name="discord"
+              onChange={handleInputChange}
+            />
           </div>
 
           <div className={classes.buttons}>
             <button type="button" className={classes.submit}>Save Changes</button>
-            <button type="button" onClick={handleCancel} className={classes.cancel}>Cancel</button>
+            <button type="button" onClick={handleCancel} className={classes.cancel}>
+              Cancel
+            </button>
           </div>
         </section>
-
       </div>
     </div>
   );

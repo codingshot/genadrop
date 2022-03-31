@@ -21,7 +21,12 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   });
 
   const {
-    toggleFilter, lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter,
+    toggleFilter,
+    lowestPrice,
+    highestPrice,
+    toggleAttribute,
+    toggleLayer,
+    filter,
   } = state;
 
   const handleSetState = (payload) => {
@@ -29,7 +34,12 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   };
 
   const handleApplyPriceFilter = () => {
-    handleSetState({ filter: { ...filter, priceRange: { min: lowestPrice, max: highestPrice } } });
+    handleSetState({
+      filter: {
+        ...filter,
+        priceRange: { min: lowestPrice, max: highestPrice },
+      },
+    });
   };
 
   const handleStatus = () => {
@@ -40,12 +50,16 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     const strAttributes = JSON.stringify(filter.attributes);
     const strVal = JSON.stringify(val);
     if (!strAttributes.includes(strVal)) {
-      handleSetState({ filter: { ...filter, attributes: [...filter.attributes, val] } });
+      handleSetState({
+        filter: { ...filter, attributes: [...filter.attributes, val] },
+      });
     }
   };
 
   const isSelected = (val) => {
-    const res = filter.attributes.find((attr) => JSON.stringify(attr) === JSON.stringify(val));
+    const res = filter.attributes.find(
+      (attr) => JSON.stringify(attr) === JSON.stringify(val),
+    );
     return !!res;
   };
 
@@ -53,7 +67,9 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     const result = isSelected(val);
     if (result) {
       const strVal = JSON.stringify(val);
-      const newAttributes = filter.attributes.filter((attr) => JSON.stringify(attr) !== strVal);
+      const newAttributes = filter.attributes.filter(
+        (attr) => JSON.stringify(attr) !== strVal,
+      );
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     } else {
       handleAddToFilterAttribute(val);
@@ -69,106 +85,134 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
       handleSetState({ filter: { ...filter, attributes: [] } });
     } else {
       const strVal = JSON.stringify(filterToDelete);
-      const newAttributes = filter.attributes.filter((attr) => JSON.stringify(attr) !== strVal);
+      const newAttributes = filter.attributes.filter(
+        (attr) => JSON.stringify(attr) !== strVal,
+      );
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     }
   }, [filterToDelete]);
 
   return (
     <>
-      {
-        toggleFilter
-          ? (
-            <aside className={classes.sidebar}>
-              <div
-                onClick={() => handleSetState(
-                  { toggleFilter: !toggleFilter },
-                )}
-                className={classes.filterHeading}
-              >
-                <div>
-                  <img src={filterIcon} alt="" />
-                  <span>Filter</span>
+      {toggleFilter ? (
+        <aside className={classes.sidebar}>
+          <div
+            onClick={() => handleSetState({ toggleFilter: !toggleFilter })}
+            className={classes.filterHeading}
+          >
+            <div>
+              <img src={filterIcon} alt="" />
+              <span>Filter</span>
+            </div>
+            <img src={arrowIconLeft} alt="" />
+          </div>
+          <div className={classes.sideOverflowWrapper}>
+            <Dropdown title="Status">
+              <div className={classes.statusFilter}>
+                <span>Show only listed item</span>
+                <div
+                  onClick={handleStatus}
+                  className={`${classes.toggleButton} ${
+                    filter.onlyListed && classes.active
+                  }`}
+                >
+                  <div className={classes.toggle} />
                 </div>
-                <img src={arrowIconLeft} alt="" />
               </div>
-              <div className={classes.sideOverflowWrapper}>
-                <Dropdown title="Status">
-                  <div className={classes.statusFilter}>
-                    <span>Show only listed item</span>
-                    <div onClick={handleStatus} className={`${classes.toggleButton} ${filter.onlyListed && classes.active}`}>
-                      <div className={classes.toggle} />
-                    </div>
+            </Dropdown>
+            <Dropdown title="Price">
+              <div className={classes.priceFilter}>
+                <div className={classes.filterInput}>
+                  <div>
+                    <input
+                      value={lowestPrice}
+                      onChange={(event) => handleSetState({ lowestPrice: event.target.value })}
+                      type="number"
+                    />
                   </div>
-                </Dropdown>
-                <Dropdown title="Price">
-                  <div className={classes.priceFilter}>
-                    <div className={classes.filterInput}>
-                      <div>
-                        <input value={lowestPrice} onChange={(event) => handleSetState({ lowestPrice: event.target.value })} type="number" />
-                      </div>
-                      to
-                      <div>
-                        <input value={highestPrice} onChange={(event) => handleSetState({ highestPrice: event.target.value })} type="number" />
-                      </div>
-                    </div>
-                    <button type="button" onClick={handleApplyPriceFilter}>Apply</button>
+                  to
+                  <div>
+                    <input
+                      value={highestPrice}
+                      onChange={(event) => handleSetState({ highestPrice: event.target.value })}
+                      type="number"
+                    />
                   </div>
-                </Dropdown>
-                <Dropdown title="Attribute">
-                  <div className={classes.attributeFilter}>
-                    <div className={`${classes.attribute} ${toggleAttribute && classes.active}`}>
-                      {
-                      attributes && attributes.map((attr, idx) => (
-                        <div key={idx}>
+                </div>
+                <button onClick={handleApplyPriceFilter}>Apply</button>
+              </div>
+            </Dropdown>
+            <Dropdown title="Attribute">
+              <div className={classes.attributeFilter}>
+                <div
+                  className={`${classes.attribute} ${
+                    toggleAttribute && classes.active
+                  }`}
+                >
+                  {attributes
+                    && attributes.map((attr, idx) => (
+                      <div key={idx}>
+                        <div
+                          onClick={() => handleSetState({
+                            toggleLayer: idx === toggleLayer ? -1 : idx,
+                          })}
+                          key={idx}
+                          className={classes.layerWrapper}
+                        >
+                          <div>{attr.trait_type}</div>
                           <div
-                            onClick={() => handleSetState(
-                              { toggleLayer: idx === toggleLayer ? -1 : idx },
-                            )}
-                            key={idx}
-                            className={classes.layerWrapper}
+                            className={`${classes.layerIcon} ${
+                              toggleLayer === idx && classes.active
+                            }`}
                           >
-                            <div>{attr.trait_type}</div>
-                            <div className={`${classes.layerIcon} ${toggleLayer === idx && classes.active}`}>
-                              <div>{attr.value.length}</div>
-                              <img src={dropdownIcon} alt="" />
-                            </div>
-                          </div>
-                          <div className={`${classes.layer} ${toggleLayer === idx && classes.active}`}>
-                            {
-                              attr.value.map((val, idx) => (
-                                <div
-                                  key={idx}
-                                  onClick={() => handleFilterAttribute(
-                                    {
-                                      trait_type: attr.trait_type,
-                                      value: val,
-                                      rarity: attr.rarity[idx],
-                                    },
-                                  )}
-                                  className={classes.value}
-                                >
-                                  <span className={classes.statusIcon}>{isSelected({ trait_type: attr.trait_type, value: val, rarity: attr.rarity[idx] }) ? '+' : '-'}</span>
-                                  <span>{val}</span>
-                                </div>
-                              ))
-                            }
+                            <div>{attr.value.length}</div>
+                            <img src={dropdownIcon} alt="" />
                           </div>
                         </div>
-                      ))
-                    }
-                    </div>
-                  </div>
-                </Dropdown>
+                        <div
+                          className={`${classes.layer} ${
+                            toggleLayer === idx && classes.active
+                          }`}
+                        >
+                          {attr.value.map((val, idx) => (
+                            <div
+                              key={idx}
+                              onClick={() => handleFilterAttribute({
+                                trait_type: attr.trait_type,
+                                value: val,
+                                rarity: attr.rarity[idx],
+                              })}
+                              className={classes.value}
+                            >
+                              <span className={classes.statusIcon}>
+                                {isSelected({
+                                  trait_type: attr.trait_type,
+                                  value: val,
+                                  rarity: attr.rarity[idx],
+                                })
+                                  ? '+'
+                                  : '-'}
+                              </span>
+                              <span>{val}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </div>
-            </aside>
-          )
-          : (
-            <aside className={classes.sidebar2}>
-              <img onClick={() => handleSetState({ toggleFilter: !toggleFilter })} src={arrowIconRight} alt="" />
-            </aside>
-          )
-      }
+            </Dropdown>
+          </div>
+        </aside>
+      ) : (
+        <aside className={classes.sidebar2}>
+          <img
+            onClick={() => handleSetState({ toggleFilter: !toggleFilter })}
+            src={arrowIconRight}
+            alt=""
+          />
+        </aside>
+      )}
     </>
   );
 };

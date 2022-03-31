@@ -18,7 +18,7 @@ const Layer = ({
   const { dispatch } = useContext(GenContext);
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleRename = () => {
@@ -27,9 +27,9 @@ const Layer = ({
     dispatch(updateLayer({ layerTitle: inputValue, id }));
   };
 
-  const handleEdit = (name) => {
-    setActiveInput(name);
-    handleSetState({ inputValue: name });
+  const handleEdit = (nameActive) => {
+    setActiveInput(nameActive);
+    handleSetState({ inputValue: nameActive });
   };
 
   return (
@@ -39,23 +39,25 @@ const Layer = ({
           <img src={dragIcon} alt="" />
         </div>
         <div className={classes.renameBtn}>
-          {activeInput === name
-            ? (
-              <form onSubmit={handleRename}>
-                <input
-                  className={`${classes.renameInput} ${classes.active}`}
-                  type="text"
-                  onChange={(e) => handleSetState({ inputValue: e.target.value })}
-                  value={inputValue}
-                  autoFocus
-                />
-              </form>
-            )
-            : <div className={classes.nameHeader}>{name}</div>}
+          {activeInput === name ? (
+            <form onSubmit={handleRename}>
+              <input
+                className={`${classes.renameInput} ${classes.active}`}
+                type="text"
+                onChange={(e) => handleSetState({ inputValue: e.target.value })}
+                value={inputValue}
+                autoFocus
+              />
+            </form>
+          ) : (
+            <div className={classes.nameHeader}>{name}</div>
+          )}
           <div className={classes.editBtn}>
-            {activeInput === name
-              ? <img onClick={handleRename} src={markIconDark} alt="" />
-              : <img onClick={() => handleEdit(name)} src={editIcon} alt="" />}
+            {activeInput === name ? (
+              <img onClick={handleRename} src={markIconDark} alt="" />
+            ) : (
+              <img onClick={() => handleEdit(name)} src={editIcon} alt="" />
+            )}
           </div>
         </div>
       </div>

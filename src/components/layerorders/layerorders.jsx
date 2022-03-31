@@ -1,5 +1,5 @@
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import React, { useContext, useState } from 'react';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuid } from 'uuid';
 import classes from './layerorders.module.css';
 import { GenContext } from '../../gen-state/gen.context';
@@ -11,7 +11,6 @@ import {
   setNotification,
   removeLayer,
 } from '../../gen-state/gen.actions';
-
 import Layer from '../layer/layer';
 import Prompt from '../prompt/prompt';
 import { getItemStyle, getListStyle } from './layeroders-script';
@@ -157,14 +156,14 @@ const LayerOrders = () => {
                       draggableId={`${index}`}
                       index={index}
                     >
-                      {(provided, snapshot) => (
+                      {(providedProp, snapshotProp) => (
                         <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          ref={providedProp.innerRef}
+                          {...providedProp.draggableProps}
+                          {...providedProp.dragHandleProps}
                           style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style,
+                            snapshotProp.isDragging,
+                            providedProp.draggableProps.style,
                           )}
                         >
                           <Layer
@@ -188,7 +187,7 @@ const LayerOrders = () => {
             <div className={classes.promptWrapper}>
               <Prompt
                 handleAddLayer={handleAddLayer}
-                setPrompt={(prompt) => handleSetState({ prompt })}
+                setPrompt={(promptAdded) => handleSetState({ prompt: promptAdded })}
               />
             </div>
           ) : (
@@ -199,7 +198,7 @@ const LayerOrders = () => {
             >
               Add Layer
               {' '}
-              <img src={plusIcon} alt="" />
+              <img src={plusIcon} alt="plus-icon" />
             </button>
           )}
         </div>

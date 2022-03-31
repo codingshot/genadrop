@@ -1,8 +1,6 @@
-import React, {
-  useEffect, useState,
-} from 'react';
-import { useRouteMatch, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { useRouteMatch, Link } from 'react-router-dom';
 import classes from './listed.module.css';
 
 const Listed = ({ location }) => {
@@ -67,10 +65,6 @@ const Listed = ({ location }) => {
       icon: '/assets/twitter-clear.svg',
       link: 'https://twitter.com/minorityprogram',
     },
-    // {
-    //   icon: "/assets/link.svg",
-    //   link: "https://www.twitter.com/mpa",
-    // },
   ];
   return (
     <div className={classes.container}>

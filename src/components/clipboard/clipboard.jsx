@@ -47,22 +47,43 @@ const Clipboard = () => {
   }, [clipboardMessage]);
 
   return (
-    <div style={{ top: notification && loaderMessage ? '10em' : loaderMessage ? '6em' : notification ? '8em' : '4em' }} className={`${classes.container} ${toggleClipboard && classes.active}`}>
-      <img className={classes.icon} onClick={handleDiscard} src={closeIcon} alt="" />
-      <div className={classes.message}>
-        {clipboardMessage}
-      </div>
+    <div
+      style={{
+        top:
+          notification && loaderMessage
+            ? '10em'
+            : loaderMessage
+              ? '6em'
+              : notification
+                ? '8em'
+                : '4em',
+      }}
+      className={`${classes.container} ${toggleClipboard && classes.active}`}
+    >
+      <img
+        className={classes.icon}
+        onClick={handleDiscard}
+        src={closeIcon}
+        alt=""
+      />
+      <div className={classes.message}>{clipboardMessage}</div>
       <div className={classes.action}>
         <div
           className={classes.copy}
           onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
         >
           {clipboardState}
-
         </div>
-        <a href={clipboardMessage} target="_blank" rel="noreferrer"><img src={linkIcon} alt="" /></a>
+        <a href={clipboardMessage} target="_blank" rel="noreferrer">
+          <img src={linkIcon} alt="icon" />
+        </a>
       </div>
-      <input style={{ display: 'none' }} ref={clipboardRef} type="text" defaultValue={clipboardMessage} />
+      <input
+        style={{ display: 'none' }}
+        ref={clipboardRef}
+        type="text"
+        defaultValue={clipboardMessage}
+      />
     </div>
   );
 };

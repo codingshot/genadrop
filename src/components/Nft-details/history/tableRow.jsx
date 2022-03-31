@@ -6,15 +6,32 @@ import mintIcon from '../../../assets/mint-icon.png';
 
 const TableRow = (data) => {
   function breakAddress(address = '', width = 6) {
-    if (!address) { return '--'; }
+    if (!address) return '--';
     return `${address.slice(0, width)}...${address.slice(-width)}`;
   }
 
   const icons = [saleIcon, transferIcon, mintIcon];
   const getDate = () => {
     const date = new Date(data.date.seconds * 1000);
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+    const formattedDate = `${months[date.getMonth()]
+    } ${
+      date.getDate()
+    }, ${
+      date.getFullYear()}`;
     return formattedDate;
   };
   const icon = () => {
@@ -38,12 +55,11 @@ const TableRow = (data) => {
   return (
     <tr>
       <td>
-        <span className={classes.icon}><img src={icon()} alt="" /></span>
-        {' '}
+        <span className={classes.icon}>
+          <img src={icon()} alt="" />
+        </span>
         {data.event}
-        {' '}
       </td>
-      {/* <td>{!data.quantity ? "--" : data.quantity}</td> */}
       <td>{!data.txId ? '--' : data.txId}</td>
       <td>{getDate(data.date)}</td>
       <td>{!data.price ? '--' : data.price}</td>

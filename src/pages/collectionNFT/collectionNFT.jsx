@@ -120,7 +120,6 @@ const CollectionNFT = () => {
           <br />
           <Skeleton count={1} height={40} />
         </div>
-
         <div className={classes.fullLegnth}>
           <Skeleton count={1} height={200} />
           <br />
@@ -179,9 +178,6 @@ const CollectionNFT = () => {
       link: 'https://www.twitter.com/mpa',
     },
   ];
-  // const handleHide = payload => {
-  //   setTimeout(() => { handleSetState(payload); }, 1000)
-  // }
   const onCopyText = () => {
     handleSetState({ isCopied: true });
     setTimeout(() => {
@@ -275,27 +271,29 @@ const CollectionNFT = () => {
             </div>
 
             <div className={classes.btns}>
-              {
-                (asset.sold
-                  ? (
-                    <>
-                      <button type="button" className={classes.sold} disabled={asset.sold}>SOLD!</button>
-                    </>
-                  )
-                  : (
-                    <>
-                      <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
-                        <img src={walletIcon} alt="" />
-                        Buy now
-                      </button>
-                      <button type="button" className={classes.bid}>
-                        <img src={bidIcon} alt="" />
-                        Place Bid
-                      </button>
-                    </>
-                  )
-                )
-}
+              {asset.sold ? (
+                <>
+                  <button type="button" className={classes.sold} disabled={asset.sold}>
+                    SOLD!
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    type="button"
+                    className={classes.buy}
+                    disabled={asset.sold}
+                    onClick={buyNft}
+                  >
+                    <img src={walletIcon} alt="" />
+                    Buy now
+                  </button>
+                  <button type="button" className={classes.bid}>
+                    <img src={bidIcon} alt="" />
+                    Place Bid
+                  </button>
+                </>
+              )}
             </div>
           </div>
           {/* PRICE HISTORY */}
@@ -322,9 +320,6 @@ const CollectionNFT = () => {
 
       {/* TRANSACTION HISTORY */}
       <div className={classes.section}>
-        {/* <DropItem key={4} item={transactions} id={4} dropdown={dropdown}
-         handleSetState={handleSetState} ></DropItem> */}
-
         <div className={classes.heading}>
           <h3>Transaction History</h3>
         </div>

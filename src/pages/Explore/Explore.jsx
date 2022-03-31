@@ -5,7 +5,10 @@ import classes from './Explore.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Filter from './Filter/Filter';
 import Header from './Header/Header';
-import { groupAttributesByTraitType, mapAttributeToFilter } from './Explore-script';
+import {
+  groupAttributesByTraitType,
+  mapAttributeToFilter,
+} from './Explore-script';
 import { getNftCollection } from '../../utils';
 import Menu from './Menu/Menu';
 import closeIcon from '../../assets/icon-close.svg';
@@ -84,19 +87,23 @@ const Explore = () => {
     if (!NFTCollection) return;
     let filtered = null;
     if (filter.price === 'low') {
-      filtered = NFTCollection.sort((a, b) => Number(a.price) - Number(b.price));
+      filtered = NFTCollection.sort(
+        (a, b) => Number(a.price) - Number(b.price),
+      );
     } else {
-      filtered = NFTCollection.sort((a, b) => Number(b.price) - Number(a.price));
+      filtered = NFTCollection.sort(
+        (a, b) => Number(b.price) - Number(a.price),
+      );
     }
     handleSetState({ FilteredCollection: filtered });
   }, [filter.price]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    const filtered = NFTCollection.filter(
-      (col) => Number(col.price) >= Number(filter.priceRange.min)
-       && Number(col.price) <= Number(filter.priceRange.max),
-    );
+    const filtered = NFTCollection.filter((col) => (
+      Number(col.price) >= Number(filter.priceRange.min)
+        && Number(col.price) <= Number(filter.priceRange.max)
+    ));
     handleSetState({ FilteredCollection: filtered });
   }, [filter.priceRange]);
 
@@ -106,7 +113,9 @@ const Explore = () => {
     const filtered = NFTCollection.filter(
       (col) => Object.keys(groupedAttributes).every(
         (attributeKey) => groupedAttributes[attributeKey].some(
-          (el) => JSON.stringify(col.ipfs_data.properties).includes(JSON.stringify(el)),
+          (el) => JSON.stringify(col.ipfs_data.properties).includes(
+            JSON.stringify(el),
+          ),
         ),
       ),
     );
@@ -120,10 +129,11 @@ const Explore = () => {
         getHeight={getHeight}
         collection={{
           ...collection,
-          numberOfNfts: NFTCollection
-          && NFTCollection.length,
-          imageUrl: NFTCollection
-          && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
+          numberOfNfts: NFTCollection && NFTCollection.length,
+          imageUrl:
+            NFTCollection
+            && NFTCollection[Math.floor(Math.random() * NFTCollection.length)]
+              .image_url,
         }}
       />
 
@@ -135,46 +145,35 @@ const Explore = () => {
         />
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={(value) => handleSetState(
-              { filter: { ...filter, searchValue: value } },
-            )}
+            <SearchBar
+              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
-            <PriceDropdown onPriceFilter={(value) => handleSetState(
-              { filter: { ...filter, price: value } },
-            )}
+            <PriceDropdown
+              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
             />
           </div>
 
           <div className={classes.filterDisplay}>
-            {
-              filter?.attributes && filter.attributes.map((f, idx) => (
+            {filter?.attributes
+              && filter.attributes.map((f, idx) => (
                 <div key={idx} className={classes.filteredItem}>
                   <span>{`${f.trait_type}: ${f.value}`}</span>
                   <div
-                    onClick={() => handleSetState(
-                      { filterToDelete: f },
-                    )}
+                    onClick={() => handleSetState({ filterToDelete: f })}
                     className={classes.closeIcon}
                   >
                     <img src={closeIcon} alt="" />
                   </div>
                 </div>
-              ))
-            }
-            {
-              filter?.attributes && filter.attributes.length
-                ? (
-                  <div
-                    onClick={() => handleSetState(
-                      { filterToDelete: [] },
-                    )}
-                    className={classes.clearFilter}
-                  >
-                    clear all
-                  </div>
-                )
-                : null
-            }
+              ))}
+            {filter?.attributes && filter.attributes.length ? (
+              <div
+                onClick={() => handleSetState({ filterToDelete: [] })}
+                className={classes.clearFilter}
+              >
+                clear all
+              </div>
+            ) : null}
           </div>
           <Menu NFTCollection={FilteredCollection} />
         </main>

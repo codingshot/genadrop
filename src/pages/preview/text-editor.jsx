@@ -23,26 +23,29 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
 
   return (
     <div className={`${classes.container} ${invert && classes.invert}`}>
-      {
-        editor
-          ? (
-            <form onSubmit={handleSubmit}>
-              {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
-              <input autoFocus type="text" value={value} onChange={(e) => handleSetState({ value: e.target.value })} />
-              <button type="button">
-                <img src={markIcon} alt="" />
-              </button>
-            </form>
-          )
-          : (
-            <div>
-              <p>{placeholder}</p>
-              <button type="button" onClick={() => handleSetState({ editor: true, value: placeholder })}>
-                <img src={editIcon} alt="" />
-              </button>
-            </div>
-          )
-      }
+      {editor ? (
+        <form onSubmit={handleSubmit}>
+          <input
+            autoFocus
+            type="text"
+            value={value}
+            onChange={(e) => handleSetState({ value: e.target.value })}
+          />
+          <button type="button">
+            <img src={markIcon} alt="" />
+          </button>
+        </form>
+      ) : (
+        <div>
+          <p>{placeholder}</p>
+          <button
+            type="button"
+            onClick={() => handleSetState({ editor: true, value: placeholder })}
+          >
+            <img src={editIcon} alt="" />
+          </button>
+        </div>
+      )}
     </div>
   );
 };

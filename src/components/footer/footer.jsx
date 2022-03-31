@@ -46,32 +46,38 @@ const Footer = () => (
           <div className={classes.socialIcons}>
             <a
               className={classes.icon}
-              target="_blank"
               href="https://discord.gg/4vdtmQqz6d"
-              rel="noreferrer"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <img src={discordIcon} alt="" />
+              <img src={discordIcon} alt="Minority Programmers Discord" />
             </a>
 
             <a
               className={classes.icon}
               href="https://twitter.com/minorityprogram"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <img src={twitterIcon} alt="" />
+              <img src={twitterIcon} alt="Minority Programmers Twitter" />
             </a>
 
             <a
               className={classes.icon}
               href="https://linkedin.com/company/minority-programmers/"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <img src={linkedInIcon} alt="" />
+              <img src={linkedInIcon} alt="Minoirty Programmers LinkedIn" />
             </a>
 
             <a
               className={classes.icon}
               href="https://youtube.com/c/minorityprogrammers"
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              <img src={youTubeIcon} alt="" />
+              <img src={youTubeIcon} alt="Minority Programmers Youtube" />
             </a>
           </div>
         </div>
@@ -80,7 +86,7 @@ const Footer = () => (
             <div key={link.id} className={classes.links}>
               <div className={classes.title}>{link.title}</div>
               {link.content.map((linkE) => (
-                <a href={linkE.link} target="_blank" key={linkE.id} rel="noreferrer">
+                <a href={linkE.link} target="_blank" key={linkE.id} rel="noopener noreferrer">
                   {linkE.name}
                 </a>
               ))}
@@ -98,9 +104,11 @@ const Footer = () => (
         >
           <div className={classes.build}>
             Built with
+            {' '}
             <span>&#x2764;</span>
             {' '}
-            by the Minority Programmers Association
+            by the Minority Programmers
+            Association
           </div>
         </a>
         <div className={classes.bottomRight}>
