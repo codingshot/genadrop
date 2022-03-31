@@ -1,11 +1,11 @@
 import { v4 as uuid } from 'uuid';
 import { getDefaultName, handleImage } from '../../utils';
 
-export const createDna = layers => {
+export const createDna = (layers) => {
   const getPercentage = (rarity, total) => {
     let result = (parseInt(rarity) / total) * 100;
-    return Math.floor(result) ? Math.floor(result) : 1
-  }
+    return Math.floor(result) ? Math.floor(result) : 1;
+  };
 
   function shuffle(array) {
     for (let i = 0; i < 100; i++) {
@@ -14,64 +14,77 @@ export const createDna = layers => {
         [array[i], array[j]] = [array[j], array[i]];
       }
     }
-    return array
+    return array;
   }
 
-  const newLayers = layers.map(layer => {
-    const totalTraits = (layer.traits.map(trait => parseInt(trait.Rarity))).reduce((acc, curr) => acc + curr);
-    const newTraits = (layer.traits.map(trait => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait))).flat();
-    return { ...layer, traits: shuffle(newTraits) }
-  })
+  const newLayers = layers.map((layer) => {
+    const totalTraits = layer.traits
+      .map((trait) => parseInt(trait.Rarity))
+      .reduce((acc, curr) => acc + curr);
+    const newTraits = layer.traits
+      .map((trait) =>
+        Array(getPercentage(trait.Rarity, totalTraits)).fill(trait)
+      )
+      .flat();
+    return { ...layer, traits: shuffle(newTraits) };
+  });
   return newLayers.reverse();
-}
+};
 
 export const isUnique = (attributes, attr, rule) => {
-  let parseAttrToRule = attr.map(p => ({ layerTitle: p.trait_type, imageName: p.value }))
+  let parseAttrToRule = attr.map((p) => ({
+    layerTitle: p.trait_type,
+    imageName: p.value,
+  }));
   let att_str = JSON.stringify(attr);
   for (let _attr of attributes) {
     let _attr_str = JSON.stringify(_attr);
     if (_attr_str === att_str) return false;
-  };
+  }
   let result;
   for (let rl of rule) {
-    result = rl.every(el => {
-      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) return true;
+    result = rl.every((el) => {
+      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el)))
+        return true;
       return false;
     });
 
     if (result === true) return false;
-  };
-  return true
-}
+  }
+  return true;
+};
 
-export const createUniqueLayer = async props => {
-  const { dispatch, setLoader, layers, rule, mintAmount, collectionName } = props;
+export const createUniqueLayer = async (props) => {
+  const { dispatch, setLoader, layers, rule, mintAmount, collectionName } =
+    props;
   const newLayers = [];
   const newAttributes = [];
   let uniqueIndex = 0;
 
-  for (let i = 0; i < (mintAmount + uniqueIndex); i++) {
-    const promise = new Promise(resolve => {
+  for (let i = 0; i < mintAmount + uniqueIndex; i++) {
+    const promise = new Promise((resolve) => {
       setTimeout(() => {
-        dispatch(setLoader(
-          `preparing ${newAttributes.length} of ${mintAmount} assets 
+        dispatch(
+          setLoader(
+            `preparing ${newAttributes.length} of ${mintAmount} assets 
 removing ${uniqueIndex} duplicates`
-        ))
+          )
+        );
 
         let attr = [];
         layers.forEach(({ layerTitle, traits }) => {
-          let randNum = Math.floor(Math.random() * traits.length)
-          let { traitTitle, Rarity, image } = traits[randNum]
+          let randNum = Math.floor(Math.random() * traits.length);
+          let { traitTitle, Rarity, image } = traits[randNum];
           attr.push({
             trait_type: layerTitle,
-            value: traitTitle.replace(".png",""),
+            value: traitTitle.replace('.png', ''),
             rarity: Rarity,
-            image: image
-          })
-        })
-      
+            image: image,
+          });
+        });
+
         if (isUnique(newAttributes, attr, rule)) {
-          newAttributes.push([...attr])
+          newAttributes.push([...attr]);
         } else {
           uniqueIndex += 1;
         }
@@ -85,40 +98,40 @@ removing ${uniqueIndex} duplicates`
     newLayers.push({
       id: uuid(),
       name: `${collectionName} ${getDefaultName(id + 1)}`.trim(),
-      description: "",
-      image: "image",
-      attributes: attr
-    })
-  })
+      description: '',
+      image: 'image',
+      attributes: attr,
+    });
+  });
 
   return newLayers;
-}
+};
 
-export const generateArt = async props => {
+export const generateArt = async (props) => {
   const { layers, canvas, image, dispatch, setLoader } = props;
   const uniqueImages = [];
   for (let [index, { attributes, id }] of layers.entries()) {
-    dispatch(setLoader(`generating ${index + 1} of ${layers.length}`))
+    dispatch(setLoader(`generating ${index + 1} of ${layers.length}`));
     const images = [];
-    attributes.forEach(attr => {
-      images.push(attr.image)
-    })
+    attributes.forEach((attr) => {
+      images.push(attr.image);
+    });
     await handleImage({ images, canvas, image });
     const imageUrl = canvas.toDataURL('image/webp', 1);
-    uniqueImages.push({ id, imageUrl })
+    uniqueImages.push({ id, imageUrl });
   }
-  dispatch(setLoader(''))
+  dispatch(setLoader(''));
   return uniqueImages;
-}
+};
 
-export const parseLayers = props => {
+export const parseLayers = (props) => {
   const { uniqueLayers, arts } = props;
-  return uniqueLayers.map(layer => {
+  return uniqueLayers.map((layer) => {
     for (let art of arts) {
       if (art.id === layer.id) {
-        return { ...layer, image: art.imageUrl }
+        return { ...layer, image: art.imageUrl };
       }
     }
-    return layer
-  })
-}
+    return layer;
+  });
+};
