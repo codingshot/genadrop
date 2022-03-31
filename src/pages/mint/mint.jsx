@@ -1,15 +1,17 @@
+
 import React, { useRef, useState, useEffect } from 'react';
 import classes from './mint.module.css';
 import { handleZipFile } from './mint-script';
 import AssetPreview from '../../components/Mint/AssetPreview/AssetPreview';
 import lineIcon from '../../assets/icon-line.svg';
 
+
 const Mint = () => {
   const fileRef = useRef(null);
   const dropRef = useRef(null);
 
   const [state, setState] = useState({
-    fileName: '',
+    fileName: "",
     file: null,
     metadata: null,
     zip: null,
@@ -25,13 +27,17 @@ const Mint = () => {
     let file = event.target.files[0];
     if (!file) return;
 
+
     let name = file.name.split('.');
+
     let fileName = name[0];
     let fileType = name[1];
-    let supportedTypes = ['zip', 'png', 'jpeg', 'jpg', 'webp'];
+    let supportedTypes = ["zip", "png", "jpeg", "jpg", "webp"];
     if (!supportedTypes.includes(fileType.toLowerCase())) return;
 
+
     if (fileType === 'zip') {
+
       handleSetState({ zip: file, fileName });
       handleZipFile({ file, handleSetState });
     } else {
@@ -43,6 +49,7 @@ const Mint = () => {
     if (!dropRef.current) return;
     dropRef.current.ondragover = (e) => {
       e.preventDefault();
+
       document.querySelector('#drop-area').style.border = '2px dashed green';
     };
     dropRef.current.ondragleave = (e) => {
@@ -54,6 +61,7 @@ const Mint = () => {
       e.preventDefault();
       document.querySelector('#drop-area').style.border =
         '1px dashed gainsboro';
+
       handleFileChange({ target: e.dataTransfer });
     };
   }, [file]);
@@ -65,7 +73,9 @@ const Mint = () => {
           data={{ file, fileName, metadata, zip }}
           changeFile={() =>
             handleSetState({
+
               fileName: '',
+
               file: null,
               metadata: null,
               zip: null,
@@ -76,15 +86,40 @@ const Mint = () => {
         <div className={classes.wrapper}>
           <h1 className={classes.title}>Mint Your NFTs</h1>
           <p className={classes.description}>
-            Upload an
-            <span>
-              <img src={lineIcon} alt="" /> asset
-            </span>
-            or a
-            <span>
-              <img src={lineIcon} alt="" /> collection
-            </span>
-            to create NFT
+
+            Upload a{" "}
+            <Popup
+              position="bottom center"
+              on={["hover", "focus", "click"]}
+              trigger={
+                <span>
+                  {" "}
+                  <img src={lineIcon} alt="" /> file
+                </span>
+              }
+            >
+              <div className={classes["tooltip"]}>.png, .jpg, .gif, .mp4</div>
+            </Popup>{" "}
+            or a{" "}
+            <Popup
+              position="bottom center"
+              on={["hover", "focus", "click"]}
+              trigger={
+                <span>
+                  {" "}
+                  <img src={lineIcon} alt="" /> collection
+                </span>
+              }
+            >
+              <div className={classes["col-tooltip"]}>
+                A collection is a rendered batch of generative images that the
+                GenaDrop create app has downloaded as a .ZIP folder with
+                accompanying metadata and all individual images as, PNGs
+              </div>
+            </Popup>
+            to create NFT(s)
+
+
           </p>
           <div ref={dropRef} className={classes.uploadWrapper}>
             <div>
@@ -98,7 +133,9 @@ const Mint = () => {
               Browse files
             </button>
             <input
+
               style={{ display: 'none' }}
+
               onChange={handleFileChange}
               ref={fileRef}
               type="file"
