@@ -78,7 +78,16 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
 
   const { pointer, showGuide } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
+  };
+  const handleCancel = () => {
+    dispatch(setDidMout(true));
+    setGuide(false);
+    handleSetState({ pointer: 1 });
+  };
+  const handleNext = () => {
+    if (pointer === guideLength) { return handleCancel(); }
+    handleSetState({ pointer: pointer + 1 });
   };
 
   const handlePrev = () => {
@@ -86,15 +95,6 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
     handleSetState({ pointer: pointer - 1 });
   };
 
-  const handleCancel = () => {
-    dispatch(setDidMout(true));
-    setGuide(false);
-    handleSetState({ pointer: 1 });
-  };
-  const handleNext = () => {
-    if (pointer === guideLength) return handleCancel();
-    handleSetState({ pointer: pointer + 1 });
-  };
   const control = (
     <div className={classes.control}>
       <div className={classes.indicator}>
@@ -105,36 +105,43 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
               key={idx}
               onClick={() => handleSetState({ pointer: idx + 1 })}
               className={`${idx + 1 === pointer && classes.active}`}
-            ></span>
+            />
           ))}
       </div>
       {pointer > 1 && (
         <button
+          type="button"
           onClick={handlePrev}
           className={`${classes.prev} ${pointer > 1 && classes.active}`}
         >
           <img src={leftArrow} alt="" />
-          prev{' '}
+          prev
+          {' '}
         </button>
       )}
 
       {pointer < guideLength ? (
         <button
+          type="button"
           onClick={handleNext}
           className={`${classes.next} ${
             pointer < guideLength && classes.active
           }`}
         >
-          next <img src={rightArrow} alt="" />
+          next
+          {' '}
+          <img src={rightArrow} alt="" />
         </button>
       ) : (
         <button
+          type="button"
           onClick={handleCancel}
           className={`${classes.next} ${
             pointer < guideLength && classes.active
           }`}
         >
-          close{' '}
+          close
+          {' '}
         </button>
       )}
     </div>
@@ -142,16 +149,16 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
 
   const content = (
     <div className={classes.content}>
-      <div className={classes.title}>{createUseGuide[pointer]['title']}</div>
+      <div className={classes.title}>{createUseGuide[pointer].title}</div>
       <div className={classes.subTitle}>
         {createUseGuide[pointer]['sub-title']}
       </div>
-      {createUseGuide[pointer]['more'] && (
-        <div className={classes.more}>{createUseGuide[pointer]['more']}</div>
+      {createUseGuide[pointer].more && (
+        <div className={classes.more}>{createUseGuide[pointer].more}</div>
       )}
       <img
         className={classes.preview}
-        src={createUseGuide[pointer]['preview']}
+        src={createUseGuide[pointer].preview}
         alt=""
       />
     </div>
@@ -159,11 +166,11 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
 
   const intro = (
     <div className={classes.content}>
-      <div className={classes.title}>{createGuideIntro['title']}</div>
+      <div className={classes.title}>{createGuideIntro.title}</div>
       <div className={classes.subTitle}>{createGuideIntro['sub-title']}</div>
       <img
         className={classes.preview}
-        src={createGuideIntro['preview']}
+        src={createGuideIntro.preview}
         alt=""
       />
     </div>
@@ -171,8 +178,8 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
 
   const introControl = (
     <div className={classes.introControl}>
-      <button onClick={handleCancel}>cancel</button>
-      <button onClick={() => handleSetState({ showGuide: true })}>
+      <button type="button" onClick={handleCancel}>cancel</button>
+      <button type="button" onClick={() => handleSetState({ showGuide: true })}>
         Get started
       </button>
     </div>

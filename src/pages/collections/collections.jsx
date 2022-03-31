@@ -1,12 +1,14 @@
-import axios from 'axios';
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import React, {
+  useEffect, useRef, useState, useContext,
+} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import axios from 'axios';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../utils';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import { getPolygonNfts } from '../../utils/arc_ipfs';
-import { transformArrayOfArraysToArrayOfObjects } from './collection-script';
+import transformArrayOfArraysToArrayOfObjects from './collection-script';
 import { fetchCollections } from '../../utils/firebase';
 import { GenContext } from '../../gen-state/gen.context';
 import NotFound from '../../components/not-found/notFound';
@@ -41,7 +43,7 @@ const Collections = () => {
   } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const getCollectionByChain = () => {
@@ -59,14 +61,14 @@ const Collections = () => {
     }
   };
 
-  // *************************get results from different blockchains**************************************
+  // *************************get results from different blockchains*************************
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        let collections = await fetchCollections(mainnet);
-        let result = await getNftCollections(collections, mainnet);
+        const collections = await fetchCollections(mainnet);
+        const result = await getNftCollections(collections, mainnet);
         handleSetState({ algoCollection: result });
-      })();
+      }());
     } catch (error) {
       console.log(error);
     }
@@ -74,33 +76,38 @@ const Collections = () => {
     try {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
-        let data = transformArrayOfArraysToArrayOfObjects(result);
-        for (let d of data) {
-          let response = await axios.get(
-            d['url'].replace('ipfs://', 'https://ipfs.io/ipfs/')
+        const data = transformArrayOfArraysToArrayOfObjects(result);
+        for (const d of data) {
+          const response = await axios.get(
+            d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
           );
         }
         // handleSetState({ polyCollection: result });
         // console.log(result);
-      })();
+      }());
     } catch (error) {
       console.log(error);
     }
   }, []);
-  // ***************************** get search result for different blockchains ************************
+  // ***********************************************************************************************
+
+  // ************************* get search result for different blockchains *************************
   useEffect(() => {
-    let collection = getCollectionByChain();
+    const collection = getCollectionByChain();
     if (!collection) return;
-    let filtered = collection.filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
   }, [filter.searchValue]);
-  // ************************* sort by price function for different blockchains *********************
+  // ***********************************************************************************************
+
+  // *********************** sort by price function for different blockchains **********************
+  // eslint-disable-next-line consistent-return
   const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
@@ -111,9 +118,10 @@ const Collections = () => {
     }
     handleSetState({ filteredCollection: sorted });
   };
-  // ********************************* render blockchains *******************************************
+  // ***********************************************************************************************
+
+  // ********************************* render blockchains ******************************************
   useEffect(() => {
-    console.log(filter);
     if (domMountRef.current) {
       sortPrice(getCollectionByChain());
     } else {
@@ -135,19 +143,13 @@ const Collections = () => {
           <h1>Collections</h1>
           <div className={classes.searchAndFilter}>
             <SearchBar
-              onSearch={(value) =>
-                handleSetState({ filter: { ...filter, searchValue: value } })
-              }
+              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
             <ChainDropdown
-              onChainFilter={(value) =>
-                handleSetState({ filter: { ...filter, chain: value } })
-              }
+              onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
             />
             <PriceDropdown
-              onPriceFilter={(value) =>
-                handleSetState({ filter: { ...filter, price: value } })
-              }
+              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
             />
           </div>
         </div>
@@ -161,17 +163,17 @@ const Collections = () => {
           <NotFound />
         ) : (
           <div className={classes.skeleton}>
-            {Array(4)
-              .fill(null)
-              .map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={250} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                </div>
-              ))}
+            {
+          ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+            <div key={id}>
+              <Skeleton count={1} height={250} />
+              <br />
+              <Skeleton count={1} height={30} />
+              <br />
+              <Skeleton count={1} height={30} />
+            </div>
+          ))
+        }
           </div>
         )}
       </div>

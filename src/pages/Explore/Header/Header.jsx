@@ -1,5 +1,5 @@
-import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 import Skeleton from 'react-loading-skeleton';
 import classes from './Header.module.css';
 import listIcon from '../../../assets/icon-list.svg';
@@ -8,7 +8,6 @@ import tradeIcon from '../../../assets/icon-trade.svg';
 import Copy from '../../../components/copy/copy';
 
 const Header = ({ collection, getHeight }) => {
-
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
   const [state, setState] = useState({
@@ -17,17 +16,18 @@ const Header = ({ collection, getHeight }) => {
   const { dollarPrice } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
-  const { name, owner, price, imageUrl, numberOfNfts, description } =
-    collection;
+  const {
+    name, owner, price, imageUrl, numberOfNfts, description,
+  } = collection;
 
   const getUsdValue = () => {
     axios
-      .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
-        let amount = res.data.data.amount * price;
+        const amount = res.data.data.amount * price;
         if (isNaN(amount)) {
           handleSetState({ dollarPrice: 0 });
         } else {
@@ -41,9 +41,9 @@ const Header = ({ collection, getHeight }) => {
   }, [price]);
 
   useEffect(() => {
-    window.addEventListener('resize', (e) => {
+    window.addEventListener('resize', () => {
       if (domMountRef.current) {
-        let res = headerRef.current.getBoundingClientRect().height;
+        const res = headerRef.current.getBoundingClientRect().height;
         getHeight(res);
       } else {
         domMountRef.current = true;
@@ -71,10 +71,10 @@ const Header = ({ collection, getHeight }) => {
                 <Copy
                   message={owner}
                   placeholder={
-                    owner &&
-                    `${owner.substring(0, 5)}...${owner.substring(
+                    owner
+                    && `${owner.substring(0, 5)}...${owner.substring(
                       owner.length - 4,
-                      owner.length
+                      owner.length,
                     )}`
                   }
                 />
@@ -87,9 +87,7 @@ const Header = ({ collection, getHeight }) => {
           )}
         </div>
         <div className={classes.description}>
-          {description ? (
-            description
-          ) : (
+          {description || (
             <div className={classes.skeleton}>
               <Skeleton count={2} height={20} />
             </div>
@@ -104,7 +102,10 @@ const Header = ({ collection, getHeight }) => {
             <div className={classes.price}>
               {price}
               <span className={classes.chain}>
-                Algo ({dollarPrice.toFixed(2)} USD)
+                Algo (
+                {dollarPrice.toFixed(2)}
+                {' '}
+                USD)
               </span>
             </div>
           </div>

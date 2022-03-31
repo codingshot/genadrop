@@ -20,7 +20,7 @@ const Banner = () => {
           data, upload to ipfs, mint, and list to multiple blockchains with NO
           CODE.
         </p>
-        <button onClick={() => history.push('./create')}>
+        <button type="button" onClick={() => history.push('./create')}>
           Generate Collection
         </button>
       </div>

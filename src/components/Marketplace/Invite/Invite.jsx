@@ -4,7 +4,7 @@ import classes from './styles.module.css';
 const Invite = () => (
   <div className={classes.container}>
     <p>Join our community on Discord</p>
-    <button>
+    <button type="button">
       <a
         href="https://discord.gg/4vdtmQqz6d"
         target="_blank"

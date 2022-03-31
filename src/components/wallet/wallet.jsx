@@ -39,8 +39,9 @@ const chains = [
 
 function ConnectWallet({ setToggleNav }) {
   const history = useHistory();
-  const { dispatch, connector, account, chainId, mainnet } =
-    useContext(GenContext);
+  const {
+    dispatch, connector, account, chainId, mainnet,
+  } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState('Copy Address');
@@ -79,7 +80,7 @@ function ConnectWallet({ setToggleNav }) {
     }
   }
 
-  const toggleWallet = async (e) => {
+  const toggleWallet = async () => {
     let connector;
     try {
       connector = await web3Modal.connect();
@@ -94,14 +95,14 @@ function ConnectWallet({ setToggleNav }) {
     if (provider.connection.url === 'metamask') {
       await dispatch(setConnector(provider));
       await dispatch(setChainId(window.ethereum.networkVersion));
-      const account = await signer.getAddress();
-      dispatch(setAccount(account));
+      const accountAddress = await signer.getAddress();
+      dispatch(setAccount(accountAddress));
       connector.on('accountsChanged', (accounts) => {
         dispatch(setAccount(accounts[0]));
       });
-      connector.on('chainChanged', (chainId) => {
-        const provider = new ethers.providers.Web3Provider(connector);
-        dispatch(setConnector(provider));
+      connector.on('chainChanged', () => {
+        const web3Provider = new ethers.providers.Web3Provider(connector);
+        dispatch(setConnector(web3Provider));
       });
       connector.on('networkChanged', (networkId) => {
         dispatch(setChainId(networkId));
@@ -114,7 +115,6 @@ function ConnectWallet({ setToggleNav }) {
       }
       // Subscribe to connection events
       connector.on('connect', (error, payload) => {
-        console.log('connecting flight');
         if (error) {
           dispatch(setNotification('No connected'));
           // feedbacktype: warn
@@ -124,7 +124,6 @@ function ConnectWallet({ setToggleNav }) {
 
         // Get provided accounts
         const { accounts } = payload.params[0];
-        console.log(payload.params, accounts);
         dispatch(setAccount(accounts[0]));
       });
 
@@ -145,7 +144,7 @@ function ConnectWallet({ setToggleNav }) {
         dispatch(setAccount(accounts[0]));
       }
 
-      connector.on('disconnect', (error, payload) => {
+      connector.on('disconnect', (error) => {
         if (error) {
           throw error;
         }
@@ -177,7 +176,7 @@ function ConnectWallet({ setToggleNav }) {
   };
 
   const getConnectedChain = () => {
-    const c = chains.find((c) => c.networkId == chainId);
+    const c = chains.find((c) => c.networkId === chainId);
     if (!c) return;
     return c.label;
   };
@@ -204,12 +203,12 @@ function ConnectWallet({ setToggleNav }) {
           className={`${classes.dropdown} ${toggleDropdown && classes.active}`}
         >
           <div
-            onClick={() =>
-              handleCopy({ navigator, clipboard: clipboardRef.current })
-            }
+            onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
             className={classes.option}
           >
-            <div>{clipboardState}</div> <img src={copyIcon} alt="" />
+            <div>{clipboardState}</div>
+            {' '}
+            <img src={copyIcon} alt="" />
             <input
               style={{ display: 'none' }}
               ref={clipboardRef}
@@ -218,7 +217,11 @@ function ConnectWallet({ setToggleNav }) {
             />
           </div>
           <div onClick={handleSwitch} className={classes.option}>
-            <div>Switch to {network === 'mainnet' ? 'Testnet' : 'Mainnet'}</div>
+            <div>
+              Switch to
+              {' '}
+              {network === 'mainnet' ? 'Testnet' : 'Mainnet'}
+            </div>
             <img src={switchIcon} alt="" />
           </div>
           <div onClick={disconnect} className={classes.option}>

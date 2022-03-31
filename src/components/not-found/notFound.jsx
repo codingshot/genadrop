@@ -8,7 +8,7 @@ const NotFound = () => (
       <img src={icon} alt="" />
     </div>
     <h1>No results Found.</h1>
-    <p>We can not find any item matching your search</p>
+    <p>We can’t find any item matching  your search</p>
   </div>
 );
 

@@ -1,4 +1,7 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
+import React, {
+  useRef, useContext, useEffect, useState,
+} from 'react';
+
 import { setClipboard } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './clipboard.module.css';
@@ -12,12 +15,13 @@ const Clipboard = () => {
   });
   const { toggleClipboard, clipboardState } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
   const clipboardRef = useRef(null);
 
-  const { notification, clipboardMessage, loaderMessage, dispatch } =
-    useContext(GenContext);
+  const {
+    notification, clipboardMessage, loaderMessage, dispatch,
+  } = useContext(GenContext);
 
   const handleCopy = (props) => {
     const { navigator, clipboard } = props;
@@ -49,10 +53,10 @@ const Clipboard = () => {
           notification && loaderMessage
             ? '10em'
             : loaderMessage
-            ? '6em'
-            : notification
-            ? '8em'
-            : '4em',
+              ? '6em'
+              : notification
+                ? '8em'
+                : '4em',
       }}
       className={`${classes.container} ${toggleClipboard && classes.active}`}
     >
@@ -66,14 +70,12 @@ const Clipboard = () => {
       <div className={classes.action}>
         <div
           className={classes.copy}
-          onClick={() =>
-            handleCopy({ navigator, clipboard: clipboardRef.current })
-          }
+          onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
         >
           {clipboardState}
         </div>
         <a href={clipboardMessage} target="_blank" rel="noreferrer">
-          <img src={linkIcon} alt="" />
+          <img src={linkIcon} alt="icon" />
         </a>
       </div>
       <input

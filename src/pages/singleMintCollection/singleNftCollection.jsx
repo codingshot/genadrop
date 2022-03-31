@@ -52,38 +52,42 @@ const SingleNftCollection = () => {
   };
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
-  // ****************************** get singleNft collections for all the blockchains ******************
+  // ******************* get singleNft collections for all the blockchains *******************
   useEffect(() => {
     try {
       (async function getAlgoSingleNftCollection() {
         const singleNftCollections = await readAllSingleNft();
         const result = await getSingleNfts(singleNftCollections);
-        console.log('single result: ', result);
         handleSetState({
           algoCollection: result,
         });
-      })();
+      }());
     } catch (error) {
       console.log(error);
     }
   }, []);
-  // ***************************** get search result for different blockchains ************************
+  // *******************************************************************************************
+
+  // ********************** get search result for different blockchains ************************
   useEffect(() => {
-    let collection = getCollectionByChain();
+    const collection = getCollectionByChain();
     if (!collection) return;
-    let filtered = collection.filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
   }, [filter.searchValue]);
-  // ************************* sort by price function for different blockchains *********************
+  // *******************************************************************************************
+
+  // ********************* sort by price function for different blockchains ********************
+  // eslint-disable-next-line consistent-return
   const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
@@ -94,7 +98,9 @@ const SingleNftCollection = () => {
     }
     handleSetState({ filteredCollection: sorted });
   };
-  // ********************************* render blockchains *******************************************
+  // *******************************************************************************************
+
+  // *********************************** render blockchains ************************************
   useEffect(() => {
     if (domMountRef.current) {
       sortPrice(getCollectionByChain());
@@ -118,19 +124,13 @@ const SingleNftCollection = () => {
         </div>
         <div className={classes.searchAndFilter}>
           <SearchBar
-            onSearch={(value) =>
-              handleSetState({ filter: { ...filter, searchValue: value } })
-            }
+            onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
           />
           <ChainDropdown
-            onChainFilter={(value) =>
-              handleSetState({ filter: { ...filter, chain: value } })
-            }
+            onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
           />
           <PriceDropdown
-            onPriceFilter={(value) =>
-              handleSetState({ filter: { ...filter, price: value } })
-            }
+            onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
           />
         </div>
         {filteredCollection?.length ? (

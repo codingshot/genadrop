@@ -15,7 +15,7 @@ const Demo = () => (
       <div className={classes.operations}>
         <div className={classes.card}>
           <div className={classes.operation}>
-            <img src={createIcon} alt="" />
+            <img src={createIcon} alt="create" />
             <span>create your collection</span>
           </div>
           <div className={classes.description}>
@@ -25,7 +25,7 @@ const Demo = () => (
         </div>
         <div className={classes.card}>
           <div className={classes.operation}>
-            <img src={walletIcon} alt="" />
+            <img src={walletIcon} alt="wallet" />
             <span>Set Up your Wallet</span>
           </div>
           <div className={classes.description}>
@@ -35,7 +35,7 @@ const Demo = () => (
         </div>
         <div className={classes.card}>
           <div className={classes.operation}>
-            <img src={mintIcon} alt="" />
+            <img src={mintIcon} alt="mint" />
             <span>Mint your NFTs</span>
           </div>
           <div className={classes.description}>
@@ -46,7 +46,7 @@ const Demo = () => (
         </div>
         <div className={classes.card}>
           <div className={classes.operation}>
-            <img src={listIcon} alt="" />
+            <img src={listIcon} alt="list" />
             <span>List Them for sale</span>
           </div>
           <div className={classes.description}>
@@ -56,6 +56,7 @@ const Demo = () => (
           <div className={classes.label}>4</div>
         </div>
       </div>
+
     </div>
   </div>
 );

@@ -4,6 +4,6 @@ export const getItemStyle = (isDragging, draggableStyle) => ({
   ...draggableStyle,
 });
 
-export const getListStyle = (isDraggingOver) => ({
+export const getListStyle = () => ({
   width: '100%',
 });

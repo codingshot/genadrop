@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuid } from 'uuid';
 import classes from './layerorders.module.css';
-
 import { GenContext } from '../../gen-state/gen.context';
 import {
   addLayer,
@@ -21,7 +20,9 @@ import markIcon from '../../assets/icon-mark.svg';
 import plusIcon from '../../assets/icon-plus.svg';
 
 const LayerOrders = () => {
-  const { layers, dispatch, collectionName, isRule } = useContext(GenContext);
+  const {
+    layers, dispatch, collectionName, isRule,
+  } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,
     inputValue: '',
@@ -29,10 +30,12 @@ const LayerOrders = () => {
     activeInput: false,
   });
 
-  const { prompt, inputValue, renameAction, activeInput } = state;
+  const {
+    prompt, inputValue, renameAction, activeInput,
+  } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const onDragEnd = ({ source, destination }) => {
@@ -47,7 +50,12 @@ const LayerOrders = () => {
   const handleAddLayer = (value) => {
     if (!value) return;
     dispatch(
-      addLayer({ id: uuid(), traitsAmount: 0, layerTitle: value, traits: [] })
+      addLayer({
+        id: uuid(),
+        traitsAmount: 0,
+        layerTitle: value,
+        traits: [],
+      }),
     );
   };
 
@@ -55,19 +63,27 @@ const LayerOrders = () => {
     dispatch(removeLayer(layer));
   };
 
+  const getCollectionsNames = async () => {
+    const collections = await fetchCollections();
+    const names = [];
+    collections.forEach((col) => {
+      names.push(col.name);
+    });
+    return names;
+  };
   const handleRename = async (event) => {
     event.preventDefault();
     try {
       dispatch(setLoader('saving...'));
-      let names = await getCollectionsNames();
-      let isUnique = names.find(
-        (name) => name.toLowerCase() === inputValue.toLowerCase()
+      const names = await getCollectionsNames();
+      const isUnique = names.find(
+        (name) => name.toLowerCase() === inputValue.toLowerCase(),
       );
       if (isUnique) {
         dispatch(
           setNotification(
-            `${inputValue} already exist. Please choose another name`
-          )
+            `${inputValue} already exist. Please choose another name`,
+          ),
         );
       } else {
         handleSetState({ renameAction: false });
@@ -76,20 +92,11 @@ const LayerOrders = () => {
     } catch (error) {
       dispatch(
         setNotification(
-          'could not save your collection name, please try again.'
-        )
+          'could not save your collection name, please try again.',
+        ),
       );
     }
     dispatch(setLoader(''));
-  };
-
-  const getCollectionsNames = async () => {
-    let collections = await fetchCollections();
-    let names = [];
-    collections.forEach((col) => {
-      names.push(col.name);
-    });
-    return names;
   };
 
   return (
@@ -146,17 +153,17 @@ const LayerOrders = () => {
                   {layers.map((item, index) => (
                     <Draggable
                       key={index}
-                      draggableId={index + ''}
+                      draggableId={`${index}`}
                       index={index}
                     >
-                      {(provided, snapshot) => (
+                      {(providedProp, snapshotProp) => (
                         <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
+                          ref={providedProp.innerRef}
+                          {...providedProp.draggableProps}
+                          {...providedProp.dragHandleProps}
                           style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
+                            snapshotProp.isDragging,
+                            providedProp.draggableProps.style,
                           )}
                         >
                           <Layer
@@ -165,9 +172,7 @@ const LayerOrders = () => {
                             trait={item.traitsAmount}
                             click={() => handleRemoveLayer(item)}
                             activeInput={activeInput}
-                            setActiveInput={(input) =>
-                              handleSetState({ activeInput: input })
-                            }
+                            setActiveInput={(input) => handleSetState({ activeInput: input })}
                           />
                         </div>
                       )}
@@ -182,15 +187,18 @@ const LayerOrders = () => {
             <div className={classes.promptWrapper}>
               <Prompt
                 handleAddLayer={handleAddLayer}
-                setPrompt={(prompt) => handleSetState({ prompt })}
+                setPrompt={(promptAdded) => handleSetState({ prompt: promptAdded })}
               />
             </div>
           ) : (
             <button
+              type="button"
               className={classes.addBtn}
               onClick={() => !isRule && handleSetState({ prompt: true })}
             >
-              Add Layer <img src={plusIcon} alt="" />
+              Add Layer
+              {' '}
+              <img src={plusIcon} alt="plus-icon" />
             </button>
           )}
         </div>

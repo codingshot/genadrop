@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-
 import classes from './Dropdown.module.css';
 import dropdownIcon from '../../../assets/icon-dropdown.svg';
 import attributeFilterIcon from '../../../assets/icon-attribute-filter.svg';
