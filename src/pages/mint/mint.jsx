@@ -49,6 +49,7 @@ const Mint = () => {
     if (!dropRef.current) return;
     dropRef.current.ondragover = (e) => {
       e.preventDefault();
+
       document.querySelector('#drop-area').style.border = '2px dashed green';
     };
     dropRef.current.ondragleave = (e) => {
@@ -83,7 +84,6 @@ const Mint = () => {
         <div className={classes.wrapper}>
           <h1 className={classes.title}>Mint Your NFTs</h1>
           <p className={classes.description}>
-
             Upload a
             {' '}
             <Popup
@@ -122,7 +122,6 @@ const Mint = () => {
               </div>
             </Popup>
             to create NFT(s)
-
           </p>
           <div ref={dropRef} className={classes.uploadWrapper}>
             <div>
