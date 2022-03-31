@@ -346,7 +346,7 @@ export async function mintSingleToPoly(singleMintProps) {
 
 export async function mintSingleToCelo(singleMintProps) {
   const {
-    file, metadata, price, account, connector, dispatch, setLoader, mainnet,
+    file, metadata, account, connector, dispatch, setLoader, mainnet,
   } = singleMintProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -451,7 +451,7 @@ export async function createNFT(createProps) {
   dispatch(
     setNotification('uploading assets, please do not refresh your page.'),
   );
-  for (let i = 0; i < metadata.length; i + 1) {
+  for (let i = 0; i < metadata.length; i += 1) {
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
     const imgName = `${metadata[i].name}.png`;
     const imgFile = data.files[imgName];
@@ -520,7 +520,7 @@ export async function mintToAlgo(algoProps) {
     const collection_id = [];
     const txns = [];
     dispatch(setNotification('preparing assets for minting'));
-    for (let i = 0; i < ipfsJsonData.length; i + 1) {
+    for (let i = 0; i < ipfsJsonData.length; i += 1) {
       dispatch(setLoader(`minting ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
       txns.push(txn);
@@ -560,7 +560,7 @@ export async function mintToAlgo(algoProps) {
 
 export async function mintToCelo(celoProps) {
   const {
-    price, account, connector, fileName, dispatch, setNotification, setLoader, mainnet,
+    account, connector, fileName, dispatch, setNotification, setLoader, mainnet,
   } = celoProps;
   if (typeof window.ethereum !== 'undefined') {
     const ipfsJsonData = await createNFT({ ...celoProps });
@@ -597,7 +597,6 @@ export async function mintToCelo(celoProps) {
     try {
       tx = await contract.mintBatch(account, ids, amounts, uris, '0x');
       await tx.wait();
-      console.log(ids, amounts, account, contract.address, price);
       // let listingTx = await marketContract.createBulkMarketItem(
       // "0x008EeeDFa0B9310960818e94C8Bf1879f1c5da18", ["46169"], "100000",
       //  ["1"], 'General', "0xB4bE310666D2f909789Fb1a2FD09a9bEB0Edd99D")
@@ -695,11 +694,9 @@ export async function PurchaseNft(asset, account, connector, mainnet) {
     return;
   }
   const params = await algodTxnClient.getTransactionParams().do();
-  console.log('parag', asset);
   const enc = new TextEncoder();
   const note = enc.encode('Nft Purchase');
   const note2 = enc.encode('Platform fee');
-  console.log(note2);
   const txns = [];
   if (!connector) {
     alert('Please connect your wallet');
@@ -707,7 +704,6 @@ export async function PurchaseNft(asset, account, connector, mainnet) {
   }
 
   const userBalance = await algodClient.accountInformation(account).do();
-  console.log(userBalance);
   if (algosdk.microalgosToAlgos(userBalance.account.amount) <= asset.price) {
     alert('insufficent fund to cover cost');
     return false;
@@ -878,9 +874,6 @@ export async function getPolygonNfts(mainnet) {
 }
 
 export async function getPolygonUserPurchasedNfts(connector, mainnet) {
-  // let provider = new ethers.providers.AlchemyProvider("maticmum",
-  //  process.env.REACT_APP_ALCHEMY_KEY)
-  // let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
   if (!connector) {
     return [];
   }
@@ -892,9 +885,6 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
 }
 
 export async function purchasePolygonNfts(connector, mainnet, itemId, price) {
-  // let provider = new ethers.providers.AlchemyProvider("maticmum",
-  //  process.env.REACT_APP_ALCHEMY_KEY)
-  // let wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider)
   if (!connector) {
     return;
   }

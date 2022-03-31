@@ -8,7 +8,7 @@ export const createDna = (layers) => {
   };
 
   function shuffle(array) {
-    for (let i = 0; i < 100; i + 1) {
+    for (let i = 0; i < 100; i += 1) {
       for (let i = array.length - 1; i > 0; i - 1) {
         const j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];

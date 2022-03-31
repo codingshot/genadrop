@@ -2,7 +2,7 @@ import JSZip from 'jszip';
 
 export const getAweaveFormat = async (nftLayers) => {
   const clone = [];
-  for (let i = 0; i < nftLayers.length; i + 1) {
+  for (let i = 0; i < nftLayers.length; i += 1) {
     clone.push({
       name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
       image: 'image.png',
@@ -32,7 +32,7 @@ export const getAweaveFormat = async (nftLayers) => {
 
 export const getIpfsFormat = async (nftLayers) => {
   const clone = [];
-  for (let i = 0; i < nftLayers.length; i + 1) {
+  for (let i = 0; i < nftLayers.length; i += 1) {
     clone.push({
       name: nftLayers[i].name ? nftLayers[i].name : `_${i}`,
       image: 'image.png',
@@ -51,7 +51,7 @@ export const paginate = (input, count) => {
   let startIndex = 0;
   let endIndex = startIndex + countPerPage;
   const paginateObj = {};
-  for (let i = 1; i <= numberOfPages; i + 1) {
+  for (let i = 1; i <= numberOfPages; i += 1) {
     paginateObj[i] = input.slice(startIndex, endIndex);
     startIndex = endIndex;
     endIndex = startIndex + countPerPage;
@@ -77,7 +77,7 @@ export const downloadCallback = async (props) => {
       JSON.stringify(await getIpfsFormat(value), null, '\t'),
     );
   }
-  for (let i = 0; i < value.length; i + 1) {
+  for (let i = 0; i < value.length; i += 1) {
     const base64String = value[i].image.replace('data:image/png;base64,', '');
     zip.file(
       value[i].name ? `${value[i].name}.png` : `_${i}.png`,

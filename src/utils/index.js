@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import axios from 'axios';
 import fileDownload from 'js-file-download';
 // eslint-disable-next-line import/no-unresolved
@@ -9,7 +10,7 @@ import blankImage from '../assets/blank.png';
 
 export const getNftCollections = async (collections, mainnet) => {
   const collectionArr = [];
-  for (let i = 0; i < collections.length; i + 1) {
+  for (let i = 0; i < collections.length; i += 1) {
     try {
       const collectionObj = {};
       collectionObj.name = collections[i].name;
@@ -43,7 +44,7 @@ export const getNftCollection = async (collection, mainnet) => {
   const { data } = await axios.get(
     collection.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
   );
-  for (let i = 0; i < data.length; i + 1) {
+  for (let i = 0; i < data.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.collection_name = collection.name;
@@ -75,7 +76,7 @@ export const getNftCollection = async (collection, mainnet) => {
 
 export const getUserNftCollection = async (mainnet, data) => {
   const nftArr = [];
-  for (let i = 0; i < data?.length; i + 1) {
+  for (let i = 0; i < data?.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.collection_name = data[i].collection;
@@ -102,10 +103,9 @@ export const getUserNftCollection = async (mainnet, data) => {
   return nftArr;
 };
 
-// eslint-disable-next-line consistent-return
 export const getSingleNfts = async (mainnet, nfts) => {
   const nftArr = [];
-  for (let i = 0; i < nfts.length; i + 1) {
+  for (let i = 0; i < nfts.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.Id = nfts[i].id;
@@ -134,25 +134,6 @@ export const getSingleNfts = async (mainnet, nfts) => {
     }
   }
 };
-
-// export const getSingleNftDetails = async (mainnet, nft) => {
-//   let nftDetails = {}
-//   try {
-//       nftDetails.Id = nft.id
-//       nftDetails.price = nft.price
-//       nftDetails.buyer = nft.buyer
-//       nftDetails.owner = nft.owner
-//       nftDetails.sold = nft.sold
-//       nftDetails.dateSold = nft.dateSold
-//       nftDetails.description = nft.description
-//       let { asset: { params} } = await getAlgoData(mainnet, nft.id)
-//       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
-//       nftDetails.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-//       nftDetails.name = response.data.name
-//       nftDetails.description = response.data.description
-//       nftDetails.properties = response.data.properties
-//       return nftArr;
-// };
 
 export const getSingleNftDetails = async (mainnet, nft) => {
   const nftDetails = {};
@@ -200,8 +181,7 @@ export const getImageSize = async (img) => new Promise((resolve) => {
   };
 });
 
-export const getDefaultName = (nameId) => {
-  let id = nameId;
+export const getDefaultName = (id) => {
   id = String(id);
   if (id.length < 4) {
     const repeatBy = 4 - id.length;
@@ -216,16 +196,15 @@ export const handleImage = async (props) => {
   canvas.setAttribute('width', width);
   canvas.setAttribute('height', height);
   const ctx = canvas.getContext('2d');
-  // eslint-disable-next-line no-restricted-syntax
   for (const img of images) {
     const resImage = await new Promise((resolve) => {
-      const newImage = new Image();
-      newImage.src = URL.createObjectURL(img);
-      newImage.onload = () => {
-        resolve(newImage);
+      const mewImage = new Image();
+      mewImage.src = URL.createObjectURL(img);
+      mewImage.onload = () => {
+        resolve(mewImage);
       };
     });
-    if (resImage) ctx.drawImage(resImage, 0, 0, width, height);
+    if (resImage)ctx.drawImage(resImage, 0, 0, width, height);
   }
 };
 

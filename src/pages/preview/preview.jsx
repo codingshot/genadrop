@@ -182,7 +182,7 @@ const Preview = () => {
     let startIndex = 0;
     let endIndex = startIndex + countPerPage;
     const paginateObj = {};
-    for (let i = 1; i <= numberOfPages; i + 1) {
+    for (let i = 1; i <= numberOfPages; i += 1) {
       paginateObj[i] = nftLayers.slice(startIndex, endIndex);
       startIndex = endIndex;
       endIndex = startIndex + countPerPage;

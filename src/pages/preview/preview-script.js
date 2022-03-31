@@ -53,7 +53,7 @@ export const createUniqueLayer = async (props) => {
       resolve();
     }, 0);
   };
-  for (let i = 0; i < uniqueIndex; i + 1) {
+  for (let i = 0; i < uniqueIndex; i += 1) {
     const promise = new Promise(uniqueCall);
     // eslint-disable-next-line no-await-in-loop
     await promise;

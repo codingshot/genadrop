@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 
 export const getAweaveFormat = async (nftLayers, dispatch, setLoader) => {
   const clone = [];
-  for (let i = 0; i < nftLayers.length; i + 1) {
+  for (let i = 0; i < nftLayers.length; i += 1) {
     const promise = new Promise((resolve) => {
       setTimeout(() => {
         dispatch(
@@ -47,7 +47,7 @@ ${i + 1} of ${nftLayers.length}`,
 
 export const getIpfsFormat = async (nftLayers, dispatch, setLoader) => {
   const clone = [];
-  for (let i = 0; i < nftLayers.length; i + 1) {
+  for (let i = 0; i < nftLayers.length; i += 1) {
     const promise = new Promise((resolve) => {
       setTimeout(() => {
         dispatch(
@@ -79,7 +79,7 @@ export const paginate = (input, count) => {
   let startIndex = 0;
   let endIndex = startIndex + countPerPage;
   const paginateObj = {};
-  for (let i = 1; i <= numberOfPages; i + 1) {
+  for (let i = 1; i <= numberOfPages; i += 1) {
     paginateObj[i] = input.slice(startIndex, endIndex);
     startIndex = endIndex;
     endIndex = startIndex + countPerPage;
@@ -107,7 +107,7 @@ const downloadCallback = async (props) => {
       ),
     );
   }
-  for (let i = 0; i < value.length; i + 1) {
+  for (let i = 0; i < value.length; i += 1) {
     const promise = new Promise((resolve) => {
       setTimeout(() => {
         dispatch(
@@ -151,7 +151,7 @@ export const handleDownload = async (input) => {
       }`,
     ),
   );
-  for (let i = 1; i <= index; i + 1) {
+  for (let i = 1; i <= index; i += 1) {
     await downloadCallback({ ...input, id: i, value: paginated[i] });
   }
   dispatch(setNotification('downloaded successfully'));

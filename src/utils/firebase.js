@@ -66,7 +66,7 @@ async function writeUserData(
 ) {
   const name = fileName.split('-')[0];
   const updates = {};
-  for (let i = 0; i < collection_id.length; i + 1) {
+  for (let i = 0; i < collection_id.length; i += 1) {
     updates[collection_id[i]] = {
       id: collection_id[i],
       collection: name,
