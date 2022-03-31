@@ -1,10 +1,12 @@
-.chart{
-        height: 200px;
+.chart {
+  height: 200px;
 }
 
-.chart img{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        width: 50%;
+.nodata {
+  /* height: 3rem; */
+  text-align: center;
+  color: gray;
+  font-weight: 700;
+  font-size: 1rem;
+  /* padding: 10px; */
 }

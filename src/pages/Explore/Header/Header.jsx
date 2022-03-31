@@ -8,6 +8,7 @@ import tradeIcon from '../../../assets/icon-trade.svg';
 import Copy from '../../../components/copy/copy';
 
 const Header = ({ collection, getHeight }) => {
+
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
   const [state, setState] = useState({
@@ -99,6 +100,7 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOOR PRICE</div>
+
             <div className={classes.price}>
               {price}
               <span className={classes.chain}>

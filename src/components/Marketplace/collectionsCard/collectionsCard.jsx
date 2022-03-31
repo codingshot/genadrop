@@ -8,6 +8,7 @@ const CollectionsCard = ({ collection }) => {
     collection;
   const history = useHistory();
   const match = useRouteMatch();
+
   const [state, setState] = useState({ algoPrice: 0 });
   const { algoPrice } = state;
 
@@ -16,6 +17,7 @@ const CollectionsCard = ({ collection }) => {
   };
 
   useEffect(() => {
+
     axios
       .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
@@ -25,6 +27,7 @@ const CollectionsCard = ({ collection }) => {
   }, []);
 
   return (
+
     <div
       onClick={() => history.push(`/marketplace/collections/${name}`)}
       className={classes.card}
@@ -33,12 +36,14 @@ const CollectionsCard = ({ collection }) => {
         style={{ backgroundImage: `url(${image_url})` }}
         className={classes.imageContainer}
       />
+
       <div className={classes.body}>
         <div className={classes.thumbnail}>
           <img src={image_url} alt="" />
         </div>
         <div className={classes.name}>{name}</div>
         <div className={classes.description}>
+
           {description.length < 100
             ? description
             : `${description.substring(0, 100)}...`}

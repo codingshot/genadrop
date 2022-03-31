@@ -155,6 +155,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
   useEffect(() => {
     if (chainId) {
+
       const c = chains.find((c) => c.networkId == chainId);
       if (!c) return handleSetState({ chain: { label: 'unsupported chain' } });
       handleSetState({ chain: c });
@@ -241,6 +242,7 @@ const AssetPreview = ({ data, changeFile }) => {
                 }
               ></textarea>
             </div>
+
 
             <div className={classes.inputWrapper}>
               <label>

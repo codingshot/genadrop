@@ -19,6 +19,10 @@ const Graph = ({ details }) => {
     ],
     []
   );
+  const nodata = React.useMemo(() => [{
+    label: "Series 1",
+    data: []
+  }])
   const series = React.useMemo(
     () => ({
       showPoints: false,
@@ -35,14 +39,19 @@ const Graph = ({ details }) => {
   );
 
   const lineChart = (
-    <div className={classes.chart}>
+    <>
       {prices ? (
-        <Chart data={data} series={series} axes={axes} />
+        <div className={classes.chart}>
+          <Chart data={data} series={series} axes={axes} />
+        </div>
       ) : (
-        <img src="/assets/no-chart.svg" alt="" />
+
+        <div className={classes.nodata}>No Price History Available</div>
+
       )}
-    </div>
+    </>
   );
+
 
   return lineChart;
 };

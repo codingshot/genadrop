@@ -244,6 +244,7 @@ const CollectionNFT = () => {
                   />
                 </svg>
 
+
                 <svg
                   className={`${classes.icon} ${classes.dots}`}
                   width="6"
