@@ -1,12 +1,19 @@
-import classes from './layerorders.module.css';
+import React, { useContext, useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { useContext, useState } from 'react';
+import { v4 as uuid } from 'uuid';
+import classes from './layerorders.module.css';
+
 import { GenContext } from '../../gen-state/gen.context';
-import { addLayer, orderLayers, setCollectionName, setLoader, setNotification } from '../../gen-state/gen.actions';
-import { removeLayer } from '../../gen-state/gen.actions';
+import {
+  addLayer,
+  orderLayers,
+  setCollectionName,
+  setLoader,
+  setNotification,
+  removeLayer,
+} from '../../gen-state/gen.actions';
 import Layer from '../layer/layer';
 import Prompt from '../prompt/prompt';
-import { v4 as uuid } from 'uuid';
 import { getItemStyle, getListStyle } from './layeroders-script';
 import { fetchCollections } from '../../utils/firebase';
 import editIcon from '../../assets/icon-edit.svg';
@@ -14,92 +21,106 @@ import markIcon from '../../assets/icon-mark.svg';
 import plusIcon from '../../assets/icon-plus.svg';
 
 const LayerOrders = () => {
-
   const { layers, dispatch, collectionName, isRule } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,
-    inputValue: "",
+    inputValue: '',
     renameAction: false,
-    activeInput: false
-  })
+    activeInput: false,
+  });
 
   const { prompt, inputValue, renameAction, activeInput } = state;
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
   const onDragEnd = ({ source, destination }) => {
-    if (!destination) return
+    if (!destination) return;
     const newList = [...layers];
     const [removed] = newList.splice(source.index, 1);
     newList.splice(destination.index, 0, removed);
     dispatch(orderLayers(newList));
-    handleSetState({ inputValue: '' })
-  }
+    handleSetState({ inputValue: '' });
+  };
 
-  const handleAddLayer = value => {
-    if (!value) return
-    dispatch(addLayer({ "id": uuid(), "traitsAmount": 0, "layerTitle": value, traits: [] }));
-  }
+  const handleAddLayer = (value) => {
+    if (!value) return;
+    dispatch(
+      addLayer({ id: uuid(), traitsAmount: 0, layerTitle: value, traits: [] })
+    );
+  };
 
-  const handleRemoveLayer = layer => {
-    dispatch(removeLayer(layer))
-  }
+  const handleRemoveLayer = (layer) => {
+    dispatch(removeLayer(layer));
+  };
 
-  const handleRename = async event => {
+  const handleRename = async (event) => {
     event.preventDefault();
     try {
-      dispatch(setLoader("saving..."))
+      dispatch(setLoader('saving...'));
       let names = await getCollectionsNames();
-      let isUnique = names.find(name => name.toLowerCase() === inputValue.toLowerCase());
+      let isUnique = names.find(
+        (name) => name.toLowerCase() === inputValue.toLowerCase()
+      );
       if (isUnique) {
-        dispatch(setNotification(`${inputValue} already exist. Please choose another name`))
+        dispatch(
+          setNotification(
+            `${inputValue} already exist. Please choose another name`
+          )
+        );
       } else {
-        handleSetState({ renameAction: false })
-        dispatch(setCollectionName(inputValue))
+        handleSetState({ renameAction: false });
+        dispatch(setCollectionName(inputValue));
       }
     } catch (error) {
-      dispatch(setNotification('could not save your collection name, please try again.'))
+      dispatch(
+        setNotification(
+          'could not save your collection name, please try again.'
+        )
+      );
     }
-    dispatch(setLoader(""))
-  }
+    dispatch(setLoader(''));
+  };
 
   const getCollectionsNames = async () => {
-    let collections = await fetchCollections()
-    let names = []
-    collections.forEach(col => {
-      names.push(col.name)
+    let collections = await fetchCollections();
+    let names = [];
+    collections.forEach((col) => {
+      names.push(col.name);
     });
     return names;
-  }
+  };
 
   return (
     <div className={classes.container}>
-
       <div className={classes.collectionNameContainer}>
         <div className={classes.collectionName}>
-          {renameAction
-            ?
+          {renameAction ? (
             <form onSubmit={handleRename}>
               <input
                 className={`${classes.renameInput} ${classes.active}`}
                 type="text"
-                onChange={e => handleSetState({ inputValue: e.target.value })}
+                onChange={(e) => handleSetState({ inputValue: e.target.value })}
                 value={inputValue}
                 autoFocus
               />
             </form>
-            :
-            collectionName
-              ? <div className={classes.nameHeader}>{collectionName}</div>
-              : <div className={classes.nameHeader}>Collection Name</div>
-          }
+          ) : collectionName ? (
+            <div className={classes.nameHeader}>{collectionName}</div>
+          ) : (
+            <div className={classes.nameHeader}>Collection Name</div>
+          )}
           <div className={classes.editBtn}>
-            {renameAction
-              ? <img onClick={handleRename} src={markIcon} alt="" />
-              : <img onClick={() => handleSetState({ renameAction: true })} src={editIcon} alt="" />
-            }
+            {renameAction ? (
+              <img onClick={handleRename} src={markIcon} alt="" />
+            ) : (
+              <img
+                onClick={() => handleSetState({ renameAction: true })}
+                src={editIcon}
+                alt=""
+              />
+            )}
           </div>
         </div>
       </div>
@@ -123,7 +144,11 @@ const LayerOrders = () => {
                   className={classes.list}
                 >
                   {layers.map((item, index) => (
-                    <Draggable key={index} draggableId={index + ''} index={index}>
+                    <Draggable
+                      key={index}
+                      draggableId={index + ''}
+                      index={index}
+                    >
                       {(provided, snapshot) => (
                         <div
                           ref={provided.innerRef}
@@ -140,7 +165,9 @@ const LayerOrders = () => {
                             trait={item.traitsAmount}
                             click={() => handleRemoveLayer(item)}
                             activeInput={activeInput}
-                            setActiveInput={input => handleSetState({ activeInput: input })}
+                            setActiveInput={(input) =>
+                              handleSetState({ activeInput: input })
+                            }
                           />
                         </div>
                       )}
@@ -151,21 +178,25 @@ const LayerOrders = () => {
               )}
             </Droppable>
           </DragDropContext>
-          {
-            prompt
-              ? <div className={classes.promptWrapper}>
-                <Prompt handleAddLayer={handleAddLayer} setPrompt={prompt => handleSetState({ prompt })} />
-              </div>
-              :
-              <button className={classes.addBtn} onClick={() => !isRule && handleSetState({ prompt: true })}>Add Layer <img src={plusIcon} alt="" /></button>
-          }
+          {prompt ? (
+            <div className={classes.promptWrapper}>
+              <Prompt
+                handleAddLayer={handleAddLayer}
+                setPrompt={(prompt) => handleSetState({ prompt })}
+              />
+            </div>
+          ) : (
+            <button
+              className={classes.addBtn}
+              onClick={() => !isRule && handleSetState({ prompt: true })}
+            >
+              Add Layer <img src={plusIcon} alt="" />
+            </button>
+          )}
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default LayerOrders;
-
-
-

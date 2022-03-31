@@ -1,3 +1,4 @@
+import React from 'react';
 import classes from './Feature.module.css';
 
 const Feature = ({ item }) => {
@@ -11,7 +12,7 @@ const Feature = ({ item }) => {
         <div className={classes.description}>{description}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Feature
+export default Feature;

@@ -1,30 +1,30 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classes from './searchBar.module.css';
 
-const SearchBar = ({onSearch}) => {
+const SearchBar = ({ onSearch }) => {
   const [state, setState] = useState({
-    searchValue: ''
+    searchValue: '',
   });
 
   const { searchValue } = state;
 
-  const handleSetState = payload => {
-    setState(state => ({...state, ...payload}))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-  useEffect(()=> {
-    onSearch(searchValue)
-  },[searchValue])
+  useEffect(() => {
+    onSearch(searchValue);
+  }, [searchValue]);
 
   return (
     <input
       className={classes.searchInput}
       type="search"
-      onChange={event => handleSetState({ searchValue: event.target.value })}
+      onChange={(event) => handleSetState({ searchValue: event.target.value })}
       value={searchValue}
-      placeholder='search'
+      placeholder="search"
     />
-  )
-}
+  );
+};
 
 export default SearchBar;

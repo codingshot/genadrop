@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { updateLayer } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './layer.module.css';
@@ -9,26 +9,26 @@ import markIconDark from '../../assets/icon-mark.svg';
 
 const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
   const [state, setState] = useState({
-    inputValue: ''
-  })
+    inputValue: '',
+  });
   const { inputValue } = state;
 
   const { dispatch } = useContext(GenContext);
 
-  const handleSetState = payload => {
-    setState(state => ({ ...state, ...payload }))
-  }
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
   const handleRename = () => {
-    setActiveInput('')
-    if (!inputValue) return
-    dispatch(updateLayer({ layerTitle: inputValue, id: id }))
-  }
+    setActiveInput('');
+    if (!inputValue) return;
+    dispatch(updateLayer({ layerTitle: inputValue, id: id }));
+  };
 
-  const handleEdit = name => {
-    setActiveInput(name)
-    handleSetState({ inputValue: name })
-  }
+  const handleEdit = (name) => {
+    setActiveInput(name);
+    handleSetState({ inputValue: name });
+  };
 
   return (
     <div className={classes.item}>
@@ -37,25 +37,25 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           <img src={dragIcon} alt="" />
         </div>
         <div className={classes.renameBtn}>
-          {activeInput === name
-            ?
+          {activeInput === name ? (
             <form onSubmit={handleRename}>
               <input
                 className={`${classes.renameInput} ${classes.active}`}
                 type="text"
-                onChange={e => handleSetState({ inputValue: e.target.value })}
+                onChange={(e) => handleSetState({ inputValue: e.target.value })}
                 value={inputValue}
                 autoFocus
               />
             </form>
-            :
+          ) : (
             <div className={classes.nameHeader}>{name}</div>
-          }
-          <div className={classes.editBtn} >
-            {activeInput === name
-              ? <img onClick={handleRename} src={markIconDark} alt="" />
-              : <img onClick={() => handleEdit(name)} src={editIcon} alt="" />
-            }
+          )}
+          <div className={classes.editBtn}>
+            {activeInput === name ? (
+              <img onClick={handleRename} src={markIconDark} alt="" />
+            ) : (
+              <img onClick={() => handleEdit(name)} src={editIcon} alt="" />
+            )}
           </div>
         </div>
       </div>
@@ -64,7 +64,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
         <img src={deleteIcon} alt="" />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Layer;
