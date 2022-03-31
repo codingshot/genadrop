@@ -58,9 +58,12 @@ const SingleNFT = () => {
 
 
     (async function getNftDetails() {
-      console.log('consula', singleNfts, nft);
+      const tHistory = await readNftTransaction(nftId);
+
       let nftDetails = await getSingleNftDetails(mainnet, nft);
-      handleSetState({ nftDetails, isLoading: false });
+      handleSetState({ nftDetails, isLoading: false, transactionHistory: tHistory });
+
+
     })();
 
     axios
@@ -204,7 +207,7 @@ const SingleNFT = () => {
               </div>
 
               <div className={classes.icons}>
-                <svg
+                {/* <svg
                   className={`${classes.icon} ${classes.refresh}`}
                   width="17"
                   height="18"
@@ -216,7 +219,7 @@ const SingleNFT = () => {
                     d="M13.6719 3.32812L16.0156 0.984375V8.01562H8.98438L12.2188 4.78125C11.0312 3.59375 9.625 3 8 3C6.34375 3 4.92188 3.59375 3.73438 4.78125C2.57812 5.9375 2 7.34375 2 9C2 10.6562 2.57812 12.0781 3.73438 13.2656C4.92188 14.4219 6.34375 15 8 15C9.15625 15 10.2812 14.6094 11.375 13.8281C12.5 13.0469 13.2656 12.1094 13.6719 11.0156H15.7344C15.2969 12.7656 14.3594 14.2031 12.9219 15.3281C11.4844 16.4531 9.84375 17.0156 8 17.0156C5.8125 17.0156 3.9375 16.2344 2.375 14.6719C0.8125 13.1094 0.03125 11.2188 0.03125 9C0.03125 6.78125 0.8125 4.89062 2.375 3.32812C3.9375 1.76562 5.8125 0.984375 8 0.984375C8.9375 0.984375 9.95312 1.21875 11.0469 1.6875C12.1719 2.125 13.0469 2.67188 13.6719 3.32812Z"
                     fill="#707A83"
                   />
-                </svg>
+                </svg> */}
                 <svg
                   onClick={() => {
                     handleSetState({ showSocial: true });
@@ -260,25 +263,17 @@ const SingleNFT = () => {
               </span>
             </div>
             <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    <img src={walletIcon} alt="" />
-                    SOLD!
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={buyNft}
-                  >
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
-                </>
-              )}
+              {
+                (nftDetails.sold ?
+                  <>
+                    <button className={classes.sold} disabled={nftDetails.sold} >SOLD!</button>
+                  </>
+                  :
+                  <>
+                    <button className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}><img src={walletIcon} alt="" />Buy now</button>
+                    {/* <button className={classes.bid}><img src={bidIcon} alt="" />Place Bid</button> */}
+                  </>
+                )}
             </div>
           </div>
           {/* PRICE HISTORY */}
