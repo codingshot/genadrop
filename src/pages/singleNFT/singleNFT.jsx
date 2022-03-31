@@ -1,19 +1,17 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../utils";
-import classes from "./singleNFT.module.css";
-import Skeleton from "react-loading-skeleton";
-import Graph from "../../components/Nft-details/graph/graph";
-import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import { PurchaseNft } from "../../utils/arc_ipfs";
-import { CopyBlock, dracula } from "react-code-blocks";
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { CopyBlock, dracula } from 'react-code-blocks';
 import axios from 'axios';
-import { readNftTransaction } from '../../utils/firebase';
-import bidIcon from '../../assets/bid.png';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { GenContext } from '../../gen-state/gen.context';
+import { getSingleNftDetails } from '../../utils';
+import classes from './singleNFT.module.css';
+import Graph from '../../components/Nft-details/graph/graph';
+import DropItem from '../../components/Nft-details/dropItem/dropItem';
+import { PurchaseNft } from '../../utils/arc_ipfs';
 import copiedIcon from '../../assets/copied.svg';
 import copyIcon from '../../assets/copy-solid.svg';
-import CopyToClipboard from 'react-copy-to-clipboard';
 import walletIcon from '../../assets/wallet-icon.png';
 import twitterIcon from '../../assets/twitter.svg';
 import facebookIcon from '../../assets/facebook.svg';
@@ -34,7 +32,7 @@ const SingleNFT = () => {
   useOutsideAlerter(wrapperRef);
   const [state, setState] = useState({
     nftDetails: null,
-    dropdown: "",
+    dropdown: '',
     algoPrice: 0,
     isLoading: true,
     transactionHistory: null,
@@ -67,7 +65,6 @@ const SingleNFT = () => {
 
 
     })();
-    // handleSetState({ })
 
     axios
       .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
@@ -93,10 +90,10 @@ const SingleNFT = () => {
       }
 
       // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, [ref]);
   }
@@ -104,15 +101,16 @@ const SingleNFT = () => {
   const icons = [
     {
       icon: facebookIcon,
-      link: "https://www.facebook.com/MinorityProgrammers"
+
+      link: 'https://www.facebook.com',
     },
     {
       icon: instagramIcon,
-      link: "https://www.instagram.com/minorityprogrammers/"
+      link: 'https://www.instagram.com',
     },
     {
       icon: twitterIcon,
-      link: "https://twitter.com/minorityprogram"
+      link: 'https://www.twitter.com/mpa',
     },
   ];
 
@@ -153,34 +151,31 @@ const SingleNFT = () => {
 
   const description = {
     icon: detailsIcon,
-    title: "Description",
+    title: 'Description',
     content: `${nftDetails.description}`,
   };
 
   const graph = {
     icon: detailsIcon,
-    title: "Price History",
+    title: 'Price History',
     content: <Graph />,
   };
 
-  const attributeContent = () => {
-    return (
-      <div className={classes.attributesContainer}>
-        {nftDetails.properties.map((attribute, idx) => (
-          <div key={idx} className={classes.attribute}>
-            <span className={classes.title}>{attribute.trait_type}</span>
-            <span className={classes.description}>{attribute.value}</span>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const attributeContent = () => (
+    <div className={classes.attributesContainer}>
+      {nftDetails.properties.map((attribute, idx) => (
+        <div key={idx} className={classes.attribute}>
+          <span className={classes.title}>{attribute.trait_type}</span>
+          <span className={classes.description}>{attribute.value}</span>
+        </div>
+      ))}
+    </div>
+  );
 
   const attributesItem = {
     icon: descriptionIcon,
-    title: "Attributes",
+    title: 'Attributes',
     content: attributeContent(),
-    // content: "attributeContent()"
   };
 
   const buyNft = async () => {
@@ -201,7 +196,7 @@ const SingleNFT = () => {
               id={1}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -267,7 +262,6 @@ const SingleNFT = () => {
                 </span>
               </span>
             </div>
-
             <div className={classes.btns}>
               {
                 (nftDetails.sold ?
@@ -306,15 +300,11 @@ const SingleNFT = () => {
 
       {/* TRANSACTION HISTORY */}
       <div className={classes.section}>
-        {/* <DropItem key={4} item={transactions} id={4} dropdown={dropdown} handleSetState={handleSetState} ></DropItem> */}
-
         <div className={classes.heading}>
           <h3>Transaction History</h3>
         </div>
-        <div className={classes.tableContainer}>
-          <Search data={transactionHistory} />
-          {/* Coming soon... */}
-        </div>
+
+        <div className={classes.tableContainer}>Coming soon...</div>
       </div>
 
       <div className={classes.section}>
@@ -333,44 +323,30 @@ const SingleNFT = () => {
         </div>
       </div>
 
-      {
 
-
-        showSocial ?
-          <div>
-            <div ref={wrapperRef} className={classes.share}>
-
-              <div className={classes.copy} >
-                <input
-                  type="text"
-                  value={window.location.href}
-                  readOnly
-                  className={classes.textArea}
-                />
-                <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
-                  <div className={classes.copy_area}>
-                    {
-                      !isCopied ?
-                        <img
-                          className={classes.shareicon} src={copyIcon} alt="" />
-                        :
-                        <img className={classes.shareicon} src={copiedIcon} alt="" />
-                    }
-
-                  </div>
-                </CopyToClipboard>
-
-              </div>
-              <div className={classes.shareContent}>
-                {icons.map((icon) => {
-                  return (
-                    <a href={icon.link} target="_blank">
-                      < img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
-                    </a>
-
-                  )
-                })}
-              </div>
+      {showSocial ? (
+        <div>
+          <div ref={wrapperRef} className={classes.share}>
+            <div className={classes.copy}>
+              <input
+                type="text"
+                value={url}
+                readOnly
+                className={classes.textArea}
+              />
+              <CopyToClipboard text={url} onCopy={onCopyText}>
+                <div className={classes.copy_area}>
+                  {!isCopied ? (
+                    <img className={classes.shareicon} src={copyIcon} alt="" />
+                  ) : (
+                    <img
+                      className={classes.shareicon}
+                      src={copiedIcon}
+                      alt=""
+                    />
+                  )}
+                </div>
+              </CopyToClipboard>
             </div>
             <div className={classes.shareContent}>
               {icons.map((icon) => {
@@ -387,9 +363,24 @@ const SingleNFT = () => {
               })}
             </div>
           </div>
-          : (
-            ""
-          )}
+          <div className={classes.shareContent}>
+            {icons.map((icon) => {
+              return (
+                <a href={icon.link} target="_blank">
+                  <img
+                    className={classes.shareIcon}
+                    onClick={() => handleSetState({ text: icon.link })}
+                    src={icon.icon}
+                    alt=""
+                  />
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

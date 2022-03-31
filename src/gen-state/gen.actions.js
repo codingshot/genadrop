@@ -119,12 +119,12 @@ export const setConnector = (connector) => ({
   payload: connector,
 });
 
-export const setChainId = chainId => ({
+export const setChainId = (chainId) => ({
   type: genActionTypes.SET_CHAIN_ID,
-  payload: chainId
-})
+  payload: chainId,
+});
 
-export const setAccount = account => ({
+export const setAccount = (account) => ({
   type: genActionTypes.SET_ACCOUNT,
   payload: account,
 });
@@ -175,10 +175,10 @@ export const setLoader = (message) => ({
 
 export const setDidMout = (isMount) => ({
   type: genActionTypes.SET_DID_MOUNT,
-  payload: isMount
-})
+  payload: isMount,
+});
 
-export const setMainnet = mainnet => ({
+export const setMainnet = (mainnet) => ({
   type: genActionTypes.SET_MAINNET,
-  payload: mainnet
-})
+  payload: mainnet,
+});

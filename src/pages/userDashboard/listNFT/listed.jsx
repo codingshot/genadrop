@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
-import classes from "./listed.module.css";
-import Skeleton from "react-loading-skeleton";
+import React, { useContext, useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import { useRouteMatch } from 'react-router-dom';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNftDetails } from '../../../utils';
+import classes from './listed.module.css';
 
 const Listed = () => {
   const { account, connector } = useContext(GenContext);

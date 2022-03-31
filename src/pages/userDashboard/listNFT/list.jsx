@@ -1,11 +1,11 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNft, getSingleNftDetails } from "../../../utils";
-import classes from "./list.module.css";
-import Skeleton from "react-loading-skeleton";
-import { PurchaseNft } from "../../../utils/arc_ipfs";
-import axios from "axios";
+import React, { useContext, useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import axios from 'axios';
+import { useRouteMatch } from 'react-router-dom';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNftDetails } from '../../../utils';
+import classes from './list.module.css';
+import { PurchaseNft } from '../../../utils/arc_ipfs';
 
 const List = () => {
   const { account, connector } = useContext(GenContext);
@@ -18,8 +18,8 @@ const List = () => {
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
-    chain: "Algo",
-    price: "",
+    chain: 'Algo',
+    price: '',
   });
   const { nftDetails, isLoading, price, chain } = state;
 
@@ -188,7 +188,7 @@ const List = () => {
           </div>
         </div>
       ) : (
-        ""
+        ''
       )}
     </div>
   );

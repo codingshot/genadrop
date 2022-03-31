@@ -1,10 +1,9 @@
+import React, { useState, useContext } from 'react';
 import LayerOrders from '../../components/layerorders/layerorders';
 import CollectionDescription from '../../components/description/collection-description';
 import CollectionOverview from '../../components/overview/collection-overview';
 import classes from './create.module.css';
 import CreatePageUseGuide from '../../components/use-guide/createUseGuide';
-import { useState } from 'react';
-import { useContext } from 'react';
 import { GenContext } from '../../gen-state/gen.context';
 import iconHelp from '../../assets/icon-help.svg';
 
@@ -14,8 +13,11 @@ const Create = () => {
 
   return (
     <div className={classes.container}>
-      <div onClick={() => setGuide(true)} className={`${classes.iconContainer} ${!toggleGuide && classes.active}`}>
-        <img className={classes.icon} src={iconHelp} alt='' />
+      <div
+        onClick={() => setGuide(true)}
+        className={`${classes.iconContainer} ${!toggleGuide && classes.active}`}
+      >
+        <img className={classes.icon} src={iconHelp} alt="" />
       </div>
       <CreatePageUseGuide toggleGuide={toggleGuide} setGuide={setGuide} />
       <div className={classes.layer_overview}>
@@ -24,7 +26,7 @@ const Create = () => {
       </div>
       <CollectionDescription />
     </div>
-  )
-}
+  );
+};
 
 export default Create;

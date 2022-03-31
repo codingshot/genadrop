@@ -51,7 +51,7 @@ async function writeUserData(
       id: collection_id[i],
       collection: name,
       price: priceValue,
-      'mainnet': mainnet
+      mainnet: mainnet,
     };
     await recordTransaction(
       collection_id[i],
@@ -179,7 +179,7 @@ async function readAllUserNft(userAddress) {
   let querySnapshot = await db.collection('listed').doc(userAddress).get();
   try {
     let res = Object.values(querySnapshot.data());
-    return res
+    return res;
   } catch (error) {
     console.log(error);
     return null;
@@ -194,13 +194,15 @@ async function readSIngleUserNft(userAddress, assetId) {
 }
 
 async function readAllCollection(mainnet) {
-  let querySnapshot = await db.collection("collections").get();
+  console.log('isnuloooo', mainnet);
+  let querySnapshot = await db.collection('collections').get();
   let res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
   });
-  console.log('data', res.filter(asset => asset.mainnet === mainnet), mainnet)
-  return res.filter(asset => asset.mainnet === mainnet);
+  let response =
+    mainnet === null ? res : res.filter((asset) => asset.mainnet === mainnet);
+  return response;
 }
 
 async function readUserCollection(userAddress) {
@@ -216,12 +218,19 @@ async function readUserCollection(userAddress) {
 }
 
 async function readAllSingleNft(mainnet) {
-  let querySnapshot = await db.collection("listed").get();
+  console.log('isnuloooo', mainnet);
+  let querySnapshot = await db.collection('listed').get();
   let res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  return res.filter(asset => (asset.collection === null) && (asset.mainnet === mainnet));
+  let response =
+    mainnet === null
+      ? res
+      : res.filter(
+          (asset) => asset.collection === null && asset.mainnet === mainnet
+        );
+  return response;
 }
 
 async function fetchCollections(mainnet) {
