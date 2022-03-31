@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { getAlgoData } from '../utils/arc_ipfs';
-import { readSIngleUserNft } from '../utils/firebase';
 import fileDownload from 'js-file-download';
-import blankImage from '../assets/blank.png';
 import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
+import { getAlgoData } from './arc_ipfs';
+import { readSIngleUserNft } from './firebase';
+import blankImage from '../assets/blank.png';
 
 export const getNftCollections = async (collections, mainnet) => {
   let collectionArr = [];
@@ -132,32 +132,13 @@ export const getSingleNfts = async (mainnet, nfts) => {
   }
 };
 
-// export const getSingleNftDetails = async (mainnet, nft) => {
-//   let nftDetails = {}
-//   try {
-//       nftDetails.Id = nft.id
-//       nftDetails.price = nft.price
-//       nftDetails.buyer = nft.buyer
-//       nftDetails.owner = nft.owner
-//       nftDetails.sold = nft.sold
-//       nftDetails.dateSold = nft.dateSold
-//       nftDetails.description = nft.description
-//       let { asset: { params} } = await getAlgoData(mainnet, nft.id)
-//       let response = await axios.get(params['url'].replace('ipfs://', 'https://ipfs.io/ipfs/'));
-//       nftDetails.image_url = response.data.image.replace('ipfs://', 'https://ipfs.io/ipfs/');
-//       nftDetails.name = response.data.name
-//       nftDetails.description = response.data.description
-//       nftDetails.properties = response.data.properties
-//       return nftArr;
-// };
-
 export const getSingleNftDetails = async (mainnet, nft) => {
   let nftDetails = {};
   try {
     nftDetails.Id = nft.id;
     nftDetails.price = nft.price;
     nftDetails.buyer = nft.buyer;
-    nftDetails.owner = nft.owner
+    nftDetails.owner = nft.owner;
     nftDetails.sold = nft.sold;
     nftDetails.dateSold = nft.dateSold;
     nftDetails.description = nft.description;
@@ -182,11 +163,11 @@ export const getSingleNftDetails = async (mainnet, nft) => {
 
 export const getNftData = async (mainnet, collection, assetName) => {
   let collectionData = await getNftCollection(mainnet, collection);
-  return collectionData.find(asset => asset.name === assetName);
+  return collectionData.find((asset) => asset.name === assetName);
 };
 
-export const getImageSize = async (img) => {
-  return new Promise((resolve) => {
+export const getImageSize = async (img) =>
+  new Promise((resolve) => {
     const image = new Image();
     if (typeof img === 'string') {
       image.src = img;
@@ -197,7 +178,6 @@ export const getImageSize = async (img) => {
       resolve({ height: image.height, width: image.width });
     };
   });
-};
 
 export const getDefaultName = (id) => {
   id = String(id);

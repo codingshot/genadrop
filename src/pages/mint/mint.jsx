@@ -1,10 +1,10 @@
-import classes from "./mint.module.css";
-import { useRef, useState, useEffect, useContext } from "react";
-import { handleZipFile } from "./mint-script";
-import AssetPreview from "../../components/Mint/AssetPreview/AssetPreview";
-import lineIcon from "../../assets/icon-line.svg";
-import Popup from "reactjs-popup";
-import { GenContext } from "../../gen-state/gen.context";
+
+import React, { useRef, useState, useEffect } from 'react';
+import classes from './mint.module.css';
+import { handleZipFile } from './mint-script';
+import AssetPreview from '../../components/Mint/AssetPreview/AssetPreview';
+import lineIcon from '../../assets/icon-line.svg';
+
 
 const Mint = () => {
   const fileRef = useRef(null);
@@ -27,13 +27,17 @@ const Mint = () => {
     let file = event.target.files[0];
     if (!file) return;
 
-    let name = file.name.split(".");
+
+    let name = file.name.split('.');
+
     let fileName = name[0];
     let fileType = name[1];
     let supportedTypes = ["zip", "png", "jpeg", "jpg", "webp"];
     if (!supportedTypes.includes(fileType.toLowerCase())) return;
 
-    if (fileType === "zip") {
+
+    if (fileType === 'zip') {
+
       handleSetState({ zip: file, fileName });
       handleZipFile({ file, handleSetState });
     } else {
@@ -45,17 +49,19 @@ const Mint = () => {
     if (!dropRef.current) return;
     dropRef.current.ondragover = (e) => {
       e.preventDefault();
-      document.querySelector("#drop-area").style.border = "2px dashed green";
+
+      document.querySelector('#drop-area').style.border = '2px dashed green';
     };
     dropRef.current.ondragleave = (e) => {
       e.preventDefault();
-      document.querySelector("#drop-area").style.border =
-        "1px dashed gainsboro";
+      document.querySelector('#drop-area').style.border =
+        '1px dashed gainsboro';
     };
     dropRef.current.ondrop = (e) => {
       e.preventDefault();
-      document.querySelector("#drop-area").style.border =
-        "1px dashed gainsboro";
+      document.querySelector('#drop-area').style.border =
+        '1px dashed gainsboro';
+
       handleFileChange({ target: e.dataTransfer });
     };
   }, [file]);
@@ -67,7 +73,9 @@ const Mint = () => {
           data={{ file, fileName, metadata, zip }}
           changeFile={() =>
             handleSetState({
-              fileName: "",
+
+              fileName: '',
+
               file: null,
               metadata: null,
               zip: null,
@@ -78,6 +86,7 @@ const Mint = () => {
         <div className={classes.wrapper}>
           <h1 className={classes.title}>Mint Your NFTs</h1>
           <p className={classes.description}>
+
             Upload a{" "}
             <Popup
               position="bottom center"
@@ -109,6 +118,8 @@ const Mint = () => {
               </div>
             </Popup>
             to create NFT(s)
+
+
           </p>
           <div ref={dropRef} className={classes.uploadWrapper}>
             <div>
@@ -122,7 +133,9 @@ const Mint = () => {
               Browse files
             </button>
             <input
-              style={{ display: "none" }}
+
+              style={{ display: 'none' }}
+
               onChange={handleFileChange}
               ref={fileRef}
               type="file"

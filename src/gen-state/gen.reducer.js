@@ -38,8 +38,8 @@ export const INITIAL_STATE = {
   clipboardMessage: '',
   loaderMessage: '',
   didMount: false,
-  mainnet: null
-}
+  mainnet: null,
+};
 
 export const genReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -173,13 +173,13 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_ACCOUNT:
       return {
         ...state,
-        account: action.payload
-      }
+        account: action.payload,
+      };
     case genActionTypes.SET_CHAIN_ID:
-    return {
-      ...state,
-      chainId: action.payload
-    }
+      return {
+        ...state,
+        chainId: action.payload,
+      };
     case genActionTypes.SET_CONNECTOR:
       return {
         ...state,
@@ -223,13 +223,13 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_DID_MOUNT:
       return {
         ...state,
-        didMount: action.payload
-      }
+        didMount: action.payload,
+      };
     case genActionTypes.SET_MAINNET:
       return {
         ...state,
-        mainnet: action.payload
-      }
+        mainnet: action.payload,
+      };
     default:
       return state;
   }
