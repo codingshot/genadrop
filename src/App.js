@@ -1,8 +1,5 @@
-import React, {
-  useContext, useEffect, lazy, useState,
-} from 'react';
+import React, { useContext, useEffect, lazy, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-
 import './App.css';
 import Footer from './components/footer/footer';
 import Navbar from './components/Navbar/Navbar';
@@ -26,9 +23,12 @@ const Fallback = lazy(() => import('./pages/fallback/fallback'));
 const CollectionNFT = lazy(() => import('./pages/collectionNFT/collectionNFT'));
 const Collections = lazy(() => import('./pages/collections/collections'));
 const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
+const docsEmbed = lazy(() => import('./pages/docs/docsEmbed'));
 const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
-const SingleNftCollection = lazy(() => import('./pages/singleMintCollection/singleNftCollection'));
+const SingleNftCollection = lazy(() =>
+  import('./pages/singleMintCollection/singleNftCollection')
+);
 const SingleNFT = lazy(() => import('./pages/singleNFT/singleNFT'));
 // const Listed = lazy(() => import('./pages/listNFT/listed'));
 
@@ -41,13 +41,13 @@ function App() {
       const collections = await fetchCollections(mainnet);
       console.log('collect', collections);
       dispatch(setCollections(collections));
-    }());
+    })();
 
     (async function readAllSingle() {
       const singleNfts = await readAllSingleNft(mainnet);
       console.log('sia', singleNfts);
       dispatch(setSingleNfts(singleNfts));
-    }());
+    })();
   }, [mainnet]);
 
   if (showWelcomeScreen) {
@@ -96,6 +96,7 @@ function App() {
               path="/me/:userId/profile/settings"
               component={Profile}
             />
+            <Route exact path="/docs" component={docsEmbed} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
