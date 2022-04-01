@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { getSingleNfts } from '../../utils';
 import classes from './singleNftCollection.module.css';
@@ -8,10 +10,11 @@ import NotFound from '../../components/not-found/notFound';
 import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
 import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDropdown';
 import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
+import { GenContext } from '../../gen-state/gen.context';
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
-
+  const { mainnet } = useContext(GenContext);
   const [state, setState] = useState({
     togglePriceFilter: false,
     toggleChainFilter: false,
@@ -49,6 +52,7 @@ const SingleNftCollection = () => {
       default:
         break;
     }
+    return null;
   };
 
   const handleSetState = (payload) => {
@@ -59,11 +63,14 @@ const SingleNftCollection = () => {
   useEffect(() => {
     try {
       (async function getAlgoSingleNftCollection() {
-        const singleNftCollections = await readAllSingleNft();
-        const result = await getSingleNfts(singleNftCollections);
-        handleSetState({
-          algoCollection: result,
-        });
+        const singleNftCollections = await readAllSingleNft(mainnet);
+        if (singleNftCollections.length > 0) {
+          const result = await getSingleNfts(mainnet, singleNftCollections);
+          handleSetState({
+            algoCollection: result,
+          });
+        }
+        return null;
       }());
     } catch (error) {
       console.log(error);
@@ -115,7 +122,27 @@ const SingleNftCollection = () => {
     celoCollection,
     nearCollection,
   ]);
-
+  useEffect(() => {
+    if (domMountRef.current) {
+      const collection = getCollectionByChain();
+      if (!collection) return;
+      const filtered = collection.filter(
+        (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+      );
+      if (filtered.length) {
+        handleSetState({ filteredCollection: filtered });
+      } else {
+        handleSetState({ filteredCollection: null });
+      }
+    } else {
+      domMountRef.current = true;
+    }
+  }, [
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+  ]);
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -135,22 +162,20 @@ const SingleNftCollection = () => {
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
-            {filteredCollection.map((nft, idx) => (
-              <NftCard key={idx} nft={nft} />
+            {filteredCollection.map((nft) => (
+              <NftCard key={nft.Id} nft={nft} />
             ))}
           </div>
         ) : !filteredCollection ? (
           <NotFound />
         ) : (
           <div className={classes.skeleton}>
-            {Array(5)
-              .fill(null)
-              .map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={200} />
-                  <Skeleton count={3} height={40} />
-                </div>
-              ))}
+            {([...new Array(5)].map((_, idx) => idx)).map((id) => (
+              <div key={id}>
+                <Skeleton count={1} height={200} />
+                <Skeleton count={3} height={40} />
+              </div>
+            ))}
           </div>
         )}
       </div>
