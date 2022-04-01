@@ -13,7 +13,7 @@ const Fallback = () => {
       <div className={classes['not-found']}>
         <img src={notFound} alt="" />
         <h1>Oh No! Page Not Found.</h1>
-        <div className={classes['text']}>
+        <div className={classes.text}>
           <span>
             The page you are looking for does not exist. Proceed with one of the
             actions below.
@@ -25,10 +25,12 @@ const Fallback = () => {
           Go Back
         </div>
         <div
+          onFocus
+          onBlur
           onMouseOver={(e) => setChangeImage((e.currentTarget.src = home))}
           onMouseOut={(e) => setChangeImage((e.currentTarget.src = homeWhite))}
           onClick={() => history.push('/')}
-          className={classes['home']}
+          className={classes.home}
         >
           <img src={changeImage} alt="" />
           Take Me Home

@@ -13,7 +13,7 @@ const Navbar = () => {
   });
   const { dropdown } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const { pathname } = useLocation();
@@ -85,9 +85,7 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className={classes.wallet}>
-          <ConnectWallet
-            setToggleNav={(state) => handleSetState({ dropdown: state })}
-          />
+          <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
         </div>
       </div>
       {dropdown ? (

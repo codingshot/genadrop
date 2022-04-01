@@ -35,7 +35,6 @@ const Explore = () => {
     attributes,
     filter,
     filterToDelete,
-    togglePriceFilter,
     FilteredCollection,
     headerHeight,
   } = state;
@@ -44,7 +43,7 @@ const Explore = () => {
   const { collectionName } = useParams();
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleFilter = (_filter) => {
@@ -57,14 +56,14 @@ const Explore = () => {
 
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const collection = collections.find((col) => col.name === collectionName);
+      const collectionsFound = collections.find((col) => col.name === collectionName);
       (async function getResult() {
-        let result = await getNftCollection(collection, mainnet);
+        const result = await getNftCollection(collectionsFound, mainnet);
         handleSetState({
-          collection,
+          collection: collectionsFound,
           NFTCollection: result,
         });
-      })();
+      }());
     }
   }, [collections]);
 
@@ -78,9 +77,9 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = NFTCollection.filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = NFTCollection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     handleSetState({ FilteredCollection: filtered });
   }, [filter.searchValue]);
 
@@ -89,11 +88,11 @@ const Explore = () => {
     let filtered = null;
     if (filter.price === 'low') {
       filtered = NFTCollection.sort(
-        (a, b) => Number(a.price) - Number(b.price)
+        (a, b) => Number(a.price) - Number(b.price),
       );
     } else {
       filtered = NFTCollection.sort(
-        (a, b) => Number(b.price) - Number(a.price)
+        (a, b) => Number(b.price) - Number(a.price),
       );
     }
     handleSetState({ FilteredCollection: filtered });
@@ -101,27 +100,25 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = NFTCollection.filter((col) => {
-      return (
-        Number(col.price) >= Number(filter.priceRange.min) &&
-        Number(col.price) <= Number(filter.priceRange.max)
-      );
-    });
+    const filtered = NFTCollection.filter((col) => (
+      Number(col.price) >= Number(filter.priceRange.min)
+        && Number(col.price) <= Number(filter.priceRange.max)
+    ));
     handleSetState({ FilteredCollection: filtered });
   }, [filter.priceRange]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let groupedAttributes = groupAttributesByTraitType(filter.attributes);
-    let filtered = NFTCollection.filter((col) => {
-      return Object.keys(groupedAttributes).every((attributeKey) => {
-        return groupedAttributes[attributeKey].some((el) => {
-          return JSON.stringify(col.ipfs_data.properties).includes(
-            JSON.stringify(el)
-          );
-        });
-      });
-    });
+    const groupedAttributes = groupAttributesByTraitType(filter.attributes);
+    const filtered = NFTCollection.filter(
+      (col) => Object.keys(groupedAttributes).every(
+        (attributeKey) => groupedAttributes[attributeKey].some(
+          (el) => JSON.stringify(col.ipfs_data.properties).includes(
+            JSON.stringify(el),
+          ),
+        ),
+      ),
+    );
     handleSetState({ FilteredCollection: filtered });
     document.documentElement.scrollTop = headerHeight;
   }, [filter.attributes]);
@@ -134,8 +131,8 @@ const Explore = () => {
           ...collection,
           numberOfNfts: NFTCollection && NFTCollection.length,
           imageUrl:
-            NFTCollection &&
-            NFTCollection[Math.floor(Math.random() * NFTCollection.length)]
+            NFTCollection
+            && NFTCollection[Math.floor(Math.random() * NFTCollection.length)]
               .image_url,
         }}
       />
@@ -149,20 +146,16 @@ const Explore = () => {
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
             <SearchBar
-              onSearch={(value) =>
-                handleSetState({ filter: { ...filter, searchValue: value } })
-              }
+              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
             <PriceDropdown
-              onPriceFilter={(value) =>
-                handleSetState({ filter: { ...filter, price: value } })
-              }
+              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
             />
           </div>
 
           <div className={classes.filterDisplay}>
-            {filter?.attributes &&
-              filter.attributes.map((f, idx) => (
+            {filter?.attributes
+              && filter.attributes.map((f, idx) => (
                 <div key={idx} className={classes.filteredItem}>
                   <span>{`${f.trait_type}: ${f.value}`}</span>
                   <div

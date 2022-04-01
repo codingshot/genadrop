@@ -2,7 +2,9 @@ import React from 'react';
 import classes from './Attribute.module.css';
 import iconClose from '../../../assets/icon-close.svg';
 
-const Attribute = ({ attribute, removeAttribute, id, changeAttribute }) => (
+const Attribute = ({
+  attribute, removeAttribute, id, changeAttribute,
+}) => (
   <div className={classes.container}>
     <input
       name="trait_type"
@@ -18,7 +20,7 @@ const Attribute = ({ attribute, removeAttribute, id, changeAttribute }) => (
       onChange={(event) => changeAttribute({ event, id })}
       placeholder="eg. green"
     />
-    <button onClick={() => removeAttribute(id)}>
+    <button type="button" onClick={() => removeAttribute(id)}>
       <img src={iconClose} alt="" />
     </button>
   </div>

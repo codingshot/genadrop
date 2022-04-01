@@ -7,19 +7,17 @@ const Menu = ({ NFTCollection }) => (
   <div className={classes.menu}>
     {NFTCollection
       ? NFTCollection.map((nft, idx) => (
-          <div className={classes.nftCardWrapper}>
-            <NftCard key={idx} nft={nft} index={idx} />
-          </div>
-        ))
-      : Array(8)
-          .fill(null)
-          .map((_, idx) => (
-            <div className={classes.loader} key={idx}>
-              <Skeleton count={1} height={200} />
-              <br />
-              <Skeleton count={1} height={40} />
-            </div>
-          ))}
+        <div className={classes.nftCardWrapper}>
+          <NftCard key={idx} nft={nft} index={idx} />
+        </div>
+      ))
+      : ([...new Array(8)].map((_, idx) => idx)).map((id) => (
+        <div className={classes.loader} key={id}>
+          <Skeleton count={1} height={200} />
+          <br />
+          <Skeleton count={1} height={40} />
+        </div>
+      ))}
   </div>
 );
 

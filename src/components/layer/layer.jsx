@@ -7,7 +7,9 @@ import dragIcon from '../../assets/icon-drag.svg';
 import editIcon from '../../assets/icon-edit.svg';
 import markIconDark from '../../assets/icon-mark.svg';
 
-const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
+const Layer = ({
+  name, trait, click, id, activeInput, setActiveInput,
+}) => {
   const [state, setState] = useState({
     inputValue: '',
   });
@@ -16,18 +18,18 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
   const { dispatch } = useContext(GenContext);
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleRename = () => {
     setActiveInput('');
     if (!inputValue) return;
-    dispatch(updateLayer({ layerTitle: inputValue, id: id }));
+    dispatch(updateLayer({ layerTitle: inputValue, id }));
   };
 
-  const handleEdit = (name) => {
-    setActiveInput(name);
-    handleSetState({ inputValue: name });
+  const handleEdit = (nameActive) => {
+    setActiveInput(nameActive);
+    handleSetState({ inputValue: nameActive });
   };
 
   return (

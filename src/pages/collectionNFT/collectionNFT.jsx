@@ -1,9 +1,11 @@
-import axios from 'axios';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import Skeleton from 'react-loading-skeleton';
+import React, {
+  useState, useContext, useRef, useEffect,
+} from 'react';
 import { CopyBlock, dracula } from 'react-code-blocks';
+import axios from 'axios';
 import { useHistory, useRouteMatch } from 'react-router-dom';
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
+import CopyToClipboard from 'react-copy-to-clipboard';
 import DropItem from '../../components/Nft-details/dropItem/dropItem';
 import classes from './collectionNFT.module.css';
 import Search from '../../components/Nft-details/history/search';
@@ -48,7 +50,7 @@ const CollectionNFT = () => {
   } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const { account, connector, mainnet } = useContext(GenContext);
@@ -57,14 +59,32 @@ const CollectionNFT = () => {
   const history = useHistory();
   const [, , , collectionName, nftId] = url.split('/');
   const wrapperRef = useRef(null);
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handleSetState({ showSocial: false });
+        }
+      }
+
+      // Bind the event listener
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
+    }, [ref]);
+  }
   useOutsideAlerter(wrapperRef);
   useEffect(() => {
     if (Object.keys(collections).length) {
-      const collection = collections.find((col) => col.name === collectionName);
+      const newCollection = collections.find((col) => col.name === collectionName);
       (async function getResult() {
-        let collectionData = await getNftCollection(collection, mainnet);
-
-        let result = collectionData.find((asset) => asset.Id === Number(nftId));
+        const collectionData = await getNftCollection(newCollection, mainnet);
+        const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
         const tHistory = await readNftTransaction(result.Id);
         handleSetState({
           asset: result,
@@ -72,7 +92,7 @@ const CollectionNFT = () => {
           collection: collectionData,
           isLoading: false,
         });
-      })();
+      }());
     }
     axios
       .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
@@ -121,18 +141,16 @@ const CollectionNFT = () => {
     content: <Graph details={transactionHistory} />,
   };
 
-  const attributeContent = () => {
-    return (
-      <div className={classes.attributesContainer}>
-        {asset.ipfs_data.properties.map((attribute, idx) => (
-          <div key={idx} className={classes.attribute}>
-            <span className={classes.title}>{attribute.trait_type}</span>
-            <span className={classes.description}>{attribute.value}</span>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const attributeContent = () => (
+    <div className={classes.attributesContainer}>
+      {asset.ipfs_data.properties.map((attribute, idx) => (
+        <div key={idx} className={classes.attribute}>
+          <span className={classes.title}>{attribute.trait_type}</span>
+          <span className={classes.description}>{attribute.value}</span>
+        </div>
+      ))}
+    </div>
+  );
 
   const attributesItem = {
     icon: descriptionIcon,
@@ -141,29 +159,10 @@ const CollectionNFT = () => {
   };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(asset, account, connector, mainnet);
+    const res = await PurchaseNft(asset, account, connector, mainnet);
+    // eslint-disable-next-line no-alert
     alert(res);
   };
-
-  function useOutsideAlerter(ref) {
-    useEffect(() => {
-      /**
-       * Alert if clicked on outside of element
-       */
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          handleSetState({ showSocial: false });
-        }
-      }
-
-      // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
-      };
-    }, [ref]);
-  }
 
   const icons = [
     {
@@ -179,7 +178,6 @@ const CollectionNFT = () => {
       link: 'https://www.twitter.com/mpa',
     },
   ];
-
   const onCopyText = () => {
     handleSetState({ isCopied: true });
     setTimeout(() => {
@@ -200,7 +198,7 @@ const CollectionNFT = () => {
               id={1}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -214,9 +212,6 @@ const CollectionNFT = () => {
               </div>
 
               <div className={classes.icons}>
-                {/* <svg className={`${classes.icon} ${classes.refresh}`} width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M13.6719 3.32812L16.0156 0.984375V8.01562H8.98438L12.2188 4.78125C11.0312 3.59375 9.625 3 8 3C6.34375 3 4.92188 3.59375 3.73438 4.78125C2.57812 5.9375 2 7.34375 2 9C2 10.6562 2.57812 12.0781 3.73438 13.2656C4.92188 14.4219 6.34375 15 8 15C9.15625 15 10.2812 14.6094 11.375 13.8281C12.5 13.0469 13.2656 12.1094 13.6719 11.0156H15.7344C15.2969 12.7656 14.3594 14.2031 12.9219 15.3281C11.4844 16.4531 9.84375 17.0156 8 17.0156C5.8125 17.0156 3.9375 16.2344 2.375 14.6719C0.8125 13.1094 0.03125 11.2188 0.03125 9C0.03125 6.78125 0.8125 4.89062 2.375 3.32812C3.9375 1.76562 5.8125 0.984375 8 0.984375C8.9375 0.984375 9.95312 1.21875 11.0469 1.6875C12.1719 2.125 13.0469 2.67188 13.6719 3.32812Z" fill="#707A83" />
-                </svg> */}
                 <svg
                   onClick={() => {
                     handleSetState({ showSocial: true });
@@ -233,7 +228,6 @@ const CollectionNFT = () => {
                     fill="#707A83"
                   />
                 </svg>
-
 
                 <svg
                   className={`${classes.icon} ${classes.dots}`}
@@ -256,7 +250,9 @@ const CollectionNFT = () => {
                 <img src="/assets/algo-logo.png" alt="" />
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>
-                  (${(asset.price * algoPrice).toFixed(2)})
+                  ($
+                  {(asset.price * algoPrice).toFixed(2)}
+                  )
                 </span>
               </span>
             </div>
@@ -264,13 +260,14 @@ const CollectionNFT = () => {
             <div className={classes.btns}>
               {asset.sold ? (
                 <>
-                  <button className={classes.sold} disabled={asset.sold}>
+                  <button type="button" className={classes.sold} disabled={asset.sold}>
                     SOLD!
                   </button>
                 </>
               ) : (
                 <>
                   <button
+                    type="button"
                     className={classes.buy}
                     disabled={asset.sold}
                     onClick={buyNft}
@@ -278,7 +275,7 @@ const CollectionNFT = () => {
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
-                  <button className={classes.bid}>
+                  <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid
                   </button>
@@ -294,7 +291,7 @@ const CollectionNFT = () => {
               id={2}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
           <div className={classes.feature}>
             <DropItem
@@ -303,7 +300,7 @@ const CollectionNFT = () => {
               id={3}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
       </div>
@@ -328,7 +325,7 @@ const CollectionNFT = () => {
             text={JSON.stringify(asset.ipfs_data.properties, null, 2)}
             showLineNumbers={false}
             theme={dracula}
-            wrapLines={true}
+            wrapLines
             codeBlock
           />
         </div>
@@ -342,6 +339,7 @@ const CollectionNFT = () => {
         </div>
         <div className={classes.allCollecitons}>
           <button
+            type="button"
             onClick={() => history.goBack()}
             className={classes.btnCollections}
           >
@@ -352,47 +350,48 @@ const CollectionNFT = () => {
 
       {
 
+        showSocial
+          ? (
+            <div>
+              <div ref={wrapperRef} className={classes.share}>
 
-        showSocial ?
-          <div>
-            <div ref={wrapperRef} className={classes.share}>
-
-              <div className={classes.copy} >
-                <input
-                  type="text"
-                  value={window.location.href}
-                  readOnly
-                  className={classes.textArea}
-                />
-                <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
-                  <div className={classes.copy_area}>
-                    {
-                      !isCopied ?
-                        <img
-                          className={classes.shareicon} src={copyIcon} alt="" />
-                        :
-                        <img className={classes.shareicon} src={copiedIcon} alt="" />
+                <div className={classes.copy}>
+                  <input
+                    type="text"
+                    value={window.location.href}
+                    readOnly
+                    className={classes.textArea}
+                  />
+                  <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
+                    <div className={classes.copy_area}>
+                      {
+                      !isCopied
+                        ? (
+                          <img
+                            className={classes.shareicon}
+                            src={copyIcon}
+                            alt=""
+                          />
+                        )
+                        : <img className={classes.shareicon} src={copiedIcon} alt="" />
                     }
 
-                  </div>
-                </CopyToClipboard>
+                    </div>
+                  </CopyToClipboard>
 
-              </div>
-              <div className={classes.shareContent}>
-                {icons.map((icon) => {
-                  return (
-                    <a href={icon.link} target="_blank">
-                      < img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
+                </div>
+                <div className={classes.shareContent}>
+                  {icons.map((icon) => (
+                    <a href={icon.link} target="_blank" rel="noreferrer">
+                      <img className={classes.shareIcon} onClick={() => handleSetState({ text: icon.link })} src={icon.icon} alt="" />
                     </a>
 
-                  )
-                })}
+                  ))}
+                </div>
               </div>
-            </div>
-            <div className={classes.shareContent}>
-              {icons.map((icon) => {
-                return (
-                  <a href={icon.link} target="_blank">
+              <div className={classes.shareContent}>
+                {icons.map((icon) => (
+                  <a href={icon.link} target="_blank" rel="noreferrer">
                     <img
                       className={classes.shareIcon}
                       onClick={() => handleSetState({ text: icon.link })}
@@ -400,15 +399,16 @@ const CollectionNFT = () => {
                       alt=""
                     />
                   </a>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
+          )
           : (
-            ""
-          )}
-    </div >
-  )
+            ''
+          )
 }
+    </div>
+  );
+};
 
 export default CollectionNFT;

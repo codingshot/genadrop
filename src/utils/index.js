@@ -1,5 +1,8 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
 import axios from 'axios';
 import fileDownload from 'js-file-download';
+// eslint-disable-next-line import/no-unresolved
 import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
 import { getAlgoData } from './arc_ipfs';
 import { readSIngleUserNft } from './firebase';
@@ -7,7 +10,7 @@ import blankImage from '../assets/blank.png';
 
 export const getNftCollections = async (collections, mainnet) => {
   const collectionArr = [];
-  for (let i = 0; i < collections.length; i++) {
+  for (let i = 0; i < collections.length; i += 1) {
     try {
       const collectionObj = {};
       collectionObj.name = collections[i].name;
@@ -41,7 +44,7 @@ export const getNftCollection = async (collection, mainnet) => {
   const { data } = await axios.get(
     collection.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
   );
-  for (let i = 0; i < data.length; i++) {
+  for (let i = 0; i < data.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.collection_name = collection.name;
@@ -73,7 +76,7 @@ export const getNftCollection = async (collection, mainnet) => {
 
 export const getUserNftCollection = async (mainnet, data) => {
   const nftArr = [];
-  for (let i = 0; i < data?.length; i++) {
+  for (let i = 0; i < data?.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.collection_name = data[i].collection;
@@ -100,9 +103,9 @@ export const getUserNftCollection = async (mainnet, data) => {
   return nftArr;
 };
 
-export const getSingleNfts = async (mainnet, nfts = []) => {
+export const getSingleNfts = async (mainnet, nfts) => {
   const nftArr = [];
-  for (let i = 0; i < nfts.length; i++) {
+  for (let i = 0; i < nfts.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.Id = nfts[i].id;
@@ -178,7 +181,8 @@ export const getImageSize = async (img) => new Promise((resolve) => {
   };
 });
 
-export const getDefaultName = (id) => {
+export const getDefaultName = (nameId) => {
+  let id = nameId;
   id = String(id);
   if (id.length < 4) {
     const repeatBy = 4 - id.length;
@@ -194,14 +198,14 @@ export const handleImage = async (props) => {
   canvas.setAttribute('height', height);
   const ctx = canvas.getContext('2d');
   for (const img of images) {
-    const image = await new Promise((resolve) => {
-      const image = new Image();
-      image.src = URL.createObjectURL(img);
-      image.onload = () => {
-        resolve(image);
+    const resImage = await new Promise((resolve) => {
+      const mewImage = new Image();
+      mewImage.src = URL.createObjectURL(img);
+      mewImage.onload = () => {
+        resolve(mewImage);
       };
     });
-    image && ctx.drawImage(image, 0, 0, width, height);
+    if (resImage)ctx.drawImage(resImage, 0, 0, width, height);
   }
 };
 
@@ -212,13 +216,13 @@ export const handleBlankImage = async (props) => {
   canvas.setAttribute('height', height);
   const ctx = canvas.getContext('2d');
   const image = await new Promise((resolve) => {
-    const image = new Image();
-    image.src = blankImage;
-    image.onload = () => {
-      resolve(image);
+    const newImage = new Image();
+    newImage.src = blankImage;
+    newImage.onload = () => {
+      resolve(newImage);
     };
   });
-  image && ctx.drawImage(image, 0, 0, width, height);
+  if (image) ctx.drawImage(image, 0, 0, width, height);
 };
 
 export const getMockValue = async (val) => {
@@ -245,10 +249,10 @@ export const getMockValue = async (val) => {
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = function () {
+      reader.onload = () => {
         resolve(reader.result);
       };
-      reader.onerror = function (error) {
+      reader.onerror = (error) => {
         console.log('Error: ', error);
       };
     });
@@ -280,11 +284,6 @@ export const getMockValue = async (val) => {
 
 export const handleDownloadWithWorker = async (props) => {
   const {
-    window,
-    dispatch,
-    setLoader,
-    setNotification,
-    value,
     name,
     outputFormat,
   } = props;
@@ -297,6 +296,7 @@ export const handleDownloadWithWorker = async (props) => {
   });
   fileDownload(
     content,
+    // eslint-disable-next-line no-constant-condition
     `${'name' ? `${'name'}${true ? '' : `_${'id'}`}.zip` : 'collections.zip'}`,
   );
 };

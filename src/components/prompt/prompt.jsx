@@ -19,7 +19,7 @@ const Prompt = ({ handleAddLayer, setPrompt }) => {
       <input onChange={handleChange} autoFocus type="text" value={value} />
       <div className={classes.buttons}>
         <button type="submit">Add</button>
-        <button onClick={() => setPrompt(false)} type="reset">
+        <button onClick={() => setPrompt(false)} type="button">
           Cancel
         </button>
       </div>

@@ -1,20 +1,19 @@
 import { getDefaultName, handleImage } from '../../utils';
 
 export const isUnique = (attributes, attr, rule) => {
-  let parseAttrToRule = attr.map((p) => ({
+  const parseAttrToRule = attr.map((p) => ({
     layerTitle: p.trait_type,
     imageName: p.value,
   }));
-  let att_str = JSON.stringify(attr);
-  for (let _attr of attributes) {
-    let _attr_str = JSON.stringify(_attr);
+  const att_str = JSON.stringify(attr);
+  for (const _attr of attributes) {
+    const _attr_str = JSON.stringify(_attr);
     if (_attr_str === att_str) return false;
   }
   let result;
-  for (let rl of rule) {
+  for (const rl of rule) {
     result = rl.every((el) => {
-      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el)))
-        return true;
+      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) { return true; }
       return false;
     });
 
@@ -36,34 +35,36 @@ export const createUniqueLayer = async (props) => {
     currentPage,
     id,
   } = props;
-  let newLayersCopy = [...nftLayers];
+  const newLayersCopy = [...nftLayers];
   let newAttributes = [];
   let uniqueIndex = 1;
   const prevAttributes = newLayersCopy.map(({ attributes }) => attributes);
 
-  for (let i = 0; i < uniqueIndex; i++) {
-    const promise = new Promise((resolve) => {
-      setTimeout(() => {
-        dispatch(setLoader(`removing ${uniqueIndex} duplicates`));
-        let attribute = [];
-        layers.forEach(({ layerTitle, traits }) => {
-          let randNum = Math.floor(Math.random() * traits.length);
-          let { traitTitle, Rarity, image } = traits[randNum];
-          attribute.push({
-            trait_type: layerTitle,
-            value: traitTitle.replace('.png', ''),
-            rarity: Rarity,
-            image: image,
-          });
+  const uniqueCall = (resolve) => {
+    setTimeout(() => {
+      dispatch(setLoader(`removing ${uniqueIndex} duplicates`));
+      const attribute = [];
+      layers.forEach(({ layerTitle, traits }) => {
+        const randNum = Math.floor(Math.random() * traits.length);
+        const { traitTitle, Rarity, image } = traits[randNum];
+        attribute.push({
+          trait_type: layerTitle,
+          value: traitTitle.replace('.png', ''),
+          rarity: Rarity,
+          image,
         });
-        if (isUnique(prevAttributes, attribute, rule)) {
-          newAttributes = [...attribute];
-        } else {
-          uniqueIndex += 1;
-        }
-        resolve();
-      }, 0);
-    });
+      });
+      if (isUnique(prevAttributes, attribute, rule)) {
+        newAttributes = [...attribute];
+      } else {
+        uniqueIndex += 1;
+      }
+      resolve();
+    }, 0);
+  };
+  for (let i = 0; i < uniqueIndex; i += 1) {
+    const promise = new Promise(uniqueCall);
+    // eslint-disable-next-line no-await-in-loop
     await promise;
   }
 
@@ -71,7 +72,7 @@ export const createUniqueLayer = async (props) => {
   return {
     id,
     name: `${collectionName} ${getDefaultName(
-      index + 1 + (currentPage * 20 - 20)
+      index + 1 + (currentPage * 20 - 20),
     )}`.trim(),
     description: collectionDescription,
     image: 'image',

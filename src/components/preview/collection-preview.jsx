@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useContext } from 'react';
+import React, {
+  useEffect, useRef, useContext,
+} from 'react';
 import classes from './collection-preview.module.css';
 import { GenContext } from '../../gen-state/gen.context';
 import { getImageSize } from '../../utils';
@@ -23,7 +25,7 @@ const CollectionPreview = () => {
         });
       });
     });
-    for (let img of newPreview) {
+    for (const img of newPreview) {
       const image = await new Promise((resolve) => {
         const image = new Image();
         image.src = URL.createObjectURL(img);
@@ -40,8 +42,8 @@ const CollectionPreview = () => {
     const { width, height } = await getImageSize(layers[0].traits[0].image);
     const canvas = document.createElement('canvas');
     await handleImage(canvas, width, height);
-    let image = canvas.toDataURL('image/webp', 1);
-    let link = document.createElement('a');
+    const image = canvas.toDataURL('image/webp', 1);
+    const link = document.createElement('a');
     link.download = 'asset.png';
     link.href = image;
     document.body.appendChild(link);
@@ -61,7 +63,7 @@ const CollectionPreview = () => {
     <div className={classes.container}>
       <canvas className={classes.canvas} ref={canvasRef} />
       {preview.length ? (
-        <button onClick={handleDownload}>
+        <button type="button" onClick={handleDownload}>
           <ButtonClickEffect>Download</ButtonClickEffect>
         </button>
       ) : null}

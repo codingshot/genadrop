@@ -17,9 +17,11 @@ const Profile = () => {
     youtube: '',
     instagram: '',
   });
-  const { subscribe, email, twitter, discord, youtube, instagram } = state;
+  const {
+    subscribe, email, twitter, discord, youtube, instagram,
+  } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleInputChange = (event) => {
@@ -77,7 +79,7 @@ const Profile = () => {
             <div className={classes.toggle} />
           </div>
           <p className={`${classes.warn} ${!subscribe && classes.active}`}>
-            (You won't recieve ANY emails from GenaDrop if do not subscribe -
+            (You won&apos;t recieve ANY emails from GenaDrop if do not subscribe -
             including important ones related to your account security or
             purchases)
           </p>
@@ -139,8 +141,8 @@ const Profile = () => {
           </div>
 
           <div className={classes.buttons}>
-            <button className={classes.submit}>Save Changes</button>
-            <button onClick={handleCancel} className={classes.cancel}>
+            <button type="button" className={classes.submit}>Save Changes</button>
+            <button type="button" onClick={handleCancel} className={classes.cancel}>
               Cancel
             </button>
           </div>

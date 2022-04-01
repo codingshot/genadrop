@@ -23,9 +23,11 @@ const DropItem = ({
       >
         <div className={classes.question} onClick={handleDropdown}>
           <h3>
-            <img src={icon} alt="" /> {title}
+            <img src={icon} alt="" />
+            {' '}
+            {title}
           </h3>
-          <button>
+          <button type="button">
             <svg
               className={dropdown === String(id) ? classes.active : ''}
               viewBox="0 0 320 512"

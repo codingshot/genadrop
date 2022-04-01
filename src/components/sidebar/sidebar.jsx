@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import classes from './sidebar.module.css';
-import Logo from '../../components/logo/logo';
-import mintIcon from '../../assets/gena-mint-icon.png';
-import createIcon from '../../assets/gena-create-icon.png';
-import searchIcon from '../../assets/gena-search-icon.png';
+import Logo from '../logo/logo';
+// import mintIcon from '../../assets/gena-mint-icon.png';
+// import createIcon from '../../assets/gena-create-icon.png';
+// import searchIcon from '../../assets/gena-search-icon.png';
 
 const Navbar = () => {
   const [activeNav, setActiveNav] = useState('');
@@ -23,9 +23,9 @@ const Navbar = () => {
               activeNav === 'create' && classes.active
             }`}
           >
-            <img src={createIcon} alt="icon" />
+            {/* <img src={createIcon} alt="icon" /> */}
             <p>create</p>
-            <div className={classes.effect}></div>
+            <div className={classes.effect} />
           </div>
         </Link>
 
@@ -36,9 +36,9 @@ const Navbar = () => {
               activeNav === 'mint' && classes.active
             }`}
           >
-            <img src={mintIcon} alt="icon" />
+            {/* <img src={mintIcon} alt="icon" /> */}
             <p>mint</p>
-            <div className={classes.effect}></div>
+            <div className={classes.effect} />
           </div>
         </Link>
 
@@ -49,9 +49,9 @@ const Navbar = () => {
               activeNav === 'explore' && classes.active
             }`}
           >
-            <img src={searchIcon} alt="icon" />
+            {/* <img src={searchIcon} alt="icon" /> */}
             <p>explore</p>
-            <div className={classes.effect}></div>
+            <div className={classes.effect} />
           </div>
         </Link>
       </div>

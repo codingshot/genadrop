@@ -14,7 +14,7 @@ const Collections = () => {
   const { collections, mainnet } = useContext(GenContext);
   const { algoCollection } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
   const history = useHistory();
   const { url } = useRouteMatch();
@@ -22,14 +22,14 @@ const Collections = () => {
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
-        //let collections = await fetchCollections();
+        // let collections = await fetchCollections();
         if (collections?.length) {
-          let result = await getNftCollections(collections, mainnet);
+          const result = await getNftCollections(collections, mainnet);
           handleSetState({ algoCollection: result });
         } else {
           handleSetState({ algoCollection: null });
         }
-      })();
+      }());
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +39,7 @@ const Collections = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <h3>Top Collections</h3>
-        <button onClick={() => history.push(`${url}/collections`)}>
+        <button type="button" onClick={() => history.push(`${url}/collections`)}>
           view all
         </button>
       </div>
@@ -47,7 +47,7 @@ const Collections = () => {
       {algoCollection?.length ? (
         <div className={classes.wrapper}>
           {algoCollection
-            .filter((_, idx) => 10 > idx)
+            .filter((_, idx) => idx < 10)
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
@@ -56,17 +56,17 @@ const Collections = () => {
         <h1 className={classes.noResult}> No Result Found.</h1>
       ) : (
         <div className={classes.skeleton}>
-          {Array(4)
-            .fill(null)
-            .map((_, idx) => (
-              <div key={idx}>
+          {
+            ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+              <div key={id}>
                 <Skeleton count={1} height={250} />
                 <br />
                 <Skeleton count={1} height={30} />
                 <br />
                 <Skeleton count={1} height={30} />
               </div>
-            ))}
+            ))
+          }
         </div>
       )}
     </div>

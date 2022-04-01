@@ -13,7 +13,7 @@ const TableRow = (data) => {
   const icons = [saleIcon, transferIcon, mintIcon];
   const getDate = () => {
     const date = new Date(data.date.seconds * 1000);
-    var months = [
+    const months = [
       'Jan',
       'Feb',
       'Mar',
@@ -27,12 +27,11 @@ const TableRow = (data) => {
       'Nov',
       'Dec',
     ];
-    const formattedDate =
-      months[date.getMonth()] +
-      ' ' +
-      date.getDate() +
-      ', ' +
-      date.getFullYear();
+    const formattedDate = `${months[date.getMonth()]
+    } ${
+      date.getDate()
+    }, ${
+      date.getFullYear()}`;
     return formattedDate;
   };
   const icon = () => {
@@ -47,10 +46,11 @@ const TableRow = (data) => {
       case 'Minting':
         icon = icons[2];
         break;
+      default:
+        break;
     }
     return icon;
   };
-
 
   return (
     <tr>

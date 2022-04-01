@@ -1,14 +1,14 @@
-import axios from 'axios';
 import React, {
   useEffect, useRef, useState, useContext,
 } from 'react';
 import Skeleton from 'react-loading-skeleton';
+import axios from 'axios';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../utils';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import { getPolygonNfts } from '../../utils/arc_ipfs';
-import { transformArrayOfArraysToArrayOfObjects } from './collection-script';
+import transformArrayOfArraysToArrayOfObjects from './collection-script';
 import { fetchCollections } from '../../utils/firebase';
 import { GenContext } from '../../gen-state/gen.context';
 import NotFound from '../../components/not-found/notFound';
@@ -43,7 +43,7 @@ const Collections = () => {
   } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const getCollectionByChain = () => {
@@ -61,7 +61,7 @@ const Collections = () => {
     }
   };
 
-  // *************************get results from different blockchains**************************************
+  // *************************get results from different blockchains*************************
   useEffect(() => {
     try {
       (async function getAlgoCollection() {
@@ -89,20 +89,25 @@ const Collections = () => {
       console.log(error);
     }
   }, []);
-  // ***************************** get search result for different blockchains ************************
+  // ***********************************************************************************************
+
+  // ************************* get search result for different blockchains *************************
   useEffect(() => {
     const collection = getCollectionByChain();
     if (!collection) return;
-    const filtered = collection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
-
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
   }, [filter.searchValue]);
+  // ***********************************************************************************************
 
-  // ************************* sort by price function for different blockchains *********************
+  // *********************** sort by price function for different blockchains **********************
+  // eslint-disable-next-line consistent-return
   const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
@@ -113,9 +118,10 @@ const Collections = () => {
     }
     handleSetState({ filteredCollection: sorted });
   };
-  // ********************************* render blockchains *******************************************
+  // ***********************************************************************************************
+
+  // ********************************* render blockchains ******************************************
   useEffect(() => {
-    console.log(filter);
     if (domMountRef.current) {
       sortPrice(getCollectionByChain());
     } else {
@@ -175,17 +181,17 @@ const Collections = () => {
           <NotFound />
         ) : (
           <div className={classes.skeleton}>
-            {Array(4)
-              .fill(null)
-              .map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={250} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                </div>
-              ))}
+            {
+          ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+            <div key={id}>
+              <Skeleton count={1} height={250} />
+              <br />
+              <Skeleton count={1} height={30} />
+              <br />
+              <Skeleton count={1} height={30} />
+            </div>
+          ))
+        }
           </div>
         )}
       </div>

@@ -11,9 +11,9 @@ export function addTask(task) {
 }
 
 export function updateTask(id, task) {
-  return axios.put(apiUrl + '/' + id, task);
+  return axios.put(`${apiUrl}/${id}`, task);
 }
 
 export function deleteTask(id) {
-  return axios.delete(apiUrl + '/' + id);
+  return axios.delete(`${apiUrl}/${id}`);
 }

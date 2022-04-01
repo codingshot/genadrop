@@ -1,6 +1,5 @@
 import React from 'react';
 import TweetEmbed from 'react-tweet-embed';
-
 import classes from './Review.module.css';
 
 const Review = () => {
@@ -17,6 +16,7 @@ const Review = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         Keep Up To Date for
+        {' '}
         <span>Early Access</span>
       </div>
       <div className={classes.description}>
@@ -24,13 +24,7 @@ const Review = () => {
       </div>
 
       <div className={classes.review}>
-        {reviews.map((tweet, idx) => {
-          return (
-            <span key={idx} className={classes.tweet}>
-              <TweetEmbed id={tweet} placeholder={'loading'} />
-            </span>
-          );
-        })}
+        {reviews.map((tweet) => <span key={tweet} className={classes.tweet}><TweetEmbed id={tweet} placeholder="loading" /></span>)}
       </div>
     </div>
   );
