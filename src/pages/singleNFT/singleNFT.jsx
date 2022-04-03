@@ -5,11 +5,11 @@ import { CopyBlock, dracula } from 'react-code-blocks';
 import axios from 'axios';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { GenContext } from '../../gen-state/gen.context';
-import { getSingleNftDetails } from '../../utils';
+import { getSingleNftDetails, } from '../../utils';
 import classes from './singleNFT.module.css';
 import Graph from '../../components/Nft-details/graph/graph';
 import DropItem from '../../components/Nft-details/dropItem/dropItem';
-import { PurchaseNft } from '../../utils/arc_ipfs';
+import { PurchaseNft, } from '../../utils/arc_ipfs';
 import copiedIcon from '../../assets/copied.svg';
 import copyIcon from '../../assets/copy-solid.svg';
 import walletIcon from '../../assets/wallet-icon.png';
@@ -19,6 +19,7 @@ import instagramIcon from '../../assets/instagram.svg';
 import descriptionIcon from '../../assets/description-icon.png';
 import detailsIcon from '../../assets/details.png';
 import Search from "../../components/Nft-details/history/search";
+import { readNftTransaction } from '../../utils/firebase';
 
 const SingleNFT = () => {
   const { account, connector, mainnet } = useContext(GenContext);
@@ -304,7 +305,7 @@ const SingleNFT = () => {
           <h3>Transaction History</h3>
         </div>
 
-        <div className={classes.tableContainer}>Coming soon...</div>
+        <Search data={transactionHistory} />
       </div>
 
       <div className={classes.section}>
