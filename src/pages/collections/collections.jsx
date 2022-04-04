@@ -135,7 +135,25 @@ const Collections = () => {
     celoCollection,
     nearCollection,
   ]);
+  useEffect(() => {
+    const collection = getCollectionByChain();
+    if (!collection) return handleSetState({ filteredCollection: null });
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
 
+    if (filtered.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+    return null;
+  }, [
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+  ]);
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
