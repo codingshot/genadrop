@@ -29,7 +29,8 @@ const Mint = () => {
 
   const handleFileChange = (event) => {
     const upladedFile = event.target.files[0];
-    if (!file) return;
+
+    if (!upladedFile) return;
 
     const name = upladedFile.name.split('.');
     const upladedFileName = name[0];
