@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import classes from './collectionsCard.module.css';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import classes from './collectionsCard.module.css';
 
 const CollectionsCard = ({ collection }) => {
-  const { name, price, description, owner, number_of_nfts, image_url } =
-    collection;
+  const {
+    name, price, description, image_url,
+  } = collection;
   const history = useHistory();
-  const match = useRouteMatch();
 
   const [state, setState] = useState({ algoPrice: 0 });
   const { algoPrice } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
-
     axios
       .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
@@ -52,13 +51,18 @@ const CollectionsCard = ({ collection }) => {
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOORPRICE</div>
             <div className={classes.price}>
-              {price} <span className={classes.chain}>Algo</span>{' '}
+              {price}
+              {' '}
+              <span className={classes.chain}>Algo</span>
+              {' '}
               <span className={classes.usdPrice}>
-                ({algoPrice.toFixed(2)} USD)
+                (
+                {algoPrice.toFixed(2)}
+                {' '}
+                USD)
               </span>
             </div>
           </div>
-          <div className={classes.nOfNfts}>{number_of_nfts} NFTs</div>
         </div>
       </div>
     </div>

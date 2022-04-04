@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useContext, useState } from 'react';
+import React, {
+  useEffect, useRef, useContext, useState,
+} from 'react';
 import { setNotification } from '../../gen-state/gen.actions';
 import { GenContext } from '../../gen-state/gen.context';
 import classes from './Notification.module.css';
@@ -11,7 +13,7 @@ const Notification = () => {
   });
   const { toggleFeedback } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
@@ -36,7 +38,7 @@ const Notification = () => {
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
       <div ref={feedbackRef} className={classes.notification}>
-        <div className={classes.icon}></div>
+        <div className={classes.icon} />
         <div className={classes.message}>{notification}</div>
       </div>
     </div>

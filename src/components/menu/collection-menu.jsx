@@ -1,4 +1,6 @@
-import React, { useRef, useContext, useEffect, useState } from 'react';
+import React, {
+  useRef, useContext, useEffect, useState,
+} from 'react';
 import classes from './collection-menu.module.css';
 import ArtCard from '../art-card/art-card';
 import { GenContext } from '../../gen-state/gen.context';
@@ -21,7 +23,7 @@ const CollectionMenu = ({ layer }) => {
   const canvas = document.createElement('canvas');
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleBlank = async () => {
@@ -29,7 +31,7 @@ const CollectionMenu = ({ layer }) => {
       traits,
       layerTitle,
       canvas,
-      img: layers[0]['traits'][0]['image'],
+      img: layers[0].traits[0].image,
     });
     dispatch(addImage(res));
   };
@@ -48,13 +50,14 @@ const CollectionMenu = ({ layer }) => {
               key={idx}
               layerTitle={layerTitle}
               trait={trait}
-              setActiveCard={(activeCard) => handleSetState({ activeCard })}
+              setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
               activeCard={activeCard}
             />
           ))}
         </div>
         <div className={classes.uploadBtnContainer}>
           <button
+            type="button"
             onClick={() => fileRef.current.click()}
             className={classes.uploadBtn}
           >
@@ -62,7 +65,7 @@ const CollectionMenu = ({ layer }) => {
           </button>
           {traits[0] && (
             <ButtonClickEffect>
-              <button onClick={handleBlank} className={classes.addBlankBtn}>
+              <button type="button" onClick={handleBlank} className={classes.addBlankBtn}>
                 Add blank image
               </button>
             </ButtonClickEffect>
@@ -71,9 +74,7 @@ const CollectionMenu = ({ layer }) => {
       </section>
 
       <input
-        onChange={(event) =>
-          dispatch(addImage(handleFileChange({ event, traits, layerTitle })))
-        }
+        onChange={(event) => dispatch(addImage(handleFileChange({ event, traits, layerTitle })))}
         ref={fileRef}
         style={{ display: 'none' }}
         type="file"

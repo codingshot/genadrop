@@ -1,4 +1,4 @@
-export const transformArrayOfArraysToArrayOfObjects = (data) => {
+const transformArrayOfArraysToArrayOfObjects = (data) => {
   const transformShape = {
     0: 'itemId',
     1: 'nftContract',
@@ -12,7 +12,7 @@ export const transformArrayOfArraysToArrayOfObjects = (data) => {
   };
 
   return data.map((el) => {
-    let obj = {};
+    const obj = {};
     if (el.length !== 9) return console.log('data format not valid');
     el.forEach((i, idx) => {
       obj[transformShape[idx]] = i;
@@ -20,3 +20,4 @@ export const transformArrayOfArraysToArrayOfObjects = (data) => {
     return obj;
   });
 };
+export default transformArrayOfArraysToArrayOfObjects;

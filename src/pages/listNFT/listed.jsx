@@ -16,7 +16,7 @@ const Listed = ({ location }) => {
   const { isLoading } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const Listed = ({ location }) => {
             know, when your listing sells or receives offers
           </div>
           <Link to={`/me/${userId}/settings`}>
-            <button className={classes.buy}>Profile Settings</button>
+            <button type="button" className={classes.buy}>Profile Settings</button>
           </Link>
         </div>
       </div>
@@ -97,16 +97,14 @@ const Listed = ({ location }) => {
         </div>
 
         <div className={classes.detailContent}>
-          {icons.map((icon) => {
-            return (
-              <a href={icon.link} target="_blank">
-                <img src={icon.icon} alt="" />
-              </a>
-            );
-          })}
+          {icons.map((icon) => (
+            <a href={icon.link} target="_blank" rel="noreferrer">
+              <img src={icon.icon} alt="" />
+            </a>
+          ))}
         </div>
       </div>
-      <button className={classes.view}>View Item</button>
+      <button type="button" className={classes.view}>View Item</button>
     </div>
   );
 };

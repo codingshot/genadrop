@@ -4,19 +4,20 @@ import { Link, useRouteMatch } from 'react-router-dom';
 import classes from './NftCard.module.css';
 
 const NftCard = ({ nft, list, extend }) => {
-  const { Id, collection_name, name, price, image_url } = nft;
+  const {
+    Id, collection_name, name, price, image_url,
+  } = nft;
   const match = useRouteMatch();
 
   const [state, setState] = useState({ algoPrice: 0 });
   const { algoPrice } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
-    axios
-      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
+    axios.get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
       .then((res) => {
         handleSetState({ algoPrice: res.data.data.amount * price });
       });
@@ -32,18 +33,23 @@ const NftCard = ({ nft, list, extend }) => {
         <div className={classes.cardBody}>
           <div className={classes.collectionName}>{collection_name}</div>
           <div className={classes.name}>{name}</div>
-          <div className={classes.chainLogo}></div>
+          <div className={classes.chainLogo} />
           <div className={classes.wrapper}>
             <div className={classes.listPrice}>
               <div className={classes.list}>LISTPRICE</div>
               <div className={classes.price}>
-                {price} <span className={classes.chain}>Algo</span>
+                {price}
+                {' '}
+                <span className={classes.chain}>Algo</span>
                 <span className={classes.usdPrice}>
-                  ({algoPrice.toFixed(2)} USD)
+                  (
+                  {algoPrice.toFixed(2)}
+                  {' '}
+                  USD)
                 </span>
               </div>
             </div>
-            <button className={classes.button}>{list ? 'List' : 'Buy'}</button>
+            <button type="button" className={classes.button}>{list ? 'List' : 'Buy'}</button>
           </div>
         </div>
       </div>

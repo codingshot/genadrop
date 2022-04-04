@@ -10,10 +10,10 @@ import {
 } from '../../../utils/arc_ipfs';
 
 export const handleMint = async (args) => {
-  const { account, chain, dispatch, setNotification, setLoader, setClipboard } =
-    args;
-  if (!account)
-    return dispatch(setNotification('connect your wallet and try again.'));
+  const {
+    account, chain, dispatch, setNotification, setLoader, setClipboard,
+  } = args;
+  if (!account) { return dispatch(setNotification('connect your wallet and try again.')); }
   let url = null;
   try {
     if (chain.toLowerCase() === 'algo') {
@@ -38,19 +38,19 @@ export const handleMint = async (args) => {
     console.error(error);
     dispatch(setLoader(''));
     dispatch(
-      setNotification('ensure that your wallet is connected and try again.')
+      setNotification('ensure that your wallet is connected and try again.'),
     );
   }
 };
 
 export const handleSingleMint = async (args) => {
-  const { account, chain, dispatch, setNotification, setLoader, setClipboard } =
-    args;
-  if (!account)
-    return dispatch(setNotification('connect your wallet and try again.'));
+  const {
+    account, chain, dispatch, setNotification, setLoader, setClipboard,
+  } = args;
+  if (!account) { return dispatch(setNotification('connect your wallet and try again.')); }
   let url = null;
   try {
-    if (chain.toLowerCase() === 'algo') {
+    if (chain.toLowerCase() === 'algorand') {
       url = await mintSingleToAlgo({ ...args });
     } else if (chain.toLowerCase() === 'celo') {
       url = await mintSingleToCelo({ ...args });
@@ -73,7 +73,7 @@ export const handleSingleMint = async (args) => {
     console.error(error);
     dispatch(setLoader(''));
     dispatch(
-      setNotification('ensure that your wallet is connected and try again.')
+      setNotification('ensure that your wallet is connected and try again.'),
     );
   }
 };

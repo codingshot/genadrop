@@ -6,9 +6,9 @@ const Graph = ({ details }) => {
   const prices = !details
     ? null
     : details.map((e, i) => {
-        let date = new Date(e.txDate * 1000);
-        return [date.getMonth(), e.price];
-      });
+      const date = new Date(e.txDate * 1000);
+      return [date.getMonth(), e.price];
+    });
 
   const data = React.useMemo(
     () => [
@@ -17,17 +17,17 @@ const Graph = ({ details }) => {
         data: prices,
       },
     ],
-    []
+    [],
   );
   const nodata = React.useMemo(() => [{
-    label: "Series 1",
-    data: []
-  }])
+    label: 'Series 1',
+    data: [],
+  }]);
   const series = React.useMemo(
     () => ({
       showPoints: false,
     }),
-    []
+    [],
   );
 
   const axes = React.useMemo(
@@ -35,7 +35,7 @@ const Graph = ({ details }) => {
       { primary: true, type: 'linear', position: 'bottom' },
       { type: 'linear', position: 'left' },
     ],
-    []
+    [],
   );
 
   const lineChart = (
@@ -51,7 +51,6 @@ const Graph = ({ details }) => {
       )}
     </>
   );
-
 
   return lineChart;
 };

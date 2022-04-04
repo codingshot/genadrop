@@ -14,7 +14,9 @@ import closeIcon from '../../assets/icon-close.svg';
 import editIconDark from '../../assets/icon-edit-dark.svg';
 import markIconDark from '../../assets/icon-mark-dark.svg';
 
-const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
+const ArtCard = ({
+  layerTitle, trait, setActiveCard, activeCard,
+}) => {
   const [state, setState] = useState({
     prompt: '',
     inputValue: {
@@ -23,12 +25,14 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
     },
     previousValue: '',
   });
-  const { prompt, inputValue, previousValue, newImage } = state;
+  const {
+    prompt, inputValue, previousValue,
+  } = state;
   const { image, traitTitle, Rarity } = trait;
   const { dispatch, preview, isRule } = useContext(GenContext);
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleAddPreview = (name, imageFile) => {
@@ -43,18 +47,18 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    handleSetState({ inputValue: { ...inputValue, [name]: value } });
+    handleSetState({ inputValue: ({ ...inputValue, [name]: value }) });
   };
 
   const handleRename = (e, imageFile) => {
     e.preventDefault();
     preview.forEach((item) => {
       if (
-        item['layerTitle'] === layerTitle &&
-        item['imageName'] === previousValue
+        item.layerTitle === layerTitle
+        && item.imageName === previousValue
       ) {
         dispatch(
-          updatePreview({ layerTitle, imageName: inputValue.name, imageFile })
+          updatePreview({ layerTitle, imageName: inputValue.name, imageFile }),
         );
       }
     });
@@ -68,9 +72,9 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
           Number(inputValue.rarity) > 100
             ? '100'
             : Number(inputValue.rarity) < 1
-            ? '1'
-            : inputValue.rarity,
-      })
+              ? '1'
+              : inputValue.rarity,
+      }),
     );
   };
 
@@ -154,7 +158,11 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         <div>
           {prompt !== 'rarity' ? (
             <div className={classes.inputText}>
-              <div>Rarity: {Rarity}</div>
+              <div>
+                Rarity:
+                {' '}
+                {Rarity}
+              </div>
               <img
                 onClick={() => handlePrompt('rarity')}
                 src={editIconDark}

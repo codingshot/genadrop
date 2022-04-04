@@ -6,9 +6,9 @@ const Loading = () => (
   <div className={classes.wrapper}>
     <img src={drop} alt="" />
     <div className={classes.loader}>
-      <div className={classes.dotOne}></div>
-      <div className={classes.dotTwo}></div>
-      <div className={classes.dotThree}></div>
+      <div className={classes.dotOne} />
+      <div className={classes.dotTwo} />
+      <div className={classes.dotThree} />
     </div>
   </div>
 );

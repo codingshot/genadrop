@@ -23,12 +23,14 @@ const Banner = () => {
           </p>
           <div className={classes.pageLinks}>
             <button
+              type="button"
               className={classes.createBtn}
               onClick={() => history.push('./create')}
             >
               Create
             </button>
             <button
+              type="button"
               className={classes.mintBtn}
               onClick={() => history.push('./mint')}
             >

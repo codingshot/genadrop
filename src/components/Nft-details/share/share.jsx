@@ -2,6 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import classes from './share.module.css';
 
 const Share = () => {
+  const [state, setState] = useState({
+    showShare: false,
+    showSocial: false,
+  });
+
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -24,45 +32,37 @@ const Share = () => {
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
 
-  const [state, setState] = useState({
-    showShare: false,
-    showSocial: false,
-  });
+  // const icons = [
+  //   {
+  //     icon: 'assets/icon-instagram.png',
+  //     link: 'www.facebook.com/mpa',
+  //   },
+  //   {
+  //     icon: 'assets/icon-instagram.png',
+  //     link: 'www.insta.com/mpa',
+  //   },
+  //   {
+  //     icon: 'assets/icon-instagram.png',
+  //     link: 'www.facebook.com/mpa',
+  //   },
+  // ];
 
-  const icons = [
-    {
-      icon: 'assets/icon-instagram.png',
-      link: 'www.facebook.com/mpa',
-    },
-    {
-      icon: 'assets/icon-instagram.png',
-      link: 'www.insta.com/mpa',
-    },
-    {
-      icon: 'assets/icon-instagram.png',
-      link: 'www.facebook.com/mpa',
-    },
-  ];
+  // const { showSocial, showShare } = state;
+  // const [text, setText] = useState('');
+  // const [isCopied, setIsCopied] = useState(false);
 
-  const { showSocial, showShare } = state;
-  const [text, setText] = useState('');
-  const [isCopied, setIsCopied] = useState(false);
-
-  const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
-  };
-  const handleHide = (payload) => {
-    setTimeout(() => {
-      handleSetState(payload);
-    }, 1000);
-  };
-  const onCopyText = () => {
-    setIsCopied(true);
-    setTimeout(() => {
-      setIsCopied(false);
-    }, 1000);
-  };
-  return <div className={classes.container}></div>;
+  // const handleHide = (payload) => {
+  //   setTimeout(() => {
+  //     handleSetState(payload);
+  //   }, 1000);
+  // };
+  // const onCopyText = () => {
+  //   setIsCopied(true);
+  //   setTimeout(() => {
+  //     setIsCopied(false);
+  //   }, 1000);
+  // };
+  return <div className={classes.container} />;
 };
 
 export default Share;

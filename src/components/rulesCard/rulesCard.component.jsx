@@ -11,8 +11,8 @@ const RulesCard = () => {
     dispatch(clearRule());
   };
 
-  const handleDelete = (rule) => {
-    dispatch(deleteRule(rule));
+  const handleDelete = (deletRule) => {
+    dispatch(deleteRule(deletRule));
   };
 
   return (
@@ -45,7 +45,7 @@ const RulesCard = () => {
       </div>
       {rule.length ? (
         <div className={classes.clearBtnContainer}>
-          <button onClick={handleClearRule}>clear all</button>
+          <button type="button" onClick={handleClearRule}>clear all</button>
         </div>
       ) : (
         <div className={classes.notification}>you have not set any rule</div>

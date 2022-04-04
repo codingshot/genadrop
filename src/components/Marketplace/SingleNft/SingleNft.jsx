@@ -12,7 +12,7 @@ const SingleNft = () => {
   });
   const { allSingleNfts } = state;
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
   const { singleNfts, mainnet } = useContext(GenContext);
   const { url } = useRouteMatch();
@@ -21,42 +21,47 @@ const SingleNft = () => {
   useEffect(() => {
     (async function getResult() {
       if (singleNfts?.length) {
-        let allSingleNfts = await getSingleNfts(mainnet, singleNfts);
-        handleSetState({ allSingleNfts });
+        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
+        handleSetState({ allSingleNfts: allSingleNFTs });
       } else {
         handleSetState({ allSingleNfts: null });
       }
-    })();
+    }());
   }, [singleNfts]);
-
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
         <h3>1 of 1s</h3>
-        <button onClick={() => history.push(`${url}/single-mint`)}>
-          view all
-        </button>
+        <button type="button" onClick={() => history.push(`${url}/single-mint`)}>view all</button>
       </div>
-      {allSingleNfts?.length ? (
-        <div className={classes.wrapper}>
-          {allSingleNfts.map((nft, idx) => (
-            <NftCard key={idx} nft={nft} extend="/single-mint" />
-          ))}
-        </div>
-      ) : !allSingleNfts ? (
-        <h1 className={classes.noResult}> No Result Found.</h1>
-      ) : (
-        <div className={classes.wrapper}>
-          {Array(5)
-            .fill(null)
-            .map((_, idx) => (
-              <div key={idx}>
-                <Skeleton count={1} height={200} />
-                <Skeleton count={3} height={40} />
+      {
+        allSingleNfts?.length
+          ? (
+            <div className={classes.wrapper}>
+              {
+              allSingleNfts
+                .map((nft) => (
+                  <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+                ))
+            }
+            </div>
+          )
+          : !allSingleNfts
+            ? <h1 className={classes.noResult}> No Result Found.</h1>
+            : (
+              <div className={classes.wrapper}>
+                {
+                ([...new Array(5)].map((_, idx) => idx)).map((id) => (
+                  <div key={id}>
+                    <Skeleton count={1} height={200} />
+                    <Skeleton count={3} height={40} />
+                  </div>
+                ))
+              }
               </div>
-            ))}
-        </div>
-      )}
+            )
+
+      }
     </div>
   );
 };

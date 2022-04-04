@@ -12,7 +12,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const { value, editor } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handleSubmit = (e) => {
@@ -31,7 +31,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
             value={value}
             onChange={(e) => handleSetState({ value: e.target.value })}
           />
-          <button>
+          <button type="button">
             <img src={markIcon} alt="" />
           </button>
         </form>

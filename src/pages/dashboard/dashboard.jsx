@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { useRouteMatch } from 'react-router-dom';
 import Copy from '../../components/copy/copy';
 import CollectionsCard from '../../components/Marketplace/collectionsCard/collectionsCard';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
@@ -32,7 +31,6 @@ const Dashboard = () => {
 
   const {
     filter,
-    togglePriceFilter,
     activeDetail,
     myCollections,
     createdNfts,
@@ -42,37 +40,36 @@ const Dashboard = () => {
   const { account, mainnet } = useContext(GenContext);
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
-  const breakAddress = (address = '', width = 6) => {
-    return `${address.slice(0, width)}...${address.slice(-width)}`;
-  };
+  const breakAddress = (address = '', width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
     if (!account) return;
 
     (async function readAllSingle() {
-      let userCollections = await fetchUserCollections(account);
-      let myCollections = await getNftCollections(userCollections, mainnet);
-      console.log('===>', myCollections);
-      handleSetState({ myCollections });
-    })();
+      const userCollections = await fetchUserCollections(account);
+      const myNftsCollections = await getNftCollections(userCollections, mainnet);
+      console.log('===>', myNftsCollections);
+      handleSetState({ myCollections: myNftsCollections });
+    }());
 
     (async function getCollections() {
-      let userNftCollections = await fetchUserNfts(account);
-      let createdNfts = await getUserNftCollection(userNftCollections, mainnet);
-      console.log('===>', createdNfts);
+      const userNftCollections = await fetchUserNfts(account);
+      const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
+      console.log('===>', createdUserNfts);
 
-      handleSetState({ createdNfts });
-    })();
+      handleSetState({ createdNfts: createdUserNfts });
+    }());
 
     (async function getCollections() {
-      let userNftCollections = await fetchAllNfts(account);
-      let result = await getUserNftCollection(userNftCollections, mainnet);
-    })();
+      const userNftCollections = await fetchAllNfts(account);
+      await getUserNftCollection(userNftCollections, mainnet);
+    }());
   }, [account]);
 
+  // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
     switch (activeDetail) {
       case 'collected':
@@ -89,9 +86,9 @@ const Dashboard = () => {
   useEffect(() => {
     if (!account) return;
     if (!filteredCollection) return;
-    let filtered = getCollectionToFilter().filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = getCollectionToFilter().filter(
+      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    );
     handleSetState({ filteredCollection: filtered });
   }, [filter.searchValue]);
 
@@ -101,11 +98,11 @@ const Dashboard = () => {
     let filtered = null;
     if (filter.price === 'low') {
       filtered = getCollectionToFilter().sort(
-        (a, b) => Number(a.price) - Number(b.price)
+        (a, b) => Number(a.price) - Number(b.price),
       );
     } else {
       filtered = getCollectionToFilter().sort(
-        (a, b) => Number(b.price) - Number(a.price)
+        (a, b) => Number(b.price) - Number(a.price),
       );
     }
     handleSetState({ filteredCollection: filtered });
@@ -113,12 +110,10 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!account) return;
-    let filteredCollection = getCollectionToFilter();
+    const filteredNFTCollection = getCollectionToFilter();
     // if (!filteredCollection) return;
-    handleSetState({ filteredCollection });
+    handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
-
-  const { url } = useRouteMatch();
 
   return (
     <div className={classes.container}>
@@ -166,14 +161,10 @@ const Dashboard = () => {
         <section className={classes.main}>
           <div className={classes.searchAndFilter}>
             <SearchBar
-              onSearch={(value) =>
-                handleSetState({ filter: { ...filter, searchValue: value } })
-              }
+              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
             <PriceDropdown
-              onPriceFilter={(value) =>
-                handleSetState({ filter: { ...filter, price: value } })
-              }
+              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
             />
           </div>
 
@@ -186,24 +177,24 @@ const Dashboard = () => {
           ) : filteredCollection && activeDetail === 'created' ? (
             <div className={classes.overview}>
               {filteredCollection.map((nft, idx) => (
-                <NftCard key={idx} nft={nft} list={true} />
+                <NftCard key={idx} nft={nft} list />
               ))}
             </div>
           ) : filteredCollection && activeDetail === 'collected' ? (
             <div className={classes.overview}>
               {filteredCollection.map((nft, idx) => (
-                <NftCard key={idx} nft={nft} list={true} />
+                <NftCard key={idx} nft={nft} list />
               ))}
             </div>
           ) : (
             <div className={classes.skeleton}>
-              {Array(5)
-                .fill(null)
-                .map((_, idx) => (
-                  <div key={idx}>
-                    <Skeleton count={1} height={300} />
-                  </div>
-                ))}
+              {
+            ([...new Array(5)].map((_, idx) => idx)).map((id) => (
+              <div key={id}>
+                <Skeleton count={1} height={300} />
+              </div>
+            ))
+          }
             </div>
           )}
         </section>
