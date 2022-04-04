@@ -161,6 +161,7 @@ const Collections = () => {
           <h1>Collections</h1>
           <div className={classes.searchAndFilter}>
             <SearchBar
+              chain={filter.chain}
               onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
             />
             <ChainDropdown

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import classes from './searchBar.module.css';
 
-const SearchBar = ({ onSearch }) => {
+const SearchBar = ({ onSearch, chain }) => {
   const history = useHistory();
   const location = useLocation();
 
@@ -28,7 +28,7 @@ const SearchBar = ({ onSearch }) => {
   }, [searchValue]);
 
   const seachHandler = (event) => {
-    const params = new URLSearchParams({ search: event.target.value });
+    const params = new URLSearchParams({ search: event.target.value, chain: chain.toLowerCase() });
     history.replace({ pathname: location.pathname, search: params.toString() });
     handleSetState({ searchValue: event.target.value });
   };
