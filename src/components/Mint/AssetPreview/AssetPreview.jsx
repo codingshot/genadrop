@@ -167,7 +167,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
   useEffect(() => {
     if (chainId) {
-      const c = chains.find((e) => e.networkId === chainId);
+      const c = chains.find((c) => c.networkId.toString() === chainId);
       if (!c) return handleSetState({ chain: { label: 'unsupported chain' } });
       handleSetState({ chain: c });
       if (c.symbol === 'NEAR') {
