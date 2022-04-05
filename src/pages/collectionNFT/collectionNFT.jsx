@@ -311,7 +311,7 @@ const CollectionNFT = () => {
         <div className={classes.heading}>
           <h3>Transaction History</h3>
         </div>
-        <div className={classes.tableContainer}>
+        <div className={classes.history}>
           <Search data={transactionHistory} />
         </div>
       </div>
@@ -374,16 +374,16 @@ const CollectionNFT = () => {
                   <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                     <div className={classes.copy_area}>
                       {
-                      !isCopied
-                        ? (
-                          <img
-                            className={classes.shareicon}
-                            src={copyIcon}
-                            alt=""
-                          />
-                        )
-                        : <img className={classes.shareicon} src={copiedIcon} alt="" />
-                    }
+                        !isCopied
+                          ? (
+                            <img
+                              className={classes.shareicon}
+                              src={copyIcon}
+                              alt=""
+                            />
+                          )
+                          : <img className={classes.shareicon} src={copiedIcon} alt="" />
+                      }
 
                     </div>
                   </CopyToClipboard>
@@ -415,7 +415,7 @@ const CollectionNFT = () => {
           : (
             ''
           )
-}
+      }
     </div>
   );
 };
