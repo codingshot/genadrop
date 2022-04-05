@@ -17,7 +17,7 @@ const chainIcon = {
 const ChainDropdown = ({ onChainFilter }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
-    chain: 'Algorand',
+    chain: 'All',
   });
 
   const { toggleChainFilter, chain } = state;
@@ -63,7 +63,6 @@ const ChainDropdown = ({ onChainFilter }) => {
     onChainFilter(name);
     handleSetState({ chain: name, toggleChainFilter: false });
   };
-  console.log(chainIcon[chain]);
   return (
     <div className={classes.chainDropdown}>
       <div
@@ -73,7 +72,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         <div>
           {chainIcon[chain.toLowerCase()]
            && <img src={chainIcon[chain.toLowerCase()]} alt={chain.toLowerCase()} />}
-          <span>{chain}</span>
+          <span>{chain === 'All' ? 'All Blockchains' : chain}</span>
         </div>
         <img
           src={dropdownIcon}
@@ -89,8 +88,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         <div
           onClick={() => chainHandler('All')}
         >
-          {/* <img src={chainE.img} alt={chainE.name} /> */}
-          <span>All</span>
+          <span>All Blockchains</span>
         </div>
         {chains.map((chainE) => (
 

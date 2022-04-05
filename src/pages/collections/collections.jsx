@@ -1,10 +1,9 @@
 import React, {
-  useEffect, useRef, useState, useContext,
+  useEffect, useState, useContext,
 } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
 import { useHistory, useLocation } from 'react-router-dom';
-import { chain } from 'lodash';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../utils';
@@ -48,10 +47,14 @@ const Collections = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const getCollectionByChain = () => {
-    switch (filter.chain.toLowerCase()) {
+  const getCollectionByChain = (network = filter.chain) => {
+    switch (network.toLowerCase()) {
       case 'all':
-        return [...algoCollection, ...polyCollection, ...celoCollection, ...nearCollection];
+        return [
+          ...(algoCollection || []),
+          ...(polyCollection || []),
+          ...(celoCollection || []),
+          ...(nearCollection || [])];
       case 'algorand':
         return algoCollection;
       case 'polygon':
@@ -63,6 +66,7 @@ const Collections = () => {
       default:
         break;
     }
+    return null;
   };
 
   // *************************get results from different blockchains*************************
@@ -81,11 +85,11 @@ const Collections = () => {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
         const data = transformArrayOfArraysToArrayOfObjects(result);
-        for (const d of data) {
+        data.forEach(async (d) => {
           const response = await axios.get(
             d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
           );
-        }
+        });
         // handleSetState({ polyCollection: result });
         // console.log(result);
       }());
@@ -93,25 +97,8 @@ const Collections = () => {
       console.log(error);
     }
   }, []);
-  // ***********************************************************************************************
-
-  // ************************* get search result for different blockchains *************************
-  // useEffect(() => {
-  //   const collection = getCollectionByChain();
-  //   if (!collection) return;
-  //   const filtered = collection.filter(
-  //     (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
-  //   );
-  //   if (filtered.length) {
-  //     handleSetState({ filteredCollection: filtered });
-  //   } else {
-  //     handleSetState({ filteredCollection: null });
-  //   }
-  // }, [filter.searchValue]);
-  // ***********************************************************************************************
 
   // *********************** sort by price function for different blockchains **********************
-  // eslint-disable-next-line consistent-return
   const sortPrice = () => {
     const collection = getCollectionByChain();
     if (!collection) return handleSetState({ filteredCollection: null });
@@ -122,42 +109,28 @@ const Collections = () => {
       sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
+    return sorted;
   };
-  // ***********************************************************************************************
 
-  // ********************************* render blockchains ******************************************
-  // useEffect(() => {
-  //   if (domMountRef.current) {
-  //     sortPrice(getCollectionByChain());
-  //   } else {
-  //     domMountRef.current = true;
-  //   }
-  // }, [
-  //   filter.chain,
-  //   filter.price,
-  //   algoCollection,
-  //   polyCollection,
-  //   celoCollection,
-  //   nearCollection,
-  // ]);
   useEffect(() => {
     const { search } = location;
     const name = new URLSearchParams(search).get('search');
-    // const chain = new URLSearchParams(filterChain).get('chain');
-    // if (chain) {
-    //   handleSetState({ filter: { ...filter, chain } });
-    // }
+    const chainParameter = new URLSearchParams(search).get('chain');
+    if (chainParameter) {
+      handleSetState({ filter: { ...filter, chain: chainParameter } });
+    }
     const collection = getCollectionByChain();
     if (!collection) return handleSetState({ filteredCollection: null });
-    let filtered = [];
     if (name) {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
-    filtered = collection.filter(
+    const filtered = collection.filter(
       (col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ''),
     );
-    if (filtered.length) {
+    if (filtered?.length) {
       handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
     }
     return null;
   }, [
@@ -203,28 +176,29 @@ const Collections = () => {
       { pathname: location.pathname, search: params.toString() },
     );
     handleSetState({ filter: { ...filter, chain: value } });
-    const collection = getCollectionByChain();
-    if (!collection) return;
-    if (filter.searchValue) {
-      const filtered = collection.filter(
-        (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
-      );
-      if (filtered.length) {
-        handleSetState({ filteredCollection: filtered });
+    const collection = getCollectionByChain(value);
+    if (collection) {
+      if (filter.searchValue) {
+        const filtered = collection.filter(
+          (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+        );
+        if (filtered.length) {
+          handleSetState({ filteredCollection: filtered });
+        } else {
+          handleSetState({ filteredCollection: null });
+        }
       } else {
-        handleSetState({ filteredCollection: null });
+        handleSetState({ filteredCollection: collection });
       }
     } else {
-      handleSetState({ filteredCollection: collection });
+      handleSetState({ filteredCollection: null });
     }
   };
 
   const priceUpdate = (value) => {
     handleSetState({ filter: { ...filter, price: value } });
-    sortPrice(getCollectionByChain());
+    sortPrice();
   };
-  console.log(filteredCollection);
-  console.log(filter.chain);
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -244,8 +218,8 @@ const Collections = () => {
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
-            {filteredCollection.map((collection, idx) => (
-              <CollectionsCard key={idx} collection={collection} />
+            {filteredCollection.map((collection) => (
+              <CollectionsCard key={collection.collection} collection={collection} />
             ))}
           </div>
         ) : !filteredCollection ? (
