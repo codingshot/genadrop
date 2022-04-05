@@ -17,7 +17,7 @@ const chainIcon = {
 const ChainDropdown = ({ onChainFilter }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
-    chain: 'All',
+    chain: 'all',
   });
 
   const { toggleChainFilter, chain } = state;
