@@ -35,8 +35,8 @@ const SingleNFT = () => {
   const { url } = useRouteMatch();
   const wrapperRef = useRef(null);
   const [state, setState] = useState({
+    dropdown: ['1', '3'],
     nftDetails: null,
-    dropdown: '',
     algoPrice: 0,
     isLoading: true,
     transactionHistory: null,
@@ -268,7 +268,7 @@ const SingleNFT = () => {
             </div>
           </div>
           {/* PRICE HISTORY */}
-          <div className={classes.feature}>
+          {/* <div className={classes.feature}>
             <DropItem
               key={2}
               item={graph}
@@ -276,7 +276,7 @@ const SingleNFT = () => {
               dropdown={dropdown}
               handleSetState={handleSetState}
             />
-          </div>
+          </div> */}
           <div className={classes.feature}>
             <DropItem
               key={3}
@@ -298,6 +298,14 @@ const SingleNFT = () => {
         <div className={classes.history}>
           <Search data={transactionHistory} />
 
+        </div>
+      </div>
+      <div className={classes.section}>
+        <div className={classes.heading}>
+          <h3>Price History</h3>
+        </div>
+        <div className={classes.tableContainer}>
+          {graph.content}
         </div>
       </div>
 
