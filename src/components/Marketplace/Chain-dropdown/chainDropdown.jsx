@@ -72,7 +72,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         <div>
           {chainIcon[chain.toLowerCase()]
            && <img src={chainIcon[chain.toLowerCase()]} alt={chain.toLowerCase()} />}
-          <span>{chain === 'All' ? 'All Blockchains' : chain}</span>
+          <span>{chain === 'all' ? 'All Blockchains' : chain}</span>
         </div>
         <img
           src={dropdownIcon}
@@ -86,7 +86,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}
       >
         <div
-          onClick={() => chainHandler('All')}
+          onClick={() => chainHandler('all')}
         >
           <span>All Blockchains</span>
         </div>
