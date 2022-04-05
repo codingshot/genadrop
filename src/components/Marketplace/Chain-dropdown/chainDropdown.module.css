@@ -42,6 +42,7 @@
   border-top-left-radius: 0.25em;
   border-top-right-radius: 0.25em;
   cursor: pointer;
+  height: 100%;
 }
 
 .selectedChain:hover {

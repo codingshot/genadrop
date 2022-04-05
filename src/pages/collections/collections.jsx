@@ -3,6 +3,8 @@ import React, {
 } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
+import { useHistory, useLocation } from 'react-router-dom';
+import { chain } from 'lodash';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../utils';
@@ -17,9 +19,9 @@ import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
 
 const Collections = () => {
-  const domMountRef = useRef(false);
   const { mainnet } = useContext(GenContext);
-
+  const history = useHistory();
+  const location = useLocation();
   const [state, setState] = useState({
     filteredCollection: [],
     algoCollection: null,
@@ -29,7 +31,7 @@ const Collections = () => {
     filter: {
       searchValue: '',
       price: 'low',
-      chain: 'Algorand',
+      chain: 'all',
     },
   });
 
@@ -47,14 +49,16 @@ const Collections = () => {
   };
 
   const getCollectionByChain = () => {
-    switch (filter.chain) {
-      case 'Algorand':
+    switch (filter.chain.toLowerCase()) {
+      case 'all':
+        return [...algoCollection, ...polyCollection, ...celoCollection, ...nearCollection];
+      case 'algorand':
         return algoCollection;
-      case 'Polygon':
+      case 'polygon':
         return polyCollection;
-      case 'Celo':
+      case 'celo':
         return celoCollection;
-      case 'Near':
+      case 'near':
         return nearCollection;
       default:
         break;
@@ -92,23 +96,24 @@ const Collections = () => {
   // ***********************************************************************************************
 
   // ************************* get search result for different blockchains *************************
-  useEffect(() => {
-    const collection = getCollectionByChain();
-    if (!collection) return;
-    const filtered = collection.filter(
-      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
-    );
-    if (filtered.length) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-  }, [filter.searchValue]);
+  // useEffect(() => {
+  //   const collection = getCollectionByChain();
+  //   if (!collection) return;
+  //   const filtered = collection.filter(
+  //     (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+  //   );
+  //   if (filtered.length) {
+  //     handleSetState({ filteredCollection: filtered });
+  //   } else {
+  //     handleSetState({ filteredCollection: null });
+  //   }
+  // }, [filter.searchValue]);
   // ***********************************************************************************************
 
   // *********************** sort by price function for different blockchains **********************
   // eslint-disable-next-line consistent-return
-  const sortPrice = (collection) => {
+  const sortPrice = () => {
+    const collection = getCollectionByChain();
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
     if (filter.price === 'low') {
@@ -121,31 +126,38 @@ const Collections = () => {
   // ***********************************************************************************************
 
   // ********************************* render blockchains ******************************************
+  // useEffect(() => {
+  //   if (domMountRef.current) {
+  //     sortPrice(getCollectionByChain());
+  //   } else {
+  //     domMountRef.current = true;
+  //   }
+  // }, [
+  //   filter.chain,
+  //   filter.price,
+  //   algoCollection,
+  //   polyCollection,
+  //   celoCollection,
+  //   nearCollection,
+  // ]);
   useEffect(() => {
-    if (domMountRef.current) {
-      sortPrice(getCollectionByChain());
-    } else {
-      domMountRef.current = true;
-    }
-  }, [
-    filter.chain,
-    filter.price,
-    algoCollection,
-    polyCollection,
-    celoCollection,
-    nearCollection,
-  ]);
-  useEffect(() => {
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    // const chain = new URLSearchParams(filterChain).get('chain');
+    // if (chain) {
+    //   handleSetState({ filter: { ...filter, chain } });
+    // }
     const collection = getCollectionByChain();
     if (!collection) return handleSetState({ filteredCollection: null });
-    const filtered = collection.filter(
-      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+    let filtered = [];
+    if (name) {
+      handleSetState({ filter: { ...filter, searchValue: name } });
+    }
+    filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ''),
     );
-
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
     }
     return null;
   }, [
@@ -154,6 +166,65 @@ const Collections = () => {
     celoCollection,
     nearCollection,
   ]);
+
+  const searchHandler = (value) => {
+    handleSetState({ filter: { ...filter, searchValue: value } });
+    const { search } = location;
+    const chainParam = new URLSearchParams(search).get('chain');
+    const params = new URLSearchParams(
+      {
+        search: value,
+        ...(chainParam && { chain: chainParam }),
+      },
+    );
+    history.replace({ pathname: location.pathname, search: params.toString() });
+    const collection = getCollectionByChain();
+    if (!collection) return;
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(value.toLowerCase()),
+    );
+    if (filtered.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  };
+
+  const chainChange = (value) => {
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    const params = new URLSearchParams(
+      {
+        chain: value.toLowerCase(),
+        ...(name && { search: name }),
+      },
+    );
+    history.replace(
+      { pathname: location.pathname, search: params.toString() },
+    );
+    handleSetState({ filter: { ...filter, chain: value } });
+    const collection = getCollectionByChain();
+    if (!collection) return;
+    if (filter.searchValue) {
+      const filtered = collection.filter(
+        (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+      );
+      if (filtered.length) {
+        handleSetState({ filteredCollection: filtered });
+      } else {
+        handleSetState({ filteredCollection: null });
+      }
+    } else {
+      handleSetState({ filteredCollection: collection });
+    }
+  };
+
+  const priceUpdate = (value) => {
+    handleSetState({ filter: { ...filter, price: value } });
+    sortPrice(getCollectionByChain());
+  };
+  console.log(filteredCollection);
+  console.log(filter.chain);
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -161,14 +232,13 @@ const Collections = () => {
           <h1>Collections</h1>
           <div className={classes.searchAndFilter}>
             <SearchBar
-              chain={filter.chain}
-              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
+              onSearch={searchHandler}
             />
             <ChainDropdown
-              onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
+              onChainFilter={chainChange}
             />
             <PriceDropdown
-              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
+              onPriceFilter={priceUpdate}
             />
           </div>
         </div>
