@@ -16,7 +16,7 @@ import { getNftCollection } from '../../utils';
 import { PurchaseNft } from '../../utils/arc_ipfs';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { readNftTransaction } from '../../utils/firebase';
-import bidIcon from '../../assets/bid.png';
+// import bidIcon from '../../assets/bid.png';
 import copiedIcon from '../../assets/copied.svg';
 import copyIcon from '../../assets/copy-solid.svg';
 import walletIcon from '../../assets/wallet-icon.png';
@@ -28,7 +28,7 @@ import detailsIcon from '../../assets/details.png';
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
-    dropdown: '',
+    dropdown: ['1', '3'],
     asset: null,
     transactionHistory: null,
     showSocial: false,
@@ -275,16 +275,16 @@ const CollectionNFT = () => {
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
-                  <button type="button" className={classes.bid}>
+                  {/* <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid
-                  </button>
+                  </button> */}
                 </>
               )}
             </div>
           </div>
           {/* PRICE HISTORY */}
-          <div className={classes.feature}>
+          {/* <div className={classes.feature}>
             <DropItem
               key={2}
               item={graph}
@@ -292,7 +292,8 @@ const CollectionNFT = () => {
               dropdown={dropdown}
               handleSetState={handleSetState}
             />
-          </div>
+          </div> */}
+          {/* Description */}
           <div className={classes.feature}>
             <DropItem
               key={3}
@@ -314,7 +315,15 @@ const CollectionNFT = () => {
           <Search data={transactionHistory} />
         </div>
       </div>
-
+      {/* PRICE HISTORY */}
+      <div className={classes.section}>
+        <div className={classes.heading}>
+          <h3>Price History</h3>
+        </div>
+        <div className={classes.tableContainer}>
+          {graph.content}
+        </div>
+      </div>
       <div className={classes.section}>
         <div className={classes.heading}>
           <h3>Meta Data</h3>

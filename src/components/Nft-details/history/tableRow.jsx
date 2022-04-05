@@ -60,7 +60,7 @@ const TableRow = (data) => {
         </span>
         {data.event}
       </td>
-      <td>{!data.txId ? '--' : data.txId}</td>
+      <td>{!data.txId ? '--' : breakAddress(data.txId)}</td>
       <td>{getDate(data.date)}</td>
       <td>{!data.price ? '--' : data.price}</td>
       <td>{breakAddress(data.from)}</td>

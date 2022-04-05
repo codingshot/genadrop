@@ -50,7 +50,7 @@ export const handleSingleMint = async (args) => {
   if (!account) { return dispatch(setNotification('connect your wallet and try again.')); }
   let url = null;
   try {
-    if (chain.toLowerCase() === 'algo') {
+    if (chain.toLowerCase() === 'algorand') {
       url = await mintSingleToAlgo({ ...args });
     } else if (chain.toLowerCase() === 'celo') {
       url = await mintSingleToCelo({ ...args });

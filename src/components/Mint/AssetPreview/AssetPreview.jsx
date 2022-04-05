@@ -156,7 +156,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
   const setMint = () => {
     if (!chainId) { return dispatch(setNotification('connect wallet and try again')); }
-    const c = chains.find((c) => c.networkId === chainId);
+    const c = chains.find((e) => e.networkId.toString() === chainId.toString());
     if (!c) return dispatch(setNotification('unsupported chain detected'));
     if (file.length > 1) {
       handleMint(mintProps);
@@ -167,7 +167,7 @@ const AssetPreview = ({ data, changeFile }) => {
 
   useEffect(() => {
     if (chainId) {
-      const c = chains.find((e) => e.networkId === chainId);
+      const c = chains.find((e) => e.networkId.toString() === (chainId.toString()));
       if (!c) return handleSetState({ chain: { label: 'unsupported chain' } });
       handleSetState({ chain: c });
       if (c.symbol === 'NEAR') {
@@ -182,12 +182,11 @@ const AssetPreview = ({ data, changeFile }) => {
         axios
           .get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`)
           .then((res) => {
-            handleSetState({ dollarPrice: res.data.data.amount * price });
+            handleSetState({ dollarPrice: price / res.data.data.amount });
           });
       }
     }
   }, [price, chainId]);
-
   return (
     <div className={classes.container}>
       {preview ? (
