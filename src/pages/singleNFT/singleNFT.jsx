@@ -50,6 +50,7 @@ const SingleNFT = () => {
     isLoading,
     showSocial,
     isCopied,
+    transactionHistory
   } = state;
 
   const handleSetState = (payload) => {
@@ -82,8 +83,10 @@ const SingleNFT = () => {
     const nft = singleNfts.filter((NFT) => String(NFT.id) === nftId)[0];
 
     (async function getNftDetails() {
+      const tHistory = await readNftTransaction(nftId);
+
       const NFTDetails = await getSingleNftDetails(mainnet, nft);
-      handleSetState({ nftDetails: NFTDetails, isLoading: false });
+      handleSetState({ nftDetails: NFTDetails, isLoading: false, transactionHistory: tHistory });
     }());
     // handleSetState({ })
 
@@ -245,7 +248,7 @@ const SingleNFT = () => {
               {nftDetails.sold ? (
                 <>
                   <button type="button" className={classes.sold} disabled={nftDetails.sold}>
-                    <img src={walletIcon} alt="" />
+
                     SOLD!
                   </button>
                 </>
@@ -292,7 +295,10 @@ const SingleNFT = () => {
           <h3>Transaction History</h3>
         </div>
 
-        <Search data={transactionHistory} />
+        <div className={classes.history}>
+          <Search data={transactionHistory} />
+
+        </div>
       </div>
 
       <div className={classes.section}>
@@ -328,16 +334,16 @@ const SingleNFT = () => {
                   <CopyToClipboard text={url} onCopy={onCopyText}>
                     <div className={classes.copy_area}>
                       {
-                      !isCopied
-                        ? (
-                          <img
-                            className={classes.shareicon}
-                            src={copyIcon}
-                            alt=""
-                          />
-                        )
-                        : <img className={classes.shareicon} src={copiedIcon} alt="" />
-                    }
+                        !isCopied
+                          ? (
+                            <img
+                              className={classes.shareicon}
+                              src={copyIcon}
+                              alt=""
+                            />
+                          )
+                          : <img className={classes.shareicon} src={copiedIcon} alt="" />
+                      }
 
                     </div>
                   </CopyToClipboard>
@@ -369,7 +375,7 @@ const SingleNFT = () => {
           : (
             ''
           )
-}
+      }
     </div>
   );
 };
