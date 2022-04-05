@@ -99,7 +99,7 @@
   color: black;
   border-radius: 0.5em;
   border: 1px solid var(--main-accent);
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   box-shadow: 0 0 5px gainsboro;
   transition: all 300ms;
   visibility: hidden;
@@ -128,5 +128,3 @@
 .option div {
   white-space: nowrap;
 }
-
-

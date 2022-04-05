@@ -1,14 +1,14 @@
-import React, { useContext, useState } from 'react';
-import CollectionMenu from '../menu/collection-menu';
-import classes from './collection-overview.module.css';
-import { GenContext } from '../../gen-state/gen.context';
+import { useContext, useState } from "react";
+import CollectionMenu from "../menu/collection-menu";
+import classes from "./collection-overview.module.css";
+import { GenContext } from "../../gen-state/gen.context";
 import {
   addRule,
   clearPreview,
   setConflictRule,
-} from '../../gen-state/gen.actions';
-import { isUnique } from './collection-overview-script';
-import RulesCard from '../rulesCard/rulesCard.component';
+} from "../../gen-state/gen.actions";
+import { isUnique } from "./collection-overview-script";
+import RulesCard from "../rulesCard/rulesCard.component";
 
 const CollectionOverview = () => {
   const { dispatch, isRule, preview, rule, layers } = useContext(GenContext);

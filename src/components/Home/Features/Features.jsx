@@ -1,6 +1,6 @@
-import React from 'react';
-import Feature from './Feature';
-import classes from './Features.module.css';
+import React from "react";
+import Feature from "./Feature";
+import classes from "./Features.module.css";
 
 const Features = ({ data }) => {
   const { heading, headingAccent, image, description, feature } = data;

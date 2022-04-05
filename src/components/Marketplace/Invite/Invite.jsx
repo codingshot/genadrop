@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './styles.module.css';
+import React from "react";
+import classes from "./styles.module.css";
 
 const Invite = () => (
   <div className={classes.container}>

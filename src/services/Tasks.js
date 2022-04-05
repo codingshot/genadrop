@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 import {
   addTask,
   getTasks,
   updateTask,
   deleteTask,
-} from './services/taskServices';
+} from "./services/taskServices";
 
 class Tasks extends Component {
-  state = { tasks: [], currentTask: '' };
+  state = { tasks: [], currentTask: "" };
 
   async componentDidMount() {
     try {
@@ -30,7 +30,7 @@ class Tasks extends Component {
       const { data } = await addTask({ task: this.state.currentTask });
       const tasks = originalTasks;
       tasks.push(data);
-      this.setState({ tasks, currentTask: '' });
+      this.setState({ tasks, currentTask: "" });
     } catch (error) {
       console.log(error);
     }

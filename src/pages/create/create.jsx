@@ -1,11 +1,11 @@
-import React, { useState, useContext } from 'react';
-import LayerOrders from '../../components/layerorders/layerorders';
-import CollectionDescription from '../../components/description/collection-description';
-import CollectionOverview from '../../components/overview/collection-overview';
-import classes from './create.module.css';
-import CreatePageUseGuide from '../../components/use-guide/createUseGuide';
-import { GenContext } from '../../gen-state/gen.context';
-import iconHelp from '../../assets/icon-help.svg';
+import { useState, useContext } from "react";
+import LayerOrders from "../../components/layerorders/layerorders";
+import CollectionDescription from "../../components/description/collection-description";
+import CollectionOverview from "../../components/overview/collection-overview";
+import classes from "./create.module.css";
+import CreatePageUseGuide from "../../components/use-guide/createUseGuide";
+import { GenContext } from "../../gen-state/gen.context";
+import iconHelp from "../../assets/icon-help.svg";
 
 const Create = () => {
   const { didMount } = useContext(GenContext);

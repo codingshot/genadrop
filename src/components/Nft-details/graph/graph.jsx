@@ -1,6 +1,6 @@
-import React from 'react';
-import { Chart } from 'react-charts';
-import classes from './graph.module.css';
+import React from "react";
+import { Chart } from "react-charts";
+import classes from "./graph.module.css";
 
 const Graph = ({ details }) => {
   const prices = !details
@@ -13,16 +13,18 @@ const Graph = ({ details }) => {
   const data = React.useMemo(
     () => [
       {
-        label: 'Series 1',
+        label: "Series 1",
         data: prices,
       },
     ],
     []
   );
-  const nodata = React.useMemo(() => [{
-    label: "Series 1",
-    data: []
-  }])
+  const nodata = React.useMemo(() => [
+    {
+      label: "Series 1",
+      data: [],
+    },
+  ]);
   const series = React.useMemo(
     () => ({
       showPoints: false,
@@ -32,8 +34,8 @@ const Graph = ({ details }) => {
 
   const axes = React.useMemo(
     () => [
-      { primary: true, type: 'linear', position: 'bottom' },
-      { type: 'linear', position: 'left' },
+      { primary: true, type: "linear", position: "bottom" },
+      { type: "linear", position: "left" },
     ],
     []
   );
@@ -45,13 +47,10 @@ const Graph = ({ details }) => {
           <Chart data={data} series={series} axes={axes} />
         </div>
       ) : (
-
         <div className={classes.nodata}>No Price History Available</div>
-
       )}
     </>
   );
-
 
   return lineChart;
 };

@@ -1,17 +1,17 @@
-import { getDefaultName, handleImage } from '../../utils';
+import { getDefaultName, handleImage } from "../../utils";
 
 export const isUnique = (attributes, attr, rule) => {
-  let parseAttrToRule = attr.map((p) => ({
+  const parseAttrToRule = attr.map((p) => ({
     layerTitle: p.trait_type,
     imageName: p.value,
   }));
-  let att_str = JSON.stringify(attr);
-  for (let _attr of attributes) {
-    let _attr_str = JSON.stringify(_attr);
+  const att_str = JSON.stringify(attr);
+  for (const _attr of attributes) {
+    const _attr_str = JSON.stringify(_attr);
     if (_attr_str === att_str) return false;
   }
   let result;
-  for (let rl of rule) {
+  for (const rl of rule) {
     result = rl.every((el) => {
       if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el)))
         return true;
@@ -36,7 +36,7 @@ export const createUniqueLayer = async (props) => {
     currentPage,
     id,
   } = props;
-  let newLayersCopy = [...nftLayers];
+  const newLayersCopy = [...nftLayers];
   let newAttributes = [];
   let uniqueIndex = 1;
   const prevAttributes = newLayersCopy.map(({ attributes }) => attributes);
@@ -45,15 +45,15 @@ export const createUniqueLayer = async (props) => {
     const promise = new Promise((resolve) => {
       setTimeout(() => {
         dispatch(setLoader(`removing ${uniqueIndex} duplicates`));
-        let attribute = [];
+        const attribute = [];
         layers.forEach(({ layerTitle, traits }) => {
-          let randNum = Math.floor(Math.random() * traits.length);
-          let { traitTitle, Rarity, image } = traits[randNum];
+          const randNum = Math.floor(Math.random() * traits.length);
+          const { traitTitle, Rarity, image } = traits[randNum];
           attribute.push({
             trait_type: layerTitle,
-            value: traitTitle.replace('.png', ''),
+            value: traitTitle.replace(".png", ""),
             rarity: Rarity,
-            image: image,
+            image,
           });
         });
         if (isUnique(prevAttributes, attribute, rule)) {
@@ -67,14 +67,14 @@ export const createUniqueLayer = async (props) => {
     await promise;
   }
 
-  dispatch(setLoader(''));
+  dispatch(setLoader(""));
   return {
     id,
     name: `${collectionName} ${getDefaultName(
       index + 1 + (currentPage * 20 - 20)
     )}`.trim(),
     description: collectionDescription,
-    image: 'image',
+    image: "image",
     attributes: newAttributes,
   };
 };
@@ -86,6 +86,6 @@ export const generateArt = async (props) => {
     images.push(attr.image);
   });
   await handleImage({ images, canvas, image });
-  const imageUrl = canvas.toDataURL('image/webp', 1);
+  const imageUrl = canvas.toDataURL("image/webp", 1);
   return { id: layer.id, imageUrl };
 };

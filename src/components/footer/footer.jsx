@@ -1,36 +1,36 @@
-import React from 'react';
-import classes from './footer.module.css';
-import logo from '../../assets/genadrop-logo.svg';
-import twitterIcon from '../../assets/icon-twitter.svg';
-import discordIcon from '../../assets/icon-discord.svg';
-import linkedInIcon from '../../assets/icon-linkedin.svg';
-import youTubeIcon from '../../assets/icon-youtube.svg';
+import React from "react";
+import classes from "./footer.module.css";
+import logo from "../../assets/genadrop-logo.svg";
+import twitterIcon from "../../assets/icon-twitter.svg";
+import discordIcon from "../../assets/icon-discord.svg";
+import linkedInIcon from "../../assets/icon-linkedin.svg";
+import youTubeIcon from "../../assets/icon-youtube.svg";
 
 const footerLinks = [
   {
-    title: 'App',
+    title: "App",
     content: [
-      { name: 'Create', link: '/create' },
-      { name: 'Mint', link: '/mint' },
-      { name: 'Marketplace', link: '/marketplace' },
+      { name: "Create", link: "/create" },
+      { name: "Mint", link: "/mint" },
+      { name: "Marketplace", link: "/marketplace" },
     ],
   },
   {
-    title: 'Quick Links',
+    title: "Quick Links",
     content: [
-      { name: 'DAO', link: 'https://snapshot.org/#/minorityprogrammers.eth' },
-      { name: 'MPA', link: 'https://www.minorityprogrammers.org' },
-      { name: 'HERDrop', link: 'https://www.herdrop.com' },
+      { name: "DAO", link: "https://snapshot.org/#/minorityprogrammers.eth" },
+      { name: "MPA", link: "https://www.minorityprogrammers.org" },
+      { name: "HERDrop", link: "https://www.herdrop.com" },
     ],
   },
   {
-    title: 'Support',
+    title: "Support",
     content: [
       {
-        name: 'Docs',
-        link: 'https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs',
+        name: "Docs",
+        link: "https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs",
       },
-      { name: 'Contact Us', link: 'https://linktr.ee/MinorityProgrammers' },
+      { name: "Contact Us", link: "https://linktr.ee/MinorityProgrammers" },
     ],
   },
 ];
@@ -98,6 +98,23 @@ const Footer = () => (
             </div>
           ))}
         </div>
+        <div className={classes.topRight}>
+          {footerLinks.map((link, idx) => (
+            <div key={idx} className={classes.links}>
+              <div className={classes.title}>{link.title}</div>
+              {link.content.map((link, idx) => (
+                <a
+                  href={link.link}
+                  key={idx}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
     <div className={classes.bottom}>
@@ -108,8 +125,8 @@ const Footer = () => (
           rel="noopener noreferrer"
         >
           <div className={classes.build}>
-            Built with <span>&#x2764;</span> by the Minority Programmers
-            Association
+            Built with
+            <span>&#x2764;</span> by the Minority Programmers Association
           </div>
         </a>
         <div className={classes.bottomRight}>

@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import classes from './searchBar.module.css';
+import React, { useEffect, useState } from "react";
+import classes from "./searchBar.module.css";
 
 const SearchBar = ({ onSearch }) => {
   const [state, setState] = useState({
-    searchValue: '',
+    searchValue: "",
   });
 
   const { searchValue } = state;

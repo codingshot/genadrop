@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './dropItem.module.css';
+import React from "react";
+import classes from "./dropItem.module.css";
 
 const DropItem = ({
   dropdown,
@@ -8,7 +8,7 @@ const DropItem = ({
   item: { icon, title, content },
 }) => {
   const handleDropdown = () => {
-    if (String(id) === dropdown) return handleSetState({ dropdown: '' });
+    if (String(id) === dropdown) return handleSetState({ dropdown: "" });
     handleSetState({ dropdown: String(id) });
   };
 
@@ -27,7 +27,7 @@ const DropItem = ({
           </h3>
           <button>
             <svg
-              className={dropdown === String(id) ? classes.active : ''}
+              className={dropdown === String(id) ? classes.active : ""}
               viewBox="0 0 320 512"
               width="100"
               title="angle-down"

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import { getSingleNfts } from '../../../utils';
-import NftCard from '../NftCard/NftCard';
-import classes from './SingleNft.module.css';
-import { GenContext } from '../../../gen-state/gen.context';
+import React, { useState, useEffect, useContext } from "react";
+import Skeleton from "react-loading-skeleton";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import { getSingleNfts } from "../../../utils";
+import NftCard from "../NftCard/NftCard";
+import classes from "./SingleNft.module.css";
+import { GenContext } from "../../../gen-state/gen.context";
+import { readAllSingleNft } from "../../../utils/firebase";
 
 const SingleNft = () => {
   const [state, setState] = useState({
@@ -14,20 +15,21 @@ const SingleNft = () => {
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
-  const { singleNfts, mainnet } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
 
   useEffect(() => {
     (async function getResult() {
+      const singleNfts = await readAllSingleNft(mainnet);
       if (singleNfts?.length) {
-        let allSingleNfts = await getSingleNfts(mainnet, singleNfts);
+        const allSingleNfts = await getSingleNfts(singleNfts, mainnet);
         handleSetState({ allSingleNfts });
       } else {
         handleSetState({ allSingleNfts: null });
       }
     })();
-  }, [singleNfts]);
+  }, [mainnet]);
 
   return (
     <div className={classes.container}>
@@ -44,7 +46,7 @@ const SingleNft = () => {
           ))}
         </div>
       ) : !allSingleNfts ? (
-        <h1 className={classes.noResult}> No Result Found.</h1>
+        <h1 className={classes.noResult}> No Results Found.</h1>
       ) : (
         <div className={classes.wrapper}>
           {Array(5)

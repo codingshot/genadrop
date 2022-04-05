@@ -1,16 +1,18 @@
-import React, { useState, useEffect, useRef } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { getSingleNfts } from '../../utils';
-import classes from './singleNftCollection.module.css';
-import NftCard from '../../components/Marketplace/NftCard/NftCard';
-import { readAllSingleNft } from '../../utils/firebase';
-import NotFound from '../../components/not-found/notFound';
-import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
-import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDropdown';
-import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
+import { useState, useEffect, useRef, useContext } from "react";
+import Skeleton from "react-loading-skeleton";
+import { getSingleNfts } from "../../utils";
+import classes from "./singleNftCollection.module.css";
+import NftCard from "../../components/Marketplace/NftCard/NftCard";
+import { readAllSingleNft } from "../../utils/firebase";
+import NotFound from "../../components/not-found/notFound";
+import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
+import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import { GenContext } from "../../gen-state/gen.context";
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
+  const { mainnet } = useContext(GenContext);
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -21,9 +23,9 @@ const SingleNftCollection = () => {
     celoCollection: null,
     nearCollection: null,
     filter: {
-      searchValue: '',
-      price: 'low',
-      chain: 'Algorand',
+      searchValue: "",
+      price: "low",
+      chain: "Algorand",
     },
   });
 
@@ -38,13 +40,13 @@ const SingleNftCollection = () => {
 
   const getCollectionByChain = () => {
     switch (filter.chain) {
-      case 'Algorand':
+      case "Algorand":
         return algoCollection;
-      case 'Polygon':
+      case "Polygon":
         return polyCollection;
-      case 'Celo':
+      case "Celo":
         return celoCollection;
-      case 'Near':
+      case "Near":
         return nearCollection;
       default:
         break;
@@ -59,9 +61,9 @@ const SingleNftCollection = () => {
   useEffect(() => {
     try {
       (async function getAlgoSingleNftCollection() {
-        const singleNftCollections = await readAllSingleNft();
+        const singleNftCollections = await readAllSingleNft(mainnet);
         const result = await getSingleNfts(singleNftCollections);
-        console.log('single result: ', result);
+        console.log("single result: ", result);
         handleSetState({
           algoCollection: result,
         });
@@ -70,30 +72,36 @@ const SingleNftCollection = () => {
       console.log(error);
     }
   }, []);
+  // **************************************************************************************************
+
   // ***************************** get search result for different blockchains ************************
   useEffect(() => {
-    let collection = getCollectionByChain();
+    const collection = getCollectionByChain();
     if (!collection) return;
-    let filtered = collection.filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = collection.filter((col) =>
+      col.name.toLowerCase().includes(filter.searchValue.toLowerCase())
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
   }, [filter.searchValue]);
+  // ************************************************************************************************
+
   // ************************* sort by price function for different blockchains *********************
   const sortPrice = (collection) => {
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
-    if (filter.price === 'low') {
+    if (filter.price === "low") {
       sorted = collection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
       sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
   };
+  // ************************************************************************************************
+
   // ********************************* render blockchains *******************************************
   useEffect(() => {
     if (domMountRef.current) {

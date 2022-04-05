@@ -1,9 +1,9 @@
-import React from 'react';
-import classes from './styles.module.css';
-import createIcon from '../../../assets/create-icon.png';
-import mintIcon from '../../../assets/mint-icon.png';
-import walletIcon from '../../../assets/wallet-icon.png';
-import listIcon from '../../../assets/list-icon.png';
+import React from "react";
+import classes from "./styles.module.css";
+import createIcon from "../../../assets/create-icon.png";
+import mintIcon from "../../../assets/mint-icon.png";
+import walletIcon from "../../../assets/wallet-icon.png";
+import listIcon from "../../../assets/list-icon.png";
 
 const Demo = () => (
   <div className={classes.container}>

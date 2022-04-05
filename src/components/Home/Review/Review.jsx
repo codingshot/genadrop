@@ -1,16 +1,14 @@
-import React from 'react';
-import TweetEmbed from 'react-tweet-embed';
-
-import classes from './Review.module.css';
+import TweetEmbed from "react-tweet-embed";
+import classes from "./Review.module.css";
 
 const Review = () => {
   const reviews = [
-    '1473516385691062273', // near announcement
+    "1473516385691062273", // near announcement
     //     "1484327197854736391",
-    '1484447708668649475',
-    '1486289656203427845',
+    "1484447708668649475",
+    "1486289656203427845",
     //     "1473516385691062273",
-    '1507735586190381056', // feedback form tweet
+    "1507735586190381056", // feedback form tweet
   ];
 
   return (
@@ -24,13 +22,11 @@ const Review = () => {
       </div>
 
       <div className={classes.review}>
-        {reviews.map((tweet, idx) => {
-          return (
-            <span key={idx} className={classes.tweet}>
-              <TweetEmbed id={tweet} placeholder={'loading'} />
-            </span>
-          );
-        })}
+        {reviews.map((tweet, idx) => (
+          <span key={idx} className={classes.tweet}>
+            <TweetEmbed id={tweet} placeholder="loading" />
+          </span>
+        ))}
       </div>
     </div>
   );

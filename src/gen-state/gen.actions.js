@@ -1,4 +1,4 @@
-import genActionTypes from './gen.types';
+import genActionTypes from "./gen.types";
 
 export const orderLayers = (layers) => ({
   type: genActionTypes.ORDER_LAYERS,
@@ -146,16 +146,6 @@ export const clearRule = () => ({
 export const deleteRule = (rule) => ({
   type: genActionTypes.DELETE_RULE,
   payload: rule,
-});
-
-export const setCollections = (collections) => ({
-  type: genActionTypes.SET_COLLECTIONS,
-  payload: collections,
-});
-
-export const setSingleNfts = (nfts) => ({
-  type: genActionTypes.SET_SINGLE_NFTS,
-  payload: nfts,
 });
 
 export const setNotification = (notification) => ({

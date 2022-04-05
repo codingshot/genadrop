@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { clearRule, deleteRule } from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './rulesCard.module.css';
-import closeIcon from '../../assets/icon-close.svg';
+import React, { useContext } from "react";
+import { clearRule, deleteRule } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./rulesCard.module.css";
+import closeIcon from "../../assets/icon-close.svg";
 
 const RulesCard = () => {
   const { dispatch, rule } = useContext(GenContext);
@@ -30,7 +30,7 @@ const RulesCard = () => {
                   />
                   <div className={classes.title}>{r.layerTitle}</div>
                   <div className={classes.text}>{r.imageName}</div>
-                  {rl.length - 1 !== idx && ';'}
+                  {rl.length - 1 !== idx && ";"}
                 </div>
               ))}
             </div>

@@ -1,9 +1,8 @@
-import React, { useContext, useState } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { v4 as uuid } from 'uuid';
-import classes from './layerorders.module.css';
-
-import { GenContext } from '../../gen-state/gen.context';
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { useContext, useState } from "react";
+import { v4 as uuid } from "uuid";
+import classes from "./layerorders.module.css";
+import { GenContext } from "../../gen-state/gen.context";
 import {
   addLayer,
   orderLayers,
@@ -11,20 +10,21 @@ import {
   setLoader,
   setNotification,
   removeLayer,
-} from '../../gen-state/gen.actions';
-import Layer from '../layer/layer';
-import Prompt from '../prompt/prompt';
-import { getItemStyle, getListStyle } from './layeroders-script';
-import { fetchCollections } from '../../utils/firebase';
-import editIcon from '../../assets/icon-edit.svg';
-import markIcon from '../../assets/icon-mark.svg';
-import plusIcon from '../../assets/icon-plus.svg';
+} from "../../gen-state/gen.actions";
+
+import Layer from "../layer/layer";
+import Prompt from "../prompt/prompt";
+import { getItemStyle, getListStyle } from "./layeroders-script";
+import { fetchCollections } from "../../utils/firebase";
+import editIcon from "../../assets/icon-edit.svg";
+import markIcon from "../../assets/icon-mark.svg";
+import plusIcon from "../../assets/icon-plus.svg";
 
 const LayerOrders = () => {
   const { layers, dispatch, collectionName, isRule } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,
-    inputValue: '',
+    inputValue: "",
     renameAction: false,
     activeInput: false,
   });
@@ -41,13 +41,19 @@ const LayerOrders = () => {
     const [removed] = newList.splice(source.index, 1);
     newList.splice(destination.index, 0, removed);
     dispatch(orderLayers(newList));
-    handleSetState({ inputValue: '' });
+    handleSetState({ inputValue: "" });
   };
 
   const handleAddLayer = (value) => {
     if (!value) return;
+    console.log("handle layer with " + value);
     dispatch(
-      addLayer({ id: uuid(), traitsAmount: 0, layerTitle: value, traits: [] })
+      addLayer({
+        id: uuid(),
+        traitsAmount: 0,
+        layerTitle: value,
+        traits: [],
+      })
     );
   };
 
@@ -58,9 +64,9 @@ const LayerOrders = () => {
   const handleRename = async (event) => {
     event.preventDefault();
     try {
-      dispatch(setLoader('saving...'));
-      let names = await getCollectionsNames();
-      let isUnique = names.find(
+      dispatch(setLoader("saving..."));
+      const names = await getCollectionsNames();
+      const isUnique = names.find(
         (name) => name.toLowerCase() === inputValue.toLowerCase()
       );
       if (isUnique) {
@@ -76,16 +82,16 @@ const LayerOrders = () => {
     } catch (error) {
       dispatch(
         setNotification(
-          'could not save your collection name, please try again.'
+          "could not save your collection name, please try again."
         )
       );
     }
-    dispatch(setLoader(''));
+    dispatch(setLoader(""));
   };
 
   const getCollectionsNames = async () => {
-    let collections = await fetchCollections();
-    let names = [];
+    const collections = await fetchCollections();
+    const names = [];
     collections.forEach((col) => {
       names.push(col.name);
     });
@@ -146,7 +152,7 @@ const LayerOrders = () => {
                   {layers.map((item, index) => (
                     <Draggable
                       key={index}
-                      draggableId={index + ''}
+                      draggableId={`${index}`}
                       index={index}
                     >
                       {(provided, snapshot) => (
@@ -190,7 +196,8 @@ const LayerOrders = () => {
               className={classes.addBtn}
               onClick={() => !isRule && handleSetState({ prompt: true })}
             >
-              Add Layer <img src={plusIcon} alt="" />
+              Add Layer
+              <img src={plusIcon} alt="" />
             </button>
           )}
         </div>

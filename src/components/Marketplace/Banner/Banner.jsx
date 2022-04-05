@@ -1,7 +1,7 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import classes from './styles.module.css';
-import banner from '../../../assets/banner.gif';
+import { useHistory } from "react-router-dom";
+import classes from "./styles.module.css";
+// import banner from "../../../assets/marketplace-banner.png";
+import banner from "../../../assets/banner.gif";
 
 const Banner = () => {
   const history = useHistory();
@@ -11,8 +11,7 @@ const Banner = () => {
       <div className={classes.innerContainer}>
         <div className={classes.bannerText}>
           <h4 className={classes.heading}>
-            The no code NFT art,
-            <br />
+            The no code NFT art, <br />
             creator tool, minter + marketplace
             <br />
           </h4>
@@ -24,13 +23,13 @@ const Banner = () => {
           <div className={classes.pageLinks}>
             <button
               className={classes.createBtn}
-              onClick={() => history.push('./create')}
+              onClick={() => history.push("./create")}
             >
               Create
             </button>
             <button
               className={classes.mintBtn}
-              onClick={() => history.push('./mint')}
+              onClick={() => history.push("./mint")}
             >
               Mint
             </button>

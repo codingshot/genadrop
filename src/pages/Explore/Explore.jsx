@@ -1,19 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './Explore.module.css';
-import 'react-loading-skeleton/dist/skeleton.css';
-import Filter from './Filter/Filter';
-import Header from './Header/Header';
+import { useContext, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./Explore.module.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import Filter from "./Filter/Filter";
+import Header from "./Header/Header";
 import {
   groupAttributesByTraitType,
   mapAttributeToFilter,
-} from './Explore-script';
-import { getNftCollection } from '../../utils';
-import Menu from './Menu/Menu';
-import closeIcon from '../../assets/icon-close.svg';
-import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
-import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
+} from "./Explore-script";
+import { getNftCollection } from "../../utils";
+import Menu from "./Menu/Menu";
+import closeIcon from "../../assets/icon-close.svg";
+import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import { fetchCollections } from "../../utils/firebase";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -25,8 +26,8 @@ const Explore = () => {
     filterToDelete: null,
     headerHeight: 0,
     filter: {
-      searchValue: '',
-      price: 'high',
+      searchValue: "",
+      price: "high",
     },
   });
   const {
@@ -39,7 +40,7 @@ const Explore = () => {
     FilteredCollection,
     headerHeight,
   } = state;
-  const { collections, mainnet } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -56,17 +57,20 @@ const Explore = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(collections).length) {
-      const collection = collections.find((col) => col.name === collectionName);
-      (async function getResult() {
-        let result = await getNftCollection(collection, mainnet);
+    (async function getResult() {
+      let collections = await fetchCollections(mainnet);
+      if (Object.keys(collections).length) {
+        const collection = collections.find(
+          (col) => col.name === collectionName
+        );
+        const result = await getNftCollection(collection, mainnet);
         handleSetState({
           collection,
           NFTCollection: result,
         });
-      })();
-    }
-  }, [collections]);
+      }
+    })();
+  }, [mainnet]);
 
   useEffect(() => {
     if (!NFTCollection) return;
@@ -78,16 +82,16 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = NFTCollection.filter((col) => {
-      return col.name.toLowerCase().includes(filter.searchValue.toLowerCase());
-    });
+    const filtered = NFTCollection.filter((col) =>
+      col.name.toLowerCase().includes(filter.searchValue.toLowerCase())
+    );
     handleSetState({ FilteredCollection: filtered });
   }, [filter.searchValue]);
 
   useEffect(() => {
     if (!NFTCollection) return;
     let filtered = null;
-    if (filter.price === 'low') {
+    if (filter.price === "low") {
       filtered = NFTCollection.sort(
         (a, b) => Number(a.price) - Number(b.price)
       );

@@ -7876,7 +7876,7 @@ eslint-plugin-node@^11.1.0:
 
 eslint-plugin-only-warn@^1.0.3:
   version "1.0.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-only-warn/-/eslint-plugin-only-warn-1.0.3.tgz#a75f3a9ded7f03e9808e75ec27f22b644084506e"
+  resolved "https://registry.npmjs.org/eslint-plugin-only-warn/-/eslint-plugin-only-warn-1.0.3.tgz"
   integrity sha512-XQOX/TfLoLw6h8ky51d29uUjXRTQHqBGXPylDEmy5fe/w7LIOnp8MA24b1OSMEn9BQoKow1q3g1kLe5/9uBTvw==
 
 eslint-plugin-prettier@^4.0.0:
@@ -9312,7 +9312,7 @@ gauge@~2.7.3:
 
 gc-stats@^1.4.0:
   version "1.4.0"
-  resolved "https://registry.yarnpkg.com/gc-stats/-/gc-stats-1.4.0.tgz#66cd194c5a8eae1138407300bc6cb42c2f6f3cd6"
+  resolved "https://registry.npmjs.org/gc-stats/-/gc-stats-1.4.0.tgz"
   integrity sha512-4FcCj9e8j8rCjvLkqRpGZBLgTC/xr9XEf5By3x77cDucWWB3pJK6FEwXZCTCbb4z8xdaOoi4owBNrvn3ciDdxA==
   dependencies:
     nan "^2.13.2"
@@ -10057,6 +10057,11 @@ human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/human-signals/-/human-signals-2.1.0.tgz"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
+
+husky@^7.0.0:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.4.tgz#242048245dc49c8fb1bf0cc7cfb98dd722531535"
+  integrity sha512-vbaCKN2QLtP/vD4yvs6iz6hBEo6wkSzs8HpRah1Z6aGmF2KW5PdYuAd7uX5a+OyBZHBhd+TFLqgjUgytQr4RvQ==
 
 iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4:
   version "0.4.24"
@@ -15930,10 +15935,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.npmjs.org/prettier/-/prettier-2.6.1.tgz"
-  integrity sha512-8UVbTBYGwN37Bs9LERmxCPjdvPxlEowx2urIL6urHzdb3SDq4B/Z6xLFCblrSnE4iKWcS6ziJ3aOYrc1kz/E2A==
+prettier@2.6.2:
+  version "2.6.2"
+  resolved "https://registry.npmjs.org/prettier/-/prettier-2.6.2.tgz"
+  integrity sha512-PkUpF+qoXTqhOeWL9fu7As8LXsIUZ1WYaJiY/a7McAQzxjk82OF0tibkFXVCDImZtWxbvojFjerkiLb0/q8mew==
 
 pretty-bytes@^1.0.2:
   version "1.0.4"

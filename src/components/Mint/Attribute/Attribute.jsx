@@ -1,6 +1,6 @@
-import React from 'react';
-import classes from './Attribute.module.css';
-import iconClose from '../../../assets/icon-close.svg';
+import React from "react";
+import classes from "./Attribute.module.css";
+import iconClose from "../../../assets/icon-close.svg";
 
 const Attribute = ({ attribute, removeAttribute, id, changeAttribute }) => (
   <div className={classes.container}>

@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useContext } from 'react';
-import classes from './collection-preview.module.css';
-import { GenContext } from '../../gen-state/gen.context';
-import { getImageSize } from '../../utils';
-import ButtonClickEffect from '../button-effect/button-effect';
+import { useEffect, useRef, useContext, useState } from "react";
+import classes from "./collection-preview.module.css";
+import { GenContext } from "../../gen-state/gen.context";
+import { getImageSize } from "../../utils";
+import ButtonClickEffect from "../button-effect/button-effect";
 
 const CollectionPreview = () => {
   const { layers, preview } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   const handleImage = async (canvas, width = 250, height = 250) => {
-    canvas.setAttribute('width', width);
-    canvas.setAttribute('height', height);
-    const ctx = canvas.getContext('2d');
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+    const ctx = canvas.getContext("2d");
     const newLayers = [...layers];
     const newPreview = [];
     newLayers.reverse().forEach(({ layerTitle: name, traits }) => {
@@ -23,7 +23,7 @@ const CollectionPreview = () => {
         });
       });
     });
-    for (let img of newPreview) {
+    for (const img of newPreview) {
       const image = await new Promise((resolve) => {
         const image = new Image();
         image.src = URL.createObjectURL(img);
@@ -38,11 +38,11 @@ const CollectionPreview = () => {
 
   const handleDownload = async () => {
     const { width, height } = await getImageSize(layers[0].traits[0].image);
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
     await handleImage(canvas, width, height);
-    let image = canvas.toDataURL('image/webp', 1);
-    let link = document.createElement('a');
-    link.download = 'asset.png';
+    const image = canvas.toDataURL("image/webp", 1);
+    const link = document.createElement("a");
+    link.download = "asset.png";
     link.href = image;
     document.body.appendChild(link);
     link.click();

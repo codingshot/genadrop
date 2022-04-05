@@ -1,7 +1,6 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import classes from './styles.module.css';
-import banner from '../../../assets/home-banner-image.svg';
+import { useHistory } from "react-router-dom";
+import classes from "./styles.module.css";
+import banner from "../../../assets/home-banner-image.svg";
 
 const Banner = () => {
   const history = useHistory();
@@ -20,7 +19,7 @@ const Banner = () => {
           data, upload to ipfs, mint, and list to multiple blockchains with NO
           CODE.
         </p>
-        <button onClick={() => history.push('./create')}>
+        <button onClick={() => history.push("./create")}>
           Generate Collection
         </button>
       </div>

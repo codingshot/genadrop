@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import cx from './select.module.css';
+import React, { useState } from "react";
+import cx from "./select.module.css";
 
 const Select = ({ heading, selectionList, select, selected }) => {
   const [toggle, toggleShow] = useState(false);
@@ -14,16 +14,14 @@ const Select = ({ heading, selectionList, select, selected }) => {
     setInShow(id);
   };
 
-  const getHeight = (layer) => {
-    return selectionList[layer].length * 3 + 'em';
-  };
+  const getHeight = (layer) => `${selectionList[layer].length * 3}em`;
 
   const handleAddAttribute = (data) => {
     select(data);
   };
 
   const isSlected = (data) => {
-    let result = JSON.stringify(selected).includes(JSON.stringify(data));
+    const result = JSON.stringify(selected).includes(JSON.stringify(data));
     return result;
   };
 
@@ -39,7 +37,7 @@ const Select = ({ heading, selectionList, select, selected }) => {
             </div>
             <div
               style={{
-                height: inShow === idx && toggle ? getHeight(layer) : '0',
+                height: inShow === idx && toggle ? getHeight(layer) : "0",
               }}
               className={`${cx.attributes}`}
             >

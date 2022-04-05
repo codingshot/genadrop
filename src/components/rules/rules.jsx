@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { setConflictRule } from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import Select from '../select/select';
-import cx from './rules.module.css';
+import { useState, useContext, useEffect } from "react";
+import { setConflictRule } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import Select from "../select/select";
+import cx from "./rules.module.css";
 
 const Rules = ({ show, setRule }) => {
   const [filteredAttribute, setFilteredAttribute] = useState([]);
@@ -20,9 +20,9 @@ const Rules = ({ show, setRule }) => {
   }, [layers]);
 
   const handleSetAttribute = (data) => {
-    let isUnique = filteredAttribute.find((d) => d.layer === data.layer);
+    const isUnique = filteredAttribute.find((d) => d.layer === data.layer);
     if (isUnique) {
-      let newFiltered = filteredAttribute.map((d) =>
+      const newFiltered = filteredAttribute.map((d) =>
         d.layer === data.layer ? data : d
       );
       setFilteredAttribute(newFiltered);
@@ -32,14 +32,14 @@ const Rules = ({ show, setRule }) => {
   };
 
   const handleRemoveAttribute = (data) => {
-    let newFiltered = filteredAttribute.filter((d) => d.layer !== data.layer);
+    const newFiltered = filteredAttribute.filter((d) => d.layer !== data.layer);
     setFilteredAttribute(newFiltered);
   };
 
   const handleSetConflict = (data) => {
-    let isUnique = conflict.find((d) => d.layer === data.layer);
+    const isUnique = conflict.find((d) => d.layer === data.layer);
     if (isUnique) {
-      let newFiltered = conflict.map((d) =>
+      const newFiltered = conflict.map((d) =>
         d.layer === data.layer ? data : d
       );
       setConflict(newFiltered);
@@ -49,7 +49,7 @@ const Rules = ({ show, setRule }) => {
   };
 
   const handleRemoveConflict = (data) => {
-    let newFiltered = conflict.filter((d) => d.layer !== data.layer);
+    const newFiltered = conflict.filter((d) => d.layer !== data.layer);
     setConflict(newFiltered);
   };
 
@@ -66,10 +66,10 @@ const Rules = ({ show, setRule }) => {
   };
 
   useEffect(() => {
-    let newConflictModel = {};
+    const newConflictModel = {};
     Object.keys(collection).forEach((key) => {
-      let layers = filteredAttribute.map((data) => data.layer);
-      let res = layers.includes(key);
+      const layers = filteredAttribute.map((data) => data.layer);
+      const res = layers.includes(key);
       if (!res) {
         newConflictModel[key] = collection[key];
       }
@@ -78,15 +78,15 @@ const Rules = ({ show, setRule }) => {
   }, [filteredAttribute]);
 
   useEffect(() => {
-    let key = Object.keys(conflictModel);
-    let newConflict = conflict.filter((data) => key.includes(data.layer));
+    const key = Object.keys(conflictModel);
+    const newConflict = conflict.filter((data) => key.includes(data.layer));
     setConflict(newConflict);
   }, [conflictModel]);
 
   return (
     <div className={`${cx.container} ${show ? cx.active : cx.inactive}`}>
       <div className={cx.rulesContainer}>
-        <i onClick={handleClose} className={`fas fa-times ${cx.cancelBtn}`}></i>
+        <i onClick={handleClose} className={`fas fa-times ${cx.cancelBtn}`} />
         <div className={cx.title}>Add Conflict Rule</div>
         <div className={cx.filterAttribute}>
           <div className={cx.heading}>Filter Attribute</div>
@@ -96,7 +96,7 @@ const Rules = ({ show, setRule }) => {
                 selectionList={collection}
                 select={handleSetAttribute}
                 selected={filteredAttribute}
-                heading={'Select Filter'}
+                heading="Select Filter"
               />
             </div>
             <div className={cx.filteredList}>
@@ -107,7 +107,7 @@ const Rules = ({ show, setRule }) => {
                   <i
                     onClick={() => handleRemoveAttribute(f)}
                     className={`${cx.closeIcon} fas fa-times`}
-                  ></i>
+                  />
                 </div>
               ))}
             </div>
@@ -121,7 +121,7 @@ const Rules = ({ show, setRule }) => {
                 selectionList={conflictModel}
                 select={handleSetConflict}
                 selected={conflict}
-                heading={'Select Conflict'}
+                heading="Select Conflict"
               />
             </div>
             <div className={cx.filteredList}>

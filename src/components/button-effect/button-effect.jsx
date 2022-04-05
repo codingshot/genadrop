@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import classes from './button-effect.module.css';
+import { useState } from "react";
+import classes from "./button-effect.module.css";
 
 const ButtonClickEffect = ({ children }) => {
   const [clicked, setClicked] = useState(false);

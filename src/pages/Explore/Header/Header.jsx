@@ -1,14 +1,13 @@
-import axios from 'axios';
-import React, { useEffect, useRef, useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import classes from './Header.module.css';
-import listIcon from '../../../assets/icon-list.svg';
-import stackIcon from '../../../assets/icon-stack.svg';
-import tradeIcon from '../../../assets/icon-trade.svg';
-import Copy from '../../../components/copy/copy';
+import Skeleton from "react-loading-skeleton";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import classes from "./Header.module.css";
+import listIcon from "../../../assets/icon-list.svg";
+import stackIcon from "../../../assets/icon-stack.svg";
+import tradeIcon from "../../../assets/icon-trade.svg";
+import Copy from "../../../components/copy/copy";
 
 const Header = ({ collection, getHeight }) => {
-
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
   const [state, setState] = useState({
@@ -25,9 +24,9 @@ const Header = ({ collection, getHeight }) => {
 
   const getUsdValue = () => {
     axios
-      .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .get("https://api.coinbase.com/v2/prices/ALGO-USD/spot")
       .then((res) => {
-        let amount = res.data.data.amount * price;
+        const amount = res.data.data.amount * price;
         if (isNaN(amount)) {
           handleSetState({ dollarPrice: 0 });
         } else {
@@ -41,10 +40,12 @@ const Header = ({ collection, getHeight }) => {
   }, [price]);
 
   useEffect(() => {
-    window.addEventListener('resize', (e) => {
+    window.addEventListener("resize", () => {
       if (domMountRef.current) {
-        let res = headerRef.current.getBoundingClientRect().height;
-        getHeight(res);
+        if (headerRef.current) {
+          const res = headerRef.current.getBoundingClientRect()?.height;
+          getHeight(res);
+        }
       } else {
         domMountRef.current = true;
       }
@@ -66,7 +67,7 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.creator}>
           {owner ? (
             <div>
-              Created by
+              Created by{" "}
               <span className={classes.address}>
                 <Copy
                   message={owner}
@@ -87,9 +88,7 @@ const Header = ({ collection, getHeight }) => {
           )}
         </div>
         <div className={classes.description}>
-          {description ? (
-            description
-          ) : (
+          {description || (
             <div className={classes.skeleton}>
               <Skeleton count={2} height={20} />
             </div>
@@ -100,9 +99,8 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.detailContentWrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOOR PRICE</div>
-
             <div className={classes.price}>
-              {price}
+              {price}{" "}
               <span className={classes.chain}>
                 Algo ({dollarPrice.toFixed(2)} USD)
               </span>

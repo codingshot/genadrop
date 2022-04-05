@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import axios from 'axios';
-import { useRouteMatch } from 'react-router-dom';
-import { GenContext } from '../../../gen-state/gen.context';
-import { getSingleNftDetails } from '../../../utils';
-import classes from './list.module.css';
-import { PurchaseNft } from '../../../utils/arc_ipfs';
+import React, { useContext, useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import axios from "axios";
+import { useRouteMatch } from "react-router-dom";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNftDetails } from "../../../utils";
+import classes from "./list.module.css";
+import { PurchaseNft } from "../../../utils/arc_ipfs";
 
 const List = () => {
   const { account, connector } = useContext(GenContext);
@@ -13,13 +13,13 @@ const List = () => {
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
 
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
-    chain: 'Algo',
-    price: '',
+    chain: "Algo",
+    price: "",
   });
   const { nftDetails, isLoading, price, chain } = state;
 
@@ -31,24 +31,25 @@ const List = () => {
   };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(nftDetails, account, connector);
+    const res = await PurchaseNft(nftDetails, account, connector);
     alert(res);
   };
 
   useEffect(() => {
-    const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
     (async function getNftDetails() {
-      let nftDetails = await getSingleNftDetails(nft);
+      const singleNfts = await readAllSingleNft(mainnet);
+      const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
+      const nftDetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails, isLoading: false });
     })();
 
     axios
-      .get(`https://api.coinbase.com/v2/prices/ALGO-USD/spot`)
+      .get("https://api.coinbase.com/v2/prices/ALGO-USD/spot")
       .then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
     document.documentElement.scrollTop = 0;
-  }, []);
+  }, [mainnet]);
 
   useEffect(() => {
     if (!nftDetails) return;
@@ -188,7 +189,7 @@ const List = () => {
           </div>
         </div>
       ) : (
-        ''
+        ""
       )}
     </div>
   );

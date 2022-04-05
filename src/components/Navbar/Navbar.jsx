@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import ConnectWallet from '../wallet/wallet';
-import classes from './Navbar.module.css';
-import logo from '../../assets/genadrop-logo-mobile.png';
-import drop from '../../assets/drop.svg';
-import closeIcon from '../../assets/icon-close.svg';
-import hamburgerIcon from '../../assets/icon-hamburger.svg';
+import { useState } from "react";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import ConnectWallet from "../wallet/wallet";
+import classes from "./Navbar.module.css";
+
+import logo from "../../assets/genadrop-logo-mobile.png";
+import drop from "../../assets/drop.svg";
+import closeIcon from "../../assets/icon-close.svg";
+import hamburgerIcon from "../../assets/icon-hamburger.svg";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -25,7 +26,7 @@ const Navbar = () => {
         <img className={classes.drop} src={drop} alt="" />
         <img
           onClick={() => {
-            history.push('/');
+            history.push("/");
           }}
           className={classes.logoDesktop}
           src={logo}
@@ -33,7 +34,7 @@ const Navbar = () => {
         />
         <img
           onClick={() => {
-            history.push('/');
+            history.push("/");
           }}
           className={classes.logoMobile}
           src={logo}
@@ -53,7 +54,7 @@ const Navbar = () => {
           >
             <div
               className={`${classes.navItem} ${
-                pathname.includes('/create') && classes.active
+                pathname.includes("/create") && classes.active
               }`}
             >
               <li>create</li>
@@ -63,7 +64,7 @@ const Navbar = () => {
           <Link onClick={() => handleSetState({ dropdown: false })} to="/mint">
             <div
               className={`${classes.navItem} ${
-                pathname.includes('/mint') && classes.active
+                pathname.includes("/mint") && classes.active
               }`}
             >
               <li>mint</li>
@@ -76,7 +77,7 @@ const Navbar = () => {
           >
             <div
               className={`${classes.navItem} ${
-                pathname.includes('/marketplace') && classes.active
+                pathname.includes("/marketplace") && classes.active
               }`}
             >
               <li>explore</li>

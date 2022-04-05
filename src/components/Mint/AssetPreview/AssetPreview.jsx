@@ -1,25 +1,25 @@
-import React, { useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useContext, useEffect } from "react";
+import axios from "axios";
 import {
   setClipboard,
   setLoader,
   setNotification,
-} from '../../../gen-state/gen.actions';
-import { GenContext } from '../../../gen-state/gen.context';
-import Attribute from '../Attribute/Attribute';
-import { handleMint, handleSingleMint } from './AssetPreview-script';
-import classes from './AssetPreview.module.css';
-import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
+} from "../../../gen-state/gen.actions";
+import { GenContext } from "../../../gen-state/gen.context";
+import Attribute from "../Attribute/Attribute";
+import { handleMint, handleSingleMint } from "./AssetPreview-script";
+import classes from "./AssetPreview.module.css";
+import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
 
 const AssetPreview = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
   const { dispatch, connector, account, chainId, mainnet } =
     useContext(GenContext);
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: '', value: '' } },
+    attributes: { [Date.now()]: { trait_type: "", value: "" } },
     fileName: fName,
-    description: metadata?.length === 1 ? metadata[0].description : '',
-    price: '',
+    description: metadata?.length === 1 ? metadata[0].description : "",
+    price: "",
     chain: null,
     preview: false,
     dollarPrice: 0,
@@ -35,22 +35,47 @@ const AssetPreview = ({ data, changeFile }) => {
   } = state;
 
   const chains = [
-    { label: 'Algorand', networkId: 4160, symbol: 'ALGO', chain: 'Algorand' },
-    { label: 'Celo', networkId: 42220, symbol: 'CGLD', chain: 'Celo' },
-    { label: 'Celo testnet', networkId: 44787, symbol: 'CGLD', chain: 'Celo' },
-    { label: 'Polygon', networkId: 137, symbol: 'MATIC', chain: 'Polygon' },
     {
-      label: 'Polygon Testnet',
-      networkId: 80001,
-      symbol: 'MATIC',
-      chain: 'Polygon',
+      label: "Algorand",
+      networkId: 4160,
+      symbol: "ALGO",
+      chain: "Algorand",
     },
-    { label: 'Near', networkId: 1313161554, symbol: 'NEAR', chain: 'Near' },
     {
-      label: 'Near testnet',
+      label: "Celo",
+      networkId: 42220,
+      symbol: "CGLD",
+      chain: "Celo",
+    },
+    {
+      label: "Celo testnet",
+      networkId: 44787,
+      symbol: "CGLD",
+      chain: "Celo",
+    },
+    {
+      label: "Polygon",
+      networkId: 137,
+      symbol: "MATIC",
+      chain: "Polygon",
+    },
+    {
+      label: "Polygon Testnet",
+      networkId: 80001,
+      symbol: "MATIC",
+      chain: "Polygon",
+    },
+    {
+      label: "Near",
+      networkId: 1313161554,
+      symbol: "NEAR",
+      chain: "Near",
+    },
+    {
+      label: "Near testnet",
       networkId: 1313161555,
-      symbol: 'NEAR',
-      chain: 'Near',
+      symbol: "NEAR",
+      chain: "Near",
     },
   ];
 
@@ -97,18 +122,18 @@ const AssetPreview = ({ data, changeFile }) => {
   };
 
   const getUintByChain = {
-    Algo: 'Algo',
-    Celo: 'CGLD',
-    Polygon: 'Matic',
-    'Polygon Testnet': 'Matic',
-    Near: 'Near',
+    Algo: "Algo",
+    Celo: "CGLD",
+    Polygon: "Matic",
+    "Polygon Testnet": "Matic",
+    Near: "Near",
   };
 
   const handleAddAttribute = () => {
     handleSetState({
       attributes: {
         ...attributes,
-        [Date.now()]: { trait_type: '', value: '' },
+        [Date.now()]: { trait_type: "", value: "" },
       },
     });
   };
@@ -117,7 +142,7 @@ const AssetPreview = ({ data, changeFile }) => {
     if (Object.keys(attributes).length === 1) return;
 
     const newAttributes = {};
-    for (let key in attributes) {
+    for (const key in attributes) {
       if (key !== id) {
         newAttributes[key] = attributes[key];
       }
@@ -138,14 +163,15 @@ const AssetPreview = ({ data, changeFile }) => {
   };
 
   const handlePrice = (event) => {
+    console.log("concord", connector);
     handleSetState({ price: event.target.value });
   };
 
   const setMint = () => {
     if (!chainId)
-      return dispatch(setNotification('connect wallet and try again'));
+      return dispatch(setNotification("connect wallet and try again"));
     const c = chains.find((c) => c.networkId == chainId);
-    if (!c) return dispatch(setNotification('unsupported chain detected'));
+    if (!c) return dispatch(setNotification("unsupported chain detected"));
     if (file.length > 1) {
       handleMint(mintProps);
     } else {
@@ -155,14 +181,13 @@ const AssetPreview = ({ data, changeFile }) => {
 
   useEffect(() => {
     if (chainId) {
-
       const c = chains.find((c) => c.networkId == chainId);
-      if (!c) return handleSetState({ chain: { label: 'unsupported chain' } });
+      if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
       handleSetState({ chain: c });
-      if (c.symbol === 'NEAR') {
+      if (c.symbol === "NEAR") {
         axios
           .get(
-            `https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`
+            "https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd"
           )
           .then((res) => {
             handleSetState({ dollarPrice: res.data.near.usd * price });
@@ -185,8 +210,7 @@ const AssetPreview = ({ data, changeFile }) => {
             onClick={() => handleSetState({ preview: false })}
             className={classes.cancelPreview}
           >
-            <img src={arrowIconLeft} alt="" />
-            Back
+            <img src={arrowIconLeft} alt="" /> Back
           </div>
           {file.map((f, idx) => (
             <div key={idx} className={classes.assetWrapper}>
@@ -210,17 +234,18 @@ const AssetPreview = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.type}>
-            <div>{file.length > 1 ? 'Collection Mint' : 'Mint 1 of 1s'}</div>
+            <div>{file.length > 1 ? "Collection Mint" : "Mint 1 of 1s"}</div>
           </section>
 
           <section className={classes.details}>
             <div className={classes.inputWrapper}>
               <label>
-                {' '}
-                Title <span className={classes.required}>*</span>
+                {" "}
+                Title
+                <span className={classes.required}>*</span>
               </label>
               <input
-                style={metadata ? { pointerEvents: 'none' } : {}}
+                style={metadata ? { pointerEvents: "none" } : {}}
                 type="text"
                 value={fileName}
                 onChange={(event) =>
@@ -231,22 +256,23 @@ const AssetPreview = ({ data, changeFile }) => {
 
             <div className={classes.inputWrapper}>
               <label>
-                Description <span className={classes.required}>*</span>
+                Description
+                <span className={classes.required}>*</span>
               </label>
               <textarea
-                style={metadata?.length === 1 ? { pointerEvents: 'none' } : {}}
+                style={metadata?.length === 1 ? { pointerEvents: "none" } : {}}
                 rows="5"
                 value={description}
                 onChange={(event) =>
                   handleSetState({ description: event.target.value })
                 }
-              ></textarea>
+              />
             </div>
-
 
             <div className={classes.inputWrapper}>
               <label>
-                Attributes <span className={classes.required}>*</span>
+                Attributes
+                <span className={classes.required}>*</span>
               </label>
               {!metadata ? (
                 <>
@@ -274,7 +300,10 @@ const AssetPreview = ({ data, changeFile }) => {
                 </>
               ) : (
                 <div className={classes.metadata}>
-                  <div>Number of assets: {metadata.length}</div>
+                  <div>
+                    Number of assets:
+                    {metadata.length}
+                  </div>
                   <div className={classes.trait_type}>
                     Trait_types:
                     {metadata[0]?.attributes.map(({ trait_type }, idx) => (
@@ -289,7 +318,8 @@ const AssetPreview = ({ data, changeFile }) => {
           <section className={classes.mintOptions}>
             <div className={classes.inputWrapper}>
               <label>
-                Price (USD) <span className={classes.required}>*</span>
+                Price (USD)
+                <span className={classes.required}>*</span>
               </label>
               {chainId ? (
                 <div className={classes.price}>
@@ -307,12 +337,12 @@ const AssetPreview = ({ data, changeFile }) => {
 
             <div className={classes.inputWrapper}>
               <label>
-                Chain:{' '}
+                Chain:
                 {chainId ? (
                   <span className={classes.chain}> {chain?.label}</span>
                 ) : (
-                  '---'
-                )}{' '}
+                  "---"
+                )}{" "}
               </label>
             </div>
           </section>

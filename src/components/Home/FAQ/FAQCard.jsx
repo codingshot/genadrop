@@ -1,7 +1,7 @@
-import React from 'react';
-import classes from './FAQCard.module.css';
-import closeIcon from '../../../assets/close-icon.svg';
-import openIcon from '../../../assets/open-icon.svg';
+import React from "react";
+import classes from "./FAQCard.module.css";
+import closeIcon from "../../../assets/close-icon.svg";
+import openIcon from "../../../assets/open-icon.svg";
 
 const FQACard = ({
   dropdown,
@@ -10,7 +10,7 @@ const FQACard = ({
   FAQ: { question, answer },
 }) => {
   const handleDropdown = () => {
-    if (String(id) === dropdown) return handleSetState({ dropdown: '' });
+    if (String(id) === dropdown) return handleSetState({ dropdown: "" });
     handleSetState({ dropdown: String(id) });
   };
 
@@ -34,7 +34,7 @@ const FQACard = ({
       >
         <span>A.</span>
         <p>
-          {answer}
+          {answer}{" "}
           {id === 0 ? (
             <a
               target="_blank"
@@ -44,8 +44,8 @@ const FQACard = ({
               demo.
             </a>
           ) : (
-            ''
-          )}
+            ""
+          )}{" "}
         </p>
       </div>
     </div>

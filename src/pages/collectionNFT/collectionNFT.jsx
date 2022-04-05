@@ -1,32 +1,32 @@
-import axios from 'axios';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import Skeleton from 'react-loading-skeleton';
-import { CopyBlock, dracula } from 'react-code-blocks';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import React, { useState, useContext, useRef, useEffect } from 'react';
-import DropItem from '../../components/Nft-details/dropItem/dropItem';
-import classes from './collectionNFT.module.css';
-import Search from '../../components/Nft-details/history/search';
-import NFT from '../../components/Nft-details/collection/nft';
-import Graph from '../../components/Nft-details/graph/graph';
-import { GenContext } from '../../gen-state/gen.context';
-import { getNftCollection } from '../../utils';
-import { PurchaseNft } from '../../utils/arc_ipfs';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { readNftTransaction } from '../../utils/firebase';
-import bidIcon from '../../assets/bid.png';
-import copiedIcon from '../../assets/copied.svg';
-import copyIcon from '../../assets/copy-solid.svg';
-import walletIcon from '../../assets/wallet-icon.png';
-import twitterIcon from '../../assets/twitter.svg';
-import facebookIcon from '../../assets/facebook.svg';
-import instagramIcon from '../../assets/instagram.svg';
-import descriptionIcon from '../../assets/description-icon.png';
-import detailsIcon from '../../assets/details.png';
+import React, { useState, useContext, useRef, useEffect } from "react";
+import { CopyBlock, dracula } from "react-code-blocks";
+import axios from "axios";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import CopyToClipboard from "react-copy-to-clipboard";
+import DropItem from "../../components/Nft-details/dropItem/dropItem";
+import classes from "./collectionNFT.module.css";
+import Search from "../../components/Nft-details/history/search";
+import NFT from "../../components/Nft-details/collection/nft";
+import Graph from "../../components/Nft-details/graph/graph";
+import { GenContext } from "../../gen-state/gen.context";
+import { getNftCollection } from "../../utils";
+import { PurchaseNft } from "../../utils/arc_ipfs";
+import "react-loading-skeleton/dist/skeleton.css";
+import { fetchCollections, readNftTransaction } from "../../utils/firebase";
+import bidIcon from "../../assets/bid.png";
+import copiedIcon from "../../assets/copied.svg";
+import copyIcon from "../../assets/copy-solid.svg";
+import walletIcon from "../../assets/wallet-icon.png";
+import twitterIcon from "../../assets/twitter.svg";
+import facebookIcon from "../../assets/facebook.svg";
+import instagramIcon from "../../assets/instagram.svg";
+import descriptionIcon from "../../assets/description-icon.png";
+import detailsIcon from "../../assets/details.png";
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
-    dropdown: '',
+    dropdown: "",
     asset: null,
     transactionHistory: null,
     showSocial: false,
@@ -52,19 +52,23 @@ const CollectionNFT = () => {
   };
 
   const { account, connector, mainnet } = useContext(GenContext);
-  const { collections } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
-  const [, , , collectionName, nftId] = url.split('/');
+  const [, , , collectionName, nftId] = url.split("/");
   const wrapperRef = useRef(null);
   useOutsideAlerter(wrapperRef);
-  useEffect(() => {
-    if (Object.keys(collections).length) {
-      const collection = collections.find((col) => col.name === collectionName);
-      (async function getResult() {
-        let collectionData = await getNftCollection(collection, mainnet);
 
-        let result = collectionData.find((asset) => asset.Id === Number(nftId));
+  useEffect(() => {
+    (async function getResult() {
+      let collections = await fetchCollections(mainnet);
+      if (Object.keys(collections).length) {
+        const collection = collections.find(
+          (col) => col.name === collectionName
+        );
+        const collectionData = await getNftCollection(collection, mainnet);
+        const result = collectionData.find(
+          (asset) => asset.Id === Number(nftId)
+        );
         const tHistory = await readNftTransaction(result.Id);
         handleSetState({
           asset: result,
@@ -72,15 +76,17 @@ const CollectionNFT = () => {
           collection: collectionData,
           isLoading: false,
         });
-      })();
-    }
+      }
+    })();
+
     axios
-      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
+      .get("https://api.coinbase.com/v2/prices/ALGO-USD/spot")
       .then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
+
     document.documentElement.scrollTop = 0;
-  }, [collections, nftId]);
+  }, [nftId, mainnet]);
 
   if (isLoading) {
     return (
@@ -111,37 +117,35 @@ const CollectionNFT = () => {
 
   const description = {
     icon: detailsIcon,
-    title: 'Description',
+    title: "Description",
     content: `${asset.ipfs_data.description}`,
   };
 
   const graph = {
     icon: detailsIcon,
-    title: 'Price History',
+    title: "Price History",
     content: <Graph details={transactionHistory} />,
   };
 
-  const attributeContent = () => {
-    return (
-      <div className={classes.attributesContainer}>
-        {asset.ipfs_data.properties.map((attribute, idx) => (
-          <div key={idx} className={classes.attribute}>
-            <span className={classes.title}>{attribute.trait_type}</span>
-            <span className={classes.description}>{attribute.value}</span>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  const attributeContent = () => (
+    <div className={classes.attributesContainer}>
+      {asset.ipfs_data.properties.map((attribute, idx) => (
+        <div key={idx} className={classes.attribute}>
+          <span className={classes.title}>{attribute.trait_type}</span>
+          <span className={classes.description}>{attribute.value}</span>
+        </div>
+      ))}
+    </div>
+  );
 
   const attributesItem = {
     icon: descriptionIcon,
-    title: 'Attributes',
+    title: "Attributes",
     content: attributeContent(),
   };
 
   const buyNft = async () => {
-    let res = await PurchaseNft(asset, account, connector, mainnet);
+    const res = await PurchaseNft(asset, account, connector, mainnet);
     alert(res);
   };
 
@@ -157,10 +161,10 @@ const CollectionNFT = () => {
       }
 
       // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -168,18 +172,21 @@ const CollectionNFT = () => {
   const icons = [
     {
       icon: facebookIcon,
-      link: 'https://www.facebook.com',
+      link: "https://www.facebook.com",
     },
     {
       icon: instagramIcon,
-      link: 'https://www.instagram.com',
+      link: "https://www.instagram.com",
     },
     {
       icon: twitterIcon,
-      link: 'https://www.twitter.com/mpa',
+      link: "https://www.twitter.com/mpa",
     },
   ];
 
+  // const handleHide = payload => {
+  //   setTimeout(() => { handleSetState(payload); }, 1000)
+  // }
   const onCopyText = () => {
     handleSetState({ isCopied: true });
     setTimeout(() => {
@@ -200,7 +207,7 @@ const CollectionNFT = () => {
               id={1}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -244,7 +251,6 @@ const CollectionNFT = () => {
                   />
                 </svg>
 
-
                 <svg
                   className={`${classes.icon} ${classes.dots}`}
                   width="6"
@@ -266,7 +272,8 @@ const CollectionNFT = () => {
                 <img src="/assets/algo-logo.png" alt="" />
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>
-                  (${(asset.price * algoPrice).toFixed(2)})
+                  ($
+                  {(asset.price * algoPrice).toFixed(2)})
                 </span>
               </span>
             </div>
@@ -304,7 +311,7 @@ const CollectionNFT = () => {
               id={2}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
           <div className={classes.feature}>
             <DropItem
@@ -313,7 +320,7 @@ const CollectionNFT = () => {
               id={3}
               dropdown={dropdown}
               handleSetState={handleSetState}
-            ></DropItem>
+            />
           </div>
         </div>
       </div>
@@ -338,7 +345,7 @@ const CollectionNFT = () => {
             text={JSON.stringify(asset.ipfs_data.properties, null, 2)}
             showLineNumbers={false}
             theme={dracula}
-            wrapLines={true}
+            wrapLines
             codeBlock
           />
         </div>
@@ -380,22 +387,20 @@ const CollectionNFT = () => {
             </CopyToClipboard>
           </div>
           <div className={classes.shareContent}>
-            {icons.map((icon) => {
-              return (
-                <a href={icon.link} target="_blank">
-                  <img
-                    className={classes.shareIcon}
-                    onClick={() => handleSetState({ text: icon.link })}
-                    src={icon.icon}
-                    alt=""
-                  />
-                </a>
-              );
-            })}
+            {icons.map((icon) => (
+              <a href={icon.link} target="_blank" rel="noreferrer">
+                <img
+                  className={classes.shareIcon}
+                  onClick={() => handleSetState({ text: icon.link })}
+                  src={icon.icon}
+                  alt=""
+                />
+              </a>
+            ))}
           </div>
         </div>
       ) : (
-        ''
+        ""
       )}
     </div>
   );

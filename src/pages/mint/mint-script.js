@@ -1,4 +1,4 @@
-import JSZip from 'jszip';
+import JSZip from "jszip";
 
 export const handleZipFile = async (arg) => {
   const { file, handleSetState } = arg;
@@ -12,15 +12,15 @@ export const extractZip = async (zip) => {
   const collection = [];
   let metadata = null;
 
-  for (let file in unzipped.files) {
+  for (const file in unzipped.files) {
     let blob = null;
     let string = null;
-    let uint8array = unzipped.files[file]['_data']['compressedContent'];
-    let fileType = file.split('.')[1].toLowerCase();
-    if (fileType === 'json') {
+    const uint8array = unzipped.files[file]._data.compressedContent;
+    const fileType = file.split(".")[1].toLowerCase();
+    if (fileType === "json") {
       string = new TextDecoder().decode(uint8array);
       blob = new Blob([new Uint8Array(uint8array).buffer], {
-        type: 'application/json',
+        type: "application/json",
       });
       metadata = JSON.parse(string);
     } else {
@@ -28,7 +28,7 @@ export const extractZip = async (zip) => {
       blob = new Blob([new Uint8Array(uint8array).buffer], {
         type: `image/${fileType}`,
       });
-      let imageFile = new File([blob], file, {
+      const imageFile = new File([blob], file, {
         type: `image/${fileType}`,
       });
       collection.push(imageFile);

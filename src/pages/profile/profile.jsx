@@ -1,21 +1,21 @@
-import React, { useContext, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './profile.module.css';
-import twitterIcon from '../../assets/icon-twitter-accent.svg';
-import youtubeIcon from '../../assets/icon-youtube-accent.svg';
-import instagramIcon from '../../assets/icon-instagram.svg';
-import discordIcon from '../../assets/icon-discord-accent.svg';
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./profile.module.css";
+import twitterIcon from "../../assets/icon-twitter-accent.svg";
+import youtubeIcon from "../../assets/icon-youtube-accent.svg";
+import instagramIcon from "../../assets/icon-instagram.svg";
+import discordIcon from "../../assets/icon-discord-accent.svg";
 
 const Profile = () => {
   const { account } = useContext(GenContext);
   const [state, setState] = useState({
     subscribe: false,
-    email: '',
-    twitter: '',
-    discord: '',
-    youtube: '',
-    instagram: '',
+    email: "",
+    twitter: "",
+    discord: "",
+    youtube: "",
+    instagram: "",
   });
   const { subscribe, email, twitter, discord, youtube, instagram } = state;
   const handleSetState = (payload) => {
@@ -32,11 +32,11 @@ const Profile = () => {
   const handleCancel = () => {
     handleSetState({
       subscribe: false,
-      email: '',
-      twitter: '',
-      discord: '',
-      youtube: '',
-      instagram: '',
+      email: "",
+      twitter: "",
+      discord: "",
+      youtube: "",
+      instagram: "",
     });
     history.goBack();
   };

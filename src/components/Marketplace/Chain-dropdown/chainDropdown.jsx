@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import classes from './chainDropdown.module.css';
-import polygonIcon from '../../../assets/icon-polygon.svg';
-import algoIcon from '../../../assets/icon-algo.svg';
-import nearIcon from '../../../assets/icon-near.svg';
-import celoIcon from '../../../assets/icon-celo.svg';
-import dropdownIcon from '../../../assets/icon-dropdown.svg';
+import React, { useEffect, useState } from "react";
+import classes from "./chainDropdown.module.css";
+import polygonIcon from "../../../assets/icon-polygon.svg";
+import algoIcon from "../../../assets/icon-algo.svg";
+import nearIcon from "../../../assets/icon-near.svg";
+import celoIcon from "../../../assets/icon-celo.svg";
+import dropdownIcon from "../../../assets/icon-dropdown.svg";
 
 const chainIcon = {
   Polygon: polygonIcon,
@@ -16,7 +16,7 @@ const chainIcon = {
 const ChainDropdown = ({ onChainFilter }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
-    chain: 'Algorand',
+    chain: "Algorand",
   });
 
   const { toggleChainFilter, chain } = state;
@@ -54,7 +54,7 @@ const ChainDropdown = ({ onChainFilter }) => {
       >
         <div
           onClick={() =>
-            handleSetState({ chain: 'Algorand', toggleChainFilter: false })
+            handleSetState({ chain: "Algorand", toggleChainFilter: false })
           }
         >
           <img src={chainIcon.Algorand} alt="" />
@@ -62,7 +62,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         </div>
         <div
           onClick={() =>
-            handleSetState({ chain: 'Polygon', toggleChainFilter: false })
+            handleSetState({ chain: "Polygon", toggleChainFilter: false })
           }
         >
           <img src={chainIcon.Polygon} alt="" />
@@ -70,7 +70,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         </div>
         <div
           onClick={() =>
-            handleSetState({ chain: 'Near', toggleChainFilter: false })
+            handleSetState({ chain: "Near", toggleChainFilter: false })
           }
         >
           <img src={chainIcon.Near} alt="" />
@@ -78,7 +78,7 @@ const ChainDropdown = ({ onChainFilter }) => {
         </div>
         <div
           onClick={() =>
-            handleSetState({ chain: 'Celo', toggleChainFilter: false })
+            handleSetState({ chain: "Celo", toggleChainFilter: false })
           }
         >
           <img src={chainIcon.Celo} alt="" />

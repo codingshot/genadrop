@@ -1,18 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import classes from './Filter.module.css';
-import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
-import arrowIconRight from '../../../assets/icon-arrow-right.svg';
-import filterIcon from '../../../assets/icon-filter.svg';
-import dropdownIcon from '../../../assets/icon-dropdown.svg';
-import Dropdown from '../Dropdown/Dropdown';
+import { useEffect, useState } from "react";
+
+import classes from "./Filter.module.css";
+import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import arrowIconRight from "../../../assets/icon-arrow-right.svg";
+import filterIcon from "../../../assets/icon-filter.svg";
+import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import Dropdown from "../Dropdown/Dropdown";
 
 const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   const [state, setState] = useState({
     toggleFilter: true,
     toggleAttribute: true,
     toggleLayer: -1,
-    lowestPrice: '0',
-    highestPrice: '0',
+    lowestPrice: "0",
+    highestPrice: "0",
     filter: {
       priceRange: { min: 0, max: 0 },
       onlyListed: false,
@@ -47,8 +48,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   };
 
   const handleAddToFilterAttribute = (val) => {
-    let strAttributes = JSON.stringify(filter.attributes);
-    let strVal = JSON.stringify(val);
+    const strAttributes = JSON.stringify(filter.attributes);
+    const strVal = JSON.stringify(val);
     if (!strAttributes.includes(strVal)) {
       handleSetState({
         filter: { ...filter, attributes: [...filter.attributes, val] },
@@ -57,17 +58,17 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   };
 
   const isSelected = (val) => {
-    let res = filter.attributes.find(
+    const res = filter.attributes.find(
       (attr) => JSON.stringify(attr) === JSON.stringify(val)
     );
     return !!res;
   };
 
   const handleFilterAttribute = (val) => {
-    let result = isSelected(val);
+    const result = isSelected(val);
     if (result) {
-      let strVal = JSON.stringify(val);
-      let newAttributes = filter.attributes.filter(
+      const strVal = JSON.stringify(val);
+      const newAttributes = filter.attributes.filter(
         (attr) => JSON.stringify(attr) !== strVal
       );
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
@@ -84,8 +85,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     if (Array.isArray(filterToDelete) && !filterToDelete.length) {
       handleSetState({ filter: { ...filter, attributes: [] } });
     } else {
-      let strVal = JSON.stringify(filterToDelete);
-      let newAttributes = filter.attributes.filter(
+      const strVal = JSON.stringify(filterToDelete);
+      const newAttributes = filter.attributes.filter(
         (attr) => JSON.stringify(attr) !== strVal
       );
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
@@ -199,8 +200,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                     value: val,
                                     rarity: attr.rarity[idx],
                                   })
-                                    ? '+'
-                                    : '-'}
+                                    ? "+"
+                                    : "-"}
                                 </span>
                                 <span>{val}</span>
                               </div>

@@ -28,7 +28,7 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .container{
+  .container {
     height: auto;
     max-height: 16em;
   }

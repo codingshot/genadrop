@@ -1,27 +1,27 @@
-import React, { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from "react";
 import {
   addPreview,
   removeImage,
   removePreview,
   updateImage,
   updatePreview,
-} from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './art-card.module.css';
-import checkActiveIcon from '../../assets/icon-check-active.svg';
-import checkIcon from '../../assets/icon-check.svg';
-import closeIcon from '../../assets/icon-close.svg';
-import editIconDark from '../../assets/icon-edit-dark.svg';
-import markIconDark from '../../assets/icon-mark-dark.svg';
+} from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./art-card.module.css";
+import checkActiveIcon from "../../assets/icon-check-active.svg";
+import checkIcon from "../../assets/icon-check.svg";
+import closeIcon from "../../assets/icon-close.svg";
+import editIconDark from "../../assets/icon-edit-dark.svg";
+import markIconDark from "../../assets/icon-mark-dark.svg";
 
 const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const [state, setState] = useState({
-    prompt: '',
+    prompt: "",
     inputValue: {
       name: trait.traitTitle,
       rarity: trait.Rarity,
     },
-    previousValue: '',
+    previousValue: "",
   });
   const { prompt, inputValue, previousValue, newImage } = state;
   const { image, traitTitle, Rarity } = trait;
@@ -49,16 +49,13 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const handleRename = (e, imageFile) => {
     e.preventDefault();
     preview.forEach((item) => {
-      if (
-        item['layerTitle'] === layerTitle &&
-        item['imageName'] === previousValue
-      ) {
+      if (item.layerTitle === layerTitle && item.imageName === previousValue) {
         dispatch(
           updatePreview({ layerTitle, imageName: inputValue.name, imageFile })
         );
       }
     });
-    handleSetState({ prompt: '' });
+    handleSetState({ prompt: "" });
     dispatch(
       updateImage({
         layerTitle,
@@ -66,9 +63,9 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         traitTitle: inputValue.name,
         Rarity:
           Number(inputValue.rarity) > 100
-            ? '100'
+            ? "100"
             : Number(inputValue.rarity) < 1
-            ? '1'
+            ? "1"
             : inputValue.rarity,
       })
     );
@@ -81,12 +78,12 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   };
 
   useEffect(() => {
-    if (activeCard !== traitTitle) handleSetState({ prompt: '' });
+    if (activeCard !== traitTitle) handleSetState({ prompt: "" });
   }, [activeCard, traitTitle]);
 
   useEffect(() => {
     if (!preview.length) {
-      setActiveCard('');
+      setActiveCard("");
     }
   }, [preview]);
 
@@ -122,11 +119,11 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
       </div>
       <div className={classes.details}>
         <div>
-          {prompt !== 'name' ? (
+          {prompt !== "name" ? (
             <div className={classes.inputText}>
               <div>{traitTitle}</div>
               <img
-                onClick={() => handlePrompt('name')}
+                onClick={() => handlePrompt("name")}
                 src={editIconDark}
                 alt=""
               />
@@ -152,11 +149,14 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         </div>
 
         <div>
-          {prompt !== 'rarity' ? (
+          {prompt !== "rarity" ? (
             <div className={classes.inputText}>
-              <div>Rarity: {Rarity}</div>
+              <div>
+                Rarity:
+                {Rarity}
+              </div>
               <img
-                onClick={() => handlePrompt('rarity')}
+                onClick={() => handlePrompt("rarity")}
                 src={editIconDark}
                 alt=""
               />

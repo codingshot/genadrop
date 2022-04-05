@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import classes from './prompt.module.css';
+import React, { useState } from "react";
+import classes from "./prompt.module.css";
 
 const Prompt = ({ handleAddLayer, setPrompt }) => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
   const handleChange = (event) => {
     setValue(event.target.value);

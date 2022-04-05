@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './error.module.css';
+import React from "react";
+import classes from "./error.module.css";
 
 class ErrorBoundary extends React.Component {
   constructor() {
@@ -9,6 +9,7 @@ class ErrorBoundary extends React.Component {
       hasErrored: false,
     };
   }
+
   static getDerivedStateFromError(error) {
     // process the error
 

@@ -1,6 +1,6 @@
-import React from 'react';
-import TableRow from './tableRow';
-import classes from './table.module.css';
+import React from "react";
+import TableRow from "./tableRow";
+import classes from "./table.module.css";
 
 class Table extends React.Component {
   constructor(props) {
@@ -20,20 +20,18 @@ class Table extends React.Component {
               <th>BUYER</th>
               <th>SELLER</th>
             </tr>
-            {this.props.data.map(function (d, i) {
-              return (
-                <TableRow
-                  key={i}
-                  event={d.type}
-                  price={d.price}
-                  quantity={1}
-                  from={d.seller}
-                  to={d.buyer}
-                  date={d.txDate}
-                  txId={d.txId}
-                />
-              );
-            })}
+            {this.props.data.map((d, i) => (
+              <TableRow
+                key={i}
+                event={d.type}
+                price={d.price}
+                quantity={1}
+                from={d.seller}
+                to={d.buyer}
+                date={d.txDate}
+                txId={d.txId}
+              />
+            ))}
           </tbody>
         </table>
       </div>

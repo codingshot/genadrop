@@ -29,12 +29,12 @@
   align-items: center;
 }
 
-.go-back:hover {
+.goBack:hover {
   background-color: var(--main-accent);
   color: white;
 }
 
-.go-back {
+.goBack {
   width: 200px;
   height: 60px;
   display: flex;
@@ -72,7 +72,7 @@
   font-weight: 600;
   border-radius: 100px;
 }
-.go-back img {
+.goBack img {
   width: 25px;
   height: 20px;
   margin-right: 10px;
@@ -101,10 +101,10 @@
   .text {
     font-size: 20px;
   }
-  .go-back {
+  .goBack {
     margin-right: 10px;
   }
-  .go-back,
+  .goBack,
   .home {
     width: 170px;
     height: 50px;

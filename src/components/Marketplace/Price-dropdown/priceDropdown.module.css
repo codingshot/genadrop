@@ -52,7 +52,7 @@
   background: rgb(240, 240, 240);
 }
 
-.selectedChain > div{
+.selectedChain > div {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -63,7 +63,7 @@
   background: rgb(240, 240, 240);
 }
 
-.priceDropdown .dropdown{
+.priceDropdown .dropdown {
   width: 100%;
   left: 0;
   position: absolute;

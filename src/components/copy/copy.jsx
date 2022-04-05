@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import classes from './copy.module.css';
-import copyIcon from '../../assets/icon-copy.svg';
+import { useState, useRef } from "react";
+import classes from "./copy.module.css";
+import copyIcon from "../../assets/icon-copy.svg";
 
 const Copy = ({ message, placeholder }) => {
   const [copied, setCopy] = useState(false);
@@ -28,7 +28,7 @@ const Copy = ({ message, placeholder }) => {
         className={`${classes.copyIcon} ${copied && classes.active}`}
       />
       <input
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         ref={copyRef}
         type="text"
         defaultValue={message}

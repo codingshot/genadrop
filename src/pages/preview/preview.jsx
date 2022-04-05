@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState, useRef } from 'react';
-import { useHistory } from 'react-router-dom';
-import classes from './preview.module.css';
-import { GenContext } from '../../gen-state/gen.context';
+import { useContext, useEffect, useState, useRef } from "react";
+import { useHistory } from "react-router-dom";
+import classes from "./preview.module.css";
+import { GenContext } from "../../gen-state/gen.context";
 import {
   addDescription,
   deleteAsset,
@@ -14,15 +14,15 @@ import {
   setMintInfo,
   setNftLayers,
   setOutputFormat,
-} from '../../gen-state/gen.actions';
-import { createUniqueLayer, generateArt } from './preview-script';
-import TextEditor from './text-editor';
-import { getDefaultName } from '../../utils';
-import { handleDownload } from '../../utils/index2';
-import { fetchCollections } from '../../utils/firebase';
-import arrowIconLeft from '../../assets/icon-arrow-left.svg';
-import closeIcon from '../../assets/icon-close.svg';
-import warnIcon from '../../assets/icon-warn.svg';
+} from "../../gen-state/gen.actions";
+import { createUniqueLayer, generateArt } from "./preview-script";
+import TextEditor from "./text-editor";
+import { getDefaultName } from "../../utils";
+import { handleDownload } from "../../utils/index2";
+import { fetchCollections } from "../../utils/firebase";
+import arrowIconLeft from "../../assets/icon-arrow-left.svg";
+import closeIcon from "../../assets/icon-close.svg";
+import warnIcon from "../../assets/icon-warn.svg";
 
 const Preview = () => {
   const {
@@ -44,7 +44,7 @@ const Preview = () => {
     paginate: {},
     currentPageValue: 1,
     enableAllDescription: true,
-    editorAction: { index: '', id: '' },
+    editorAction: { index: "", id: "" },
   });
 
   const { currentPage, paginate, currentPageValue, enableAllDescription } =
@@ -52,7 +52,7 @@ const Preview = () => {
   const ipfsRef = useRef(null);
   const arweaveRef = useRef(null);
   const history = useHistory();
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -60,10 +60,10 @@ const Preview = () => {
 
   const handleDeleteAndReplace = async (id, index, currentPage) => {
     if (!(combinations - mintAmount)) {
-      dispatch(setMintInfo('  cannot generate asset from 0 combination'));
+      dispatch(setMintInfo("  cannot generate asset from 0 combination"));
     } else {
-      dispatch(setLoader('generating...'));
-      dispatch(setMintInfo(''));
+      dispatch(setLoader("generating..."));
+      dispatch(setMintInfo(""));
       const newLayer = await createUniqueLayer({
         dispatch,
         setLoader,
@@ -82,12 +82,12 @@ const Preview = () => {
         setLoader,
         layer: newLayer,
         canvas,
-        image: layers[0]['traits'][0]['image'],
+        image: layers[0].traits[0].image,
       });
-      let newLayers = nftLayers.map((asset) =>
+      const newLayers = nftLayers.map((asset) =>
         asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
       );
-      dispatch(setLoader(''));
+      dispatch(setLoader(""));
       dispatch(setNftLayers(newLayers));
     }
   };
@@ -116,9 +116,9 @@ const Preview = () => {
 
   const handleCollectionName = async (value) => {
     try {
-      dispatch(setLoader('saving...'));
-      let names = await getCollectionsNames();
-      let isUnique = names.find(
+      dispatch(setLoader("saving..."));
+      const names = await getCollectionsNames();
+      const isUnique = names.find(
         (name) => name.toLowerCase() === value.toLowerCase()
       );
       if (isUnique) {
@@ -127,7 +127,7 @@ const Preview = () => {
         );
       } else {
         dispatch(setCollectionName(value));
-        let newLayers = nftLayers.map((asset, idx) => ({
+        const newLayers = nftLayers.map((asset, idx) => ({
           ...asset,
           name: `${value} ${getDefaultName(idx + 1)}`.trim(),
         }));
@@ -136,16 +136,16 @@ const Preview = () => {
     } catch (error) {
       dispatch(
         setNotification(
-          'could not save your collection name, please try again.'
+          "could not save your collection name, please try again."
         )
       );
     }
-    dispatch(setLoader(''));
+    dispatch(setLoader(""));
   };
 
   const handleCollectionDescription = (event) => {
     if (enableAllDescription) {
-      let newLayers = nftLayers.map((asset) => ({
+      const newLayers = nftLayers.map((asset) => ({
         ...asset,
         description: event.target.value,
       }));
@@ -155,12 +155,12 @@ const Preview = () => {
   };
 
   const handleFormatChange = (val) => {
-    if (val === 'ipfs') {
+    if (val === "ipfs") {
       ipfsRef.current.checked = true;
-      dispatch(setOutputFormat('ipfs'));
-    } else if (val === 'arweave') {
+      dispatch(setOutputFormat("ipfs"));
+    } else if (val === "arweave") {
       arweaveRef.current.checked = true;
-      dispatch(setOutputFormat('arweave'));
+      dispatch(setOutputFormat("arweave"));
     }
   };
 
@@ -184,8 +184,8 @@ const Preview = () => {
   };
 
   const getCollectionsNames = async () => {
-    let collections = await fetchCollections();
-    let names = [];
+    const collections = await fetchCollections();
+    const names = [];
     collections.forEach((col) => {
       names.push(col.name);
     });
@@ -193,15 +193,15 @@ const Preview = () => {
   };
 
   useEffect(() => {
-    dispatch(setMintInfo(''));
+    dispatch(setMintInfo(""));
   }, [dispatch, mintAmount]);
 
   useEffect(() => {
-    let countPerPage = 20;
-    let numberOfPages = Math.ceil(nftLayers.length / countPerPage);
+    const countPerPage = 20;
+    const numberOfPages = Math.ceil(nftLayers.length / countPerPage);
     let startIndex = 0;
     let endIndex = startIndex + countPerPage;
-    let paginate = {};
+    const paginate = {};
     for (let i = 1; i <= numberOfPages; i++) {
       paginate[i] = nftLayers.slice(startIndex, endIndex);
       startIndex = endIndex;
@@ -223,7 +223,7 @@ const Preview = () => {
             </div>
             <div className={classes.wrapper}>
               <TextEditor
-                placeholder={collectionName ? collectionName : `collectionName`}
+                placeholder={collectionName || "collectionName"}
                 submitHandler={handleCollectionName}
                 invert
               />
@@ -260,7 +260,7 @@ const Preview = () => {
           </div>
           <div className={classes.actionContainer}>
             <h3>Use Format</h3>
-            <label htmlFor="ipfs" onClick={() => handleFormatChange('ipfs')}>
+            <label htmlFor="ipfs" onClick={() => handleFormatChange("ipfs")}>
               <input
                 ref={ipfsRef}
                 type="radio"
@@ -268,14 +268,14 @@ const Preview = () => {
                 value="ipfs"
                 defaultChecked
                 className={`${classes.radioBtn} ${
-                  outputFormat === 'ipfs' && classes.clicked
+                  outputFormat === "ipfs" && classes.clicked
                 }`}
               />
               <p>IPFS</p>
             </label>
             <label
               htmlFor="arweave"
-              onClick={() => handleFormatChange('arweave')}
+              onClick={() => handleFormatChange("arweave")}
             >
               <input
                 ref={arweaveRef}
@@ -283,7 +283,7 @@ const Preview = () => {
                 name="format"
                 value="arweave"
                 className={`${classes.radioBtn} ${
-                  outputFormat === 'arweave' && classes.clicked
+                  outputFormat === "arweave" && classes.clicked
                 }`}
               />
               <p>Arweave</p>
