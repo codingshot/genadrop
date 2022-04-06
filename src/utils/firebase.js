@@ -2,14 +2,14 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import { nanoid } from 'nanoid';
 
-const {
-  getDatabase,
-  ref,
-  get,
-  child,
-  push,
-  update,
-} = require('firebase/database');
+// const {
+//   getDatabase,
+//   ref,
+//   get,
+//   child,
+//   push,
+//   update,
+// } = require('firebase/database');
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -35,31 +35,52 @@ if (!firebase.apps.length) {
 
 const db = firebase.firestore();
 
+async function recordTransaction(assetId, type, buyer, seller, price, txId) {
+  const updates = {};
+  updates[nanoid()] = {
+    type,
+    buyer,
+    seller,
+    price,
+    txId,
+    txDate: new Date(),
+  };
+  db.collection('transactions')
+    .doc(`${assetId}`)
+    .set(
+      {
+        ...updates,
+      },
+      { merge: true },
+    );
+}
+
 async function writeUserData(
   owner,
   collection,
-  name,
+  fileName,
   collection_id,
   priceValue,
   description,
-  mainnet
+  mainnet,
 ) {
-  name = name.split('-')[0];
-  let updates = {};
-  for (let i = 0; i < collection_id.length; i++) {
+  const name = fileName.split('-')[0];
+  const updates = {};
+  for (let i = 0; i < collection_id.length; i += 1) {
     updates[collection_id[i]] = {
       id: collection_id[i],
       collection: name,
       price: priceValue,
-      'mainnet': mainnet
+      mainnet,
     };
+    // eslint-disable-next-line no-await-in-loop
     await recordTransaction(
       collection_id[i],
       'Minting',
       owner,
       null,
       null,
-      null
+      null,
     );
   }
   db.collection('collections')
@@ -67,11 +88,11 @@ async function writeUserData(
       name: `${name}`,
       url: `${collection}`,
       price: priceValue,
-      owner: owner,
-      description: description,
-      mainnet: mainnet,
+      owner,
+      description,
+      mainnet,
     })
-    .then((docRef) => {})
+    .then(() => {})
     .catch((error) => {
       console.error('Error', error);
     });
@@ -81,33 +102,12 @@ async function writeUserData(
       {
         ...updates,
       },
-      { merge: true }
-    );
-}
-
-async function recordTransaction(assetId, type, buyer, seller, price, txId) {
-  let updates = {};
-  console.log(txId);
-  updates[nanoid()] = {
-    type: type,
-    buyer: buyer,
-    seller: seller,
-    price: price,
-    txId: txId,
-    txDate: new Date(),
-  };
-  db.collection('transactions')
-    .doc(`${assetId}`)
-    .set(
-      {
-        ...updates,
-      },
-      { merge: true }
+      { merge: true },
     );
 }
 
 async function readNftTransaction(assetId) {
-  let querySnapshot = await db
+  const querySnapshot = await db
     .collection('transactions')
     .doc(`${assetId}`)
     .get();
@@ -123,17 +123,17 @@ async function writeNft(
   sold,
   buyer,
   dateSold,
-  mainnet
+  mainnet,
 ) {
-  let updates = {};
+  const updates = {};
   updates[assetId] = {
     id: assetId,
-    collection: collection ? collection : null,
-    sold: sold ? true : false,
+    collection: collection || null,
+    sold: !!sold,
     Buyer: buyer,
-    price: price,
-    dateSold: dateSold,
-    mainnet: mainnet,
+    price,
+    dateSold,
+    mainnet,
   };
   db.collection('listed')
     .doc(`${owner}`)
@@ -141,7 +141,7 @@ async function writeNft(
       {
         ...updates,
       },
-      { merge: true }
+      { merge: true },
     );
   if (!sold) {
     await recordTransaction(assetId, 'Minting', owner, null, null, null);
@@ -151,35 +151,34 @@ async function writeNft(
 }
 
 async function readAllNft() {
-  let querySnapshot = await db.collection('listed').get();
-  let res = [];
+  const querySnapshot = await db.collection('listed').get();
+  const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
   return res;
 }
 
-async function readData() {
-  const dbRef = ref(getDatabase());
-  await get(child(dbRef, `list`))
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        // console.log(snapshot.val());
-      } else {
-        // console.log("No data available");
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  return;
-}
+// async function readData() {
+//   const dbRef = ref(getDatabase());
+//   await get(child(dbRef, 'list'))
+//     .then((snapshot) => {
+//       if (snapshot.exists()) {
+//         // console.log(snapshot.val());
+//       } else {
+//         // console.log("No data available");
+//       }
+//     })
+//     .catch((error) => {
+//       console.error(error);
+//     });
+// }
 
 async function readAllUserNft(userAddress) {
-  let querySnapshot = await db.collection('listed').doc(userAddress).get();
+  const querySnapshot = await db.collection('listed').doc(userAddress).get();
   try {
-    let res = Object.values(querySnapshot.data());
-    return res
+    const res = Object.values(querySnapshot.data());
+    return res;
   } catch (error) {
     console.log(error);
     return null;
@@ -187,29 +186,29 @@ async function readAllUserNft(userAddress) {
 }
 
 async function readSIngleUserNft(userAddress, assetId) {
-  let querySnapshot = await db.collection('listed').doc(userAddress).get();
+  const querySnapshot = await db.collection('listed').doc(userAddress).get();
   return Object.values(querySnapshot.data()).find(
-    (asset) => asset.id === assetId
+    (asset) => asset.id === assetId,
   );
 }
 
 async function readAllCollection(mainnet) {
-  console.log('isnuloooo', mainnet)
-  let querySnapshot = await db.collection("collections").get();
-  let res = [];
+  console.log('isnuloooo', mainnet);
+  const querySnapshot = await db.collection('collections').get();
+  const res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
   });
-  let response = mainnet === null ? res : res.filter(asset => asset.mainnet === mainnet);
+  const response = mainnet === null ? res : res.filter((asset) => asset.mainnet === mainnet);
   return response;
 }
 
 async function readUserCollection(userAddress) {
-  let querySnapshot = await db
+  const querySnapshot = await db
     .collection('collections')
     .where('owner', '==', userAddress)
     .get();
-  let res = [];
+  const res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
   });
@@ -217,30 +216,38 @@ async function readUserCollection(userAddress) {
 }
 
 async function readAllSingleNft(mainnet) {
-  console.log('isnuloooo', mainnet)
-  let querySnapshot = await db.collection("listed").get();
-  let res = [];
+  console.log('isnuloooo', mainnet);
+  const querySnapshot = await db.collection('listed').get();
+  const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  let response = mainnet === null ? res : res.filter(asset => (asset.collection === null) && (asset.mainnet === mainnet));
+  const response = mainnet === null
+    ? res
+    : res.filter(
+      (asset) => asset.collection === null && asset.mainnet === mainnet,
+    );
   return response;
 }
 
 async function fetchCollections(mainnet) {
-  return await readAllCollection(mainnet);
+  const collections = await readAllCollection(mainnet);
+  return collections;
 }
 
 async function fetchUserCollections(account) {
-  return await readUserCollection(account);
+  const userCollection = await readUserCollection(account);
+  return userCollection;
 }
 
 async function fetchUserNfts(account) {
-  return await readAllUserNft(account);
+  const userNfts = await readAllUserNft(account);
+  return userNfts;
 }
 
 async function fetchAllNfts(account) {
-  return await readAllNft(account);
+  const nfts = await readAllNft(account);
+  return nfts;
 }
 
 export {

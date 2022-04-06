@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, lazy, Suspense, useState } from 'react';
+import React, { useContext, useEffect, lazy, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-
 import './App.css';
 import Footer from './components/footer/footer';
 import Navbar from './components/Navbar/Navbar';
@@ -24,13 +23,14 @@ const Fallback = lazy(() => import('./pages/fallback/fallback'));
 const CollectionNFT = lazy(() => import('./pages/collectionNFT/collectionNFT'));
 const Collections = lazy(() => import('./pages/collections/collections'));
 const Dashboard = lazy(() => import('./pages/dashboard/dashboard'));
+const docsEmbed = lazy(() => import('./pages/docs/docsEmbed'));
 const List = lazy(() => import('./pages/listNFT/list'));
 const Profile = lazy(() => import('./pages/profile/profile'));
 const SingleNftCollection = lazy(() =>
   import('./pages/singleMintCollection/singleNftCollection')
 );
 const SingleNFT = lazy(() => import('./pages/singleNFT/singleNFT'));
-const Listed = lazy(() => import('./pages/listNFT/listed'));
+// const Listed = lazy(() => import('./pages/listNFT/listed'));
 
 function App() {
   const { dispatch, mainnet } = useContext(GenContext);
@@ -38,13 +38,13 @@ function App() {
 
   useEffect(() => {
     (async function getCollections() {
-      let collections = await fetchCollections(mainnet);
+      const collections = await fetchCollections(mainnet);
       console.log('collect', collections);
       dispatch(setCollections(collections));
     })();
 
     (async function readAllSingle() {
-      let singleNfts = await readAllSingleNft(mainnet);
+      const singleNfts = await readAllSingleNft(mainnet);
       console.log('sia', singleNfts);
       dispatch(setSingleNfts(singleNfts));
     })();
@@ -52,62 +52,62 @@ function App() {
 
   if (showWelcomeScreen) {
     return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
-  } else {
-    return (
-      <div className='App'>
-        <Navbar />
-        <div className='Routes'>
-          <ErrorBoundary>
-            <Switch>
-              <Route exact path='/' component={Home} />
-              <Route exact path='/create' component={Create} />
-              <Route exact path='/preview' component={Preview} />
-              <Route exact path='/mint' component={Mint} />
-              <Route exact path='/marketplace' component={Marketplace} />
-              <Route
-                exact
-                path='/marketplace/single-mint'
-                component={SingleNftCollection}
-              />
-              <Route
-                exact
-                path='/marketplace/single-mint/:nftId'
-                component={SingleNFT}
-              />
-              <Route
-                exact
-                path='/marketplace/collections'
-                component={Collections}
-              />
-              <Route
-                exact
-                path='/marketplace/collections/:collectionName'
-                component={Explore}
-              />
-              <Route
-                exact
-                path='/marketplace/collections/:collectionName/:nftId'
-                component={CollectionNFT}
-              />
-              <Route exact path='/me/:userId' component={Dashboard} />
-              <Route exact path='/me/:userId/:nftId' component={List} />
-              <Route
-                exact
-                path='/me/:userId/profile/settings'
-                component={Profile}
-              />
-              <Route component={Fallback} />
-            </Switch>
-          </ErrorBoundary>
-        </div>
-        <Footer />
-        <Overlay />
-        <Notification />
-        <Clipboard />
-        <Loader />
-      </div>
-    );
   }
+  return (
+    <div className='App'>
+      <Navbar />
+      <div className='Routes'>
+        <ErrorBoundary>
+          <Switch>
+            <Route exact path='/' component={Home} />
+            <Route exact path='/create' component={Create} />
+            <Route exact path='/preview' component={Preview} />
+            <Route exact path='/mint' component={Mint} />
+            <Route exact path='/marketplace' component={Marketplace} />
+            <Route
+              exact
+              path='/marketplace/single-mint'
+              component={SingleNftCollection}
+            />
+            <Route
+              exact
+              path='/marketplace/single-mint/:nftId'
+              component={SingleNFT}
+            />
+            <Route
+              exact
+              path='/marketplace/collections'
+              component={Collections}
+            />
+            <Route
+              exact
+              path='/marketplace/collections/:collectionName'
+              component={Explore}
+            />
+            <Route
+              exact
+              path='/marketplace/collections/:collectionName/:nftId'
+              component={CollectionNFT}
+            />
+            <Route exact path='/me/:userId' component={Dashboard} />
+            <Route exact path='/me/:userId/:nftId' component={List} />
+            <Route
+              exact
+              path='/me/:userId/profile/settings'
+              component={Profile}
+            />
+            <Route exact path='/docs' component={docsEmbed} />
+            <Route component={Fallback} />
+          </Switch>
+        </ErrorBoundary>
+      </div>
+      <Footer />
+      <Overlay />
+      <Notification />
+      <Clipboard />
+      <Loader />
+    </div>
+  );
 }
 
 export default App;

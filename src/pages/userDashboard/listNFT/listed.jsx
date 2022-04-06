@@ -1,12 +1,14 @@
-import { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
-import classes from "./listed.module.css";
-import Skeleton from "react-loading-skeleton";
+import React, {
+  useContext, useEffect, useState,
+} from 'react';
+import { useRouteMatch } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { GenContext } from '../../../gen-state/gen.context';
+import { getSingleNftDetails } from '../../../utils';
+import classes from './listed.module.css';
 
 const Listed = () => {
-  const { account, connector } = useContext(GenContext);
+  // const { account, connector } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -19,15 +21,15 @@ const Listed = () => {
   const { nftDetails, isLoading } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
-    const nft = singleNfts.filter((nft) => String(nft.id) === nftId)[0];
+    const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
     (async function getNftDetails() {
-      let nftDetails = await getSingleNftDetails(nft);
-      handleSetState({ nftDetails, isLoading: false });
-    })();
+      const nftdetails = await getSingleNftDetails(nft);
+      handleSetState({ nftDetails: nftdetails, isLoading: false });
+    }());
     document.documentElement.scrollTop = 0;
   }, []);
 
@@ -76,7 +78,7 @@ const Listed = () => {
             Enter your email address in your account settings so we can let you
             know, when your listing sells or receives offers
           </div>
-          <button className={classes.buy}>Profile Settings</button>
+          <button type="button" className={classes.buy}>Profile Settings</button>
         </div>
       </div>
 
@@ -94,7 +96,7 @@ const Listed = () => {
           <img src="/assets/link.svg" alt="" />
         </div>
       </div>
-      <button className={classes.view}>View Item</button>
+      <button type="button" className={classes.view}>View Item</button>
     </div>
   );
 };

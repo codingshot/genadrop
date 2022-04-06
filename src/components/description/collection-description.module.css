@@ -1,8 +1,6 @@
 .container {
   width: 100%;
   max-width: 20em;
-  height: calc(100vh - 7em);
-  overflow: auto;
   padding: 0 1em;
   position: sticky;
   top: 5em;
@@ -17,8 +15,8 @@
 }
 
 .container {
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .btnWrapper {
