@@ -2,7 +2,7 @@
 
 ## Description
 
-Give a precise description of your pull request
+ Describe the problem solved. 
 
 ## Tasks : clickUp URL
    - updated PR template : https://app.clickup.com/t/2acqbkj
