@@ -38,7 +38,6 @@
   text-transform: capitalize;
 }
 
-
 .container button:hover {
   outline: 2px solid var(--main-accent);
   background: var(--main-accent-dark);
@@ -81,7 +80,7 @@
   .container img {
     max-width: 80%;
   }
-  
+
   .bannerText {
     padding-bottom: 0;
   }
@@ -118,4 +117,3 @@
     height: 18em;
   }
 }
-

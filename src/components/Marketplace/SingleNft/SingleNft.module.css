@@ -1,4 +1,4 @@
-.container  {
+.container {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -7,7 +7,7 @@
   border-radius: 1em;
   overflow: auto;
   background: white;
-  box-shadow: 0 0 15px gainsboro;  
+  box-shadow: 0 0 15px gainsboro;
 }
 
 .container > input {
@@ -83,5 +83,3 @@
     font-size: 1.2rem;
   }
 }
-
-

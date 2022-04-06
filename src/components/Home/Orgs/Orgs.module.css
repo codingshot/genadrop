@@ -18,7 +18,7 @@
   color: var(--main-accent);
 }
 
-.description{
+.description {
   width: 100%;
   text-align: center;
   max-width: 36em;
@@ -56,7 +56,6 @@
 
 .bgIcons img:first-child {
   align-self: flex-start;
-
 }
 
 .bgIcons img:last-child {
@@ -81,9 +80,7 @@
 
   .orgs img {
     width: 8em;
-  } 
-
-  
+  }
 
   .bgIcons img {
     width: 4em;
@@ -94,8 +91,7 @@
   }
 }
 
-.org:hover{
-    cursor: pointer;
+.org:hover {
+  cursor: pointer;
   transform: scale(1.02);
-    
-  }
+}

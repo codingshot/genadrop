@@ -1,10 +1,10 @@
-import React, { Suspense } from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import { BrowserRouter } from 'react-router-dom';
-import App from './App';
-import GenContextProvider from './gen-state/gen.context';
-import Loading from './pages/loading/loading';
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App";
+import GenContextProvider from "./gen-state/gen.context";
+import Loading from "./pages/loading/loading";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,5 +16,5 @@ ReactDOM.render(
       </BrowserRouter>
     </Suspense>
   </React.StrictMode>,
-  document.getElementById('root'),
+  document.getElementById("root")
 );

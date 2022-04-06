@@ -1,24 +1,27 @@
 export const addLayer = (layers, layerToAdd) => {
   const result = layers.find(
-    (layer) => layer.layerTitle.toLowerCase() === layerToAdd.layerTitle.toLowerCase(),
+    (layer) => layer.layerTitle.toLowerCase() === layerToAdd.layerTitle.toLowerCase()
   );
   if (result) return layers;
   return [...layers, layerToAdd];
 };
 
-export const removeLayer = (layers, layerToRemove) => layers.filter(
-  (layer) => layer.layerTitle.toLowerCase() !== layerToRemove.layerTitle.toLowerCase(),
-);
+export const removeLayer = (layers, layerToRemove) =>
+  layers.filter(
+    (layer) => layer.layerTitle.toLowerCase() !== layerToRemove.layerTitle.toLowerCase()
+  );
 
 export const updateLayer = (layers, layerToUpdate) => {
   const result = layers.find(
-    (layer) => layer.layerTitle.toLowerCase() === layerToUpdate.layerTitle.toLowerCase(),
+    (layer) => layer.layerTitle.toLowerCase() === layerToUpdate.layerTitle.toLowerCase()
   );
   if (result) return layers;
 
-  return layers.map((layer) => (layer.id === layerToUpdate.id
-    ? { ...layer, layerTitle: layerToUpdate.layerTitle }
-    : layer));
+  return layers.map((layer) =>
+    layer.id === layerToUpdate.id
+      ? { ...layer, layerTitle: layerToUpdate.layerTitle }
+      : layer
+  );
 };
 
 export const addImage = (layers, imageObj) => {
@@ -40,7 +43,7 @@ export const removeImage = (layers, imageObj) => {
     if (layer.layerTitle === imageObj.layerTitle) {
       const { traits } = layer;
       const newTraits = traits.filter(
-        ({ traitTitle }) => traitTitle !== imageObj.traitTitle,
+        ({ traitTitle }) => traitTitle !== imageObj.traitTitle
       );
       return { ...layer, traits: newTraits, traitsAmount: newTraits.length };
     }
@@ -90,7 +93,7 @@ export const removePreview = (preview, { layerTitle, imageName }) => {
   const result = preview.find((item) => item.layerTitle === layerTitle);
   if (!result) return preview;
   return preview.filter(
-    (item) => !(item.layerTitle === layerTitle && item.imageName === imageName),
+    (item) => !(item.layerTitle === layerTitle && item.imageName === imageName)
   );
 };
 
@@ -104,12 +107,18 @@ export const updatePreview = (preview, { layerTitle, imageName }) => {
   return newPreview;
 };
 
-export const deleteAsset = (nftLayers, id) => nftLayers.filter((layer) => layer.id !== id);
+export const deleteAsset = (nftLayers, id) =>
+  nftLayers.filter((layer) => layer.id !== id);
 
-export const renameAsset = (nftLayers, value) => nftLayers.map((layer) => (layer.id === value.id ? { ...layer, name: value.name } : layer));
+export const renameAsset = (nftLayers, value) =>
+  nftLayers.map((layer) =>
+    layer.id === value.id ? { ...layer, name: value.name } : layer
+  );
 
-export const addDescription = (nftLayers, value) => nftLayers.map((layer) => (layer.id === value.id ? { ...layer, description: value.description } : layer));
+export const addDescription = (nftLayers, value) =>
+  nftLayers.map((layer) =>
+    layer.id === value.id ? { ...layer, description: value.description } : layer
+  );
 
-export const deleteRule = (rule, ruleToDelete) => rule.filter(
-  (rl) => JSON.stringify(rl) !== JSON.stringify(ruleToDelete),
-);
+export const deleteRule = (rule, ruleToDelete) =>
+  rule.filter((rl) => JSON.stringify(rl) !== JSON.stringify(ruleToDelete));

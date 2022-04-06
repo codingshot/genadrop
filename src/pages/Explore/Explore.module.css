@@ -90,7 +90,6 @@
   .displayContainer {
     flex-direction: column;
   }
-
 }
 
 @media screen and (max-width: 540px) {
@@ -102,6 +101,4 @@
   .searchAndFilter > div {
     width: 100%;
   }
-  
 }
-

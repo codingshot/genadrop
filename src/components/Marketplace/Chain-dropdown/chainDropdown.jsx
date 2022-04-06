@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import classes from './chainDropdown.module.css';
-import polygonIcon from '../../../assets/icon-polygon.svg';
-import algoIcon from '../../../assets/icon-algo.svg';
-import nearIcon from '../../../assets/icon-near.svg';
-import celoIcon from '../../../assets/icon-celo.svg';
-import dropdownIcon from '../../../assets/icon-dropdown.svg';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import classes from "./chainDropdown.module.css";
+import polygonIcon from "../../../assets/icon-polygon.svg";
+import algoIcon from "../../../assets/icon-algo.svg";
+import nearIcon from "../../../assets/icon-near.svg";
+import celoIcon from "../../../assets/icon-celo.svg";
+import dropdownIcon from "../../../assets/icon-dropdown.svg";
 
 const chainIcon = {
   polygon: polygonIcon,
@@ -17,7 +17,7 @@ const chainIcon = {
 const ChainDropdown = ({ onChainFilter }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
-    chain: 'all',
+    chain: "all",
   });
 
   const { toggleChainFilter, chain } = state;
@@ -30,7 +30,7 @@ const ChainDropdown = ({ onChainFilter }) => {
 
   useEffect(() => {
     const { search } = location;
-    const name = new URLSearchParams(search).get('chain');
+    const name = new URLSearchParams(search).get("chain");
     if (name) {
       handleSetState({ chain: name });
     }
@@ -39,25 +39,24 @@ const ChainDropdown = ({ onChainFilter }) => {
   const chains = [
     {
       id: 1,
-      name: 'Algorand',
+      name: "Algorand",
       img: algoIcon,
     },
     {
       id: 2,
-      name: 'Polygon',
+      name: "Polygon",
       img: polygonIcon,
     },
     {
       id: 3,
-      name: 'Near',
+      name: "Near",
       img: nearIcon,
     },
     {
       id: 4,
-      name: 'Celo',
+      name: "Celo",
       img: celoIcon,
     },
-
   ];
   const chainHandler = (name) => {
     onChainFilter(name);
@@ -70,32 +69,23 @@ const ChainDropdown = ({ onChainFilter }) => {
         className={classes.selectedChain}
       >
         <div>
-          {chainIcon[chain.toLowerCase()]
-           && <img src={chainIcon[chain.toLowerCase()]} alt={chain.toLowerCase()} />}
-          <span>{chain === 'all' ? 'All Blockchains' : chain}</span>
+          {chainIcon[chain.toLowerCase()] && (
+            <img src={chainIcon[chain.toLowerCase()]} alt={chain.toLowerCase()} />
+          )}
+          <span>{chain === "all" ? "All Blockchains" : chain}</span>
         </div>
         <img
           src={dropdownIcon}
           alt="dropdown-indicator"
-          className={`${classes.dropdownIcon} ${
-            toggleChainFilter && classes.active
-          }`}
+          className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`}
         />
       </div>
-      <div
-        className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}
-      >
-        <div
-          onClick={() => chainHandler('all')}
-        >
+      <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
+        <div onClick={() => chainHandler("all")}>
           <span>All Blockchains</span>
         </div>
         {chains.map((chainE) => (
-
-          <div
-            id={chainE.id}
-            onClick={() => chainHandler(chainE.name)}
-          >
+          <div id={chainE.id} onClick={() => chainHandler(chainE.name)}>
             <img src={chainE.img} alt={chainE.name} />
             <span>{chainE.name}</span>
           </div>

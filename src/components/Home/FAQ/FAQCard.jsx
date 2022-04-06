@@ -1,16 +1,11 @@
-import React from 'react';
-import classes from './FAQCard.module.css';
-import closeIcon from '../../../assets/close-icon.svg';
-import openIcon from '../../../assets/open-icon.svg';
+import React from "react";
+import classes from "./FAQCard.module.css";
+import closeIcon from "../../../assets/close-icon.svg";
+import openIcon from "../../../assets/open-icon.svg";
 
-const FQACard = ({
-  dropdown,
-  id,
-  handleSetState,
-  FAQ: { question, answer },
-}) => {
+const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) => {
   const handleDropdown = () => {
-    if (String(id) === dropdown) return handleSetState({ dropdown: '' });
+    if (String(id) === dropdown) return handleSetState({ dropdown: "" });
     handleSetState({ dropdown: String(id) });
   };
 
@@ -27,11 +22,7 @@ const FQACard = ({
           )}
         </span>
       </div>
-      <div
-        className={`${classes.answer} ${
-          dropdown === String(id) && classes.dropdown
-        }`}
-      >
+      <div className={`${classes.answer} ${dropdown === String(id) && classes.dropdown}`}>
         <span>A.</span>
         <p>
           {answer}
@@ -44,7 +35,7 @@ const FQACard = ({
               demo.
             </a>
           ) : (
-            ''
+            ""
           )}
         </p>
       </div>

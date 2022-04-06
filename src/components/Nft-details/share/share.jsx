@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import classes from './share.module.css';
+import React, { useEffect, useRef, useState } from "react";
+import classes from "./share.module.css";
 
 const Share = () => {
   const [state, setState] = useState({
@@ -22,10 +22,10 @@ const Share = () => {
       }
 
       // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }

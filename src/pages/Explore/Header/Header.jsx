@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import Skeleton from 'react-loading-skeleton';
-import classes from './Header.module.css';
-import listIcon from '../../../assets/icon-list.svg';
-import stackIcon from '../../../assets/icon-stack.svg';
-import tradeIcon from '../../../assets/icon-trade.svg';
-import Copy from '../../../components/copy/copy';
+import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import Skeleton from "react-loading-skeleton";
+import classes from "./Header.module.css";
+import listIcon from "../../../assets/icon-list.svg";
+import stackIcon from "../../../assets/icon-stack.svg";
+import tradeIcon from "../../../assets/icon-trade.svg";
+import Copy from "../../../components/copy/copy";
 
 const Header = ({ collection, getHeight }) => {
   const domMountRef = useRef(false);
@@ -19,21 +19,17 @@ const Header = ({ collection, getHeight }) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const {
-    name, owner, price, imageUrl, numberOfNfts, description,
-  } = collection;
+  const { name, owner, price, imageUrl, numberOfNfts, description } = collection;
 
   const getUsdValue = () => {
-    axios
-      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
-      .then((res) => {
-        const amount = res.data.data.amount * price;
-        if (isNaN(amount)) {
-          handleSetState({ dollarPrice: 0 });
-        } else {
-          handleSetState({ dollarPrice: amount });
-        }
-      });
+    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+      const amount = res.data.data.amount * price;
+      if (isNaN(amount)) {
+        handleSetState({ dollarPrice: 0 });
+      } else {
+        handleSetState({ dollarPrice: amount });
+      }
+    });
   };
 
   useEffect(() => {
@@ -41,7 +37,7 @@ const Header = ({ collection, getHeight }) => {
   }, [price]);
 
   useEffect(() => {
-    window.addEventListener('resize', () => {
+    window.addEventListener("resize", () => {
       if (domMountRef.current) {
         const res = headerRef.current.getBoundingClientRect().height;
         getHeight(res);
@@ -71,10 +67,10 @@ const Header = ({ collection, getHeight }) => {
                 <Copy
                   message={owner}
                   placeholder={
-                    owner
-                    && `${owner.substring(0, 5)}...${owner.substring(
+                    owner &&
+                    `${owner.substring(0, 5)}...${owner.substring(
                       owner.length - 4,
-                      owner.length,
+                      owner.length
                     )}`
                   }
                 />
@@ -101,12 +97,7 @@ const Header = ({ collection, getHeight }) => {
 
             <div className={classes.price}>
               {price}
-              <span className={classes.chain}>
-                Algo (
-                {dollarPrice.toFixed(2)}
-                {' '}
-                USD)
-              </span>
+              <span className={classes.chain}>Algo ({dollarPrice.toFixed(2)} USD)</span>
             </div>
           </div>
           <img src={stackIcon} alt="" />

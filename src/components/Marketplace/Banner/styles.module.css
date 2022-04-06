@@ -25,7 +25,7 @@
 
 .heading {
   font-size: 3.6em;
-  color: #EEE9DB;
+  color: #eee9db;
 }
 
 .heading span {
@@ -47,7 +47,8 @@
   gap: 2em;
 }
 
-.createBtn, .mintBtn {
+.createBtn,
+.mintBtn {
   outline: none;
   padding: 1em 4em;
   font-size: 0.85rem;
@@ -94,7 +95,7 @@
   }
 }
 
-@media screen and (max-width: 900px) { 
+@media screen and (max-width: 900px) {
   .imageContainer {
     width: 48vw;
   }
@@ -107,7 +108,8 @@
     font-size: 1rem;
   }
 
-  .createBtn, .mintBtn {
+  .createBtn,
+  .mintBtn {
     padding: 0.75em 3em;
   }
 }
@@ -123,7 +125,7 @@
     margin-bottom: 2em;
     width: 72vw;
   }
- 
+
   .heading {
     font-size: 2.5rem;
   }
@@ -156,5 +158,4 @@
     padding: 0 1em;
     padding-bottom: 2em;
   }
-
 }

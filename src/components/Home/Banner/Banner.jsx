@@ -1,7 +1,7 @@
-import React from 'react';
-import { useHistory } from 'react-router-dom';
-import classes from './styles.module.css';
-import banner from '../../../assets/home-banner-image.svg';
+import React from "react";
+import { useHistory } from "react-router-dom";
+import classes from "./styles.module.css";
+import banner from "../../../assets/home-banner-image.svg";
 
 const Banner = () => {
   const history = useHistory();
@@ -16,11 +16,10 @@ const Banner = () => {
           <br />
         </h4>
         <p className={classes.description}>
-          Generate all combinations from your art assets, preview and edit meta
-          data, upload to ipfs, mint, and list to multiple blockchains with NO
-          CODE.
+          Generate all combinations from your art assets, preview and edit meta data,
+          upload to ipfs, mint, and list to multiple blockchains with NO CODE.
         </p>
-        <button type="button" onClick={() => history.push('./create')}>
+        <button type="button" onClick={() => history.push("./create")}>
           Generate Collection
         </button>
       </div>

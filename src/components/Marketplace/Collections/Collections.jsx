@@ -1,11 +1,11 @@
-import React, { useEffect, useContext, useState } from 'react';
-import { useHistory, useRouteMatch } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
-import classes from './collections.module.css';
-import 'react-loading-skeleton/dist/skeleton.css';
-import { getNftCollections } from '../../../utils';
-import CollectionsCard from '../collectionsCard/collectionsCard';
-import { GenContext } from '../../../gen-state/gen.context';
+import React, { useEffect, useContext, useState } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import classes from "./collections.module.css";
+import "react-loading-skeleton/dist/skeleton.css";
+import { getNftCollections } from "../../../utils";
+import CollectionsCard from "../collectionsCard/collectionsCard";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const Collections = () => {
   const [state, setState] = useState({
@@ -29,7 +29,7 @@ const Collections = () => {
         } else {
           handleSetState({ algoCollection: null });
         }
-      }());
+      })();
     } catch (error) {
       console.log(error);
     }
@@ -56,8 +56,9 @@ const Collections = () => {
         <h1 className={classes.noResult}> No Result Found.</h1>
       ) : (
         <div className={classes.skeleton}>
-          {
-            ([...new Array(4)].map((_, idx) => idx)).map((id) => (
+          {[...new Array(4)]
+            .map((_, idx) => idx)
+            .map((id) => (
               <div key={id}>
                 <Skeleton count={1} height={250} />
                 <br />
@@ -65,8 +66,7 @@ const Collections = () => {
                 <br />
                 <Skeleton count={1} height={30} />
               </div>
-            ))
-          }
+            ))}
         </div>
       )}
     </div>
