@@ -71,6 +71,7 @@ async function writeUserData(
       id: collection_id[i],
       collection: name,
       price: priceValue,
+      chain: 'algo',
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
@@ -131,6 +132,7 @@ async function writeNft(
     collection: collection || null,
     sold: !!sold,
     Buyer: buyer,
+    chain: 'algo',
     price,
     dateSold,
     mainnet,
