@@ -73,6 +73,9 @@
   flex-direction: column;
   width: 100%;
 }
+.history {
+  overflow: scroll;
+}
 
 .feature {
   margin-bottom: 1rem;
