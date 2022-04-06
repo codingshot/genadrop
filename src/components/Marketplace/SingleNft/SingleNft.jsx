@@ -29,7 +29,7 @@ const SingleNft = () => {
     }());
   }, [singleNfts]);
 
-  console.log('getter', allSingleNfts, singleNfts);
+
   return (
     <div className={classes.container}>
       <div className={classes.heading}>

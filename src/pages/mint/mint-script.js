@@ -5,7 +5,6 @@ export const extractZip = async (zip) => {
   const unzipped = await new_zip.loadAsync(zip);
   const collection = [];
   let metadata = null;
-  console.log('off paynt', unzipped)
   Object.keys(unzipped.files).forEach((file) => {
     let blob = null;
     let string = null;

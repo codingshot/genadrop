@@ -98,7 +98,6 @@ const SingleNFT = () => {
     document.documentElement.scrollTop = 0;
   }, []);
 
-  // console.log('siever', nft, nftId);
 
   useEffect(() => {
   }, [nftDetails]);

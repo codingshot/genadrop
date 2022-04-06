@@ -150,7 +150,6 @@ function ConnectWallet({ setToggleNav }) {
         }
       });
     }
-    console.log(connector);
     // check if already connected
   };
 
