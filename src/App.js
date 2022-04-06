@@ -54,49 +54,49 @@ function App() {
     return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
   }
   return (
-    <div className="App">
+    <div className='App'>
       <Navbar />
-      <div className="Routes">
+      <div className='Routes'>
         <ErrorBoundary>
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/create" component={Create} />
-            <Route exact path="/preview" component={Preview} />
-            <Route exact path="/mint" component={Mint} />
-            <Route exact path="/marketplace" component={Marketplace} />
+            <Route exact path='/' component={Home} />
+            <Route exact path='/create' component={Create} />
+            <Route exact path='/preview' component={Preview} />
+            <Route exact path='/mint' component={Mint} />
+            <Route exact path='/marketplace' component={Marketplace} />
             <Route
               exact
-              path="/marketplace/single-mint"
+              path='/marketplace/single-mint'
               component={SingleNftCollection}
             />
             <Route
               exact
-              path="/marketplace/single-mint/:nftId"
+              path='/marketplace/single-mint/:nftId'
               component={SingleNFT}
             />
             <Route
               exact
-              path="/marketplace/collections"
+              path='/marketplace/collections'
               component={Collections}
             />
             <Route
               exact
-              path="/marketplace/collections/:collectionName"
+              path='/marketplace/collections/:collectionName'
               component={Explore}
             />
             <Route
               exact
-              path="/marketplace/collections/:collectionName/:nftId"
+              path='/marketplace/collections/:collectionName/:nftId'
               component={CollectionNFT}
             />
-            <Route exact path="/me/:userId" component={Dashboard} />
-            <Route exact path="/me/:userId/:nftId" component={List} />
+            <Route exact path='/me/:userId' component={Dashboard} />
+            <Route exact path='/me/:userId/:nftId' component={List} />
             <Route
               exact
-              path="/me/:userId/profile/settings"
+              path='/me/:userId/profile/settings'
               component={Profile}
             />
-            <Route exact path="/docs" component={docsEmbed} />
+            <Route exact path='/docs' component={docsEmbed} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
