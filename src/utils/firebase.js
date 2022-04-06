@@ -71,6 +71,7 @@ async function writeUserData(
       id: collection_id[i],
       collection: name,
       price: priceValue,
+      chain: 'algo',
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
@@ -131,6 +132,7 @@ async function writeNft(
     collection: collection || null,
     sold: !!sold,
     Buyer: buyer,
+    chain: 'algo',
     price,
     dateSold,
     mainnet,
@@ -193,7 +195,6 @@ async function readSIngleUserNft(userAddress, assetId) {
 }
 
 async function readAllCollection(mainnet) {
-  console.log('isnuloooo', mainnet);
   const querySnapshot = await db.collection('collections').get();
   const res = [];
   querySnapshot.forEach((doc) => {
@@ -216,14 +217,13 @@ async function readUserCollection(userAddress) {
 }
 
 async function readAllSingleNft(mainnet) {
-  console.log('isnuloooo', mainnet);
   const querySnapshot = await db.collection('listed').get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
   const response = mainnet === null
-    ? res
+    ? res.filter((asset) => asset.collection === null)
     : res.filter(
       (asset) => asset.collection === null && asset.mainnet === mainnet,
     );

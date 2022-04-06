@@ -28,6 +28,8 @@ const SingleNft = () => {
       }
     }());
   }, [singleNfts]);
+
+
   return (
     <div className={classes.container}>
       <div className={classes.heading}>

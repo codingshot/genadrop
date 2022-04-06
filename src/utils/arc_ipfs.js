@@ -85,8 +85,8 @@ const pinFileToIPFS = async (
     .post(url, data, {
       maxBodyLength: 'Infinity', // this is needed to prevent axios from erroring out with large files
       headers: {
-        pinata_api_key: pinataApiKey,
-        pinata_secret_api_key: pinataApiIFPSKey,
+        pinata_api_key: pinataApiIFPSKey,
+        pinata_secret_api_key: pinataSecretApiKey,
       },
     })
     .then((response) => response.data)
@@ -655,7 +655,6 @@ export async function mintToCelo(celoProps) {
       wallet,
     );
     const uris = ipfsJsonData.map((asset) => asset.url);
-    console.log(ipfsJsonData);
     const ids = ipfsJsonData.map((asset) => {
       const uintArray = asset.metadata.toLocaleString();
       return parseInt(uintArray.slice(0, 7).replace(/,/g, ''));
