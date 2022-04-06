@@ -10,6 +10,7 @@ import Copy from '../../../components/copy/copy';
 const Header = ({ collection, getHeight }) => {
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
+  const [explorerLink, setExplorerLink] = useState('');
   const [state, setState] = useState({
     dollarPrice: 0,
   });
@@ -19,9 +20,8 @@ const Header = ({ collection, getHeight }) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const {
-    name, owner, price, imageUrl, numberOfNfts, description,
-  } = collection;
+  const { name, owner, price, imageUrl, numberOfNfts, description } =
+    collection;
 
   const getUsdValue = () => {
     axios
@@ -38,6 +38,7 @@ const Header = ({ collection, getHeight }) => {
 
   useEffect(() => {
     getUsdValue();
+    viewOnExplorer();
   }, [price]);
 
   useEffect(() => {
@@ -52,11 +53,20 @@ const Header = ({ collection, getHeight }) => {
     getHeight(500);
   }, []);
 
+  const viewOnExplorer = () => {
+    if (collection.mainnet === true)
+      return setExplorerLink(`https://algoexplorer.io/${owner}`);
+    else if (collection.mainnet === false)
+      return setExplorerLink(
+        `https://testnet.algoexplorer.io/address/${owner}`
+      );
+  };
+
   return (
     <header ref={headerRef} className={classes.container}>
       <div className={classes.wrapper}>
         {imageUrl ? (
-          <img className={classes.imageContainer} src={imageUrl} alt="asset" />
+          <img className={classes.imageContainer} src={imageUrl} alt='asset' />
         ) : (
           <div className={classes.imageLoadingContainer}>
             <Skeleton count={1} height={200} />
@@ -65,20 +75,30 @@ const Header = ({ collection, getHeight }) => {
         <div className={classes.collectionName}>{name}</div>
         <div className={classes.creator}>
           {owner ? (
-            <div>
-              Created by
-              <span className={classes.address}>
-                <Copy
-                  message={owner}
-                  placeholder={
-                    owner
-                    && `${owner.substring(0, 5)}...${owner.substring(
-                      owner.length - 4,
-                      owner.length,
-                    )}`
-                  }
-                />
-              </span>
+            <div className={classes.ownerDetails}>
+              <div>
+                Created by
+                <span className={classes.address}>
+                  <Copy
+                    message={owner}
+                    placeholder={
+                      owner &&
+                      `${owner.substring(0, 5)}...${owner.substring(
+                        owner.length - 4,
+                        owner.length
+                      )}`
+                    }
+                  />
+                </span>
+              </div>
+              <a
+                className={classes['link-explorer']}
+                rel='noopener noreferrer'
+                target='_blank'
+                href={explorerLink}
+              >
+                View on block explorer
+              </a>
             </div>
           ) : (
             <div className={classes.skeleton}>
@@ -102,14 +122,11 @@ const Header = ({ collection, getHeight }) => {
             <div className={classes.price}>
               {price}
               <span className={classes.chain}>
-                Algo (
-                {dollarPrice.toFixed(2)}
-                {' '}
-                USD)
+                Algo ({dollarPrice.toFixed(2)} USD)
               </span>
             </div>
           </div>
-          <img src={stackIcon} alt="" />
+          <img src={stackIcon} alt='' />
         </div>
 
         <div className={classes.detailContentWrapper}>
@@ -117,7 +134,7 @@ const Header = ({ collection, getHeight }) => {
             <div className={classes.floor}>TOTAL VOLUME TRADED</div>
             <div className={classes.price}>0</div>
           </div>
-          <img src={tradeIcon} alt="" />
+          <img src={tradeIcon} alt='' />
         </div>
 
         <div className={classes.detailContentWrapper}>
@@ -125,7 +142,7 @@ const Header = ({ collection, getHeight }) => {
             <div className={classes.floor}>TOTAL LIST COUNT</div>
             <div className={classes.price}>{numberOfNfts}</div>
           </div>
-          <img src={listIcon} alt="" />
+          <img src={listIcon} alt='' />
         </div>
       </div>
     </header>

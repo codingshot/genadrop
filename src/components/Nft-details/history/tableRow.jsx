@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import classes from './tableRow.module.css';
 import saleIcon from '../../../assets/sale-icon.png';
 import transferIcon from '../../../assets/transfer-icon.png';
 import mintIcon from '../../../assets/mint-icon.png';
+import { GenContext } from '../../../gen-state/gen.context';
+import { useParams } from 'react-router-dom';
 
 const TableRow = (data) => {
+  const [explorerLink, setExplorerLink] = useState('');
+  const [isMainnet, setIsMainnet] = useState(false);
+  const { collections } = useContext(GenContext);
+  const { collectionName } = useParams();
+
   function breakAddress(address = '', width = 6) {
     if (!address) return '--';
     return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -27,11 +34,9 @@ const TableRow = (data) => {
       'Nov',
       'Dec',
     ];
-    const formattedDate = `${months[date.getMonth()]
-    } ${
-      date.getDate()
-    }, ${
-      date.getFullYear()}`;
+    const formattedDate = `${
+      months[date.getMonth()]
+    } ${date.getDate()}, ${date.getFullYear()}`;
     return formattedDate;
   };
   const icon = () => {
@@ -52,15 +57,41 @@ const TableRow = (data) => {
     return icon;
   };
 
+  useEffect(() => {
+    if (Object.keys(collections).length) {
+      const collectionsFound = collections.find(
+        (col) => col.name === collectionName
+      );
+      setIsMainnet(collectionsFound.mainnet);
+      console.log(data);
+      viewOnExplorer();
+    }
+  }, [collections]);
+
+  const viewOnExplorer = () => {
+    if (isMainnet === true)
+      return setExplorerLink(`https://algoexplorer.io/tx/${data.txId}`);
+    else if (isMainnet === false)
+      return setExplorerLink(`https://testnet.algoexplorer.io/tx/${data.txId}`);
+  };
+
   return (
     <tr>
       <td>
         <span className={classes.icon}>
-          <img src={icon()} alt="" />
+          <img src={icon()} alt='' />
         </span>
         {data.event}
       </td>
-      <td>{!data.txId ? '--' : data.txId}</td>
+      <td>
+        {!data.txId ? (
+          '--'
+        ) : (
+          <a rel='noopener noreferrer' target='_blank' href={explorerLink}>
+            {data.txId}
+          </a>
+        )}
+      </td>
       <td>{getDate(data.date)}</td>
       <td>{!data.price ? '--' : data.price}</td>
       <td>{breakAddress(data.from)}</td>
