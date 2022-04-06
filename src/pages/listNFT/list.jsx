@@ -57,7 +57,6 @@ const List = () => {
         image_url: nft.image_url,
       });
     })();
-    document.documentElement.scrollTop = 0;
   }, []);
 
   useEffect(() => {}, [nftDetails]);

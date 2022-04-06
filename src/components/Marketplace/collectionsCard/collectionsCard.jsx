@@ -18,7 +18,6 @@ const CollectionsCard = ({ collection }) => {
     axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
       handleSetState({ algoPrice: res.data.data.amount * price });
     });
-    document.documentElement.scrollTop = 0;
   }, []);
 
   return (
