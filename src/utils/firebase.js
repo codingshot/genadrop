@@ -223,10 +223,11 @@ async function readAllSingleNft(mainnet) {
     res.push(...Object.values(doc.data()));
   });
   const response = mainnet === null
-    ? res
+    ? res.filter((asset) => asset.collection === null)
     : res.filter(
       (asset) => asset.collection === null && asset.mainnet === mainnet,
     );
+    console.log('responder', response)
   return response;
 }
 

@@ -28,6 +28,7 @@ const Mint = () => {
   };
 
   const handleFileChange = (event) => {
+    console.log('files', event.target.files)
     const upladedFile = event.target.files[0];
 
     if (!upladedFile) return;
@@ -39,6 +40,7 @@ const Mint = () => {
     if (!supportedTypes.includes(fileType.toLowerCase())) return;
 
     if (fileType === 'zip') {
+      console.log(fileType, upladedFile);
       handleSetState({ zip: upladedFile, upladedFileName });
       handleZipFile({ upladedFile, handleSetState });
     } else {

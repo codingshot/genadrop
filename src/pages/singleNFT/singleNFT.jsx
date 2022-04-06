@@ -7,11 +7,11 @@ import { CopyBlock, dracula } from 'react-code-blocks';
 import axios from 'axios';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { GenContext } from '../../gen-state/gen.context';
-import { getSingleNftDetails, } from '../../utils';
+import { getSingleNftDetails } from '../../utils';
 import classes from './singleNFT.module.css';
 import Graph from '../../components/Nft-details/graph/graph';
 import DropItem from '../../components/Nft-details/dropItem/dropItem';
-import { PurchaseNft, } from '../../utils/arc_ipfs';
+import { PurchaseNft } from '../../utils/arc_ipfs';
 import copiedIcon from '../../assets/copied.svg';
 import copyIcon from '../../assets/copy-solid.svg';
 import walletIcon from '../../assets/wallet-icon.png';
@@ -94,6 +94,8 @@ const SingleNFT = () => {
       });
     document.documentElement.scrollTop = 0;
   }, []);
+
+  // console.log('siever', nft, nftId);
 
   useEffect(() => {
   }, [nftDetails]);
