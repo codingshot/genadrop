@@ -1,12 +1,12 @@
-import React from 'react';
-import { Link, useRouteMatch } from 'react-router-dom';
-import classes from './nft.module.css';
+import React from "react";
+import { Link, useRouteMatch } from "react-router-dom";
+import classes from "./nft.module.css";
 
 const NFT = (data) => {
   const match = useRouteMatch();
 
   return data.data.map((nft, idx) => (
-    <Link to={`${match.url.split('/').slice(0, -1).join('/')}/${nft.Id}`}>
+    <Link to={`${match.url.split("/").slice(0, -1).join("/")}/${nft.Id}`}>
       <div key={idx} className={classes.collectionItem}>
         <img src={nft.image_url} alt="" />
         <span className={classes.collectionName}>{nft.collection_name}</span>
@@ -17,15 +17,17 @@ const NFT = (data) => {
             <div className={classes.section}>
               <div className={classes.heading}>LIST PRICE</div>
               <div className={classes.price}>
-                {nft.price}
-                {' '}
-                <span>ALGO</span>
+                {nft.price} <span>ALGO</span>
               </div>
             </div>
             {nft.sold ? (
-              <button type="button" className={classes.sold}>Sold</button>
+              <button type="button" className={classes.sold}>
+                Sold
+              </button>
             ) : (
-              <button type="button" className={classes.buy}>Buy</button>
+              <button type="button" className={classes.buy}>
+                Buy
+              </button>
             )}
           </div>
         </div>

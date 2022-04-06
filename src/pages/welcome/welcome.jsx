@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import classes from './welcome.module.css';
-import dropIcon from '../../assets/drop.svg';
+import React, { useEffect } from "react";
+import classes from "./welcome.module.css";
+import dropIcon from "../../assets/drop.svg";
 
 const Welcome = ({ showWelcomeScreen }) => {
   useEffect(() => {
-    document.getElementById('dropIcon').onanimationend = () => {
+    document.getElementById("dropIcon").onanimationend = () => {
       showWelcomeScreen(false);
     };
   }, []);

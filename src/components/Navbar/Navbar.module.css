@@ -32,7 +32,7 @@
   animation: drop 650ms;
 }
 
-.logoContainer:hover .logoDesktop, 
+.logoContainer:hover .logoDesktop,
 .logoContainer:hover .logoMobile {
   transform: translate(1px, 1px);
 }
@@ -43,8 +43,16 @@
 }
 
 @keyframes drop {
-  from{transform: translateY(0%);opacity: 0; visibility: hidden;}
-  to{transform: translateY(200%);opacity: 1; visibility: visible;}
+  from {
+    transform: translateY(0%);
+    opacity: 0;
+    visibility: hidden;
+  }
+  to {
+    transform: translateY(200%);
+    opacity: 1;
+    visibility: visible;
+  }
 }
 
 .logoDesktop {
@@ -133,7 +141,6 @@
 }
 
 @media screen and (max-width: 768px) {
-
   .container {
     background: var(--main-bg);
   }

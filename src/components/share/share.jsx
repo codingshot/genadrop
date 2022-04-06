@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import classes from './share.module.css';
-import copiedIcon from '../../assets/copied.svg';
-import copyIcon from '../../assets/copy-solid.svg';
-import twitterIcon from '../../assets/twitter.svg';
-import facebookIcon from '../../assets/facebook.svg';
+import React, { useState, useRef, useEffect } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
+import classes from "./share.module.css";
+import copiedIcon from "../../assets/copied.svg";
+import copyIcon from "../../assets/copy-solid.svg";
+import twitterIcon from "../../assets/twitter.svg";
+import facebookIcon from "../../assets/facebook.svg";
 // import instagramIcon from '../../assets/instagramIcon';
 
 const Share = ({ url }) => {
@@ -24,8 +24,8 @@ const Share = ({ url }) => {
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
-             * Alert if clicked on outside of element
-             */
+       * Alert if clicked on outside of element
+       */
       function handleClickOutside(event) {
         if (ref.current && !ref.current.contains(event.target)) {
           handleSetState({ showSocial: false });
@@ -33,10 +33,10 @@ const Share = ({ url }) => {
       }
 
       // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
@@ -45,7 +45,7 @@ const Share = ({ url }) => {
   const icons = [
     {
       icon: facebookIcon,
-      link: 'https://www.facebook.com/MinorityProgrammers',
+      link: "https://www.facebook.com/MinorityProgrammers",
     },
     // {
     //   icon: instagramIcon,
@@ -53,7 +53,7 @@ const Share = ({ url }) => {
     // },
     {
       icon: twitterIcon,
-      link: 'https://www.twitter.com/minorityprogram',
+      link: "https://www.twitter.com/minorityprogram",
     },
   ];
   // const handleHide = payload => {

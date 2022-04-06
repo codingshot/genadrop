@@ -1,15 +1,13 @@
-import React, { useContext, useState } from 'react';
-import CollectionMenu from '../menu/collection-menu';
-import classes from './collection-overview.module.css';
-import { GenContext } from '../../gen-state/gen.context';
-import { addRule, clearPreview, setConflictRule } from '../../gen-state/gen.actions';
-import isUnique from './collection-overview-script';
-import RulesCard from '../rulesCard/rulesCard.component';
+import React, { useContext, useState } from "react";
+import CollectionMenu from "../menu/collection-menu";
+import classes from "./collection-overview.module.css";
+import { GenContext } from "../../gen-state/gen.context";
+import { addRule, clearPreview, setConflictRule } from "../../gen-state/gen.actions";
+import isUnique from "./collection-overview-script";
+import RulesCard from "../rulesCard/rulesCard.component";
 
 const CollectionOverview = () => {
-  const {
-    dispatch, isRule, preview, rule, layers,
-  } = useContext(GenContext);
+  const { dispatch, isRule, preview, rule, layers } = useContext(GenContext);
   const [state, setState] = useState({
     showRule: false,
   });
@@ -35,7 +33,9 @@ const CollectionOverview = () => {
   };
 
   const handleAddRule = () => {
-    if (isUnique({ rule, preview }) && preview.length) { dispatch(addRule([...rule, preview])); }
+    if (isUnique({ rule, preview }) && preview.length) {
+      dispatch(addRule([...rule, preview]));
+    }
     dispatch(clearPreview());
     closeRule();
   };
@@ -46,13 +46,15 @@ const CollectionOverview = () => {
         <div className={classes.rules}>
           {isRule ? (
             <>
-              <button type="button" onClick={handleAddRule} className={classes.addRuleBtn}>
+              <button
+                type="button"
+                onClick={handleAddRule}
+                className={classes.addRuleBtn}
+              >
                 Add Rule
               </button>
               <button type="button" onClick={closeRule} className={classes.showRuleBtn}>
-                Cancel
-                {' '}
-                <span>0</span>
+                Cancel <span>0</span>
               </button>
             </>
           ) : (
@@ -61,9 +63,7 @@ const CollectionOverview = () => {
                 Set Conflict
               </button>
               <button type="button" onClick={handleRules} className={classes.showRuleBtn}>
-                Rules
-                {' '}
-                <span>{rule.length}</span>
+                Rules <span>{rule.length}</span>
               </button>
               {showRule && (
                 <div className={classes.ruleCardWrapper}>

@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import cx from './select.module.css';
+import React, { useState } from "react";
+import cx from "./select.module.css";
 
-const Select = ({
-  heading, selectionList, select, selected,
-}) => {
+const Select = ({ heading, selectionList, select, selected }) => {
   const [toggle, toggleShow] = useState(false);
   const [inShow, setInShow] = useState(-1);
 
@@ -39,18 +37,20 @@ const Select = ({
             </div>
             <div
               style={{
-                height: inShow === idx && toggle ? getHeight(layer) : '0',
+                height: inShow === idx && toggle ? getHeight(layer) : "0",
               }}
               className={`${cx.attributes}`}
             >
               {selectionList[layer].map((data, idx) => (
                 <div
                   key={idx}
-                  onClick={() => handleAddAttribute({
-                    layer,
-                    attr: data.traitTitle,
-                    image: data.image,
-                  })}
+                  onClick={() =>
+                    handleAddAttribute({
+                      layer,
+                      attr: data.traitTitle,
+                      image: data.image,
+                    })
+                  }
                   className={cx.attribute}
                 >
                   <span className={cx.icon}>
@@ -60,9 +60,9 @@ const Select = ({
                       image: data.image,
                     }) ? (
                       <i className="fas fa-times" />
-                      ) : (
-                        <i className="fas fa-minus" />
-                      )}
+                    ) : (
+                      <i className="fas fa-minus" />
+                    )}
                   </span>
                   <span>{data.traitTitle}</span>
                   <img src={URL.createObjectURL(data.image)} alt="" />

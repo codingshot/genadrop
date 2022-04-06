@@ -1,13 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap");
 
 :root {
   --main-bg: #ffffff;
   --main-accent: #009987;
-  --main-accent-dark:#037568;
+  --main-accent-dark: #037568;
   --main-hover: #eff5f4;
   --text-color: #000000;
   --card-bg: #3d3d3d;
-  --card-bg1: #27292C;
+  --card-bg1: #27292c;
   --card-bg2: #212529;
   --card-bg3: #000000;
 }
@@ -42,7 +42,7 @@ a {
   min-height: calc(100vh - 19em);
 }
 
-*{
+* {
   /* font-family: 'Frank Ruhl Libre', serif; */
   /* font-family: 'Roboto', sans-serif; */
   font-display: fallback;
@@ -61,12 +61,12 @@ a {
 /* Track */
 ::-webkit-scrollbar-track {
   border-radius: 0px;
-  background: #F1F1F1;
+  background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #C1C1C1; 
+  background: #c1c1c1;
   border-radius: 0px;
 }
 
@@ -76,7 +76,7 @@ a {
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #b1b1b1; 
+  background: #b1b1b1;
 }
 
 button {
@@ -91,4 +91,3 @@ button {
     margin-top: 3em;
   }
 }
-

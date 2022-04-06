@@ -134,13 +134,15 @@
 }
 
 @media screen and (max-width: 1280px) {
-  .overview, .skeleton {
+  .overview,
+  .skeleton {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
 @media screen and (max-width: 1000px) {
-  .overview, .skeleton {
+  .overview,
+  .skeleton {
     grid-template-columns: repeat(3, 1fr);
   }
 
@@ -154,7 +156,8 @@
 }
 
 @media screen and (max-width: 768px) {
-  .overview, .skeleton {
+  .overview,
+  .skeleton {
     grid-template-columns: repeat(2, 1fr);
   }
 
@@ -178,7 +181,7 @@
 
   .imageContainer {
     width: calc(8 * 16px);
-    height: calc(8 * 16px);  
+    height: calc(8 * 16px);
   }
 }
 
@@ -190,15 +193,16 @@
 
   .searchAndFilter > div {
     width: 100%;
-  } 
+  }
 
-  .overview, .skeleton {
+  .overview,
+  .skeleton {
     grid-template-columns: repeat(1, 1fr);
   }
 
   .imageContainer {
     width: calc(8 * 16px);
-    height: calc(8 * 16px);  
+    height: calc(8 * 16px);
   }
 
   .details {

@@ -1,11 +1,11 @@
-.input{
-    width: 97%;
-    height: 35px;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #F3F4F7;
-    font-size: 20px;
-    margin: 0.5rem;
-    background-size: 25px;
-    background-position: 5px;
+.input {
+  width: 97%;
+  height: 35px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #f3f4f7;
+  font-size: 20px;
+  margin: 0.5rem;
+  background-size: 25px;
+  background-position: 5px;
 }

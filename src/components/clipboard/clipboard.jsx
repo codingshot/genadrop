@@ -1,17 +1,15 @@
-import React, {
-  useRef, useContext, useEffect, useState,
-} from 'react';
+import React, { useRef, useContext, useEffect, useState } from "react";
 
-import { setClipboard } from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './clipboard.module.css';
-import linkIcon from '../../assets/icon-link.svg';
-import closeIcon from '../../assets/icon-close.svg';
+import { setClipboard } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./clipboard.module.css";
+import linkIcon from "../../assets/icon-link.svg";
+import closeIcon from "../../assets/icon-close.svg";
 
 const Clipboard = () => {
   const [state, setState] = useState({
     toggleClipboard: false,
-    clipboardState: 'copy',
+    clipboardState: "copy",
   });
   const { toggleClipboard, clipboardState } = state;
   const handleSetState = (payload) => {
@@ -19,25 +17,24 @@ const Clipboard = () => {
   };
   const clipboardRef = useRef(null);
 
-  const {
-    notification, clipboardMessage, loaderMessage, dispatch,
-  } = useContext(GenContext);
+  const { notification, clipboardMessage, loaderMessage, dispatch } =
+    useContext(GenContext);
 
   const handleCopy = (props) => {
     const { navigator, clipboard } = props;
     clipboard.select();
     clipboard.setSelectionRange(0, 99999); /* For mobile devices */
     navigator.clipboard.writeText(clipboard.value);
-    handleSetState({ clipboardState: 'copied' });
+    handleSetState({ clipboardState: "copied" });
     setTimeout(() => {
-      handleSetState({ clipboardState: 'copy' });
+      handleSetState({ clipboardState: "copy" });
     }, 650);
   };
 
   const handleDiscard = () => {
     handleSetState({ toggleClipboard: false });
     setTimeout(() => {
-      dispatch(setClipboard(''));
+      dispatch(setClipboard(""));
     }, 500);
   };
 
@@ -51,21 +48,16 @@ const Clipboard = () => {
       style={{
         top:
           notification && loaderMessage
-            ? '10em'
+            ? "10em"
             : loaderMessage
-              ? '6em'
-              : notification
-                ? '8em'
-                : '4em',
+            ? "6em"
+            : notification
+            ? "8em"
+            : "4em",
       }}
       className={`${classes.container} ${toggleClipboard && classes.active}`}
     >
-      <img
-        className={classes.icon}
-        onClick={handleDiscard}
-        src={closeIcon}
-        alt=""
-      />
+      <img className={classes.icon} onClick={handleDiscard} src={closeIcon} alt="" />
       <div className={classes.message}>{clipboardMessage}</div>
       <div className={classes.action}>
         <div
@@ -79,7 +71,7 @@ const Clipboard = () => {
         </a>
       </div>
       <input
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         ref={clipboardRef}
         type="text"
         defaultValue={clipboardMessage}

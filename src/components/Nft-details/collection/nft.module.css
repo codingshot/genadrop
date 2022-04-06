@@ -1,39 +1,36 @@
-
-.collectionItem{
-    width: 10rem;
-    display: flex;
-    flex-direction: column;
-    color: #4B4B5A;
-    border-radius: 0 0 10px 10px;
-    margin:   1rem;
-    padding: 0 0.4rem;
-  
+.collectionItem {
+  width: 10rem;
+  display: flex;
+  flex-direction: column;
+  color: #4b4b5a;
+  border-radius: 0 0 10px 10px;
+  margin: 1rem;
+  padding: 0 0.4rem;
 }
 
-.collectionItem:hover{
+.collectionItem:hover {
   transform: scale(1.02);
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
-}  
+}
 
-.collectionItem img{
+.collectionItem img {
   width: 10rem;
 }
 
-.itemName{
+.itemName {
   font-size: 15px;
   font-weight: bold;
   padding: 0 0.4rem;
   margin-bottom: 1rem;
-  
 }
-.collectionName{
+.collectionName {
   padding: 0.4rem;
   font-size: 10px;
   font-weight: bold;
 }
 
-.itemPrice{
+.itemPrice {
   padding: 5px;
   font-size: 15px;
   display: flex;
@@ -41,34 +38,31 @@
   bottom: 0;
 }
 
-
-.section{
+.section {
   display: flex;
   flex-direction: column;
 }
 
-.heading{
-  color: #ADB5BD;
+.heading {
+  color: #adb5bd;
   font-size: 10px;
 }
 
-.price{
+.price {
   color: var(--main-accent);
   font-size: 20px;
   font-weight: bold;
-
 }
 
-.price span{
+.price span {
   font-size: 12px;
 }
-.pricing img{
+.pricing img {
   width: 25px;
 }
 
-
-.buy, .sold{
-  
+.buy,
+.sold {
   flex-direction: row;
   color: white;
   padding: 0 1rem;
@@ -79,15 +73,13 @@
   order: 2;
 }
 
-.buy{
+.buy {
   background-color: var(--main-accent);
-
 }
 .sold {
-  background-color: #4B4B5A;
-
+  background-color: #4b4b5a;
 }
-.buy:hover{
+.buy:hover {
   transform: scale(1.05);
-  transition: all .2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }

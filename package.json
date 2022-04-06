@@ -56,7 +56,9 @@
     "eject": "react-scripts eject",
     "prod": "yarn run build && serve build",
     "lint": "eslint \"./**/*.{js,jsx}\"",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -88,6 +90,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "4.3.0",
-    "prettier": "^2.6.1"
+    "prettier": "2.6.2",
+    "husky": "^7.0.0"
   }
 }

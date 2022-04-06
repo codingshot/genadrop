@@ -152,7 +152,7 @@
   background: gray;
 }
 
-.collectionDetail .toggle.active{
+.collectionDetail .toggle.active {
   transform: translateX(100%);
   background: var(--main-accent);
 }
@@ -335,7 +335,7 @@
   border-radius: 50%;
   background: black;
   position: absolute;
-  content: '';
+  content: "";
   outline: 2px solid white;
   outline-offset: 2px;
 }
