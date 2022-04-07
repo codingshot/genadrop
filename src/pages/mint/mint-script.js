@@ -9,7 +9,7 @@ export const extractZip = async (zip) => {
     let blob = null;
     let string = null;
     const uint8array = unzipped.files[file]._data.compressedContent;
-    const fileType = file.split(".")[1].toLowerCase();
+    const fileType = file.split(".")[1]?.toLowerCase();
     if (fileType === "json") {
       string = new TextDecoder().decode(uint8array);
       blob = new Blob([new Uint8Array(uint8array).buffer], {
