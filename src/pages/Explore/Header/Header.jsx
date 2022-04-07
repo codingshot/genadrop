@@ -39,6 +39,7 @@ const Header = ({ collection, getHeight }) => {
   useEffect(() => {
     getUsdValue();
     viewOnExplorer();
+    console.log(collection);
   }, [price]);
 
   useEffect(() => {

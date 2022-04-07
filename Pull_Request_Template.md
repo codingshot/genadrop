@@ -2,40 +2,19 @@
 
 ## Description
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+ Describe the problem solved. 
 
-Fixes # (issue)
+## Tasks : clickUp URL
+   - updated PR template : https://app.clickup.com/t/2acqbkj
+   - fixed homepage mobile responsiveness: 'if no click url, create the task and
+                                              assign to yourself. Then put link here`
+   - more ...
+## Modifies files
+   - src/pages...
+   - src/component/...
+   - etc...
+## Good conduct
+  Please check the boxes below 
+- [ ]  I pull from  main branch and resolved all merge conflicts Locally
+- [ ]  I tested my code and it does break existing pages
 
-## Type of change
-
-Please delete options that are not relevant.
-
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
-
-## How Has This Been Tested?
-
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
-
-- [ ] Test A
-- [ ] Test B
-
-**Test Configuration(if any)**:
-* Firmware version:
-* Hardware:
-* Toolchain:
-* SDK
-
-## Checklist:
-
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-- [ ] Any dependent changes have been merged and published in downstream modules
-- [ ] I have checked my code and corrected any misspellings

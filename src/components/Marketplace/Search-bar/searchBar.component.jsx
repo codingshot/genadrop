@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import classes from './searchBar.module.css';
 
 const SearchBar = ({ onSearch }) => {
+  const location = useLocation();
   const [state, setState] = useState({
     searchValue: '',
   });
@@ -9,18 +11,25 @@ const SearchBar = ({ onSearch }) => {
   const { searchValue } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
-
   useEffect(() => {
-    onSearch(searchValue);
-  }, [searchValue]);
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    if (name) {
+      handleSetState({ searchValue: name });
+    }
+  }, []);
 
+  const seachHandler = (event) => {
+    onSearch(event.target.value);
+    handleSetState({ searchValue: event.target.value });
+  };
   return (
     <input
       className={classes.searchInput}
       type="search"
-      onChange={(event) => handleSetState({ searchValue: event.target.value })}
+      onChange={seachHandler}
       value={searchValue}
       placeholder="search"
     />

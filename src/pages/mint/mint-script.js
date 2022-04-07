@@ -5,7 +5,7 @@ export const extractZip = async (zip) => {
   const unzipped = await new_zip.loadAsync(zip);
   const collection = [];
   let metadata = null;
-  unzipped.files.forEach((file) => {
+  Object.keys(unzipped.files).forEach((file) => {
     let blob = null;
     let string = null;
     const uint8array = unzipped.files[file]._data.compressedContent;
@@ -30,7 +30,7 @@ export const extractZip = async (zip) => {
   return { metadata, collection };
 };
 export const handleZipFile = async (arg) => {
-  const { file, handleSetState } = arg;
-  const { metadata, collection } = await extractZip(file);
+  const { upladedFile, handleSetState } = arg;
+  const { metadata, collection } = await extractZip(upladedFile);
   handleSetState({ file: collection, metadata });
 };

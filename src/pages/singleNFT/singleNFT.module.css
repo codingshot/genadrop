@@ -302,6 +302,9 @@
   .section1 {
     flex-direction: column;
   }
+  .history {
+    overflow: scroll;
+  }
 
   .v_subsection1 {
     width: 100%;

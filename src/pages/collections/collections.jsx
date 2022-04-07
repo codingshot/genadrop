@@ -1,8 +1,9 @@
 import React, {
-  useEffect, useRef, useState, useContext,
+  useEffect, useState, useContext,
 } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import axios from 'axios';
+import { useHistory, useLocation } from 'react-router-dom';
 import classes from './collections.module.css';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getNftCollections } from '../../utils';
@@ -17,9 +18,9 @@ import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
 
 const Collections = () => {
-  const domMountRef = useRef(false);
   const { mainnet } = useContext(GenContext);
-
+  const history = useHistory();
+  const location = useLocation();
   const [state, setState] = useState({
     filteredCollection: [],
     algoCollection: null,
@@ -29,7 +30,7 @@ const Collections = () => {
     filter: {
       searchValue: '',
       price: 'low',
-      chain: 'Algorand',
+      chain: 'all',
     },
   });
 
@@ -46,19 +47,26 @@ const Collections = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const getCollectionByChain = () => {
-    switch (filter.chain) {
-      case 'Algorand':
+  const getCollectionByChain = (network = filter.chain) => {
+    switch (network.toLowerCase()) {
+      case 'all':
+        return [
+          ...(algoCollection || []),
+          ...(polyCollection || []),
+          ...(celoCollection || []),
+          ...(nearCollection || [])];
+      case 'algorand':
         return algoCollection;
-      case 'Polygon':
+      case 'polygon':
         return polyCollection;
-      case 'Celo':
+      case 'celo':
         return celoCollection;
-      case 'Near':
+      case 'near':
         return nearCollection;
       default:
         break;
     }
+    return null;
   };
 
   // *************************get results from different blockchains*************************
@@ -77,11 +85,11 @@ const Collections = () => {
       (async function getPolygonCollection() {
         const result = await getPolygonNfts();
         const data = transformArrayOfArraysToArrayOfObjects(result);
-        for (const d of data) {
+        data.forEach(async (d) => {
           const response = await axios.get(
             d.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
           );
-        }
+        });
         // handleSetState({ polyCollection: result });
         // console.log(result);
       }());
@@ -89,26 +97,10 @@ const Collections = () => {
       console.log(error);
     }
   }, []);
-  // ***********************************************************************************************
-
-  // ************************* get search result for different blockchains *************************
-  useEffect(() => {
-    const collection = getCollectionByChain();
-    if (!collection) return;
-    const filtered = collection.filter(
-      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
-    );
-    if (filtered.length) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-  }, [filter.searchValue]);
-  // ***********************************************************************************************
 
   // *********************** sort by price function for different blockchains **********************
-  // eslint-disable-next-line consistent-return
-  const sortPrice = (collection) => {
+  const sortPrice = () => {
+    const collection = getCollectionByChain();
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
     if (filter.price === 'low') {
@@ -117,25 +109,96 @@ const Collections = () => {
       sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
+    return sorted;
   };
-  // ***********************************************************************************************
 
-  // ********************************* render blockchains ******************************************
   useEffect(() => {
-    if (domMountRef.current) {
-      sortPrice(getCollectionByChain());
-    } else {
-      domMountRef.current = true;
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    const chainParameter = new URLSearchParams(search).get('chain');
+    if (chainParameter) {
+      handleSetState({ filter: { ...filter, chain: chainParameter } });
     }
+    const collection = getCollectionByChain();
+    if (!collection) return handleSetState({ filteredCollection: null });
+    if (name) {
+      handleSetState({ filter: { ...filter, searchValue: name } });
+    }
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ''),
+    );
+    if (filtered?.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+    return null;
   }, [
-    filter.chain,
-    filter.price,
     algoCollection,
     polyCollection,
     celoCollection,
     nearCollection,
   ]);
 
+  const searchHandler = (value) => {
+    handleSetState({ filter: { ...filter, searchValue: value } });
+    const { search } = location;
+    const chainParam = new URLSearchParams(search).get('chain');
+    const params = new URLSearchParams(
+      {
+        search: value,
+        ...(chainParam && { chain: chainParam }),
+      },
+    );
+    history.replace({ pathname: location.pathname, search: params.toString() });
+    const collection = getCollectionByChain();
+    if (!collection) return;
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(value.toLowerCase()),
+    );
+    if (filtered.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  };
+
+  const chainChange = (value) => {
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    const params = new URLSearchParams(
+      {
+        chain: value.toLowerCase(),
+        ...(name && { search: name }),
+      },
+    );
+    history.replace(
+      { pathname: location.pathname, search: params.toString() },
+    );
+    handleSetState({ filter: { ...filter, chain: value } });
+    const collection = getCollectionByChain(value);
+    if (collection) {
+      if (filter.searchValue) {
+        const filtered = collection.filter(
+          (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+        );
+        if (filtered.length) {
+          handleSetState({ filteredCollection: filtered });
+        } else {
+          handleSetState({ filteredCollection: null });
+        }
+      } else {
+        handleSetState({ filteredCollection: collection });
+      }
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  };
+
+  const priceUpdate = (value) => {
+    handleSetState({ filter: { ...filter, price: value } });
+    sortPrice();
+  };
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -143,20 +206,20 @@ const Collections = () => {
           <h1>Collections</h1>
           <div className={classes.searchAndFilter}>
             <SearchBar
-              onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
+              onSearch={searchHandler}
             />
             <ChainDropdown
-              onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
+              onChainFilter={chainChange}
             />
             <PriceDropdown
-              onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
+              onPriceFilter={priceUpdate}
             />
           </div>
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
-            {filteredCollection.map((collection, idx) => (
-              <CollectionsCard key={idx} collection={collection} />
+            {filteredCollection.map((collection) => (
+              <CollectionsCard key={collection.collection} collection={collection} />
             ))}
           </div>
         ) : !filteredCollection ? (

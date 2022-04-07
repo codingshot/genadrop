@@ -1,5 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useContext,
+} from 'react';
 import Skeleton from 'react-loading-skeleton';
+import { useHistory, useLocation } from 'react-router-dom';
 import { getSingleNfts } from '../../utils';
 import classes from './singleNftCollection.module.css';
 import NftCard from '../../components/Marketplace/NftCard/NftCard';
@@ -8,10 +11,12 @@ import NotFound from '../../components/not-found/notFound';
 import SearchBar from '../../components/Marketplace/Search-bar/searchBar.component';
 import ChainDropdown from '../../components/Marketplace/Chain-dropdown/chainDropdown';
 import PriceDropdown from '../../components/Marketplace/Price-dropdown/priceDropdown';
+import { GenContext } from '../../gen-state/gen.context';
 
 const SingleNftCollection = () => {
-  const domMountRef = useRef(false);
-
+  const { mainnet } = useContext(GenContext);
+  const history = useHistory();
+  const location = useLocation();
   const [state, setState] = useState({
     togglePriceFilter: false,
     toggleChainFilter: false,
@@ -23,7 +28,7 @@ const SingleNftCollection = () => {
     filter: {
       searchValue: '',
       price: 'low',
-      chain: 'Algorand',
+      chain: 'all',
     },
   });
 
@@ -36,19 +41,26 @@ const SingleNftCollection = () => {
     filteredCollection,
   } = state;
 
-  const getCollectionByChain = () => {
-    switch (filter.chain) {
-      case 'Algorand':
+  const getCollectionByChain = (network = filter.chain) => {
+    switch (network.toLowerCase()) {
+      case 'all':
+        return [
+          ...(algoCollection || []),
+          ...(polyCollection || []),
+          ...(celoCollection || []),
+          ...(nearCollection || [])];
+      case 'algorand':
         return algoCollection;
-      case 'Polygon':
+      case 'polygon':
         return polyCollection;
-      case 'Celo':
+      case 'celo':
         return celoCollection;
-      case 'Near':
+      case 'near':
         return nearCollection;
       default:
         break;
     }
+    return null;
   };
 
   const handleSetState = (payload) => {
@@ -59,11 +71,14 @@ const SingleNftCollection = () => {
   useEffect(() => {
     try {
       (async function getAlgoSingleNftCollection() {
-        const singleNftCollections = await readAllSingleNft();
-        const result = await getSingleNfts(singleNftCollections);
-        handleSetState({
-          algoCollection: result,
-        });
+        const singleNftCollections = await readAllSingleNft(mainnet);
+        if (singleNftCollections.length > 0) {
+          const result = await getSingleNfts(mainnet, singleNftCollections);
+          handleSetState({
+            algoCollection: result,
+          });
+        }
+        return null;
       }());
     } catch (error) {
       console.log(error);
@@ -71,24 +86,10 @@ const SingleNftCollection = () => {
   }, []);
   // *******************************************************************************************
 
-  // ********************** get search result for different blockchains ************************
-  useEffect(() => {
-    const collection = getCollectionByChain();
-    if (!collection) return;
-    const filtered = collection.filter(
-      (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
-    );
-    if (filtered.length) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-  }, [filter.searchValue]);
-  // *******************************************************************************************
-
   // ********************* sort by price function for different blockchains ********************
   // eslint-disable-next-line consistent-return
-  const sortPrice = (collection) => {
+  const sortPrice = () => {
+    const collection = getCollectionByChain();
     if (!collection) return handleSetState({ filteredCollection: null });
     let sorted = [];
     if (filter.price === 'low') {
@@ -102,20 +103,91 @@ const SingleNftCollection = () => {
 
   // *********************************** render blockchains ************************************
   useEffect(() => {
-    if (domMountRef.current) {
-      sortPrice(getCollectionByChain());
-    } else {
-      domMountRef.current = true;
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    const chainParameter = new URLSearchParams(search).get('chain');
+    if (chainParameter) {
+      handleSetState({ filter: { ...filter, chain: chainParameter } });
     }
+    const collection = getCollectionByChain();
+    if (!collection) return handleSetState({ filteredCollection: null });
+    if (name) {
+      handleSetState({ filter: { ...filter, searchValue: name } });
+    }
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ''),
+    );
+    if (filtered?.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+    return null;
   }, [
-    filter.chain,
-    filter.price,
     algoCollection,
     polyCollection,
     celoCollection,
     nearCollection,
   ]);
+  const searchHandler = (value) => {
+    handleSetState({ filter: { ...filter, searchValue: value } });
+    const { search } = location;
+    const chainParam = new URLSearchParams(search).get('chain');
+    const params = new URLSearchParams(
+      {
+        search: value,
+        ...(chainParam && { chain: chainParam }),
+      },
+    );
+    history.replace({ pathname: location.pathname, search: params.toString() });
+    const collection = getCollectionByChain();
+    if (!collection) return;
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(value.toLowerCase()),
+    );
+    if (filtered.length) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  };
 
+  const chainChange = (value) => {
+    const { search } = location;
+    const name = new URLSearchParams(search).get('search');
+    const params = new URLSearchParams(
+      {
+        chain: value.toLowerCase(),
+        ...(name && { search: name }),
+      },
+    );
+    history.replace(
+      { pathname: location.pathname, search: params.toString() },
+    );
+    handleSetState({ filter: { ...filter, chain: value } });
+    const collection = getCollectionByChain(value);
+    if (collection) {
+      if (filter.searchValue) {
+        const filtered = collection.filter(
+          (col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()),
+        );
+        if (filtered.length) {
+          handleSetState({ filteredCollection: filtered });
+        } else {
+          handleSetState({ filteredCollection: null });
+        }
+      } else {
+        handleSetState({ filteredCollection: collection });
+      }
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  };
+
+  const priceUpdate = (value) => {
+    handleSetState({ filter: { ...filter, price: value } });
+    sortPrice();
+  };
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -124,33 +196,31 @@ const SingleNftCollection = () => {
         </div>
         <div className={classes.searchAndFilter}>
           <SearchBar
-            onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })}
+            onSearch={searchHandler}
           />
           <ChainDropdown
-            onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })}
+            onChainFilter={chainChange}
           />
           <PriceDropdown
-            onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })}
+            onPriceFilter={priceUpdate}
           />
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
-            {filteredCollection.map((nft, idx) => (
-              <NftCard key={idx} nft={nft} />
+            {filteredCollection.map((nft) => (
+              <NftCard key={nft.Id} nft={nft} />
             ))}
           </div>
         ) : !filteredCollection ? (
           <NotFound />
         ) : (
           <div className={classes.skeleton}>
-            {Array(5)
-              .fill(null)
-              .map((_, idx) => (
-                <div key={idx}>
-                  <Skeleton count={1} height={200} />
-                  <Skeleton count={3} height={40} />
-                </div>
-              ))}
+            {([...new Array(5)].map((_, idx) => idx)).map((id) => (
+              <div key={id}>
+                <Skeleton count={1} height={200} />
+                <Skeleton count={3} height={40} />
+              </div>
+            ))}
           </div>
         )}
       </div>

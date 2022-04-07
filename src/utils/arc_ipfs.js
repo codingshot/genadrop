@@ -19,7 +19,7 @@ const config = require('./arc_config');
 const algoAddress = config.algodClientUrl;
 const algoNode = config.algodNodeUrl;
 const algoMainAddress = config.algodMainClientUrl;
-const algoMainNode = config.algodMainNodeUrl;
+const algoMainNode = config.algoMaindNodeUrl;
 const { algodClientPort } = config;
 const algoToken = config.algodClientToken;
 const write = require('./firebase');
@@ -85,8 +85,8 @@ const pinFileToIPFS = async (
     .post(url, data, {
       maxBodyLength: 'Infinity', // this is needed to prevent axios from erroring out with large files
       headers: {
-        pinata_api_key: pinataApiKey,
-        pinata_secret_api_key: pinataApiIFPSKey,
+        pinata_api_key: pinataApiIFPSKey,
+        pinata_secret_api_key: pinataSecretApiKey,
       },
     })
     .then((response) => response.data)
@@ -261,6 +261,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     dispatch,
     setNotification,
     price,
+    mainnet,
   } = algoMintProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
@@ -510,7 +511,7 @@ export async function createNFT(createProps) {
   dispatch(
     setNotification('uploading assets, please do not refresh your page.'),
   );
-  for (let i = 0; i < metadata.length; i++) {
+  for (let i = 0; i < metadata.length; i += 1) {
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
     const imgName = `${metadata[i].name}.png`;
     const imgFile = data.files[imgName];
@@ -569,6 +570,7 @@ export async function mintToAlgo(algoProps) {
     dispatch,
     setNotification,
     setLoader,
+    mainnet,
   } = algoProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
@@ -653,7 +655,6 @@ export async function mintToCelo(celoProps) {
       wallet,
     );
     const uris = ipfsJsonData.map((asset) => asset.url);
-    console.log(ipfsJsonData);
     const ids = ipfsJsonData.map((asset) => {
       const uintArray = asset.metadata.toLocaleString();
       return parseInt(uintArray.slice(0, 7).replace(/,/g, ''));

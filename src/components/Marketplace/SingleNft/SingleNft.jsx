@@ -29,6 +29,7 @@ const SingleNft = () => {
     }());
   }, [singleNfts]);
 
+
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
@@ -41,8 +42,8 @@ const SingleNft = () => {
             <div className={classes.wrapper}>
               {
               allSingleNfts
-                .map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} extend="/single-mint" />
+                .map((nft) => (
+                  <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
                 ))
             }
             </div>
