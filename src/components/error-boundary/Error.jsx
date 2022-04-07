@@ -11,6 +11,10 @@ const SomethingWentWrong = () => {
   const [changeImage, setChangeImage] = useState(home);
   const [refreshColor, setRefreshColor] = useState(refresh);
   const history = useHistory();
+  const goHome = () => {
+    history.push("/");
+    window.location.reload();
+  };
   return (
     <div className={classes["container"]}>
       <div className={classes["not-found"]}>
@@ -24,7 +28,7 @@ const SomethingWentWrong = () => {
         <div
           onMouseOver={(e) => setChangeImage((e.currentTarget.src = homeWhite))}
           onMouseOut={(e) => setChangeImage((e.currentTarget.src = home))}
-          onClick={() => history.push("/")}
+          onClick={goHome}
           className={classes["home"]}
         >
           <img src={changeImage} alt="" />

@@ -8,12 +8,11 @@ import Transaction from "../../transactionDetails/TransactionDetails";
 const TableRow = (data) => {
   const [state, setState] = useState({
     showTransaction: false,
-
-  })
+  });
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const { showTransaction } = state
+  const { showTransaction } = state;
 
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";
@@ -48,9 +47,9 @@ const TableRow = (data) => {
   };
 
   const handleClick = () => {
-    handleSetState({ showTransaction: true })
+    handleSetState({ showTransaction: true });
     console.log("clicking...");
-  }
+  };
 
   const wrapperRef = useRef(null);
 
@@ -74,20 +73,16 @@ const TableRow = (data) => {
     }, [ref]);
   }
 
-
-
-
   useOutsideAlerter(wrapperRef);
   return (
     <>
-      {
-        showTransaction ?
-          <div ref={wrapperRef}>
-
-            <Transaction data={data} date={getDate(data.date)} />
-          </div>
-          : ""
-      }
+      {showTransaction ? (
+        <div ref={wrapperRef}>
+          <Transaction data={data} date={getDate(data.date)} />
+        </div>
+      ) : (
+        ""
+      )}
       <tr className={classes.transaction} onClick={handleClick}>
         <td>
           <span className={classes.icon}>
@@ -102,7 +97,6 @@ const TableRow = (data) => {
         <td>{breakAddress(data.from)}</td>
       </tr>
     </>
-
   );
 };
 
