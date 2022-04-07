@@ -17,8 +17,7 @@ export const creators = {
       id: "1",
       icon: createIcon,
       title: "Create Layers",
-      description:
-        "You can create your layers and name them according to assets you want to upload",
+      description: "You can create your layers and name them according to assets you want to upload",
     },
     {
       id: "2",
@@ -30,15 +29,13 @@ export const creators = {
       id: "3",
       icon: setRuleIcon,
       title: "Set Rarity and Conflict Rules",
-      description:
-        "You can configure rarity and conflict rules as you want it to apply to a certain asset.",
+      description: "You can configure rarity and conflict rules as you want it to apply to a certain asset.",
     },
     {
       id: "4",
       icon: downloadIcon,
       title: "Download, Mint and Auto List",
-      description:
-        "You can configure rarity and conflict rules as you want it to apply to a certain asset.",
+      description: "You can configure rarity and conflict rules as you want it to apply to a certain asset.",
     },
   ],
 };
@@ -54,8 +51,7 @@ export const Collectors = {
       id: "1",
       icon: createIcon,
       title: "Browse Generative Drops",
-      description:
-        "You can browse through thousands of generative drops designed by other creators.",
+      description: "You can browse through thousands of generative drops designed by other creators.",
     },
     {
       id: "2",
@@ -67,8 +63,7 @@ export const Collectors = {
       id: "3",
       icon: resellIcon,
       title: "Resell on Marketplace",
-      description:
-        "You can configure rarity and conflict rules as you want it to apply to a certain asset.",
+      description: "You can configure rarity and conflict rules as you want it to apply to a certain asset.",
     },
   ],
 };

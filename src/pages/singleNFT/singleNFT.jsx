@@ -39,15 +39,7 @@ const SingleNFT = () => {
     showSocial: false,
     isCopied: false,
   });
-  const {
-    dropdown,
-    nftDetails,
-    algoPrice,
-    isLoading,
-    showSocial,
-    isCopied,
-    transactionHistory,
-  } = state;
+  const { dropdown, nftDetails, algoPrice, isLoading, showSocial, isCopied, transactionHistory } = state;
 
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
@@ -201,13 +193,7 @@ const SingleNFT = () => {
           <img className={classes.nft} src={nftDetails.image_url} alt="" />
 
           <div className={classes.feature}>
-            <DropItem
-              key={1}
-              item={attributesItem}
-              id={1}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -250,22 +236,13 @@ const SingleNFT = () => {
             <div className={classes.btns}>
               {nftDetails.sold ? (
                 <>
-                  <button
-                    type="button"
-                    className={classes.sold}
-                    disabled={nftDetails.sold}
-                  >
+                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                     SOLD!
                   </button>
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={buyNft}
-                  >
+                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
@@ -284,13 +261,7 @@ const SingleNFT = () => {
             />
           </div> */}
           <div className={classes.feature}>
-            <DropItem
-              key={3}
-              item={description}
-              id={3}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={3} item={description} id={3} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
       </div>

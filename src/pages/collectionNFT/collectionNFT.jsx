@@ -36,16 +36,7 @@ const CollectionNFT = () => {
     isCopied: false,
   });
 
-  const {
-    dropdown,
-    asset,
-    transactionHistory,
-    collection,
-    isLoading,
-    algoPrice,
-    showSocial,
-    isCopied,
-  } = state;
+  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -189,13 +180,7 @@ const CollectionNFT = () => {
           <img className={classes.nft} src={asset.image_url} alt="" />
 
           <div className={classes.feature}>
-            <DropItem
-              key={1}
-              item={attributesItem}
-              id={1}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -260,12 +245,7 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={asset.sold}
-                    onClick={buyNft}
-                  >
+                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
@@ -289,13 +269,7 @@ const CollectionNFT = () => {
           </div> */}
           {/* Description */}
           <div className={classes.feature}>
-            <DropItem
-              key={3}
-              item={description}
-              id={3}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={3} item={description} id={3} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
       </div>
@@ -339,11 +313,7 @@ const CollectionNFT = () => {
           <NFT data={collection.filter((e) => e.name !== asset.name)} />
         </div>
         <div className={classes.allCollecitons}>
-          <button
-            type="button"
-            onClick={() => history.goBack()}
-            className={classes.btnCollections}
-          >
+          <button type="button" onClick={() => history.goBack()} className={classes.btnCollections}>
             View All Collections
           </button>
         </div>
@@ -353,12 +323,7 @@ const CollectionNFT = () => {
         <div>
           <div ref={wrapperRef} className={classes.share}>
             <div className={classes.copy}>
-              <input
-                type="text"
-                value={window.location.href}
-                readOnly
-                className={classes.textArea}
-              />
+              <input type="text" value={window.location.href} readOnly className={classes.textArea} />
               <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                 <div className={classes.copy_area}>
                   {!isCopied ? (

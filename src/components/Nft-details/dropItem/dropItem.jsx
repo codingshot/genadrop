@@ -17,9 +17,7 @@ const DropItem = ({ dropdown, id, handleSetState, item: { icon, title, content }
     <>
       <div
         className={
-          dropdown.includes(String(id))
-            ? `${classes.questionwrapper} ${classes.active}`
-            : classes.questionwrapper
+          dropdown.includes(String(id)) ? `${classes.questionwrapper} ${classes.active}` : classes.questionwrapper
         }
       >
         <div className={classes.question} onClick={handleDropdown}>
@@ -38,13 +36,7 @@ const DropItem = ({ dropdown, id, handleSetState, item: { icon, title, content }
           </button>
         </div>
       </div>
-      <div
-        className={
-          dropdown.includes(String(id))
-            ? `${classes.answer} ${classes.active}`
-            : classes.answer
-        }
-      >
+      <div className={dropdown.includes(String(id)) ? `${classes.answer} ${classes.active}` : classes.answer}>
         {content}
       </div>
     </>

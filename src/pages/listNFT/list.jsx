@@ -57,7 +57,6 @@ const List = () => {
         image_url: nft.image_url,
       });
     })();
-    document.documentElement.scrollTop = 0;
   }, []);
 
   useEffect(() => {}, [nftDetails]);
@@ -107,12 +106,7 @@ const List = () => {
             <div className={classes.btns}>
               {price ? (
                 <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={listNFT}
-                  >
+                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={listNFT}>
                     <div>
                       <img src="/assets/price-tage.svg" alt="" />
                       SET PRICE
@@ -148,24 +142,14 @@ const List = () => {
               </div>
               <div className={classes.chain}>
                 <div className={classes.inputWrapper}>
-                  <select
-                    value={chain}
-                    onChange={(event) => handleSetState({ chain: event.target.value })}
-                  >
+                  <select value={chain} onChange={(event) => handleSetState({ chain: event.target.value })}>
                     <option value="Algo">Algo</option>
                     <option value="Celo">Celo</option>
                     <option value="Polygon">Polygon</option>
                   </select>
                 </div>
                 <div className={classes.inputWrapper}>
-                  <input
-                    value={price}
-                    onChange={handlePrice}
-                    placeholder="E.g. 10"
-                    type="number"
-                    min="1"
-                    step="1"
-                  />
+                  <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
               </div>
             </section>

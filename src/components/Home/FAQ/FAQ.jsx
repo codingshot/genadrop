@@ -43,14 +43,12 @@ const FQA = () => {
     {
       id: "5",
       question: "Can I resell my art after its been minted on Genadrop?",
-      answer:
-        "Yes, NFTs can be transfer and resell arts that have been minted on the respective public blockchains",
+      answer: "Yes, NFTs can be transfer and resell arts that have been minted on the respective public blockchains",
     },
     {
       id: "6",
       question: "How many editions of an NFT can create?",
-      answer:
-        "You can select how many NFTs (must be less than possible combinations that can be produced)",
+      answer: "You can select how many NFTs (must be less than possible combinations that can be produced)",
     },
     {
       id: "7",
@@ -78,13 +76,7 @@ const FQA = () => {
       <div className={classes.heading}>Frequently Asked Questions</div>
       <div className={classes.FQAs}>
         {FAQS.map((FAQ, index) => (
-          <FQACard
-            key={FAQ.id}
-            FAQ={FAQ}
-            id={index}
-            dropdown={dropdown}
-            handleSetState={handleSetState}
-          />
+          <FQACard key={FAQ.id} FAQ={FAQ} id={index} dropdown={dropdown} handleSetState={handleSetState} />
         ))}
       </div>
     </div>

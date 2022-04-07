@@ -17,22 +17,15 @@ export const getNftCollections = async (collections, mainnet) => {
       collectionObj.price = collections[i].price;
       collectionObj.owner = collections[i].owner;
       collectionObj.description = collections[i].description;
-      collectionObj.mainnet = collections[i].mainnet;
 
-      const { data } = await axios.get(
-        collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/")
-      );
+      const { data } = await axios.get(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+
       collectionObj.number_of_nfts = data.length;
       const {
         asset: { params },
       } = await getAlgoData(mainnet, data[0]);
-      const response = await axios.get(
-        params.url.replace("ipfs://", "https://ipfs.io/ipfs/")
-      );
-      collectionObj.image_url = response.data.image.replace(
-        "ipfs://",
-        "https://ipfs.io/ipfs/"
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      collectionObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       collectionArr.push(collectionObj);
     } catch (error) {
       console.log(error);
@@ -43,9 +36,7 @@ export const getNftCollections = async (collections, mainnet) => {
 
 export const getNftCollection = async (collection, mainnet) => {
   const nftArr = [];
-  const { data } = await axios.get(
-    collection.url.replace("ipfs://", "https://ipfs.io/ipfs/")
-  );
+  const { data } = await axios.get(collection.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
   for (let i = 0; i < data.length; i += 1) {
     try {
       const nftObj = {};
@@ -57,9 +48,7 @@ export const getNftCollection = async (collection, mainnet) => {
       } = await getAlgoData(mainnet, data[i]);
       nftObj.algo_data = params;
       nftObj.Id = data[i];
-      const response = await axios.get(
-        params.url.replace("ipfs://", "https://ipfs.io/ipfs/")
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       const assetInfo = await readSIngleUserNft(collection.owner, data[i]);
       nftObj.sold = assetInfo.sold;
       nftObj.ipfs_data = response.data;
@@ -85,9 +74,7 @@ export const getUserNftCollection = async (mainnet, data) => {
       } = await getAlgoData(mainnet, data[i].id);
       nftObj.algo_data = params;
       nftObj.Id = data[i].id;
-      const response = await axios.get(
-        params.url.replace("ipfs://", "https://ipfs.io/ipfs/")
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       nftObj.ipfs_data = response.data;
       nftObj.name = response.data.name;
       nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
@@ -115,9 +102,7 @@ export const getSingleNfts = async (mainnet, nfts) => {
       const {
         asset: { params },
       } = await getAlgoData(mainnet, nfts[i].id);
-      const response = await axios.get(
-        params.url.replace("ipfs://", "https://ipfs.io/ipfs/")
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       nftObj.name = response.data.name;
       nftObj.description = response.data.description;
@@ -142,13 +127,8 @@ export const getSingleNftDetails = async (mainnet, nft) => {
     const {
       asset: { params },
     } = await getAlgoData(mainnet, nft.id);
-    const response = await axios.get(
-      params.url.replace("ipfs://", "https://ipfs.io/ipfs/")
-    );
-    nftDetails.image_url = response.data.image.replace(
-      "ipfs://",
-      "https://ipfs.io/ipfs/"
-    );
+    const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+    nftDetails.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
     nftDetails.name = response.data.name;
     nftDetails.description = response.data.description;
     nftDetails.properties = response.data.properties;

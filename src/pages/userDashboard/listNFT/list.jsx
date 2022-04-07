@@ -96,24 +96,14 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-              <button
-                type="button"
-                className={classes.buy}
-                disabled={nftDetails.sold}
-                onClick={buyNft}
-              >
+              <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
                 <div>
                   <img src="/assets/price-tage.svg" alt="" />
                   SET PRICE
                 </div>
                 <span>Sell the NFT at a fixed price</span>
               </button>
-              <button
-                type="button"
-                className={classes.bid}
-                disabled={nftDetails.sold}
-                onClick={buyNft}
-              >
+              <button type="button" className={classes.bid} disabled={nftDetails.sold} onClick={buyNft}>
                 <div>
                   <img src="/assets/bid.png" alt="" />
                   HIGHEST BID
@@ -139,22 +129,14 @@ const List = () => {
               </div>
               <div className={classes.chain}>
                 <div className={classes.inputWrapper}>
-                  <select
-                    value={chain}
-                    onChange={(event) => handleSetState({ chain: event.target.value })}
-                  >
+                  <select value={chain} onChange={(event) => handleSetState({ chain: event.target.value })}>
                     <option value="Algo">Algo</option>
                     <option value="Celo">Celo</option>
                     <option value="Polygon">Polygon</option>
                   </select>
                 </div>
                 <div className={classes.inputWrapper}>
-                  <input
-                    type="text"
-                    value={price}
-                    onChange={handlePrice}
-                    placeholder="E.g. 10"
-                  />
+                  <input type="text" value={price} onChange={handlePrice} placeholder="E.g. 10" />
                 </div>
               </div>
             </section>

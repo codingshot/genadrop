@@ -55,8 +55,7 @@ const createUseGuide = {
   },
   6: {
     title: "Input number of arts to generate",
-    "sub-title":
-      "Input the number of arts you want to generate from the total combinations.",
+    "sub-title": "Input the number of arts you want to generate from the total combinations.",
     preview: image6,
   },
   7: {
@@ -111,11 +110,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
           ))}
       </div>
       {pointer > 1 && (
-        <button
-          type="button"
-          onClick={handlePrev}
-          className={`${classes.prev} ${pointer > 1 && classes.active}`}
-        >
+        <button type="button" onClick={handlePrev} className={`${classes.prev} ${pointer > 1 && classes.active}`}>
           <img src={leftArrow} alt="" />
           prev{" "}
         </button>
@@ -145,9 +140,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
     <div className={classes.content}>
       <div className={classes.title}>{createUseGuide[pointer].title}</div>
       <div className={classes.subTitle}>{createUseGuide[pointer]["sub-title"]}</div>
-      {createUseGuide[pointer].more && (
-        <div className={classes.more}>{createUseGuide[pointer].more}</div>
-      )}
+      {createUseGuide[pointer].more && <div className={classes.more}>{createUseGuide[pointer].more}</div>}
       <img className={classes.preview} src={createUseGuide[pointer].preview} alt="" />
     </div>
   );
@@ -176,12 +169,7 @@ const CreatePageUseGuide = ({ toggleGuide, setGuide }) => {
       <div className={classes.guideContainer}>
         {showGuide && (
           <div className={classes.closeIconContainer}>
-            <img
-              onClick={handleCancel}
-              className={classes.close}
-              src={closeIcon}
-              alt=""
-            />
+            <img onClick={handleCancel} className={classes.close} src={closeIcon} alt="" />
           </div>
         )}
         {showGuide ? content : intro}

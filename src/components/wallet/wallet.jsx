@@ -1,17 +1,11 @@
 import React, { useContext, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import {
-  setConnector,
-  setAccount,
-  setNotification,
-  setChainId,
-  setMainnet,
-} from "../../gen-state/gen.actions";
+import { setConnector, setAccount, setNotification, setChainId, setMainnet } from "../../gen-state/gen.actions";
 import userIcon from "../../assets/user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
@@ -39,6 +33,8 @@ const chains = [
 
 function ConnectWallet({ setToggleNav }) {
   const history = useHistory();
+  const { pathname } = useLocation();
+
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -75,6 +71,9 @@ function ConnectWallet({ setToggleNav }) {
       dispatch(setChainId(""));
       setDropdown(false);
       setToggleDropdown(false);
+      if (pathname.includes("/me")) {
+        history.push("/marketplace");
+      }
     }
   }
 
@@ -191,24 +190,13 @@ function ConnectWallet({ setToggleNav }) {
         >
           <img src={chainIcon[getConnectedChain()]} alt="" />
         </div>
-        <div
-          onClick={() => setToggleDropdown(!toggleDropdown)}
-          className={classes.address}
-        >
+        <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
           <span>{breakAddress(account)}</span>
         </div>
         <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
-          <div
-            onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
-            className={classes.option}
-          >
+          <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
             <div>{clipboardState}</div> <img src={copyIcon} alt="" />
-            <input
-              style={{ display: "none" }}
-              ref={clipboardRef}
-              type="text"
-              defaultValue={account}
-            />
+            <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
           </div>
           <div onClick={handleSwitch} className={classes.option}>
             <div>Switch to {network === "mainnet" ? "Testnet" : "Mainnet"}</div>
@@ -220,9 +208,7 @@ function ConnectWallet({ setToggleNav }) {
           </div>
         </div>
       </div>
-      <div className={classes.network}>
-        {network === "mainnet" ? "Mainnet" : "Testnet"}
-      </div>
+      <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
       <div
         onClick={() => {
           setToggleDropdown(false);
