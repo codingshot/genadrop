@@ -195,7 +195,9 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                   {UppercaseFirstLetter(val)}
                                 </span>
                                 <span>
-                                  {countOccurrences(attr.value, val)}
+                                  <span style={{ marginRight: '3px' }}>
+                                    {countOccurrences(attr.value, val)}
+                                  </span>
                                   (
                                   {
                                     toPercent(countOccurrences(attr.value, val), attr.value.length)
