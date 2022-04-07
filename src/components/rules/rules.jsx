@@ -22,9 +22,7 @@ const Rules = ({ show, setRule }) => {
   const handleSetAttribute = (data) => {
     const isUnique = filteredAttribute.find((d) => d.layer === data.layer);
     if (isUnique) {
-      const newFiltered = filteredAttribute.map((d) =>
-        d.layer === data.layer ? data : d
-      );
+      const newFiltered = filteredAttribute.map((d) => (d.layer === data.layer ? data : d));
       setFilteredAttribute(newFiltered);
     } else {
       setFilteredAttribute([...filteredAttribute, data]);
@@ -102,10 +100,7 @@ const Rules = ({ show, setRule }) => {
                 <div key={f.layer} className={cx.filteredItem}>
                   <img src={URL.createObjectURL(f.image)} alt="" />
                   <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
-                  <i
-                    onClick={() => handleRemoveAttribute(f)}
-                    className={`${cx.closeIcon} fas fa-times`}
-                  />
+                  <i onClick={() => handleRemoveAttribute(f)} className={`${cx.closeIcon} fas fa-times`} />
                 </div>
               ))}
             </div>
@@ -127,10 +122,7 @@ const Rules = ({ show, setRule }) => {
                 <div key={f.layer} className={cx.filteredItem}>
                   <img src={URL.createObjectURL(f.image)} alt="" />
                   <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
-                  <i
-                    onClick={() => handleRemoveConflict(f)}
-                    className={`${cx.closeIcon} fas fa-times`}
-                  />
+                  <i onClick={() => handleRemoveConflict(f)} className={`${cx.closeIcon} fas fa-times`} />
                 </div>
               ))}
             </div>

@@ -173,17 +173,13 @@ const AssetPreview = ({ data, changeFile }) => {
       if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
       handleSetState({ chain: c });
       if (c.symbol === "NEAR") {
-        axios
-          .get("https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd")
-          .then((res) => {
-            handleSetState({ dollarPrice: price / res.data.near.usd });
-          });
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd").then((res) => {
+          handleSetState({ dollarPrice: price / res.data.near.usd });
+        });
       } else {
-        axios
-          .get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`)
-          .then((res) => {
-            handleSetState({ dollarPrice: price / res.data.data.amount });
-          });
+        axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
+          handleSetState({ dollarPrice: price / res.data.data.amount });
+        });
       }
     }
   }, [price, chainId]);
@@ -191,10 +187,7 @@ const AssetPreview = ({ data, changeFile }) => {
     <div className={classes.container}>
       {preview ? (
         <div className={classes.previewWrapper}>
-          <div
-            onClick={() => handleSetState({ preview: false })}
-            className={classes.cancelPreview}
-          >
+          <div onClick={() => handleSetState({ preview: false })} className={classes.cancelPreview}>
             <img src={arrowIconLeft} alt="" />
             Back
           </div>
@@ -208,10 +201,7 @@ const AssetPreview = ({ data, changeFile }) => {
         <div className={classes.wrapper}>
           <section className={classes.asset}>
             {file.length > 1 ? (
-              <div
-                onClick={() => handleSetState({ preview: true })}
-                className={classes.showPreview}
-              >
+              <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
                 view all collections
               </div>
             ) : null}
@@ -313,10 +303,7 @@ const AssetPreview = ({ data, changeFile }) => {
             </div>
 
             <div className={classes.inputWrapper}>
-              <label>
-                Chain:{" "}
-                {chainId ? <span className={classes.chain}> {chain?.label}</span> : "---"}{" "}
-              </label>
+              <label>Chain: {chainId ? <span className={classes.chain}> {chain?.label}</span> : "---"} </label>
             </div>
           </section>
 

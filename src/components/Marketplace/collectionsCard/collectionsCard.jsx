@@ -21,14 +21,8 @@ const CollectionsCard = ({ collection }) => {
   }, []);
 
   return (
-    <div
-      onClick={() => history.push(`/marketplace/collections/${name}`)}
-      className={classes.card}
-    >
-      <div
-        style={{ backgroundImage: `url(${image_url})` }}
-        className={classes.imageContainer}
-      />
+    <div onClick={() => history.push(`/marketplace/collections/${name}`)} className={classes.card}>
+      <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
 
       <div className={classes.body}>
         <div className={classes.thumbnail}>

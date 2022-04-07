@@ -13,8 +13,7 @@ const Orgs = () => (
       Backed by the Web3&apos;s <span>Best Orgs</span>
     </div>
     <div className={classes.description}>
-      From the leading blockchains, creative groups, and DAOs, GenaDrop is supported by
-      the industry’s best.
+      From the leading blockchains, creative groups, and DAOs, GenaDrop is supported by the industry’s best.
     </div>
     <div className={classes.orgs}>
       <img

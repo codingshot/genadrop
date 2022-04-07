@@ -14,10 +14,7 @@ const Fallback = () => {
         <img src={notFound} alt="" />
         <h1>Oh No! Page Not Found.</h1>
         <div className={classes.text}>
-          <span>
-            The page you are looking for does not exist. Proceed with one of the actions
-            below.
-          </span>
+          <span>The page you are looking for does not exist. Proceed with one of the actions below.</span>
         </div>
       </div>
       <div className={classes["button-container"]}>

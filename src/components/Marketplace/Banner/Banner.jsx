@@ -17,23 +17,14 @@ const Banner = () => {
             <br />
           </h4>
           <p className={classes.description}>
-            The first NFT marketplace that enables creators to create their generative
-            NFTs and embed licenses when they mint NFTs. Creators know what they are
-            selling, collectors know what they are buying.
+            The first NFT marketplace that enables creators to create their generative NFTs and embed licenses when they
+            mint NFTs. Creators know what they are selling, collectors know what they are buying.
           </p>
           <div className={classes.pageLinks}>
-            <button
-              type="button"
-              className={classes.createBtn}
-              onClick={() => history.push("./create")}
-            >
+            <button type="button" className={classes.createBtn} onClick={() => history.push("./create")}>
               Create
             </button>
-            <button
-              type="button"
-              className={classes.mintBtn}
-              onClick={() => history.push("./mint")}
-            >
+            <button type="button" className={classes.mintBtn} onClick={() => history.push("./mint")}>
               Mint
             </button>
           </div>

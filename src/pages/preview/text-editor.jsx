@@ -25,12 +25,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
     <div className={`${classes.container} ${invert && classes.invert}`}>
       {editor ? (
         <form onSubmit={handleSubmit}>
-          <input
-            autoFocus
-            type="text"
-            value={value}
-            onChange={(e) => handleSetState({ value: e.target.value })}
-          />
+          <input autoFocus type="text" value={value} onChange={(e) => handleSetState({ value: e.target.value })} />
           <button type="button">
             <img src={markIcon} alt="" />
           </button>
@@ -38,10 +33,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
       ) : (
         <div>
           <p>{placeholder}</p>
-          <button
-            type="button"
-            onClick={() => handleSetState({ editor: true, value: placeholder })}
-          >
+          <button type="button" onClick={() => handleSetState({ editor: true, value: placeholder })}>
             <img src={editIcon} alt="" />
           </button>
         </div>

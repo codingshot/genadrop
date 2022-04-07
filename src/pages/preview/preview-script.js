@@ -73,9 +73,7 @@ export const createUniqueLayer = async (props) => {
   dispatch(setLoader(""));
   return {
     id,
-    name: `${collectionName} ${getDefaultName(
-      index + 1 + (currentPage * 20 - 20)
-    )}`.trim(),
+    name: `${collectionName} ${getDefaultName(index + 1 + (currentPage * 20 - 20))}`.trim(),
     description: collectionDescription,
     image: "image",
     attributes: newAttributes,

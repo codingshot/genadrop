@@ -46,11 +46,7 @@ const CollectionOverview = () => {
         <div className={classes.rules}>
           {isRule ? (
             <>
-              <button
-                type="button"
-                onClick={handleAddRule}
-                className={classes.addRuleBtn}
-              >
+              <button type="button" onClick={handleAddRule} className={classes.addRuleBtn}>
                 Add Rule
               </button>
               <button type="button" onClick={closeRule} className={classes.showRuleBtn}>

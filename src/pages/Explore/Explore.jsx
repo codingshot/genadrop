@@ -26,15 +26,7 @@ const Explore = () => {
       price: "high",
     },
   });
-  const {
-    collection,
-    NFTCollection,
-    attributes,
-    filter,
-    filterToDelete,
-    FilteredCollection,
-    headerHeight,
-  } = state;
+  const { collection, NFTCollection, attributes, filter, filterToDelete, FilteredCollection, headerHeight } = state;
   const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -74,9 +66,7 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    const filtered = NFTCollection.filter((col) =>
-      col.name.toLowerCase().includes(filter.searchValue.toLowerCase())
-    );
+    const filtered = NFTCollection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
     handleSetState({ FilteredCollection: filtered });
   }, [filter.searchValue]);
 
@@ -94,9 +84,7 @@ const Explore = () => {
   useEffect(() => {
     if (!NFTCollection) return;
     const filtered = NFTCollection.filter(
-      (col) =>
-        Number(col.price) >= Number(filter.priceRange.min) &&
-        Number(col.price) <= Number(filter.priceRange.max)
+      (col) => Number(col.price) >= Number(filter.priceRange.min) && Number(col.price) <= Number(filter.priceRange.max)
     );
     handleSetState({ FilteredCollection: filtered });
   }, [filter.priceRange]);
@@ -122,30 +110,16 @@ const Explore = () => {
         collection={{
           ...collection,
           numberOfNfts: NFTCollection && NFTCollection.length,
-          imageUrl:
-            NFTCollection &&
-            NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
+          imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
         }}
       />
 
       <div className={classes.displayContainer}>
-        <Filter
-          handleFilter={handleFilter}
-          filterToDelete={filterToDelete}
-          attributes={attributes}
-        />
+        <Filter handleFilter={handleFilter} filterToDelete={filterToDelete} attributes={attributes} />
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
-            <SearchBar
-              onSearch={(value) =>
-                handleSetState({ filter: { ...filter, searchValue: value } })
-              }
-            />
-            <PriceDropdown
-              onPriceFilter={(value) =>
-                handleSetState({ filter: { ...filter, price: value } })
-              }
-            />
+            <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
+            <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
           <div className={classes.filterDisplay}>
@@ -153,19 +127,13 @@ const Explore = () => {
               filter.attributes.map((f, idx) => (
                 <div key={idx} className={classes.filteredItem}>
                   <span>{`${f.trait_type}: ${f.value}`}</span>
-                  <div
-                    onClick={() => handleSetState({ filterToDelete: f })}
-                    className={classes.closeIcon}
-                  >
+                  <div onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon}>
                     <img src={closeIcon} alt="" />
                   </div>
                 </div>
               ))}
             {filter?.attributes && filter.attributes.length ? (
-              <div
-                onClick={() => handleSetState({ filterToDelete: [] })}
-                className={classes.clearFilter}
-              >
+              <div onClick={() => handleSetState({ filterToDelete: [] })} className={classes.clearFilter}>
                 clear all
               </div>
             ) : null}
