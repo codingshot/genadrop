@@ -53,7 +53,7 @@ const Collections = () => {
             ))}
         </div>
       ) : !algoCollection ? (
-        <h1 className={classes.noResult}> No Result Found.</h1>
+        <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.skeleton}>
           {[...new Array(4)]
