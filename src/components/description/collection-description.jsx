@@ -14,24 +14,11 @@ import CollectionDetails from "../details/collection-details";
 import CollectionPreview from "../preview/collection-preview";
 import classes from "./collection-description.module.css";
 import ButtonClickEffect from "../button-effect/button-effect";
-import {
-  createDna,
-  createUniqueLayer,
-  generateArt,
-  parseLayers,
-} from "./collection-description-script";
+import { createDna, createUniqueLayer, generateArt, parseLayers } from "./collection-description-script";
 
 const CollectionDescription = () => {
-  const {
-    layers,
-    nftLayers,
-    mintAmount,
-    dispatch,
-    combinations,
-    rule,
-    isRule,
-    collectionName,
-  } = useContext(GenContext);
+  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName } =
+    useContext(GenContext);
   const canvasRef = useRef(null);
 
   const handleChange = (event) => {
@@ -50,9 +37,7 @@ const CollectionDescription = () => {
       return dispatch(setNotification("Please uplaod images and try again"));
     }
     if (mintAmount > combinations - rule.length) {
-      return dispatch(
-        setNotification("cannot generate more than the possible combinations")
-      );
+      return dispatch(setNotification("cannot generate more than the possible combinations"));
     }
     dispatch(setNftLayers([]));
     dispatch(setLoading(true));

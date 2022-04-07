@@ -226,15 +226,9 @@ const Preview = () => {
                     enableAllDescription: !enableAllDescription,
                   })
                 }
-                className={`${classes.toggleContainer}  ${
-                  enableAllDescription && classes.active
-                }`}
+                className={`${classes.toggleContainer}  ${enableAllDescription && classes.active}`}
               >
-                <div
-                  className={`${classes.toggle} ${
-                    enableAllDescription && classes.active
-                  }`}
-                />
+                <div className={`${classes.toggle} ${enableAllDescription && classes.active}`} />
               </div>
             </div>
             <div className={classes.wrapper}>
@@ -256,9 +250,7 @@ const Preview = () => {
                 name="format"
                 value="ipfs"
                 defaultChecked
-                className={`${classes.radioBtn} ${
-                  outputFormat === "ipfs" && classes.clicked
-                }`}
+                className={`${classes.radioBtn} ${outputFormat === "ipfs" && classes.clicked}`}
               />
               <p>IPFS</p>
             </label>
@@ -268,9 +260,7 @@ const Preview = () => {
                 type="radio"
                 name="format"
                 value="arweave"
-                className={`${classes.radioBtn} ${
-                  outputFormat === "arweave" && classes.clicked
-                }`}
+                className={`${classes.radioBtn} ${outputFormat === "arweave" && classes.clicked}`}
               />
               <p>Arweave</p>
             </label>
@@ -352,10 +342,7 @@ const Preview = () => {
                           >
                             Download
                           </button>
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteAndReplace(id, index, currentPage)}
-                          >
+                          <button type="button" onClick={() => handleDeleteAndReplace(id, index, currentPage)}>
                             Generate New
                           </button>
                         </div>

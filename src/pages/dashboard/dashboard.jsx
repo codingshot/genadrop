@@ -25,22 +25,14 @@ const Dashboard = () => {
     filteredCollection: null,
   });
 
-  const {
-    filter,
-    activeDetail,
-    myCollections,
-    createdNfts,
-    collectedNfts,
-    filteredCollection,
-  } = state;
+  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
   const { account, mainnet } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const breakAddress = (address = "", width = 6) =>
-    `${address.slice(0, width)}...${address.slice(-width)}`;
+  const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
     if (!account) return;
@@ -94,13 +86,9 @@ const Dashboard = () => {
     if (!filteredCollection) return;
     let filtered = null;
     if (filter.price === "low") {
-      filtered = getCollectionToFilter().sort(
-        (a, b) => Number(a.price) - Number(b.price)
-      );
+      filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      filtered = getCollectionToFilter().sort(
-        (a, b) => Number(b.price) - Number(a.price)
-      );
+      filtered = getCollectionToFilter().sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.price]);
@@ -127,27 +115,21 @@ const Dashboard = () => {
           <div className={classes.details}>
             <div
               onClick={() => handleSetState({ activeDetail: "created" })}
-              className={`${classes.detail} ${
-                activeDetail === "created" && classes.active
-              }`}
+              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created NFT</p>
               <span>{createdNfts && createdNfts.length}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collected" })}
-              className={`${classes.detail} ${
-                activeDetail === "collected" && classes.active
-              }`}
+              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
               <p>Collected NFTs</p>
               <span>{collectedNfts && collectedNfts.length}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collections" })}
-              className={`${classes.detail} ${
-                activeDetail === "collections" && classes.active
-              }`}
+              className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
             >
               <p>My Collections</p>
               <span>{myCollections && myCollections.length}</span>
@@ -157,16 +139,8 @@ const Dashboard = () => {
 
         <section className={classes.main}>
           <div className={classes.searchAndFilter}>
-            <SearchBar
-              onSearch={(value) =>
-                handleSetState({ filter: { ...filter, searchValue: value } })
-              }
-            />
-            <PriceDropdown
-              onPriceFilter={(value) =>
-                handleSetState({ filter: { ...filter, price: value } })
-              }
-            />
+            <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
+            <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
           {filteredCollection && activeDetail === "collections" ? (

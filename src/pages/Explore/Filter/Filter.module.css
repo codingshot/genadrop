@@ -237,7 +237,7 @@
   padding: 1em;
   transition: all 300ms;
 }
-.valuesOfAttr{
+.valuesOfAttr {
   display: flex;
   justify-content: space-between;
   width: 100%;

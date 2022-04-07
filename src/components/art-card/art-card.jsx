@@ -1,11 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import {
-  addPreview,
-  removeImage,
-  removePreview,
-  updateImage,
-  updatePreview,
-} from "../../gen-state/gen.actions";
+import { addPreview, removeImage, removePreview, updateImage, updatePreview } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./art-card.module.css";
 import checkActiveIcon from "../../assets/icon-check-active.svg";
@@ -59,12 +53,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         layerTitle,
         image,
         traitTitle: inputValue.name,
-        Rarity:
-          Number(inputValue.rarity) > 100
-            ? "100"
-            : Number(inputValue.rarity) < 1
-            ? "1"
-            : inputValue.rarity,
+        Rarity: Number(inputValue.rarity) > 100 ? "100" : Number(inputValue.rarity) < 1 ? "1" : inputValue.rarity,
       })
     );
   };
@@ -86,29 +75,18 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   }, [preview]);
 
   return (
-    <div
-      className={`${classes.container} ${
-        activeCard === traitTitle ? classes.active : classes.inActive
-      }`}
-    >
+    <div className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
       <div className={classes.action}>
         {!isRule ? (
           <i />
         ) : activeCard === traitTitle ? (
-          <img
-            src={checkActiveIcon}
-            alt=""
-            onClick={() => handleAddPreview(traitTitle, image)}
-          />
+          <img src={checkActiveIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
         ) : (
           <img src={checkIcon} alt="" />
         )}
         <img onClick={handleRemove} src={closeIcon} alt="" />
       </div>
-      <div
-        onClick={() => handleAddPreview(traitTitle, image)}
-        className={classes.imageContainer}
-      >
+      <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
       </div>
       <div className={classes.details}>
@@ -121,13 +99,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
           ) : (
             <div className={classes.editInput}>
               <form onSubmit={(e) => handleRename(e, image)}>
-                <input
-                  autoFocus
-                  type="text"
-                  name="name"
-                  value={inputValue.name}
-                  onChange={handleChange}
-                />
+                <input autoFocus type="text" name="name" value={inputValue.name} onChange={handleChange} />
               </form>
               <img onClick={(e) => handleRename(e, image)} src={markIconDark} alt="" />
             </div>

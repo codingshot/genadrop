@@ -70,10 +70,7 @@ export const downloadCallback = async (props) => {
   if (outputFormat.toLowerCase() === "arweave") {
     const aweave = await getAweaveFormat(value);
     aweave.forEach((data, idx) => {
-      zip.file(
-        data.name ? `${data.name}.json` : `_${idx}.json`,
-        JSON.stringify(data, null, "\t")
-      );
+      zip.file(data.name ? `${data.name}.json` : `_${idx}.json`, JSON.stringify(data, null, "\t"));
     });
   } else {
     zip.file("metadata.json", JSON.stringify(await getIpfsFormat(value), null, "\t"));

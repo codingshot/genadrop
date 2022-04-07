@@ -18,18 +18,11 @@ const CollectionsCard = ({ collection }) => {
     axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
       handleSetState({ algoPrice: res.data.data.amount * price });
     });
-    document.documentElement.scrollTop = 0;
   }, []);
 
   return (
-    <div
-      onClick={() => history.push(`/marketplace/collections/${name}`)}
-      className={classes.card}
-    >
-      <div
-        style={{ backgroundImage: `url(${image_url})` }}
-        className={classes.imageContainer}
-      />
+    <div onClick={() => history.push(`/marketplace/collections/${name}`)} className={classes.card}>
+      <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
 
       <div className={classes.body}>
         <div className={classes.thumbnail}>

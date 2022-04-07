@@ -4,11 +4,7 @@ import ArtCard from "../art-card/art-card";
 import { GenContext } from "../../gen-state/gen.context";
 import { addImage, setCombinations } from "../../gen-state/gen.actions";
 import ButtonClickEffect from "../button-effect/button-effect";
-import {
-  getCombinations,
-  handleAddBlank,
-  handleFileChange,
-} from "./collection-menu-script";
+import { getCombinations, handleAddBlank, handleFileChange } from "./collection-menu-script";
 
 const CollectionMenu = ({ layer }) => {
   const [state, setState] = useState({
@@ -48,19 +44,13 @@ const CollectionMenu = ({ layer }) => {
               key={idx}
               layerTitle={layerTitle}
               trait={trait}
-              setActiveCard={(activeArtCard) =>
-                handleSetState({ activeCard: activeArtCard })
-              }
+              setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
               activeCard={activeCard}
             />
           ))}
         </div>
         <div className={classes.uploadBtnContainer}>
-          <button
-            type="button"
-            onClick={() => fileRef.current.click()}
-            className={classes.uploadBtn}
-          >
+          <button type="button" onClick={() => fileRef.current.click()} className={classes.uploadBtn}>
             upload
           </button>
           {traits[0] && (
@@ -74,9 +64,7 @@ const CollectionMenu = ({ layer }) => {
       </section>
 
       <input
-        onChange={(event) =>
-          dispatch(addImage(handleFileChange({ event, traits, layerTitle })))
-        }
+        onChange={(event) => dispatch(addImage(handleFileChange({ event, traits, layerTitle })))}
         ref={fileRef}
         style={{ display: "none" }}
         type="file"

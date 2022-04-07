@@ -40,46 +40,30 @@ const Navbar = () => {
           alt=""
         />
       </div>
-      <div
-        className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}
-      >
+      <div className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}>
         <br />
         <ul className={classes.navList}>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/create">
-            <div
-              className={`${classes.navItem} ${
-                pathname.includes("/create") && classes.active
-              }`}
-            >
+            <div className={`${classes.navItem} ${pathname.includes("/create") && classes.active}`}>
               <li>create</li>
               <div className={classes.line} />
             </div>
           </Link>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/mint">
-            <div
-              className={`${classes.navItem} ${
-                pathname.includes("/mint") && classes.active
-              }`}
-            >
+            <div className={`${classes.navItem} ${pathname.includes("/mint") && classes.active}`}>
               <li>mint</li>
               <div className={classes.line} />
             </div>
           </Link>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/marketplace">
-            <div
-              className={`${classes.navItem} ${
-                pathname.includes("/marketplace") && classes.active
-              }`}
-            >
+            <div className={`${classes.navItem} ${pathname.includes("/marketplace") && classes.active}`}>
               <li>explore</li>
               <div className={classes.line} />
             </div>
           </Link>
         </ul>
         <div className={classes.wallet}>
-          <ConnectWallet
-            setToggleNav={(states) => handleSetState({ dropdown: states })}
-          />
+          <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
         </div>
       </div>
       {dropdown ? (

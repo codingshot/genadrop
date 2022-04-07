@@ -72,13 +72,9 @@ const LayerOrders = () => {
     try {
       dispatch(setLoader("saving..."));
       const names = await getCollectionsNames();
-      const isUnique = names.find(
-        (name) => name.toLowerCase() === inputValue.toLowerCase()
-      );
+      const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
       if (isUnique) {
-        dispatch(
-          setNotification(`${inputValue} already exist. Please choose another name`)
-        );
+        dispatch(setNotification(`${inputValue} already exist. Please choose another name`));
       } else {
         handleSetState({ renameAction: false });
         dispatch(setCollectionName(inputValue));
@@ -112,11 +108,7 @@ const LayerOrders = () => {
             {renameAction ? (
               <img onClick={handleRename} src={markIcon} alt="" />
             ) : (
-              <img
-                onClick={() => handleSetState({ renameAction: true })}
-                src={editIcon}
-                alt=""
-              />
+              <img onClick={() => handleSetState({ renameAction: true })} src={editIcon} alt="" />
             )}
           </div>
         </div>
@@ -147,10 +139,7 @@ const LayerOrders = () => {
                           ref={providedProp.innerRef}
                           {...providedProp.draggableProps}
                           {...providedProp.dragHandleProps}
-                          style={getItemStyle(
-                            snapshotProp.isDragging,
-                            providedProp.draggableProps.style
-                          )}
+                          style={getItemStyle(snapshotProp.isDragging, providedProp.draggableProps.style)}
                         >
                           <Layer
                             name={item.layerTitle}
@@ -158,9 +147,7 @@ const LayerOrders = () => {
                             trait={item.traitsAmount}
                             click={() => handleRemoveLayer(item)}
                             activeInput={activeInput}
-                            setActiveInput={(input) =>
-                              handleSetState({ activeInput: input })
-                            }
+                            setActiveInput={(input) => handleSetState({ activeInput: input })}
                           />
                         </div>
                       )}
