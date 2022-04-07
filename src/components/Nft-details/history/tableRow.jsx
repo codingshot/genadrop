@@ -100,7 +100,7 @@ const TableRow = (data) => {
           </div>
           : ""
       }
-      <tr onClick={handleClick}>
+      <tr className={classes.transaction} onClick={handleClick}>
         <td>
           <span className={classes.icon}>
             <img src={icon()} alt="" />
