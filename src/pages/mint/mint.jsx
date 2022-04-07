@@ -34,10 +34,10 @@ const Mint = () => {
     if (!supportedTypes.includes(fileType.toLowerCase())) return;
 
     if (fileType === "zip") {
-      handleSetState({ zip: upladedFile, upladedFileName });
+      handleSetState({ zip: upladedFile, fileName: upladedFileName });
       handleZipFile({ upladedFile, handleSetState });
     } else {
-      handleSetState({ file: [upladedFile], upladedFileName });
+      handleSetState({ file: [upladedFile], fileName: upladedFileName });
     }
   };
 

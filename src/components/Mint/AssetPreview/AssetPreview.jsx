@@ -158,6 +158,9 @@ const AssetPreview = ({ data, changeFile }) => {
     if (!chainId) {
       return dispatch(setNotification("connect wallet and try again"));
     }
+    if (!parseInt(price)) {
+      return dispatch(setNotification("please enter a valid price"));
+    }
     const c = chains.find((e) => e.networkId.toString() === chainId.toString());
     if (!c) return dispatch(setNotification("unsupported chain detected"));
     if (file.length > 1) {
