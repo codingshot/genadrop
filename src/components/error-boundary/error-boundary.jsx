@@ -1,7 +1,7 @@
-import React from 'react';
-import classes from './error.module.css';
+import React from "react";
+import classes from "./error.module.css";
 
-import SomethingWentWrong from './Error';
+import SomethingWentWrong from "./Error";
 
 class ErrorBoundary extends React.Component {
   constructor() {

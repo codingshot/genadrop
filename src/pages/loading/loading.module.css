@@ -16,7 +16,9 @@
   gap: 1em;
 }
 
-.dotOne, .dotTwo, .dotThree {
+.dotOne,
+.dotTwo,
+.dotThree {
   width: 0.75em;
   height: 0.75em;
   border-radius: 50%;
@@ -36,8 +38,11 @@
   animation-delay: 300ms;
 }
 
-
 @keyframes blink {
-  from {background: white}
-  to {background: var(--main-accent)}
+  from {
+    background: white;
+  }
+  to {
+    background: var(--main-accent);
+  }
 }

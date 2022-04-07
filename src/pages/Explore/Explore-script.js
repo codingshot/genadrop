@@ -24,9 +24,9 @@ export const mapAttributeToFilter = (data) => {
 
 export const groupAttributesByTraitType = (attributes) => {
   const obj = {};
-  attributes
-    && attributes.length
-    && attributes.forEach((attr) => {
+  attributes &&
+    attributes.length &&
+    attributes.forEach((attr) => {
       try {
         obj[attr.trait_type] = [...obj[attr.trait_type], attr];
       } catch (error) {

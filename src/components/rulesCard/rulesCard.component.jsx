@@ -1,8 +1,8 @@
-import React, { useContext } from 'react';
-import { clearRule, deleteRule } from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './rulesCard.module.css';
-import closeIcon from '../../assets/icon-close.svg';
+import React, { useContext } from "react";
+import { clearRule, deleteRule } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./rulesCard.module.css";
+import closeIcon from "../../assets/icon-close.svg";
 
 const RulesCard = () => {
   const { dispatch, rule } = useContext(GenContext);
@@ -23,29 +23,22 @@ const RulesCard = () => {
             <div className={classes.content}>
               {rl.map((r, idx) => (
                 <div key={idx} className={classes.innerContent}>
-                  <img
-                    className={classes.image}
-                    src={URL.createObjectURL(r.imageFile)}
-                    alt=""
-                  />
+                  <img className={classes.image} src={URL.createObjectURL(r.imageFile)} alt="" />
                   <div className={classes.title}>{r.layerTitle}</div>
                   <div className={classes.text}>{r.imageName}</div>
-                  {rl.length - 1 !== idx && ';'}
+                  {rl.length - 1 !== idx && ";"}
                 </div>
               ))}
             </div>
-            <img
-              onClick={() => handleDelete(rl)}
-              className={classes.icon}
-              src={closeIcon}
-              alt=""
-            />
+            <img onClick={() => handleDelete(rl)} className={classes.icon} src={closeIcon} alt="" />
           </div>
         ))}
       </div>
       {rule.length ? (
         <div className={classes.clearBtnContainer}>
-          <button type="button" onClick={handleClearRule}>clear all</button>
+          <button type="button" onClick={handleClearRule}>
+            clear all
+          </button>
         </div>
       ) : (
         <div className={classes.notification}>you have not set any rule</div>

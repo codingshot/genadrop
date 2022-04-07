@@ -1,26 +1,20 @@
-import React, {
-  useRef, useContext, useEffect, useState,
-} from 'react';
-import classes from './collection-menu.module.css';
-import ArtCard from '../art-card/art-card';
-import { GenContext } from '../../gen-state/gen.context';
-import { addImage, setCombinations } from '../../gen-state/gen.actions';
-import ButtonClickEffect from '../button-effect/button-effect';
-import {
-  getCombinations,
-  handleAddBlank,
-  handleFileChange,
-} from './collection-menu-script';
+import React, { useRef, useContext, useEffect, useState } from "react";
+import classes from "./collection-menu.module.css";
+import ArtCard from "../art-card/art-card";
+import { GenContext } from "../../gen-state/gen.context";
+import { addImage, setCombinations } from "../../gen-state/gen.actions";
+import ButtonClickEffect from "../button-effect/button-effect";
+import { getCombinations, handleAddBlank, handleFileChange } from "./collection-menu-script";
 
 const CollectionMenu = ({ layer }) => {
   const [state, setState] = useState({
-    activeCard: '',
+    activeCard: "",
   });
   const { activeCard } = state;
   const { layerTitle, traits } = layer;
   const { dispatch, layers } = useContext(GenContext);
   const fileRef = useRef(null);
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -56,11 +50,7 @@ const CollectionMenu = ({ layer }) => {
           ))}
         </div>
         <div className={classes.uploadBtnContainer}>
-          <button
-            type="button"
-            onClick={() => fileRef.current.click()}
-            className={classes.uploadBtn}
-          >
+          <button type="button" onClick={() => fileRef.current.click()} className={classes.uploadBtn}>
             upload
           </button>
           {traits[0] && (
@@ -76,7 +66,7 @@ const CollectionMenu = ({ layer }) => {
       <input
         onChange={(event) => dispatch(addImage(handleFileChange({ event, traits, layerTitle })))}
         ref={fileRef}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         type="file"
         name="avatar"
         id="avatar"

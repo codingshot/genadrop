@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import classes from './text-editor.module.css';
-import editIcon from '../../assets/icon-edit.svg';
-import markIcon from '../../assets/icon-mark.svg';
+import React, { useState } from "react";
+import classes from "./text-editor.module.css";
+import editIcon from "../../assets/icon-edit.svg";
+import markIcon from "../../assets/icon-mark.svg";
 
 const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const [state, setState] = useState({
-    value: '',
+    value: "",
     editor: false,
   });
 
@@ -18,19 +18,14 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     submitHandler(value);
-    handleSetState({ editor: false, value: '' });
+    handleSetState({ editor: false, value: "" });
   };
 
   return (
     <div className={`${classes.container} ${invert && classes.invert}`}>
       {editor ? (
         <form onSubmit={handleSubmit}>
-          <input
-            autoFocus
-            type="text"
-            value={value}
-            onChange={(e) => handleSetState({ value: e.target.value })}
-          />
+          <input autoFocus type="text" value={value} onChange={(e) => handleSetState({ value: e.target.value })} />
           <button type="button">
             <img src={markIcon} alt="" />
           </button>
@@ -38,10 +33,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
       ) : (
         <div>
           <p>{placeholder}</p>
-          <button
-            type="button"
-            onClick={() => handleSetState({ editor: true, value: placeholder })}
-          >
+          <button type="button" onClick={() => handleSetState({ editor: true, value: placeholder })}>
             <img src={editIcon} alt="" />
           </button>
         </div>

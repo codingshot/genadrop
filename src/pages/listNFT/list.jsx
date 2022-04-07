@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { useRouteMatch, Link } from 'react-router-dom';
-import { GenContext } from '../../gen-state/gen.context';
-import { getUserNftCollection } from '../../utils';
-import classes from './list.module.css';
-import { fetchAllNfts, writeNft } from '../../utils/firebase';
+import React, { useContext, useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { useRouteMatch, Link } from "react-router-dom";
+import { GenContext } from "../../gen-state/gen.context";
+import { getUserNftCollection } from "../../utils";
+import classes from "./list.module.css";
+import { fetchAllNfts, writeNft } from "../../utils/firebase";
 
 const List = () => {
   const { account } = useContext(GenContext);
@@ -17,13 +17,11 @@ const List = () => {
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
-    chain: 'Algo',
-    price: '',
-    image_url: '',
+    chain: "Algo",
+    price: "",
+    image_url: "",
   });
-  const {
-    nftDetails, isLoading, price, chain, image_url,
-  } = state;
+  const { nftDetails, isLoading, price, chain, image_url } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -42,7 +40,7 @@ const List = () => {
       nftDetails.price,
       null,
       null,
-      null,
+      null
     );
   };
 
@@ -58,12 +56,10 @@ const List = () => {
         isLoading: false,
         image_url: nft.image_url,
       });
-    }());
-    document.documentElement.scrollTop = 0;
+    })();
   }, []);
 
-  useEffect(() => {
-  }, [nftDetails]);
+  useEffect(() => {}, [nftDetails]);
 
   if (isLoading) {
     return (
@@ -109,15 +105,8 @@ const List = () => {
 
             <div className={classes.btns}>
               {price ? (
-                <Link
-                  to={{ pathname: `${match.url}/listed`, state: { image_url } }}
-                >
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={listNFT}
-                  >
+                <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
+                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={listNFT}>
                     <div>
                       <img src="/assets/price-tage.svg" alt="" />
                       SET PRICE
@@ -126,11 +115,7 @@ const List = () => {
                   </button>
                 </Link>
               ) : (
-                <button
-                  type="button"
-                  className={classes.buy}
-                  onClick={listNFT}
-                >
+                <button type="button" className={classes.buy} onClick={listNFT}>
                   <div>
                     <img src="/assets/price-tage.svg" alt="" />
                     SET PRICE
@@ -153,29 +138,18 @@ const List = () => {
                 <a href="#" target="_blank">
                   Collection Floor price
                 </a>
-                to give you an idea of the average price of the NFT at the
-                moment
+                to give you an idea of the average price of the NFT at the moment
               </div>
               <div className={classes.chain}>
                 <div className={classes.inputWrapper}>
-                  <select
-                    value={chain}
-                    onChange={(event) => handleSetState({ chain: event.target.value })}
-                  >
+                  <select value={chain} onChange={(event) => handleSetState({ chain: event.target.value })}>
                     <option value="Algo">Algo</option>
                     <option value="Celo">Celo</option>
                     <option value="Polygon">Polygon</option>
                   </select>
                 </div>
                 <div className={classes.inputWrapper}>
-                  <input
-                    value={price}
-                    onChange={handlePrice}
-                    placeholder="E.g. 10"
-                    type="number"
-                    min="1"
-                    step="1"
-                  />
+                  <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
               </div>
             </section>
@@ -192,28 +166,21 @@ const List = () => {
 
           <div className={classes.detailContent}>
             <div className={classes.priceDescription}>
-              Listing is Free! At the time of sale, the following fees will be
-              deducted
+              Listing is Free! At the time of sale, the following fees will be deducted
             </div>
             <div className={classes.row}>
-              Genadrop
-              {' '}
-              <span>10%</span>
+              Genadrop <span>10%</span>
             </div>
             <div className={classes.row}>
-              {nftDetails.name ? nftDetails.name : ''}
-              {' '}
-              <span>7%</span>
+              {nftDetails.name ? nftDetails.name : ""} <span>7%</span>
             </div>
             <div className={classes.row}>
-              Total
-              {' '}
-              <span>17%</span>
+              Total <span>17%</span>
             </div>
           </div>
         </div>
       ) : (
-        ''
+        ""
       )}
     </div>
   );

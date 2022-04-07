@@ -94,7 +94,8 @@
 }
 
 .introControl > button,
-.control .next, .control .prev {
+.control .next,
+.control .prev {
   padding: 0.5em 1em;
   border-radius: 1em;
   font-size: 0.85rem;

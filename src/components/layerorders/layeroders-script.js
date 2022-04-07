@@ -1,9 +1,9 @@
 export const getItemStyle = (isDragging, draggableStyle) => ({
-  userSelect: 'none',
+  userSelect: "none",
   marginBottom: 8,
   ...draggableStyle,
 });
 
 export const getListStyle = () => ({
-  width: '100%',
+  width: "100%",
 });

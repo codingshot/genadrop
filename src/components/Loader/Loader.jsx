@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './Loader.module.css';
-import loaderIcon from '../../assets/icon-loading-dark.svg';
+import React, { useContext } from "react";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./Loader.module.css";
+import loaderIcon from "../../assets/icon-loading-dark.svg";
 
 const Loader = () => {
   const { loaderMessage } = useContext(GenContext);

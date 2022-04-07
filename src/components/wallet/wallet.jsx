@@ -1,55 +1,49 @@
-import React, { useContext, useRef, useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { ethers } from 'ethers';
-import Web3Modal from 'web3modal';
-import WalletConnectProvider from '@walletconnect/web3-provider';
-import classes from './wallet.module.css';
-import { GenContext } from '../../gen-state/gen.context';
-import {
-  setConnector,
-  setAccount,
-  setNotification,
-  setChainId,
-  setMainnet,
-} from '../../gen-state/gen.actions';
-import userIcon from '../../assets/user.svg';
-import switchIcon from '../../assets/icon-switch.svg';
-import copyIcon from '../../assets/icon-copy.svg';
-import disconnectIcon from '../../assets/icon-disconnect.svg';
-import polygonIcon from '../../assets/icon-polygon.svg';
-import algoIcon from '../../assets/icon-algo.svg';
-import nearIcon from '../../assets/icon-near.svg';
-import celoIcon from '../../assets/icon-celo.svg';
+import React, { useContext, useRef, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
+import { ethers } from "ethers";
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import classes from "./wallet.module.css";
+import { GenContext } from "../../gen-state/gen.context";
+import { setConnector, setAccount, setNotification, setChainId, setMainnet } from "../../gen-state/gen.actions";
+import userIcon from "../../assets/user.svg";
+import switchIcon from "../../assets/icon-switch.svg";
+import copyIcon from "../../assets/icon-copy.svg";
+import disconnectIcon from "../../assets/icon-disconnect.svg";
+import polygonIcon from "../../assets/icon-polygon.svg";
+import algoIcon from "../../assets/icon-algo.svg";
+import nearIcon from "../../assets/icon-near.svg";
+import celoIcon from "../../assets/icon-celo.svg";
 
 const chainIcon = {
   Polygon: polygonIcon,
-  'Polygon Testnet': polygonIcon,
+  "Polygon Testnet": polygonIcon,
   Algorand: algoIcon,
   Near: nearIcon,
   Celo: celoIcon,
 };
 
 const chains = [
-  { label: 'Algorand', networkId: 4160, symbol: 'ALGO' },
-  { label: 'Celo', networkId: 42220, symbol: 'CGLD' },
-  { label: 'Polygon', networkId: 137, symbol: 'MATIC' },
-  { label: 'Polygon Testnet', networkId: 80001, symbol: 'MATIC' },
-  { label: 'Near', networkId: 1313161555, symbol: 'NEAR' },
+  { label: "Algorand", networkId: 4160, symbol: "ALGO" },
+  { label: "Celo", networkId: 42220, symbol: "CGLD" },
+  { label: "Polygon", networkId: 137, symbol: "MATIC" },
+  { label: "Polygon Testnet", networkId: 80001, symbol: "MATIC" },
+  { label: "Near", networkId: 1313161555, symbol: "NEAR" },
 ];
 
 function ConnectWallet({ setToggleNav }) {
   const history = useHistory();
-  const {
-    dispatch, connector, account, chainId, mainnet,
-  } = useContext(GenContext);
+  const { pathname } = useLocation();
+
+  const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [clipboardState, setClipboardState] = useState('Copy Address');
-  const [network, setNetwork] = useState('mainnet');
+  const [clipboardState, setClipboardState] = useState("Copy Address");
+  const [network, setNetwork] = useState("mainnet");
 
   const clipboardRef = useRef(null);
 
-  function breakAddress(address = '', width = 6) {
+  function breakAddress(address = "", width = 6) {
     return `${address.slice(0, width)}...${address.slice(-width)}`;
   }
 
@@ -58,10 +52,10 @@ function ConnectWallet({ setToggleNav }) {
       package: WalletConnectProvider,
       options: {
         rpc: {
-          137: 'https://polygon-mumbai.g.alchemy.com/v2/sjbvWTjbyKXxvfJ1HkHIdEDHc2u8wNym',
-          4160: 'https://node.testnet.algoexplorerapi.io',
+          137: "https://polygon-mumbai.g.alchemy.com/v2/sjbvWTjbyKXxvfJ1HkHIdEDHc2u8wNym",
+          4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
         },
-        rpcUrl: '',
+        rpcUrl: "",
       },
     },
   };
@@ -72,11 +66,14 @@ function ConnectWallet({ setToggleNav }) {
 
   async function disconnect() {
     if (connector) {
-      dispatch(setAccount(''));
+      dispatch(setAccount(""));
       dispatch(setConnector());
-      dispatch(setChainId(''));
+      dispatch(setChainId(""));
       setDropdown(false);
       setToggleDropdown(false);
+      if (pathname.includes("/me")) {
+        history.push("/marketplace");
+      }
     }
   }
 
@@ -85,26 +82,26 @@ function ConnectWallet({ setToggleNav }) {
     try {
       connector = await web3Modal.connect();
     } catch (error) {
-      dispatch(setNotification('connection failed ❌️'));
+      dispatch(setNotification("connection failed ❌️"));
       return;
     }
 
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
 
-    if (provider.connection.url === 'metamask') {
+    if (provider.connection.url === "metamask") {
       await dispatch(setConnector(provider));
       await dispatch(setChainId(window.ethereum.networkVersion));
       const accountAddress = await signer.getAddress();
       dispatch(setAccount(accountAddress));
-      connector.on('accountsChanged', (accounts) => {
+      connector.on("accountsChanged", (accounts) => {
         dispatch(setAccount(accounts[0]));
       });
-      connector.on('chainChanged', () => {
+      connector.on("chainChanged", () => {
         const web3Provider = new ethers.providers.Web3Provider(connector);
         dispatch(setConnector(web3Provider));
       });
-      connector.on('networkChanged', (networkId) => {
+      connector.on("networkChanged", (networkId) => {
         dispatch(setChainId(networkId));
       });
     } else {
@@ -114,9 +111,9 @@ function ConnectWallet({ setToggleNav }) {
         await connector.createSession();
       }
       // Subscribe to connection events
-      connector.on('connect', (error, payload) => {
+      connector.on("connect", (error, payload) => {
         if (error) {
-          dispatch(setNotification('No connected'));
+          dispatch(setNotification("No connected"));
           // feedbacktype: warn
 
           throw error;
@@ -127,7 +124,7 @@ function ConnectWallet({ setToggleNav }) {
         dispatch(setAccount(accounts[0]));
       });
 
-      connector.on('session_update', (error, payload) => {
+      connector.on("session_update", (error, payload) => {
         if (error) {
           throw error;
         }
@@ -144,7 +141,7 @@ function ConnectWallet({ setToggleNav }) {
         dispatch(setAccount(accounts[0]));
       }
 
-      connector.on('disconnect', (error) => {
+      connector.on("disconnect", (error) => {
         if (error) {
           throw error;
         }
@@ -154,11 +151,11 @@ function ConnectWallet({ setToggleNav }) {
   };
 
   const handleSwitch = async () => {
-    if (network === 'mainnet') {
-      setNetwork('testnet');
+    if (network === "mainnet") {
+      setNetwork("testnet");
       dispatch(setMainnet(false));
     } else {
-      setNetwork('mainnet');
+      setNetwork("mainnet");
       dispatch(setMainnet(true));
     }
     setToggleDropdown(!toggleDropdown);
@@ -169,9 +166,9 @@ function ConnectWallet({ setToggleNav }) {
     clipboard.select();
     clipboard.setSelectionRange(0, 99999); /* For mobile devices */
     navigator.clipboard.writeText(clipboard.value);
-    setClipboardState('Copied');
+    setClipboardState("Copied");
     setTimeout(() => {
-      setClipboardState('Copy Address');
+      setClipboardState("Copy Address");
     }, 850);
   };
 
@@ -193,35 +190,16 @@ function ConnectWallet({ setToggleNav }) {
         >
           <img src={chainIcon[getConnectedChain()]} alt="" />
         </div>
-        <div
-          onClick={() => setToggleDropdown(!toggleDropdown)}
-          className={classes.address}
-        >
+        <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
           <span>{breakAddress(account)}</span>
         </div>
-        <div
-          className={`${classes.dropdown} ${toggleDropdown && classes.active}`}
-        >
-          <div
-            onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
-            className={classes.option}
-          >
-            <div>{clipboardState}</div>
-            {' '}
-            <img src={copyIcon} alt="" />
-            <input
-              style={{ display: 'none' }}
-              ref={clipboardRef}
-              type="text"
-              defaultValue={account}
-            />
+        <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
+          <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
+            <div>{clipboardState}</div> <img src={copyIcon} alt="" />
+            <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
           </div>
           <div onClick={handleSwitch} className={classes.option}>
-            <div>
-              Switch to
-              {' '}
-              {network === 'mainnet' ? 'Testnet' : 'Mainnet'}
-            </div>
+            <div>Switch to {network === "mainnet" ? "Testnet" : "Mainnet"}</div>
             <img src={switchIcon} alt="" />
           </div>
           <div onClick={disconnect} className={classes.option}>
@@ -230,9 +208,7 @@ function ConnectWallet({ setToggleNav }) {
           </div>
         </div>
       </div>
-      <div className={classes.network}>
-        {network === 'mainnet' ? 'Mainnet' : 'Testnet'}
-      </div>
+      <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
       <div
         onClick={() => {
           setToggleDropdown(false);

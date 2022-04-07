@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import classes from './Filter.module.css';
-import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
-import arrowIconRight from '../../../assets/icon-arrow-right.svg';
-import filterIcon from '../../../assets/icon-filter.svg';
-import dropdownIcon from '../../../assets/icon-dropdown.svg';
-import Dropdown from '../Dropdown/Dropdown';
+import React, { useEffect, useState } from "react";
+import classes from "./Filter.module.css";
+import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import arrowIconRight from "../../../assets/icon-arrow-right.svg";
+import filterIcon from "../../../assets/icon-filter.svg";
+import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import Dropdown from "../Dropdown/Dropdown";
 
 const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   const [state, setState] = useState({
     toggleFilter: true,
     toggleAttribute: true,
     toggleLayer: -1,
-    lowestPrice: '0',
-    highestPrice: '0',
+    lowestPrice: "0",
+    highestPrice: "0",
     filter: {
       priceRange: { min: 0, max: 0 },
       onlyListed: false,
@@ -20,18 +20,15 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     },
   });
 
-  const {
-    toggleFilter,
-    lowestPrice,
-    highestPrice,
-    toggleAttribute,
-    toggleLayer,
-    filter,
-  } = state;
+  const { toggleFilter, lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
+  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const capitalize = (arr) => arr.charAt(0).toUpperCase() + arr.slice(1); // Capitalize first letter of the word
+  const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
 
   const handleApplyPriceFilter = () => {
     handleSetState({
@@ -57,9 +54,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   };
 
   const isSelected = (val) => {
-    const res = filter.attributes.find(
-      (attr) => JSON.stringify(attr) === JSON.stringify(val),
-    );
+    const res = filter.attributes.find((attr) => JSON.stringify(attr) === JSON.stringify(val));
     return !!res;
   };
 
@@ -67,9 +62,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     const result = isSelected(val);
     if (result) {
       const strVal = JSON.stringify(val);
-      const newAttributes = filter.attributes.filter(
-        (attr) => JSON.stringify(attr) !== strVal,
-      );
+      const newAttributes = filter.attributes.filter((attr) => JSON.stringify(attr) !== strVal);
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     } else {
       handleAddToFilterAttribute(val);
@@ -85,9 +78,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
       handleSetState({ filter: { ...filter, attributes: [] } });
     } else {
       const strVal = JSON.stringify(filterToDelete);
-      const newAttributes = filter.attributes.filter(
-        (attr) => JSON.stringify(attr) !== strVal,
-      );
+      const newAttributes = filter.attributes.filter((attr) => JSON.stringify(attr) !== strVal);
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     }
   }, [filterToDelete]);
@@ -96,10 +87,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     <>
       {toggleFilter ? (
         <aside className={classes.sidebar}>
-          <div
-            onClick={() => handleSetState({ toggleFilter: !toggleFilter })}
-            className={classes.filterHeading}
-          >
+          <div onClick={() => handleSetState({ toggleFilter: !toggleFilter })} className={classes.filterHeading}>
             <div>
               <img src={filterIcon} alt="" />
               <span>Filter</span>
@@ -112,9 +100,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                 <span>Show only listed item</span>
                 <div
                   onClick={handleStatus}
-                  className={`${classes.toggleButton} ${
-                    filter.onlyListed && classes.active
-                  }`}
+                  className={`${classes.toggleButton} ${filter.onlyListed && classes.active}`}
                 >
                   <div className={classes.toggle} />
                 </div>
@@ -144,44 +130,36 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
             </Dropdown>
             <Dropdown title="Attribute">
               <div className={classes.attributeFilter}>
-                <div
-                  className={`${classes.attribute} ${
-                    toggleAttribute && classes.active
-                  }`}
-                >
-                  {attributes
-                    && attributes.map((attr, idx) => (
+                <div className={`${classes.attribute} ${toggleAttribute && classes.active}`}>
+                  {attributes &&
+                    attributes.map((attr, idx) => (
                       <div key={idx}>
                         <div
-                          onClick={() => handleSetState({
-                            toggleLayer: idx === toggleLayer ? -1 : idx,
-                          })}
+                          onClick={() =>
+                            handleSetState({
+                              toggleLayer: idx === toggleLayer ? -1 : idx,
+                            })
+                          }
                           key={idx}
                           className={classes.layerWrapper}
                         >
-                          <div>{attr.trait_type}</div>
-                          <div
-                            className={`${classes.layerIcon} ${
-                              toggleLayer === idx && classes.active
-                            }`}
-                          >
+                          <div>{capitalize(attr.trait_type)}</div>
+                          <div className={`${classes.layerIcon} ${toggleLayer === idx && classes.active}`}>
                             <div>{attr.value.length}</div>
                             <img src={dropdownIcon} alt="" />
                           </div>
                         </div>
-                        <div
-                          className={`${classes.layer} ${
-                            toggleLayer === idx && classes.active
-                          }`}
-                        >
+                        <div className={`${classes.layer} ${toggleLayer === idx && classes.active}`}>
                           {attr.value.map((val, idx) => (
                             <div
                               key={idx}
-                              onClick={() => handleFilterAttribute({
-                                trait_type: attr.trait_type,
-                                value: val,
-                                rarity: attr.rarity[idx],
-                              })}
+                              onClick={() =>
+                                handleFilterAttribute({
+                                  trait_type: attr.trait_type,
+                                  value: val,
+                                  rarity: attr.rarity[idx],
+                                })
+                              }
                               className={classes.value}
                             >
                               <span className={classes.statusIcon}>
@@ -190,10 +168,18 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                   value: val,
                                   rarity: attr.rarity[idx],
                                 })
-                                  ? '+'
-                                  : '-'}
+                                  ? "+"
+                                  : "-"}
                               </span>
-                              <span>{val}</span>
+                              {/* percentage of each value in an attribute */}
+                              <div className={classes.valuesOfAttr}>
+                                <span>{capitalize(val)}</span>
+                                <span>
+                                  <span style={{ marginRight: "3px" }}>{countOccurrences(attr.value, val)}</span>(
+                                  {toPercent(countOccurrences(attr.value, val), attr.value.length)}
+                                  %)
+                                </span>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -206,11 +192,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
         </aside>
       ) : (
         <aside className={classes.sidebar2}>
-          <img
-            onClick={() => handleSetState({ toggleFilter: !toggleFilter })}
-            src={arrowIconRight}
-            alt=""
-          />
+          <img onClick={() => handleSetState({ toggleFilter: !toggleFilter })} src={arrowIconRight} alt="" />
         </aside>
       )}
     </>

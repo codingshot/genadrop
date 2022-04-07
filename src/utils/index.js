@@ -1,12 +1,12 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
-import axios from 'axios';
-import fileDownload from 'js-file-download';
+import axios from "axios";
+import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
-import worker from 'workerize-loader!../worker'; // eslint-disable-line import/no-webpack-loader-syntax
-import { getAlgoData } from './arc_ipfs';
-import { readSIngleUserNft } from './firebase';
-import blankImage from '../assets/blank.png';
+import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
+import { getAlgoData } from "./arc_ipfs";
+import { readSIngleUserNft } from "./firebase";
+import blankImage from "../assets/blank.png";
 
 export const getNftCollections = async (collections, mainnet) => {
   const collectionArr = [];
@@ -17,20 +17,15 @@ export const getNftCollections = async (collections, mainnet) => {
       collectionObj.price = collections[i].price;
       collectionObj.owner = collections[i].owner;
       collectionObj.description = collections[i].description;
-      const { data } = await axios.get(
-        collections[i].url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-      );
+
+      const { data } = await axios.get(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+
       collectionObj.number_of_nfts = data.length;
       const {
         asset: { params },
       } = await getAlgoData(mainnet, data[0]);
-      const response = await axios.get(
-        params.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-      );
-      collectionObj.image_url = response.data.image.replace(
-        'ipfs://',
-        'https://ipfs.io/ipfs/',
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      collectionObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       collectionArr.push(collectionObj);
     } catch (error) {
       console.log(error);
@@ -41,9 +36,7 @@ export const getNftCollections = async (collections, mainnet) => {
 
 export const getNftCollection = async (collection, mainnet) => {
   const nftArr = [];
-  const { data } = await axios.get(
-    collection.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-  );
+  const { data } = await axios.get(collection.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
   for (let i = 0; i < data.length; i += 1) {
     try {
       const nftObj = {};
@@ -55,17 +48,12 @@ export const getNftCollection = async (collection, mainnet) => {
       } = await getAlgoData(mainnet, data[i]);
       nftObj.algo_data = params;
       nftObj.Id = data[i];
-      const response = await axios.get(
-        params.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       const assetInfo = await readSIngleUserNft(collection.owner, data[i]);
       nftObj.sold = assetInfo.sold;
       nftObj.ipfs_data = response.data;
       nftObj.name = response.data.name;
-      nftObj.image_url = response.data.image.replace(
-        'ipfs://',
-        'https://ipfs.io/ipfs/',
-      );
+      nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       nftArr.push(nftObj);
     } catch (error) {
       console.error(error);
@@ -86,15 +74,10 @@ export const getUserNftCollection = async (mainnet, data) => {
       } = await getAlgoData(mainnet, data[i].id);
       nftObj.algo_data = params;
       nftObj.Id = data[i].id;
-      const response = await axios.get(
-        params.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       nftObj.ipfs_data = response.data;
       nftObj.name = response.data.name;
-      nftObj.image_url = response.data.image.replace(
-        'ipfs://',
-        'https://ipfs.io/ipfs/',
-      );
+      nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       nftArr.push(nftObj);
     } catch (error) {
       console.error(error);
@@ -115,21 +98,17 @@ export const getSingleNfts = async (mainnet, nfts) => {
       nftObj.sold = nfts[i].sold;
       nftObj.dateSold = nfts[i].dateSold;
       nftObj.description = nfts[i].description;
+      nftObj.mainnet = nfts[i].mainnet;
       const {
         asset: { params },
       } = await getAlgoData(mainnet, nfts[i].id);
-      const response = await axios.get(
-        params.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-      );
-      nftObj.image_url = response.data.image.replace(
-        'ipfs://',
-        'https://ipfs.io/ipfs/',
-      );
+      const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       nftObj.name = response.data.name;
       nftObj.description = response.data.description;
       nftArr.push(nftObj);
     } catch (error) {
-      console.error('get collection result failed');
+      console.error("get collection result failed");
     }
   }
   return nftArr;
@@ -148,18 +127,13 @@ export const getSingleNftDetails = async (mainnet, nft) => {
     const {
       asset: { params },
     } = await getAlgoData(mainnet, nft.id);
-    const response = await axios.get(
-      params.url.replace('ipfs://', 'https://ipfs.io/ipfs/'),
-    );
-    nftDetails.image_url = response.data.image.replace(
-      'ipfs://',
-      'https://ipfs.io/ipfs/',
-    );
+    const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+    nftDetails.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
     nftDetails.name = response.data.name;
     nftDetails.description = response.data.description;
     nftDetails.properties = response.data.properties;
   } catch (error) {
-    console.error('get collection result failed');
+    console.error("get collection result failed");
   }
   return nftDetails;
 };
@@ -169,24 +143,25 @@ export const getNftData = async (mainnet, collection, assetName) => {
   return collectionData.find((asset) => asset.name === assetName);
 };
 
-export const getImageSize = async (img) => new Promise((resolve) => {
-  const image = new Image();
-  if (typeof img === 'string') {
-    image.src = img;
-  } else {
-    image.src = URL.createObjectURL(img);
-  }
-  image.onload = () => {
-    resolve({ height: image.height, width: image.width });
-  };
-});
+export const getImageSize = async (img) =>
+  new Promise((resolve) => {
+    const image = new Image();
+    if (typeof img === "string") {
+      image.src = img;
+    } else {
+      image.src = URL.createObjectURL(img);
+    }
+    image.onload = () => {
+      resolve({ height: image.height, width: image.width });
+    };
+  });
 
 export const getDefaultName = (nameId) => {
   let id = nameId;
   id = String(id);
   if (id.length < 4) {
     const repeatBy = 4 - id.length;
-    return `#${'0'.repeat(repeatBy)}${id}`;
+    return `#${"0".repeat(repeatBy)}${id}`;
   }
   return `#${id}`;
 };
@@ -194,9 +169,9 @@ export const getDefaultName = (nameId) => {
 export const handleImage = async (props) => {
   const { canvas, images, image } = props;
   const { height, width } = await getImageSize(image);
-  canvas.setAttribute('width', width);
-  canvas.setAttribute('height', height);
-  const ctx = canvas.getContext('2d');
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", height);
+  const ctx = canvas.getContext("2d");
   for (const img of images) {
     const resImage = await new Promise((resolve) => {
       const mewImage = new Image();
@@ -205,16 +180,16 @@ export const handleImage = async (props) => {
         resolve(mewImage);
       };
     });
-    if (resImage)ctx.drawImage(resImage, 0, 0, width, height);
+    if (resImage) ctx.drawImage(resImage, 0, 0, width, height);
   }
 };
 
 export const handleBlankImage = async (props) => {
   const { img, canvas } = props;
   const { height, width } = await getImageSize(img);
-  canvas.setAttribute('width', width);
-  canvas.setAttribute('height', height);
-  const ctx = canvas.getContext('2d');
+  canvas.setAttribute("width", width);
+  canvas.setAttribute("height", height);
+  const ctx = canvas.getContext("2d");
   const image = await new Promise((resolve) => {
     const newImage = new Image();
     newImage.src = blankImage;
@@ -229,9 +204,9 @@ export const getMockValue = async (val) => {
   const pickerOpts = {
     types: [
       {
-        description: 'Images',
+        description: "Images",
         accept: {
-          'image/*': ['.png'],
+          "image/*": [".png"],
         },
       },
     ],
@@ -253,7 +228,7 @@ export const getMockValue = async (val) => {
         resolve(reader.result);
       };
       reader.onerror = (error) => {
-        console.log('Error: ', error);
+        console.log("Error: ", error);
       };
     });
   }
@@ -262,15 +237,15 @@ export const getMockValue = async (val) => {
     attributes: [
       {
         image: await getTheFile(),
-        rarity: '1',
-        trait_type: 'a',
-        value: 'Red Lips.png',
+        rarity: "1",
+        trait_type: "a",
+        value: "Red Lips.png",
       },
     ],
-    description: ' #0001',
+    description: " #0001",
     id: Date.now(),
     image: await getBase64(await getTheFile()),
-    name: '',
+    name: "",
   });
 
   value = value.map((v, id) => ({
@@ -283,10 +258,7 @@ export const getMockValue = async (val) => {
 };
 
 export const handleDownloadWithWorker = async (props) => {
-  const {
-    name,
-    outputFormat,
-  } = props;
+  const { name, outputFormat } = props;
   const mockValue = await getMockValue(500);
   const instance = worker();
   const content = await instance.downloadCallback({
@@ -297,6 +269,6 @@ export const handleDownloadWithWorker = async (props) => {
   fileDownload(
     content,
     // eslint-disable-next-line no-constant-condition
-    `${'name' ? `${'name'}${true ? '' : `_${'id'}`}.zip` : 'collections.zip'}`,
+    `${"name" ? `${"name"}${true ? "" : `_${"id"}`}.zip` : "collections.zip"}`
   );
 };

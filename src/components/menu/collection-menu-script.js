@@ -1,4 +1,4 @@
-import { handleBlankImage } from '../../utils';
+import { handleBlankImage } from "../../utils";
 
 export const handleFileChange = (props) => {
   const { event, traits, layerTitle } = props;
@@ -12,7 +12,7 @@ export const handleFileChange = (props) => {
     if (!filterArr.includes(imageFile.name)) {
       uniqueImageFile.push({
         traitTitle: imageFile.name,
-        Rarity: '1',
+        Rarity: "1",
         image: imageFile,
       });
       filterArr.push(imageFile.name);
@@ -22,8 +22,8 @@ export const handleFileChange = (props) => {
 };
 
 export const dataURItoBlob = (dataURI) => {
-  const byteString = atob(dataURI.split(',')[1]);
-  const mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  const byteString = atob(dataURI.split(",")[1]);
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
   const ab = new ArrayBuffer(byteString.length);
   const ia = new Uint8Array(ab);
   for (let i = 0; i < byteString.length; i += 1) {
@@ -34,18 +34,16 @@ export const dataURItoBlob = (dataURI) => {
 };
 
 export const handleAddBlank = async (props) => {
-  const {
-    canvas, img, traits, layerTitle,
-  } = props;
+  const { canvas, img, traits, layerTitle } = props;
   await handleBlankImage({ canvas, img });
-  const imageUrl = canvas.toDataURL('image/webp', 1);
-  const imageFile = new File([dataURItoBlob(imageUrl)], '');
+  const imageUrl = canvas.toDataURL("image/webp", 1);
+  const imageFile = new File([dataURItoBlob(imageUrl)], "");
   const uniqueImageFile = [...traits];
   const filterArr = traits.map(({ image }) => image.name);
   if (!filterArr.includes(imageFile.name)) {
     uniqueImageFile.push({
       traitTitle: imageFile.name,
-      Rarity: '1',
+      Rarity: "1",
       image: imageFile,
     });
   }
@@ -54,9 +52,7 @@ export const handleAddBlank = async (props) => {
 
 export const getCombinations = (layers) => {
   const amtArr = layers.map((layer) => layer.traitsAmount);
-  const count = amtArr.reduce((acc, curr) => (
-    acc * curr
-  ), 1);
+  const count = amtArr.reduce((acc, curr) => acc * curr, 1);
 
   return count;
 };

@@ -1,11 +1,9 @@
-import React, {
-  useContext, useEffect, useState,
-} from 'react';
-import { useRouteMatch } from 'react-router-dom';
-import Skeleton from 'react-loading-skeleton';
-import { GenContext } from '../../../gen-state/gen.context';
-import { getSingleNftDetails } from '../../../utils';
-import classes from './listed.module.css';
+import React, { useContext, useEffect, useState } from "react";
+import { useRouteMatch } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNftDetails } from "../../../utils";
+import classes from "./listed.module.css";
 
 const Listed = () => {
   // const { account, connector } = useContext(GenContext);
@@ -29,7 +27,7 @@ const Listed = () => {
     (async function getNftDetails() {
       const nftdetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails: nftdetails, isLoading: false });
-    }());
+    })();
     document.documentElement.scrollTop = 0;
   }, []);
 
@@ -75,10 +73,12 @@ const Listed = () => {
 
         <div className={classes.detailContent}>
           <div className={classes.priceDescription}>
-            Enter your email address in your account settings so we can let you
-            know, when your listing sells or receives offers
+            Enter your email address in your account settings so we can let you know, when your listing sells or
+            receives offers
           </div>
-          <button type="button" className={classes.buy}>Profile Settings</button>
+          <button type="button" className={classes.buy}>
+            Profile Settings
+          </button>
         </div>
       </div>
 
@@ -96,7 +96,9 @@ const Listed = () => {
           <img src="/assets/link.svg" alt="" />
         </div>
       </div>
-      <button type="button" className={classes.view}>View Item</button>
+      <button type="button" className={classes.view}>
+        View Item
+      </button>
     </div>
   );
 };

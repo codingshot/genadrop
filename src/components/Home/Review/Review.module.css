@@ -33,7 +33,7 @@
   flex-wrap: wrap;
 }
 
-.tweet{
+.tweet {
   width: 20rem;
 }
 
@@ -59,7 +59,7 @@
   .description {
     font-size: 1rem;
   }
-  
+
   .tweet {
     width: 25rem;
   }

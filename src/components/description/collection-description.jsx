@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import {
   setCurrentDnaLayers,
   setNotification,
@@ -7,31 +7,18 @@ import {
   setLoading,
   setMintAmount,
   setNftLayers,
-} from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import Button from '../button/button';
-import CollectionDetails from '../details/collection-details';
-import CollectionPreview from '../preview/collection-preview';
-import classes from './collection-description.module.css';
-import ButtonClickEffect from '../button-effect/button-effect';
-import {
-  createDna,
-  createUniqueLayer,
-  generateArt,
-  parseLayers,
-} from './collection-description-script';
+} from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import Button from "../button/button";
+import CollectionDetails from "../details/collection-details";
+import CollectionPreview from "../preview/collection-preview";
+import classes from "./collection-description.module.css";
+import ButtonClickEffect from "../button-effect/button-effect";
+import { createDna, createUniqueLayer, generateArt, parseLayers } from "./collection-description-script";
 
 const CollectionDescription = () => {
-  const {
-    layers,
-    nftLayers,
-    mintAmount,
-    dispatch,
-    combinations,
-    rule,
-    isRule,
-    collectionName,
-  } = useContext(GenContext);
+  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName } =
+    useContext(GenContext);
   const canvasRef = useRef(null);
 
   const handleChange = (event) => {
@@ -41,16 +28,16 @@ const CollectionDescription = () => {
 
   const handleGenerate = async () => {
     if (isRule) {
-      return dispatch(
-        setNotification('finish adding conflict rule and try again'),
-      );
+      return dispatch(setNotification("finish adding conflict rule and try again"));
     }
-    if (!mintAmount) { return dispatch(setNotification('please set the number to generate')); }
-    if (!combinations) { return dispatch(setNotification('Please uplaod images and try again')); }
+    if (!mintAmount) {
+      return dispatch(setNotification("please set the number to generate"));
+    }
+    if (!combinations) {
+      return dispatch(setNotification("Please uplaod images and try again"));
+    }
     if (mintAmount > combinations - rule.length) {
-      return dispatch(
-        setNotification('cannot generate more than the possible combinations'),
-      );
+      return dispatch(setNotification("cannot generate more than the possible combinations"));
     }
     dispatch(setNftLayers([]));
     dispatch(setLoading(true));
@@ -73,9 +60,7 @@ const CollectionDescription = () => {
     });
     dispatch(setCurrentDnaLayers(dnaLayers));
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
-    dispatch(
-      setNotification('done! click on the preview button to view assets.'),
-    );
+    dispatch(setNotification("done! click on the preview button to view assets."));
     dispatch(setLoading(false));
   };
 
@@ -101,20 +86,14 @@ const CollectionDescription = () => {
         </div>
         <div className={classes.action}>
           <div htmlFor="combinations">Combinations</div>
-          <div className={classes.combinations}>
-            {combinations - rule.length}
-          </div>
+          <div className={classes.combinations}>{combinations - rule.length}</div>
         </div>
       </div>
 
       <div className={classes.btnWrapper}>
         <div onClick={handleGenerate}>
           <ButtonClickEffect>
-            <Button>
-              generate
-              {' '}
-              {mintAmount}
-            </Button>
+            <Button>generate {mintAmount}</Button>
           </ButtonClickEffect>
         </div>
       </div>
@@ -128,7 +107,7 @@ const CollectionDescription = () => {
           </Link>
         )}
       </div>
-      <canvas style={{ display: 'none' }} ref={canvasRef} />
+      <canvas style={{ display: "none" }} ref={canvasRef} />
     </div>
   );
 };

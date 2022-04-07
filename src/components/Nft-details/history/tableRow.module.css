@@ -1,30 +1,30 @@
 span {
-    white-space: nowrap;
-    overflow: hidden;
-    vertical-align:middle;
-  }
-  
-  .begining {
-    display: inline-block;
-    width: calc(25% + 1em);
-    text-overflow: ellipsis;
-  }
-  
-  .end {
-    display:inline-flex;
-    width: calc(76% - 10.2em);
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
 
-  }
+.begining {
+  display: inline-block;
+  width: calc(25% + 1em);
+  text-overflow: ellipsis;
+}
+
+.end {
+  display: inline-flex;
+  width: calc(76% - 10.2em);
+}
 
 tr img {
-    width: 15px;
-    /* margin-right: 10px; */
-
+  width: 15px;
+  /* margin-right: 10px; */
 }
-.icon{
+.icon {
   border-radius: 50%;
   background-color: rgba(0, 153, 135, 0.12);
   padding: 8px;
+}
 
-
+.transaction:hover{
+  cursor: pointer;
 }

@@ -1,33 +1,23 @@
-import React, { useContext, useState, useEffect } from 'react';
-import {
-  addPreview,
-  removeImage,
-  removePreview,
-  updateImage,
-  updatePreview,
-} from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './art-card.module.css';
-import checkActiveIcon from '../../assets/icon-check-active.svg';
-import checkIcon from '../../assets/icon-check.svg';
-import closeIcon from '../../assets/icon-close.svg';
-import editIconDark from '../../assets/icon-edit-dark.svg';
-import markIconDark from '../../assets/icon-mark-dark.svg';
+import React, { useContext, useState, useEffect } from "react";
+import { addPreview, removeImage, removePreview, updateImage, updatePreview } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./art-card.module.css";
+import checkActiveIcon from "../../assets/icon-check-active.svg";
+import checkIcon from "../../assets/icon-check.svg";
+import closeIcon from "../../assets/icon-close.svg";
+import editIconDark from "../../assets/icon-edit-dark.svg";
+import markIconDark from "../../assets/icon-mark-dark.svg";
 
-const ArtCard = ({
-  layerTitle, trait, setActiveCard, activeCard,
-}) => {
+const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const [state, setState] = useState({
-    prompt: '',
+    prompt: "",
     inputValue: {
       name: trait.traitTitle,
       rarity: trait.Rarity,
     },
-    previousValue: '',
+    previousValue: "",
   });
-  const {
-    prompt, inputValue, previousValue,
-  } = state;
+  const { prompt, inputValue, previousValue } = state;
   const { image, traitTitle, Rarity } = trait;
   const { dispatch, preview, isRule } = useContext(GenContext);
 
@@ -47,34 +37,24 @@ const ArtCard = ({
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    handleSetState({ inputValue: ({ ...inputValue, [name]: value }) });
+    handleSetState({ inputValue: { ...inputValue, [name]: value } });
   };
 
   const handleRename = (e, imageFile) => {
     e.preventDefault();
     preview.forEach((item) => {
-      if (
-        item.layerTitle === layerTitle
-        && item.imageName === previousValue
-      ) {
-        dispatch(
-          updatePreview({ layerTitle, imageName: inputValue.name, imageFile }),
-        );
+      if (item.layerTitle === layerTitle && item.imageName === previousValue) {
+        dispatch(updatePreview({ layerTitle, imageName: inputValue.name, imageFile }));
       }
     });
-    handleSetState({ prompt: '' });
+    handleSetState({ prompt: "" });
     dispatch(
       updateImage({
         layerTitle,
         image,
         traitTitle: inputValue.name,
-        Rarity:
-          Number(inputValue.rarity) > 100
-            ? '100'
-            : Number(inputValue.rarity) < 1
-              ? '1'
-              : inputValue.rarity,
-      }),
+        Rarity: Number(inputValue.rarity) > 100 ? "100" : Number(inputValue.rarity) < 1 ? "1" : inputValue.rarity,
+      })
     );
   };
 
@@ -85,89 +65,52 @@ const ArtCard = ({
   };
 
   useEffect(() => {
-    if (activeCard !== traitTitle) handleSetState({ prompt: '' });
+    if (activeCard !== traitTitle) handleSetState({ prompt: "" });
   }, [activeCard, traitTitle]);
 
   useEffect(() => {
     if (!preview.length) {
-      setActiveCard('');
+      setActiveCard("");
     }
   }, [preview]);
 
   return (
-    <div
-      className={`${classes.container} ${
-        activeCard === traitTitle ? classes.active : classes.inActive
-      }`}
-    >
+    <div className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
       <div className={classes.action}>
         {!isRule ? (
           <i />
         ) : activeCard === traitTitle ? (
-          <img
-            src={checkActiveIcon}
-            alt=""
-            onClick={() => handleAddPreview(traitTitle, image)}
-          />
+          <img src={checkActiveIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
         ) : (
           <img src={checkIcon} alt="" />
         )}
         <img onClick={handleRemove} src={closeIcon} alt="" />
       </div>
-      <div
-        onClick={() => handleAddPreview(traitTitle, image)}
-        className={classes.imageContainer}
-      >
-        <img
-          className={classes.image}
-          src={URL.createObjectURL(image)}
-          alt="avatar"
-        />
+      <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
+        <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />
       </div>
       <div className={classes.details}>
         <div>
-          {prompt !== 'name' ? (
+          {prompt !== "name" ? (
             <div className={classes.inputText}>
               <div>{traitTitle}</div>
-              <img
-                onClick={() => handlePrompt('name')}
-                src={editIconDark}
-                alt=""
-              />
+              <img onClick={() => handlePrompt("name")} src={editIconDark} alt="" />
             </div>
           ) : (
             <div className={classes.editInput}>
               <form onSubmit={(e) => handleRename(e, image)}>
-                <input
-                  autoFocus
-                  type="text"
-                  name="name"
-                  value={inputValue.name}
-                  onChange={handleChange}
-                />
+                <input autoFocus type="text" name="name" value={inputValue.name} onChange={handleChange} />
               </form>
-              <img
-                onClick={(e) => handleRename(e, image)}
-                src={markIconDark}
-                alt=""
-              />
+              <img onClick={(e) => handleRename(e, image)} src={markIconDark} alt="" />
             </div>
           )}
         </div>
 
         <div>
-          {prompt !== 'rarity' ? (
+          {prompt !== "rarity" ? (
             <div className={classes.inputText}>
-              <div>
-                Rarity:
-                {' '}
-                {Rarity}
-              </div>
-              <img
-                onClick={() => handlePrompt('rarity')}
-                src={editIconDark}
-                alt=""
-              />
+              <div>Rarity: {Rarity}</div>
+              <img onClick={() => handlePrompt("rarity")} src={editIconDark} alt="" />
             </div>
           ) : (
             <div className={classes.editInput}>

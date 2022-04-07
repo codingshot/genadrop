@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { setConflictRule } from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import Select from '../select/select';
-import cx from './rules.module.css';
+import React, { useState, useContext, useEffect } from "react";
+import { setConflictRule } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import Select from "../select/select";
+import cx from "./rules.module.css";
 
 const Rules = ({ show, setRule }) => {
   const [filteredAttribute, setFilteredAttribute] = useState([]);
@@ -100,10 +100,7 @@ const Rules = ({ show, setRule }) => {
                 <div key={f.layer} className={cx.filteredItem}>
                   <img src={URL.createObjectURL(f.image)} alt="" />
                   <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
-                  <i
-                    onClick={() => handleRemoveAttribute(f)}
-                    className={`${cx.closeIcon} fas fa-times`}
-                  />
+                  <i onClick={() => handleRemoveAttribute(f)} className={`${cx.closeIcon} fas fa-times`} />
                 </div>
               ))}
             </div>
@@ -125,10 +122,7 @@ const Rules = ({ show, setRule }) => {
                 <div key={f.layer} className={cx.filteredItem}>
                   <img src={URL.createObjectURL(f.image)} alt="" />
                   <span>{`{"${f.layer}" : "${f.attr}}"`}</span>
-                  <i
-                    onClick={() => handleRemoveConflict(f)}
-                    className={`${cx.closeIcon} fas fa-times`}
-                  />
+                  <i onClick={() => handleRemoveConflict(f)} className={`${cx.closeIcon} fas fa-times`} />
                 </div>
               ))}
             </div>

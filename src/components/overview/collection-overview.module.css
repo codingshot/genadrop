@@ -13,8 +13,8 @@
 }
 
 .container {
-  -ms-overflow-style: none; 
-  scrollbar-width: none; 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .rules {
@@ -91,7 +91,6 @@
   }
 
   .ruleCardWrapper {
-
     transform: translateX(25%) translateY(3.5em);
   }
 }
@@ -106,7 +105,7 @@
     width: 100%;
 
     transform: translateX(55%) translateY(3.5em);
-  }  
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -114,5 +113,5 @@
     width: 90%;
 
     transform: translateX(5%) translateY(3.5em);
-  }  
+  }
 }

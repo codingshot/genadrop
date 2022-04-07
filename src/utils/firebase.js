@@ -1,6 +1,6 @@
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/firestore';
-import { nanoid } from 'nanoid';
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import { nanoid } from "nanoid";
 
 // const {
 //   getDatabase,
@@ -45,46 +45,31 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
     txId,
     txDate: new Date(),
   };
-  db.collection('transactions')
+  db.collection("transactions")
     .doc(`${assetId}`)
     .set(
       {
         ...updates,
       },
-      { merge: true },
+      { merge: true }
     );
 }
 
-async function writeUserData(
-  owner,
-  collection,
-  fileName,
-  collection_id,
-  priceValue,
-  description,
-  mainnet,
-) {
-  const name = fileName.split('-')[0];
+async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet) {
+  const name = fileName.split("-")[0];
   const updates = {};
   for (let i = 0; i < collection_id.length; i += 1) {
     updates[collection_id[i]] = {
       id: collection_id[i],
       collection: name,
       price: priceValue,
-      chain: 'algo',
+      chain: "algo",
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
-    await recordTransaction(
-      collection_id[i],
-      'Minting',
-      owner,
-      null,
-      null,
-      null,
-    );
+    await recordTransaction(collection_id[i], "Minting", owner, null, null, null);
   }
-  db.collection('collections')
+  db.collection("collections")
     .add({
       name: `${name}`,
       url: `${collection}`,
@@ -95,65 +80,53 @@ async function writeUserData(
     })
     .then(() => {})
     .catch((error) => {
-      console.error('Error', error);
+      console.error("Error", error);
     });
-  db.collection('listed')
+  db.collection("listed")
     .doc(`${owner}`)
     .set(
       {
         ...updates,
       },
-      { merge: true },
+      { merge: true }
     );
 }
 
 async function readNftTransaction(assetId) {
-  const querySnapshot = await db
-    .collection('transactions')
-    .doc(`${assetId}`)
-    .get();
+  const querySnapshot = await db.collection("transactions").doc(`${assetId}`).get();
 
   return Object.values(querySnapshot.data());
 }
 
-async function writeNft(
-  owner,
-  collection,
-  assetId,
-  price,
-  sold,
-  buyer,
-  dateSold,
-  mainnet,
-) {
+async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet) {
   const updates = {};
   updates[assetId] = {
     id: assetId,
     collection: collection || null,
     sold: !!sold,
     Buyer: buyer,
-    chain: 'algo',
+    chain: "algo",
     price,
     dateSold,
     mainnet,
   };
-  db.collection('listed')
+  db.collection("listed")
     .doc(`${owner}`)
     .set(
       {
         ...updates,
       },
-      { merge: true },
+      { merge: true }
     );
   if (!sold) {
-    await recordTransaction(assetId, 'Minting', owner, null, null, null);
+    await recordTransaction(assetId, "Minting", owner, null, null, null);
   }
 
   return true;
 }
 
 async function readAllNft() {
-  const querySnapshot = await db.collection('listed').get();
+  const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
@@ -177,7 +150,7 @@ async function readAllNft() {
 // }
 
 async function readAllUserNft(userAddress) {
-  const querySnapshot = await db.collection('listed').doc(userAddress).get();
+  const querySnapshot = await db.collection("listed").doc(userAddress).get();
   try {
     const res = Object.values(querySnapshot.data());
     return res;
@@ -188,14 +161,12 @@ async function readAllUserNft(userAddress) {
 }
 
 async function readSIngleUserNft(userAddress, assetId) {
-  const querySnapshot = await db.collection('listed').doc(userAddress).get();
-  return Object.values(querySnapshot.data()).find(
-    (asset) => asset.id === assetId,
-  );
+  const querySnapshot = await db.collection("listed").doc(userAddress).get();
+  return Object.values(querySnapshot.data()).find((asset) => asset.id === assetId);
 }
 
 async function readAllCollection(mainnet) {
-  const querySnapshot = await db.collection('collections').get();
+  const querySnapshot = await db.collection("collections").get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
@@ -205,10 +176,7 @@ async function readAllCollection(mainnet) {
 }
 
 async function readUserCollection(userAddress) {
-  const querySnapshot = await db
-    .collection('collections')
-    .where('owner', '==', userAddress)
-    .get();
+  const querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(doc.data());
@@ -217,16 +185,15 @@ async function readUserCollection(userAddress) {
 }
 
 async function readAllSingleNft(mainnet) {
-  const querySnapshot = await db.collection('listed').get();
+  const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  const response = mainnet === null
-    ? res.filter((asset) => asset.collection === null)
-    : res.filter(
-      (asset) => asset.collection === null && asset.mainnet === mainnet,
-    );
+  const response =
+    mainnet === null
+      ? res.filter((asset) => asset.collection === null)
+      : res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
   return response;
 }
 

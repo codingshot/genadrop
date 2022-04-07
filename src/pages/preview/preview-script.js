@@ -1,4 +1,4 @@
-import { getDefaultName, handleImage } from '../../utils';
+import { getDefaultName, handleImage } from "../../utils";
 
 export const isUnique = (attributes, attr, rule) => {
   const parseAttrToRule = attr.map((p) => ({
@@ -13,7 +13,9 @@ export const isUnique = (attributes, attr, rule) => {
   let result;
   for (const rl of rule) {
     result = rl.every((el) => {
-      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) { return true; }
+      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) {
+        return true;
+      }
       return false;
     });
 
@@ -49,7 +51,7 @@ export const createUniqueLayer = async (props) => {
         const { traitTitle, Rarity, image } = traits[randNum];
         attribute.push({
           trait_type: layerTitle,
-          value: traitTitle.replace('.png', ''),
+          value: traitTitle.replace(".png", ""),
           rarity: Rarity,
           image,
         });
@@ -68,14 +70,12 @@ export const createUniqueLayer = async (props) => {
     await promise;
   }
 
-  dispatch(setLoader(''));
+  dispatch(setLoader(""));
   return {
     id,
-    name: `${collectionName} ${getDefaultName(
-      index + 1 + (currentPage * 20 - 20),
-    )}`.trim(),
+    name: `${collectionName} ${getDefaultName(index + 1 + (currentPage * 20 - 20))}`.trim(),
     description: collectionDescription,
-    image: 'image',
+    image: "image",
     attributes: newAttributes,
   };
 };
@@ -87,6 +87,6 @@ export const generateArt = async (props) => {
     images.push(attr.image);
   });
   await handleImage({ images, canvas, image });
-  const imageUrl = canvas.toDataURL('image/webp', 1);
+  const imageUrl = canvas.toDataURL("image/webp", 1);
   return { id: layer.id, imageUrl };
 };

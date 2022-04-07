@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Link, useLocation, useHistory } from 'react-router-dom';
-import ConnectWallet from '../wallet/wallet';
-import classes from './Navbar.module.css';
-import logo from '../../assets/genadrop-logo-mobile.png';
-import drop from '../../assets/drop.svg';
-import closeIcon from '../../assets/icon-close.svg';
-import hamburgerIcon from '../../assets/icon-hamburger.svg';
+import React, { useState } from "react";
+import { Link, useLocation, useHistory } from "react-router-dom";
+import ConnectWallet from "../wallet/wallet";
+import classes from "./Navbar.module.css";
+import logo from "../../assets/genadrop-logo-mobile.png";
+import drop from "../../assets/drop.svg";
+import closeIcon from "../../assets/icon-close.svg";
+import hamburgerIcon from "../../assets/icon-hamburger.svg";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -25,7 +25,7 @@ const Navbar = () => {
         <img className={classes.drop} src={drop} alt="" />
         <img
           onClick={() => {
-            history.push('/');
+            history.push("/");
           }}
           className={classes.logoDesktop}
           src={logo}
@@ -33,52 +33,30 @@ const Navbar = () => {
         />
         <img
           onClick={() => {
-            history.push('/');
+            history.push("/");
           }}
           className={classes.logoMobile}
           src={logo}
           alt=""
         />
       </div>
-      <div
-        className={`${classes.wrapper} ${
-          dropdown ? classes.active : classes.inactive
-        }`}
-      >
+      <div className={`${classes.wrapper} ${dropdown ? classes.active : classes.inactive}`}>
         <br />
         <ul className={classes.navList}>
-          <Link
-            onClick={() => handleSetState({ dropdown: false })}
-            to="/create"
-          >
-            <div
-              className={`${classes.navItem} ${
-                pathname.includes('/create') && classes.active
-              }`}
-            >
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/create">
+            <div className={`${classes.navItem} ${pathname.includes("/create") && classes.active}`}>
               <li>create</li>
               <div className={classes.line} />
             </div>
           </Link>
           <Link onClick={() => handleSetState({ dropdown: false })} to="/mint">
-            <div
-              className={`${classes.navItem} ${
-                pathname.includes('/mint') && classes.active
-              }`}
-            >
+            <div className={`${classes.navItem} ${pathname.includes("/mint") && classes.active}`}>
               <li>mint</li>
               <div className={classes.line} />
             </div>
           </Link>
-          <Link
-            onClick={() => handleSetState({ dropdown: false })}
-            to="/marketplace"
-          >
-            <div
-              className={`${classes.navItem} ${
-                pathname.includes('/marketplace') && classes.active
-              }`}
-            >
+          <Link onClick={() => handleSetState({ dropdown: false })} to="/marketplace">
+            <div className={`${classes.navItem} ${pathname.includes("/marketplace") && classes.active}`}>
               <li>explore</li>
               <div className={classes.line} />
             </div>

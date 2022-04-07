@@ -1,4 +1,4 @@
-import genActionTypes from './gen.types';
+import genActionTypes from "./gen.types";
 import {
   addLayer,
   removeLayer,
@@ -13,7 +13,7 @@ import {
   updateLayer,
   addDescription,
   deleteRule,
-} from './gen.utils';
+} from "./gen.utils";
 
 export const INITIAL_STATE = {
   layers: [],
@@ -21,22 +21,22 @@ export const INITIAL_STATE = {
   nftLayers: [],
   combinations: 0,
   mintAmount: 0,
-  outputFormat: 'ipfs',
-  mintInfo: '',
-  collectionName: '',
-  collectionDescription: '',
+  outputFormat: "ipfs",
+  mintInfo: "",
+  collectionName: "",
+  collectionDescription: "",
   isLoading: false,
   currentDnaLayers: null,
-  chainId: '',
-  account: '',
+  chainId: "",
+  account: "",
   connector: null,
   isRule: false,
   rule: [],
   collections: {},
   singleNfts: [],
-  notification: '',
-  clipboardMessage: '',
-  loaderMessage: '',
+  notification: "",
+  clipboardMessage: "",
+  loaderMessage: "",
   didMount: false,
   mainnet: null,
 };

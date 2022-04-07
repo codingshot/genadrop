@@ -1,5 +1,5 @@
-import React, { useReducer, createContext } from 'react';
-import { genReducer, INITIAL_STATE } from './gen.reducer';
+import React, { useReducer, createContext } from "react";
+import { genReducer, INITIAL_STATE } from "./gen.reducer";
 
 export const GenContext = createContext();
 

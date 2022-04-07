@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { useRouteMatch, Link } from 'react-router-dom';
-import classes from './listed.module.css';
+import React, { useEffect, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import { useRouteMatch, Link } from "react-router-dom";
+import classes from "./listed.module.css";
 
 const Listed = ({ location }) => {
-  const { image_url = 'no image found!' } = location.state || {};
+  const { image_url = "no image found!" } = location.state || {};
 
   const {
     params: { userId },
@@ -54,16 +54,16 @@ const Listed = ({ location }) => {
 
   const icons = [
     {
-      icon: '/assets/facebook-clear.svg',
-      link: 'https://www.facebook.com/mpa',
+      icon: "/assets/facebook-clear.svg",
+      link: "https://www.facebook.com/mpa",
     },
     {
-      icon: '/assets/telegram.svg',
-      link: 'https://t.co/XUHAJEPLoA',
+      icon: "/assets/telegram.svg",
+      link: "https://t.co/XUHAJEPLoA",
     },
     {
-      icon: '/assets/twitter-clear.svg',
-      link: 'https://twitter.com/minorityprogram',
+      icon: "/assets/twitter-clear.svg",
+      link: "https://twitter.com/minorityprogram",
     },
   ];
   return (
@@ -80,11 +80,13 @@ const Listed = ({ location }) => {
 
         <div className={classes.detailContent}>
           <div className={classes.priceDescription}>
-            Enter your email address in your account settings so we can let you
-            know, when your listing sells or receives offers
+            Enter your email address in your account settings so we can let you know, when your listing sells or
+            receives offers
           </div>
           <Link to={`/me/${userId}/settings`}>
-            <button type="button" className={classes.buy}>Profile Settings</button>
+            <button type="button" className={classes.buy}>
+              Profile Settings
+            </button>
           </Link>
         </div>
       </div>
@@ -104,7 +106,9 @@ const Listed = ({ location }) => {
           ))}
         </div>
       </div>
-      <button type="button" className={classes.view}>View Item</button>
+      <button type="button" className={classes.view}>
+        View Item
+      </button>
     </div>
   );
 };

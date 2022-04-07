@@ -38,7 +38,7 @@
   color: var(--main-accent);
 }
 
-.attributeFilter .title  {
+.attributeFilter .title {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -117,7 +117,7 @@
   width: 100%;
 }
 
-.priceFilter button{
+.priceFilter button {
   background: var(--main-accent);
   color: white;
   padding: 1em;
@@ -237,15 +237,19 @@
   padding: 1em;
   transition: all 300ms;
 }
+.valuesOfAttr {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .sidebar2 img:hover {
   background: var(--main-hover);
 }
 
 @media screen and (max-width: 768px) {
-  
-  .sidebar, .sidebar2 {
+  .sidebar,
+  .sidebar2 {
     display: none;
   }
-
 }

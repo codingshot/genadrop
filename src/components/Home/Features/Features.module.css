@@ -11,7 +11,7 @@
   font-weight: 500;
 }
 
-.heading span{
+.heading span {
   color: var(--main-accent);
 }
 
@@ -60,7 +60,6 @@
   }
 }
 
-
 @media screen and (max-width: 1200px) {
   .heading {
     font-size: calc(1rem + 2vmin);
@@ -86,7 +85,7 @@
   }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
   .main > img {
     width: 100%;
     margin-bottom: 1rem;
