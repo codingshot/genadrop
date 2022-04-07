@@ -53,7 +53,7 @@ function ConnectWallet({ setToggleNav }) {
       options: {
         rpc: {
           137: "https://polygon-mumbai.g.alchemy.com/v2/sjbvWTjbyKXxvfJ1HkHIdEDHc2u8wNym",
-          4160: "https://node.testnet.algoexplorerapi.io",
+          4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
         },
         rpcUrl: "",
       },
