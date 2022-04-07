@@ -1,6 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import classes from './logo.module.css';
+import React from "react";
+import { Link } from "react-router-dom";
+import classes from "./logo.module.css";
 
 const Logo = () => (
   <div className={classes.container}>

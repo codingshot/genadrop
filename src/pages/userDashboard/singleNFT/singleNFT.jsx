@@ -1,17 +1,15 @@
-import React, {
-  useContext, useEffect, useState, useRef,
-} from 'react';
-import Skeleton from 'react-loading-skeleton';
-import { CopyBlock, dracula } from 'react-code-blocks';
-import axios from 'axios';
-import CopyToClipboard from 'react-copy-to-clipboard';
-import { useRouteMatch } from 'react-router-dom';
-import { GenContext } from '../../../gen-state/gen.context';
-import { getSingleNftDetails } from '../../../utils';
-import classes from './singleNFT.module.css';
-import Graph from '../../../components/Nft-details/graph/graph';
-import DropItem from '../../../components/Nft-details/dropItem/dropItem';
-import { PurchaseNft } from '../../../utils/arc_ipfs';
+import React, { useContext, useEffect, useState, useRef } from "react";
+import Skeleton from "react-loading-skeleton";
+import { CopyBlock, dracula } from "react-code-blocks";
+import axios from "axios";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useRouteMatch } from "react-router-dom";
+import { GenContext } from "../../../gen-state/gen.context";
+import { getSingleNftDetails } from "../../../utils";
+import classes from "./singleNFT.module.css";
+import Graph from "../../../components/Nft-details/graph/graph";
+import DropItem from "../../../components/Nft-details/dropItem/dropItem";
+import { PurchaseNft } from "../../../utils/arc_ipfs";
 
 const SingleNFT = () => {
   const { account, connector } = useContext(GenContext);
@@ -25,7 +23,7 @@ const SingleNFT = () => {
 
   const [state, setState] = useState({
     nftDetails: null,
-    dropdown: '',
+    dropdown: "",
     algoPrice: 0,
     isLoading: true,
     transactionHistory: null,
@@ -49,53 +47,44 @@ const SingleNFT = () => {
       }
 
       // Bind the event listener
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
         // Unbind the event listener on clean up
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [ref]);
   }
   useOutsideAlerter(wrapperRef);
 
-  const {
-    dropdown,
-    nftDetails,
-    isLoading,
-    showSocial,
-    isCopied,
-  } = state;
+  const { dropdown, nftDetails, isLoading, showSocial, isCopied } = state;
 
   useEffect(() => {
     const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
     (async function getNftDetails() {
       const nftdetails = await getSingleNftDetails(nft);
       handleSetState({ nftDetails: nftdetails, isLoading: false });
-    }());
+    })();
 
-    axios
-      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
-      .then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount });
-      });
+    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+      handleSetState({ algoPrice: res.data.data.amount });
+    });
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => {
-  }, [nftDetails]);
+  useEffect(() => {}, [nftDetails]);
 
   const icons = [
     {
-      icon: '/assets/facebook.svg',
-      link: 'https://www.facebook.com',
+      icon: "/assets/facebook.svg",
+      link: "https://www.facebook.com",
     },
     {
-      icon: '/assets/instagram.svg',
-      link: 'https://www.instagram.com',
+      icon: "/assets/instagram.svg",
+      link: "https://www.instagram.com",
     },
     {
-      icon: '/assets/twitter.svg',
-      link: 'https://www.twitter.com/mpa',
+      icon: "/assets/twitter.svg",
+      link: "https://www.twitter.com/mpa",
     },
   ];
 
@@ -135,14 +124,14 @@ const SingleNFT = () => {
   }
 
   const description = {
-    icon: '/assets/details.png',
-    title: 'Description',
+    icon: "/assets/details.png",
+    title: "Description",
     content: `${nftDetails.description}`,
   };
 
   const graph = {
-    icon: '/assets/details.png',
-    title: 'Price History',
+    icon: "/assets/details.png",
+    title: "Price History",
     content: <Graph details="" />,
   };
 
@@ -158,34 +147,28 @@ const SingleNFT = () => {
   );
 
   const attributesItem = {
-    icon: '/assets/description-icon.png',
-    title: 'Attributes',
+    icon: "/assets/description-icon.png",
+    title: "Attributes",
     content: attributeContent(),
   };
 
   const details = () => (
     <div className={classes.detailContent}>
       <div className={classes.row}>
-        Mint Address
-        {' '}
-        <span>sdfgs</span>
+        Mint Address <span>sdfgs</span>
       </div>
       <div className={classes.row}>
-        Token Address
-        {' '}
-        <span>sdgds</span>
+        Token Address <span>sdgds</span>
       </div>
       <div className={classes.row}>
-        Owner
-        {' '}
-        <span>sdgds</span>
+        Owner <span>sdgds</span>
       </div>
     </div>
   );
 
   const detailsItem = {
-    icon: '/assets/description-icon.png',
-    title: 'Details',
+    icon: "/assets/description-icon.png",
+    title: "Details",
     content: details(),
   };
 
@@ -271,7 +254,11 @@ const SingleNFT = () => {
             <div className={classes.btns}>
               {nftDetails.sold ? (
                 <>
-                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
+                  <button
+                    type="button"
+                    className={classes.sold}
+                    disabled={nftDetails.sold}
+                  >
                     <img src="/assets/wallet-icon.png" alt="" />
                     Listed!
                   </button>
@@ -350,12 +337,7 @@ const SingleNFT = () => {
       {showSocial ? (
         <div ref={wrapperRef} className={classes.share}>
           <div className={classes.copy}>
-            <input
-              type="text"
-              value={url}
-              readOnly
-              className={classes.textArea}
-            />
+            <input type="text" value={url} readOnly className={classes.textArea} />
             <CopyToClipboard text={url} onCopy={onCopyText}>
               <div className={classes.copy_area}>
                 {!isCopied ? (
@@ -365,11 +347,7 @@ const SingleNFT = () => {
                     alt=""
                   />
                 ) : (
-                  <img
-                    className={classes.shareicon}
-                    src="/assets/copied.svg"
-                    alt=""
-                  />
+                  <img className={classes.shareicon} src="/assets/copied.svg" alt="" />
                 )}
               </div>
             </CopyToClipboard>
@@ -388,7 +366,7 @@ const SingleNFT = () => {
           </div>
         </div>
       ) : (
-        ''
+        ""
       )}
     </div>
   );

@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import classes from './Filter.module.css';
-import arrowIconLeft from '../../../assets/icon-arrow-left.svg';
-import arrowIconRight from '../../../assets/icon-arrow-right.svg';
-import filterIcon from '../../../assets/icon-filter.svg';
-import dropdownIcon from '../../../assets/icon-dropdown.svg';
-import Dropdown from '../Dropdown/Dropdown';
-import { capitalize } from 'lodash';
+import React, { useEffect, useState } from "react";
+import classes from "./Filter.module.css";
+import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import arrowIconRight from "../../../assets/icon-arrow-right.svg";
+import filterIcon from "../../../assets/icon-filter.svg";
+import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import Dropdown from "../Dropdown/Dropdown";
 
 const Filter = ({ attributes, handleFilter, filterToDelete }) => {
   const [state, setState] = useState({
     toggleFilter: true,
     toggleAttribute: true,
     toggleLayer: -1,
-    lowestPrice: '0',
-    highestPrice: '0',
+    lowestPrice: "0",
+    highestPrice: "0",
     filter: {
       priceRange: { min: 0, max: 0 },
       onlyListed: false,
@@ -63,7 +62,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
 
   const isSelected = (val) => {
     const res = filter.attributes.find(
-      (attr) => JSON.stringify(attr) === JSON.stringify(val),
+      (attr) => JSON.stringify(attr) === JSON.stringify(val)
     );
     return !!res;
   };
@@ -73,7 +72,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     if (result) {
       const strVal = JSON.stringify(val);
       const newAttributes = filter.attributes.filter(
-        (attr) => JSON.stringify(attr) !== strVal,
+        (attr) => JSON.stringify(attr) !== strVal
       );
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     } else {
@@ -91,7 +90,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     } else {
       const strVal = JSON.stringify(filterToDelete);
       const newAttributes = filter.attributes.filter(
-        (attr) => JSON.stringify(attr) !== strVal,
+        (attr) => JSON.stringify(attr) !== strVal
       );
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     }
@@ -130,7 +129,9 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                   <div>
                     <input
                       value={lowestPrice}
-                      onChange={(event) => handleSetState({ lowestPrice: event.target.value })}
+                      onChange={(event) =>
+                        handleSetState({ lowestPrice: event.target.value })
+                      }
                       type="number"
                     />
                   </div>
@@ -138,7 +139,9 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                   <div>
                     <input
                       value={highestPrice}
-                      onChange={(event) => handleSetState({ highestPrice: event.target.value })}
+                      onChange={(event) =>
+                        handleSetState({ highestPrice: event.target.value })
+                      }
                       type="number"
                     />
                   </div>
@@ -151,13 +154,15 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                 <div
                   className={`${classes.attribute} ${toggleAttribute && classes.active}`}
                 >
-                  {attributes
-                    && attributes.map((attr, idx) => (
+                  {attributes &&
+                    attributes.map((attr, idx) => (
                       <div key={idx}>
                         <div
-                          onClick={() => handleSetState({
-                            toggleLayer: idx === toggleLayer ? -1 : idx,
-                          })}
+                          onClick={() =>
+                            handleSetState({
+                              toggleLayer: idx === toggleLayer ? -1 : idx,
+                            })
+                          }
                           key={idx}
                           className={classes.layerWrapper}
                         >
@@ -174,11 +179,13 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                           {attr.value.map((val, idx) => (
                             <div
                               key={idx}
-                              onClick={() => handleFilterAttribute({
-                                trait_type: attr.trait_type,
-                                value: val,
-                                rarity: attr.rarity[idx],
-                              })}
+                              onClick={() =>
+                                handleFilterAttribute({
+                                  trait_type: attr.trait_type,
+                                  value: val,
+                                  rarity: attr.rarity[idx],
+                                })
+                              }
                               className={classes.value}
                             >
                               <span className={classes.statusIcon}>
@@ -187,8 +194,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                   value: val,
                                   rarity: attr.rarity[idx],
                                 })
-                                  ? '+'
-                                  : '-'}
+                                  ? "+"
+                                  : "-"}
                               </span>
                               {/* percentage of each value in an attribute */}
                               <div className={classes.valuesOfAttr}>

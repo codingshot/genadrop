@@ -20,22 +20,47 @@
 }
 
 .container.inactive {
-  animation: close 250ms forwards cubic-bezier(0,0,0,1.15);
+  animation: close 250ms forwards cubic-bezier(0, 0, 0, 1.15);
 }
 
 @keyframes close {
-  0% {width: 64em; height: 30em; overflow: hidden; visibility: visible;}
-  100%{width: 0; height: 0; overflow: hidden; visibility: hidden;}
+  0% {
+    width: 64em;
+    height: 30em;
+    overflow: hidden;
+    visibility: visible;
+  }
+  100% {
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    visibility: hidden;
+  }
 }
 
 .container.active {
-  animation: open 250ms forwards cubic-bezier(0,0,0,1.15);
+  animation: open 250ms forwards cubic-bezier(0, 0, 0, 1.15);
 }
 
 @keyframes open {
-  0% {width: 0; height: 0; overflow: auto; visibility: hidden;}
-  40% {width: 48em; height: 24em; overflow: auto; visibility: hidden;}
-  100%{width: 72em; height: 30em; overflow: auto; visibility: visible;}
+  0% {
+    width: 0;
+    height: 0;
+    overflow: auto;
+    visibility: hidden;
+  }
+  40% {
+    width: 48em;
+    height: 24em;
+    overflow: auto;
+    visibility: hidden;
+  }
+  100% {
+    width: 72em;
+    height: 30em;
+    overflow: auto;
+    visibility: visible;
+  }
 }
 
 .title {

@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import classes from './text-editor.module.css';
-import editIcon from '../../assets/icon-edit.svg';
-import markIcon from '../../assets/icon-mark.svg';
+import React, { useState } from "react";
+import classes from "./text-editor.module.css";
+import editIcon from "../../assets/icon-edit.svg";
+import markIcon from "../../assets/icon-mark.svg";
 
 const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const [state, setState] = useState({
-    value: '',
+    value: "",
     editor: false,
   });
 
@@ -18,7 +18,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     submitHandler(value);
-    handleSetState({ editor: false, value: '' });
+    handleSetState({ editor: false, value: "" });
   };
 
   return (

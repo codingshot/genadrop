@@ -1,7 +1,7 @@
 .container {
   width: 14em;
   cursor: pointer;
-  position:  relative;
+  position: relative;
   border-radius: 0.25em;
   overflow: hidden;
   transition: all 0.2s;
@@ -35,7 +35,7 @@
   background: var(--card-bg1);
 }
 
-.imageContainer:hover .image{
+.imageContainer:hover .image {
   transform: scale(1.01);
 }
 
@@ -45,7 +45,7 @@
 
 .action {
   width: 100%;
-  top: 0;  
+  top: 0;
   left: 0;
   background: var(--main-bg);
   display: flex;
@@ -68,7 +68,7 @@
   bottom: 0;
   left: 0;
   color: black;
-  background:var(--main-bg);
+  background: var(--main-bg);
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -100,7 +100,7 @@
 }
 
 .reset {
- background: var(--main-accent);
+  background: var(--main-accent);
 }
 
 .reset * {
@@ -108,8 +108,12 @@
 }
 
 @keyframes bounce {
-  from{transform: translateY(4px);}
-  to{transform: translateY(0);}
+  from {
+    transform: translateY(4px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .details input {

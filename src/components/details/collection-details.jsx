@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { GenContext } from '../../gen-state/gen.context';
-import classes from './collection-details.module.css';
+import React, { useContext, useEffect, useState } from "react";
+import { GenContext } from "../../gen-state/gen.context";
+import classes from "./collection-details.module.css";
 
 const CollectionDetails = () => {
   const { preview, layers } = useContext(GenContext);
@@ -29,11 +29,7 @@ const CollectionDetails = () => {
         <p key={index}>
           <span>{`[${layerTitle}]`}</span>
           <span>{traitTitle}</span>
-          <span>
-            Rarity
-            {' '}
-            {Rarity}
-          </span>
+          <span>Rarity {Rarity}</span>
         </p>
       ))}
     </div>

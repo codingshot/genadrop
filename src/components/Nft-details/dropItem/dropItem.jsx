@@ -1,35 +1,34 @@
-import React from 'react';
-import classes from './dropItem.module.css';
+import React from "react";
+import classes from "./dropItem.module.css";
 
-const DropItem = ({
-  dropdown,
-  id,
-  handleSetState,
-  item: { icon, title, content },
-}) => {
+const DropItem = ({ dropdown, id, handleSetState, item: { icon, title, content } }) => {
   const handleDropdown = () => {
-    if (String(id) === dropdown) return handleSetState({ dropdown: '' });
-    handleSetState({ dropdown: String(id) });
+    if (dropdown.includes(String(id))) {
+      const filteredIDs = dropdown.filter((activeID) => String(id) !== activeID);
+      handleSetState({ dropdown: filteredIDs });
+    } else {
+      const updatedDropdown = dropdown;
+      updatedDropdown.push(String(id));
+      handleSetState({ dropdown: updatedDropdown });
+    }
   };
 
   return (
     <>
       <div
         className={
-          dropdown === String(id)
+          dropdown.includes(String(id))
             ? `${classes.questionwrapper} ${classes.active}`
             : classes.questionwrapper
         }
       >
         <div className={classes.question} onClick={handleDropdown}>
           <h3>
-            <img src={icon} alt="" />
-            {' '}
-            {title}
+            <img src={icon} alt="" /> {title}
           </h3>
           <button type="button">
             <svg
-              className={dropdown === String(id) ? classes.active : ''}
+              className={dropdown.includes(String(id)) ? classes.active : ""}
               viewBox="0 0 320 512"
               width="100"
               title="angle-down"
@@ -41,7 +40,7 @@ const DropItem = ({
       </div>
       <div
         className={
-          dropdown === String(id)
+          dropdown.includes(String(id))
             ? `${classes.answer} ${classes.active}`
             : classes.answer
         }

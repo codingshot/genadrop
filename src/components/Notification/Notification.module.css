@@ -47,11 +47,19 @@
 }
 
 @keyframes slide-in {
-  from{transform: translateX(110%);}
-  to{transform: translateX(0);}
+  from {
+    transform: translateX(110%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 
 @keyframes slide-out {
-  from{transform: translateX(0);}
-  to{transform: translateX(100%);}
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }

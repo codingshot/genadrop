@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import axios from 'axios';
-import classes from './collectionsCard.module.css';
+import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import classes from "./collectionsCard.module.css";
 
 const CollectionsCard = ({ collection }) => {
-  const {
-    name, price, description, image_url,
-  } = collection;
+  const { name, price, description, image_url } = collection;
   const history = useHistory();
 
   const [state, setState] = useState({ algoPrice: 0 });
@@ -17,16 +15,13 @@ const CollectionsCard = ({ collection }) => {
   };
 
   useEffect(() => {
-    axios
-      .get('https://api.coinbase.com/v2/prices/ALGO-USD/spot')
-      .then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount * price });
-      });
+    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+      handleSetState({ algoPrice: res.data.data.amount * price });
+    });
     document.documentElement.scrollTop = 0;
   }, []);
 
   return (
-
     <div
       onClick={() => history.push(`/marketplace/collections/${name}`)}
       className={classes.card}
@@ -42,25 +37,14 @@ const CollectionsCard = ({ collection }) => {
         </div>
         <div className={classes.name}>{name}</div>
         <div className={classes.description}>
-
-          {description.length < 100
-            ? description
-            : `${description.substring(0, 100)}...`}
+          {description.length < 100 ? description : `${description.substring(0, 100)}...`}
         </div>
         <div className={classes.wrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOORPRICE</div>
             <div className={classes.price}>
-              {price}
-              {' '}
-              <span className={classes.chain}>Algo</span>
-              {' '}
-              <span className={classes.usdPrice}>
-                (
-                {algoPrice.toFixed(2)}
-                {' '}
-                USD)
-              </span>
+              {price} <span className={classes.chain}>Algo</span>{" "}
+              <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
             </div>
           </div>
         </div>

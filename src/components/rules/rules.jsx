@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { setConflictRule } from '../../gen-state/gen.actions';
-import { GenContext } from '../../gen-state/gen.context';
-import Select from '../select/select';
-import cx from './rules.module.css';
+import React, { useState, useContext, useEffect } from "react";
+import { setConflictRule } from "../../gen-state/gen.actions";
+import { GenContext } from "../../gen-state/gen.context";
+import Select from "../select/select";
+import cx from "./rules.module.css";
 
 const Rules = ({ show, setRule }) => {
   const [filteredAttribute, setFilteredAttribute] = useState([]);
@@ -22,7 +22,9 @@ const Rules = ({ show, setRule }) => {
   const handleSetAttribute = (data) => {
     const isUnique = filteredAttribute.find((d) => d.layer === data.layer);
     if (isUnique) {
-      const newFiltered = filteredAttribute.map((d) => (d.layer === data.layer ? data : d));
+      const newFiltered = filteredAttribute.map((d) =>
+        d.layer === data.layer ? data : d
+      );
       setFilteredAttribute(newFiltered);
     } else {
       setFilteredAttribute([...filteredAttribute, data]);

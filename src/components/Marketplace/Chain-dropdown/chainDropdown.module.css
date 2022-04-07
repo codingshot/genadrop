@@ -42,13 +42,14 @@
   border-top-left-radius: 0.25em;
   border-top-right-radius: 0.25em;
   cursor: pointer;
+  height: 100%;
 }
 
 .selectedChain:hover {
   background: rgb(240, 240, 240);
 }
 
-.selectedChain > div{
+.selectedChain > div {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -89,7 +90,7 @@
   gap: 1em;
 }
 
-.chainDropdown .dropdown >div:hover {
+.chainDropdown .dropdown > div:hover {
   background: rgb(240, 240, 240);
 }
 

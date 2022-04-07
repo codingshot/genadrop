@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './userInput.module.css';
+import React from "react";
+import classes from "./userInput.module.css";
 
 const UserInput = (props) => (
   <div>

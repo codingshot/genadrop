@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './Feature.module.css';
+import React from "react";
+import classes from "./Feature.module.css";
 
 const Feature = ({ item }) => {
   const { icon, title, description } = item;

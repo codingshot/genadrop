@@ -1,9 +1,9 @@
-import React from 'react';
-import classes from './styles.module.css';
-import createIcon from '../../../assets/create-icon.png';
-import mintIcon from '../../../assets/mint-icon.png';
-import walletIcon from '../../../assets/wallet-icon.png';
-import listIcon from '../../../assets/list-icon.png';
+import React from "react";
+import classes from "./styles.module.css";
+import createIcon from "../../../assets/create-icon.png";
+import mintIcon from "../../../assets/mint-icon.png";
+import walletIcon from "../../../assets/wallet-icon.png";
+import listIcon from "../../../assets/list-icon.png";
 
 const Demo = () => (
   <div className={classes.container}>
@@ -18,9 +18,7 @@ const Demo = () => (
             <img src={createIcon} alt="create" />
             <span>create your collection</span>
           </div>
-          <div className={classes.description}>
-            Generate and design your collection
-          </div>
+          <div className={classes.description}>Generate and design your collection</div>
           <div className={classes.label}>1</div>
         </div>
         <div className={classes.card}>
@@ -50,13 +48,12 @@ const Demo = () => (
             <span>List Them for sale</span>
           </div>
           <div className={classes.description}>
-            Choose between auctions, fixed-price listings, and declining-price
-            listings. You choose how you want to sell your NFTs
+            Choose between auctions, fixed-price listings, and declining-price listings.
+            You choose how you want to sell your NFTs
           </div>
           <div className={classes.label}>4</div>
         </div>
       </div>
-
     </div>
   </div>
 );

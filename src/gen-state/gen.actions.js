@@ -1,4 +1,4 @@
-import genActionTypes from './gen.types';
+import genActionTypes from "./gen.types";
 
 export const orderLayers = (layers) => ({
   type: genActionTypes.ORDER_LAYERS,
