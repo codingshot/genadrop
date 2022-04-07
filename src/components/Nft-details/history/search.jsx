@@ -17,6 +17,7 @@ class Search extends React.Component {
 
   render() {
     let records = this.props.data;
+
     const searchString = this.state.search.trim().toLowerCase();
 
     if (searchString.length > 0) {

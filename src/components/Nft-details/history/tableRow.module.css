@@ -24,3 +24,7 @@ tr img {
   background-color: rgba(0, 153, 135, 0.12);
   padding: 8px;
 }
+
+.transaction:hover{
+  cursor: pointer;
+}

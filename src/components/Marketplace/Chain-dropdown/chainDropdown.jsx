@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import classes from "./chainDropdown.module.css";
 import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
@@ -8,88 +7,58 @@ import celoIcon from "../../../assets/icon-celo.svg";
 import dropdownIcon from "../../../assets/icon-dropdown.svg";
 
 const chainIcon = {
-  polygon: polygonIcon,
-  algorand: algoIcon,
-  near: nearIcon,
-  celo: celoIcon,
+  Polygon: polygonIcon,
+  Algorand: algoIcon,
+  Near: nearIcon,
+  Celo: celoIcon,
 };
 
 const ChainDropdown = ({ onChainFilter }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
-    chain: "all",
+    chain: "All Chains",
   });
 
   const { toggleChainFilter, chain } = state;
 
-  const location = useLocation();
-
   const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
+    setState((state) => ({ ...state, ...payload }));
   };
 
   useEffect(() => {
-    const { search } = location;
-    const name = new URLSearchParams(search).get("chain");
-    if (name) {
-      handleSetState({ chain: name });
-    }
-  }, []);
+    onChainFilter(chain);
+  }, [chain]);
 
-  const chains = [
-    {
-      id: 1,
-      name: "Algorand",
-      img: algoIcon,
-    },
-    {
-      id: 2,
-      name: "Polygon",
-      img: polygonIcon,
-    },
-    {
-      id: 3,
-      name: "Near",
-      img: nearIcon,
-    },
-    {
-      id: 4,
-      name: "Celo",
-      img: celoIcon,
-    },
-  ];
-  const chainHandler = (name) => {
-    onChainFilter(name);
-    handleSetState({ chain: name, toggleChainFilter: false });
-  };
   return (
     <div className={classes.chainDropdown}>
-      <div
-        onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter })}
-        className={classes.selectedChain}
-      >
+      <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter })} className={classes.selectedChain}>
         <div>
-          {chainIcon[chain.toLowerCase()] && (
-            <img src={chainIcon[chain.toLowerCase()]} alt={chain.toLowerCase()} />
-          )}
-          <span>{chain === "all" ? "All Blockchains" : chain}</span>
+          <img src={chainIcon[chain]} alt="" />
+          <span>{chain}</span>
         </div>
-        <img
-          src={dropdownIcon}
-          alt="dropdown-indicator"
-          className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`}
-        />
+        <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`} />
       </div>
       <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
-        <div onClick={() => chainHandler("all")}>
-          <span>All Blockchains</span>
+        <div onClick={() => handleSetState({ chain: "All Chains", toggleChainFilter: false })}>
+          <img src="" alt="" />
+          <span>All Chains</span>
         </div>
-        {chains.map((chainE) => (
-          <div id={chainE.id} onClick={() => chainHandler(chainE.name)}>
-            <img src={chainE.img} alt={chainE.name} />
-            <span>{chainE.name}</span>
-          </div>
-        ))}
+        <div onClick={() => handleSetState({ chain: "Algorand", toggleChainFilter: false })}>
+          <img src={chainIcon.Algorand} alt="" />
+          <span>Algorand</span>
+        </div>
+        <div onClick={() => handleSetState({ chain: "Polygon", toggleChainFilter: false })}>
+          <img src={chainIcon.Polygon} alt="" />
+          <span>Polygon</span>
+        </div>
+        <div onClick={() => handleSetState({ chain: "Near", toggleChainFilter: false })}>
+          <img src={chainIcon.Near} alt="" />
+          <span>Near</span>
+        </div>
+        <div onClick={() => handleSetState({ chain: "Celo", toggleChainFilter: false })}>
+          <img src={chainIcon.Celo} alt="" />
+          <span>Celo</span>
+        </div>
       </div>
     </div>
   );

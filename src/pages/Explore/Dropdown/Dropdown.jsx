@@ -13,11 +13,7 @@ const Dropdown = ({ children, title }) => {
           <img src={attributeFilterIcon} alt="" />
           <div>{title}</div>
         </div>
-        <img
-          className={`${classes.dropdownIcon} ${dropdown && classes.active}`}
-          src={dropdownIcon}
-          alt=""
-        />
+        <img className={`${classes.dropdownIcon} ${dropdown && classes.active}`} src={dropdownIcon} alt="" />
       </div>
       <div className={`${classes.content} ${dropdown && classes.active}`}>{children}</div>
     </div>

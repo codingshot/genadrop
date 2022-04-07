@@ -100,10 +100,7 @@ const downloadCallback = async (props) => {
       zip.file(`${data.name}.json`, JSON.stringify(data, null, "\t"));
     });
   } else {
-    zip.file(
-      "metadata.json",
-      JSON.stringify(await getIpfsFormat(value, dispatch, setLoader, id), null, "\t")
-    );
+    zip.file("metadata.json", JSON.stringify(await getIpfsFormat(value, dispatch, setLoader, id), null, "\t"));
   }
   for (let i = 0; i < value.length; i += 1) {
     const promise = new Promise((resolve) => {
@@ -135,11 +132,7 @@ export const handleDownload = async (input) => {
   }
   const paginated = paginate(value, 1000);
   const index = Object.keys(paginated).length;
-  dispatch(
-    setNotification(
-      `your asset will be downloaded in ${index} ${index === 1 ? "batch" : "batches"}`
-    )
-  );
+  dispatch(setNotification(`your asset will be downloaded in ${index} ${index === 1 ? "batch" : "batches"}`));
   for (let i = 1; i <= index; i += 1) {
     await downloadCallback({ ...input, id: i, value: paginated[i] });
   }

@@ -22,34 +22,21 @@ const PriceDropdown = ({ onPriceFilter }) => {
 
   return (
     <div className={classes.priceDropdown}>
-      <div
-        onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })}
-        className={classes.selectedPrice}
-      >
+      <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
         Price
         <div className={classes.priceInfo}>
           {priceFilter === "low" ? <span>Low to High</span> : <span>High to Low</span>}
-          <img
-            src={dropdownIcon}
-            alt=""
-            className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`}
-          />
+          <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
         </div>
       </div>
       <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-        <div
-          onClick={() => handleSetState({ priceFilter: "low", togglePriceFilter: false })}
-        >
+        <div onClick={() => handleSetState({ priceFilter: "low", togglePriceFilter: false })}>
           price
           <div className={classes.priceInfo}>
             <span>Low to High</span> <img src={arrowUp} alt="" />
           </div>
         </div>
-        <div
-          onClick={() =>
-            handleSetState({ priceFilter: "high", togglePriceFilter: false })
-          }
-        >
+        <div onClick={() => handleSetState({ priceFilter: "high", togglePriceFilter: false })}>
           price
           <div className={classes.priceInfo}>
             <span>High to Low</span>

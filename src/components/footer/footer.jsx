@@ -56,12 +56,7 @@ const Footer = () => (
             <img src={logo} alt="" />
           </a>
           <div className={classes.socialIcons}>
-            <a
-              className={classes.icon}
-              href="https://discord.gg/4vdtmQqz6d"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a className={classes.icon} href="https://discord.gg/4vdtmQqz6d" target="_blank" rel="noopener noreferrer">
               <img src={discordIcon} alt="Minority Programmers Discord" />
             </a>
 
@@ -98,12 +93,7 @@ const Footer = () => (
             <div key={link.id} className={classes.links}>
               <div className={classes.title}>{link.title}</div>
               {link.content.map((linkE) => (
-                <a
-                  href={linkE.link}
-                  target="_blank"
-                  key={linkE.id}
-                  rel="noopener noreferrer"
-                >
+                <a href={linkE.link} target="_blank" key={linkE.id} rel="noopener noreferrer">
                   {linkE.name}
                 </a>
               ))}
@@ -114,11 +104,7 @@ const Footer = () => (
     </div>
     <div className={classes.bottom}>
       <div className={classes.wrapper}>
-        <a
-          href="https://www.minorityprogrammers.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href="https://www.minorityprogrammers.com/" target="_blank" rel="noopener noreferrer">
           <div className={classes.build}>
             Built with <span>&#x2764;</span> by the Minority Programmers Association
           </div>

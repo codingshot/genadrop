@@ -73,8 +73,8 @@ const Listed = () => {
 
         <div className={classes.detailContent}>
           <div className={classes.priceDescription}>
-            Enter your email address in your account settings so we can let you know, when
-            your listing sells or receives offers
+            Enter your email address in your account settings so we can let you know, when your listing sells or
+            receives offers
           </div>
           <button type="button" className={classes.buy}>
             Profile Settings

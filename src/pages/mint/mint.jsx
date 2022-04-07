@@ -109,9 +109,8 @@ const Mint = () => {
               }
             >
               <div className={classes["col-tooltip"]}>
-                A collection is a rendered batch of generative images that the GenaDrop
-                create app has downloaded as a .ZIP folder with accompanying metadata and
-                all individual images as, PNGs
+                A collection is a rendered batch of generative images that the GenaDrop create app has downloaded as a
+                .ZIP folder with accompanying metadata and all individual images as, PNGs
               </div>
             </Popup>
             to create NFT(s)

@@ -66,13 +66,7 @@ const Header = ({ collection, getHeight }) => {
               <span className={classes.address}>
                 <Copy
                   message={owner}
-                  placeholder={
-                    owner &&
-                    `${owner.substring(0, 5)}...${owner.substring(
-                      owner.length - 4,
-                      owner.length
-                    )}`
-                  }
+                  placeholder={owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`}
                 />
               </span>
             </div>

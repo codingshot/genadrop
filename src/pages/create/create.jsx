@@ -13,10 +13,7 @@ const Create = () => {
 
   return (
     <div className={classes.container}>
-      <div
-        onClick={() => setGuide(true)}
-        className={`${classes.iconContainer} ${!toggleGuide && classes.active}`}
-      >
+      <div onClick={() => setGuide(true)} className={`${classes.iconContainer} ${!toggleGuide && classes.active}`}>
         <img className={classes.icon} src={iconHelp} alt="" />
       </div>
       <CreatePageUseGuide toggleGuide={toggleGuide} setGuide={setGuide} />

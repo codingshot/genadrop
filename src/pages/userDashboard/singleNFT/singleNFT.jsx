@@ -68,7 +68,6 @@ const SingleNFT = () => {
     axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
       handleSetState({ algoPrice: res.data.data.amount });
     });
-    document.documentElement.scrollTop = 0;
   }, []);
 
   useEffect(() => {}, [nftDetails]);
@@ -185,13 +184,7 @@ const SingleNFT = () => {
           <img className={classes.nft} src={nftDetails.image_url} alt="" />
 
           <div className={classes.feature}>
-            <DropItem
-              key={1}
-              item={attributesItem}
-              id={1}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
         <div className={classes.v_subsection2}>
@@ -254,23 +247,14 @@ const SingleNFT = () => {
             <div className={classes.btns}>
               {nftDetails.sold ? (
                 <>
-                  <button
-                    type="button"
-                    className={classes.sold}
-                    disabled={nftDetails.sold}
-                  >
+                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                     <img src="/assets/wallet-icon.png" alt="" />
                     Listed!
                   </button>
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={buyNft}
-                  >
+                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
                     <img src="/assets/wallet-icon.png" alt="" />
                     List
                   </button>
@@ -280,32 +264,14 @@ const SingleNFT = () => {
           </div>
           {/* PRICE HISTORY */}
           <div className={classes.feature}>
-            <DropItem
-              key={2}
-              item={graph}
-              id={2}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={2} item={graph} id={2} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
           <div className={classes.feature}>
-            <DropItem
-              key={3}
-              item={description}
-              id={3}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={3} item={description} id={3} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
 
           <div className={classes.feature}>
-            <DropItem
-              key={4}
-              item={detailsItem}
-              id={4}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
+            <DropItem key={4} item={detailsItem} id={4} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
       </div>
@@ -341,11 +307,7 @@ const SingleNFT = () => {
             <CopyToClipboard text={url} onCopy={onCopyText}>
               <div className={classes.copy_area}>
                 {!isCopied ? (
-                  <img
-                    className={classes.shareicon}
-                    src="/assets/copy-solid.svg"
-                    alt=""
-                  />
+                  <img className={classes.shareicon} src="/assets/copy-solid.svg" alt="" />
                 ) : (
                   <img className={classes.shareicon} src="/assets/copied.svg" alt="" />
                 )}

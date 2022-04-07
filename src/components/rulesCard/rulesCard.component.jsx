@@ -23,23 +23,14 @@ const RulesCard = () => {
             <div className={classes.content}>
               {rl.map((r, idx) => (
                 <div key={idx} className={classes.innerContent}>
-                  <img
-                    className={classes.image}
-                    src={URL.createObjectURL(r.imageFile)}
-                    alt=""
-                  />
+                  <img className={classes.image} src={URL.createObjectURL(r.imageFile)} alt="" />
                   <div className={classes.title}>{r.layerTitle}</div>
                   <div className={classes.text}>{r.imageName}</div>
                   {rl.length - 1 !== idx && ";"}
                 </div>
               ))}
             </div>
-            <img
-              onClick={() => handleDelete(rl)}
-              className={classes.icon}
-              src={closeIcon}
-              alt=""
-            />
+            <img onClick={() => handleDelete(rl)} className={classes.icon} src={closeIcon} alt="" />
           </div>
         ))}
       </div>
