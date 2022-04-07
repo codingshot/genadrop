@@ -25,6 +25,7 @@ const Collections = () => {
         // let collections = await fetchCollections();
         if (collections?.length) {
           const result = await getNftCollections(collections, mainnet);
+          console.log("collections: ", result);
           handleSetState({ algoCollection: result });
         } else {
           handleSetState({ algoCollection: null });

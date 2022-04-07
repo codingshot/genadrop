@@ -84,6 +84,7 @@ const CollectionNFT = () => {
         const collectionData = await getNftCollection(newCollection, mainnet);
         const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
         const tHistory = await readNftTransaction(result.Id);
+        console.log(collection, collectionData, result);
         handleSetState({
           asset: result,
           transactionHistory: tHistory,

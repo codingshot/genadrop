@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classes from "./tableRow.module.css";
 import saleIcon from "../../../assets/sale-icon.png";
 import transferIcon from "../../../assets/transfer-icon.png";
 import mintIcon from "../../../assets/mint-icon.png";
+import Transaction from "../../transactionDetails/TransactionDetails";
 
 const TableRow = (data) => {
+  const [state, setState] = useState({
+    showTransaction: false,
+
+  })
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
+  const { showTransaction } = state
+
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";
     return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -27,9 +37,8 @@ const TableRow = (data) => {
       "Nov",
       "Dec",
     ];
-    const formattedDate = `${
-      months[date.getMonth()]
-    } ${date.getDate()}, ${date.getFullYear()}`;
+    const formattedDate = `${months[date.getMonth()]
+      } ${date.getDate()}, ${date.getFullYear()}`;
     return formattedDate;
   };
   const icon = () => {
@@ -50,20 +59,62 @@ const TableRow = (data) => {
     return icon;
   };
 
+  const handleClick = () => {
+    handleSetState({ showTransaction: true })
+    console.log("clicking...");
+  }
+
+  const wrapperRef = useRef(null);
+
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          handleSetState({ showTransaction: false });
+        }
+      }
+
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+
+
+
+  useOutsideAlerter(wrapperRef);
   return (
-    <tr>
-      <td>
-        <span className={classes.icon}>
-          <img src={icon()} alt="" />
-        </span>
-        {data.event}
-      </td>
-      <td>{!data.txId ? "--" : breakAddress(data.txId)}</td>
-      <td>{getDate(data.date)}</td>
-      <td>{!data.price ? "--" : data.price}</td>
-      <td>{breakAddress(data.from)}</td>
-      <td>{breakAddress(data.to)}</td>
-    </tr>
+    <>
+      {
+        showTransaction ?
+          <div ref={wrapperRef}>
+
+            <Transaction data={data} date={getDate(data.date)} />
+          </div>
+          : ""
+      }
+      <tr onClick={handleClick}>
+        <td>
+          <span className={classes.icon}>
+            <img src={icon()} alt="" />
+          </span>
+          {data.event}
+        </td>
+        <td>{!data.txId ? "--" : breakAddress(data.txId)}</td>
+        <td>{getDate(data.date)}</td>
+        <td>{!data.price ? "--" : data.price}</td>
+        <td>{breakAddress(data.to)}</td>
+        <td>{breakAddress(data.from)}</td>
+      </tr>
+    </>
+
   );
 };
 
