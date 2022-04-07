@@ -33,6 +33,10 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const UppercaseFirstLetter = (arr) => (arr.charAt(0).toUpperCase() + arr.slice(1));
+  const toPercent = (count, total) => ((count >= 0) && (total > 0) ? ((100 * count) / total).toFixed(1) : 'NaN');
+
   const handleApplyPriceFilter = () => {
     handleSetState({
       filter: {
@@ -112,9 +116,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                 <span>Show only listed item</span>
                 <div
                   onClick={handleStatus}
-                  className={`${classes.toggleButton} ${
-                    filter.onlyListed && classes.active
-                  }`}
+                  className={`${classes.toggleButton} ${filter.onlyListed && classes.active
+                    }`}
                 >
                   <div className={classes.toggle} />
                 </div>
@@ -145,9 +148,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
             <Dropdown title="Attribute">
               <div className={classes.attributeFilter}>
                 <div
-                  className={`${classes.attribute} ${
-                    toggleAttribute && classes.active
-                  }`}
+                  className={`${classes.attribute} ${toggleAttribute && classes.active}`}
                 >
                   {attributes
                     && attributes.map((attr, idx) => (
@@ -159,21 +160,16 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                           key={idx}
                           className={classes.layerWrapper}
                         >
-                          <div>{attr.trait_type}</div>
+                          <div>{UppercaseFirstLetter(attr.trait_type)}</div>
                           <div
-                            className={`${classes.layerIcon} ${
-                              toggleLayer === idx && classes.active
-                            }`}
+                            className={`${classes.layerIcon} ${toggleLayer === idx && classes.active}`}
                           >
                             <div>{attr.value.length}</div>
                             <img src={dropdownIcon} alt="" />
                           </div>
                         </div>
-                        <div
-                          className={`${classes.layer} ${
-                            toggleLayer === idx && classes.active
-                          }`}
-                        >
+                        <div className={`${classes.layer} ${toggleLayer === idx && classes.active}`}>
+                          {/* list of items in 1 attribute */}
                           {attr.value.map((val, idx) => (
                             <div
                               key={idx}
@@ -193,7 +189,18 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                   ? '+'
                                   : '-'}
                               </span>
-                              <span>{val}</span>
+                              {/* percentage of each value in an attribute */}
+                              <div className={classes.valuesOfAttr}>
+                                <span>
+                                  {UppercaseFirstLetter(val)}
+                                </span>
+                                <span>
+                                  {
+                                    toPercent(countOccurrences(attr.value, val), attr.value.length)
+                                  }
+                                  %
+                                </span>
+                              </div>
                             </div>
                           ))}
                         </div>
