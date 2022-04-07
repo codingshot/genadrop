@@ -26,6 +26,10 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const capitalize = (arr) => arr.charAt(0).toUpperCase() + arr.slice(1); // Capitalize first letter of the word
+  const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
+
   const handleApplyPriceFilter = () => {
     handleSetState({
       filter: {
@@ -139,7 +143,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                           key={idx}
                           className={classes.layerWrapper}
                         >
-                          <div>{attr.trait_type}</div>
+                          <div>{capitalize(attr.trait_type)}</div>
                           <div className={`${classes.layerIcon} ${toggleLayer === idx && classes.active}`}>
                             <div>{attr.value.length}</div>
                             <img src={dropdownIcon} alt="" />
@@ -167,7 +171,15 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
                                   ? "+"
                                   : "-"}
                               </span>
-                              <span>{val}</span>
+                              {/* percentage of each value in an attribute */}
+                              <div className={classes.valuesOfAttr}>
+                                <span>{capitalize(val)}</span>
+                                <span>
+                                  <span style={{ marginRight: "3px" }}>{countOccurrences(attr.value, val)}</span>(
+                                  {toPercent(countOccurrences(attr.value, val), attr.value.length)}
+                                  %)
+                                </span>
+                              </div>
                             </div>
                           ))}
                         </div>

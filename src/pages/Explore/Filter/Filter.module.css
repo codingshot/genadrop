@@ -237,6 +237,11 @@
   padding: 1em;
   transition: all 300ms;
 }
+.valuesOfAttr {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
 .sidebar2 img:hover {
   background: var(--main-hover);
