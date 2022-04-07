@@ -41,6 +41,12 @@ const SingleNFT = () => {
   });
   const { dropdown, nftDetails, algoPrice, isLoading, showSocial, isCopied, transactionHistory } = state;
 
+  const Explorers = [
+    { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
+    { matic: [{ testnet: "https://mumbai.polygonscan.com/tx/" }, { mainnet: "https://polygonscan.com/tx/" }] },
+    { near: [{ testnet: "https://testnet.aurorascan.dev/tx/" }, { mainnet: "https://explorer.mainnet.aurora.dev/tx/" }] },
+    { celo: [{ mainnet: "https://alfajores-blockscout.celo-testnet.org/tx/" }, { testnet: "https://explorer.celo.org/tx/" },] },
+  ]
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -74,6 +80,7 @@ const SingleNFT = () => {
       const tHistory = await readNftTransaction(nftId);
 
       const NFTDetails = await getSingleNftDetails(mainnet, nft);
+      console.log(tHistory);
       handleSetState({
         nftDetails: NFTDetails,
         isLoading: false,
@@ -88,7 +95,7 @@ const SingleNFT = () => {
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => {}, [nftDetails]);
+  useEffect(() => { }, [nftDetails]);
 
   useEffect(() => {
     // if (!nftDetails) return;
