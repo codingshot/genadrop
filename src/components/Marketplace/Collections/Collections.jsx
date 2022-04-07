@@ -25,6 +25,7 @@ const Collections = () => {
         // let collections = await fetchCollections();
         if (collections?.length) {
           const result = await getNftCollections(collections, mainnet);
+          console.log("collections: ", result);
           handleSetState({ algoCollection: result });
         } else {
           handleSetState({ algoCollection: null });
@@ -53,7 +54,7 @@ const Collections = () => {
             ))}
         </div>
       ) : !algoCollection ? (
-        <h1 className={classes.noResult}> No Result Found.</h1>
+        <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.skeleton}>
           {[...new Array(4)]

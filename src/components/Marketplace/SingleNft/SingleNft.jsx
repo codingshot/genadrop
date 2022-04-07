@@ -44,7 +44,7 @@ const SingleNft = () => {
           ))}
         </div>
       ) : !allSingleNfts ? (
-        <h1 className={classes.noResult}> No Result Found.</h1>
+        <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.wrapper}>
           {[...new Array(5)]

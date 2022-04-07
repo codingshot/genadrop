@@ -17,7 +17,9 @@ export const getNftCollections = async (collections, mainnet) => {
       collectionObj.price = collections[i].price;
       collectionObj.owner = collections[i].owner;
       collectionObj.description = collections[i].description;
+
       const { data } = await axios.get(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+
       collectionObj.number_of_nfts = data.length;
       const {
         asset: { params },
@@ -96,6 +98,7 @@ export const getSingleNfts = async (mainnet, nfts) => {
       nftObj.sold = nfts[i].sold;
       nftObj.dateSold = nfts[i].dateSold;
       nftObj.description = nfts[i].description;
+      nftObj.mainnet = nfts[i].mainnet;
       const {
         asset: { params },
       } = await getAlgoData(mainnet, nfts[i].id);
