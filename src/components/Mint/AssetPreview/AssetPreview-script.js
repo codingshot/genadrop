@@ -16,7 +16,7 @@ export const handleMint = async (args) => {
   }
   let url = null;
   try {
-    if (chain.toLowerCase() === "algo") {
+    if (chain.toLowerCase() === "algorand") {
       url = await mintToAlgo({ ...args });
     } else if (chain.toLowerCase() === "celo") {
       url = await mintToCelo({ ...args });
