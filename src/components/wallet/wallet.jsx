@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -39,6 +39,8 @@ const chains = [
 
 function ConnectWallet({ setToggleNav }) {
   const history = useHistory();
+  const { pathname } = useLocation();
+
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
@@ -75,6 +77,9 @@ function ConnectWallet({ setToggleNav }) {
       dispatch(setChainId(""));
       setDropdown(false);
       setToggleDropdown(false);
+      if (pathname.includes("/me")) {
+        history.push("/marketplace");
+      }
     }
   }
 
