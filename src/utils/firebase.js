@@ -106,6 +106,7 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
     sold: !!sold,
     Buyer: buyer,
     chain: "algo",
+    owner,
     price,
     dateSold,
     mainnet,

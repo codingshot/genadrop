@@ -37,13 +37,11 @@ function App() {
   useEffect(() => {
     (async function getCollections() {
       const collections = await fetchCollections(mainnet);
-      console.log("collect", collections);
       dispatch(setCollections(collections));
     })();
 
     (async function readAllSingle() {
       const singleNfts = await readAllSingleNft(mainnet);
-      console.log("sia", singleNfts);
       dispatch(setSingleNfts(singleNfts));
     })();
   }, [mainnet]);

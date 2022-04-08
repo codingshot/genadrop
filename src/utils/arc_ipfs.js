@@ -579,7 +579,7 @@ export async function mintToPoly(polyProps) {
 
 export async function PurchaseNft(asset, account, connector, mainnet) {
   initAlgoClients(mainnet);
-  if (!connector.isWalletConnect && !(connector.chainId === 4160)) {
+  if (!connector?.isWalletConnect && !(connector?.chainId === 4160)) {
     alert("connect wallet to algorand network");
     return;
   }
