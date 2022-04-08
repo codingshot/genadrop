@@ -19,10 +19,9 @@ const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) =>
       <div className={`${classes.answer} ${dropdown === String(id) && classes.dropdown}`}>
         <span>A.</span>
         <p>
-          {answer}
           {id === 0 ? (
-            <a target="_blank" rel="noreferrer" href="https://www.youtube.com/watch?v=Yx3zimPPwjA">
-              demo.
+            <a target="_blank" rel="noreferrer" href="https://www.genadrop.com/docs">
+              {answer}
             </a>
           ) : (
             ""
