@@ -158,23 +158,25 @@ const AssetPreview = ({ data, changeFile }) => {
     if (!chainId) {
       return dispatch(setNotification("connect wallet and try again"));
     }
+    const c = chains.find((e) => e.networkId.toString() === chainId.toString());
+    if (!c) return dispatch(setNotification("unsupported chain detected"));
     if (!parseInt(price)) {
       return dispatch(setNotification("please enter a valid price"));
     }
-    if (
-      !singleMintProps.price ||
-      !singleMintProps.fileName ||
-      !description ||
-      !singleMintProps.metadata?.attributes[0]?.trait_type ||
-      !singleMintProps.metadata?.attributes[0]?.value
-    ) {
-      return dispatch(setNotification("please fill out the missing fields"));
-    }
-    const c = chains.find((e) => e.networkId.toString() === chainId.toString());
-    if (!c) return dispatch(setNotification("unsupported chain detected"));
     if (file.length > 1) {
+      if (!mintProps.description) {
+        return dispatch(setNotification("please fill out the missing fields"));
+      }
       handleMint(mintProps);
     } else {
+      if (
+        !singleMintProps.fileName ||
+        !description ||
+        !singleMintProps.metadata?.attributes[0]?.trait_type ||
+        !singleMintProps.metadata?.attributes[0]?.value
+      ) {
+        return dispatch(setNotification("please fill out the missing fields"));
+      }
       handleSingleMint(singleMintProps);
     }
   };
