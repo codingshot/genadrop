@@ -26,7 +26,7 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
       {editor ? (
         <form onSubmit={handleSubmit}>
           <input autoFocus type="text" value={value} onChange={(e) => handleSetState({ value: e.target.value })} />
-          <button type="button">
+          <button type="submit">
             <img src={markIcon} alt="" />
           </button>
         </form>
