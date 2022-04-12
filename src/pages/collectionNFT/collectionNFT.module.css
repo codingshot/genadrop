@@ -103,6 +103,10 @@
   cursor: pointer;
 }
 
+.collectionName:hover {
+  text-decoration: underline;
+}
+
 .nftId {
   font-size: 1.5rem;
   font-weight: bold;
