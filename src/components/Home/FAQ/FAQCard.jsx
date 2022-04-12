@@ -24,7 +24,7 @@ const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) =>
               {answer}
             </a>
           ) : (
-            ""
+            answer
           )}
         </p>
       </div>
