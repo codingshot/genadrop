@@ -49,6 +49,7 @@ function App() {
   if (showWelcomeScreen) {
     return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
   }
+
   return (
     <div className="App">
       <Navbar />

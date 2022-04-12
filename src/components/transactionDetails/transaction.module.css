@@ -1,23 +1,23 @@
 .container {
-    position: fixed;
-    width: 25rem;
-    height: 20rem;
-    top: 0;
-    margin: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 1.5rem;
-    background-color: white;
-    z-index: 10000;
-    border-radius: 20px;
-    box-shadow: 0 0 15px gray;
-    text-align: center;
-  }
+  position: fixed;
+  width: 25rem;
+  height: 20rem;
+  top: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1.5rem;
+  background-color: white;
+  z-index: 10000;
+  border-radius: 20px;
+  box-shadow: 0 0 15px gray;
+  text-align: center;
+}
 
-  .table {
-      width: 100%;
-  }
+.table {
+  width: 100%;
+}
 
 .table td:first-child,
 th:first-child {
@@ -25,55 +25,55 @@ th:first-child {
   padding-left: 1rem;
 }
 
-.table td:nth-child(2){
-    font-size: 15px;
-    font-weight: 600;
+.table td:nth-child(2) {
+  font-size: 15px;
+  font-weight: 600;
 }
-.title{
-    font-weight: 700;
-    font-size: 25px;
-}
-
-
-.subTitle{
-    font-weight: 400;
-    font-size: 20px;
-    color: var(--main-accent);
-    background-color: rgba(0, 153, 135, 0.12);
-    margin-top: 0.5rem;
+.title {
+  font-weight: 700;
+  font-size: 25px;
 }
 
-.clickable, .copied{
-    position: absolute;
-    background: #000;
-    margin-top: 15px;
-    margin-right: 10rem;
-    padding: 7px 0;
-    text-align: center;
-    border-radius: 10px;
-    color: #FFF;
-
+.subTitle {
+  font-weight: 400;
+  font-size: 20px;
+  color: var(--main-accent);
+  background-color: rgba(0, 153, 135, 0.12);
+  margin-top: 0.5rem;
 }
 
-.copied{
-    width: 100px;
+.clickable,
+.copied {
+  position: absolute;
+  background: #000;
+  margin-top: 15px;
+  margin-right: 10rem;
+  padding: 7px 0;
+  text-align: center;
+  border-radius: 10px;
+  color: #fff;
 }
-.clickable{
-    width: 170px;
 
+.copied {
+  width: 100px;
 }
-.copy{
-    margin-right: 5px;
-    padding-right: 5px;
-    border-right: 2px solid #FFF;
+.clickable {
+  width: 170px;
+}
+.copy {
+  margin-right: 5px;
+  padding-right: 5px;
+  border-right: 2px solid #fff;
 }
 
-.explore:hover, .copy:hover{
-    cursor: pointer;
-    text-decoration: underline;
+.explore:hover,
+.copy:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
-.clickable::before, .copied::before{
-    content: '';
+.clickable::before,
+.copied::before {
+  content: "";
   position: absolute;
   top: -40%;
   left: calc(50% - 10px);
@@ -84,19 +84,19 @@ th:first-child {
   clip-path: polygon(0% 87%, 50% 0%, 50% 0%, 100% 87%);
 }
 
-.txId:hover{
-cursor: pointer;
+.txId:hover {
+  cursor: pointer;
 }
 
-.icon{
-    min-height: 1.5em;
+.icon {
+  min-height: 1.5em;
   min-width: 1.5em;
   align-self: stretch;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.icon img{
-    margin-left: 10px;
-    width: 1.5rem;
+.icon img {
+  margin-left: 10px;
+  width: 1.5rem;
 }

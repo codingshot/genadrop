@@ -6,6 +6,10 @@ import App from "./App";
 import GenContextProvider from "./gen-state/gen.context";
 import Loading from "./pages/loading/loading";
 
+if (module.hot) {
+  module.hot.accept();
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<Loading />}>

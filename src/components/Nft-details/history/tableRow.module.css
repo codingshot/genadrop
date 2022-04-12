@@ -25,6 +25,6 @@ tr img {
   padding: 8px;
 }
 
-.transaction:hover{
+.transaction:hover {
   cursor: pointer;
 }
