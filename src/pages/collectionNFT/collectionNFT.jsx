@@ -23,7 +23,7 @@ import facebookIcon from "../../assets/facebook.svg";
 import instagramIcon from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
-
+import algoLogo from "../../assets/icon-algo.svg";
 const CollectionNFT = () => {
   const [state, setState] = useState({
     dropdown: ["1", "3"],
@@ -229,7 +229,7 @@ const CollectionNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src="/assets/algo-logo.png" alt="" />
+                <img src={algoLogo} alt="" />
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>
                   ($

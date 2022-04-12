@@ -20,6 +20,7 @@ import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
+import algoLogo from "../../assets/icon-algo.svg";
 
 const SingleNFT = () => {
   const { account, connector, mainnet } = useContext(GenContext);
@@ -230,7 +231,7 @@ const SingleNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src="/assets/algo-logo.png" alt="" />
+                <img src={algoLogo} alt="" />
                 <p className={classes.tokenValue}>{nftDetails.price}</p>
                 <span className={classes.usdValue}>
                   ($
