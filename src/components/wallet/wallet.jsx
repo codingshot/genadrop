@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
@@ -178,9 +178,32 @@ function ConnectWallet({ setToggleNav }) {
     return c.label;
   };
 
+  const wrapperRef = useRef(null);
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+      /**
+       * Alert if clicked on outside of element
+       */
+      function handleClickOutside(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setToggleDropdown(false);
+        }
+      }
+
+      // Bind the event listener
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        // Unbind the event listener on clean up
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+  useOutsideAlerter(wrapperRef);
+
   return account ? (
     <div className={classes.container}>
-      <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
+      <div onClick={() => setDropdown(!dropdown)} className={classes.connected}
+      >
         <div
           onClick={() => {
             setToggleDropdown(false);
@@ -193,7 +216,7 @@ function ConnectWallet({ setToggleNav }) {
         <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
           <span>{breakAddress(account)}</span>
         </div>
-        <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
+        <div ref={wrapperRef} className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
           <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
             <div>{clipboardState}</div> <img src={copyIcon} alt="" />
             <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
