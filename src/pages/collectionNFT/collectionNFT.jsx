@@ -187,7 +187,9 @@ const CollectionNFT = () => {
           <div className={classes.feature}>
             <div className={classes.mainDetails}>
               <div className={classes.collectionHeader}>
-                <div className={classes.collectionName}>{asset.collection_name}</div>
+                <div className={classes.collectionName} onClick={() => history.goBack()}>
+                  {asset.collection_name}
+                </div>
                 <div className={classes.nftId}>{asset.name}</div>
               </div>
 
