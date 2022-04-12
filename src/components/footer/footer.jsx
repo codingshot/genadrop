@@ -35,7 +35,7 @@ const footerLinks = [
     content: [
       {
         name: "Docs",
-        link: "https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs",
+        link: "https://www.genadrop.com/docs",
         id: "1",
       },
       {
