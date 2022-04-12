@@ -8,9 +8,8 @@ export const removeLayer = (layers, layerToRemove) =>
   layers.filter((layer) => layer.layerTitle.toLowerCase() !== layerToRemove.layerTitle.toLowerCase());
 
 export const updateLayer = (layers, layerToUpdate) => {
-  const result = layers.find((layer) => layer.layerTitle.toLowerCase() === layerToUpdate.layerTitle.toLowerCase());
+  const result = layers.find((layer) => layer.layerTitle === layerToUpdate.layerTitle);
   if (result) return layers;
-
   return layers.map((layer) =>
     layer.id === layerToUpdate.id ? { ...layer, layerTitle: layerToUpdate.layerTitle } : layer
   );

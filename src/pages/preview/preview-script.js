@@ -13,12 +13,15 @@ export const isUnique = (attributes, attr, rule) => {
   let result;
   for (const rl of rule) {
     result = rl.every((el) => {
-      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) {
+      let singleRule = {
+        layerTitle: el.layerTitle,
+        imageName: el.imageName.split(".png")[0],
+      };
+      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(singleRule))) {
         return true;
       }
       return false;
     });
-
     if (result === true) return false;
   }
   return true;

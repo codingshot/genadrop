@@ -51,6 +51,7 @@ const CollectionDescription = () => {
       rule,
       collectionName,
     });
+
     const arts = await generateArt({
       dispatch,
       setLoader,

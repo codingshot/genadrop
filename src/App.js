@@ -46,9 +46,9 @@ function App() {
     })();
   }, [mainnet]);
 
-  if (showWelcomeScreen) {
-    return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
-  }
+  // if (showWelcomeScreen) {
+  //   return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
+  // }
   return (
     <div className="App">
       <Navbar />

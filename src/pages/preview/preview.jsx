@@ -58,7 +58,7 @@ const Preview = () => {
   };
 
   const handleDeleteAndReplace = async (id, index, currentPageD) => {
-    if (!(combinations - mintAmount)) {
+    if (!(combinations - rule.length - mintAmount)) {
       dispatch(setMintInfo("  cannot generate asset from 0 combination"));
     } else {
       dispatch(setLoader("generating..."));

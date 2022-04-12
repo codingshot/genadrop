@@ -30,15 +30,21 @@ export const isUnique = (attributes, attr, rule) => {
     layerTitle: p.trait_type,
     imageName: p.value,
   }));
+
   const att_str = JSON.stringify(attr);
   for (const _attr of attributes) {
     const _attr_str = JSON.stringify(_attr);
     if (_attr_str === att_str) return false;
   }
   let result;
+
   for (const rl of rule) {
     result = rl.every((el) => {
-      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(el))) {
+      let singleRule = {
+        layerTitle: el.layerTitle,
+        imageName: el.imageName.split(".png")[0],
+      };
+      if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(singleRule))) {
         return true;
       }
       return false;
@@ -54,6 +60,7 @@ export const createUniqueLayer = async (props) => {
   const newLayers = [];
   const newAttributes = [];
   let uniqueIndex = 0;
+
   const mintCallback = (resolve) => {
     setTimeout(() => {
       dispatch(
@@ -83,9 +90,9 @@ removing ${uniqueIndex} duplicates`
       resolve();
     }, 0);
   };
+
   for (let i = 0; i < mintAmount + uniqueIndex; i += 1) {
-    const promise = new Promise(mintCallback);
-    await promise;
+    await new Promise(mintCallback);
   }
 
   newAttributes.forEach((attr, id) => {
