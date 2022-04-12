@@ -6,15 +6,23 @@ import FAQ from "../../components/Home/FAQ/FAQ";
 import Orgs from "../../components/Home/Orgs/Orgs";
 import classes from "./home.module.css";
 import { Collectors, creators } from "./home-script";
+import Docs from "../../components/Home/Docs/Docs";
 
 const Home = () => (
   <div className={classes.container}>
-    <Banner />
-    <Orgs />
-    <Features data={creators} />
-    <Features data={Collectors} />
-    <Review />
-    <FAQ />
+    <div className={classes.wrapper}>
+      <Banner />
+      <Orgs />
+      <Features data={creators} />
+      <Features data={Collectors} />
+    </div>
+    <div className={`${classes.wrapper} ${classes.withBg}`}>
+      <Docs />
+    </div>
+    <div className={classes.wrapper}>
+      <Review />
+      <FAQ />
+    </div>
   </div>
 );
 

@@ -1,0 +1,87 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10em;
+  padding: 1em 2em;
+}
+
+.container p {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-right: 2em;
+}
+
+.container p > span {
+  color: var(--main-accent);
+}
+
+.container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  background: var(--main-accent);
+  padding: 0.75em 2em;
+  border-radius: 0.5em;
+  color: white;
+  font-size: 1rem;
+  transition: all 300ms;
+}
+
+.container button:hover {
+  outline: 2px solid var(--main-accent);
+  background: var(--main-accent-dark);
+}
+
+.container button > img {
+  width: 1.5em;
+}
+
+@media screen and (max-width: 1440px) {
+  .container {
+    justify-content: space-between;
+    gap: 1em;
+  }
+
+  .container p {
+    margin-right: unset;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .container img {
+    width: 8em;
+  }
+
+  .container p {
+    font-size: 2rem;
+  }
+
+  .container button > img {
+    width: 1em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 1em 0;
+  }
+
+  button {
+    align-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container img {
+    width: 4em;
+  }
+
+  .container p {
+    font-size: 1.6rem;
+  }
+}

@@ -1,5 +1,10 @@
 .container {
   width: 100%;
+  margin-bottom: 8em;
+}
+
+.wrapper {
+  width: 100%;
   max-width: 1440px;
   padding: 0 1em;
   padding-top: 2em;
@@ -7,33 +12,39 @@
   margin-bottom: 8em;
 }
 
+.withBg {
+  max-width: 100%;
+  padding: 0;
+  background: #f2f3ff;
+}
+
 @media screen and (max-width: 1440px) {
-  .container {
+  .wrapper {
     max-width: 1200px;
   }
 }
 
 @media screen and (max-width: 1200px) {
-  .container {
+  .wrapper {
     max-width: 1000px;
   }
 }
 
 @media screen and (max-width: 1000px) {
-  .container {
+  .wrapper {
     max-width: 768px;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .container {
+  .wrapper {
     max-width: 540px;
     padding: 0 2em;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .container {
+  .wrapper {
     padding: 0 1em;
   }
 }
