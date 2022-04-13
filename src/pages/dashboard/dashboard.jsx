@@ -4,7 +4,7 @@ import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import { getNftCollections, getUserNftCollection } from "../../utils";
+import { getNftCollections, getUserNftCollection, getSingleNfts } from "../../utils";
 import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
@@ -39,6 +39,7 @@ const Dashboard = () => {
 
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
+      console.log(userCollections);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
       console.log("===>", myNftsCollections);
       handleSetState({ myCollections: myNftsCollections });
@@ -46,7 +47,8 @@ const Dashboard = () => {
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
-      const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
+      console.log(userNftCollections);
+      const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
       console.log("===>", createdUserNfts);
 
       handleSetState({ createdNfts: createdUserNfts });
@@ -54,7 +56,8 @@ const Dashboard = () => {
 
     (async function getCollections() {
       const userNftCollections = await fetchAllNfts(account);
-      await getUserNftCollection(userNftCollections, mainnet);
+      const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
+      console.log("===>", userNftCollections);
     })();
   }, [account]);
 
