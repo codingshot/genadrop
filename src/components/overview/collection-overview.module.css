@@ -4,6 +4,7 @@
   z-index: 1;
   border: 1px solid gainsboro;
   border-radius: 0.5em;
+  padding: 1em;
 }
 
 .container::-webkit-scrollbar {
@@ -16,64 +17,83 @@
 }
 
 .rules {
-  width: auto;
+  width: 100%;
   background: var(--main-bg);
-  padding: 0.5em;
+  padding: 2em 0.5em;
   z-index: 1;
   gap: 1em;
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   position: sticky;
-  top: 6.5em;
+  top: 3.9em;
   z-index: 100;
-  box-shadow: 0 0 5px gainsboro;
-  border-radius: 0.5em;
-  margin-left: 1em;
+}
+
+.addRuleBtn,
+.showRuleBtn {
+  border-radius: 2em;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 300ms;
+  border: 1px solid transparent;
 }
 
 .addRuleBtn {
-  padding: 0.75em 2em;
-  border-radius: 0.25em;
-  font-size: 1rem;
+  padding: 0.65em 2em;
   background: var(--main-accent);
   color: white;
-  border: 1px solid transparent;
-  cursor: pointer;
 }
 
 .showRuleBtn {
-  padding: 0.45em 2em;
-  border-radius: 0.25em;
-  font-size: 1rem;
+  padding: 0.5em 2em;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
-  color: white;
-  border: 1px solid transparent;
-  background: var(--card-bg);
-  cursor: pointer;
+  color: var(--main-accent);
+  background: white;
+  border: 1px solid var(--main-accent);
 }
 
-.showRuleBtn span {
-  height: 1.8em;
-  width: 1.8em;
-  display: inline-block;
+.addRuleBtn:hover {
+  background: var(--main-accent-dark);
+}
+
+.showRuleBtn:hover {
+  background: var(--main-accent);
+  color: white;
+}
+
+.ruleCount {
+  height: 24px;
+  width: 24px;
+  padding-top: 1px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgb(192, 192, 192);
+  background: var(--main-accent);
   color: white;
+  transition: all 300ms;
+}
+
+.showRuleBtn:hover .ruleCount {
+  background: white;
+  color: var(--main-accent);
 }
 
 .ruleCardWrapper {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  transform: translateX(55%) translateY(3.5em);
+  width: 100vw;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
 }
 
 .fallback {
@@ -92,10 +112,6 @@
   .container {
     min-height: 10em;
   }
-
-  .ruleCardWrapper {
-    transform: translateX(25%) translateY(3.5em);
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -104,20 +120,12 @@
     height: auto;
   }
 
-  .ruleCardWrapper {
-    width: 100%;
-
-    transform: translateX(55%) translateY(3.5em);
+  .rules {
+    top: 3em;
   }
 }
 
 @media screen and (max-width: 480px) {
-  .ruleCardWrapper {
-    width: 90%;
-
-    transform: translateX(5%) translateY(3.5em);
-  }
-
   .rules {
     width: 100%;
     margin-left: 0;

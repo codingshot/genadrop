@@ -14,6 +14,8 @@ import {
   setMintInfo,
   setNftLayers,
   setOutputFormat,
+  setPrompt,
+  promptDeleteAsset,
 } from "../../gen-state/gen.actions";
 import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
@@ -37,6 +39,7 @@ const Preview = () => {
     outputFormat,
     rule,
     layers,
+    promptAsset,
   } = useContext(GenContext);
 
   const [state, setState] = useState({
@@ -92,8 +95,7 @@ const Preview = () => {
   };
 
   const handleDelete = (val) => {
-    dispatch(deleteAsset(val));
-    dispatch(setMintAmount(mintAmount - 1));
+    dispatch(setPrompt(promptDeleteAsset(val)));
   };
 
   const handleRename = (input) => {
@@ -198,6 +200,14 @@ const Preview = () => {
     }
     handleSetState({ paginate: paginateObj });
   }, [nftLayers]);
+
+  useEffect(() => {
+    if (promptAsset) {
+      dispatch(deleteAsset(promptAsset));
+      dispatch(setMintAmount(mintAmount - 1));
+      dispatch(promptDeleteAsset(null));
+    }
+  }, [promptAsset]);
 
   return (
     <div className={classes.wrapper}>
@@ -347,8 +357,8 @@ const Preview = () => {
                           </button>
                         </div>
                       </div>
-                      <div className={classes.iconClose}>
-                        <img src={closeIcon} alt="" onClick={() => handleDelete(id)} />
+                      <div onClick={() => handleDelete(id)} className={classes.iconClose}>
+                        <img src={closeIcon} alt="" />
                       </div>
                     </div>
                   );

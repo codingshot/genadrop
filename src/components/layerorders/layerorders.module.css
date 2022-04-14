@@ -9,6 +9,7 @@
 
 .container * {
   color: white;
+  z-index: 0 !important;
 }
 
 .container i {
@@ -43,15 +44,32 @@
   background: transparent;
   width: 100%;
   outline: none;
-  font-size: 1rem;
+  font-size: 0.85rem;
   padding: 0.25em;
-  border: 1px solid gainsboro;
+  border: 1px solid white;
+  border-radius: 0.25em;
   margin-right: 1em;
 }
 
 .editBtn {
   cursor: pointer;
   padding: 0.1em;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--card-bg2);
+  transition: all 300ms;
+}
+
+.editBtn:hover {
+  background: gray;
+}
+
+.editBtn img {
+  width: 1em;
 }
 
 .nameHeader {
@@ -93,7 +111,7 @@
   padding: 0.5em 1em;
   padding-right: 2em;
   text-transform: capitalize;
-  background: var(--card-bg);
+  background: var(--card-bg2);
   margin-bottom: 0.5em;
   border-radius: 0.25em;
 }

@@ -39,6 +39,10 @@ export const INITIAL_STATE = {
   loaderMessage: "",
   didMount: false,
   mainnet: null,
+  prompt: null,
+  promptAsset: null,
+  promptLayer: null,
+  promptRules: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -73,13 +77,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: removeImage(state.layers, action.payload),
       };
-
     case genActionTypes.UPDATE_IMAGE:
       return {
         ...state,
         layers: updateImage(state.layers, action.payload),
       };
-
+    case genActionTypes.SET_PREVIEW:
+      return {
+        ...state,
+        preview: action.payload,
+      };
     case genActionTypes.ADD_PREVIEW:
       return {
         ...state,
@@ -229,6 +236,26 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mainnet: action.payload,
+      };
+    case genActionTypes.SET_PROMPT:
+      return {
+        ...state,
+        prompt: action.payload,
+      };
+    case genActionTypes.PROMPT_DELETE_ASSET:
+      return {
+        ...state,
+        promptAsset: action.payload,
+      };
+    case genActionTypes.PROMPT_DELETE_LAYER:
+      return {
+        ...state,
+        promptLayer: action.payload,
+      };
+    case genActionTypes.PROMPT_DELETE_RULES:
+      return {
+        ...state,
+        promptRules: action.payload,
       };
     default:
       return state;

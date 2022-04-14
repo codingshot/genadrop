@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.5em;
-  padding: 0.25em 0.5em;
+  padding: 0.35em 0.5em;
   background: var(--card-bg);
   border-radius: 0.25em;
 }
@@ -20,50 +20,74 @@
   margin-right: 0.5em;
 }
 
-.icon {
-  width: 2em;
-  height: 2em;
+.renameBtn,
+.editBtn,
+.deleteBtn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 300ms;
+  background: var(--card-bg2);
 }
 
-.renameBtn {
+.renameBtn img,
+.deleteBtn img,
+.editBtn img {
+  width: 1em;
+}
+
+.renameBtn:hover {
+  /* background: var(--main-accent); */
+  background: gray;
+}
+
+.editBtn:hover {
+  /* background: var(--main-accent); */
+  background: gray;
+}
+
+.deleteBtn:hover {
+  /* background: rgb(197, 67, 44); */
+  background: gray;
+}
+
+.renameWrapper {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 0.25em;
   background: transparent;
   color: white;
   font-size: 1rem;
   border: none;
 }
 
-.renameBtn form {
+.renameWrapper form {
   flex: 1;
   height: 100%;
   display: flex;
 }
 
-.renameBtn input {
+.renameWrapper input {
   background: transparent;
   width: 100%;
   outline: none;
   border: none;
-  font-size: 0.85rem;
   padding: 0.25em;
   border: 1px solid var(--sidebar-bg);
-}
-
-.editBtn {
-  cursor: pointer;
-  padding: 0.1em;
+  border: 1px solid white;
+  border-radius: 0.25em;
 }
 
 .nameHeader {
   width: 100%;
-  max-width: 10em;
+  max-width: 8em;
   overflow: auto;
   white-space: nowrap;
+  padding: 0.25em;
 }

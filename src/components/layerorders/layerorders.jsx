@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuid } from "uuid";
 import classes from "./layerorders.module.css";
@@ -10,6 +10,8 @@ import {
   setLoader,
   setNotification,
   removeLayer,
+  setPrompt,
+  promptDeleteLayer,
 } from "../../gen-state/gen.actions";
 import Layer from "../layer/layer";
 import Prompt from "../prompt/prompt";
@@ -20,7 +22,7 @@ import markIcon from "../../assets/icon-mark.svg";
 import plusIcon from "../../assets/icon-plus.svg";
 
 const LayerOrders = () => {
-  const { layers, dispatch, collectionName, isRule } = useContext(GenContext);
+  const { layers, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,
     inputValue: "",
@@ -36,10 +38,10 @@ const LayerOrders = () => {
 
   const onDragEnd = ({ source, destination }) => {
     if (!destination) return;
-    const newList = [...layers];
-    const [removed] = newList.splice(source.index, 1);
-    newList.splice(destination.index, 0, removed);
-    dispatch(orderLayers(newList));
+    const newLayers = [...layers];
+    const [removed] = newLayers.splice(source.index, 1);
+    newLayers.splice(destination.index, 0, removed);
+    dispatch(orderLayers(newLayers));
     handleSetState({ inputValue: "" });
   };
 
@@ -56,7 +58,7 @@ const LayerOrders = () => {
   };
 
   const handleRemoveLayer = (layer) => {
-    dispatch(removeLayer(layer));
+    dispatch(setPrompt(promptDeleteLayer(layer)));
   };
 
   const getCollectionsNames = async () => {
@@ -67,8 +69,10 @@ const LayerOrders = () => {
     });
     return names;
   };
+
   const handleRename = async (event) => {
     event.preventDefault();
+    if (!inputValue) return;
     try {
       dispatch(setLoader("saving..."));
       const names = await getCollectionsNames();
@@ -84,6 +88,13 @@ const LayerOrders = () => {
     }
     dispatch(setLoader(""));
   };
+
+  useEffect(() => {
+    if (promptLayer) {
+      dispatch(removeLayer(promptLayer));
+      dispatch(promptDeleteLayer(null));
+    }
+  }, [promptLayer]);
 
   return (
     <div className={classes.container}>

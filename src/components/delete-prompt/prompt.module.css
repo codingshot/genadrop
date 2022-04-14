@@ -1,0 +1,63 @@
+.container {
+  position: fixed;
+  width: 0;
+  height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  top: 0;
+  left: 0;
+  z-index: 100000;
+  overflow: hidden;
+  font-style: italic;
+  color: black;
+}
+
+.container.isActive {
+  background: rgba(0, 0, 0, 0.75);
+  width: 100vw;
+  height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2em;
+  padding: 2em;
+  background: white;
+  border-radius: 0.5em;
+  z-index: 100;
+}
+
+.action {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 2em;
+  align-items: center;
+}
+
+.reject,
+.accept {
+  width: 6em;
+  padding: 0.5em 0;
+  border-radius: 0.5em;
+  transition: all 300ms;
+}
+
+.accept {
+  background: rgb(255, 0, 0, 1);
+  color: white;
+  outline: 2px solid transparent;
+}
+
+.accept:hover {
+  outline: 2px solid rgb(255, 0, 0, 0.5);
+}
+
+.reject:hover {
+  background: gainsboro;
+}

@@ -44,6 +44,7 @@ const CollectionMenu = ({ layer }) => {
               key={idx}
               layerTitle={layerTitle}
               trait={trait}
+              layer={layer}
               setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
               activeCard={activeCard}
             />
