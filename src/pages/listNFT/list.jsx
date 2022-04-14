@@ -7,7 +7,7 @@ import classes from "./list.module.css";
 import { fetchAllNfts, writeNft } from "../../utils/firebase";
 
 const List = () => {
-  const { account } = useContext(GenContext);
+  const { account, mainnet } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -47,7 +47,7 @@ const List = () => {
   useEffect(() => {
     (async function getUserCollection() {
       const userNftCollections = await fetchAllNfts(account);
-      const result = await getUserNftCollection(userNftCollections);
+      const result = await getUserNftCollection(mainnet, userNftCollections);
 
       const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
 
