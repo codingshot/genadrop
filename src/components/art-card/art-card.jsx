@@ -80,11 +80,11 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
         {!isRule ? (
           <i />
         ) : activeCard === traitTitle ? (
-          <img src={checkActiveIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
+          <img src={checkActiveIcon} alt="" />
         ) : (
-          <img src={checkIcon} alt="" />
+          <img src={checkIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
         )}
-        <img onClick={handleRemove} src={closeIcon} alt="" />
+        <img onClick={handleRemove} src={closeIcon} className={classes.removeIcon} alt="" />
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />

@@ -12,9 +12,8 @@ const CollectionPreview = () => {
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);
     const ctx = canvas.getContext("2d");
-    const newLayers = [...layers];
     const newPreview = [];
-    newLayers.reverse().forEach(({ layerTitle: name, traits }) => {
+    [...layers].reverse().forEach(({ layerTitle: name, traits }) => {
       traits.forEach(({ traitTitle, image }) => {
         preview.forEach(({ layerTitle, imageName }) => {
           if (name === layerTitle && traitTitle === imageName) {
@@ -55,6 +54,8 @@ const CollectionPreview = () => {
       await handleImage(canvas, 250, 250);
     };
     imageHandler();
+
+    console.log("preview: ", preview);
   }, [preview, layers]);
 
   return (

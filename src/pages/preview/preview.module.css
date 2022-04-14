@@ -227,16 +227,16 @@
   background: white;
   box-shadow: 0 0 15px gainsboro;
   border-radius: 0.15em;
+  transition: all 300ms;
 }
 
 .iconClose img {
   width: 0.7em;
-  transition: transform 300ms;
   margin: 0;
 }
 
-.card > .iconClose:hover img {
-  transform: scale(1.2);
+.card > .iconClose:hover {
+  box-shadow: 0 0 10px gray;
 }
 
 .asset {
