@@ -19,7 +19,7 @@ const Dashboard = () => {
       price: "high",
     },
     activeDetail: "created",
-    collectedNfts: 0,
+    collectedNfts: [],
     createdNfts: 0,
     myCollections: null,
     filteredCollection: null,
@@ -39,7 +39,6 @@ const Dashboard = () => {
 
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
-      console.log(userCollections);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
       console.log("===>", myNftsCollections);
       handleSetState({ myCollections: myNftsCollections });
@@ -47,17 +46,17 @@ const Dashboard = () => {
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
-      console.log(userNftCollections);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
+      const createdNFTs = createdUserNfts.filter((nft) => nft.owner);
       console.log("===>", createdUserNfts);
 
-      handleSetState({ createdNfts: createdUserNfts });
+      handleSetState({ createdNfts: createdNFTs });
     })();
 
     (async function getCollections() {
       const userNftCollections = await fetchAllNfts(account);
       const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
-      console.log("===>", userNftCollections);
+      console.log("===>", createdUserNfts);
     })();
   }, [account]);
 
@@ -102,7 +101,6 @@ const Dashboard = () => {
     // if (!filteredCollection) return;
     handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
-
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>

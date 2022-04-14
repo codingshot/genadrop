@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
+import { useHistory, useLocation } from "react-router-dom";
 import { getSingleNfts } from "../../utils";
 import classes from "./singleNftCollection.module.css";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
@@ -9,7 +10,6 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
-import { useHistory, useLocation } from "react-router-dom";
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
@@ -37,7 +37,7 @@ const SingleNftCollection = () => {
     state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const getCollectionByChain = () => {

@@ -20,7 +20,7 @@ const NftCard = ({ nft, list, extend }) => {
     });
   }, []);
   return (
-    <Link to={`${match.url}${extend ? `${extend}/` : "/"}${Id}`}>
+    <Link to={nft.collection_name ? `${match.url}/${Id}` : `/marketplace/single-mint/${Id}`}>
       <div className={classes.card}>
         <div className={classes.imageContainer}>
           <img src={image_url} alt="" />
@@ -37,9 +37,13 @@ const NftCard = ({ nft, list, extend }) => {
                 <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
               </div>
             </div>
-            <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
-              {list ? "List" : nft.sold ? "SOLD!" : "Buy"}
-            </button>
+            {list ? (
+              ""
+            ) : (
+              <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
+                {nft.sold ? "SOLD!" : "Buy"}
+              </button>
+            )}
           </div>
         </div>
       </div>
