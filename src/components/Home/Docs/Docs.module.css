@@ -2,15 +2,17 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
+  grid-gap: 10em;
   gap: 10em;
-  padding: 1em 2em;
+  padding: 1em;
+  max-width: 1440px;
+  margin: auto;
 }
 
 .container p {
   font-size: 2.5rem;
   font-weight: bold;
-  margin-right: 2em;
 }
 
 .container p > span {
