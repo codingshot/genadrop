@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { clearRule, deleteRule, promptDeleteRules, setPrompt } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./rulesCard.module.css";
-import closeIcon from "../../assets/icon-close.svg";
 import leftArrow from "../../assets/icon-arrow-left-long.svg";
+import { handleImage } from "../preview/collection-preview-script";
 
 const RulesCard = ({ showRule }) => {
-  const { dispatch, rule, promptRules } = useContext(GenContext);
+  const { dispatch, layers, rule, promptRules } = useContext(GenContext);
+  const canvasRef = useRef(null);
 
   const handleClearRule = () => {
     dispatch(setPrompt(promptDeleteRules({})));
@@ -24,11 +25,18 @@ const RulesCard = ({ showRule }) => {
     }
   }, [promptRules]);
 
+  const imageHandler = async (idx) => {
+    const canvas = canvasRef.current;
+    await handleImage({ layers, preview: rule[idx], canvas, height: 100, width: 100 });
+  };
+
   return (
     <div className={classes.container}>
+      <canvas className={classes.canvas} ref={canvasRef} />
+      <p>Click on a rule to show preview</p>
       <div className={classes.wrapper}>
-        {rule.map((rl, idx) => (
-          <div key={idx} className={classes.conflictCard}>
+        {rule.map((rl, index) => (
+          <div key={index} className={classes.conflictCard} onClick={() => imageHandler(index)}>
             <div className={classes.content}>
               {rl.map((r, idx) => (
                 <div key={idx} className={classes.innerContent}>

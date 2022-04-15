@@ -11,7 +11,7 @@ const CollectionMenu = ({ layer }) => {
     activeCard: "",
   });
   const { activeCard } = state;
-  const { layerTitle, traits } = layer;
+  const { layerTitle, traits, id } = layer;
   const { dispatch, layers } = useContext(GenContext);
   const fileRef = useRef(null);
   const canvas = document.createElement("canvas");
@@ -22,6 +22,7 @@ const CollectionMenu = ({ layer }) => {
 
   const handleBlank = async () => {
     const res = await handleAddBlank({
+      layerId: id,
       traits,
       layerTitle,
       canvas,
@@ -42,9 +43,10 @@ const CollectionMenu = ({ layer }) => {
           {traits.map((trait, idx) => (
             <ArtCard
               key={idx}
+              index={idx}
               layerTitle={layerTitle}
               trait={trait}
-              layer={layer}
+              layerId={id}
               setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
               activeCard={activeCard}
             />
@@ -65,7 +67,7 @@ const CollectionMenu = ({ layer }) => {
       </section>
 
       <input
-        onChange={(event) => dispatch(addImage(handleFileChange({ event, traits, layerTitle })))}
+        onChange={(event) => dispatch(addImage(handleFileChange({ layerId: id, event, traits, layerTitle })))}
         ref={fileRef}
         style={{ display: "none" }}
         type="file"

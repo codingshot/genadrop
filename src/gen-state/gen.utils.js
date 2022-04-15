@@ -1,11 +1,11 @@
 export const addLayer = (layers, layerToAdd) => {
-  const result = layers.find((layer) => layer.layerTitle.toLowerCase() === layerToAdd.layerTitle.toLowerCase());
+  const result = layers.find((layer) => layer.layerTitle === layerToAdd.layerTitle);
   if (result) return layers;
   return [...layers, layerToAdd];
 };
 
 export const removeLayer = (layers, layerToRemove) =>
-  layers.filter((layer) => layer.layerTitle.toLowerCase() !== layerToRemove.layerTitle.toLowerCase());
+  layers.filter((layer) => layer.layerTitle !== layerToRemove.layerTitle);
 
 export const updateLayer = (layers, layerToUpdate) => {
   const result = layers.find((layer) => layer.layerTitle === layerToUpdate.layerTitle);
@@ -17,7 +17,7 @@ export const updateLayer = (layers, layerToUpdate) => {
 
 export const addImage = (layers, imageObj) => {
   const newLayers = layers.map((layer) => {
-    if (layer.layerTitle.toLowerCase() === imageObj.layerTitle.toLowerCase()) {
+    if (layer.id === imageObj.layerId) {
       return {
         ...layer,
         traits: imageObj.traits,
@@ -31,7 +31,7 @@ export const addImage = (layers, imageObj) => {
 
 export const removeImage = (layers, imageObj) => {
   const newLayers = layers.map((layer) => {
-    if (layer.layerTitle === imageObj.layerTitle) {
+    if (layer.id === imageObj.layerId) {
       const { traits } = layer;
       const newTraits = traits.filter(({ traitTitle }) => traitTitle !== imageObj.traitTitle);
       return { ...layer, traits: newTraits, traitsAmount: newTraits.length };
@@ -43,7 +43,7 @@ export const removeImage = (layers, imageObj) => {
 
 export const updateImage = (layers, imageObj) => {
   const newLayers = layers.map((layer) => {
-    if (layer.layerTitle === imageObj.layerTitle) {
+    if (layer.id === imageObj.layerId) {
       const { traits } = layer;
       const newTraits = traits.map((trait) => {
         if (trait.image.name === imageObj.image.name) {
@@ -62,32 +62,32 @@ export const updateImage = (layers, imageObj) => {
   return newLayers;
 };
 
-export const addPreview = (preview, { layerTitle, imageName, imageFile }) => {
+export const addPreview = (preview, { layerId, layerTitle, imageName, imageFile }) => {
   let newPreview = [];
-  const result = preview.find((item) => item.layerTitle === layerTitle);
+  const result = preview.find((item) => item.layerId === layerId);
   if (result) {
     newPreview = preview.map((item) => {
-      if (item.layerTitle === layerTitle) {
-        return { layerTitle, imageName, imageFile };
+      if (item.layerId === layerId) {
+        return { layerId, layerTitle, imageName, imageFile };
       }
       return item;
     });
   } else {
-    return [...preview, { layerTitle, imageName, imageFile }];
+    return [...preview, { layerId, layerTitle, imageName, imageFile }];
   }
   return newPreview;
 };
 
-export const removePreview = (preview, { layerTitle, imageName }) => {
-  const result = preview.find((item) => item.layerTitle === layerTitle);
+export const removePreview = (preview, { layerId, imageName }) => {
+  const result = preview.find((item) => item.layerId === layerId);
   if (!result) return preview;
-  return preview.filter((item) => !(item.layerTitle === layerTitle && item.imageName === imageName));
+  return preview.filter((item) => !(item.layerId === layerId && item.imageName === imageName));
 };
 
-export const updatePreview = (preview, { layerTitle, imageName }) => {
+export const updatePreview = (preview, { layerId, layerTitle, imageName }) => {
   const newPreview = preview.map((pre) => {
-    if (pre.layerTitle === layerTitle) {
-      return { layerTitle, imageName };
+    if (pre.layerId === layerId) {
+      return { layerId, layerTitle, imageName };
     }
     return pre;
   });

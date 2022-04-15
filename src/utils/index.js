@@ -202,11 +202,11 @@ export const handleBlankImage = async (props) => {
 
 export const reOrderPreview = ({ preview, layers }) => {
   const newPreview = [];
-  [...layers].forEach(({ layerTitle: name, traits }) => {
-    traits.forEach(({ traitTitle, image }) => {
+  [...layers].forEach(({ id, traits, layerTitle }) => {
+    traits.forEach(({ traitTitle }) => {
       preview.forEach((p) => {
-        if (name === p.layerTitle && traitTitle === p.imageName) {
-          newPreview.push(p);
+        if (id === p.layerId && traitTitle === p.imageName) {
+          newPreview.push({ ...p, layerTitle });
         }
       });
     });

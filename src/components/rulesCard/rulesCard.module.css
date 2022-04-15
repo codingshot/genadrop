@@ -14,8 +14,10 @@
 .wrapper {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
   gap: 1em;
-  height: 20em;
+  height: 16em;
   overflow: auto;
 }
 
@@ -145,6 +147,21 @@
 .notification {
   width: 100%;
   text-align: center;
+}
+
+.canvas {
+  height: 100px;
+  width: 100px;
+  border-radius: 0.25em;
+}
+
+.container > p {
+  font-style: italic;
+  color: gray;
+  font-size: 0.85rem;
+  margin-left: 0.5em;
+  display: inline-block;
+  transform: translateY(-5px);
 }
 
 @media screen and (max-width: 480px) {

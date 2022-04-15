@@ -3,42 +3,17 @@ import classes from "./collection-preview.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import { getImageSize } from "../../utils";
 import ButtonClickEffect from "../button-effect/button-effect";
+import { setPreview } from "../../gen-state/gen.actions";
+import { handleImage } from "./collection-preview-script";
 
 const CollectionPreview = () => {
-  const { layers, preview } = useContext(GenContext);
+  const { dispatch, layers, preview } = useContext(GenContext);
   const canvasRef = useRef(null);
-
-  const handleImage = async (canvas, width = 250, height = 250) => {
-    canvas.setAttribute("width", width);
-    canvas.setAttribute("height", height);
-    const ctx = canvas.getContext("2d");
-    const newPreview = [];
-    [...layers].reverse().forEach(({ layerTitle: name, traits }) => {
-      traits.forEach(({ traitTitle, image }) => {
-        preview.forEach(({ layerTitle, imageName }) => {
-          if (name === layerTitle && traitTitle === imageName) {
-            newPreview.push(image);
-          }
-        });
-      });
-    });
-    for (const img of newPreview) {
-      const image = await new Promise((resolve) => {
-        const image = new Image();
-        image.src = URL.createObjectURL(img);
-        image.onload = () => {
-          resolve(image);
-        };
-      });
-
-      image && ctx.drawImage(image, 0, 0, width, height);
-    }
-  };
 
   const handleDownload = async () => {
     const { width, height } = await getImageSize(layers[0].traits[0].image);
     const canvas = document.createElement("canvas");
-    await handleImage(canvas, width, height);
+    await handleImage({ layers, preview, canvas, height, width });
     const image = canvas.toDataURL("image/webp", 1);
     const link = document.createElement("a");
     link.download = "asset.png";
@@ -51,12 +26,22 @@ const CollectionPreview = () => {
   useEffect(() => {
     const imageHandler = async () => {
       const canvas = canvasRef.current;
-      await handleImage(canvas, 250, 250);
+      await handleImage({ layers, preview, canvas, height: 250, width: 250 });
     };
     imageHandler();
+  }, [preview]);
 
-    console.log("preview: ", preview);
-  }, [preview, layers]);
+  useEffect(() => {
+    const newPreview = [];
+    [...layers].forEach(({ id, layerTitle }) => {
+      preview.forEach((p) => {
+        if (id === p.layerId) {
+          newPreview.push({ ...p, layerTitle });
+        }
+      });
+    });
+    dispatch(setPreview(newPreview));
+  }, [layers]);
 
   return (
     <div className={classes.container}>

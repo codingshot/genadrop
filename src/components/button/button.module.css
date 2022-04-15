@@ -1,7 +1,7 @@
 .button {
   width: 100%;
   padding: 0.75em 3em;
-  background: var(--card-bg);
+  background: var(--card-bg2);
   border: none;
   color: white;
   outline: none;
@@ -22,5 +22,5 @@
 }
 
 .button:hover {
-  outline: 2px solid var(--card-bg);
+  outline: 2px solid var(--card-bg1);
 }
