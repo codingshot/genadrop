@@ -27,7 +27,6 @@ const CollectionOverview = () => {
 
   const closeRule = () => {
     dispatch(setConflictRule(false));
-    dispatch(clearPreview());
   };
 
   const handleRules = () => {
@@ -40,7 +39,6 @@ const CollectionOverview = () => {
     if (isUnique({ rule, preview: newPreview }) && newPreview.length) {
       dispatch(addRule([...rule, newPreview]));
     }
-    dispatch(clearPreview());
     closeRule();
   };
 
@@ -59,10 +57,6 @@ const CollectionOverview = () => {
   useEffect(() => {
     if (!rule.length) handleSetState({ showRule: false });
   }, [rule]);
-
-  useEffect(() => {
-    console.log(preview);
-  }, [preview]);
 
   return (
     <div className={classes.container}>

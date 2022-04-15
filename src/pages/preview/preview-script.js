@@ -15,7 +15,7 @@ export const isUnique = (attributes, attr, rule) => {
     result = rl.every((el) => {
       let singleRule = {
         layerTitle: el.layerTitle,
-        imageName: el.imageName.split(".png")[0],
+        imageName: el.imageName,
       };
       if (JSON.stringify(parseAttrToRule).includes(JSON.stringify(singleRule))) {
         return true;

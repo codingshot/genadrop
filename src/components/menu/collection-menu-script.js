@@ -1,7 +1,7 @@
 import { handleBlankImage } from "../../utils";
 
 export const handleFileChange = (props) => {
-  const { event, traits, layerTitle } = props;
+  const { layerId, event, traits, layerTitle } = props;
 
   const { files } = event.target;
   const imageFiles = Object.values(files);
@@ -11,14 +11,14 @@ export const handleFileChange = (props) => {
   imageFiles.forEach((imageFile) => {
     if (!filterArr.includes(imageFile.name)) {
       uniqueImageFile.push({
-        traitTitle: imageFile.name,
+        traitTitle: imageFile.name.split(".")[0],
         Rarity: "1",
         image: imageFile,
       });
       filterArr.push(imageFile.name);
     }
   });
-  return { layerTitle, traits: uniqueImageFile };
+  return { layerId, layerTitle, traits: uniqueImageFile };
 };
 
 export const dataURItoBlob = (dataURI) => {
@@ -34,7 +34,7 @@ export const dataURItoBlob = (dataURI) => {
 };
 
 export const handleAddBlank = async (props) => {
-  const { canvas, img, traits, layerTitle } = props;
+  const { canvas, img, traits, layerTitle, layerId } = props;
   await handleBlankImage({ canvas, img });
   const imageUrl = canvas.toDataURL("image/webp", 1);
   const imageFile = new File([dataURItoBlob(imageUrl)], "");
@@ -42,12 +42,12 @@ export const handleAddBlank = async (props) => {
   const filterArr = traits.map(({ image }) => image.name);
   if (!filterArr.includes(imageFile.name)) {
     uniqueImageFile.push({
-      traitTitle: imageFile.name,
+      traitTitle: "blank",
       Rarity: "1",
       image: imageFile,
     });
   }
-  return { layerTitle, traits: uniqueImageFile };
+  return { layerId, layerTitle, traits: uniqueImageFile };
 };
 
 export const getCombinations = (layers) => {
