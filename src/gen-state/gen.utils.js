@@ -1,3 +1,5 @@
+import { getDefaultName } from "../utils";
+
 export const addLayer = (layers, layerToAdd) => {
   const result = layers.find((layer) => layer.layerTitle === layerToAdd.layerTitle);
   if (result) return layers;
@@ -94,7 +96,10 @@ export const updatePreview = (preview, { layerId, layerTitle, imageName }) => {
   return newPreview;
 };
 
-export const deleteAsset = (nftLayers, id) => nftLayers.filter((layer) => layer.id !== id);
+export const deleteAsset = (nftLayers, id) =>
+  nftLayers
+    .filter((layer) => layer.id !== id)
+    .map((layer, idx) => ({ ...layer, name: `${layer.name.split("#")[0]} ${getDefaultName(idx + 1)}`.trim() }));
 
 export const renameAsset = (nftLayers, value) =>
   nftLayers.map((layer) => (layer.id === value.id ? { ...layer, name: value.name } : layer));
