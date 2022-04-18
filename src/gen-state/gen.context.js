@@ -30,6 +30,10 @@ const GenContextProvider = ({ children }) => {
     collectionDescription,
     didMount,
     mainnet,
+    prompt,
+    promptAsset,
+    promptLayer,
+    promptRules,
   } = state;
 
   return (
@@ -58,6 +62,10 @@ const GenContextProvider = ({ children }) => {
         didMount,
         mainnet,
         singleNfts,
+        prompt,
+        promptAsset,
+        promptLayer,
+        promptRules,
         dispatch,
       }}
     >

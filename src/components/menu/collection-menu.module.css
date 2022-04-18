@@ -3,7 +3,6 @@
   overflow: auto;
   border: 1px solid var(--sidebar-bg);
   margin-bottom: 1em;
-  padding: 1em;
 }
 
 .layer {

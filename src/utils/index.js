@@ -200,6 +200,20 @@ export const handleBlankImage = async (props) => {
   if (image) ctx.drawImage(image, 0, 0, width, height);
 };
 
+export const reOrderPreview = ({ preview, layers }) => {
+  const newPreview = [];
+  [...layers].forEach(({ id, traits, layerTitle }) => {
+    traits.forEach(({ traitTitle }) => {
+      preview.forEach((p) => {
+        if (id === p.layerId && traitTitle === p.imageName) {
+          newPreview.push({ ...p, layerTitle });
+        }
+      });
+    });
+  });
+  return newPreview;
+};
+
 export const getMockValue = async (val) => {
   const pickerOpts = {
     types: [

@@ -4,7 +4,7 @@ import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import { getNftCollections, getUserNftCollection } from "../../utils";
+import { getNftCollections, getUserNftCollection, getSingleNfts } from "../../utils";
 import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
@@ -19,7 +19,7 @@ const Dashboard = () => {
       price: "high",
     },
     activeDetail: "created",
-    collectedNfts: 0,
+    collectedNfts: [],
     createdNfts: 0,
     myCollections: null,
     filteredCollection: null,
@@ -46,15 +46,17 @@ const Dashboard = () => {
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
-      const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
+      const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
+      const createdNFTs = createdUserNfts.filter((nft) => nft.owner);
       console.log("===>", createdUserNfts);
 
-      handleSetState({ createdNfts: createdUserNfts });
+      handleSetState({ createdNfts: createdNFTs });
     })();
 
     (async function getCollections() {
       const userNftCollections = await fetchAllNfts(account);
-      await getUserNftCollection(userNftCollections, mainnet);
+      const createdUserNfts = await getUserNftCollection(userNftCollections, mainnet);
+      console.log("===>", createdUserNfts);
     })();
   }, [account]);
 
@@ -99,7 +101,6 @@ const Dashboard = () => {
     // if (!filteredCollection) return;
     handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
-
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>

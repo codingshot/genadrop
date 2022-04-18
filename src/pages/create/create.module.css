@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 2;
 }
 
 .iconContainer.active {
@@ -62,5 +62,11 @@
 
   .layer_overview {
     flex-direction: column;
+  }
+
+  .iconContainer {
+    width: 1.4em;
+    height: 1.4em;
+    top: 3.5em;
   }
 }

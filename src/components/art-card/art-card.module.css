@@ -2,9 +2,9 @@
   width: 14em;
   cursor: pointer;
   position: relative;
-  border-radius: 0.25em;
+  border-radius: 1em;
   overflow: hidden;
-  transition: all 0.2s;
+  transition: all 100ms;
   display: flex;
   flex-direction: column;
   box-shadow: 1px 1px 5px rgb(201, 201, 201);
@@ -12,7 +12,7 @@
 }
 
 .container.active {
-  box-shadow: 1px 1px 5px black;
+  border: 3px solid var(--main-accent);
 }
 
 .container.inActive {
@@ -138,4 +138,14 @@
 
 .promptWrapper.show {
   display: block;
+}
+
+.removeIcon {
+  transition: all 300ms;
+  padding: 0.25em;
+  border-radius: 0.25em;
+}
+
+.removeIcon:hover {
+  box-shadow: 0 0 10px gray;
 }

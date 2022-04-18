@@ -14,6 +14,8 @@ import {
   setMintInfo,
   setNftLayers,
   setOutputFormat,
+  setPrompt,
+  promptDeleteAsset,
 } from "../../gen-state/gen.actions";
 import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
@@ -37,6 +39,7 @@ const Preview = () => {
     outputFormat,
     rule,
     layers,
+    promptAsset,
   } = useContext(GenContext);
 
   const [state, setState] = useState({
@@ -92,8 +95,7 @@ const Preview = () => {
   };
 
   const handleDelete = (val) => {
-    dispatch(deleteAsset(val));
-    dispatch(setMintAmount(mintAmount - 1));
+    dispatch(setPrompt(promptDeleteAsset(val)));
   };
 
   const handleRename = (input) => {
@@ -199,9 +201,17 @@ const Preview = () => {
     handleSetState({ paginate: paginateObj });
   }, [nftLayers]);
 
+  useEffect(() => {
+    if (promptAsset) {
+      dispatch(deleteAsset(promptAsset));
+      dispatch(setMintAmount(mintAmount - 1));
+      dispatch(promptDeleteAsset(null));
+    }
+  }, [promptAsset]);
+
   return (
     <div className={classes.wrapper}>
-      <div onClick={() => history.goBack()} className={classes.arrowBack}>
+      <div onClick={() => history.goBack()} className={`${classes.backBtn} ${classes.mobile}`}>
         <img src={arrowIconLeft} alt="" />
       </div>
       <div className={classes.container}>
@@ -284,15 +294,20 @@ const Preview = () => {
         </aside>
 
         <main className={classes.main}>
-          <div className={classes.details}>
-            <div>
-              <span>Number of Generative Arts</span>
-              <span>{nftLayers.length}</span>
+          <div className={classes.detailsView}>
+            <div onClick={() => history.goBack()} className={classes.backBtn}>
+              <img src={arrowIconLeft} alt="" />
             </div>
-            <div>
-              {mintInfo ? <img src={warnIcon} alt="" /> : null}
-              <span>Unused Combinations</span>
-              <span>{combinations - mintAmount - rule.length}</span>
+            <div className={classes.detailsWrapper}>
+              <div className={classes.detail}>
+                <span>Number of Generative Arts</span>
+                <span>{nftLayers.length}</span>
+              </div>
+              <div className={classes.detail}>
+                {mintInfo ? <img src={warnIcon} alt="" /> : null}
+                <span>Unused Combinations</span>
+                <span>{combinations - mintAmount - rule.length}</span>
+              </div>
             </div>
           </div>
 
@@ -347,8 +362,8 @@ const Preview = () => {
                           </button>
                         </div>
                       </div>
-                      <div className={classes.iconClose}>
-                        <img src={closeIcon} alt="" onClick={() => handleDelete(id)} />
+                      <div onClick={() => handleDelete(id)} className={classes.iconClose}>
+                        <img src={closeIcon} alt="" />
                       </div>
                     </div>
                   );

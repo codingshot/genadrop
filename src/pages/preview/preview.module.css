@@ -25,27 +25,6 @@
   border-radius: 0.5em;
 }
 
-.arrowBack {
-  padding: 0 1em;
-  margin-left: 1em;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.25em 2em;
-  border-radius: 0.25em;
-  box-shadow: 4px 4px 8px gainsboro;
-  margin-bottom: 2em;
-  cursor: pointer;
-}
-
-.arrowBack img {
-  transition: all 300ms;
-}
-
-.arrowBack:hover img {
-  transform: translateX(-2px);
-}
-
 .main {
   flex: 1;
   height: auto;
@@ -53,41 +32,74 @@
   z-index: 1;
 }
 
-.details {
+.detailsView {
   width: 100%;
   position: sticky;
-  top: 4em;
+  top: 3.95em;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.5em;
-  padding: 1em;
+  padding: 1em 0.5em;
   background: var(--main-bg);
   z-index: 1;
-  border: 1px solid gainsboro;
-  border-radius: 0.5em;
   margin-bottom: 0.5em;
 }
 
-.details div {
+.backBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25em 2em;
+  border-radius: 0.25em;
+  box-shadow: 0 0 10px gainsboro;
+  background: var(--main-bg);
+  cursor: pointer;
+}
+
+.backBtn.mobile {
+  margin-bottom: 2em;
+  margin-left: 0.5em;
+  display: none;
+  position: sticky;
+  top: 4em;
+  z-index: 10;
+}
+
+.backBtn img {
+  transition: all 300ms;
+}
+
+.backBtn:hover img {
+  transform: translateX(-50%);
+}
+
+.detailsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.detail {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
   padding: 0.65em 1em;
-  font-size: 1rem;
+  font-size: 0.95rem;
   border-radius: 0.25em;
   background: var(--card-bg);
   color: white;
 }
 
-.details div span:last-child {
+.detail span:last-child {
   border: 1px solid white;
   padding: 0 1em;
 }
 
-.details div i {
+.detail i {
   color: red;
 }
 
@@ -227,16 +239,16 @@
   background: white;
   box-shadow: 0 0 15px gainsboro;
   border-radius: 0.15em;
+  transition: all 300ms;
 }
 
 .iconClose img {
   width: 0.7em;
-  transition: transform 300ms;
   margin: 0;
 }
 
-.card > .iconClose:hover img {
-  transform: scale(1.2);
+.card > .iconClose:hover {
+  box-shadow: 0 0 10px gray;
 }
 
 .asset {
@@ -394,6 +406,10 @@
   .preview {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .detail {
+    font-size: 0.85rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -407,8 +423,23 @@
     position: static;
   }
 
-  .details {
+  .detailsView {
     top: 3em;
+  }
+
+  .detailsWrapper {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.5em;
+    padding-top: 2em;
+  }
+
+  .backBtn {
+    display: none;
+  }
+
+  .backBtn.mobile {
+    display: inline-flex;
   }
 }
 
