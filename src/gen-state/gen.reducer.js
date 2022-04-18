@@ -38,7 +38,7 @@ export const INITIAL_STATE = {
   clipboardMessage: "",
   loaderMessage: "",
   didMount: false,
-  mainnet: null,
+  mainnet: !process.env.REACT_APP_ENV_STAGING,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
