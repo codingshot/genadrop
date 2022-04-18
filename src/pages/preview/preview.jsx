@@ -211,7 +211,7 @@ const Preview = () => {
 
   return (
     <div className={classes.wrapper}>
-      <div onClick={() => history.goBack()} className={classes.arrowBack}>
+      <div onClick={() => history.goBack()} className={`${classes.backBtn} ${classes.mobile}`}>
         <img src={arrowIconLeft} alt="" />
       </div>
       <div className={classes.container}>
@@ -294,15 +294,20 @@ const Preview = () => {
         </aside>
 
         <main className={classes.main}>
-          <div className={classes.details}>
-            <div>
-              <span>Number of Generative Arts</span>
-              <span>{nftLayers.length}</span>
+          <div className={classes.detailsView}>
+            <div onClick={() => history.goBack()} className={classes.backBtn}>
+              <img src={arrowIconLeft} alt="" />
             </div>
-            <div>
-              {mintInfo ? <img src={warnIcon} alt="" /> : null}
-              <span>Unused Combinations</span>
-              <span>{combinations - mintAmount - rule.length}</span>
+            <div className={classes.detailsWrapper}>
+              <div className={classes.detail}>
+                <span>Number of Generative Arts</span>
+                <span>{nftLayers.length}</span>
+              </div>
+              <div className={classes.detail}>
+                {mintInfo ? <img src={warnIcon} alt="" /> : null}
+                <span>Unused Combinations</span>
+                <span>{combinations - mintAmount - rule.length}</span>
+              </div>
             </div>
           </div>
 
