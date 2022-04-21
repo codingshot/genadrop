@@ -12,6 +12,7 @@ import Clipboard from "./components/clipboard/clipboard";
 import Loader from "./components/Loader/Loader";
 import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
+import Prompt from "./components/delete-prompt/prompt";
 
 const Home = lazy(() => import("./pages/home/home"));
 const Create = lazy(() => import("./pages/create/create"));
@@ -79,6 +80,7 @@ function App() {
       <Notification />
       <Clipboard />
       <Loader />
+      <Prompt />
     </div>
   );
 }

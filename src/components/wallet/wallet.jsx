@@ -202,8 +202,7 @@ function ConnectWallet({ setToggleNav }) {
 
   return account ? (
     <div className={classes.container}>
-      <div onClick={() => setDropdown(!dropdown)} className={classes.connected}
-      >
+      <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
         <div
           onClick={() => {
             setToggleDropdown(false);

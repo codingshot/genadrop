@@ -36,7 +36,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
         <div className={classes.line}>
           <img src={dragIcon} alt="" />
         </div>
-        <div className={classes.renameBtn}>
+        <div className={classes.renameWrapper}>
           {activeInput === name ? (
             <form onSubmit={handleRename}>
               <input
@@ -50,17 +50,19 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
           ) : (
             <div className={classes.nameHeader}>{name}</div>
           )}
-          <div className={classes.editBtn}>
-            {activeInput === name ? (
-              <img onClick={handleRename} src={markIconDark} alt="" />
-            ) : (
-              <img onClick={() => handleEdit(name)} src={editIcon} alt="" />
-            )}
-          </div>
+          {activeInput === name ? (
+            <div onClick={handleRename} className={classes.renameBtn}>
+              <img src={markIconDark} alt="" />
+            </div>
+          ) : (
+            <div onClick={() => handleEdit(name)} className={classes.editBtn}>
+              <img src={editIcon} alt="" />
+            </div>
+          )}
         </div>
       </div>
       <div className={classes.trait}>{trait}</div>
-      <div onClick={click} className={classes.icon}>
+      <div onClick={click} className={classes.deleteBtn}>
         <img src={deleteIcon} alt="" />
       </div>
     </div>

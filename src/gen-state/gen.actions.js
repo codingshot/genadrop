@@ -35,6 +35,11 @@ export const removeImage = (imageObj) => ({
   payload: imageObj,
 });
 
+export const setPreview = (preview) => ({
+  type: genActionTypes.SET_PREVIEW,
+  payload: preview,
+});
+
 export const addPreview = (item) => ({
   type: genActionTypes.ADD_PREVIEW,
   payload: item,
@@ -181,4 +186,24 @@ export const setDidMout = (isMount) => ({
 export const setMainnet = (mainnet) => ({
   type: genActionTypes.SET_MAINNET,
   payload: mainnet,
+});
+
+export const setPrompt = (prompt) => ({
+  type: genActionTypes.SET_PROMPT,
+  payload: prompt,
+});
+
+export const promptDeleteAsset = (asset) => ({
+  type: genActionTypes.PROMPT_DELETE_ASSET,
+  payload: asset,
+});
+
+export const promptDeleteLayer = (layer) => ({
+  type: genActionTypes.PROMPT_DELETE_LAYER,
+  payload: layer,
+});
+
+export const promptDeleteRules = (rules) => ({
+  type: genActionTypes.PROMPT_DELETE_RULES,
+  payload: rules,
 });

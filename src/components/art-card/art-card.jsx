@@ -8,7 +8,7 @@ import closeIcon from "../../assets/icon-close.svg";
 import editIconDark from "../../assets/icon-edit-dark.svg";
 import markIconDark from "../../assets/icon-mark-dark.svg";
 
-const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
+const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index }) => {
   const [state, setState] = useState({
     prompt: "",
     inputValue: {
@@ -26,13 +26,13 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   };
 
   const handleAddPreview = (name, imageFile) => {
-    dispatch(addPreview({ layerTitle, imageName: name, imageFile }));
-    setActiveCard(traitTitle);
+    dispatch(addPreview({ layerId, layerTitle, imageName: name, imageFile }));
+    setActiveCard(index);
   };
 
   const handleRemove = () => {
-    dispatch(removePreview({ layerTitle, imageName: traitTitle }));
-    dispatch(removeImage({ layerTitle, traitTitle }));
+    dispatch(removePreview({ layerId, layerTitle, imageName: traitTitle }));
+    dispatch(removeImage({ layerId, layerTitle, traitTitle }));
   };
 
   const handleChange = (event) => {
@@ -43,13 +43,14 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
   const handleRename = (e, imageFile) => {
     e.preventDefault();
     preview.forEach((item) => {
-      if (item.layerTitle === layerTitle && item.imageName === previousValue) {
-        dispatch(updatePreview({ layerTitle, imageName: inputValue.name, imageFile }));
+      if (item.layerId === layerId && item.imageName === previousValue) {
+        dispatch(updatePreview({ layerId, layerTitle, imageName: inputValue.name, imageFile }));
       }
     });
     handleSetState({ prompt: "" });
     dispatch(
       updateImage({
+        layerId,
         layerTitle,
         image,
         traitTitle: inputValue.name,
@@ -60,7 +61,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
 
   const handlePrompt = (value) => {
     handleSetState({ prompt: value });
-    setActiveCard(traitTitle);
+    setActiveCard(index);
     handleSetState({ previousValue: traitTitle });
   };
 
@@ -70,21 +71,21 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard }) => {
 
   useEffect(() => {
     if (!preview.length) {
-      setActiveCard("");
+      setActiveCard(-1);
     }
   }, [preview]);
 
   return (
-    <div className={`${classes.container} ${activeCard === traitTitle ? classes.active : classes.inActive}`}>
+    <div className={`${classes.container} ${activeCard === index ? classes.active : classes.inActive}`}>
       <div className={classes.action}>
         {!isRule ? (
           <i />
-        ) : activeCard === traitTitle ? (
-          <img src={checkActiveIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
+        ) : activeCard === index ? (
+          <img src={checkActiveIcon} alt="" />
         ) : (
-          <img src={checkIcon} alt="" />
+          <img src={checkIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
         )}
-        <img onClick={handleRemove} src={closeIcon} alt="" />
+        <img onClick={handleRemove} src={closeIcon} className={classes.removeIcon} alt="" />
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />

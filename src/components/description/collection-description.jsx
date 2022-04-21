@@ -11,10 +11,10 @@ import {
 import { GenContext } from "../../gen-state/gen.context";
 import Button from "../button/button";
 import CollectionDetails from "../details/collection-details";
-import CollectionPreview from "../preview/collection-preview";
 import classes from "./collection-description.module.css";
 import ButtonClickEffect from "../button-effect/button-effect";
 import { createDna, createUniqueLayer, generateArt, parseLayers } from "./collection-description-script";
+import CollectionPreview from "../preview/collection-preview";
 
 const CollectionDescription = () => {
   const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName } =

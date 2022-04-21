@@ -4,6 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { GenContext } from "../../gen-state/gen.context";
 import { getSingleNftDetails } from "../../utils";
 import classes from "./singleNFT.module.css";
@@ -15,7 +16,7 @@ import copyIcon from "../../assets/copy-solid.svg";
 import walletIcon from "../../assets/wallet-icon.png";
 import twitterIcon from "../../assets/twitter.svg";
 import facebookIcon from "../../assets/facebook.svg";
-import instagramIcon from "../../assets/instagram.svg";
+import whatsappIcon from "../../assets/whatsapp.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
@@ -29,7 +30,6 @@ const SingleNFT = () => {
     params: { nftId },
   } = useRouteMatch();
   const { singleNfts } = useContext(GenContext);
-  const { url } = useRouteMatch();
   const wrapperRef = useRef(null);
   const [state, setState] = useState({
     dropdown: ["1", "3"],
@@ -108,21 +108,6 @@ const SingleNFT = () => {
   useEffect(() => {
     // if (!nftDetails) return;
   }, [nftDetails]);
-
-  const icons = [
-    {
-      icon: facebookIcon,
-      link: "https://www.facebook.com",
-    },
-    {
-      icon: instagramIcon,
-      link: "https://www.instagram.com",
-    },
-    {
-      icon: twitterIcon,
-      link: "https://www.twitter.com/mpa",
-    },
-  ];
 
   const onCopyText = () => {
     handleSetState({ isCopied: true });
@@ -316,8 +301,8 @@ const SingleNFT = () => {
         <div>
           <div ref={wrapperRef} className={classes.share}>
             <div className={classes.copy}>
-              <input type="text" value={url} readOnly className={classes.textArea} />
-              <CopyToClipboard text={url} onCopy={onCopyText}>
+              <input type="text" value={window.location.href} readOnly className={classes.textArea} />
+              <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                 <div className={classes.copy_area}>
                   {!isCopied ? (
                     <img className={classes.shareicon} src={copyIcon} alt="" />
@@ -328,29 +313,16 @@ const SingleNFT = () => {
               </CopyToClipboard>
             </div>
             <div className={classes.shareContent}>
-              {icons.map((icon) => (
-                <a href={icon.link} target="_blank" rel="noreferrer">
-                  <img
-                    className={classes.shareIcon}
-                    onClick={() => handleSetState({ text: icon.link })}
-                    src={icon.icon}
-                    alt=""
-                  />
-                </a>
-              ))}
+              <FacebookShareButton url={window.location.href}>
+                <img className={classes.shareIcon} src={facebookIcon} alt="facebook" />
+              </FacebookShareButton>
+              <TwitterShareButton url={window.location.href}>
+                <img className={classes.shareIcon} src={twitterIcon} alt="twitter" />
+              </TwitterShareButton>
+              <WhatsappShareButton url={window.location.href}>
+                <img className={classes.shareIcon} src={whatsappIcon} alt="twitter" />
+              </WhatsappShareButton>
             </div>
-          </div>
-          <div className={classes.shareContent}>
-            {icons.map((icon) => (
-              <a href={icon.link} target="_blank" rel="noreferrer">
-                <img
-                  className={classes.shareIcon}
-                  onClick={() => handleSetState({ text: icon.link })}
-                  src={icon.icon}
-                  alt=""
-                />
-              </a>
-            ))}
           </div>
         </div>
       ) : (

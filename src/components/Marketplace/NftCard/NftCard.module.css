@@ -84,3 +84,11 @@
   background: var(--main-accent-dark);
   outline: 2px solid var(--main-accent);
 }
+.buttonSold {
+  background-color: #707a83;
+  cursor: default;
+}
+.buttonSold:hover {
+  background: #707a83;
+  outline: none;
+}
