@@ -1,0 +1,150 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  position: relative;
+  transform: translateY(-10px);
+  animation: slide-down 1s forwards;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.topNav {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1em;
+  border-top: 1px solid gainsboro;
+  border-bottom: 1px solid gainsboro;
+  position: sticky;
+  top: 3.9em;
+  background: white;
+  padding: 2em 0;
+}
+
+.backBtn {
+  padding: 0.5em 1em;
+  border-radius: 2em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.backBtn img {
+  transition: all 300ms;
+}
+
+.backBtn:hover img {
+  transform: translateX(-50%);
+}
+
+.paginate {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
+  padding: 0.25em;
+}
+
+.paginate input {
+  padding: 0.65em;
+  max-width: 6em;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+}
+
+.pageControl {
+  padding: 0.5em 2em;
+  border-radius: 2em;
+  cursor: pointer;
+  transition: all 300ms;
+  border: 2px solid transparent;
+}
+
+.pageControl.next {
+  color: white;
+  background: var(--main-accent);
+}
+
+.pageControl.next:hover {
+  background: var(--main-accent-dark);
+}
+
+.pageControl.prev {
+  color: gray;
+  background: white;
+  border: 2px solid gainsboro;
+}
+
+.pageControl.prev:hover {
+  background: whitesmoke;
+}
+
+.pageControl.goto {
+  background: var(--card-bg);
+  color: white;
+}
+
+.pageControl.goto:hover {
+  background: var(--card-bg2);
+}
+
+.pageCount {
+  white-space: nowrap;
+  color: gray;
+}
+
+.gotoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.assetWrapper {
+  width: 100%;
+  max-width: 14em;
+}
+
+.assetWrapper img {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .topNav {
+    flex-direction: column;
+    top: 3em;
+    gap: 0.5em;
+    padding: 0.5em 0;
+  }
+
+  .paginate input,
+  .pageCount,
+  .backBtn,
+  .pageControl {
+    font-size: 0.75rem;
+  }
+
+  .backBtn {
+    align-self: flex-start;
+  }
+
+  .paginate {
+    width: 100%;
+  }
+}

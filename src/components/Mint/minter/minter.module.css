@@ -2,7 +2,18 @@
   width: 100%;
   background: white;
   border-radius: 0.5em;
-  padding: 4em 1em;
+  padding: 2em 1em;
+  transform: translateY(-10px);
+  animation: slide-down 1s forwards;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(-10px);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .wrapper {
@@ -64,10 +75,10 @@
 .asset button {
   float: right;
   padding: 0.5em 2em;
-  border-radius: 0.25em;
-  background: var(--main-accent);
+  border-radius: 1.5em;
+  color: var(--main-accent);
   border: 2px solid var(--main-accent-dark);
-  color: white;
+  background: white;
   transition: all 300ms;
 }
 
@@ -75,6 +86,7 @@
   background: var(--main-accent-dark);
   border: 2px solid var(--main-accent);
   cursor: pointer;
+  color: white;
 }
 
 .type {
@@ -121,7 +133,7 @@
   flex-direction: row;
 }
 .price input {
-  width: 10rem;
+  width: 10em;
   margin-right: 1rem;
 }
 .price span {
@@ -161,20 +173,21 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 2em;
   flex-wrap: wrap;
 }
 
 .mintButtonWrapper button {
-  flex: 1;
-  padding: 0.75em 2em;
-  border-radius: 0.25em;
+  width: 10em;
+  padding: 0.75em 0;
+  border-radius: 2em;
+  cursor: pointer;
 }
 
 .mintBtn {
   background: var(--main-accent);
-  border: 2px solid var(--main-accent-dark);
+  border: 1px solid transparent;
   color: white;
   font-size: 1rem;
   transition: all 300ms;
@@ -182,18 +195,19 @@
 
 .mintBtn:hover {
   background: var(--main-accent-dark);
-  border: 2px solid var(--main-accent);
-  cursor: pointer;
+  border: 1px solid var(--main-accent);
 }
 
 .cancelBtn {
-  border: 2px solid var(--main-accent);
+  border: 1px solid var(--main-accent);
   transition: all 300ms;
   font-size: 1rem;
 }
 
 .cancelBtn:hover {
-  border: 2px solid var(--main-accent-dark);
+  border: 1px solid transparent;
+  background: var(--main-accent);
+  color: white;
 }
 
 .metadata {
@@ -253,36 +267,6 @@
 
 .warn {
   color: red;
-}
-
-/* ------------------------------------------full preview section ----------------------------------------------------*/
-
-.previewWrapper {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  position: relative;
-}
-
-.cancelPreview {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateY(-100%);
-  padding: 0.5em 2em;
-  border-radius: 0.25em;
-  cursor: pointer;
-}
-
-.assetWrapper {
-  width: 100%;
-  max-width: 14em;
-}
-
-.assetWrapper img {
-  width: 100%;
 }
 
 @media screen and (max-width: 480px) {
