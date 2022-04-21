@@ -17,6 +17,7 @@ import Prompt from "./components/delete-prompt/prompt";
 const Home = lazy(() => import("./pages/home/home"));
 const Create = lazy(() => import("./pages/create/create"));
 const Mint = lazy(() => import("./pages/mint/mint"));
+const CollectionToSingleMinter = lazy(() => import("./components/Mint/collection-single/collection-single"));
 const Marketplace = lazy(() => import("./pages/Marketplace/Marketplace"));
 const Preview = lazy(() => import("./pages/preview/preview"));
 const Explore = lazy(() => import("./pages/Explore/Explore"));
@@ -29,6 +30,7 @@ const List = lazy(() => import("./pages/listNFT/list"));
 const Profile = lazy(() => import("./pages/profile/profile"));
 const SingleNftCollection = lazy(() => import("./pages/singleMintCollection/singleNftCollection"));
 const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
+
 // const Listed = lazy(() => import('./pages/listNFT/listed'));
 
 function App() {
@@ -47,9 +49,9 @@ function App() {
     })();
   }, [mainnet]);
 
-  if (showWelcomeScreen) {
-    return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
-  }
+  // if (showWelcomeScreen) {
+  //   return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
+  // }
 
   return (
     <div className="App">
@@ -61,6 +63,7 @@ function App() {
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
+            <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
             <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} />

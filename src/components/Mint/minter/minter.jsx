@@ -3,11 +3,11 @@ import axios from "axios";
 import { setClipboard, setLoader, setNotification } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
-import { handleMint, handleSingleMint } from "./AssetPreview-script";
-import classes from "./AssetPreview.module.css";
-import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import { handleMint, handleSingleMint } from "./minter-script";
+import classes from "./minter.module.css";
+import CollectionPreview from "../collection-preview/collectionPreview";
 
-const AssetPreview = ({ data, changeFile }) => {
+const Minter = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [state, setState] = useState({
@@ -197,20 +197,11 @@ const AssetPreview = ({ data, changeFile }) => {
       }
     }
   }, [price, chainId]);
+
   return (
     <div className={classes.container}>
       {preview ? (
-        <div className={classes.previewWrapper}>
-          <div onClick={() => handleSetState({ preview: false })} className={classes.cancelPreview}>
-            <img src={arrowIconLeft} alt="" />
-            Back
-          </div>
-          {file.map((f, idx) => (
-            <div key={idx} className={classes.assetWrapper}>
-              <img src={URL.createObjectURL(f)} alt="" />
-            </div>
-          ))}
-        </div>
+        <CollectionPreview file={file} goBack={handleSetState} />
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
@@ -335,4 +326,4 @@ const AssetPreview = ({ data, changeFile }) => {
   );
 };
 
-export default AssetPreview;
+export default Minter;
