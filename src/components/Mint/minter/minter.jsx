@@ -6,6 +6,11 @@ import Attribute from "../Attribute/Attribute";
 import { handleMint, handleSingleMint } from "./minter-script";
 import classes from "./minter.module.css";
 import CollectionPreview from "../collection-preview/collectionPreview";
+import rightArrow from "../../../assets/icon-arrow-right.svg";
+import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
+import infoIcon from "../../../assets/icon-info.svg";
+
+import { Link } from "react-router-dom";
 
 const Minter = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -205,15 +210,43 @@ const Minter = ({ data, changeFile }) => {
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
-            {file.length > 1 ? (
-              <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
-                view all collections
+            <div className={classes.imageContainers}>
+              {file.length > 1 ? (
+                file
+                  .filter((_, idx) => idx < 3)
+                  .map((f) => (
+                    <div
+                      style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
+                      className={classes.imageContainer}
+                    ></div>
+                  ))
+              ) : (
+                <div
+                  style={{ backgroundImage: `url(${URL.createObjectURL(file[0])})` }}
+                  className={`${classes.imageContainer} ${classes.single}`}
+                ></div>
+              )}
+            </div>
+
+            <div className={classes.assetInfo}>
+              <div className={classes.innerAssetInfo}>
+                <p>{fName}</p>
+                <p>Number of assets: {file.length}</p>
+                {file.length > 1 ? (
+                  <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
+                    <span>view all assets</span>
+                    <img src={rightArrow} alt="" />
+                  </div>
+                ) : null}
               </div>
-            ) : null}
-            <img src={URL.createObjectURL(file[0])} alt="" />
-            <button type="button" onClick={changeFile}>
-              Change asset
-            </button>
+              <button onClick={changeFile} type="button">
+                Change asset
+              </button>
+            </div>
+
+            <Link to="/mint" className={classes.backBtn}>
+              <img src={leftArrow} alt="" />
+            </Link>
           </section>
 
           <section className={classes.type}>
@@ -221,6 +254,7 @@ const Minter = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.details}>
+            <div className={classes.category}>Asset Details</div>
             <div className={classes.inputWrapper}>
               <label>
                 {" "}
@@ -291,6 +325,11 @@ const Minter = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.mintOptions}>
+            <div className={classes.category}>Set Mint Options</div>
+            <div className={classes.info}>
+              <img src={infoIcon} alt="" />
+              <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
+            </div>
             <div className={classes.inputWrapper}>
               <label>
                 Price (USD) <span className={classes.required}>*</span>
@@ -308,7 +347,8 @@ const Minter = ({ data, changeFile }) => {
             </div>
 
             <div className={classes.inputWrapper}>
-              <label>Chain: {chainId ? <span className={classes.chain}> {chain?.label}</span> : "---"} </label>
+              <label>Blockchain: {chainId ? "" : "---"} </label>
+              {chainId && <div className={classes.metadata}>{chain?.label}</div>}
             </div>
           </section>
 

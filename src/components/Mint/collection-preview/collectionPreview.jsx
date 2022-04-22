@@ -78,13 +78,15 @@ const CollectionPreview = ({ file, goBack }) => {
         </div>
       </div>
 
-      {Object.keys(paginate).length
-        ? paginate[currentPage].map((f, idx) => (
-            <div key={idx} className={classes.assetWrapper}>
-              <img src={URL.createObjectURL(f)} alt="" />
-            </div>
-          ))
-        : null}
+      <div className={classes.display}>
+        {Object.keys(paginate).length
+          ? paginate[currentPage].map((f, idx) => (
+              <div key={idx} className={classes.assetWrapper}>
+                <img src={URL.createObjectURL(f)} alt="" />
+              </div>
+            ))
+          : null}
+      </div>
     </div>
   );
 };
