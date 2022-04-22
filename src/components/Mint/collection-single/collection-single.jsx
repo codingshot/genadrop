@@ -114,7 +114,7 @@ const CollectionToSingleMinter = () => {
             <span>Back</span>
           </Link>
           <header className={classes.headingWrapper}>
-            <h1 className={classes.heading}>Mint Your NFTs</h1>
+            {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
             <p className={classes.description}>
               Upload a <span>{params.mintId === "1of1" ? "image" : "collection"}</span> to create NFTs on any of our{" "}
               <br />

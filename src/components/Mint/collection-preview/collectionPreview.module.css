@@ -1,9 +1,7 @@
 .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   position: relative;
   transform: translateY(-10px);
   animation: slide-down 1s forwards;
@@ -116,6 +114,15 @@
   gap: 1em;
 }
 
+.display {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
 .assetWrapper {
   width: 100%;
   max-width: 14em;
@@ -123,6 +130,7 @@
 
 .assetWrapper img {
   width: 100%;
+  border-radius: 1em;
 }
 
 @media screen and (max-width: 768px) {
