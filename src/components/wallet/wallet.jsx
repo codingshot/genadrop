@@ -39,7 +39,7 @@ function ConnectWallet({ setToggleNav }) {
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState("Copy Address");
-  const [network, setNetwork] = useState("testnet");
+  const [network, setNetwork] = useState(process.env.REACT_APP_ENV_STAGING ? "testnet" : "mainnet");
 
   const clipboardRef = useRef(null);
 

@@ -3,6 +3,7 @@
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import JSZip from "jszip";
 import { ethers } from "ethers";
+import { setLoader } from "../gen-state/gen.actions";
 
 const algosdk = require("algosdk");
 const bs58 = require("bs58");
@@ -192,7 +193,6 @@ async function createAsset(asset, account) {
 }
 
 async function signTx(connector, txns) {
-  let assetID;
   const txnsToSign = txns.map((txn) => {
     const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
     return {
@@ -217,8 +217,8 @@ async function signTx(connector, txns) {
   const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
   await waitForConfirmation(tx.txId);
   const ptx = await algodTxnClient.pendingTransactionInformation(tx.txId).do();
-  assetID = ptx["asset-index"];
-  return assetID;
+  const assetID = ptx["asset-index"];
+  return { assetID, txId: tx.txId };
 }
 export async function mintSingleToAlgo(algoMintProps) {
   const { file, metadata, account, connector, dispatch, setNotification, price, mainnet } = algoMintProps;
@@ -229,9 +229,9 @@ export async function mintSingleToAlgo(algoMintProps) {
     const asset = await connectAndMint(file, metadata, file.name);
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
-    dispatch(setLoader("uploaded successfully, minting in progress..."));
-    const assetID = await signTx(connector, [txn]);
-    await write.writeNft(account, undefined, assetID, price, false, null, null, mainnet);
+    dispatch(setLoader("asset uploaded, minting in progress"));
+    const { assetID, txId } = await signTx(connector, [txn]);
+    await write.writeNft(account, undefined, assetID, price, false, null, null, mainnet, txId);
     // notification: asset minted
     dispatch(
       setNotification({
@@ -457,7 +457,7 @@ export async function mintToAlgo(algoProps) {
 
     const groupId = txgroup[0].group.toString("base64");
     dispatch(setLoader("finalizing"));
-    const assetID = await signTx(connector, txns);
+    const { assetID, txId } = await signTx(connector, txns);
     for (let nfts = 0; nfts < ipfsJsonData.length; nfts += 1) {
       collection_id.push(assetID + nfts);
     }
@@ -465,7 +465,7 @@ export async function mintToAlgo(algoProps) {
       pinataMetadata: { name: "collection" },
     });
     const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, fileName, collection_id, price, description, mainnet);
+    await write.writeUserData(account, collectionUrl, fileName, collection_id, price, description, mainnet, txId);
     dispatch(setLoader(""));
     dispatch(
       setNotification({
