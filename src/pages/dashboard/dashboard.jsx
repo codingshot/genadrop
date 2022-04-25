@@ -12,6 +12,8 @@ import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -30,6 +32,12 @@ const Dashboard = () => {
     filteredCollection: null,
   });
 
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
   const { account, mainnet } = useContext(GenContext);
 
@@ -38,6 +46,13 @@ const Dashboard = () => {
   };
 
   const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
+
+  useEffect(() => {
+    (async function getSubgraphNfts() {
+      const data = await client.query(GET_ALL_AURORA_COLLECTIONS);
+      console.log("aurora collection", data);
+    })();
+  }, []);
 
   useEffect(() => {
     if (!account) return;

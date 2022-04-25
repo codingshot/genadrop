@@ -3,21 +3,43 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getNftCollections } from "../../../utils";
+import { getAuroraCollections, getNftCollections } from "../../../utils";
 import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS } from "../../../graphql/querries/getCollections";
 
 const Collections = () => {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const [state, setState] = useState({
     algoCollection: [],
+    auroraCollection: [],
   });
   const { collections, mainnet } = useContext(GenContext);
-  const { algoCollection } = state;
+  const { algoCollection, auroraCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
   const history = useHistory();
   const { url } = useRouteMatch();
+
+  useEffect(() => {
+    (async function getSubgraphNfts() {
+      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      console.log(data);
+      const result = await getAuroraCollections(data.data.collections[0].nfts);
+      if (result?.length) {
+        handleSetState({ auroraCollection: result });
+      } else {
+        handleSetState({ auroraCollection: null });
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     try {
@@ -47,11 +69,14 @@ const Collections = () => {
 
       {algoCollection?.length ? (
         <div className={classes.wrapper}>
-          {algoCollection
+          {auroraCollection.map((collection, idx) => (
+            <CollectionsCard key={idx} collection={collection} />
+          ))}
+          {/* {algoCollection
             .filter((_, idx) => idx < 10)
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
-            ))}
+            ))} */}
         </div>
       ) : !algoCollection ? (
         <h1 className={classes.noResult}> No Results Found</h1>

@@ -8,6 +8,27 @@ import { getAlgoData } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 
+export const getAuroraCollections = async (collection) => {
+  const collectionArr = [];
+  for (let i = 0; i < collection.length; i += 1) {
+    try {
+      const collectionObj = {};
+      const link = collection[i].tokenIPFSPath;
+      const { data } = await axios.get(link.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      collectionObj.name = data.name;
+      collectionObj.owner = collection[i].owner.id;
+      collectionObj.price = collection[i].price;
+      collectionObj.description = data.description;
+      collectionObj.number_of_nfts = collection[i].owner.nfts.length;
+      collectionObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      collectionArr.push(collectionObj);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return collectionArr;
+};
+
 export const getNftCollections = async (collections, mainnet) => {
   const collectionArr = [];
   for (let i = 0; i < collections.length; i += 1) {
