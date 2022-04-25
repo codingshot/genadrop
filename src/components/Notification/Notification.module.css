@@ -1,5 +1,6 @@
 .container {
-  width: 20em;
+  width: 90%;
+  max-width: 22em;
   position: fixed;
   right: 10px;
   z-index: 3000;
@@ -13,29 +14,39 @@
 }
 
 .icon {
-  width: 16px;
-  height: 16px;
-  background: gray;
+  width: 24px;
+  height: 24px;
+  background: whitesmoke;
   border-radius: 50%;
   white-space: nowrap;
 }
 
 .message {
   flex: 1;
-  text-transform: lowercase;
 }
 
 .notification {
   width: 100%;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
   gap: 1em;
   animation: slide-out 650ms forwards;
-  background: var(--card-bg);
   color: white;
-  padding: 1em;
-  border-radius: 0.25em;
+  padding: 1em 1.5em;
+  border-radius: 0.5em;
+}
+
+.notification.error {
+  background: var(--main-error);
+}
+
+.notification.warning {
+  background: var(--main-warning);
+}
+
+.notification.successs {
+  background: var(--main-success);
 }
 
 .container.active {

@@ -129,7 +129,12 @@ const Preview = () => {
       const names = await getCollectionsNames();
       const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
       if (isUnique) {
-        dispatch(setNotification(`${value} already exist. Please choose another name`));
+        dispatch(
+          setNotification({
+            message: `${value} already exist. try choose another name`,
+            type: "warning",
+          })
+        );
       } else {
         dispatch(setCollectionName(value));
         const newLayers = nftLayers.map((asset, idx) => ({
@@ -139,7 +144,12 @@ const Preview = () => {
         dispatch(setNftLayers(newLayers));
       }
     } catch (error) {
-      dispatch(setNotification("could not save your collection name, please try again."));
+      dispatch(
+        setNotification({
+          message: "could not save your collection name, please try again.",
+          type: "error",
+        })
+      );
     }
     dispatch(setLoader(""));
   };

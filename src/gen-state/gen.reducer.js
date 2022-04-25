@@ -34,7 +34,10 @@ export const INITIAL_STATE = {
   rule: [],
   collections: {},
   singleNfts: [],
-  notification: "",
+  notification: {
+    message: "",
+    type: "", //warning, error, success
+  },
   clipboardMessage: "",
   loaderMessage: "",
   didMount: false,

@@ -161,16 +161,37 @@ const Minter = ({ data, changeFile }) => {
 
   const setMint = () => {
     if (!chainId) {
-      return dispatch(setNotification("connect wallet and try again"));
+      return dispatch(
+        setNotification({
+          message: "connect your wallet and try again",
+          type: "warning",
+        })
+      );
     }
     const c = chains.find((e) => e.networkId.toString() === chainId.toString());
-    if (!c) return dispatch(setNotification("unsupported chain detected"));
+    if (!c)
+      return dispatch(
+        setNotification({
+          message: "unsupported chain detected",
+          type: "error",
+        })
+      );
     if (!parseInt(price)) {
-      return dispatch(setNotification("please enter a valid price"));
+      return dispatch(
+        setNotification({
+          message: "enter a valid price",
+          type: "warning",
+        })
+      );
     }
     if (file.length > 1) {
       if (!mintProps.description) {
-        return dispatch(setNotification("please fill out the missing fields"));
+        return dispatch(
+          setNotification({
+            message: "fill out the required fields",
+            type: "warning",
+          })
+        );
       }
       handleMint(mintProps);
     } else {
@@ -180,7 +201,12 @@ const Minter = ({ data, changeFile }) => {
         !singleMintProps.metadata?.attributes[0]?.trait_type ||
         !singleMintProps.metadata?.attributes[0]?.value
       ) {
-        return dispatch(setNotification("please fill out the missing fields"));
+        return dispatch(
+          setNotification({
+            message: "fill out the missing fields",
+            type: "warning",
+          })
+        );
       }
       handleSingleMint(singleMintProps);
     }
@@ -206,7 +232,7 @@ const Minter = ({ data, changeFile }) => {
   return (
     <div className={classes.container}>
       {preview ? (
-        <CollectionPreview file={file} goBack={handleSetState} />
+        <CollectionPreview file={file} metadata={metadata} goBack={handleSetState} />
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
@@ -243,10 +269,11 @@ const Minter = ({ data, changeFile }) => {
                 Change asset
               </button>
             </div>
-
-            <Link to="/mint" className={classes.backBtn}>
-              <img src={leftArrow} alt="" />
-            </Link>
+            {file.length > 1 ? (
+              <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview_}>
+                <img src={leftArrow} alt="" />
+              </div>
+            ) : null}
           </section>
 
           <section className={classes.type}>
