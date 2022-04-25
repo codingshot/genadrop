@@ -45,7 +45,7 @@
   background: var(--main-warning);
 }
 
-.notification.successs {
+.notification.success {
   background: var(--main-success);
 }
 

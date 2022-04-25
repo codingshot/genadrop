@@ -127,7 +127,7 @@ const CollectionToSingleMinter = () => {
               collection
             </button>
             <button className={`${params.mintId === "1of1" && classes.active}`} onClick={handle1of1Click}>
-              1of1
+              1 of 1
             </button>
           </div>
 
@@ -154,7 +154,7 @@ const CollectionToSingleMinter = () => {
             <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
               {!loading2 ? <div className={classes.imagePlaceholder}></div> : null}
               <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
-              <h3 className={classes.title}> Mint 1of1 </h3>
+              <h3 className={classes.title}> Mint 1 of 1 </h3>
               <p className={classes.action}>Drag and Drop your image file here</p>
               <p className={classes.supportedFiles}>
                 We only support .Zip files for collection mints and deploy to Celo, Algorand, Near, and Polygon{" "}
