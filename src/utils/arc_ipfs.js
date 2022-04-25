@@ -211,11 +211,22 @@ async function signTx(connector, txns) {
     result = await connector.send(request);
   } catch (error) {
     alert(error);
+    console.log("da errorororo", error);
     throw error;
+    
   }
+  console.log("poresylt", result);
   const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
+  console.log("decode ke?", decodedResult);
+  const chunkSize = 16;
+  // let txgroup;
+  for (let i = 0; i < decodedResult.length; i += chunkSize) {
+    const chunk = decodedResult.slice(i, i + chunkSize);
+    const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
+  }
   const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
   await waitForConfirmation(tx.txId);
+  console.log("ID", tx.txId)
   const ptx = await algodTxnClient.pendingTransactionInformation(tx.txId).do();
   assetID = ptx["asset-index"];
   return assetID;
@@ -438,9 +449,20 @@ export async function mintToAlgo(algoProps) {
       txns.push(txn);
     }
 
-    const txgroup = algosdk.assignGroupID(txns);
+    console.log("txn before", txns)
 
-    const groupId = txgroup[0].group.toString("base64");
+    const chunkSize = 16;
+    // let txgroup;
+
+    for (let i = 0; i < txns.length; i += chunkSize) {
+      const chunk = txns.slice(i, i + chunkSize);
+      algosdk.assignGroupID(chunk);
+    }
+
+    // const txgroup = algosdk.assignGroupID(txns);
+    console.log("after ass", txns)
+
+    // const groupId = txgroup[0].group.toString("base64");
     dispatch(setLoader("finalizing"));
     const assetID = await signTx(connector, txns);
     for (let nfts = 0; nfts < ipfsJsonData.length; nfts += 1) {
