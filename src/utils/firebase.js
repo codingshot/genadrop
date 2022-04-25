@@ -66,7 +66,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
     );
 }
 
-async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet) {
+async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId) {
   const name = fileName.split("-")[0];
   const updates = {};
   for (let i = 0; i < collection_id.length; i += 1) {
@@ -78,7 +78,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
-    await recordTransaction(collection_id[i], "Minting", owner, null, null, null);
+    await recordTransaction(collection_id[i], "Minting", owner, null, null, txId);
   }
   db.collection("collections")
     .add({
@@ -109,7 +109,7 @@ async function readNftTransaction(assetId) {
   return Object.values(querySnapshot.data());
 }
 
-async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet) {
+async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet, txId) {
   const updates = {};
   updates[assetId] = {
     id: assetId,
@@ -131,7 +131,7 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
       { merge: true }
     );
   if (!sold) {
-    await recordTransaction(assetId, "Minting", owner, null, null, null);
+    await recordTransaction(assetId, "Minting", owner, null, null, txId);
   }
 
   return true;
