@@ -12,7 +12,12 @@ import {
 export const handleMint = async (args) => {
   const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
   if (!account) {
-    return dispatch(setNotification("connect your wallet and try again."));
+    return dispatch(
+      setNotification({
+        message: "connect your wallet and try again.",
+        type: "warning",
+      })
+    );
   }
   let url = null;
   try {
@@ -25,11 +30,21 @@ export const handleMint = async (args) => {
     } else if (chain.toLowerCase() === "near") {
       url = await mintToNear({ ...args });
     } else {
-      dispatch(setNotification("please, select a chain."));
+      dispatch(
+        setNotification({
+          message: "select a chain and try again.",
+          type: "warning",
+        })
+      );
     }
 
     if (typeof url === "object") {
-      dispatch(setNotification(url.message));
+      dispatch(
+        setNotification({
+          message: url.message,
+          type: "error",
+        })
+      );
     } else {
       dispatch(setClipboard(url));
     }
@@ -37,14 +52,24 @@ export const handleMint = async (args) => {
   } catch (error) {
     console.error(error);
     dispatch(setLoader(""));
-    dispatch(setNotification("ensure that your wallet is connected and try again."));
+    dispatch(
+      setNotification({
+        message: "connect your wallet and try again.",
+        type: "warning",
+      })
+    );
   }
 };
 
 export const handleSingleMint = async (args) => {
   const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
   if (!account) {
-    return dispatch(setNotification("connect your wallet and try again."));
+    return dispatch(
+      setNotification({
+        message: "connect your wallet and try again.",
+        type: "warning",
+      })
+    );
   }
   let url = null;
   try {
@@ -57,19 +82,34 @@ export const handleSingleMint = async (args) => {
     } else if (chain.toLowerCase() === "near") {
       url = await mintSingleToNear({ ...args });
     } else {
-      dispatch(setNotification("please, select a chain."));
+      dispatch(
+        setNotification({
+          message: "select a chain and try again.",
+          type: "warning",
+        })
+      );
     }
 
     if (typeof url === "object") {
       dispatch(setNotification(url.message));
     } else {
-      dispatch(setNotification("asset minted successfully"));
+      dispatch(
+        setNotification({
+          message: "asset minted successfully",
+          type: "success",
+        })
+      );
       dispatch(setClipboard(url));
     }
     dispatch(setLoader(""));
   } catch (error) {
     console.error(error);
     dispatch(setLoader(""));
-    dispatch(setNotification("ensure that your wallet is connected and try again."));
+    dispatch(
+      setNotification({
+        message: "connect your wallet and try again.",
+        type: "warning",
+      })
+    );
   }
 };

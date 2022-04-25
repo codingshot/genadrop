@@ -1,6 +1,20 @@
 .container {
   width: 100%;
   margin-bottom: 8em;
+  transform: scale(0.98);
+  animation: breath 1s forwards;
+  opacity: 0;
+}
+
+@keyframes breath {
+  from {
+    transform: scale(0.98);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .wrapper {

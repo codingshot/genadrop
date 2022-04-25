@@ -3,11 +3,16 @@ import axios from "axios";
 import { setClipboard, setLoader, setNotification } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
-import { handleMint, handleSingleMint } from "./AssetPreview-script";
-import classes from "./AssetPreview.module.css";
-import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import { handleMint, handleSingleMint } from "./minter-script";
+import classes from "./minter.module.css";
+import CollectionPreview from "../collection-preview/collectionPreview";
+import rightArrow from "../../../assets/icon-arrow-right.svg";
+import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
+import infoIcon from "../../../assets/icon-info.svg";
 
-const AssetPreview = ({ data, changeFile }) => {
+import { Link } from "react-router-dom";
+
+const Minter = ({ data, changeFile }) => {
   const { file, fileName: fName, metadata, zip } = data;
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [state, setState] = useState({
@@ -156,16 +161,37 @@ const AssetPreview = ({ data, changeFile }) => {
 
   const setMint = () => {
     if (!chainId) {
-      return dispatch(setNotification("connect wallet and try again"));
+      return dispatch(
+        setNotification({
+          message: "connect your wallet and try again",
+          type: "warning",
+        })
+      );
     }
     const c = chains.find((e) => e.networkId.toString() === chainId.toString());
-    if (!c) return dispatch(setNotification("unsupported chain detected"));
+    if (!c)
+      return dispatch(
+        setNotification({
+          message: "unsupported chain detected",
+          type: "error",
+        })
+      );
     if (!parseInt(price)) {
-      return dispatch(setNotification("please enter a valid price"));
+      return dispatch(
+        setNotification({
+          message: "enter a valid price",
+          type: "warning",
+        })
+      );
     }
     if (file.length > 1) {
       if (!mintProps.description) {
-        return dispatch(setNotification("please fill out the missing fields"));
+        return dispatch(
+          setNotification({
+            message: "fill out the required fields",
+            type: "warning",
+          })
+        );
       }
       handleMint(mintProps);
     } else {
@@ -175,7 +201,12 @@ const AssetPreview = ({ data, changeFile }) => {
         !singleMintProps.metadata?.attributes[0]?.trait_type ||
         !singleMintProps.metadata?.attributes[0]?.value
       ) {
-        return dispatch(setNotification("please fill out the missing fields"));
+        return dispatch(
+          setNotification({
+            message: "fill out the missing fields",
+            type: "warning",
+          })
+        );
       }
       handleSingleMint(singleMintProps);
     }
@@ -197,32 +228,52 @@ const AssetPreview = ({ data, changeFile }) => {
       }
     }
   }, [price, chainId]);
+
   return (
     <div className={classes.container}>
       {preview ? (
-        <div className={classes.previewWrapper}>
-          <div onClick={() => handleSetState({ preview: false })} className={classes.cancelPreview}>
-            <img src={arrowIconLeft} alt="" />
-            Back
-          </div>
-          {file.map((f, idx) => (
-            <div key={idx} className={classes.assetWrapper}>
-              <img src={URL.createObjectURL(f)} alt="" />
-            </div>
-          ))}
-        </div>
+        <CollectionPreview file={file} metadata={metadata} goBack={handleSetState} />
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
+            <div className={classes.imageContainers}>
+              {file.length > 1 ? (
+                file
+                  .filter((_, idx) => idx < 3)
+                  .map((f) => (
+                    <div
+                      style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
+                      className={classes.imageContainer}
+                    ></div>
+                  ))
+              ) : (
+                <div
+                  style={{ backgroundImage: `url(${URL.createObjectURL(file[0])})` }}
+                  className={`${classes.imageContainer} ${classes.single}`}
+                ></div>
+              )}
+            </div>
+
+            <div className={classes.assetInfo}>
+              <div className={classes.innerAssetInfo}>
+                <p>{fName}</p>
+                <p>Number of assets: {file.length}</p>
+                {file.length > 1 ? (
+                  <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
+                    <span>view all assets</span>
+                    <img src={rightArrow} alt="" />
+                  </div>
+                ) : null}
+              </div>
+              <button onClick={changeFile} type="button">
+                Change asset
+              </button>
+            </div>
             {file.length > 1 ? (
-              <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
-                view all collections
+              <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview_}>
+                <img src={leftArrow} alt="" />
               </div>
             ) : null}
-            <img src={URL.createObjectURL(file[0])} alt="" />
-            <button type="button" onClick={changeFile}>
-              Change asset
-            </button>
           </section>
 
           <section className={classes.type}>
@@ -230,6 +281,7 @@ const AssetPreview = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.details}>
+            <div className={classes.category}>Asset Details</div>
             <div className={classes.inputWrapper}>
               <label>
                 {" "}
@@ -300,6 +352,11 @@ const AssetPreview = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.mintOptions}>
+            <div className={classes.category}>Set Mint Options</div>
+            <div className={classes.info}>
+              <img src={infoIcon} alt="" />
+              <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
+            </div>
             <div className={classes.inputWrapper}>
               <label>
                 Price (USD) <span className={classes.required}>*</span>
@@ -317,7 +374,8 @@ const AssetPreview = ({ data, changeFile }) => {
             </div>
 
             <div className={classes.inputWrapper}>
-              <label>Chain: {chainId ? <span className={classes.chain}> {chain?.label}</span> : "---"} </label>
+              <label>Blockchain: {chainId ? "" : "---"} </label>
+              {chainId && <div className={classes.metadata}>{chain?.label}</div>}
             </div>
           </section>
 
@@ -335,4 +393,4 @@ const AssetPreview = ({ data, changeFile }) => {
   );
 };
 
-export default AssetPreview;
+export default Minter;
