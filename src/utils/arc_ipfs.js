@@ -446,7 +446,12 @@ export async function mintToAlgo(algoProps) {
     const ipfsJsonData = await createNFT({ ...algoProps });
     const collection_id = [];
     const txns = [];
-    dispatch(setNotification("preparing assets for minting"));
+    dispatch(
+      setNotification({
+        message: "preparing assets for minting",
+        type: "default",
+      })
+    );
     for (let i = 0; i < ipfsJsonData.length; i += 1) {
       dispatch(setLoader(`minting ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
@@ -538,7 +543,12 @@ export async function mintToCelo(celoProps) {
       ? `https://blockscout.celo.org/tx/${tx.hash}`
       : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
   }
-  dispatch(setNotification("download metamask"));
+  dispatch(
+    setNotification({
+      message: "download metamask",
+      type: "warning",
+    })
+  );
 }
 
 export async function mintToPoly(polyProps) {
@@ -712,7 +722,12 @@ export async function mintToNear(polyProps) {
     };
   }
   const ipfsJsonData = await createNFT({ ...polyProps });
-  dispatch(setNotification("preparing assets for minting"));
+  dispatch(
+    setNotification({
+      message: "preparing assets for minting",
+      type: "default",
+    })
+  );
   const contract = await initializeContract({
     minterAddress: mainnet
       ? process.env.REACT_APP_AURORA_MAINNET_MINTER_ADDRESS
@@ -763,7 +778,12 @@ export async function mintToNear(polyProps) {
     return;
   }
   dispatch(setLoader(""));
-  dispatch(setNotification("NFTs successfully minted."));
+  dispatch(
+    setNotification({
+      message: "NFTs successfully minted.",
+      type: "success",
+    })
+  );
   return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
 }
 

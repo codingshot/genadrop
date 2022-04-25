@@ -49,6 +49,10 @@
   background: var(--main-success);
 }
 
+.notification.default {
+  background: var(--card-bg);
+}
+
 .container.active {
   visibility: visible;
 }
