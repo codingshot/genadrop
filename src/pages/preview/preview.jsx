@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { v4 as uuid } from "uuid";
 import classes from "./preview.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import {
@@ -24,6 +26,7 @@ import { handleDownload } from "../../utils/index2";
 import { fetchCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
 import closeIcon from "../../assets/icon-close.svg";
+import checkIcon from "../../assets/check-solid.svg";
 import warnIcon from "../../assets/icon-warn.svg";
 
 const Preview = () => {
@@ -47,10 +50,13 @@ const Preview = () => {
     paginate: {},
     currentPageValue: 1,
     enableAllDescription: true,
+    duration: 0,
+    gifShow: null,
+    gifImages: [],
     editorAction: { index: "", id: "" },
   });
 
-  const { currentPage, paginate, currentPageValue, enableAllDescription } = state;
+  const { currentPage, paginate, currentPageValue, enableAllDescription, gifShow, gifImages, duration } = state;
   const ipfsRef = useRef(null);
   const arweaveRef = useRef(null);
   const history = useHistory();
@@ -209,6 +215,44 @@ const Preview = () => {
     }
   }, [promptAsset]);
 
+  const addGif = (asset) => {
+    if (gifImages.filter((e) => e.id === asset.id).length > 0) {
+      const newImgs = gifImages.filter((e) => e.id !== asset.id);
+      handleSetState({ gifImages: newImgs });
+    } else {
+      handleSetState({ gifImages: [...gifImages, asset] });
+    }
+  };
+
+  const generateGif = () => {
+    dispatch(setLoader("generating..."));
+    const urls = gifImages.map((img) => img.image);
+    const attributes = gifImages.map((img) => img.attributes);
+    if (duration < 1) {
+      return dispatch(setNotification("please enter a valid duration."));
+    }
+    if (gifImages.length < 2) {
+      return dispatch(setNotification("please select the images."));
+    }
+    axios.post(`https://gif-generator-api.herokuapp.com/`, { urls, duration }).then((res) => {
+      dispatch(setLoader(""));
+      dispatch(
+        setNftLayers([
+          ...nftLayers,
+          {
+            id: uuid(),
+            attributes,
+            description: "",
+            image: res.data.data,
+            name: getDefaultName(nftLayers.length + 1),
+          },
+        ])
+      );
+      handleSetState({ gifShow: false });
+      dispatch(setLoader(""));
+    });
+  };
+
   return (
     <div className={classes.wrapper}>
       <div onClick={() => history.goBack()} className={`${classes.backBtn} ${classes.mobile}`}>
@@ -274,6 +318,32 @@ const Preview = () => {
               />
               <p>Arweave</p>
             </label>
+            <button className={classes.gifButton} type="button">
+              {!gifShow && <span onClick={() => handleSetState({ gifShow: true })}>Genrate GIF</span>}
+            </button>
+
+            {gifShow && (
+              <div>
+                <div className={classes.durationField}>
+                  <p>Duration</p>
+                  <div>
+                    <span>s</span>
+                    <input onChange={(e) => handleSetState({ duration: e.target.value })} type="number" />
+                  </div>
+                </div>
+                <div className={classes.mintButtonWrapper}>
+                  <button type="button" onClick={generateGif} className={classes.mintBtn}>
+                    Done
+                  </button>
+                  <button type="button" onClick={() => handleSetState({ gifShow: null })} className={classes.cancelBtn}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            )}
+            {/* {gifShow && gifImages.length > 1 && <span>Done</span>}
+              {gifShow && <span onClick={() => handleSetState({ gifShow: null })}>Close</span>} */}
+
             <button
               type="button"
               onClick={() =>
@@ -362,14 +432,40 @@ const Preview = () => {
                           </button>
                         </div>
                       </div>
-                      <div onClick={() => handleDelete(id)} className={classes.iconClose}>
-                        <img src={closeIcon} alt="" />
-                      </div>
+                      {!gifShow && (
+                        <div onClick={() => handleDelete(id)} className={classes.iconClose}>
+                          <img src={closeIcon} alt="" />
+                        </div>
+                      )}
+                      {gifShow && (
+                        <div
+                          onClick={() => addGif(asset)}
+                          className={`${classes.iconClose} ${
+                            gifImages.filter((e) => e.id === id).length > 0 ? classes.cheked : ""
+                          }`}
+                        >
+                          <img src={checkIcon} alt="" />
+                        </div>
+                      )}
                     </div>
                   );
                 })
               : null}
           </div>
+          {gifShow && gifImages.length > 0 && (
+            <div className={classes.galleryGif}>
+              {gifImages.map((img) => (
+                <div>
+                  {gifShow && (
+                    <div onClick={() => addGif(img)} className={classes.iconClose}>
+                      <img src={closeIcon} alt="" />
+                    </div>
+                  )}
+                  <img src={img.image} alt="gifIMG" />
+                </div>
+              ))}
+            </div>
+          )}
         </main>
       </div>
       <div className={classes.paginate}>

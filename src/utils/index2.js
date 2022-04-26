@@ -111,8 +111,14 @@ const downloadCallback = async (props) => {
 ${i + 1} of ${value.length}`
           )
         );
-        const base64String = value[i].image.replace("data:image/webp;base64,", "");
-        zip.file(`${value[i].name}.png`, base64String, { base64: true });
+        let base64String;
+        if (value[i].image.includes("data:image/gif")) {
+          base64String = value[i].image.replace("data:image/gif;base64,", "");
+          zip.file(`${value[i].name}.gif`, base64String, { base64: true });
+        } else {
+          base64String = value[i].image.replace("data:image/webp;base64,", "");
+          zip.file(`${value[i].name}.png`, base64String, { base64: true });
+        }
         resolve();
       }, 0);
     });
@@ -120,7 +126,9 @@ ${i + 1} of ${value.length}`
   }
   dispatch(setLoader("zipping...."));
   const content = await zip.generateAsync({ type: "blob" });
+
   fileDownload(content, `${name}.zip`);
+
   dispatch(setLoader(""));
 };
 

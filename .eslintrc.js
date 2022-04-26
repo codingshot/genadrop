@@ -22,7 +22,7 @@ module.exports = {
     "no-nested-ternary": "off",
     "no-param-reassign": ["error", { props: false }],
     "jsx-a11y/no-static-element-interactions": "off",
-    "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"],
+    "linebreak-style": 0,
     "react/jsx-no-useless-fragment": "off",
     radix: "off",
     "react/jsx-props-no-spreading": "off",
@@ -34,5 +34,11 @@ module.exports = {
     "class-methods-use-this": "off",
     "prefer-regex-literals": "off",
     "react/destructuring-assignment": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
   },
 };
