@@ -78,13 +78,23 @@ const LayerOrders = () => {
       const names = await getCollectionsNames();
       const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
       if (isUnique) {
-        dispatch(setNotification(`${inputValue} already exist. Please choose another name`));
+        dispatch(
+          setNotification({
+            message: `${inputValue} already exist. try another name`,
+            type: "warning",
+          })
+        );
       } else {
         handleSetState({ renameAction: false });
         dispatch(setCollectionName(inputValue));
       }
     } catch (error) {
-      dispatch(setNotification("could not save your collection name, please try again."));
+      dispatch(
+        setNotification({
+          message: "could not save your collection name, please try again.",
+          type: "error",
+        })
+      );
     }
     dispatch(setLoader(""));
   };

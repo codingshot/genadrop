@@ -136,13 +136,28 @@ ${i + 1} of ${value.length}`
 export const handleDownload = async (input) => {
   const { value, dispatch, setNotification, name } = input;
   if (!name) {
-    return dispatch(setNotification("please, name your collection and try again."));
+    return dispatch(
+      setNotification({
+        message: "please, name your collection and try again.",
+        type: "warning",
+      })
+    );
   }
   const paginated = paginate(value, 1000);
   const index = Object.keys(paginated).length;
-  dispatch(setNotification(`your asset will be downloaded in ${index} ${index === 1 ? "batch" : "batches"}`));
+  dispatch(
+    setNotification({
+      message: `your asset will be downloaded in ${index} ${index === 1 ? "batch" : "batches"}`,
+      type: "default",
+    })
+  );
   for (let i = 1; i <= index; i += 1) {
     await downloadCallback({ ...input, id: i, value: paginated[i] });
   }
-  dispatch(setNotification("downloaded successfully"));
+  dispatch(
+    setNotification({
+      message: "downloaded successfully",
+      type: "success",
+    })
+  );
 };

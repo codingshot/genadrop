@@ -63,23 +63,11 @@
   display: none;
 }
 
-.wrapper {
+.navContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: white;
-}
-
-.wrapper input {
-  background: transparent;
-  border: 1px solid white;
-  width: 100%;
-  max-width: 28em;
-  outline-color: transparent;
-  padding: 0.25em;
-  font-size: 1rem;
-  border-radius: 0.25em;
-  display: none;
 }
 
 .navList {
@@ -126,7 +114,7 @@
 }
 
 .wallet {
-  width: 100%;
+  width: 18em;
   text-align: right;
 }
 
@@ -167,7 +155,7 @@
     display: block;
   }
 
-  .wrapper {
+  .navContainer {
     width: 95%;
     margin-right: 2.5%;
     position: absolute;
@@ -183,14 +171,14 @@
     border-bottom-left-radius: 1em;
   }
 
-  .wrapper.active {
+  .navContainer.active {
     max-height: 100vh;
     box-shadow: 0 0 15px gainsboro;
     justify-content: center;
     align-items: center;
   }
 
-  .wrapper input {
+  .navContainer input {
     display: block;
     max-width: 100%;
     border: 1px solid gray;
@@ -199,7 +187,7 @@
     margin-top: 2em;
   }
 
-  .wrapper input:hover {
+  .navContainer input:hover {
     outline: 1px solid gray;
   }
 
@@ -243,7 +231,7 @@
 }
 
 @media screen and (max-width: 480px) {
-  .wrapper {
+  .navContainer {
     max-width: 100%;
     right: 0;
   }

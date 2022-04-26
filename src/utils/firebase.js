@@ -17,14 +17,25 @@ import { nanoid } from "nanoid";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  databaseURL: process.env.REACT_APP_DATABASE_URL,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  apiKey: process.env.REACT_APP_ENV_STAGING
+    ? process.env.REACT_APP_API_KEY_STAGING
+    : process.env.REACT_APP_API_KEY_PROD,
+  authDomain: process.env.REACT_APP_ENV_STAGING
+    ? process.env.REACT_APP_AUTH_DOMAIN_STAGING
+    : process.env.REACT_APP_AUTH_DOMAIN_PROD,
+  projectId: process.env.REACT_APP_ENV_STAGING
+    ? process.env.REACT_APP_PROJECT_ID_STAGING
+    : process.env.REACT_APP_PROJECT_ID_PROD,
+  storageBucket: process.env.REACT_APP_ENV_STAGING
+    ? process.env.REACT_APP_STORAGE_BUCKET_STAGING
+    : process.env.REACT_APP_STORAGE_BUCKET_PROD,
+  messagingSenderId: process.env.REACT_APP_ENV_STAGING
+    ? process.env.REACT_APP_MESSAGING_SENDER_ID_STAGING
+    : process.env.REACT_APP_MESSAGING_SENDER_ID_PROD,
+  appId: process.env.REACT_APP_ENV_STAGING ? process.env.REACT_APP_ID_STAGING : process.env.REACT_APP_ID_PROD,
+  measurementId: process.env.REACT_APP_ENV_STAGING
+    ? process.env.REACT_APP_MEASUREMENT_ID_STAGING
+    : process.env.REACT_APP_MEASUREMENT_ID_PROD,
 };
 
 // Initialize Firebase
@@ -55,7 +66,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
     );
 }
 
-async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet) {
+async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId) {
   const name = fileName.split("-")[0];
   const updates = {};
   for (let i = 0; i < collection_id.length; i += 1) {
@@ -67,7 +78,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
-    await recordTransaction(collection_id[i], "Minting", owner, null, null, null);
+    await recordTransaction(collection_id[i], "Minting", owner, null, null, txId);
   }
   db.collection("collections")
     .add({
@@ -98,7 +109,7 @@ async function readNftTransaction(assetId) {
   return Object.values(querySnapshot.data());
 }
 
-async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet) {
+async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet, txId) {
   const updates = {};
   updates[assetId] = {
     id: assetId,
@@ -120,7 +131,7 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
       { merge: true }
     );
   if (!sold) {
-    await recordTransaction(assetId, "Minting", owner, null, null, null);
+    await recordTransaction(assetId, "Minting", owner, null, null, txId);
   }
 
   return true;
