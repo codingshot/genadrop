@@ -3,7 +3,7 @@
   background: white;
   border-radius: 0.5em;
   padding: 2em 1em;
-  transform: translateY(-10px);
+  /* transform: translateY(-10px);
   animation: slide-down 1s forwards;
 }
 
@@ -13,7 +13,7 @@
   }
   to {
     transform: translateY(0);
-  }
+  } */
 }
 
 .wrapper {
@@ -139,16 +139,17 @@
   transform: translateX(50%);
 }
 
-.backBtn {
+.showPreview_ {
   position: absolute;
   left: 2em;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
-.backBtn img {
+.showPreview_ img {
   width: 1.5em;
 }
 
@@ -239,7 +240,7 @@
 }
 
 .inputWrapper button:hover {
-  text-shadow: 2px 2px 2px var(--main-accent-dark);
+  color: var(--main-accent-dark);
 }
 
 .attributes {
@@ -367,7 +368,7 @@
     width: 90%;
   }
 
-  .backBtn {
+  .showPreview_ {
     left: 0;
   }
 
