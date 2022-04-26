@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import wrongSvg from "../../assets/something_wrong.svg";
 import home from "../../assets/home-svg.svg";
@@ -15,6 +15,14 @@ const SomethingWentWrong = () => {
     history.push("/");
     window.location.reload();
   };
+
+  useLayoutEffect(() => {
+    let hideFooter = document.getElementById("hide-footer");
+    if (hideFooter) {
+      hideFooter.style.display = "none";
+    }
+  }, []);
+
   return (
     <div className={classes["container"]}>
       <div className={classes["not-found"]}>
