@@ -1,15 +1,19 @@
 import classes from "./collectionPreview.module.css";
 import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
 import { useEffect, useState } from "react";
+import AttributeOverlay from "../attribute-overlay/attributeOverlay";
 
-const CollectionPreview = ({ file, goBack }) => {
+const CollectionPreview = ({ file, metadata, goBack }) => {
   const [state, setState] = useState({
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
+    fileToMetadataMap: {},
+    showAttribute: false,
+    attribute: {},
   });
 
-  const { currentPage, paginate, currentPageValue } = state;
+  const { currentPage, paginate, currentPageValue, fileToMetadataMap, showAttribute, attribute } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -33,6 +37,10 @@ const CollectionPreview = ({ file, goBack }) => {
     document.documentElement.scrollTop = 0;
   };
 
+  const handleShowAttribute = (attribute) => {
+    handleSetState({ showAttribute: true, attribute });
+  };
+
   useEffect(() => {
     const countPerPage = 20;
     const numberOfPages = Math.ceil(file.length / countPerPage);
@@ -47,8 +55,23 @@ const CollectionPreview = ({ file, goBack }) => {
     handleSetState({ paginate: paginateObj });
   }, [file]);
 
+  useEffect(() => {
+    const data = [...metadata];
+    let obj = {};
+    file.forEach((f) => {
+      data.forEach((m, idx) => {
+        if (f.name === m.image) {
+          obj[f.name] = { ...m, file: f };
+          data.splice(idx, 1);
+        }
+      });
+    });
+    handleSetState({ fileToMetadataMap: obj });
+  }, []);
+
   return (
     <div className={classes.container}>
+      {showAttribute && <AttributeOverlay attribute={attribute} handleSetState={handleSetState} />}
       <div className={classes.topNav}>
         <div onClick={() => goBack({ preview: false })} className={classes.backBtn}>
           <img src={arrowIconLeft} alt="" />
@@ -83,6 +106,12 @@ const CollectionPreview = ({ file, goBack }) => {
           ? paginate[currentPage].map((f, idx) => (
               <div key={idx} className={classes.assetWrapper}>
                 <img src={URL.createObjectURL(f)} alt="" />
+                <div className={classes.assetOverlay}>
+                  {fileToMetadataMap[f.name].name}
+                  <button onClick={() => handleShowAttribute(fileToMetadataMap[f.name])} className={classes.attrBtn}>
+                    View Attributes
+                  </button>
+                </div>
               </div>
             ))
           : null}

@@ -15,7 +15,7 @@ const Notification = () => {
   };
 
   useEffect(() => {
-    if (!notification) return;
+    if (!notification.message) return;
     handleSetState({ toggleFeedback: true });
     setTimeout(() => {
       handleSetState({ toggleFeedback: false });
@@ -25,7 +25,12 @@ const Notification = () => {
   useEffect(() => {
     feedbackRef.current.onanimationend = (e) => {
       if (e.animationName.includes("slide-out")) {
-        dispatch(setNotification(""));
+        dispatch(
+          setNotification({
+            message: "",
+            type: "success",
+          })
+        );
       }
     };
   }, []);
@@ -35,9 +40,11 @@ const Notification = () => {
       style={{ top: loaderMessage ? "8em" : "4em" }}
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
-      <div ref={feedbackRef} className={classes.notification}>
+      <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>
         <div className={classes.icon} />
-        <div className={classes.message}>{notification}</div>
+        <div className={classes.message}>
+          {notification.message.charAt(0).toUpperCase() + notification.message.substring(1)}
+        </div>
       </div>
     </div>
   );
