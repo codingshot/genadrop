@@ -367,8 +367,8 @@ export async function mintSingleToNear(singleMintProps) {
   );
   const marketContract = new ethers.Contract(
     mainnet
-      ? process.env.REACT_APP_GENADROP_NEAR_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_NEAR_TESTNET_MARKET_ADDRESS,
+      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
     marketAbi,
     wallet
   );
@@ -734,8 +734,8 @@ export async function mintToNear(polyProps) {
       ? process.env.REACT_APP_AURORA_MAINNET_MINTER_ADDRESS
       : process.env.REACT_APP_AURORA_TESTNET_MINTER_ADDRESS,
     marketAddress: mainnet
-      ? process.env.REACT_APP_GENADROP_NEAR_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_NEAR_TESTNET_MARKET_ADDRESS,
+      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
     fileName,
     connector,
     account,
@@ -745,8 +745,8 @@ export async function mintToNear(polyProps) {
   const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   const marketContract = new ethers.Contract(
     mainnet
-      ? process.env.REACT_APP_GENADROP_NEAR_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_NEAR_TESTNET_MARKET_ADDRESS,
+      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
     marketAbi,
     wallet
   );
