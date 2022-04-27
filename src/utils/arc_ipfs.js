@@ -458,7 +458,7 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { account, connector, fileName, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
   if (typeof window.ethereum !== "undefined") {
     const ipfsJsonData = await createNFT({ ...celoProps });
     dispatch(setNotification("preparing assets for minting"));
@@ -511,7 +511,7 @@ export async function mintToCelo(celoProps) {
 }
 
 export async function mintToPoly(polyProps) {
-  const { price, account, connector, fileName, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
       return { message: "not yet implemented" };
@@ -564,7 +564,8 @@ export async function mintToPoly(polyProps) {
       String(price * 10 ** 18),
       amounts,
       "General",
-      account
+      account,
+      description
     );
   } catch (error) {
     dispatch(setLoader(""));
@@ -661,7 +662,7 @@ export async function getAlgoData(mainnet, id) {
 }
 
 export async function mintToNear(polyProps) {
-  const { price, account, connector, fileName, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
       return { message: "not yet implemented" };
@@ -714,7 +715,8 @@ export async function mintToNear(polyProps) {
       String(price * 10 ** 18),
       amounts,
       "General",
-      account
+      account,
+      description
     );
   } catch (error) {
     dispatch(setLoader(""));
