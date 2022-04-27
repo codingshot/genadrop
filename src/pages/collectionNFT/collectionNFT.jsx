@@ -74,8 +74,11 @@ const CollectionNFT = () => {
       (async function getResult() {
         const collectionData = await getNftCollection(newCollection, mainnet);
         const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
-        const tHistory = await readNftTransaction(result.Id);
-        console.log(collection, collectionData, result);
+        let tHistory = await readNftTransaction(result.Id);
+        tHistory.find(t => {
+          if (t.type === "Minting")
+            t.price = result.price
+        })
         handleSetState({
           asset: result,
           transactionHistory: tHistory,
@@ -89,6 +92,7 @@ const CollectionNFT = () => {
     });
     document.documentElement.scrollTop = 0;
   }, [collections, nftId]);
+
 
   if (isLoading) {
     return (

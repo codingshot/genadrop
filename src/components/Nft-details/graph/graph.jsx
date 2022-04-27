@@ -1,58 +1,57 @@
-import React from "react";
-import { Chart } from "react-charts";
+import React, { useEffect } from "react";
 import classes from "./graph.module.css";
+import { Line } from "react-chartjs-2";
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 const Graph = ({ details }) => {
-  const prices = !details
-    ? null
-    : details.map((e, i) => {
-        const date = new Date(e.txDate * 1000);
-        return [date.getMonth(), e.price];
-      });
+  let dates = []
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"]
+  let prices = []
+  if (details) {
+    details.map((e, i) => {
+      const date = new Date(e.txDate * 1000);
 
-  const data = React.useMemo(
-    () => [
+      dates.push(date.getDate() + "/" + months[date.getMonth()])
+      prices.push(e.price)
+
+    });
+  }
+
+
+  console.log(dates, prices);
+  const data = {
+    labels: dates,
+    datasets: [
       {
-        label: "Series 1",
+        // label: "First dataset",
         data: prices,
+        fill: true,
+        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "rgba(75,192,192,1)"
       },
-    ],
-    []
-  );
-  const nodata = React.useMemo(() => [
-    {
-      label: "Series 1",
-      data: [],
-    },
-  ]);
-  const series = React.useMemo(
-    () => ({
-      showPoints: false,
-    }),
-    []
-  );
+    ]
+  };
 
-  const axes = React.useMemo(
-    () => [
-      { primary: true, type: "linear", position: "bottom" },
-      { type: "linear", position: "left" },
-    ],
-    []
-  );
+  const options = {
+    plugins: {
+      responsive: true,
+      legend: {
+        display: false
+      }
+    }
 
-  const lineChart = (
-    <>
-      {prices ? (
-        <div className={classes.chart}>
-          <Chart data={data} series={series} axes={axes} />
-        </div>
-      ) : (
-        <div className={classes.nodata}>No Price History Available</div>
-      )}
-    </>
-  );
+  };
+  return <>
+    {prices ? (
+      <div className={classes.chart}>
+        <Line data={data} width={null} height={80} options={options} />
+      </div>
+    ) : (
+      <div className={classes.nodata}>No Price History Available</div>
+    )}
+  </>
 
-  return lineChart;
 };
 
 export default Graph;
