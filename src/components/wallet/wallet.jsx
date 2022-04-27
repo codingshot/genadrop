@@ -7,13 +7,14 @@ import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import { setConnector, setAccount, setNotification, setChainId, setMainnet } from "../../gen-state/gen.actions";
 import userIcon from "../../assets/user.svg";
-import switchIcon from "../../assets/icon-switch.svg";
+// import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import polygonIcon from "../../assets/icon-polygon.svg";
 import algoIcon from "../../assets/icon-algo.svg";
 import nearIcon from "../../assets/icon-near.svg";
 import celoIcon from "../../assets/icon-celo.svg";
+import downArrow from "../../assets/icon-chevron-down.svg";
 
 const chainIcon = {
   Polygon: polygonIcon,
@@ -36,10 +37,9 @@ function ConnectWallet({ setToggleNav }) {
   const { pathname } = useLocation();
 
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
-  const [dropdown, setDropdown] = useState(false);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState("Copy Address");
-  const [network, setNetwork] = useState("mainnet");
+  const [network, setNetwork] = useState(process.env.REACT_APP_ENV_STAGING ? "testnet" : "mainnet");
 
   const clipboardRef = useRef(null);
 
@@ -69,7 +69,6 @@ function ConnectWallet({ setToggleNav }) {
       dispatch(setAccount(""));
       dispatch(setConnector());
       dispatch(setChainId(""));
-      setDropdown(false);
       setToggleDropdown(false);
       if (pathname.includes("/me")) {
         history.push("/marketplace");
@@ -82,7 +81,12 @@ function ConnectWallet({ setToggleNav }) {
     try {
       connector = await web3Modal.connect();
     } catch (error) {
-      dispatch(setNotification("connection failed ❌️"));
+      dispatch(
+        setNotification({
+          message: "connection failed ❌️",
+          type: "error",
+        })
+      );
       return;
     }
 
@@ -113,7 +117,12 @@ function ConnectWallet({ setToggleNav }) {
       // Subscribe to connection events
       connector.on("connect", (error, payload) => {
         if (error) {
-          dispatch(setNotification("No connected"));
+          dispatch(
+            setNotification({
+              message: "Not connected",
+              type: "warning",
+            })
+          );
           // feedbacktype: warn
 
           throw error;
@@ -158,7 +167,6 @@ function ConnectWallet({ setToggleNav }) {
       setNetwork("mainnet");
       dispatch(setMainnet(true));
     }
-    setToggleDropdown(!toggleDropdown);
   };
 
   const handleCopy = (props) => {
@@ -178,51 +186,20 @@ function ConnectWallet({ setToggleNav }) {
     return c.label;
   };
 
-  const wrapperRef = useRef(null);
-  function useOutsideAlerter(ref) {
-    useEffect(() => {
-      /**
-       * Alert if clicked on outside of element
-       */
-      function handleClickOutside(event) {
-        if (ref.current && !ref.current.contains(event.target)) {
-          setToggleDropdown(false);
-        }
-      }
-
-      // Bind the event listener
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        // Unbind the event listener on clean up
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [ref]);
-  }
-  useOutsideAlerter(wrapperRef);
-
   return account ? (
     <div className={classes.container}>
-      <div onClick={() => setDropdown(!dropdown)} className={classes.connected}>
-        <div
-          onClick={() => {
-            setToggleDropdown(false);
-            setToggleNav(false);
-          }}
-          className={classes.chain}
-        >
-          <img src={chainIcon[getConnectedChain()]} alt="" />
-        </div>
+      <div
+        onMouseLeave={() => setToggleDropdown(false)}
+        className={`${classes.connected} ${toggleDropdown && classes.active}`}
+      >
+        <img className={classes.chain} src={chainIcon[getConnectedChain()]} alt="" />
         <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
           <span>{breakAddress(account)}</span>
         </div>
-        <div ref={wrapperRef} className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
+        <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
           <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
             <div>{clipboardState}</div> <img src={copyIcon} alt="" />
             <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
-          </div>
-          <div onClick={handleSwitch} className={classes.option}>
-            <div>Switch to {network === "mainnet" ? "Testnet" : "Mainnet"}</div>
-            <img src={switchIcon} alt="" />
           </div>
           <div onClick={disconnect} className={classes.option}>
             <div>Disconnect</div>
@@ -230,12 +207,17 @@ function ConnectWallet({ setToggleNav }) {
           </div>
         </div>
       </div>
-      <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
+      <div className={classes.network}>
+        {network === "mainnet" ? "Mainnet" : "Testnet"}
+        <img src={downArrow} alt="" />
+
+        <div onClick={handleSwitch} className={classes.networkDrop}>
+          {network === "mainnet" ? "Testnet" : "Mainnet"}
+        </div>
+      </div>
       <div
         onClick={() => {
-          setToggleDropdown(false);
           history.push(`/me/${account}`);
-          setToggleNav(false);
         }}
         className={classes.user}
       >
