@@ -16,7 +16,6 @@
 .icon {
   width: 24px;
   height: 24px;
-  background: whitesmoke;
   border-radius: 50%;
   white-space: nowrap;
 }
@@ -39,14 +38,20 @@
 
 .notification.error {
   background: var(--main-error);
+  border: 1px solid var(--main-error-dark);
+  color: var(--main-error-dark);
 }
 
 .notification.warning {
   background: var(--main-warning);
+  border: 1px solid var(--main-warning-dark);
+  color: var(--main-warning-dark);
 }
 
 .notification.success {
   background: var(--main-success);
+  border: 1px solid var(--main-success-dark);
+  color: white;
 }
 
 .notification.default {

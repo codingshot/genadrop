@@ -72,10 +72,11 @@
   -webkit-filter: blur(4px);
 }
 
-.imageContainer.single {
-  transform: unset;
-  filter: unset;
-  -webkit-filter: unset;
+.singleImage {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0 0 15px gainsboro;
+  border-radius: 0.5em;
 }
 
 .asset button {

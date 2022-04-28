@@ -78,6 +78,18 @@
   background: var(--main-bg);
 }
 
+.imageContainer {
+  width: 6em;
+  height: 6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageContainer img {
+  width: 100%;
+}
+
 .title {
   color: var(--main-accent);
   font-size: 1.2rem;

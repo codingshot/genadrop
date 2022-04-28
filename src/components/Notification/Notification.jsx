@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useContext, useState } from "react";
 import { setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Notification.module.css";
+import warningIcon from "../../assets/icon-warning.svg";
+import successIcon from "../../assets/icon-success.svg";
+import errorIcon from "../../assets/icon-error.svg";
 
 const Notification = () => {
   const feedbackRef = useRef(null);
@@ -12,6 +15,12 @@ const Notification = () => {
   const { toggleFeedback } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
+  };
+
+  const notificationIcon = {
+    warning: warningIcon,
+    error: errorIcon,
+    success: successIcon,
   };
 
   useEffect(() => {
@@ -41,7 +50,7 @@ const Notification = () => {
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
       <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>
-        <div className={classes.icon} />
+        <img className={classes.icon} src={notificationIcon[notification.type]} alt="" />
         <div className={classes.message}>
           {notification.message.charAt(0).toUpperCase() + notification.message.substring(1)}
         </div>

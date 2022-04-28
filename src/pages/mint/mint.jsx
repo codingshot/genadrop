@@ -24,7 +24,9 @@ const Mint = () => {
 
       <main className={classes.mainWrapper}>
         <div className={`${classes.card} ${classes.collection}`}>
-          <img src={collectionIcon} alt="" />
+          <div className={classes.imageContainer}>
+            <img src={collectionIcon} alt="" />
+          </div>
           <h3 className={classes.title}> Mint a collection</h3>
           <p className={classes.description}>
             {" "}
@@ -37,7 +39,9 @@ const Mint = () => {
         </div>
 
         <div className={`${classes.card} ${classes._1of1}`}>
-          <img src={_1of1Icon} alt="" />
+          <div className={classes.imageContainer}>
+            <img src={_1of1Icon} alt="" />
+          </div>
           <h3 className={classes.title}> Mint 1 of 1 </h3>
           <p className={classes.description}>
             {" "}

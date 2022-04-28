@@ -143,7 +143,7 @@ const CollectionToSingleMinter = () => {
               <h3 className={classes.title}> Mint a collection</h3>
               <p className={classes.action}>Drag and Drop your zip file created using Genadrop Create app</p>
               <p className={classes.supportedFiles}>
-                We only support .Zip files for collection mints and deploy to Celo, Algorand, Near, and Polygon{" "}
+                We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
               </p>
               <div>or</div>
               <button onClick={() => fileRef.current.click()} className={classes.btn}>
@@ -157,7 +157,7 @@ const CollectionToSingleMinter = () => {
               <h3 className={classes.title}> Mint 1 of 1 </h3>
               <p className={classes.action}>Drag and Drop your image file here</p>
               <p className={classes.supportedFiles}>
-                We only support .Zip files for collection mints and deploy to Celo, Algorand, Near, and Polygon{" "}
+                We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
               </p>
               <div>or</div>
               <button onClick={() => fileRef.current.click()} className={classes.btn}>

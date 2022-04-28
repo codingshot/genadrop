@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap");
+@font-face {
+  font-family: neue;
+  src: url("fonts/NeueHaasDisplayMediu.ttf");
+}
 
 :root {
   --main-bg: #ffffff;
@@ -6,9 +10,12 @@
   --main-accent-dark: #037568;
   --main-hover: #eff5f4;
   --main-light: #d0ebe9e4;
-  --main-success: #46af46;
-  --main-error: #df5338;
-  --main-warning: #fba200;
+  --main-success: #00cc9b;
+  --main-success-dark: #009987;
+  --main-error: #ffe3d6;
+  --main-error-dark: #ff3236;
+  --main-warning: #ffeda6;
+  --main-warning-dark: #ffad0d;
   --text-color: #000000;
   --card-bg: #3d3d3d;
   --card-bg1: #27292c;
@@ -51,7 +58,7 @@ a {
   /* font-family: 'Roboto', sans-serif; */
   font-display: fallback;
   /* font-family: 'Poppins', sans-serif; */
-  font-family: sans-serif;
+  font-family: neue;
 }
 
 /* width */
