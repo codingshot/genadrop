@@ -7,10 +7,11 @@
 .container {
   width: 100%;
   max-width: 1440px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 28% 70%;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 1em;
+  gap: 2%;
   margin: 0 auto;
   margin-bottom: 4em;
   min-height: 100vh;
@@ -90,13 +91,48 @@
   padding: 0.65em 1em;
   font-size: 0.95rem;
   border-radius: 0.25em;
-  background: var(--card-bg);
+  border: 1px solid var(--card-bg);
+  background: #fff;
+  color: var(--card-bg);
+}
+.detailGif {
+  border-radius: 30px;
+  border-color: var(--main-accent);
+  cursor: pointer;
+}
+.detailGif:hover {
+  background: var(--main-accent);
+}
+.detailGif:hover p {
   color: white;
 }
-
+.detailGif:hover span:last-child {
+  color: var(--main-accent);
+  background: white;
+}
 .detail span:last-child {
-  border: 1px solid white;
+  background: #4b4b5a;
+  border: 1px solid #4b4b5a;
+  color: white;
   padding: 0 1em;
+}
+.detailGif p {
+  margin: auto;
+  font-weight: 500;
+  color: var(--main-accent);
+  display: flex;
+  align-items: center;
+}
+.detailGif span:last-child {
+  border-radius: 50%;
+  padding: 0;
+  width: 23px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  background: var(--main-accent);
+  border: 1px solid var(--main-accent);
 }
 
 .detail i {
@@ -196,8 +232,8 @@
 }
 
 .actionContainer > button {
+  border: 1px solid var(--main-accent);
   width: 100%;
-  margin-top: 2em;
   border: none;
   padding: 0.75em;
   font-size: 1rem;
@@ -309,29 +345,34 @@
   padding: 0.5em 0em;
   white-space: nowrap;
   border-radius: 0.25em;
-  border: none;
+  border: 1px solid;
   color: white;
   cursor: pointer;
   transition: all 150ms;
   outline: 1px solid transparent;
-}
-
-.buttonContainer button:first-child {
-  background: var(--main-accent);
+  font-weight: 600;
+  font-size: 0.7em;
 }
 
 .buttonContainer button:last-child {
-  background: var(--card-bg);
+  border-color: white;
 }
 
-.buttonContainer button:first-child:hover {
-  background: var(--main-accent-dark);
-  outline: 1px solid var(--main-accent);
+.buttonContainer button:first-child,
+.nftDonwload {
+  background: white;
+  border-color: white;
+  color: var(--main-accent);
 }
-
 .buttonContainer button:last-child:hover {
   background: var(--card-bg3);
   outline: 2px solid var(--card-bg);
+}
+.buttonContainer button:first-child:hover,
+.nftDonwload {
+  background: var(--main-accent-dark);
+  border-color: var(--main-accent-dark);
+  color: white;
 }
 
 .radioBtn {
@@ -396,9 +437,19 @@
   white-space: nowrap;
 }
 /* -------------------------------- GIF Genrator -------------------------------- */
-.gifButton {
-  padding: 0 !important;
+button.gifButton {
+  margin-top: 2em;
+  background: white;
+  border: 1px solid var(--main-accent);
+  color: var(--main-accent);
+  transition: 0.3s ease-in;
 }
+button.gifButton:hover {
+  background: var(--main-accent);
+  color: white;
+  outline: none;
+}
+
 .gifButton span {
   display: block;
   width: 100%;
@@ -409,44 +460,101 @@
   background: var(--main-accent);
 }
 .galleryGif {
-  margin-top: 20px;
-  display: flex;
-  background: #27292cb5;
+  background: rgba(39, 39, 39, 0.77);
+  backdrop-filter: blur(23px);
+  border-radius: 7px;
   padding: 1rem;
+  margin-top: 20px;
+  position: sticky;
+  bottom: 0;
+}
+.galleryGifslides {
+  display: flex;
   overflow-x: scroll;
 }
-.galleryGif > div {
+/* width */
+.galleryGifslides::-webkit-scrollbar {
+  height: 20px;
+}
+
+/* Track */
+.galleryGifslides::-webkit-scrollbar-track {
+  background: rgba(75, 75, 90, 0.56);
+  border-radius: 0px 0px 8px 8px;
+}
+
+/* Handle */
+.galleryGifslides::-webkit-scrollbar-thumb {
+  background: #b6b6b6;
+  border-radius: 30px;
+}
+
+.galleryGifslides > div {
   position: relative;
   margin-right: 10px;
 }
-.galleryGif > div > img {
-  width: 100px;
-  height: 100px;
+.galleryGifslides > div > img {
+  width: 150px;
+  height: 150px;
   object-fit: cover;
+  border-radius: 9px;
+  padding: 8px;
+  background: #fff;
+}
+.galleryGifInfo {
+  color: white;
+  display: flex;
+  margin-bottom: 20px;
+}
+.galleryGifInfo > p {
+  display: flex;
+  align-items: center;
+}
+.galleryGifInfo > div {
+  background: rgba(152, 162, 179, 0.32);
+  border-radius: 4px;
+  margin-left: 1em;
+  padding: 0.7em;
+  display: flex;
+  cursor: pointer;
+}
+.galleryGifInfo > div svg {
+  margin-right: 6px;
+}
+.galleryGifInfo > div:hover svg {
+  fill: var(--main-accent);
 }
 .mintButtonWrapper {
   width: 100%;
-  display: flex;
+  display: grid;
   align-items: center;
   justify-content: space-between;
-  gap: 2em;
+  grid-gap: 10%;
+  gap: 10%;
   flex-wrap: wrap;
+  margin: 1.5em 0;
+  grid-template-columns: 45% 45%;
 }
 
 .mintButtonWrapper button {
-  flex: 1;
-  padding: 0.75em 2em;
-  border-radius: 0.25em;
+  flex: 1 1;
+  height: 2.8em;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mintBtn {
   background: var(--main-accent);
-  border: 2px solid var(--main-accent-dark);
+  border: 2px solid var(--main-accent);
   color: white;
   font-size: 1rem;
   transition: all 300ms;
 }
-
+.mintBtn svg {
+  margin-right: 8px;
+}
 .mintBtn:hover {
   background: var(--main-accent-dark);
   border: 2px solid var(--main-accent);
@@ -463,24 +571,32 @@
 .cancelBtn:hover {
   border: 2px solid var(--main-accent-dark);
 }
+.durationWrapper {
+  width: 100%;
+}
 .durationField {
+  margin-top: 2em;
   margin-bottom: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.durationField p {
+.durationLabel {
+  display: flex;
+  width: 100%;
+  margin-bottom: 0.5em;
+}
+.durationLabel p {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.1em;
+  font-weight: 500;
 }
-.durationField div {
-  display: flex;
-  justify-content: center;
-  width: 50%;
-  position: relative;
+.durationLabel img {
+  width: 30px;
+  margin-left: 5px;
 }
 .durationField div span {
   position: absolute;
@@ -491,31 +607,154 @@
   top: 50%;
   transform: translate(-50%, -50%);
 }
-.durationField div input {
-  padding: 0.75em 2em;
-  border-radius: 0.25em;
-  border: 2px solid var(--main-accent);
+.durationInput {
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+.durationInput input {
+  padding-left: 1em;
+  height: 3.4em;
+  border-radius: 5px;
+  border: 2px solid #adb5bd;
   background: white;
   transition: all 300ms;
-  font-size: 1rem;
+  font-size: 1.2rem;
   width: 100%;
-  text-align: center;
 }
-.durationField div input:focus {
+.durationInput input:focus {
   border: 2px solid var(--main-accent);
   outline: none;
 }
+.durationInput input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #adb5bd;
+  opacity: 1; /* Firefox */
+}
 /* Chrome, Safari, Edge, Opera */
-.durationField input::-webkit-outer-spin-button,
-.durationField input::-webkit-inner-spin-button {
+.durationInput input::-webkit-outer-spin-button,
+.durationInput input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 /* Firefox */
-.durationField input[type="number"] {
+.durationInput input[type="number"] {
   -moz-appearance: textfield;
 }
+.numberCounter {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  display: flex;
+  width: 75px;
+  justify-content: space-evenly;
+}
+.numberCounter p {
+  color: #adb5bd;
+  display: flex;
+  align-items: center;
+  width: 50%;
+}
+.verticalLine {
+  width: 1px;
+  background: #c4c4c4;
+  height: 45px;
+  margin: auto 0;
+}
+.inputArrows {
+  display: flex;
+  flex-direction: column;
+  height: 55%;
+  margin: auto 0;
+  justify-content: space-around;
+  width: 50%;
+  align-items: center;
+}
+.inputArrows img {
+  cursor: pointer;
+}
 
+/* -------------------------------- GIF Model -------------------------------- */
+.modelContainer {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+.modelActive {
+  display: flex;
+}
+.guideContainer {
+  width: 100%;
+  max-width: 68em;
+  border-radius: 1em;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 2em 2.1em;
+  padding-bottom: 3em;
+}
+.guideContainer > svg {
+  margin-left: auto;
+  margin-bottom: 1.3em;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+}
+.guideContainer > svg > path {
+  fill: #4b4b5a;
+}
+.imgContainer {
+  border: 1px solid #adb5bd;
+  display: flex;
+  padding: 3em 1.5em 1.5em;
+  flex-direction: column;
+}
+.closeIcon path {
+  fill: #f1423b;
+}
+.gifAllBtn {
+  display: flex;
+  margin-top: 1.4em;
+  justify-content: flex-end;
+}
+.gifAllBtn p,
+.gifAllBtn div {
+  border-radius: 40px;
+  width: 13em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3em;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+.gifAllBtn div {
+  background: var(--main-accent);
+  color: white;
+  border: 1px solid var(--main-accent);
+  margin-left: 20px;
+}
+.gifAllBtn div:hover {
+  background: var(--main-accent-dark);
+  border: 2px solid var(--main-accent);
+}
+.gifAllBtn p {
+  color: #f1423b;
+  border: 1px solid #f1423b;
+}
+.gifAllBtn p:hover {
+  background: #f1423b;
+  color: #fff;
+  border: 2px solid #f1423b;
+}
 @media screen and (max-width: 1280px) {
   .preview {
     grid-template-columns: repeat(3, 1fr);
@@ -534,10 +773,13 @@
 
 @media screen and (max-width: 768px) {
   .container {
+    display: flex;
     flex-direction: column;
     align-items: center;
   }
-
+  .main {
+    width: 100%;
+  }
   .sidebar {
     width: 100%;
     position: static;

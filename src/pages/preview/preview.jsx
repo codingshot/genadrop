@@ -25,9 +25,13 @@ import { getDefaultName } from "../../utils";
 import { handleDownload } from "../../utils/index2";
 import { fetchCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
-import closeIcon from "../../assets/icon-close.svg";
-import checkIcon from "../../assets/check-solid.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
+import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
+import infoIcon from "../../assets/icon-info-transparent.svg";
+import CaretDown from "../../assets/icon-CaretDown.svg";
+import CaretUP from "../../assets/icon-CaretUp.svg";
 
 const Preview = () => {
   const {
@@ -50,13 +54,25 @@ const Preview = () => {
     paginate: {},
     currentPageValue: 1,
     enableAllDescription: true,
-    duration: 0,
+    duration: "",
     gifShow: null,
+    toggleGuide: false,
+    gifs: [],
     gifImages: [],
     editorAction: { index: "", id: "" },
   });
 
-  const { currentPage, paginate, currentPageValue, enableAllDescription, gifShow, gifImages, duration } = state;
+  const {
+    currentPage,
+    paginate,
+    currentPageValue,
+    enableAllDescription,
+    gifShow,
+    gifs,
+    gifImages,
+    duration,
+    toggleGuide,
+  } = state;
   const ipfsRef = useRef(null);
   const arweaveRef = useRef(null);
   const history = useHistory();
@@ -225,6 +241,7 @@ const Preview = () => {
     }
   }, [promptAsset]);
 
+  // Genrate GIF
   const addGif = (asset) => {
     if (gifImages.filter((e) => e.id === asset.id).length > 0) {
       const newImgs = gifImages.filter((e) => e.id !== asset.id);
@@ -235,34 +252,61 @@ const Preview = () => {
   };
 
   const generateGif = () => {
-    dispatch(setLoader("generating..."));
-    const urls = gifImages.map((img) => img.image);
-    const attributes = gifImages.map((img) => img.attributes);
-    if (duration < 1) {
-      return dispatch(setNotification("please enter a valid duration."));
+    if (duration < 0 || !duration) {
+      dispatch(
+        setNotification({
+          message: "please enter a valid duration.",
+          type: "error",
+        })
+      );
+      return;
     }
     if (gifImages.length < 2) {
-      return dispatch(setNotification("please select the images."));
+      dispatch(
+        setNotification({
+          message: "please select the images.",
+          type: "error",
+        })
+      );
+      return;
     }
+    const urls = gifImages.map((img) => img.image);
+    const attributes = gifImages.map((img) => img.attributes);
+    dispatch(setLoader("generating..."));
+
     axios.post(`https://gif-generator-api.herokuapp.com/`, { urls, duration }).then((res) => {
       dispatch(setLoader(""));
-      dispatch(
-        setNftLayers([
-          ...nftLayers,
+      handleSetState({
+        gifs: [
+          ...gifs,
           {
             id: uuid(),
             attributes,
             description: "",
             image: res.data.data,
-            name: getDefaultName(nftLayers.length + 1),
+            name: `${collectionName} ${getDefaultName(nftLayers.length + 1)}`.trim(),
           },
-        ])
-      );
-      handleSetState({ gifShow: false });
+        ],
+      });
+      handleSetState({ gifShow: false, toggleGuide: true, gifImages: [], duration: "" });
       dispatch(setLoader(""));
     });
   };
-
+  // GIFs Model
+  const handleCancel = () => handleSetState({ toggleGuide: false });
+  const addToCollection = (gif) => {
+    const updatedGifs = gifs.filter((img) => gif.id !== img.id);
+    dispatch(setNftLayers([...nftLayers, gif]));
+    handleSetState({ gifs: updatedGifs });
+  };
+  const addAllGifs = () => {
+    dispatch(setNftLayers([...nftLayers, ...gifs]));
+    handleSetState({
+      toggleGuide: false,
+      gifs: [],
+    });
+  };
+  console.log(nftLayers);
   return (
     <div className={classes.wrapper}>
       <div onClick={() => history.goBack()} className={`${classes.backBtn} ${classes.mobile}`}>
@@ -328,31 +372,62 @@ const Preview = () => {
               />
               <p>Arweave</p>
             </label>
-            <button className={classes.gifButton} type="button">
-              {!gifShow && <span onClick={() => handleSetState({ gifShow: true })}>Genrate GIF</span>}
-            </button>
+            {!gifShow && (
+              <button onClick={() => handleSetState({ gifShow: true })} className={classes.gifButton} type="button">
+                Genrate GIF
+              </button>
+            )}
 
             {gifShow && (
-              <div>
+              <div className={classes.durationWrapper}>
                 <div className={classes.durationField}>
-                  <p>Duration</p>
-                  <div>
-                    <span>s</span>
-                    <input onChange={(e) => handleSetState({ duration: e.target.value })} type="number" />
+                  <div className={classes.durationLabel}>
+                    <p>Duration in Seconds</p>
+                    <img src={infoIcon} alt="info" />
+                  </div>
+                  <div className={classes.durationInput}>
+                    <input
+                      onChange={(e) => handleSetState({ duration: e.target.valueAsNumber })}
+                      placeholder="set duration"
+                      value={duration}
+                      type="number"
+                    />
+                    <div className={classes.numberCounter}>
+                      <p style={{ opacity: isNaN(duration) || duration === "" ? 0 : 1 }}>Sec</p>
+                      <div className={classes.verticalLine} />
+                      <div className={classes.inputArrows}>
+                        <img
+                          onClick={() =>
+                            handleSetState({
+                              duration: duration ? duration + 1 : 1,
+                            })
+                          }
+                          src={CaretUP}
+                          alt="count-up"
+                        />
+                        <img
+                          onClick={() =>
+                            handleSetState({
+                              duration: duration ? (duration - 1 <= 0 ? 0 : duration - 1) : 0,
+                            })
+                          }
+                          src={CaretDown}
+                          alt="count-down"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className={classes.mintButtonWrapper}>
-                  <button type="button" onClick={generateGif} className={classes.mintBtn}>
-                    Done
-                  </button>
                   <button type="button" onClick={() => handleSetState({ gifShow: null })} className={classes.cancelBtn}>
                     Cancel
+                  </button>
+                  <button type="button" onClick={generateGif} className={classes.mintBtn}>
+                    <CheckIcon /> Done
                   </button>
                 </div>
               </div>
             )}
-            {/* {gifShow && gifImages.length > 1 && <span>Done</span>}
-              {gifShow && <span onClick={() => handleSetState({ gifShow: null })}>Close</span>} */}
 
             <button
               type="button"
@@ -379,6 +454,15 @@ const Preview = () => {
               <img src={arrowIconLeft} alt="" />
             </div>
             <div className={classes.detailsWrapper}>
+              {(gifShow || gifs.length > 0) && (
+                <div
+                  onClick={() => (gifs.length > 0 ? handleSetState({ toggleGuide: true }) : "")}
+                  className={`${classes.detailGif} ${classes.detail}`}
+                >
+                  <p>GIF</p>
+                  <span>{gifs.length}</span>
+                </div>
+              )}
               <div className={classes.detail}>
                 <span>Number of Generative Arts</span>
                 <span>{nftLayers.length}</span>
@@ -422,6 +506,7 @@ const Preview = () => {
                         <div className={classes.buttonContainer}>
                           <button
                             type="button"
+                            className={classes.nftDonwload}
                             onClick={() =>
                               handleDownload({
                                 window,
@@ -437,14 +522,16 @@ const Preview = () => {
                           >
                             Download
                           </button>
-                          <button type="button" onClick={() => handleDeleteAndReplace(id, index, currentPage)}>
-                            Generate New
-                          </button>
+                          {image.split(",")[0] !== "data:image/gif;base64" && (
+                            <button type="button" onClick={() => handleDeleteAndReplace(id, index, currentPage)}>
+                              Generate New
+                            </button>
+                          )}
                         </div>
                       </div>
                       {!gifShow && (
                         <div onClick={() => handleDelete(id)} className={classes.iconClose}>
-                          <img src={closeIcon} alt="" />
+                          <CloseIcon className={classes.closeIcon} />
                         </div>
                       )}
                       {gifShow && (
@@ -454,7 +541,7 @@ const Preview = () => {
                             gifImages.filter((e) => e.id === id).length > 0 ? classes.cheked : ""
                           }`}
                         >
-                          <img src={checkIcon} alt="" />
+                          <CheckIcon fill={gifImages.filter((e) => e.id === id).length > 0 ? "#ffffff" : "#D1D4D8"} />
                         </div>
                       )}
                     </div>
@@ -464,16 +551,25 @@ const Preview = () => {
           </div>
           {gifShow && gifImages.length > 0 && (
             <div className={classes.galleryGif}>
-              {gifImages.map((img) => (
+              <div className={classes.galleryGifInfo}>
+                <p>Select arts from collection</p>
                 <div>
-                  {gifShow && (
-                    <div onClick={() => addGif(img)} className={classes.iconClose}>
-                      <img src={closeIcon} alt="" />
-                    </div>
-                  )}
-                  <img src={img.image} alt="gifIMG" />
+                  <PlayIcon />
+                  <p>Watch how to make GIF</p>
                 </div>
-              ))}
+              </div>
+              <div className={classes.galleryGifslides}>
+                {gifImages.map((img) => (
+                  <div>
+                    {gifShow && (
+                      <div onClick={() => addGif(img)} className={classes.iconClose}>
+                        <CloseIcon className={classes.closeIcon} />
+                      </div>
+                    )}
+                    <img src={img.image} alt="gifIMG" />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </main>
@@ -497,6 +593,86 @@ const Preview = () => {
           onChange={(event) => handleSetState({ currentPageValue: event.target.value })}
         />
       </div>
+
+      {/* GIFs Model */}
+      <div onClick={handleCancel} className={`${classes.modelContainer} ${toggleGuide && classes.modelActive}`}>
+        <div className={classes.guideContainer}>
+          <CloseIcon className={classes.closeIcon} onClick={handleCancel} />
+          <div className={classes.imgContainer}>
+            {gifs.length > 0
+              ? gifs.map((asset, index) => {
+                  const { image, id, name, description } = asset;
+                  return (
+                    <div key={id} className={classes.card}>
+                      <img className={classes.asset} src={image} alt="" />
+                      <div className={classes.cardBody}>
+                        <div className={classes.textWrapper}>
+                          <TextEditor
+                            placeholder={name}
+                            submitHandler={(value) => handleRename({ value, id, index })}
+                          />
+                        </div>
+                        <textarea
+                          name="description"
+                          value={description}
+                          cols="30"
+                          rows="3"
+                          placeholder="description"
+                          onChange={(e) =>
+                            handleDescription({
+                              value: e.target.value,
+                              id,
+                              index,
+                            })
+                          }
+                        />
+                        <div className={classes.buttonContainer}>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleDownload({
+                                window,
+                                dispatch,
+                                setLoader,
+                                setNotification,
+                                value: [asset],
+                                name: asset.name,
+                                outputFormat,
+                                single: true,
+                              })
+                            }
+                          >
+                            Download
+                          </button>
+                          <button type="button" onClick={() => addToCollection(asset)}>
+                            Add to {collectionName}
+                          </button>
+                        </div>
+                      </div>
+                      <div onClick={() => handleDelete(id)} className={classes.iconClose}>
+                        <CloseIcon className={classes.closeIcon} />
+                      </div>
+                    </div>
+                  );
+                })
+              : ""}
+            <div className={classes.gifAllBtn}>
+              <p
+                onClick={() =>
+                  handleSetState({
+                    toggleGuide: false,
+                    gifs: [],
+                  })
+                }
+              >
+                Delete all
+              </p>
+              <div onClick={addAllGifs}>Add all to {collectionName}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/*  */}
     </div>
   );
 };
