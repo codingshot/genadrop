@@ -450,29 +450,23 @@ const Preview = () => {
 
         <main className={classes.main}>
           <div className={classes.detailsView}>
+            {(gifShow || gifs.length > 0) && (
+              <div
+                onClick={() => (gifs.length > 0 ? handleSetState({ toggleGuide: true }) : "")}
+                className={`${classes.detailGif} ${classes.detail}`}
+              >
+                <p>GIF</p>
+                <span>{gifs.length}</span>
+              </div>
+            )}
             <div className={classes.detail}>
               <span>Number of Generative Arts</span>
               <span>{nftLayers.length}</span>
             </div>
-            <div className={classes.detailsWrapper}>
-              {(gifShow || gifs.length > 0) && (
-                <div
-                  onClick={() => (gifs.length > 0 ? handleSetState({ toggleGuide: true }) : "")}
-                  className={`${classes.detailGif} ${classes.detail}`}
-                >
-                  <p>GIF</p>
-                  <span>{gifs.length}</span>
-                </div>
-              )}
-              <div className={classes.detail}>
-                <span>Number of Generative Arts</span>
-                <span>{nftLayers.length}</span>
-              </div>
-              <div className={classes.detail}>
-                {mintInfo ? <img src={warnIcon} alt="" /> : null}
-                <span>Unused Combinations</span>
-                <span>{combinations - mintAmount - rule.length}</span>
-              </div>
+            <div className={classes.detail}>
+              {mintInfo ? <img src={warnIcon} alt="" /> : null}
+              <span>Unused Combinations</span>
+              <span>{combinations - mintAmount - rule.length}</span>
             </div>
           </div>
 
