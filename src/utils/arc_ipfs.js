@@ -217,9 +217,9 @@ async function signTx(connector, txns) {
   const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
   const chunkSize = 16;
   const assetIds = [];
-  // let txgroup;
   for (let i = 0; i < decodedResult.length; i += chunkSize) {
     const chunk = decodedResult.slice(i, i + chunkSize);
+    // should watch for failed transaction sendings on rare occassions and log the signed tx to send later on.
     const tx = await algodTxnClient.sendRawTransaction(chunk).do();
   }
   // const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
