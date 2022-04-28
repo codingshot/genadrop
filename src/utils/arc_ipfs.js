@@ -211,25 +211,29 @@ async function signTx(connector, txns) {
     result = await connector.send(request);
   } catch (error) {
     alert(error);
-    console.log("da errorororo", error);
     throw error;
-    
   }
-  console.log("poresylt", result);
+  const TxIds = txns.map((tx) => tx.txID());
   const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
-  console.log("decode ke?", decodedResult);
   const chunkSize = 16;
+  const assetIds = [];
   // let txgroup;
   for (let i = 0; i < decodedResult.length; i += chunkSize) {
     const chunk = decodedResult.slice(i, i + chunkSize);
-    const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
+    const tx = await algodTxnClient.sendRawTransaction(chunk).do();
   }
-  const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
-  await waitForConfirmation(tx.txId);
-  console.log("ID", tx.txId)
-  const ptx = await algodTxnClient.pendingTransactionInformation(tx.txId).do();
-  const assetID = ptx["asset-index"];
-  return { assetID, txId: tx.txId };
+  // const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
+  // await waitForConfirmation(tx.txId);
+  for (let index = 0; index < TxIds.length; ++index) {
+    await waitForConfirmation(TxIds[index]);
+    const ptx = await algodTxnClient.pendingTransactionInformation(TxIds[index]).do();
+    const assetID = ptx["asset-index"];
+    assetIds.push(assetID);
+  }
+
+  console.log(assetIds);
+
+  return { assetID: assetIds, txId: TxIds };
 }
 export async function mintSingleToAlgo(algoMintProps) {
   const { file, metadata, account, connector, dispatch, setNotification, price, mainnet } = algoMintProps;
@@ -242,7 +246,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     const { assetID, txId } = await signTx(connector, [txn]);
-    await write.writeNft(account, undefined, assetID, price, false, null, null, mainnet, txId);
+    await write.writeNft(account, undefined, assetID[0], price, false, null, null, mainnet, txId[0]);
     // notification: asset minted
     dispatch(
       setNotification({
@@ -455,7 +459,6 @@ export async function mintToAlgo(algoProps) {
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps });
-    const collection_id = [];
     const txns = [];
     dispatch(
       setNotification({
@@ -463,13 +466,12 @@ export async function mintToAlgo(algoProps) {
         type: "default",
       })
     );
-    for (let i = 0; i < ipfsJsonData.length; i += 1) {
+    for (let i = 0; i < ipfsJsonData.length; ++i) {
       dispatch(setLoader(`minting ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
       txns.push(txn);
     }
 
-    console.log("txn before", txns)
 
     const chunkSize = 16;
     // let txgroup;
@@ -479,20 +481,13 @@ export async function mintToAlgo(algoProps) {
       algosdk.assignGroupID(chunk);
     }
 
-    // const txgroup = algosdk.assignGroupID(txns);
-    console.log("after ass", txns)
-
-    // const groupId = txgroup[0].group.toString("base64");
     dispatch(setLoader("finalizing"));
     const { assetID, txId } = await signTx(connector, txns);
-    for (let nfts = 0; nfts < ipfsJsonData.length; nfts += 1) {
-      collection_id.push(assetID + nfts);
-    }
-    const collectionHash = await pinata.pinJSONToIPFS(collection_id, {
+    const collectionHash = await pinata.pinJSONToIPFS(assetID, {
       pinataMetadata: { name: "collection" },
     });
     const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, fileName, collection_id, price, description, mainnet, txId);
+    await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
     dispatch(setLoader(""));
     dispatch(
       setNotification({
@@ -500,7 +495,7 @@ export async function mintToAlgo(algoProps) {
         type: "success",
       })
     );
-    return `https://testnet.algoexplorer.io/tx/group/${groupId}`;
+    return `https://testnet.algoexplorer.io/tx/${txId[0]}`;
   }
   dispatch(
     setNotification({
