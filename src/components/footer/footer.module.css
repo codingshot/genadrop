@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-accent);
+  background: #333333;
   padding: 2em;
 }
 
@@ -60,7 +60,7 @@
 
 .socialIcons .icon:hover {
   transform: scale(1.1);
-  background: var(--main-accent-dark);
+  background: var(--main-accent);
 }
 
 .topRight {
@@ -89,7 +89,7 @@
 
 .bottom {
   width: 100%;
-  background: #00cc9b;
+  background: var(--main-accent);
   padding: 1em;
   color: white;
 }

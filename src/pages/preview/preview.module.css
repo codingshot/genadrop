@@ -35,10 +35,10 @@
 .detailsView {
   width: 100%;
   position: sticky;
-  top: 3.95em;
+  top: 3.8em;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-wrap: wrap;
   gap: 0.5em;
   padding: 1em 0.5em;
@@ -48,23 +48,20 @@
 }
 
 .backBtn {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.25em 2em;
-  border-radius: 0.25em;
   box-shadow: 0 0 10px gainsboro;
   background: var(--main-bg);
   cursor: pointer;
-}
-
-.backBtn.mobile {
-  margin-bottom: 2em;
-  margin-left: 0.5em;
-  display: none;
+  margin-bottom: 1em;
   position: sticky;
-  top: 4em;
+  top: 5em;
   z-index: 10;
+  opacity: 0.9;
 }
 
 .backBtn img {
@@ -72,14 +69,7 @@
 }
 
 .backBtn:hover img {
-  transform: translateX(-50%);
-}
-
-.detailsWrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
+  transform: translateX(-25%);
 }
 
 .detail {
@@ -321,7 +311,7 @@
 }
 
 .buttonContainer button:last-child {
-  background: var(--card-bg);
+  border: 1px solid var(--card-bg);
 }
 
 .buttonContainer button:first-child:hover {
@@ -332,6 +322,7 @@
 .buttonContainer button:last-child:hover {
   background: var(--card-bg3);
   outline: 2px solid var(--card-bg);
+  border-color: transparent;
 }
 
 .radioBtn {
@@ -423,23 +414,14 @@
     position: static;
   }
 
+  .main {
+    width: 100%;
+  }
+
   .detailsView {
     top: 3em;
-  }
-
-  .detailsWrapper {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 0.5em;
-    padding-top: 2em;
-  }
-
-  .backBtn {
-    display: none;
-  }
-
-  .backBtn.mobile {
-    display: inline-flex;
+    border: 1px solid gainsboro;
+    border-radius: 0.5em;
   }
 }
 
@@ -451,5 +433,11 @@
 
   .paginate * {
     font-size: 0.75rem;
+  }
+
+  .backBtn {
+    width: 2em;
+    height: 2em;
+    position: static;
   }
 }
