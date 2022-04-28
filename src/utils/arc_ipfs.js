@@ -355,7 +355,7 @@ export async function mintSingleToCelo(singleMintProps) {
   }
 }
 
-export async function mintSingleToNear(singleMintProps) {
+export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
@@ -729,7 +729,7 @@ export async function getAlgoData(mainnet, id) {
   return data;
 }
 
-export async function mintToNear(polyProps) {
+export async function mintToAurora(polyProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   if (connector.isWalletConnect) {
     if (connector.chainId === 137) {
