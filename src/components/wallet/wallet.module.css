@@ -16,7 +16,7 @@
   background: var(--main-accent);
   text-align: center;
   border: 1px solid var(--main-accent);
-  transition: all 300ms;
+  transition: background 300ms;
 }
 
 .connect:hover {
@@ -125,7 +125,7 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  background: var(--main-hover);
+  background: whitesmoke;
   position: absolute;
   top: 2em;
   right: 0;
@@ -153,7 +153,7 @@
 }
 
 .option:hover {
-  background: var(--main-light);
+  background: rgb(230, 230, 230);
 }
 
 .option div {

@@ -309,7 +309,7 @@ const Preview = () => {
   console.log(nftLayers);
   return (
     <div className={classes.wrapper}>
-      <div onClick={() => history.goBack()} className={`${classes.backBtn} ${classes.mobile}`}>
+      <div onClick={() => history.goBack()} className={classes.backBtn}>
         <img src={arrowIconLeft} alt="" />
       </div>
       <div className={classes.container}>
@@ -450,8 +450,9 @@ const Preview = () => {
 
         <main className={classes.main}>
           <div className={classes.detailsView}>
-            <div onClick={() => history.goBack()} className={classes.backBtn}>
-              <img src={arrowIconLeft} alt="" />
+            <div className={classes.detail}>
+              <span>Number of Generative Arts</span>
+              <span>{nftLayers.length}</span>
             </div>
             <div className={classes.detailsWrapper}>
               {(gifShow || gifs.length > 0) && (
