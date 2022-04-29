@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-accent);
+  background: #333333;
   padding: 2em;
 }
 
