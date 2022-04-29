@@ -22,9 +22,10 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
+import { setLoader } from "../../gen-state/gen.actions";
 
 const SingleNFT = () => {
-  const { account, connector, mainnet } = useContext(GenContext);
+  const { account, connector, mainnet, dispatch } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -58,7 +59,13 @@ const SingleNFT = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-
+  const buyProps = {
+    dispatch,
+    account,
+    connector,
+    mainnet,
+    nftDetails
+  };
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -183,9 +190,12 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector, mainnet);
+    dispatch(setLoader("Executing transaction..."))
+    const res = await PurchaseNft(buyProps);
     // eslint-disable-next-line no-alert
-    alert(res);
+    // alert(res);
+    dispatch(setLoader(""));
+
   };
   return (
     <div className={classes.container}>
