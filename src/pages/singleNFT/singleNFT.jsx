@@ -88,10 +88,9 @@ const SingleNFT = () => {
       const tHistory = await readNftTransaction(nftId);
 
       const NFTDetails = await getSingleNftDetails(mainnet, nft);
-      tHistory.find(t => {
-        if (t.type === "Minting")
-          t.price = NFTDetails.price
-      })
+      tHistory.find((t) => {
+        if (t.type === "Minting") t.price = NFTDetails.price;
+      });
       handleSetState({
         nftDetails: NFTDetails,
         isLoading: false,
@@ -106,7 +105,7 @@ const SingleNFT = () => {
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => { }, [nftDetails]);
+  useEffect(() => {}, [nftDetails]);
 
   useEffect(() => {
     // if (!nftDetails) return;

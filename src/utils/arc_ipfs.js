@@ -472,7 +472,6 @@ export async function mintToAlgo(algoProps) {
       txns.push(txn);
     }
 
-
     const chunkSize = 16;
     // let txgroup;
 
