@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
@@ -12,7 +12,7 @@ import copyIcon from "../../assets/icon-copy.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import polygonIcon from "../../assets/icon-polygon.svg";
 import algoIcon from "../../assets/icon-algo.svg";
-import nearIcon from "../../assets/icon-near.svg";
+import auroraIcon from "../../assets/icon-aurora.svg";
 import celoIcon from "../../assets/icon-celo.svg";
 import downArrow from "../../assets/icon-chevron-down.svg";
 
@@ -20,7 +20,7 @@ const chainIcon = {
   Polygon: polygonIcon,
   "Polygon Testnet": polygonIcon,
   Algorand: algoIcon,
-  Near: nearIcon,
+  Aurora: auroraIcon,
   Celo: celoIcon,
 };
 
@@ -29,7 +29,7 @@ const chains = [
   { label: "Celo", networkId: 42220, symbol: "CGLD" },
   { label: "Polygon", networkId: 137, symbol: "MATIC" },
   { label: "Polygon Testnet", networkId: 80001, symbol: "MATIC" },
-  { label: "Near", networkId: 1313161555, symbol: "NEAR" },
+  { label: "Aurora", networkId: 1313161555, symbol: "AURORA" },
 ];
 
 function ConnectWallet({ setToggleNav }) {
@@ -83,7 +83,7 @@ function ConnectWallet({ setToggleNav }) {
     } catch (error) {
       dispatch(
         setNotification({
-          message: "connection failed ❌️",
+          message: "connection failed",
           type: "error",
         })
       );

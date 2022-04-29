@@ -24,7 +24,7 @@ const SingleNftCollection = () => {
     algoCollection: null,
     polyCollection: null,
     celoCollection: null,
-    nearCollection: null,
+    auroraCollection: null,
     allChains: null,
     filter: {
       searchValue: "",
@@ -33,7 +33,7 @@ const SingleNftCollection = () => {
     },
   });
 
-  const { algoCollection, polyCollection, celoCollection, nearCollection, filter, filteredCollection, allChains } =
+  const { algoCollection, polyCollection, celoCollection, auroraCollection, filter, filteredCollection, allChains } =
     state;
 
   const handleSetState = (payload) => {
@@ -50,8 +50,8 @@ const SingleNftCollection = () => {
         return polyCollection;
       case "Celo":
         return celoCollection;
-      case "Near":
-        return nearCollection;
+      case "Aurora":
+        return auroraCollection;
       default:
         break;
     }
@@ -79,7 +79,7 @@ const SingleNftCollection = () => {
       console.log(error);
     }
 
-    // get singleNftCollection for other chains: polygon|celo|near
+    // get singleNftCollection for other chains: polygon|celo|aurora
   }, [mainnet]);
 
   // get search result for different blockchains ****
@@ -115,7 +115,7 @@ const SingleNftCollection = () => {
       domMountRef.current = true;
     }
     updateHistory();
-  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, nearCollection, allChains]);
+  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, auroraCollection, allChains]);
 
   // compile data for all blockchains
   useEffect(() => {
@@ -124,10 +124,10 @@ const SingleNftCollection = () => {
         ...(algoCollection || []),
         ...(polyCollection || []),
         ...(celoCollection || []),
-        ...(nearCollection || []),
+        ...(auroraCollection || []),
       ],
     });
-  }, [algoCollection, polyCollection, celoCollection, nearCollection]);
+  }, [algoCollection, polyCollection, celoCollection, auroraCollection]);
 
   return (
     <div className={classes.container}>

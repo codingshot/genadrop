@@ -58,16 +58,16 @@ const Minter = ({ data, changeFile }) => {
       chain: "Polygon",
     },
     {
-      label: "Near",
+      label: "Aurora",
       networkId: 1313161554,
-      symbol: "NEAR",
-      chain: "Near",
+      symbol: "AURORA",
+      chain: "Aurora",
     },
     {
-      label: "Near testnet",
+      label: "Aurora testnet",
       networkId: 1313161555,
-      symbol: "NEAR",
-      chain: "Near",
+      symbol: "AURORA",
+      chain: "Aurora",
     },
   ];
 
@@ -118,8 +118,8 @@ const Minter = ({ data, changeFile }) => {
     celo: "CGLD",
     polygon: "Matic",
     "polygon Testnet": "Matic",
-    "near testnet": "Near",
-    near: "Near",
+    "aurora testnet": "Aurora",
+    aurora: "Aurora",
   };
 
   const handleAddAttribute = () => {
@@ -217,9 +217,9 @@ const Minter = ({ data, changeFile }) => {
       const c = chains.find((e) => e.networkId.toString() === chainId.toString());
       if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
       handleSetState({ chain: c });
-      if (c.symbol === "NEAR") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.near.usd });
+      if (c.symbol === "AURORA") {
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora&vs_currencies=usd").then((res) => {
+          handleSetState({ dollarPrice: price / res.data.aurora.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
@@ -247,10 +247,7 @@ const Minter = ({ data, changeFile }) => {
                     ></div>
                   ))
               ) : (
-                <div
-                  style={{ backgroundImage: `url(${URL.createObjectURL(file[0])})` }}
-                  className={`${classes.imageContainer} ${classes.single}`}
-                ></div>
+                <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
               )}
             </div>
 
