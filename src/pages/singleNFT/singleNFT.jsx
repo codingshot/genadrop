@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
@@ -42,7 +42,7 @@ const SingleNFT = () => {
     isCopied: false,
   });
   const { dropdown, nftDetails, algoPrice, isLoading, showSocial, isCopied, transactionHistory } = state;
-
+  const history = useHistory();
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
     { matic: [{ testnet: "https://mumbai.polygonscan.com/tx/" }, { mainnet: "https://polygonscan.com/tx/" }] },
@@ -195,6 +195,8 @@ const SingleNFT = () => {
     // eslint-disable-next-line no-alert
     // alert(res);
     dispatch(setLoader(""));
+    if (res)
+      history.push(`/me/${account}`)
 
   };
   return (
