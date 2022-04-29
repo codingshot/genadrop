@@ -9,7 +9,7 @@ import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
 import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
 import infoIcon from "../../../assets/icon-info.svg";
-
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Minter = ({ data, changeFile }) => {
@@ -25,6 +25,7 @@ const Minter = ({ data, changeFile }) => {
     dollarPrice: 0,
   });
   const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
+  const history = useHistory()
 
   const chains = [
     {
@@ -193,7 +194,9 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleMint(mintProps);
+      handleMint(mintProps).then(url => {
+        history.push(`/me/${account}`);
+      });
     } else {
       if (
         !singleMintProps.fileName ||
@@ -208,7 +211,10 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleSingleMint(singleMintProps);
+      handleSingleMint(singleMintProps).then(url => {
+        history.push(`/me/${account}`);
+      });
+
     }
   };
 
