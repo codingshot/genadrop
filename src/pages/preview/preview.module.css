@@ -8,20 +8,18 @@
   width: 100%;
   max-width: 1440px;
   display: grid;
-  grid-template-columns: 28% 70%;
+  grid-template-columns: 22.5% 72%;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 2%;
+  gap: 1.5%;
   margin: 0 auto;
   margin-bottom: 4em;
   min-height: 100vh;
 }
 
 .sidebar {
-  width: 20em;
-  height: auto;
   position: sticky;
-  top: 5em;
+  top: 11em;
   border: 1px solid gainsboro;
   border-radius: 0.5em;
 }
@@ -48,6 +46,11 @@
   margin-bottom: 0.5em;
 }
 
+.backBtnWrapper {
+  position: sticky;
+  top: 6em;
+  z-index: 10;
+}
 .backBtn {
   width: 3em;
   height: 3em;
@@ -59,9 +62,6 @@
   background: var(--main-bg);
   cursor: pointer;
   margin-bottom: 1em;
-  position: sticky;
-  top: 5em;
-  z-index: 10;
   opacity: 0.9;
 }
 
@@ -244,7 +244,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1em;
-  padding: 0 0.5em;
 }
 
 .card {
@@ -605,8 +604,8 @@ button.gifButton:hover {
   position: relative;
 }
 .durationInput input {
+  padding: 0.75em;
   padding-left: 1em;
-  height: 3.4em;
   border-radius: 5px;
   border: 2px solid #adb5bd;
   background: white;
@@ -650,13 +649,13 @@ button.gifButton:hover {
 .verticalLine {
   width: 1px;
   background: #c4c4c4;
-  height: 45px;
+  height: 34px;
   margin: auto 0;
 }
 .inputArrows {
   display: flex;
   flex-direction: column;
-  height: 55%;
+  height: 65%;
   margin: auto 0;
   justify-content: space-around;
   width: 50%;
@@ -753,7 +752,7 @@ button.gifButton:hover {
 }
 .sidebarActive {
   overflow-y: scroll;
-  max-height: 75vh;
+  height: calc(100vh - 11em);
 }
 @media screen and (max-width: 1280px) {
   .preview {
@@ -799,7 +798,7 @@ button.gifButton:hover {
   }
   .sidebarActive {
     overflow-y: unset;
-    max-height: 100%;
+    height: auto;
   }
   .modelPreview {
     grid-template-columns: repeat(2, 1fr);

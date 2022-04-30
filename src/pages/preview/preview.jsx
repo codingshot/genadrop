@@ -284,7 +284,7 @@ const Preview = () => {
             attributes,
             description: "",
             image: res.data.data,
-            name: `${collectionName} ${getDefaultName(nftLayers.length + 1)}`.trim(),
+            name: `${collectionName} ${getDefaultName(gifs.length + 1)}`.trim(),
           },
         ],
       });
@@ -296,7 +296,15 @@ const Preview = () => {
   const handleCancel = () => handleSetState({ toggleGuide: false });
   const addToCollection = (gif) => {
     const updatedGifs = gifs.filter((img) => gif.id !== img.id);
-    dispatch(setNftLayers([gif, ...nftLayers]));
+    const newLayers = [gif, ...nftLayers].map((asset, idx) => ({
+      ...asset,
+      name:
+        asset.name === `${collectionName} ${getDefaultName(idx)}`.trim() ||
+        asset.name === `${collectionName} ${getDefaultName(gifs.indexOf(gif) + 1)}`.trim()
+          ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+          : asset.name,
+    }));
+    dispatch(setNftLayers(newLayers));
     dispatch(
       setNotification({
         message: "added to the collection.",
@@ -306,7 +314,14 @@ const Preview = () => {
     handleSetState({ gifs: updatedGifs });
   };
   const addAllGifs = () => {
-    dispatch(setNftLayers([...gifs, ...nftLayers]));
+    const newLayers = [...gifs, ...nftLayers].map((asset, idx) => ({
+      ...asset,
+      name:
+        asset.name === `${collectionName} ${getDefaultName(idx + 1 - gifs.length)}`.trim()
+          ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+          : asset.name,
+    }));
+    dispatch(setNftLayers(newLayers));
     dispatch(
       setNotification({
         message: "added to the collection.",
@@ -320,8 +335,10 @@ const Preview = () => {
   };
   return (
     <div className={classes.wrapper}>
-      <div onClick={() => history.goBack()} className={classes.backBtn}>
-        <img src={arrowIconLeft} alt="" />
+      <div className={classes.backBtnWrapper}>
+        <div onClick={() => history.goBack()} className={classes.backBtn}>
+          <img src={arrowIconLeft} alt="" />
+        </div>
       </div>
       <div className={classes.container}>
         <aside className={`${classes.sidebar} ${gifShow && classes.sidebarActive}`}>
@@ -656,7 +673,14 @@ const Preview = () => {
                             </button>
                           </div>
                         </div>
-                        <div onClick={() => handleDelete(id)} className={classes.iconClose}>
+                        <div
+                          onClick={() =>
+                            handleSetState({
+                              gifs: gifs.filter((gif) => gif.id !== id),
+                            })
+                          }
+                          className={classes.iconClose}
+                        >
                           <CloseIcon className={classes.closeIcon} />
                         </div>
                       </div>
@@ -675,7 +699,9 @@ const Preview = () => {
               >
                 Delete all
               </p>
-              <div onClick={addAllGifs}>Add all to {collectionName || "collection"}</div>
+              <div onClick={() => (gifs.length > 1 ? addAllGifs() : addToCollection(gifs[0]))}>
+                Add all to {collectionName || "collection"}
+              </div>
             </div>
           </div>
         </div>
