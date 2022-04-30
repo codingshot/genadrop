@@ -49,10 +49,3 @@ export const handleAddBlank = async (props) => {
   }
   return { layerId, layerTitle, traits: uniqueImageFile };
 };
-
-export const getCombinations = (layers) => {
-  const amtArr = layers.map((layer) => layer.traitsAmount);
-  const count = amtArr.reduce((acc, curr) => acc * curr, 1);
-
-  return count;
-};
