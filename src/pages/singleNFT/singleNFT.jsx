@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
@@ -22,9 +22,10 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
+import { setLoader } from "../../gen-state/gen.actions";
 
 const SingleNFT = () => {
-  const { account, connector, mainnet } = useContext(GenContext);
+  const { account, connector, mainnet, dispatch } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -41,7 +42,7 @@ const SingleNFT = () => {
     isCopied: false,
   });
   const { dropdown, nftDetails, algoPrice, isLoading, showSocial, isCopied, transactionHistory } = state;
-
+  const history = useHistory();
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
     { matic: [{ testnet: "https://mumbai.polygonscan.com/tx/" }, { mainnet: "https://polygonscan.com/tx/" }] },
@@ -58,7 +59,13 @@ const SingleNFT = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-
+  const buyProps = {
+    dispatch,
+    account,
+    connector,
+    mainnet,
+    nftDetails
+  };
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -88,7 +95,10 @@ const SingleNFT = () => {
       const tHistory = await readNftTransaction(nftId);
 
       const NFTDetails = await getSingleNftDetails(mainnet, nft);
-      console.log(tHistory);
+      tHistory.find(t => {
+        if (t.type === "Minting")
+          t.price = NFTDetails.price
+      })
       handleSetState({
         nftDetails: NFTDetails,
         isLoading: false,
@@ -103,7 +113,7 @@ const SingleNFT = () => {
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => {}, [nftDetails]);
+  useEffect(() => { }, [nftDetails]);
 
   useEffect(() => {
     // if (!nftDetails) return;
@@ -153,7 +163,7 @@ const SingleNFT = () => {
   const graph = {
     icon: detailsIcon,
     title: "Price History",
-    content: <Graph />,
+    content: <Graph details={transactionHistory} />,
   };
 
   const attributeContent = () => (
@@ -180,9 +190,14 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector, mainnet);
+    dispatch(setLoader("Executing transaction..."))
+    const res = await PurchaseNft(buyProps);
     // eslint-disable-next-line no-alert
-    alert(res);
+    // alert(res);
+    dispatch(setLoader(""));
+    if (res)
+      history.push(`/me/${account}`)
+
   };
   return (
     <div className={classes.container}>
