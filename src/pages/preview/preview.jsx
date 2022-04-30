@@ -296,24 +296,35 @@ const Preview = () => {
   const handleCancel = () => handleSetState({ toggleGuide: false });
   const addToCollection = (gif) => {
     const updatedGifs = gifs.filter((img) => gif.id !== img.id);
-    dispatch(setNftLayers([...nftLayers, gif]));
+    dispatch(setNftLayers([gif, ...nftLayers]));
+    dispatch(
+      setNotification({
+        message: "added to the collection.",
+        type: "success",
+      })
+    );
     handleSetState({ gifs: updatedGifs });
   };
   const addAllGifs = () => {
-    dispatch(setNftLayers([...nftLayers, ...gifs]));
+    dispatch(setNftLayers([...gifs, ...nftLayers]));
+    dispatch(
+      setNotification({
+        message: "added to the collection.",
+        type: "success",
+      })
+    );
     handleSetState({
       toggleGuide: false,
       gifs: [],
     });
   };
-  console.log(nftLayers);
   return (
     <div className={classes.wrapper}>
       <div onClick={() => history.goBack()} className={classes.backBtn}>
         <img src={arrowIconLeft} alt="" />
       </div>
       <div className={classes.container}>
-        <aside className={classes.sidebar}>
+        <aside className={`${classes.sidebar} ${gifShow && classes.sidebarActive}`}>
           <div className={classes.collectionDetail}>
             <div className={classes.tab}>
               <h3>Collection Name </h3>
@@ -593,64 +604,66 @@ const Preview = () => {
       <div onClick={handleCancel} className={`${classes.modelContainer} ${toggleGuide && classes.modelActive}`}>
         <div className={classes.guideContainer}>
           <CloseIcon className={classes.closeIcon} onClick={handleCancel} />
-          <div className={classes.imgContainer}>
-            {gifs.length > 0
-              ? gifs.map((asset, index) => {
-                  const { image, id, name, description } = asset;
-                  return (
-                    <div key={id} className={classes.card}>
-                      <img className={classes.asset} src={image} alt="" />
-                      <div className={classes.cardBody}>
-                        <div className={classes.textWrapper}>
-                          <TextEditor
-                            placeholder={name}
-                            submitHandler={(value) => handleRename({ value, id, index })}
-                          />
-                        </div>
-                        <textarea
-                          name="description"
-                          value={description}
-                          cols="30"
-                          rows="3"
-                          placeholder="description"
-                          onChange={(e) =>
-                            handleDescription({
-                              value: e.target.value,
-                              id,
-                              index,
-                            })
-                          }
-                        />
-                        <div className={classes.buttonContainer}>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleDownload({
-                                window,
-                                dispatch,
-                                setLoader,
-                                setNotification,
-                                value: [asset],
-                                name: asset.name,
-                                outputFormat,
-                                single: true,
+          <div className={`${classes.imgContainer}`}>
+            <div className={`${classes.preview} ${classes.modelPreview}`}>
+              {gifs.length > 0
+                ? gifs.map((asset, index) => {
+                    const { image, id, name, description } = asset;
+                    return (
+                      <div key={id} className={classes.card}>
+                        <img className={classes.asset} src={image} alt="" />
+                        <div className={classes.cardBody}>
+                          <div className={classes.textWrapper}>
+                            <TextEditor
+                              placeholder={name}
+                              submitHandler={(value) => handleRename({ value, id, index })}
+                            />
+                          </div>
+                          <textarea
+                            name="description"
+                            value={description}
+                            cols="30"
+                            rows="3"
+                            placeholder="description"
+                            onChange={(e) =>
+                              handleDescription({
+                                value: e.target.value,
+                                id,
+                                index,
                               })
                             }
-                          >
-                            Download
-                          </button>
-                          <button type="button" onClick={() => addToCollection(asset)}>
-                            Add to {collectionName}
-                          </button>
+                          />
+                          <div className={classes.buttonContainer}>
+                            <button
+                              type="button"
+                              onClick={() =>
+                                handleDownload({
+                                  window,
+                                  dispatch,
+                                  setLoader,
+                                  setNotification,
+                                  value: [asset],
+                                  name: asset.name,
+                                  outputFormat,
+                                  single: true,
+                                })
+                              }
+                            >
+                              Download
+                            </button>
+                            <button type="button" onClick={() => addToCollection(asset)}>
+                              Add to {collectionName || "collection"}
+                            </button>
+                          </div>
+                        </div>
+                        <div onClick={() => handleDelete(id)} className={classes.iconClose}>
+                          <CloseIcon className={classes.closeIcon} />
                         </div>
                       </div>
-                      <div onClick={() => handleDelete(id)} className={classes.iconClose}>
-                        <CloseIcon className={classes.closeIcon} />
-                      </div>
-                    </div>
-                  );
-                })
-              : ""}
+                    );
+                  })
+                : ""}
+            </div>
             <div className={classes.gifAllBtn}>
               <p
                 onClick={() =>
@@ -662,7 +675,7 @@ const Preview = () => {
               >
                 Delete all
               </p>
-              <div onClick={addAllGifs}>Add all to {collectionName}</div>
+              <div onClick={addAllGifs}>Add all to {collectionName || "collection"}</div>
             </div>
           </div>
         </div>

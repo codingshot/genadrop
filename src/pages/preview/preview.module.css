@@ -341,7 +341,7 @@
   transition: all 150ms;
   outline: 1px solid transparent;
   font-weight: 600;
-  font-size: 0.7em;
+  font-size: 0.6em;
 }
 
 .buttonContainer button:last-child {
@@ -510,6 +510,7 @@ button.gifButton:hover {
   cursor: pointer;
 }
 .galleryGifInfo > div svg {
+  margin: auto;
   margin-right: 6px;
 }
 .galleryGifInfo > div:hover svg {
@@ -684,17 +685,16 @@ button.gifButton:hover {
 }
 .guideContainer {
   width: 100%;
-  max-width: 68em;
+  max-width: 48em;
   border-radius: 1em;
   background: #fff;
   display: flex;
   flex-direction: column;
-  padding: 2em 2.1em;
-  padding-bottom: 3em;
+  padding: 1em;
 }
 .guideContainer > svg {
   margin-left: auto;
-  margin-bottom: 1.3em;
+  margin-bottom: 0.7em;
   cursor: pointer;
   width: 25px;
   height: 25px;
@@ -705,8 +705,13 @@ button.gifButton:hover {
 .imgContainer {
   border: 1px solid #adb5bd;
   display: flex;
-  padding: 3em 1.5em 1.5em;
+  padding: 1em 1.5em 1.5em;
   flex-direction: column;
+}
+.modelPreview {
+  max-height: 24em;
+  overflow-y: scroll;
+  grid-template-columns: repeat(3, 1fr);
 }
 .closeIcon path {
   fill: #f1423b;
@@ -746,6 +751,10 @@ button.gifButton:hover {
   color: #fff;
   border: 2px solid #f1423b;
 }
+.sidebarActive {
+  overflow-y: scroll;
+  max-height: 75vh;
+}
 @media screen and (max-width: 1280px) {
   .preview {
     grid-template-columns: repeat(3, 1fr);
@@ -755,6 +764,9 @@ button.gifButton:hover {
 @media screen and (max-width: 1024px) {
   .preview {
     grid-template-columns: repeat(2, 1fr);
+  }
+  .modelPreview {
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .detail {
@@ -784,6 +796,14 @@ button.gifButton:hover {
     top: 3em;
     border: 1px solid gainsboro;
     border-radius: 0.5em;
+  }
+  .sidebarActive {
+    overflow-y: unset;
+    max-height: 100%;
+  }
+  .modelPreview {
+    grid-template-columns: repeat(2, 1fr);
+    max-height: 30em;
   }
 }
 
