@@ -229,6 +229,12 @@ const Minter = ({ data, changeFile }) => {
     }
   }, [price, chainId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      document.documentElement.scrollTop = 200;
+    }, 500);
+  }, []);
+
   return (
     <div className={classes.container}>
       {preview ? (
@@ -236,7 +242,7 @@ const Minter = ({ data, changeFile }) => {
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
-            <div className={classes.imageContainers}>
+            <div className={`${classes.imageContainers} ${file.length > 1 && classes._}`}>
               {file.length > 1 ? (
                 file
                   .filter((_, idx) => idx < 3)
@@ -311,11 +317,12 @@ const Minter = ({ data, changeFile }) => {
               {!metadata ? (
                 <>
                   <div className={classes.attributes}>
-                    {Object.keys(attributes).map((key) => (
+                    {Object.keys(attributes).map((key, index) => (
                       <Attribute
                         key={key}
                         attribute={attributes[key]}
                         id={key}
+                        index={index}
                         removeAttribute={handleRemoveAttribute}
                         changeAttribute={handleChangeAttribute}
                       />
@@ -349,11 +356,11 @@ const Minter = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.mintOptions}>
-            <div className={classes.category}>Set Mint Options</div>
             <div className={classes.info}>
               <img src={infoIcon} alt="" />
               <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
             </div>
+            <div className={classes.category}>Set Mint Options</div>
             <div className={classes.inputWrapper}>
               <label>
                 Price (USD) <span className={classes.required}>*</span>

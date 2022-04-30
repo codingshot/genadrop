@@ -17,11 +17,13 @@ export const createDna = (layers) => {
     return array;
   }
 
-  const newLayers = layers.map((layer) => {
-    const totalTraits = layer.traits.map((trait) => parseInt(trait.Rarity)).reduce((acc, curr) => acc + curr);
-    const newTraits = layer.traits.map((trait) => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait)).flat();
-    return { ...layer, traits: shuffle(newTraits) };
-  });
+  const newLayers = layers
+    .filter((layer) => layer.traits.length)
+    .map((layer) => {
+      const totalTraits = layer.traits.map((trait) => parseInt(trait.Rarity)).reduce((acc, curr) => acc + curr);
+      const newTraits = layer.traits.map((trait) => Array(getPercentage(trait.Rarity, totalTraits)).fill(trait)).flat();
+      return { ...layer, traits: shuffle(newTraits) };
+    });
   return newLayers.reverse();
 };
 
