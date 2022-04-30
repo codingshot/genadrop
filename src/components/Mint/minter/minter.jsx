@@ -25,7 +25,7 @@ const Minter = ({ data, changeFile }) => {
     dollarPrice: 0,
   });
   const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
-  const history = useHistory()
+  const history = useHistory();
 
   const chains = [
     {
@@ -194,7 +194,7 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleMint(mintProps).then(url => {
+      handleMint(mintProps).then((url) => {
         history.push(`/me/${account}`);
       });
     } else {
@@ -211,10 +211,9 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleSingleMint(singleMintProps).then(url => {
+      handleSingleMint(singleMintProps).then((url) => {
         history.push(`/me/${account}`);
       });
-
     }
   };
 

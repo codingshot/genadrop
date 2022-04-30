@@ -64,7 +64,7 @@ const SingleNFT = () => {
     account,
     connector,
     mainnet,
-    nftDetails
+    nftDetails,
   };
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -95,10 +95,9 @@ const SingleNFT = () => {
       const tHistory = await readNftTransaction(nftId);
 
       const NFTDetails = await getSingleNftDetails(mainnet, nft);
-      tHistory.find(t => {
-        if (t.type === "Minting")
-          t.price = NFTDetails.price
-      })
+      tHistory.find((t) => {
+        if (t.type === "Minting") t.price = NFTDetails.price;
+      });
       handleSetState({
         nftDetails: NFTDetails,
         isLoading: false,
@@ -113,7 +112,7 @@ const SingleNFT = () => {
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => { }, [nftDetails]);
+  useEffect(() => {}, [nftDetails]);
 
   useEffect(() => {
     // if (!nftDetails) return;
@@ -190,14 +189,12 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    dispatch(setLoader("Executing transaction..."))
+    dispatch(setLoader("Executing transaction..."));
     const res = await PurchaseNft(buyProps);
     // eslint-disable-next-line no-alert
     // alert(res);
     dispatch(setLoader(""));
-    if (res)
-      history.push(`/me/${account}`)
-
+    if (res) history.push(`/me/${account}`);
   };
   return (
     <div className={classes.container}>

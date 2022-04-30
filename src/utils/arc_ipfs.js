@@ -488,7 +488,6 @@ export async function mintToAlgo(algoProps) {
       txns.push(txn);
     }
 
-
     const chunkSize = 16;
     // let txgroup;
 
@@ -504,7 +503,6 @@ export async function mintToAlgo(algoProps) {
       collection_id.push(assetID + nfts);
     }
     const collectionHash = await pinata.pinJSONToIPFS(collection_id, {
-
       pinataMetadata: { name: "collection" },
     });
     const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
