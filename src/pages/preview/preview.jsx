@@ -129,7 +129,12 @@ const Preview = () => {
       const names = await getCollectionsNames();
       const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
       if (isUnique) {
-        dispatch(setNotification(`${value} already exist. Please choose another name`));
+        dispatch(
+          setNotification({
+            message: `${value} already exist. try choose another name`,
+            type: "warning",
+          })
+        );
       } else {
         dispatch(setCollectionName(value));
         const newLayers = nftLayers.map((asset, idx) => ({
@@ -139,7 +144,12 @@ const Preview = () => {
         dispatch(setNftLayers(newLayers));
       }
     } catch (error) {
-      dispatch(setNotification("could not save your collection name, please try again."));
+      dispatch(
+        setNotification({
+          message: "could not save your collection name, please try again.",
+          type: "error",
+        })
+      );
     }
     dispatch(setLoader(""));
   };
@@ -211,7 +221,7 @@ const Preview = () => {
 
   return (
     <div className={classes.wrapper}>
-      <div onClick={() => history.goBack()} className={`${classes.backBtn} ${classes.mobile}`}>
+      <div onClick={() => history.goBack()} className={classes.backBtn}>
         <img src={arrowIconLeft} alt="" />
       </div>
       <div className={classes.container}>
@@ -295,19 +305,14 @@ const Preview = () => {
 
         <main className={classes.main}>
           <div className={classes.detailsView}>
-            <div onClick={() => history.goBack()} className={classes.backBtn}>
-              <img src={arrowIconLeft} alt="" />
+            <div className={classes.detail}>
+              <span>Number of Generative Arts</span>
+              <span>{nftLayers.length}</span>
             </div>
-            <div className={classes.detailsWrapper}>
-              <div className={classes.detail}>
-                <span>Number of Generative Arts</span>
-                <span>{nftLayers.length}</span>
-              </div>
-              <div className={classes.detail}>
-                {mintInfo ? <img src={warnIcon} alt="" /> : null}
-                <span>Unused Combinations</span>
-                <span>{combinations - mintAmount - rule.length}</span>
-              </div>
+            <div className={classes.detail}>
+              {mintInfo ? <img src={warnIcon} alt="" /> : null}
+              <span>Unused Combinations</span>
+              <span>{combinations - mintAmount - rule.length}</span>
             </div>
           </div>
 

@@ -34,12 +34,15 @@ export const INITIAL_STATE = {
   rule: [],
   collections: {},
   singleNfts: [],
-  notification: "",
+  notification: {
+    message: "",
+    type: "", //warning, error, success
+  },
   clipboardMessage: "",
   loaderMessage: "",
   didMount: false,
-  mainnet: null,
   graphCollections: [],
+  mainnet: !process.env.REACT_APP_ENV_STAGING,
   prompt: null,
   promptAsset: null,
   promptLayer: null,

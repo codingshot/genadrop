@@ -3,14 +3,14 @@ import { useLocation } from "react-router-dom";
 import classes from "./chainDropdown.module.css";
 import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
-import nearIcon from "../../../assets/icon-near.svg";
+import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
 import dropdownIcon from "../../../assets/icon-dropdown.svg";
 
 const chainIcon = {
   polygon: polygonIcon,
   algorand: algoIcon,
-  near: nearIcon,
+  aurora: auroraIcon,
   celo: celoIcon,
 };
 
@@ -51,8 +51,8 @@ const ChainDropdown = ({ onChainFilter }) => {
     },
     {
       id: 4,
-      name: "Near",
-      img: nearIcon,
+      name: "Aurora",
+      img: auroraIcon,
     },
     {
       id: 5,

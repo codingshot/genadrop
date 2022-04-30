@@ -28,16 +28,36 @@ const CollectionDescription = () => {
 
   const handleGenerate = async () => {
     if (isRule) {
-      return dispatch(setNotification("finish adding conflict rule and try again"));
+      return dispatch(
+        setNotification({
+          message: "finish adding conflict rule and try again",
+          type: "warning",
+        })
+      );
     }
     if (!mintAmount) {
-      return dispatch(setNotification("please set the number to generate"));
+      return dispatch(
+        setNotification({
+          message: "set the number to generate",
+          type: "warning",
+        })
+      );
     }
     if (!combinations) {
-      return dispatch(setNotification("Please uplaod images and try again"));
+      return dispatch(
+        setNotification({
+          message: "uplaod images and try again",
+          type: "warning",
+        })
+      );
     }
     if (mintAmount > combinations - rule.length) {
-      return dispatch(setNotification("cannot generate more than the possible combinations"));
+      return dispatch(
+        setNotification({
+          message: "cannot generate more than the possible combinations",
+          type: "warning",
+        })
+      );
     }
     dispatch(setNftLayers([]));
     dispatch(setLoading(true));
@@ -61,7 +81,12 @@ const CollectionDescription = () => {
     });
     dispatch(setCurrentDnaLayers(dnaLayers));
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
-    dispatch(setNotification("done! click on the preview button to view assets."));
+    dispatch(
+      setNotification({
+        message: "done! click on the preview button to view assets.",
+        type: "success",
+      })
+    );
     dispatch(setLoading(false));
   };
 
@@ -90,6 +115,15 @@ const CollectionDescription = () => {
           <div className={classes.combinations}>{combinations - rule.length}</div>
         </div>
       </div>
+      {nftLayers.length ? (
+        <div className={classes.btnWrapper}>
+          <Link to="/preview">
+            <ButtonClickEffect>
+              <Button invert>preview</Button>
+            </ButtonClickEffect>
+          </Link>
+        </div>
+      ) : null}
 
       <div className={classes.btnWrapper}>
         <div onClick={handleGenerate}>
@@ -97,16 +131,6 @@ const CollectionDescription = () => {
             <Button>generate {mintAmount}</Button>
           </ButtonClickEffect>
         </div>
-      </div>
-
-      <div className={classes.btnWrapper}>
-        {nftLayers.length && (
-          <Link to="/preview">
-            <ButtonClickEffect>
-              <Button invert>preview</Button>
-            </ButtonClickEffect>
-          </Link>
-        )}
       </div>
       <canvas style={{ display: "none" }} ref={canvasRef} />
     </div>

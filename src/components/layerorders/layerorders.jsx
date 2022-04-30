@@ -12,10 +12,11 @@ import {
   removeLayer,
   setPrompt,
   promptDeleteLayer,
+  setCombinations,
 } from "../../gen-state/gen.actions";
 import Layer from "../layer/layer";
 import Prompt from "../prompt/prompt";
-import { getItemStyle, getListStyle } from "./layeroders-script";
+import { getCombinations, getItemStyle, getListStyle } from "./layeroders-script";
 import { fetchCollections } from "../../utils/firebase";
 import editIcon from "../../assets/icon-edit.svg";
 import markIcon from "../../assets/icon-mark.svg";
@@ -78,13 +79,23 @@ const LayerOrders = () => {
       const names = await getCollectionsNames();
       const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
       if (isUnique) {
-        dispatch(setNotification(`${inputValue} already exist. Please choose another name`));
+        dispatch(
+          setNotification({
+            message: `${inputValue} already exist. try another name`,
+            type: "warning",
+          })
+        );
       } else {
         handleSetState({ renameAction: false });
         dispatch(setCollectionName(inputValue));
       }
     } catch (error) {
-      dispatch(setNotification("could not save your collection name, please try again."));
+      dispatch(
+        setNotification({
+          message: "could not save your collection name, please try again.",
+          type: "error",
+        })
+      );
     }
     dispatch(setLoader(""));
   };
@@ -95,6 +106,10 @@ const LayerOrders = () => {
       dispatch(promptDeleteLayer(null));
     }
   }, [promptLayer]);
+
+  useEffect(() => {
+    dispatch(setCombinations(getCombinations(layers)));
+  }, [layers]);
 
   return (
     <div className={classes.container}>
