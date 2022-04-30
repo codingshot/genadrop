@@ -6,13 +6,21 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Filter from "./Filter/Filter";
 import Header from "./Header/Header";
 import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-script";
-import { getNftCollection } from "../../utils";
+import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import { createClient } from "urql";
+import { gql } from "@apollo/client";
 
 const Explore = () => {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet/";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const [state, setState] = useState({
     togglePriceFilter: false,
     NFTCollection: null,
@@ -27,9 +35,27 @@ const Explore = () => {
     },
   });
   const { collection, NFTCollection, attributes, filter, filterToDelete, FilteredCollection, headerHeight } = state;
-  const { collections, mainnet } = useContext(GenContext);
+  const { collections, mainnet, graphCollections } = useContext(GenContext);
 
   const { collectionName } = useParams();
+
+  const GET_GRAPH_COLLECTION = gql`
+    query MyQuery {
+      collection(id: collectionName) {
+        description
+        id
+        nfts {
+          category
+          chain
+          id
+          isSold
+          price
+          tokenIPFSPath
+          tokenID
+        }
+      }
+    }
+  `;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -46,15 +72,28 @@ const Explore = () => {
   useEffect(() => {
     if (Object.keys(collections).length) {
       const collectionsFound = collections.find((col) => col.name === collectionName);
-      (async function getResult() {
-        const result = await getNftCollection(collectionsFound, mainnet);
-        handleSetState({
-          collection: collectionsFound,
-          NFTCollection: result,
-        });
-      })();
+      if (collectionsFound) {
+        (async function getResult() {
+          const result = await getNftCollection(collectionsFound, mainnet);
+          handleSetState({
+            collection: collectionsFound,
+            NFTCollection: result,
+          });
+        })();
+      } else {
+        console.log(graphCollections);
+        const collectionId = graphCollections.find((col) => col.owner === collectionName);
+        console.log(collectionId);
+        (async function getGraphResult() {
+          const result = await getGraphCollection(collectionId.nfts, collectionId);
+          handleSetState({
+            collection: collectionId,
+            NFTCollection: result,
+          });
+        })();
+      }
     }
-  }, [collections]);
+  }, []);
 
   useEffect(() => {
     if (!NFTCollection) return;

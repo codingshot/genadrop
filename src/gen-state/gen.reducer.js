@@ -39,6 +39,7 @@ export const INITIAL_STATE = {
   loaderMessage: "",
   didMount: false,
   mainnet: null,
+  graphCollections: [],
   prompt: null,
   promptAsset: null,
   promptLayer: null,
@@ -207,6 +208,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.payload,
+      };
+    case genActionTypes.GRAPH_COLLECTIONS:
+      return {
+        ...state,
+        graphCollections: action.payload,
       };
     case genActionTypes.SET_SINGLE_NFTS:
       return {

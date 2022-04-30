@@ -4,10 +4,11 @@ import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import { getAuroraCollections, getNftCollections } from "../../../utils";
-import CollectionsCard from "../collectionsCard/collectionsCard";
+import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS } from "../../../graphql/querries/getCollections";
+import { setGraphCollection } from "../../../gen-state/gen.actions";
 
 const Collections = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -20,7 +21,7 @@ const Collections = () => {
     algoCollection: [],
     auroraCollection: [],
   });
-  const { collections, mainnet } = useContext(GenContext);
+  const { collections, mainnet, dispatch } = useContext(GenContext);
   const { algoCollection, auroraCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -32,7 +33,8 @@ const Collections = () => {
     (async function getSubgraphNfts() {
       const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
       console.log(data);
-      const result = await getAuroraCollections(data.data.collections[0].nfts);
+      const result = await getAuroraCollections(data.data.collections);
+      dispatch(setGraphCollection(result));
       if (result?.length) {
         handleSetState({ auroraCollection: result });
       } else {
@@ -69,14 +71,14 @@ const Collections = () => {
 
       {algoCollection?.length ? (
         <div className={classes.wrapper}>
-          {auroraCollection.map((collection, idx) => (
-            <CollectionsCard key={idx} collection={collection} />
-          ))}
-          {/* {algoCollection
+          {algoCollection
             .filter((_, idx) => idx < 10)
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
-            ))} */}
+            ))}
+          {auroraCollection.map((collection, idx) => (
+            <NearCollectionCard key={idx} collection={collection} />
+          ))}
         </div>
       ) : !algoCollection ? (
         <h1 className={classes.noResult}> No Results Found</h1>
