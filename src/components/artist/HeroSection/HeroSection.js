@@ -18,7 +18,7 @@ const HeroSection = () => {
         </div>
         <a
           target="_blank"
-          href="https://www.indeed.com/cmp/Minority-Programmers-Association-1"
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeVwZlJOkX_i9g8ogHlB_Jvnt0iYSTsXvzdJygCZx3XZQEnUw/viewform"
           className={classes.applyBtn}
           rel="noreferrer"
         >
