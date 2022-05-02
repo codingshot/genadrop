@@ -8,10 +8,10 @@
   width: 100%;
   max-width: 1440px;
   display: grid;
-  grid-template-columns: 22.5% 72%;
+  grid-template-columns: 24% 74.5%;
+  gap: 1.5%;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 1.5%;
   margin: 0 auto;
   margin-bottom: 4em;
   min-height: 100vh;
@@ -20,7 +20,8 @@
 .sidebar {
   position: sticky;
   top: 11em;
-  border: 1px solid gainsboro;
+  border: 1px solid #c4c4c4;
+  box-shadow: 0px 0px 2px rgba(55, 125, 255, 0.46);
   border-radius: 0.5em;
 }
 
@@ -39,7 +40,6 @@
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
-  gap: 0.5em;
   padding: 1em 0.5em;
   background: var(--main-bg);
   z-index: 1;
@@ -85,10 +85,15 @@
   background: #fff;
   color: var(--card-bg);
 }
+.detailsView :last-child {
+  margin-left: 1rem;
+}
 .detailGif {
   border-radius: 30px;
   border-color: var(--main-accent);
   cursor: pointer;
+  margin-right: 1.6875em;
+  box-shadow: 0px 3px 7px #a8bdd1;
 }
 .detailGif:hover {
   background: var(--main-accent);
@@ -131,7 +136,7 @@
 
 .collectionDetail {
   width: 100%;
-  padding: 1em;
+  padding: 1em 1.6em;
 }
 
 .collectionDetail .wrapper {
@@ -139,7 +144,8 @@
   padding: 0.5em;
   border-radius: 0.25em;
   margin-bottom: 2em;
-  border: 1px solid gainsboro;
+  border: 1px solid #c4c4c4;
+  box-shadow: 0px 0px 2px rgba(55, 125, 255, 0.46);
 }
 
 .collectionDetail img {
@@ -149,10 +155,10 @@
 .collectionDetail textarea {
   resize: none;
   width: 100%;
-  border: none;
-  padding: 0.25em;
   border-radius: 0.25em;
-  border: 1px solid gainsboro;
+  border: 1px solid #c4c4c4;
+  box-shadow: 0px 0px 2px rgba(55, 125, 255, 0.46);
+  padding: 0.6rem 0rem 0.3rem 0.8rem;
 }
 
 .collectionDetail textarea:focus {
@@ -178,7 +184,7 @@
 }
 
 .collectionDetail .toggleContainer.active {
-  background: white;
+  background: var(--main-accent);
   border: 1px solid gainsboro;
 }
 
@@ -192,11 +198,11 @@
 
 .collectionDetail .toggle.active {
   transform: translateX(100%);
-  background: var(--main-accent);
+  background: white;
 }
 
 .actionContainer {
-  padding: 1em;
+  padding: 1em 0.8em;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -205,7 +211,12 @@
 }
 
 .actionContainer h3 {
-  width: 100%;
+  margin-top: -20px;
+  background: white;
+  width: fit-content;
+  padding-right: 6px;
+  margin-left: -5px;
+  padding-left: 5px;
 }
 
 .actionContainer label {
@@ -221,11 +232,11 @@
   color: white;
 }
 
-.actionContainer > button {
+.actionContainer .btnWrapper > button {
   border: 1px solid var(--main-accent);
   width: 100%;
   border: none;
-  padding: 0.75em;
+  height: 3rem;
   font-size: 1rem;
   border-radius: 0.25em;
   background: var(--main-accent);
@@ -234,7 +245,7 @@
   transition: all 300ms;
 }
 
-.actionContainer > button:hover {
+.actionContainer .btnWrapper > button:hover {
   background: var(--main-accent-dark);
   outline: 2px solid var(--main-accent);
 }
@@ -243,13 +254,17 @@
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1em;
+  gap: 0.5em;
 }
 
 .card {
   min-width: 12em;
   max-width: 20em;
+  padding: 0.5rem;
   position: relative;
+}
+.cardActive {
+  background: rgba(0, 153, 135, 0.3);
 }
 
 .iconClose {
@@ -364,12 +379,25 @@
   border-color: var(--main-accent-dark);
   color: white;
 }
-
+.foramtWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  grid-gap: 1em;
+  gap: 1em;
+  width: 100%;
+  border: 1px solid #c4c4c4;
+  box-shadow: 0px 0px 1.01498px rgb(55 125 255 / 46%);
+  padding: 0.6rem 0.8rem;
+  padding-bottom: 1.3rem;
+}
 .radioBtn {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .radioBtn::before {
@@ -427,14 +455,18 @@
   white-space: nowrap;
 }
 /* -------------------------------- GIF Genrator -------------------------------- */
-button.gifButton {
+.btnWrapper {
+  padding: 0 0.8rem;
+  width: 100%;
+}
+.btnWrapper > button.gifButton {
   margin-top: 2em;
   background: white;
   border: 1px solid var(--main-accent);
   color: var(--main-accent);
   transition: 0.3s ease-in;
 }
-button.gifButton:hover {
+.btnWrapper > button.gifButton:hover {
   background: var(--main-accent);
   color: white;
   outline: none;
@@ -450,7 +482,7 @@ button.gifButton:hover {
   background: var(--main-accent);
 }
 .galleryGif {
-  background: rgba(39, 39, 39, 0.77);
+  background: #f6fdff;
   backdrop-filter: blur(23px);
   border-radius: 7px;
   padding: 1rem;
@@ -458,9 +490,17 @@ button.gifButton:hover {
   position: sticky;
   bottom: 0;
 }
+.galleryGifLine {
+  height: 3px;
+  width: 100%;
+  box-shadow: 0px 3px 7px rgb(111 116 164 / 79%);
+  background: #ced4da;
+  margin-bottom: 0.7rem;
+}
 .galleryGifslides {
   display: flex;
   overflow-x: scroll;
+  padding: 0 1rem;
 }
 /* width */
 .galleryGifslides::-webkit-scrollbar {
@@ -469,7 +509,7 @@ button.gifButton:hover {
 
 /* Track */
 .galleryGifslides::-webkit-scrollbar-track {
-  background: rgba(75, 75, 90, 0.56);
+  background: #f3f4f7;
   border-radius: 0px 0px 8px 8px;
 }
 
@@ -489,31 +529,36 @@ button.gifButton:hover {
   object-fit: cover;
   border-radius: 9px;
   padding: 8px;
-  background: #fff;
+  background: #e5e8eb;
 }
 .galleryGifInfo {
-  color: white;
+  color: #4b4b5a;
   display: flex;
+  justify-content: space-between;
   margin-bottom: 20px;
+  padding: 0 1rem;
 }
 .galleryGifInfo > p {
   display: flex;
   align-items: center;
 }
-.galleryGifInfo > div {
+.playTut {
   background: rgba(152, 162, 179, 0.32);
   border-radius: 4px;
-  margin-left: 1em;
+  /* margin-left: 1em; */
   padding: 0.7em;
   display: flex;
   cursor: pointer;
 }
-.galleryGifInfo > div svg {
+.playTut svg {
   margin: auto;
   margin-right: 6px;
 }
-.galleryGifInfo > div:hover svg {
-  fill: var(--main-accent);
+.playTut svg {
+  transition: 0.2s ease-in;
+}
+.playTut:hover svg {
+  transform: translate(4px, 0px);
 }
 .mintButtonWrapper {
   width: 100%;
@@ -563,6 +608,7 @@ button.gifButton:hover {
   border: 2px solid var(--main-accent-dark);
 }
 .durationWrapper {
+  padding: 0 0.5rem;
   width: 100%;
 }
 .durationField {
@@ -576,7 +622,9 @@ button.gifButton:hover {
 .durationLabel {
   display: flex;
   width: 100%;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.8em;
+  font-size: 0.7em;
+  justify-content: space-between;
 }
 .durationLabel p {
   display: flex;
@@ -604,13 +652,13 @@ button.gifButton:hover {
   position: relative;
 }
 .durationInput input {
-  padding: 0.75em;
+  height: 3rem;
   padding-left: 1em;
   border-radius: 5px;
-  border: 2px solid #adb5bd;
+  border: 1px solid #adb5bd;
   background: white;
   transition: all 300ms;
-  font-size: 1.2rem;
+  font-size: 1rem;
   width: 100%;
 }
 .durationInput input:focus {
@@ -752,7 +800,7 @@ button.gifButton:hover {
 }
 .sidebarActive {
   overflow-y: scroll;
-  height: calc(100vh - 11em);
+  max-height: calc(100vh - 11em);
 }
 @media screen and (max-width: 1280px) {
   .preview {
@@ -760,6 +808,16 @@ button.gifButton:hover {
   }
 }
 
+@media screen and (max-width: 1060px) {
+  .durationLabel {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+  .playTut {
+    margin-bottom: 10px;
+    margin-left: 0;
+  }
+}
 @media screen and (max-width: 1024px) {
   .preview {
     grid-template-columns: repeat(2, 1fr);
@@ -820,5 +878,42 @@ button.gifButton:hover {
     width: 2em;
     height: 2em;
     position: static;
+  }
+}
+
+/* Animation Keyframes*/
+@keyframes loopplay {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(10px, 0px);
+  }
+}
+
+@-moz-keyframes loopplay {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(10px, 0px);
+  }
+}
+
+@-webkit-keyframes loopplay {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(10px, 0px);
+  }
+}
+
+@-o-keyframes loopplay {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(10px, 0px);
   }
 }

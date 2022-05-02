@@ -29,7 +29,6 @@ import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
 import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
-import infoIcon from "../../assets/icon-info-transparent.svg";
 import CaretDown from "../../assets/icon-CaretDown.svg";
 import CaretUP from "../../assets/icon-CaretUp.svg";
 
@@ -367,51 +366,56 @@ const Preview = () => {
                 <div className={`${classes.toggle} ${enableAllDescription && classes.active}`} />
               </div>
             </div>
-            <div className={classes.wrapper}>
-              <textarea
-                name="description"
-                value={collectionDescription}
-                rows="4"
-                placeholder="description"
-                onChange={handleCollectionDescription}
-              />
-            </div>
+            <textarea
+              name="description"
+              value={collectionDescription}
+              rows="4"
+              placeholder="description"
+              onChange={handleCollectionDescription}
+            />
           </div>
           <div className={classes.actionContainer}>
-            <h3>Use Format</h3>
-            <label htmlFor="ipfs" onClick={() => handleFormatChange("ipfs")}>
-              <input
-                ref={ipfsRef}
-                type="radio"
-                name="format"
-                value="ipfs"
-                defaultChecked
-                className={`${classes.radioBtn} ${outputFormat === "ipfs" && classes.clicked}`}
-              />
-              <p>IPFS</p>
-            </label>
-            <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
-              <input
-                ref={arweaveRef}
-                type="radio"
-                name="format"
-                value="arweave"
-                className={`${classes.radioBtn} ${outputFormat === "arweave" && classes.clicked}`}
-              />
-              <p>Arweave</p>
-            </label>
-            {!gifShow && (
-              <button onClick={() => handleSetState({ gifShow: true })} className={classes.gifButton} type="button">
-                Genrate GIF
-              </button>
-            )}
+            <div className={classes.foramtWrapper}>
+              <h3>Use Format</h3>
+              <label htmlFor="ipfs" onClick={() => handleFormatChange("ipfs")}>
+                <input
+                  ref={ipfsRef}
+                  type="radio"
+                  name="format"
+                  value="ipfs"
+                  defaultChecked
+                  className={`${classes.radioBtn} ${outputFormat === "ipfs" && classes.clicked}`}
+                />
+                <p>IPFS</p>
+              </label>
+              <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
+                <input
+                  ref={arweaveRef}
+                  type="radio"
+                  name="format"
+                  value="arweave"
+                  className={`${classes.radioBtn} ${outputFormat === "arweave" && classes.clicked}`}
+                />
+                <p>Arweave</p>
+              </label>
+            </div>
+            <div className={classes.btnWrapper}>
+              {!gifShow && (
+                <button onClick={() => handleSetState({ gifShow: true })} className={classes.gifButton} type="button">
+                  Genrate GIF
+                </button>
+              )}
+            </div>
 
             {gifShow && (
               <div className={classes.durationWrapper}>
                 <div className={classes.durationField}>
                   <div className={classes.durationLabel}>
                     <p>Duration in Seconds</p>
-                    <img src={infoIcon} alt="info" />
+                    <div className={classes.playTut}>
+                      <PlayIcon />
+                      <p>Watch how to make GIF</p>
+                    </div>
                   </div>
                   <div className={classes.durationInput}>
                     <input
@@ -456,23 +460,24 @@ const Preview = () => {
                 </div>
               </div>
             )}
-
-            <button
-              type="button"
-              onClick={() =>
-                handleDownload({
-                  window,
-                  dispatch,
-                  setLoader,
-                  setNotification,
-                  value: nftLayers,
-                  name: collectionName,
-                  outputFormat,
-                })
-              }
-            >
-              Download zip
-            </button>
+            <div className={classes.btnWrapper}>
+              <button
+                type="button"
+                onClick={() =>
+                  handleDownload({
+                    window,
+                    dispatch,
+                    setLoader,
+                    setNotification,
+                    value: nftLayers,
+                    name: collectionName,
+                    outputFormat,
+                  })
+                }
+              >
+                Download zip
+              </button>
+            </div>
           </div>
         </aside>
 
@@ -503,7 +508,12 @@ const Preview = () => {
               ? paginate[currentPage].map((asset, index) => {
                   const { image, id, name, description } = asset;
                   return (
-                    <div key={id} className={classes.card}>
+                    <div
+                      key={id}
+                      className={`${classes.card} ${
+                        gifImages.filter((e) => e.id === id).length > 0 ? classes.cardActive : ""
+                      }`}
+                    >
                       <img className={classes.asset} src={image} alt="" />
                       <div className={classes.cardBody}>
                         <div className={classes.textWrapper}>
@@ -574,12 +584,9 @@ const Preview = () => {
           </div>
           {gifShow && gifImages.length > 0 && (
             <div className={classes.galleryGif}>
+              <div className={classes.galleryGifLine} />
               <div className={classes.galleryGifInfo}>
                 <p>Select arts from collection</p>
-                <div>
-                  <PlayIcon />
-                  <p>Watch how to make GIF</p>
-                </div>
               </div>
               <div className={classes.galleryGifslides}>
                 {gifImages.map((img) => (
