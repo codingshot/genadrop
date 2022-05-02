@@ -11,8 +11,8 @@ import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
-import { createClient } from "urql";
-import { gql } from "@apollo/client";
+import { createClient, gql } from "urql";
+import { GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
 
 const Explore = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet/";
@@ -39,24 +39,6 @@ const Explore = () => {
 
   const { collectionName } = useParams();
 
-  const GET_GRAPH_COLLECTION = gql`
-    query MyQuery {
-      collection(id: collectionName) {
-        description
-        id
-        nfts {
-          category
-          chain
-          id
-          isSold
-          price
-          tokenIPFSPath
-          tokenID
-        }
-      }
-    }
-  `;
-
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -81,10 +63,21 @@ const Explore = () => {
           });
         })();
       } else {
-        console.log(graphCollections);
         const collectionId = graphCollections.find((col) => col.owner === collectionName);
         console.log(collectionId);
         (async function getGraphResult() {
+          const data = await client
+            .query(
+              gql`
+                query ($id: ID) {
+                  collection(id: "0xf16a60cf74f0f64d9a9ee5c3c37a0aa192768eed") {
+                    id
+                  }
+                }
+              `
+            )
+            .toPromise();
+          console.log(data);
           const result = await getGraphCollection(collectionId.nfts, collectionId);
           handleSetState({
             collection: collectionId,

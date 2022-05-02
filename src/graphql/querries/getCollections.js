@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from "urql";
 
 export const GET_ALL_AURORA_COLLECTIONS = gql`
   query MyQuery {
@@ -25,7 +25,7 @@ export const GET_ALL_AURORA_COLLECTIONS = gql`
 
 export const GET_GRAPH_COLLECTION = gql`
   query MyQuery {
-    collection(id: id) {
+    collection(id: $id) {
       description
       id
       nfts {
