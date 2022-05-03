@@ -1,141 +1,57 @@
-import React, { useRef, useState, useEffect } from "react";
-import Popup from "reactjs-popup";
 import classes from "./mint.module.css";
-import { handleZipFile } from "./mint-script";
-import AssetPreview from "../../components/Mint/AssetPreview/AssetPreview";
-import lineIcon from "../../assets/icon-line.svg";
+import mintBg from "../../assets/mint-bg1.svg";
+import collectionIcon from "../../assets/icon-collection.svg";
+import _1of1Icon from "../../assets/icon-1of1.svg";
+import { Link, useRouteMatch } from "react-router-dom";
 
 const Mint = () => {
-  const fileRef = useRef(null);
-  const dropRef = useRef(null);
-
-  const [state, setState] = useState({
-    fileName: "",
-    file: null,
-    metadata: null,
-    zip: null,
-  });
-
-  const { fileName, file, metadata, zip } = state;
-
-  const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
-
-  const handleFileChange = (event) => {
-    const upladedFile = event.target.files[0];
-
-    if (!upladedFile) return;
-
-    const name = upladedFile.name.split(".");
-    const upladedFileName = name[0];
-    const fileType = name[1];
-    const supportedTypes = ["zip", "png", "jpeg", "jpg", "webp"];
-    if (!supportedTypes.includes(fileType.toLowerCase())) return;
-
-    if (fileType === "zip") {
-      handleSetState({ zip: upladedFile, fileName: upladedFileName });
-      handleZipFile({ upladedFile, handleSetState });
-    } else {
-      handleSetState({ file: [upladedFile], fileName: upladedFileName });
-    }
-  };
-
-  useEffect(() => {
-    if (!dropRef.current) return;
-    dropRef.current.ondragover = (e) => {
-      e.preventDefault();
-
-      document.querySelector("#drop-area").style.border = "2px dashed green";
-    };
-    dropRef.current.ondragleave = (e) => {
-      e.preventDefault();
-      document.querySelector("#drop-area").style.border = "1px dashed gainsboro";
-    };
-    dropRef.current.ondrop = (e) => {
-      e.preventDefault();
-      document.querySelector("#drop-area").style.border = "1px dashed gainsboro";
-
-      handleFileChange({ target: e.dataTransfer });
-    };
-  }, [file]);
+  const { url } = useRouteMatch();
 
   return (
-    <div className={classes.container}>
-      {file ? (
-        <AssetPreview
-          data={{
-            file,
-            fileName,
-            metadata,
-            zip,
-          }}
-          changeFile={() =>
-            handleSetState({
-              fileName: "",
+    <div style={{ backgroundImage: `url(${mintBg})` }} className={classes.container}>
+      <header className={classes.headingWrapper}>
+        <h1 className={classes.heading}>Mint Your NFTs</h1>
+        <p className={classes.description}>
+          With Genadrop simplified minting, you can mint your NFts as fast as your fingers can go. <br />
+          Simply choose your mint type, either a <span>Collection mint</span> or <span>1 of 1 mint</span>, and upload a
+          file to <br />
+          mint to any of our supported blockchains!
+        </p>
+        <p className={classes.disclaimer}>
+          We do not own your private keys and cannot access your funds without your confirmation
+        </p>
+      </header>
 
-              file: null,
-              metadata: null,
-              zip: null,
-            })
-          }
-        />
-      ) : (
-        <div className={classes.wrapper}>
-          <h1 className={classes.title}>Mint Your NFTs</h1>
-          <p className={classes.description}>
-            Upload a{" "}
-            <Popup
-              position="bottom center"
-              on={["hover", "focus", "click"]}
-              trigger={
-                <span>
-                  {" "}
-                  <img src={lineIcon} alt="" /> file
-                </span>
-              }
-            >
-              <div className={classes.tooltip}>.png, .jpg, .gif, .mp4</div>
-            </Popup>{" "}
-            or a{" "}
-            <Popup
-              position="bottom center"
-              on={["hover", "focus", "click"]}
-              trigger={
-                <span>
-                  {" "}
-                  <img src={lineIcon} alt="" /> collection
-                </span>
-              }
-            >
-              <div className={classes["col-tooltip"]}>
-                A collection is a rendered batch of generative images that the GenaDrop create app has downloaded as a
-                .ZIP folder with accompanying metadata and all individual images as, PNGs
-              </div>
-            </Popup>
-            to create NFT(s)
-          </p>
-          <div ref={dropRef} className={classes.uploadWrapper}>
-            <div>
-              <p id="drop-area" className={classes.dropArea}>
-                Drag and Drop you files
-              </p>
-              <p>Supported file types: zip, png, jpeg, jpg, webp</p>
-            </div>
-            <p>or</p>
-            <button type="button" onClick={() => fileRef.current.click()}>
-              Browse files
-            </button>
-            <input
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-              ref={fileRef}
-              type="file"
-              accept=".jpg, .jpeg, .png, .webp, .zip"
-            />
+      <main className={classes.mainWrapper}>
+        <div className={`${classes.card} ${classes.collection}`}>
+          <div className={classes.imageContainer}>
+            <img src={collectionIcon} alt="" />
           </div>
+          <h3 className={classes.title}> Mint a collection</h3>
+          <p className={classes.description}>
+            {" "}
+            Mint your collection downloaded from Genadrop Creat app. These are collections of NFTs with mix and match
+            traits in a Zip file.{" "}
+          </p>
+          <Link to={`${url}/collection`}>
+            <button className={classes.btn}>Mint collection</button>
+          </Link>
         </div>
-      )}
+
+        <div className={`${classes.card} ${classes._1of1}`}>
+          <div className={classes.imageContainer}>
+            <img src={_1of1Icon} alt="" />
+          </div>
+          <h3 className={classes.title}> Mint 1 of 1 </h3>
+          <p className={classes.description}>
+            {" "}
+            1 of 1 is a unique NFT you are minting individually. This is usually a single image in the format of Png{" "}
+          </p>
+          <Link to={`${url}/1of1`}>
+            <button className={classes.btn}>Mint 1 of 1</button>
+          </Link>
+        </div>
+      </main>
     </div>
   );
 };

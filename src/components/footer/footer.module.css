@@ -20,10 +20,6 @@
   padding: 2em;
 }
 
-.bottom .wrapper:hover {
-  text-decoration: underline;
-}
-
 .topLeft {
   width: auto;
   display: flex;
@@ -88,12 +84,12 @@
 }
 
 .links a:hover {
-  color: gainsboro;
+  text-decoration: underline;
 }
 
 .bottom {
   width: 100%;
-  background: #00cc9b;
+  background: #333333;
   padding: 1em;
   color: white;
 }

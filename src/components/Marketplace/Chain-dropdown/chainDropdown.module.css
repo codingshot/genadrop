@@ -99,6 +99,11 @@
   border-bottom-right-radius: 0.25em;
 }
 
+.chainDropdown .dropdown img {
+  width: 2em;
+  height: 2em;
+}
+
 .dropdownIcon {
   transition: all 250ms;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./footer.module.css";
-import logo from "../../assets/genadrop-logo.svg";
+import logo from "../../assets/genadrop-logo-light.svg";
 import twitterIcon from "../../assets/icon-twitter.svg";
 import discordIcon from "../../assets/icon-discord.svg";
 import linkedInIcon from "../../assets/icon-linkedin.svg";
@@ -99,7 +99,7 @@ const Footer = () => (
               <div key={link.id} className={classes.links}>
                 <div className={classes.title}>{link.title}</div>
                 {link.content.map((linkE) => (
-                  <a href={linkE.link} target="_blank" key={linkE.id} rel="noopener noreferrer">
+                  <a href={linkE.link} key={linkE.id}>
                     {linkE.name}
                   </a>
                 ))}

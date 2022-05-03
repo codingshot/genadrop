@@ -2,9 +2,9 @@ import React, { useRef, useContext, useEffect, useState } from "react";
 import classes from "./collection-menu.module.css";
 import ArtCard from "../art-card/art-card";
 import { GenContext } from "../../gen-state/gen.context";
-import { addImage, setCombinations } from "../../gen-state/gen.actions";
+import { addImage } from "../../gen-state/gen.actions";
 import ButtonClickEffect from "../button-effect/button-effect";
-import { getCombinations, handleAddBlank, handleFileChange } from "./collection-menu-script";
+import { handleAddBlank, handleFileChange } from "./collection-menu-script";
 
 const CollectionMenu = ({ layer }) => {
   const [state, setState] = useState({
@@ -30,10 +30,6 @@ const CollectionMenu = ({ layer }) => {
     });
     dispatch(addImage(res));
   };
-
-  useEffect(() => {
-    dispatch(setCombinations(getCombinations(layers)));
-  }, [layers, dispatch]);
 
   return (
     <div className={classes.container}>

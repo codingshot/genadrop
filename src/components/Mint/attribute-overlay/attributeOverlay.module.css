@@ -1,0 +1,155 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  width: 100%;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+}
+
+.innerContainer {
+  width: 100%;
+  max-width: 48em;
+  background: var(--main-bg);
+  padding: 1em;
+  border-radius: 1em;
+  position: relative;
+}
+
+.closeBtn {
+  background: transparent;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.closeBtn img {
+  padding: 0.25em;
+  cursor: pointer;
+  transition: all 300ms;
+  background: white;
+}
+
+.closeBtn img:hover {
+  box-shadow: 0 0 15px gainsboro;
+}
+
+.image {
+  width: 14em;
+  height: 14em;
+  border-radius: 1em;
+}
+
+.imageAndDescription {
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 2em;
+}
+
+.nameAndDescription {
+  flex: 1 1 auto;
+  padding: 0.5em;
+}
+
+.name {
+  font-weight: bold;
+  text-transform: capitalize;
+  margin-bottom: 1em;
+}
+
+.description {
+  height: 10em;
+  overflow: auto;
+}
+
+.attributeSection {
+  width: 100%;
+  margin-top: 2em;
+}
+
+.attributeHeading {
+  padding-left: 1em;
+  font-weight: bold;
+}
+
+.attributeMenu {
+  height: 16em;
+  border: 1px solid gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 0.5em;
+  flex-wrap: wrap;
+  margin-top: 1em;
+  overflow: auto;
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.attribute {
+  min-width: 14em;
+  flex: 1 1 auto;
+  text-align: center;
+  padding: 0.75em;
+  font-size: 0.85rem;
+  border-radius: 0.5em;
+  background: #d0ebe9e4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  flex-direction: column;
+  border: 1px solid var(--main-accent);
+}
+
+@media screen and (max-width: 900px) {
+  .innerContainer {
+    max-width: 40em;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .innerContainer {
+    max-width: 32em;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .innerContainer {
+    height: 80vh;
+    overflow: auto;
+  }
+
+  .closeBtn {
+    position: sticky;
+    top: 0;
+  }
+
+  .imageAndDescription {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nameAndDescription {
+    width: 100%;
+  }
+
+  .attributeMenu {
+    overflow: unset;
+    height: auto;
+  }
+
+  .description {
+    height: unset;
+  }
+
+  .closeBtn img {
+    box-shadow: 0 0 5px gainsboro;
+  }
+}

@@ -2,6 +2,9 @@ import React, { useEffect, useRef, useContext, useState } from "react";
 import { setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Notification.module.css";
+import warningIcon from "../../assets/icon-warning.svg";
+import successIcon from "../../assets/icon-success.svg";
+import errorIcon from "../../assets/icon-error.svg";
 
 const Notification = () => {
   const feedbackRef = useRef(null);
@@ -14,8 +17,14 @@ const Notification = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  const notificationIcon = {
+    warning: warningIcon,
+    error: errorIcon,
+    success: successIcon,
+  };
+
   useEffect(() => {
-    if (!notification) return;
+    if (!notification.message) return;
     handleSetState({ toggleFeedback: true });
     setTimeout(() => {
       handleSetState({ toggleFeedback: false });
@@ -25,7 +34,12 @@ const Notification = () => {
   useEffect(() => {
     feedbackRef.current.onanimationend = (e) => {
       if (e.animationName.includes("slide-out")) {
-        dispatch(setNotification(""));
+        dispatch(
+          setNotification({
+            message: "",
+            type: "success",
+          })
+        );
       }
     };
   }, []);
@@ -35,9 +49,11 @@ const Notification = () => {
       style={{ top: loaderMessage ? "8em" : "4em" }}
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
-      <div ref={feedbackRef} className={classes.notification}>
-        <div className={classes.icon} />
-        <div className={classes.message}>{notification}</div>
+      <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>
+        <img className={classes.icon} src={notificationIcon[notification.type]} alt="" />
+        <div className={classes.message}>
+          {notification.message.charAt(0).toUpperCase() + notification.message.substring(1)}
+        </div>
       </div>
     </div>
   );
