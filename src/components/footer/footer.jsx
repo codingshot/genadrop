@@ -93,7 +93,7 @@ const Footer = () => (
             <div key={link.id} className={classes.links}>
               <div className={classes.title}>{link.title}</div>
               {link.content.map((linkE) => (
-                <a href={linkE.link} target="_blank" key={linkE.id} rel="noopener noreferrer">
+                <a href={linkE.link} key={linkE.id}>
                   {linkE.name}
                 </a>
               ))}

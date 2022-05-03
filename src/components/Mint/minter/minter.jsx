@@ -9,7 +9,7 @@ import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
 import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
 import infoIcon from "../../../assets/icon-info.svg";
-
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Minter = ({ data, changeFile }) => {
@@ -25,6 +25,7 @@ const Minter = ({ data, changeFile }) => {
     dollarPrice: 0,
   });
   const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
+  const history = useHistory();
 
   const chains = [
     {
@@ -193,7 +194,9 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleMint(mintProps);
+      handleMint(mintProps).then((url) => {
+        history.push(`/me/${account}`);
+      });
     } else {
       if (
         !singleMintProps.fileName ||
@@ -208,7 +211,9 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleSingleMint(singleMintProps);
+      handleSingleMint(singleMintProps).then((url) => {
+        history.push(`/me/${account}`);
+      });
     }
   };
 
@@ -229,6 +234,12 @@ const Minter = ({ data, changeFile }) => {
     }
   }, [price, chainId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      document.documentElement.scrollTop = 200;
+    }, 500);
+  }, []);
+
   return (
     <div className={classes.container}>
       {preview ? (
@@ -236,7 +247,7 @@ const Minter = ({ data, changeFile }) => {
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
-            <div className={classes.imageContainers}>
+            <div className={`${classes.imageContainers} ${file.length > 1 && classes._}`}>
               {file.length > 1 ? (
                 file
                   .filter((_, idx) => idx < 3)
@@ -311,11 +322,12 @@ const Minter = ({ data, changeFile }) => {
               {!metadata ? (
                 <>
                   <div className={classes.attributes}>
-                    {Object.keys(attributes).map((key) => (
+                    {Object.keys(attributes).map((key, index) => (
                       <Attribute
                         key={key}
                         attribute={attributes[key]}
                         id={key}
+                        index={index}
                         removeAttribute={handleRemoveAttribute}
                         changeAttribute={handleChangeAttribute}
                       />
@@ -349,11 +361,11 @@ const Minter = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.mintOptions}>
-            <div className={classes.category}>Set Mint Options</div>
             <div className={classes.info}>
               <img src={infoIcon} alt="" />
               <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
             </div>
+            <div className={classes.category}>Set Mint Options</div>
             <div className={classes.inputWrapper}>
               <label>
                 Price (USD) <span className={classes.required}>*</span>
