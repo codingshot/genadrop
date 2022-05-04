@@ -15,7 +15,7 @@ import { createClient, gql } from "urql";
 import { GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
 
 const Explore = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet/";
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
 
   const client = createClient({
     url: APIURL,
@@ -70,14 +70,13 @@ const Explore = () => {
             .query(
               gql`
                 query ($id: ID) {
-                  collection(id: "0xf16a60cf74f0f64d9a9ee5c3c37a0aa192768eed") {
+                  collection(id: "0xc1700f542a67e78c5629b436897d5b1da634c24a") {
                     id
                   }
                 }
               `
-            )
-            .toPromise();
-          console.log(data);
+            ).toPromise();
+          console.log("my data", data);
           const result = await getGraphCollection(collectionId.nfts, collectionId);
           handleSetState({
             collection: collectionId,
