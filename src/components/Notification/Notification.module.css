@@ -3,6 +3,7 @@
   max-width: 22em;
   position: fixed;
   right: 10px;
+  top: 5em !important;
   z-index: 3000;
   background: transparent;
   overflow: hidden;

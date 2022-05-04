@@ -20,9 +20,9 @@
 }
 
 .iconContainer {
-  background: var(--main-accent-dark);
+  background: black;
   position: fixed;
-  top: 0.5em;
+  top: 4.5em;
   right: 0.5em;
   width: 2em;
   height: 2em;
@@ -67,6 +67,6 @@
   .iconContainer {
     width: 1.4em;
     height: 1.4em;
-    top: 0;
+    top: 3.5em;
   }
 }
