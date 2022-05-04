@@ -127,7 +127,10 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
         <div className={classes.heading}>
           <h3>
             Welcome To Genadrop
-            <span>, the easy and robust no-code art generating tool that gives you quality and unique art.</span>
+            <span>
+              , the easy and robust no-code art generating tool that gives you quality and unique art. Let's work you
+              through
+            </span>
           </h3>
           <p>{guide[swipeCount].title}</p>
         </div>
