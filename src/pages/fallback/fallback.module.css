@@ -3,7 +3,7 @@
   font-size: 1rem;
   text-align: center;
   padding-top: 4em;
-  min-height: 950px;
+  max-height: 100vh;
 }
 
 .container h1 {
@@ -89,7 +89,7 @@
 @media screen and (max-width: 768px) {
   .container {
     padding-top: 2em;
-    min-height: 800px;
+    max-height: 100vh;
   }
   .not-found img {
     width: 90vw;
