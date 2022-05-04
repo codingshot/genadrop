@@ -40,22 +40,23 @@ const Dashboard = () => {
   const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
-    if (!account) return;
+    if (!account) history.push("/")
 
+    console.log(" collection length:", filteredCollection?.length);
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
-      console.log("===>", myNftsCollections);
+      console.log("MY COLLECTION: ", myNftsCollections.length);
       handleSetState({ myCollections: myNftsCollections });
     })();
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-      const createdNFTs = createdUserNfts.filter((nft) => nft.owner);
-      console.log("===>", createdUserNfts);
+      // const createdNFTs = createdUserNfts.filter((nft) => nft.owner);
+      // console.log("===>", createdUserNfts);
 
-      handleSetState({ createdNfts: createdNFTs });
+      handleSetState({ createdNfts: createdUserNfts });
     })();
 
     (async function getCollections() {
@@ -165,41 +166,52 @@ const Dashboard = () => {
             <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
-          {filteredCollection?.length > 0 && activeDetail === "collections" ? (
-            <div className={classes.overview}>
-              {filteredCollection.map((collection, idx) => (
-                <CollectionsCard key={idx} collection={collection} />
-              ))}
-            </div>
-          ) : filteredCollection?.length > 0 && activeDetail === "created" ? (
-            <div className={classes.overview}>
-              {filteredCollection.map((nft, idx) => (
-                <NftCard key={idx} nft={nft} list />
-              ))}
-            </div>
-          ) : filteredCollection?.length > 0 && activeDetail === "collected" ? (
-            <div className={classes.overview}>
-              {filteredCollection.map((nft, idx) => (
-                <NftCard key={idx} nft={nft} list />
-              ))}
-            </div>
-          ) : filteredCollection?.length === 0 ? (
-            filter.searchValue ? (
-              <NotFound />
-            ) : (
-              <h1 className={classes.noResult}>No Results Found</h1>
-            )
-          ) : (
-            <div className={classes.skeleton}>
-              {[...new Array(5)]
-                .map((_, idx) => idx)
-                .map((id) => (
-                  <div key={id}>
-                    <Skeleton count={1} height={300} />
-                  </div>
-                ))}
-            </div>
-          )}
+          {
+            filteredCollection?.length > 0 ?
+              (
+                activeDetail === "collections" ? (
+                  <div className={classes.overview}>
+                    {filteredCollection.map((collection, idx) => (
+                      <CollectionsCard key={idx} collection={collection} />
+                    ))}
+                  </div>) :
+                  activeDetail === "created" ? (
+                    <div className={classes.overview}>
+                      {filteredCollection.map((nft, idx) => (
+                        <NftCard key={idx} nft={nft} list />
+                      ))}
+                    </div>
+                  ) :
+                    activeDetail === "collected" ? (
+                      <div className={classes.overview}>
+                        {filteredCollection.map((nft, idx) => (
+                          <NftCard key={idx} nft={nft} list />
+                        ))}
+                      </div>
+                    ) :
+                      "")
+
+
+
+              :
+              filteredCollection?.length === 0 ? (
+                filter.searchValue ? (
+                  <NotFound />
+                ) : (
+                  <h1 className={classes.noResult}>No Results Found</h1>
+                )
+              ) :
+                <div className={classes.skeleton}>
+                  {[...new Array(5)]
+                    .map((_, idx) => idx)
+                    .map((id) => (
+                      <div key={id}>
+                        <Skeleton count={1} height={300} />
+                      </div>
+                    ))}
+                </div>
+          }
+
         </section>
       </div>
     </div>
