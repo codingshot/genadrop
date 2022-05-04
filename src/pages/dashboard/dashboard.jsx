@@ -59,16 +59,18 @@ const Dashboard = () => {
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
-      console.log("MY COLLECTION: ", myNftsCollections.length);
-      handleSetState({ myCollections: myNftsCollections });
+
+      console.log("===>", myNftsCollections);
+      handleSetState({
+        myCollections: myNftsCollections,
+      });
     })();
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
       console.log(userNftCollections);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-      // const createdNFTs = createdUserNfts.filter((nft) => nft.owner);
-      // console.log("===>", createdUserNfts);
+
 
       handleSetState({ createdNfts: createdUserNfts });
     })();
@@ -227,9 +229,9 @@ const Dashboard = () => {
                 </div>
           }
 
-        </section>
-      </div>
-    </div>
+        </section >
+      </div >
+    </div >
   );
 };
 
