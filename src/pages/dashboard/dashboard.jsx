@@ -1,17 +1,30 @@
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory, useLocation } from "react-router-dom";
 import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import { getNftCollections, getUserCollectedNftCollection, getSingleNfts } from "../../utils";
-import { fetchAllNfts, fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
+import { getNftCollections, getSingleNfts } from "../../utils";
+import { fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
+
+const LodaingCards = () => (
+  <div className={classes.skeleton}>
+    {[...new Array(5)]
+      .map((_, idx) => idx)
+      .map((id) => (
+        <div key={id}>
+          <Skeleton count={1} height={300} />
+        </div>
+      ))}
+  </div>
+);
 
 const Dashboard = () => {
   const location = useLocation();
@@ -24,14 +37,14 @@ const Dashboard = () => {
       price: "high",
     },
     activeDetail: "created",
-    collectedNfts: 0,
-    createdNfts: 0,
-    myCollections: null,
+    collectedNfts: false,
+    createdNfts: false,
+    myCollections: false,
     filteredCollection: null,
   });
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
-  const { account, mainnet } = useContext(GenContext);
+  const { account, mainnet, singleNfts } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -46,26 +59,30 @@ const Dashboard = () => {
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
-      console.log("MY COLLECTION: ", myNftsCollections.length);
-      handleSetState({ myCollections: myNftsCollections });
+
+      console.log("===>", myNftsCollections);
+      handleSetState({
+        myCollections: myNftsCollections,
+      });
     })();
 
     (async function getCollections() {
       const userNftCollections = await fetchUserNfts(account);
+      console.log(userNftCollections);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-      // const createdNFTs = createdUserNfts.filter((nft) => nft.owner);
-      // console.log("===>", createdUserNfts);
+      
 
       handleSetState({ createdNfts: createdUserNfts });
     })();
 
     (async function getCollections() {
-      const userNftCollections = await fetchAllNfts(account);
-      const createdUserNfts = await getUserCollectedNftCollection(mainnet, userNftCollections);
-      const collectedNFTS = createdUserNfts.filter((nft) => nft.buyer === account);
+      const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
+      const collectedNFTS = allSingleNFTs.filter((nft) => nft.buyer === account);
       console.log("===>", collectedNFTS);
 
-      handleSetState({ collectedNfts: collectedNFTS });
+      handleSetState({
+        collectedNfts: collectedNFTS,
+      });
     })();
   }, [account]);
 
@@ -141,21 +158,21 @@ const Dashboard = () => {
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created NFT</p>
-              <span>{createdNfts && createdNfts.length}</span>
+              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collected" })}
               className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
               <p>Collected NFTs</p>
-              <span>{collectedNfts && collectedNfts.length}</span>
+              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collections" })}
               className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
             >
               <p>My Collections</p>
-              <span>{myCollections && myCollections.length}</span>
+              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
             </div>
           </div>
         </section>
@@ -211,6 +228,7 @@ const Dashboard = () => {
                     ))}
                 </div>
           }
+
 
         </section>
       </div>
