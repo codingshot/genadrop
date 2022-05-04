@@ -10,9 +10,10 @@ const Transaction = (data, date) => {
   }
 
   const [state, setState] = useState({
-    explorer: "https://testnet.algoexplorer.io/tx/",
+    explorer: "https://testnet.algoexplorer.io/",
     isCopied: false,
     showDrop: false,
+    clicked: ""
   });
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -40,15 +41,18 @@ const Transaction = (data, date) => {
     }, [ref]);
   }
 
+
+
   useOutsideAlerter(wrapperRef);
 
-  const { explorer, isCopied, showDrop } = state;
+  const { explorer, isCopied, clicked } = state;
 
   const onCopyText = () => {
+    console.log("HANDLE COPY");
     handleSetState({ isCopied: true });
 
     setTimeout(() => {
-      handleSetState({ isCopied: false, showDrop: false });
+      handleSetState({ isCopied: false, showDrop: false, clicked: "" });
     }, 1000);
   };
 
@@ -60,10 +64,10 @@ const Transaction = (data, date) => {
         <tbody>
           <tr>
             <td>Transaction ID</td>
-            <td className={classes.txId} onClick={() => handleSetState({ showDrop: true })} ref={wrapperRef}>
-              {" "}
+            <td className={classes.txId} onClick={() => { handleSetState({ clicked: "txId" }) }} ref={wrapperRef}>
+
               {breakAddress(data.data.txId)}
-              {showDrop && data.data.txId ? (
+              {data.data.txId && clicked == "txId" ? (
                 isCopied ? (
                   <div className={classes.copied}>Copied!</div>
                 ) : (
@@ -73,7 +77,7 @@ const Transaction = (data, date) => {
                         Copy
                       </span>
                     </CopyToClipboard>
-                    <a href={explorer + data.data.txId} target="_blank">
+                    <a href={explorer + "tx/" + data.data.txId} target="_blank">
                       <span className={classes.explore}>Go to Explorer</span>
                     </a>
                   </div>
@@ -90,11 +94,53 @@ const Transaction = (data, date) => {
 
           <tr>
             <td>From</td>
-            <td> {breakAddress(data.data.from)}</td>
+            <td className={classes.txId} onClick={() => { handleSetState({ clicked: "from" }) }} ref={wrapperRef}>
+
+              {breakAddress(data.data.from)}
+              {data.data.from && clicked === "from" ? (
+                isCopied ? (
+                  <div className={classes.copied}>Copied!</div>
+                ) : (
+                  <div className={classes.clickable}>
+                    <CopyToClipboard text={data.data.from}>
+                      <span className={classes.copy} onClick={onCopyText}>
+                        Copy
+                      </span>
+                    </CopyToClipboard>
+                    <a href={explorer + "address/" + data.data.from} target="_blank">
+                      <span className={classes.explore}>Go to Explorer</span>
+                    </a>
+                  </div>
+                )
+              ) : (
+                ""
+              )}
+            </td>
           </tr>
           <tr>
             <td>To</td>
-            <td> {breakAddress(data.data.to)}</td>
+            <td className={classes.txId} onClick={() => { handleSetState({ clicked: "to" }) }} ref={wrapperRef}>
+
+              {breakAddress(data.data.to)}
+              {data.data.to && clicked === "to" ? (
+                isCopied ? (
+                  <div className={classes.copied}>Copied!</div>
+                ) : (
+                  <div className={classes.clickable}>
+                    <CopyToClipboard text={data.data.to}>
+                      <span className={classes.copy} onClick={onCopyText}>
+                        Copy
+                      </span>
+                    </CopyToClipboard>
+                    <a href={explorer + "address/" + data.data.to} target="_blank">
+                      <span className={classes.explore}>Go to Explorer</span>
+                    </a>
+                  </div>
+                )
+              ) : (
+                ""
+              )}
+            </td>
           </tr>
           {data.data.price ? (
             <tr>

@@ -70,7 +70,7 @@ const Dashboard = () => {
       const userNftCollections = await fetchUserNfts(account);
       console.log(userNftCollections);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-      
+
 
       handleSetState({ createdNfts: createdUserNfts });
     })();
@@ -229,10 +229,9 @@ const Dashboard = () => {
                 </div>
           }
 
-
-        </section>
-      </div>
-    </div>
+        </section >
+      </div >
+    </div >
   );
 };
 
