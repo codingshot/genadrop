@@ -78,6 +78,7 @@ function ConnectWallet({ setToggleNav }) {
 
   const toggleWallet = async () => {
     let connector;
+    const networkArray = ["137", "1313161554", "42220"];
     try {
       connector = await web3Modal.connect();
     } catch (error) {
@@ -94,6 +95,14 @@ function ConnectWallet({ setToggleNav }) {
     const signer = provider.getSigner();
 
     if (provider.connection.url === "metamask") {
+      console.log(provider, window.ethereum.networkVersion);
+      if (networkArray.includes(window.ethereum.networkVersion)) {
+        setNetwork("mainnet");
+        dispatch(setMainnet(true));
+      } else {
+        setNetwork("testnet");
+        dispatch(setMainnet(false));
+      }
       await dispatch(setConnector(provider));
       await dispatch(setChainId(window.ethereum.networkVersion));
       const accountAddress = await signer.getAddress();
@@ -107,6 +116,16 @@ function ConnectWallet({ setToggleNav }) {
       });
       connector.on("networkChanged", (networkId) => {
         dispatch(setChainId(networkId));
+        console.log(networkId, networkArray.includes(networkId));
+        if (networkArray.includes(networkId)) {
+          console.log("SHout halle");
+          setNetwork("mainnet");
+          dispatch(setMainnet(true));
+        } else {
+          console.log("unabailable");
+          setNetwork("testnet");
+          dispatch(setMainnet(false));
+        }
       });
     } else {
       await dispatch(setConnector(connector));
@@ -127,7 +146,6 @@ function ConnectWallet({ setToggleNav }) {
 
           throw error;
         }
-
         // Get provided accounts
         const { accounts } = payload.params[0];
         dispatch(setAccount(accounts[0]));

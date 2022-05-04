@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./fallback.module.css";
 import notFound from "../../assets/404.svg";
@@ -8,6 +8,14 @@ import homeWhite from "../../assets/home-white.svg";
 const Fallback = () => {
   const [changeImage, setChangeImage] = useState(homeWhite);
   const history = useHistory();
+
+  useLayoutEffect(() => {
+    let hideFooter = document.getElementById("hide-footer");
+    if (hideFooter) {
+      hideFooter.style.display = "none";
+    }
+  }, []);
+
   return (
     <div className={classes.container}>
       <div className={classes["not-found"]}>
