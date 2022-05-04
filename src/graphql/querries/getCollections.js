@@ -1,4 +1,4 @@
-import { gql } from "urql";
+import { gql } from "@apollo/client";
 
 export const GET_ALL_AURORA_COLLECTIONS = gql`
   query MyQuery {
@@ -24,18 +24,18 @@ export const GET_ALL_AURORA_COLLECTIONS = gql`
 `;
 
 export const GET_GRAPH_COLLECTION = gql`
-  query MyQuery {
-    collection(id: $id) {
+  query ($id: ID) {
+    collection(id: $ownerId) {
       description
       id
+      name
       nfts {
-        category
         chain
         id
         isSold
         price
-        tokenIPFSPath
         tokenID
+        tokenIPFSPath
       }
     }
   }

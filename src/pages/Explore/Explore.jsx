@@ -63,23 +63,34 @@ const Explore = () => {
           });
         })();
       } else {
+        let collname = collectionName;
         const collectionId = graphCollections.find((col) => col.owner === collectionName);
-        console.log(collectionId);
         (async function getGraphResult() {
           const data = await client
             .query(
               gql`
                 query ($id: ID) {
-                  collection(id: "0xc1700f542a67e78c5629b436897d5b1da634c24a") {
+                  collection(id: collectionName) {
+                    description
                     id
+                    name
+                    nfts {
+                      chain
+                      id
+                      isSold
+                      price
+                      tokenID
+                      tokenIPFSPath
+                    }
                   }
                 }
               `
-            ).toPromise();
+            )
+            .toPromise();
           console.log("my data", data);
-          const result = await getGraphCollection(collectionId.nfts, collectionId);
+          const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
           handleSetState({
-            collection: collectionId,
+            collection: { ...data?.data?.collection, owner: data?.data?.collection?.id },
             NFTCollection: result,
           });
         })();
