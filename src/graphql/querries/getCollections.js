@@ -25,7 +25,7 @@ export const GET_ALL_AURORA_COLLECTIONS = gql`
 
 export const GET_GRAPH_COLLECTION = gql`
   query ($id: ID) {
-    collection(id: $ownerId) {
+    collection(id: $id) {
       description
       id
       name

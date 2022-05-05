@@ -63,29 +63,10 @@ const Explore = () => {
           });
         })();
       } else {
-        let collname = collectionName;
         const collectionId = graphCollections.find((col) => col.owner === collectionName);
         (async function getGraphResult() {
           const data = await client
-            .query(
-              gql`
-                query ($id: ID) {
-                  collection(id: collectionName) {
-                    description
-                    id
-                    name
-                    nfts {
-                      chain
-                      id
-                      isSold
-                      price
-                      tokenID
-                      tokenIPFSPath
-                    }
-                  }
-                }
-              `
-            )
+            .query(GET_GRAPH_COLLECTION, {id: collectionName})
             .toPromise();
           console.log("my data", data);
           const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
