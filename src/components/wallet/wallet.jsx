@@ -163,6 +163,7 @@ function ConnectWallet({ setToggleNav }) {
 
       if (connector.connected) {
         const { accounts } = connector;
+        console.log("account", accounts);
         dispatch(setChainId(connector.chainId));
 
         dispatch(setAccount(accounts[0]));
