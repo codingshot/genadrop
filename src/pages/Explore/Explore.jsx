@@ -35,7 +35,7 @@ const Explore = () => {
     },
   });
   const { collection, NFTCollection, attributes, filter, filterToDelete, FilteredCollection, headerHeight } = state;
-  const { collections, mainnet, graphCollections } = useContext(GenContext);
+  const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -63,12 +63,8 @@ const Explore = () => {
           });
         })();
       } else {
-        const collectionId = graphCollections.find((col) => col.owner === collectionName);
         (async function getGraphResult() {
-          const data = await client
-            .query(GET_GRAPH_COLLECTION, {id: collectionName})
-            .toPromise();
-          console.log("my data", data);
+          const data = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
           const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
           handleSetState({
             collection: { ...data?.data?.collection, owner: data?.data?.collection?.id },
@@ -85,6 +81,7 @@ const Explore = () => {
       attributes: mapAttributeToFilter(NFTCollection),
       FilteredCollection: NFTCollection,
     });
+    console.log(FilteredCollection);
   }, [NFTCollection]);
 
   useEffect(() => {

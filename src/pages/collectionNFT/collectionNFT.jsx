@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getNftCollection } from "../../utils";
+import { getGraphNft, getNftCollection } from "../../utils";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
@@ -24,6 +24,9 @@ import instagramIcon from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
+import { createClient } from "urql";
+import { GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
+
 const CollectionNFT = () => {
   const [state, setState] = useState({
     dropdown: ["1", "3"],
@@ -34,6 +37,12 @@ const CollectionNFT = () => {
     collection: [],
     algoPrice: 0,
     isCopied: false,
+  });
+
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
   });
 
   const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied } = state;
@@ -68,29 +77,50 @@ const CollectionNFT = () => {
     }, [ref]);
   }
   useOutsideAlerter(wrapperRef);
+
+  useEffect(() => {
+    console.log(collections);
+  }, []);
+
   useEffect(() => {
     if (Object.keys(collections).length) {
       const newCollection = collections.find((col) => col.name === collectionName);
-      (async function getResult() {
-        const collectionData = await getNftCollection(newCollection, mainnet);
-        const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
-        let tHistory = await readNftTransaction(result.Id);
-        tHistory.find((t) => {
-          if (t.type === "Minting") t.price = result.price;
-        });
-        handleSetState({
-          asset: result,
-          transactionHistory: tHistory,
-          collection: collectionData,
-          isLoading: false,
-        });
-      })();
+      if (newCollection) {
+        (async function getResult() {
+          const collectionData = await getNftCollection(newCollection, mainnet);
+          const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
+          console.log("The result", result);
+          let tHistory = await readNftTransaction(result.Id);
+          tHistory.find((t) => {
+            if (t.type === "Minting") t.price = result.price;
+          });
+          handleSetState({
+            asset: result,
+            transactionHistory: tHistory,
+            collection: collectionData,
+            isLoading: false,
+          });
+        })();
+      } else {
+        (async function getNFTDetails() {
+          const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+          console.log(collections);
+          const result = await getGraphNft(data.data.nft, collectionName);
+          console.log(result[0]);
+          handleSetState({
+            asset: result[0],
+            isLoading: false,
+            collection: data.data.nft,
+          });
+        })();
+      }
+      // console.log("collection Data", newCollection);
     }
     axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
       handleSetState({ algoPrice: res.data.data.amount });
     });
     document.documentElement.scrollTop = 0;
-  }, [collections, nftId]);
+  }, []);
 
   if (isLoading) {
     return (

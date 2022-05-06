@@ -40,3 +40,18 @@ export const GET_GRAPH_COLLECTION = gql`
     }
   }
 `;
+
+export const GET_GRAPH_NFT = gql`
+  query ($id: ID) {
+    nft(id: $id) {
+      chain
+      category
+      createdAtTimestamp
+      id
+      isSold
+      price
+      tokenID
+      tokenIPFSPath
+    }
+  }
+`;

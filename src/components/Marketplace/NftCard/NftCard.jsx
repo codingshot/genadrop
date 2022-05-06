@@ -19,6 +19,7 @@ const NftCard = ({ nft, list, extend }) => {
       handleSetState({ algoPrice: res.data.data.amount * price });
     });
   }, []);
+
   return (
     <Link to={nft.collection_name ? `${match.url}/${Id}` : `/marketplace/single-mint/${Id}`}>
       <div className={classes.card}>
