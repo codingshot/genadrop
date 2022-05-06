@@ -260,17 +260,24 @@ export async function mintSingleToAlgo(algoMintProps) {
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
-    const { assetID, txId } = await signTx(connector, [txn], dispatch);
-    await write.writeNft(account, undefined, assetID, price, false, null, null, mainnet, txId);
-
-    // notification: asset minted
-    dispatch(
-      setNotification({
-        message: "minted successfully",
-        type: "success",
-      })
-    );
-    return `https://testnet.algoexplorer.io/asset/${assetID}`;
+    try {
+      const { assetID, txId } = await signTx(connector, [txn], dispatch);
+      await write.writeNft(account, undefined, assetID[0], price, false, null, null, mainnet, txId[0]);
+      // notification: asset minted
+      dispatch(
+        setNotification({
+          message: "minted successfully",
+          type: "success",
+        })
+      );
+      return `https://testnet.algoexplorer.io/asset/${assetID}`;
+    } catch (error) {
+      console.log(error);
+      console.log(error.message);
+      return {
+        message: `${error.message}`,
+      };
+    }
   }
   return {
     message: "connect to alogrand network on your wallet or select a different network",
@@ -498,30 +505,35 @@ export async function mintToAlgo(algoProps) {
 
     dispatch(setLoader("finalizing"));
 
-    const { assetID, txId } = await signTx(connector, txns, dispatch);
-    for (let nfts = 0; nfts < ipfsJsonData.length; nfts += 1) {
-      collection_id.push(assetID + nfts);
+    try {
+      const { assetID, txId } = await signTx(connector, txns, dispatch);
+      const collectionHash = await pinata.pinJSONToIPFS(assetID, {
+        pinataMetadata: { name: "collection" },
+      });
+      const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
+      await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully",
+          type: "success",
+        })
+      );
+      return `https://testnet.algoexplorer.io/tx/${txId[0]}`;
+    } catch (error) {
+      console.log(error);
+      return {
+        message: `${error.message}`,
+      };
     }
-    const collectionHash = await pinata.pinJSONToIPFS(collection_id, {
-      pinataMetadata: { name: "collection" },
-    });
-    const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-    await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
-    dispatch(setLoader(""));
-    dispatch(
-      setNotification({
-        message: "NFTs minted successfully",
-        type: "success",
-      })
-    );
-    return `https://testnet.algoexplorer.io/tx/${txId[0]}`;
   }
-  dispatch(
-    setNotification({
-      message: "connect wallet to algorand network or select a different chain",
-      type: "warning",
-    })
-  );
+  return { message: "connect wallet to algorand network or select a different chain" };
+  // dispatch(
+  //   setNotification({
+  //     message: "connect wallet to algorand network or select a different chain",
+  //     type: "warning",
+  //   })
+  // );
 }
 
 export async function mintToCelo(celoProps) {
