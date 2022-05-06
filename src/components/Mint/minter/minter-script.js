@@ -91,7 +91,12 @@ export const handleSingleMint = async (args) => {
     }
 
     if (typeof url === "object") {
-      dispatch(setNotification(url.message));
+      dispatch(
+        setNotification({
+          message: url.message,
+          type: "warning",
+        })
+      );
     } else {
       dispatch(
         setNotification({
