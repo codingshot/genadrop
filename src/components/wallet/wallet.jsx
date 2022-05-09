@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useRef, useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { ethers } from "ethers";
 import Web3Modal from "web3modal";
@@ -61,7 +61,8 @@ function ConnectWallet({ setToggleNav }) {
   };
 
   const web3Modal = new Web3Modal({
-    providerOptions, // required
+    providerOptions, // required,
+    cacheProvider: true
   });
 
   async function disconnect() {
@@ -70,17 +71,30 @@ function ConnectWallet({ setToggleNav }) {
       dispatch(setConnector());
       dispatch(setChainId(""));
       setToggleDropdown(false);
+      web3Modal.clearCachedProvider();
       if (pathname.includes("/me")) {
         history.push("/marketplace");
       }
     }
   }
 
+  useEffect(() => {
+
+    console.log(web3Modal);
+    if (web3Modal.cachedProvider) {
+      toggleWallet();
+    }
+  }, [])
+
+
   const toggleWallet = async () => {
     let connector;
     const networkArray = ["137", "1313161554", "42220"];
     try {
       connector = await web3Modal.connect();
+      console.log("web3 1: ", web3Modal);
+      console.log("connnector", connector);
+
     } catch (error) {
       dispatch(
         setNotification({
