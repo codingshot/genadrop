@@ -50,8 +50,23 @@ export const GET_GRAPH_NFT = gql`
       id
       isSold
       price
+      collection {
+        name
+        id
+      }
       tokenID
+
       tokenIPFSPath
+      transactions {
+        id
+        txDate
+        txId
+        type
+        price
+        buyer {
+          id
+        }
+      }
     }
   }
 `;

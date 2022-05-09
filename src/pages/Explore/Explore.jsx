@@ -25,6 +25,7 @@ const Explore = () => {
     togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
+    loadedGraphData: false,
     collection: null,
     attributes: null,
     filterToDelete: null,
@@ -34,7 +35,16 @@ const Explore = () => {
       price: "high",
     },
   });
-  const { collection, NFTCollection, attributes, filter, filterToDelete, FilteredCollection, headerHeight } = state;
+  const {
+    collection,
+    NFTCollection,
+    attributes,
+    filter,
+    filterToDelete,
+    FilteredCollection,
+    headerHeight,
+    loadedGraphData,
+  } = state;
   const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -69,6 +79,7 @@ const Explore = () => {
           handleSetState({
             collection: { ...data?.data?.collection, owner: data?.data?.collection?.id },
             NFTCollection: result,
+            loadedGraphData: true,
           });
         })();
       }
@@ -132,6 +143,7 @@ const Explore = () => {
           numberOfNfts: NFTCollection && NFTCollection.length,
           imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
         }}
+        setGraphData={loadedGraphData}
       />
 
       <div className={classes.displayContainer}>

@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getGraphNft, getNftCollection } from "../../utils";
+import { getAuroraCollections, getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
@@ -25,7 +25,7 @@ import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
 import { createClient } from "urql";
-import { GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
+import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
@@ -79,8 +79,10 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    console.log(collections);
-  }, []);
+    console.log("The nft asset", asset);
+    console.log("Transaction History", transactionHistory);
+    console.log("Collection Data", collection);
+  }, [asset, collection, transactionHistory]);
 
   useEffect(() => {
     if (Object.keys(collections).length) {
@@ -103,18 +105,30 @@ const CollectionNFT = () => {
         })();
       } else {
         (async function getNFTDetails() {
+          //get single nft data
           const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-          console.log(collections);
           const result = await getGraphNft(data.data.nft, collectionName);
-          console.log(result[0]);
+          const trHistory = await getTransactions(data?.data?.nft?.transactions);
+
+          // get collection data
+          const collectionData = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
+          const collectionResponseData = await getGraphCollection(
+            collectionData.data.collection.nfts,
+            collectionData.data.collection
+          );
+
+          trHistory.find((t) => {
+            if (t.type === "Minting") t.price = result[0].price;
+          });
+          console.log("The Transaction history", trHistory);
           handleSetState({
             asset: result[0],
             isLoading: false,
-            collection: data.data.nft,
+            collection: collectionResponseData,
+            transactionHistory: trHistory,
           });
         })();
       }
-      // console.log("collection Data", newCollection);
     }
     axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
       handleSetState({ algoPrice: res.data.data.amount });
@@ -344,7 +358,7 @@ const CollectionNFT = () => {
           <h3>More from this collection</h3>
         </div>
         <div className={classes.collectionItems}>
-          <NFT data={collection.filter((e) => e.name !== asset.name)} />
+          <NFT data={collection?.filter((e) => e.name !== asset.name)} />
         </div>
         <div className={classes.allCollecitons}>
           <button type="button" onClick={() => history.goBack()} className={classes.btnCollections}>

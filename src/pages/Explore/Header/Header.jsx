@@ -7,7 +7,7 @@ import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
 import Copy from "../../../components/copy/copy";
 
-const Header = ({ collection, getHeight }) => {
+const Header = ({ collection, getHeight, setGraphData }) => {
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
   const [explorerLink, setExplorerLink] = useState("");
@@ -36,6 +36,7 @@ const Header = ({ collection, getHeight }) => {
   useEffect(() => {
     getUsdValue();
     viewOnExplorer();
+    console.log(setGraphData);
   }, [price]);
 
   useEffect(() => {
@@ -51,8 +52,12 @@ const Header = ({ collection, getHeight }) => {
   }, []);
 
   const viewOnExplorer = () => {
-    if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
-    else if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    if (setGraphData) {
+      console.log(setGraphData);
+    } else {
+      if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
+      else if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    }
   };
 
   return (

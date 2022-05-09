@@ -27,7 +27,13 @@ class Search extends React.Component {
     return (
       <div>
         <UserInput update={(e) => this.handleChange(e)} />
-        <Table data={records} />
+        {records.length >= 1 ? (
+          <Table data={records} />
+        ) : (
+          <div style={{ height: 100, display: "flex", justifyContent: "center", alignItems: "center" }}>
+            No Transaction
+          </div>
+        )}
       </div>
     );
   }
