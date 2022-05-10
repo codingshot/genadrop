@@ -3,21 +3,28 @@ import axios from "axios";
 import { Link, useRouteMatch } from "react-router-dom";
 import classes from "./NftCard.module.css";
 
-const NftCard = ({ nft, list, extend }) => {
+const NftCard = ({ nft, list, extend, loadedChain }) => {
   const { Id, collection_name, name, price, image_url } = nft;
   const match = useRouteMatch();
 
-  const [state, setState] = useState({ algoPrice: 0 });
-  const { algoPrice } = state;
+  const [state, setState] = useState({ algoPrice: 0, chainName: "" });
+  const { algoPrice, chainName } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount * price });
-    });
+    if (loadedChain === "1313161555") {
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({ algoPrice: value * price, chainName: "AOA" });
+      });
+    } else {
+      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount * price, chainName: "Algo" });
+      });
+    }
   }, []);
 
   return (
@@ -34,7 +41,7 @@ const NftCard = ({ nft, list, extend }) => {
             <div className={classes.listPrice}>
               <div className={classes.list}>LISTPRICE</div>
               <div className={classes.price}>
-                {price} <span className={classes.chain}>Algo</span>
+                {price} <span className={classes.chain}>{chainName}</span>
                 <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
               </div>
             </div>

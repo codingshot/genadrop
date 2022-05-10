@@ -3,12 +3,12 @@ import Skeleton from "react-loading-skeleton";
 import NftCard from "../../../components/Marketplace/NftCard/NftCard";
 import classes from "./Menu.module.css";
 
-const Menu = ({ NFTCollection }) => (
+const Menu = ({ NFTCollection, loadedChain }) => (
   <div className={classes.menu}>
     {NFTCollection
       ? NFTCollection.map((nft, idx) => (
           <div className={classes.nftCardWrapper}>
-            <NftCard key={idx} nft={nft} index={idx} />
+            <NftCard key={idx} nft={nft} index={idx} loadedChain={loadedChain} />
           </div>
         ))
       : [...new Array(8)]

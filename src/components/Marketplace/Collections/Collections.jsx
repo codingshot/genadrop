@@ -32,7 +32,6 @@ const Collections = () => {
   useEffect(() => {
     (async function getSubgraphNfts() {
       const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      console.log("first data", data);
       const result = await getAuroraCollections(data.data.collections);
       dispatch(setGraphCollection(result));
       if (result?.length) {
@@ -49,7 +48,6 @@ const Collections = () => {
         // let collections = await fetchCollections();
         if (collections?.length) {
           const result = await getNftCollections(collections, mainnet);
-          console.log("collections: ", result);
           handleSetState({ algoCollection: result });
         } else {
           handleSetState({ algoCollection: null });

@@ -11,8 +11,8 @@ import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
-import { createClient, gql } from "urql";
-import { GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
 
 const Explore = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -25,7 +25,7 @@ const Explore = () => {
     togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
-    loadedGraphData: false,
+    loadedChain: null,
     collection: null,
     attributes: null,
     filterToDelete: null,
@@ -43,7 +43,7 @@ const Explore = () => {
     filterToDelete,
     FilteredCollection,
     headerHeight,
-    loadedGraphData,
+    loadedChain,
   } = state;
   const { collections, mainnet } = useContext(GenContext);
 
@@ -75,11 +75,16 @@ const Explore = () => {
       } else {
         (async function getGraphResult() {
           const data = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
+          console.log(data.data);
           const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
           handleSetState({
-            collection: { ...data?.data?.collection, owner: data?.data?.collection?.id },
+            collection: {
+              ...data?.data?.collection,
+              owner: data?.data?.collection?.id,
+              price: result[0].collectionPrice,
+            },
             NFTCollection: result,
-            loadedGraphData: true,
+            loadedChain: result[0].chain,
           });
         })();
       }
@@ -92,7 +97,6 @@ const Explore = () => {
       attributes: mapAttributeToFilter(NFTCollection),
       FilteredCollection: NFTCollection,
     });
-    console.log(FilteredCollection);
   }, [NFTCollection]);
 
   useEffect(() => {
@@ -143,7 +147,7 @@ const Explore = () => {
           numberOfNfts: NFTCollection && NFTCollection.length,
           imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
         }}
-        setGraphData={loadedGraphData}
+        loadedChain={loadedChain}
       />
 
       <div className={classes.displayContainer}>
@@ -170,7 +174,7 @@ const Explore = () => {
               </div>
             ) : null}
           </div>
-          <Menu NFTCollection={FilteredCollection} />
+          <Menu NFTCollection={FilteredCollection} loadedChain={loadedChain} />
         </main>
       </div>
     </div>

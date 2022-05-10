@@ -24,6 +24,7 @@ import instagramIcon from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
+import auroraIcon from "../../assets/icon-aurora.svg";
 import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 
@@ -37,6 +38,7 @@ const CollectionNFT = () => {
     collection: [],
     algoPrice: 0,
     isCopied: false,
+    chainIcon: algoLogo,
   });
 
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -45,7 +47,8 @@ const CollectionNFT = () => {
     url: APIURL,
   });
 
-  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied } = state;
+  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied, chainIcon } =
+    state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -79,12 +82,6 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    console.log("The nft asset", asset);
-    console.log("Transaction History", transactionHistory);
-    console.log("Collection Data", collection);
-  }, [asset, collection, transactionHistory]);
-
-  useEffect(() => {
     if (Object.keys(collections).length) {
       const newCollection = collections.find((col) => col.name === collectionName);
       if (newCollection) {
@@ -116,11 +113,9 @@ const CollectionNFT = () => {
             collectionData.data.collection.nfts,
             collectionData.data.collection
           );
-
           trHistory.find((t) => {
             if (t.type === "Minting") t.price = result[0].price;
           });
-          console.log("The Transaction history", trHistory);
           handleSetState({
             asset: result[0],
             isLoading: false,
@@ -130,11 +125,27 @@ const CollectionNFT = () => {
         })();
       }
     }
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount });
-    });
+
     document.documentElement.scrollTop = 0;
   }, []);
+
+  useEffect(() => {
+    if (asset?.chain) {
+      if (asset?.chain === "1313161555") {
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+          let value = Object.values(res.data)[0].usd;
+          handleSetState({
+            chainIcon: auroraIcon,
+            algoPrice: value,
+          });
+        });
+      }
+    } else {
+      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount });
+      });
+    }
+  }, [asset]);
 
   if (isLoading) {
     return (
@@ -275,7 +286,7 @@ const CollectionNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={algoLogo} alt="" />
+                <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>
                   ($
