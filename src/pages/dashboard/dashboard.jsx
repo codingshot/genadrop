@@ -61,13 +61,6 @@ const Dashboard = () => {
   const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
-    (async function getSubgraphNfts() {
-      const data = await client.query(GET_ALL_AURORA_COLLECTIONS);
-      console.log("aurora collection", data);
-    })();
-  }, []);
-
-  useEffect(() => {
     if (!account) history.push("/");
 
     console.log(" collection length:", filteredCollection?.length);
