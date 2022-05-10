@@ -134,6 +134,11 @@ export const setChainId = (chainId) => ({
   payload: chainId,
 });
 
+export const setProposedChain = (chain) => ({
+  type: genActionTypes.SET_PROPOSED_CHAIN,
+  payload: chain,
+});
+
 export const setAccount = (account) => ({
   type: genActionTypes.SET_ACCOUNT,
   payload: account,
