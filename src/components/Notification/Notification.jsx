@@ -28,7 +28,7 @@ const Notification = () => {
     handleSetState({ toggleFeedback: true });
     setTimeout(() => {
       handleSetState({ toggleFeedback: false });
-    }, 5000);
+    }, 8000);
   }, [notification]);
 
   useEffect(() => {
