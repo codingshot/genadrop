@@ -10,6 +10,11 @@ export const addLayer = (layer) => ({
   payload: layer,
 });
 
+export const setGraphCollection = (collections) => ({
+  type: genActionTypes.GRAPH_COLLECTIONS,
+  payload: collections,
+});
+
 export const removeLayer = (layer) => ({
   type: genActionTypes.REMOVE_LAYER,
   payload: layer,
