@@ -22,13 +22,11 @@ const TableRow = (data) => {
   const icons = [saleIcon, transferIcon, mintIcon];
   const getDate = () => {
     let date = new Date(data.date.seconds * 1000);
-    if (date.getDate() === NaN) {
-      date = new Date(data.date * 1000);
-    }
-
+    let graphDate = new Date(data.date * 1000);
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    let formatedGraphDate = `${months[graphDate.getMonth()]} ${graphDate.getDate()}, ${graphDate.getFullYear()}`;
     let formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-    return formattedDate;
+    return date.getDate() ? formattedDate : formatedGraphDate;
   };
   const icon = () => {
     let icon = "";
