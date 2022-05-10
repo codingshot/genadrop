@@ -13,7 +13,7 @@ const Transaction = (data, date) => {
     explorer: "https://testnet.algoexplorer.io/",
     isCopied: false,
     showDrop: false,
-    clicked: ""
+    clicked: "",
   });
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -41,8 +41,6 @@ const Transaction = (data, date) => {
     }, [ref]);
   }
 
-
-
   useOutsideAlerter(wrapperRef);
 
   const { explorer, isCopied, clicked } = state;
@@ -64,8 +62,13 @@ const Transaction = (data, date) => {
         <tbody>
           <tr>
             <td>Transaction ID</td>
-            <td className={classes.txId} onClick={() => { handleSetState({ clicked: "txId" }) }} ref={wrapperRef}>
-
+            <td
+              className={classes.txId}
+              onClick={() => {
+                handleSetState({ clicked: "txId" });
+              }}
+              ref={wrapperRef}
+            >
               {breakAddress(data.data.txId)}
               {data.data.txId && clicked == "txId" ? (
                 isCopied ? (
@@ -94,8 +97,13 @@ const Transaction = (data, date) => {
 
           <tr>
             <td>From</td>
-            <td className={classes.txId} onClick={() => { handleSetState({ clicked: "from" }) }} ref={wrapperRef}>
-
+            <td
+              className={classes.txId}
+              onClick={() => {
+                handleSetState({ clicked: "from" });
+              }}
+              ref={wrapperRef}
+            >
               {breakAddress(data.data.from)}
               {data.data.from && clicked === "from" ? (
                 isCopied ? (
@@ -119,8 +127,13 @@ const Transaction = (data, date) => {
           </tr>
           <tr>
             <td>To</td>
-            <td className={classes.txId} onClick={() => { handleSetState({ clicked: "to" }) }} ref={wrapperRef}>
-
+            <td
+              className={classes.txId}
+              onClick={() => {
+                handleSetState({ clicked: "to" });
+              }}
+              ref={wrapperRef}
+            >
               {breakAddress(data.data.to)}
               {data.data.to && clicked === "to" ? (
                 isCopied ? (
