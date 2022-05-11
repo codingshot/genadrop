@@ -137,13 +137,22 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   return true;
 }
 
-async function readAllNft() {
+async function readAllNft(account) {
+  console.log("ACCOUNT: ", account);
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  return res;
+
+  var filtered = [];
+  res.forEach((e) => {
+    if (e.Buyer == account) {
+      filtered.push(e);
+    }
+  });
+  console.log(res);
+  return filtered;
 }
 
 // async function readData() {

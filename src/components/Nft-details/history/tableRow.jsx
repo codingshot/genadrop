@@ -21,12 +21,12 @@ const TableRow = (data) => {
 
   const icons = [saleIcon, transferIcon, mintIcon];
   const getDate = () => {
-    const date = new Date(data.date.seconds * 1000);
-
+    let date = new Date(data.date.seconds * 1000);
+    let graphDate = new Date(data.date * 1000);
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    const formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-
-    return formattedDate;
+    let formatedGraphDate = `${months[graphDate.getMonth()]} ${graphDate.getDate()}, ${graphDate.getFullYear()}`;
+    let formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    return date.getDate() ? formattedDate : formatedGraphDate;
   };
   const icon = () => {
     let icon = "";
