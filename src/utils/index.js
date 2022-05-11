@@ -206,6 +206,27 @@ export const getSingleNfts = async (mainnet, nfts) => {
   return nftArr;
 };
 
+export const getSingleGraphNfts = async (nfts) => {
+  const nftArr = [];
+  for (let i = 0; i < nfts.length; i++) {
+    try {
+      const nftObj = {};
+      const { data } = await axios.get(nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      nftObj.id = nfts[i].id;
+      nftObj.price = nfts[i].price * 0.000000000000000001;
+      nftObj.owner = nfts[i].owner.id;
+      nftObj.sold = nfts[i].isSold;
+      nftObj.description = data.description;
+      nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      nftObj.name = data.name;
+      nftArr.push(nftObj);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  return nftArr;
+};
+
 export const getSingleNftDetails = async (mainnet, nft) => {
   const nftDetails = {};
   try {
