@@ -6,6 +6,8 @@ import mintIcon from "../../../assets/mint-icon.png";
 import Transaction from "../../transactionDetails/TransactionDetails";
 
 const TableRow = (data) => {
+
+
   const [state, setState] = useState({
     showTransaction: false,
   });
@@ -48,7 +50,6 @@ const TableRow = (data) => {
 
   const handleClick = () => {
     handleSetState({ showTransaction: true });
-    console.log("clicking...");
   };
 
   const wrapperRef = useRef(null);
@@ -64,6 +65,7 @@ const TableRow = (data) => {
         }
       }
 
+
       // Bind the event listener
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
@@ -78,7 +80,7 @@ const TableRow = (data) => {
     <>
       {showTransaction ? (
         <div ref={wrapperRef}>
-          <Transaction data={data} date={getDate(data.date)} />
+          <Transaction data={data} date={getDate(data.date)} chain={data.chain} />
         </div>
       ) : (
         ""

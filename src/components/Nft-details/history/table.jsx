@@ -25,6 +25,7 @@ const Table = (props) => (
             to={d.buyer}
             date={d.txDate}
             txId={d.txId}
+            chain={props.chain}
           />
         ))}
       </tbody>
