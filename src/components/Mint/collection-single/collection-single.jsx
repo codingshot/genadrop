@@ -1,9 +1,9 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useParams, useHistory, useRouteMatch, Link } from "react-router-dom";
 import classes from "./collection-single.module.css";
 import collectionIcon from "../../../assets/icon-collection-light.svg";
 import _1of1Icon from "../../../assets/icon-1of1-light.svg";
 import leftArrow from "../../../assets/icon-arrow-left.svg";
-import { useEffect, useRef, useState } from "react";
-import { useParams, useHistory, useRouteMatch, Link } from "react-router-dom";
 import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
@@ -79,6 +79,7 @@ const CollectionToSingleMinter = () => {
       e.preventDefault();
       document.querySelector(".drop-area").style.border = "2px solid green";
       handleFileChange({ target: e.dataTransfer });
+      console.log("update");
     };
   }, []);
 
@@ -98,6 +99,7 @@ const CollectionToSingleMinter = () => {
       {file ? (
         <Minter
           data={{ file, fileName, metadata, zip }}
+          handleSetFileState={handleSetState}
           changeFile={() =>
             handleSetState({
               fileName: "",
@@ -123,17 +125,21 @@ const CollectionToSingleMinter = () => {
           </header>
 
           <div className={classes.mintSwitch}>
-            <button className={`${params.mintId === "collection" && classes.active}`} onClick={handleCollectionClick}>
+            <button
+              type="button"
+              className={`${params.mintId === "collection" && classes.active}`}
+              onClick={handleCollectionClick}
+            >
               collection
             </button>
-            <button className={`${params.mintId === "1of1" && classes.active}`} onClick={handle1of1Click}>
+            <button type="button" className={`${params.mintId === "1of1" && classes.active}`} onClick={handle1of1Click}>
               1 of 1
             </button>
           </div>
 
           {mintSwitch === "collection" ? (
             <div className={`${classes.card} ${classes[params.mintId]} drop-area`}>
-              {!loading1 ? <div className={classes.imagePlaceholder}></div> : null}
+              {!loading1 ? <div className={classes.imagePlaceholder} /> : null}
               <img
                 style={!loading1 ? { display: "none" } : {}}
                 src={collectionIcon}
@@ -146,13 +152,13 @@ const CollectionToSingleMinter = () => {
                 We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
               </p>
               <div>or</div>
-              <button onClick={() => fileRef.current.click()} className={classes.btn}>
+              <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
                 Browse files
               </button>
             </div>
           ) : mintSwitch === "1of1" ? (
             <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
-              {!loading2 ? <div className={classes.imagePlaceholder}></div> : null}
+              {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
               <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
               <h3 className={classes.title}> Mint 1 of 1 </h3>
               <p className={classes.action}>Drag and Drop your image file here</p>
@@ -160,12 +166,12 @@ const CollectionToSingleMinter = () => {
                 We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
               </p>
               <div>or</div>
-              <button onClick={() => fileRef.current.click()} className={classes.btn}>
+              <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
                 Browse files
               </button>
             </div>
           ) : (
-            <div className={classes.cardPlaceholder}></div>
+            <div className={classes.cardPlaceholder} />
           )}
 
           <input

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import { setClipboard, setLoader, setNotification } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
@@ -9,10 +10,12 @@ import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
 import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
 import infoIcon from "../../../assets/icon-info.svg";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
+import dropImg from "../../../assets/icon-1of1-light.svg";
+// Collection Profile Image Select
+import CollectionPreviewSelect from "../CollectionPreviewSelect/CollectionPreviewSelect";
+import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 
-const Minter = ({ data, changeFile }) => {
+const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
   const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
   const [state, setState] = useState({
@@ -23,8 +26,22 @@ const Minter = ({ data, changeFile }) => {
     chain: null,
     preview: false,
     dollarPrice: 0,
+    collectionProfile: false,
+    toggleGuide: false,
+    previewSelectMode: false,
   });
-  const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
+  const {
+    attributes,
+    fileName,
+    description,
+    price,
+    chain,
+    preview,
+    dollarPrice,
+    collectionProfile,
+    toggleGuide,
+    previewSelectMode,
+  } = state;
   const history = useHistory();
 
   const chains = [
@@ -239,11 +256,25 @@ const Minter = ({ data, changeFile }) => {
       document.documentElement.scrollTop = 200;
     }, 500);
   }, []);
-
   return (
     <div className={classes.container}>
       {preview ? (
-        <CollectionPreview file={file} metadata={metadata} goBack={handleSetState} />
+        <CollectionPreview
+          previewSelectMode={previewSelectMode}
+          file={file}
+          metadata={metadata}
+          goBack={handleSetState}
+        />
+      ) : previewSelectMode ? (
+        <CollectionPreviewSelect
+          previewSelectMode={previewSelectMode}
+          file={file}
+          metadata={metadata}
+          handleMintSetState={handleSetState}
+          collectionProfile={collectionProfile}
+          handleSetFileState={handleSetFileState}
+          zip={zip}
+        />
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
@@ -255,7 +286,7 @@ const Minter = ({ data, changeFile }) => {
                     <div
                       style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
                       className={classes.imageContainer}
-                    ></div>
+                    />
                   ))
               ) : (
                 <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
@@ -289,6 +320,13 @@ const Minter = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.details}>
+            <div className={classes.category}>Collection Logo</div>
+            <div className={classes.dropWrapper}>
+              <p>This image will also be used as collection logo</p>
+              <div onClick={() => handleSetState({ toggleGuide: true })}>
+                <img src={dropImg} alt="" />
+              </div>
+            </div>
             <div className={classes.category}>Asset Details</div>
             <div className={classes.inputWrapper}>
               <label>
@@ -398,6 +436,15 @@ const Minter = ({ data, changeFile }) => {
           </section>
         </div>
       )}
+      <ProfileImgOverlay
+        metadata={metadata}
+        zip={zip}
+        handleSetState={handleSetState}
+        handleSetFileState={handleSetFileState}
+        file={file}
+        toggleGuide={toggleGuide}
+        collectionProfile={collectionProfile}
+      />
     </div>
   );
 };

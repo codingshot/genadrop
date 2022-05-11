@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import classes from "./collectionPreview.module.css";
 import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
-import { useEffect, useState } from "react";
 import AttributeOverlay from "../attribute-overlay/attributeOverlay";
 
 const CollectionPreview = ({ file, metadata, goBack }) => {
@@ -16,7 +16,7 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
   const { currentPage, paginate, currentPageValue, fileToMetadataMap, showAttribute, attribute } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handlePrev = () => {
@@ -37,8 +37,8 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
     document.documentElement.scrollTop = 0;
   };
 
-  const handleShowAttribute = (attribute) => {
-    handleSetState({ showAttribute: true, attribute });
+  const handleShowAttribute = (attributes) => {
+    handleSetState({ showAttribute: true, attribute: attributes });
   };
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
 
   useEffect(() => {
     const data = [...metadata];
-    let obj = {};
+    const obj = {};
     file.forEach((f) => {
       data.forEach((m, idx) => {
         if (f.name === m.image) {
@@ -106,9 +106,14 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
           ? paginate[currentPage].map((f, idx) => (
               <div key={idx} className={classes.assetWrapper}>
                 <img src={URL.createObjectURL(f)} alt="" />
+
                 <div className={classes.assetOverlay}>
                   {fileToMetadataMap[f.name].name}
-                  <button onClick={() => handleShowAttribute(fileToMetadataMap[f.name])} className={classes.attrBtn}>
+                  <button
+                    type="button"
+                    onClick={() => handleShowAttribute(fileToMetadataMap[f.name])}
+                    className={classes.attrBtn}
+                  >
                     View Attributes
                   </button>
                 </div>
