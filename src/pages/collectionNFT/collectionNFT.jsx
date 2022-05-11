@@ -306,7 +306,7 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
+                  <button type="button" className={classes.buy} disabled={asset.sold || asset?.chain} onClick={buyNft}>
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
