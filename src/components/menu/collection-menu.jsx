@@ -39,19 +39,6 @@ const CollectionMenu = ({ layer }) => {
   };
 
   const handleTemplates = async () => {
-    // for (let img of templateImages){
-    //   let newCanvas = document.createElement("canvas");
-    //   const res = await handleAddTemplates({
-    //     layerId: id,
-    //     traits,
-    //     layerTitle,
-    //     canvas: newCanvas,
-    //     img: img,
-    //     imgName: img,
-    //   });
-    //   if (res) dispatch(addImage(res));
-    // }
-
     let newCanvas = document.createElement("canvas");
     let indicator = templateImages.pointr;
     let templateImage = templateImages.imgs[indicator];
