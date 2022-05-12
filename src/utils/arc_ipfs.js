@@ -460,15 +460,20 @@ export async function mintSingleToAurora(singleMintProps) {
 }
 
 export async function createNFT(createProps) {
-  const { file, dispatch, setNotification, setLoader } = createProps;
+  const { file, dispatch, account, setNotification, setLoader } = createProps;
   const assets = [];
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
-
   const files = data.files["metadata.json"];
+  const userInfo = await algodClient.accountInformation(account).do();
+  const assetBalance = userInfo.account.assets.length;
+  const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
-
+  const estimateTxFee = 0.001 * metadata.length;
+  if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
+    return false;
+  }
   dispatch(
     setNotification({
       message: "uploading assets, do not refresh your page.",
@@ -514,6 +519,12 @@ export async function mintToAlgo(algoProps) {
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps });
+    if (!ipfsJsonData) {
+      return {
+        message: "insufficient balance/Min balance not enough to hold assets",
+        type: "warning",
+      };
+    }
     const txns = [];
     dispatch(
       setNotification({
@@ -526,9 +537,6 @@ export async function mintToAlgo(algoProps) {
       const txn = await createAsset(ipfsJsonData[i], account);
       txns.push(txn);
     }
-
-    console.log("after ass", txns);
-
     dispatch(setLoader("finalizing"));
 
     try {
@@ -938,12 +946,5 @@ export async function purchasePolygonNfts(connector, mainnet, itemId, price) {
   }
   return true;
 }
-console.log("odogwu111")
-initAlgoClients(false);
-algodTxnClient
-  .status()
-  .do()
-  .then((data) => {
-    console.log(data);
-  });
+
 export { pinata, write };
