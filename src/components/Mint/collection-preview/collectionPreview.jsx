@@ -2,8 +2,17 @@ import React, { useEffect, useState } from "react";
 import classes from "./collectionPreview.module.css";
 import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
 import AttributeOverlay from "../attribute-overlay/attributeOverlay";
+import { updateZip } from "../collection-single/collection-single-script";
 
-const CollectionPreview = ({ file, metadata, goBack }) => {
+const CollectionPreview = ({
+  file,
+  metadata,
+  handleMintSetState,
+  previewSelectMode,
+  collectionProfile,
+  handleSetFileState,
+  zip,
+}) => {
   const [state, setState] = useState({
     currentPage: 1,
     paginate: {},
@@ -69,13 +78,20 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
     handleSetState({ fileToMetadataMap: obj });
   }, []);
 
+  const saveHandler = async () => {
+    await updateZip(zip, collectionProfile.name, handleSetFileState);
+    handleMintSetState({ preview: false, previewSelectMode: false, toggleGuide: false, collectionProfile: "" });
+  };
   return (
     <div className={classes.container}>
       {showAttribute && <AttributeOverlay attribute={attribute} handleSetState={handleSetState} />}
       <div className={classes.topNav}>
-        <div onClick={() => goBack({ preview: false })} className={classes.backBtn}>
+        <div
+          onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}
+          className={classes.backBtn}
+        >
           <img src={arrowIconLeft} alt="" />
-          Back
+          {previewSelectMode ? "Select an image" : "Back"}
         </div>
 
         <div className={classes.paginate}>
@@ -104,23 +120,34 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
       <div className={classes.display}>
         {Object.keys(paginate).length
           ? paginate[currentPage].map((f, idx) => (
-              <div key={idx} className={classes.assetWrapper}>
-                <img src={URL.createObjectURL(f)} alt="" />
-
-                <div className={classes.assetOverlay}>
-                  {fileToMetadataMap[f.name].name}
-                  <button
-                    type="button"
-                    onClick={() => handleShowAttribute(fileToMetadataMap[f.name])}
-                    className={classes.attrBtn}
-                  >
-                    View Attributes
-                  </button>
-                </div>
+              <div
+                key={idx}
+                style={{ display: previewSelectMode ? "flex" : "block" }}
+                className={`${classes.assetWrapper} ${collectionProfile.name === f.name && classes.assetWrapperActive}`}
+              >
+                <img onClick={() => handleMintSetState({ collectionProfile: f })} src={URL.createObjectURL(f)} alt="" />
+                {!previewSelectMode && (
+                  <div className={classes.assetOverlay}>
+                    {fileToMetadataMap[f.name].name}
+                    <button
+                      type="button"
+                      onClick={() => handleShowAttribute(fileToMetadataMap[f.name])}
+                      className={classes.attrBtn}
+                    >
+                      View Attributes
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           : null}
       </div>
+      {previewSelectMode && (
+        <div className={classes.buttonWrapper}>
+          <p onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}>Cancel</p>
+          <div onClick={saveHandler}>Save</div>
+        </div>
+      )}
     </div>
   );
 };

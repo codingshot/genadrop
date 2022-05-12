@@ -263,13 +263,6 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           previewSelectMode={previewSelectMode}
           file={file}
           metadata={metadata}
-          goBack={handleSetState}
-        />
-      ) : previewSelectMode ? (
-        <CollectionPreviewSelect
-          previewSelectMode={previewSelectMode}
-          file={file}
-          metadata={metadata}
           handleMintSetState={handleSetState}
           collectionProfile={collectionProfile}
           handleSetFileState={handleSetFileState}
@@ -450,3 +443,15 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
 };
 
 export default Minter;
+
+// : previewSelectMode ? (
+//   <CollectionPreviewSelect
+//     previewSelectMode={previewSelectMode}
+//     file={file}
+//     metadata={metadata}
+//     handleMintSetState={handleSetState}
+//     collectionProfile={collectionProfile}
+//     handleSetFileState={handleSetFileState}
+//     zip={zip}
+//   />
+// ) :

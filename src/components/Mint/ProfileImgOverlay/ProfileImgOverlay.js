@@ -26,7 +26,7 @@ const ProfileImgOverlay = ({ toggleGuide, file, handleSetState, collectionProfil
           ))}
         </div>
         <div
-          onClick={() => handleSetState({ previewSelectMode: true, toggleGuide: false })}
+          onClick={() => handleSetState({ previewSelectMode: true, toggleGuide: false, preview: true })}
           className={classes.viewALlBtn}
         >
           View all
