@@ -17,8 +17,9 @@ const SingleNft = () => {
 
   const [state, setState] = useState({
     allSingleNfts: [],
+    allSingleGraphNfts: [],
   });
-  const { allSingleNfts } = state;
+  const { allSingleNfts, allSingleGraphNfts } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -42,12 +43,12 @@ const SingleNft = () => {
       (async function getGraphResults() {
         const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
         const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
-        handleSetState({ allSingleNfts });
+        handleSetState({ allSingleGraphNfts: allSingleNfts });
       })();
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [singleNfts]);
 
   return (
     <div className={classes.container}>
@@ -57,9 +58,12 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {allSingleNfts?.length ? (
+      {allSingleNfts?.length || allSingleGraphNfts?.length ? (
         <div className={classes.wrapper}>
           {allSingleNfts.map((nft) => (
+            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+          ))}
+          {allSingleGraphNfts?.map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
         </div>

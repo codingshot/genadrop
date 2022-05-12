@@ -4,7 +4,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import classes from "./NftCard.module.css";
 
 const NftCard = ({ nft, list, extend, loadedChain }) => {
-  const { Id, collection_name, name, price, image_url } = nft;
+  const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
 
   const [state, setState] = useState({ algoPrice: 0, chainName: "" });
@@ -15,7 +15,7 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
   };
 
   useEffect(() => {
-    if (loadedChain === "1313161555") {
+    if (loadedChain === "1313161555" || chain === "1313161555") {
       axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({ algoPrice: value * price, chainName: "AOA" });
