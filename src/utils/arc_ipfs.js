@@ -198,55 +198,88 @@ async function createAsset(asset, account) {
 }
 
 async function signTx(connector, txns, dispatch) {
-  const txnsToSign = txns.map((txn) => {
-    const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
-    return {
-      txn: encodedTxn,
-      message: "Nft Minting",
-      // Note: if the transaction does not need to be signed (because it's part of an atomic group
-      // that will be signed by another party), specify an empty singers array like so:
-      // signers: [],
-    };
-  });
-  const requestParams = [txnsToSign];
-  let result;
-  try {
-    const request = formatJsonRpcRequest("algo_signTxn", requestParams);
-    dispatch(
-      setNotification({
-        message: "please check wallet to confirm transaction",
-        type: "warning",
-      })
-    );
-    result = await connector.send(request);
-  } catch (error) {
-    dispatch(
-      setNotification({
-        message: error.message,
-        type: "error",
-      })
-    );
-    throw error;
-  }
   const TxIds = txns.map((tx) => tx.txID());
-  const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
-  const chunkSize = 16;
   const assetIds = [];
-  for (let i = 0; i < decodedResult.length; i += chunkSize) {
-    const chunk = decodedResult.slice(i, i + chunkSize);
-    // should watch for failed transaction sendings on rare occassions and log the signed tx to send later on.
-    const tx = await algodTxnClient.sendRawTransaction(chunk).do();
+  // const txnsToSign = [txnsToSign];
+  const requestChunkSize = 64;
+  for (let index = 0; index < txns.length; index += requestChunkSize) {
+    const requestChunk = txns.slice(index, index + requestChunkSize);
+    const groupChunkSize = 16;
+    // let txgroup;
+    if (txns.length > 1) {
+      for (let i = 0; i < requestChunk.length; i += groupChunkSize) {
+        const chunk = requestChunk.slice(i, i + groupChunkSize);
+        algosdk.assignGroupID(chunk);
+      }
+    }
+    const txnsToSign = requestChunk.map((txn) => {
+      const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
+      return {
+        txn: encodedTxn,
+        message: "Nft Minting",
+        // Note: if the transaction does not need to be signed (because it's part of an atomic group
+        // that will be signed by another party), specify an empty singers array like so:
+        // signers: [],
+      };
+    });
+    dispatch(
+      setLoader(
+        txns.length > 64
+          ? `Minting batch ${index + 1} - ${index + requestChunk.length} of ${txns.length}`
+          : `Minting asset`
+      )
+    );
+    // const chunk = decodedResult.slice(i, i + chunkSize);
+    let result;
+    try {
+      const request = formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
+      dispatch(
+        setNotification({
+          message: "please check wallet to confirm transaction",
+          type: "warning",
+        })
+      );
+      result = await connector.send(request);
+    } catch (error) {
+      dispatch(
+        setNotification({
+          message: error.message,
+          type: "error",
+        })
+      );
+      throw error;
+    }
+    const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
+    const chunkSize = 16;
+    dispatch(
+      setLoader(
+        txns.length > 64
+          ? `Broadcasting transaction for batch ${index + 1} - ${index + requestChunk.length} of ${txns.length}`
+          : `Broadcasting transaction`
+      )
+    );
+    for (let id = 0; id < decodedResult.length; id += chunkSize) {
+      const chunk = decodedResult.slice(id, id + chunkSize);
+      // should watch for failed transaction sendings on rare occassions and log the signed tx to send later on.
+      const tx = await algodTxnClient.sendRawTransaction(chunk).do();
+    }
+    dispatch(
+      setLoader(
+        txns.length > 64
+          ? `Confirming transaction for batch ${index + 1} - ${index + requestChunk.length} of ${txns.length}`
+          : `confirming transaction`
+      )
+    );
+    for (let tIndex = 0; tIndex < requestChunk.length; ++tIndex) {
+      const trxId = requestChunk[tIndex].txID();
+      await waitForConfirmation(trxId);
+      const ptx = await algodTxnClient.pendingTransactionInformation(trxId).do();
+      const assetID = ptx["asset-index"];
+      assetIds.push(assetID);
+    }
   }
   // const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
   // await waitForConfirmation(tx.txId);
-  for (let index = 0; index < TxIds.length; ++index) {
-    await waitForConfirmation(TxIds[index]);
-    const ptx = await algodTxnClient.pendingTransactionInformation(TxIds[index]).do();
-    const assetID = ptx["asset-index"];
-    assetIds.push(assetID);
-  }
-
-  console.log(assetIds);
 
   return { assetID: assetIds, txId: TxIds };
 }
@@ -272,7 +305,6 @@ export async function mintSingleToAlgo(algoMintProps) {
       );
       return `https://testnet.algoexplorer.io/asset/${assetID}`;
     } catch (error) {
-      console.log(error);
       console.log(error.message);
       return {
         message: `${error.message}`,
@@ -428,15 +460,20 @@ export async function mintSingleToAurora(singleMintProps) {
 }
 
 export async function createNFT(createProps) {
-  const { file, dispatch, setNotification, setLoader } = createProps;
+  const { file, dispatch, account, setNotification, setLoader } = createProps;
   const assets = [];
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
-
   const files = data.files["metadata.json"];
+  const userInfo = await algodClient.accountInformation(account).do();
+  const assetBalance = userInfo.account.assets.length;
+  const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
-
+  const estimateTxFee = 0.001 * metadata.length;
+  if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
+    return false;
+  }
   dispatch(
     setNotification({
       message: "uploading assets, do not refresh your page.",
@@ -482,6 +519,12 @@ export async function mintToAlgo(algoProps) {
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps });
+    if (!ipfsJsonData) {
+      return {
+        message: "insufficient balance/Min balance not enough to hold assets",
+        type: "warning",
+      };
+    }
     const txns = [];
     dispatch(
       setNotification({
@@ -490,19 +533,10 @@ export async function mintToAlgo(algoProps) {
       })
     );
     for (let i = 0; i < ipfsJsonData.length; ++i) {
-      dispatch(setLoader(`minting ${i + 1} of ${ipfsJsonData.length}`));
+      dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
       txns.push(txn);
     }
-
-    const chunkSize = 16;
-    // let txgroup;
-
-    for (let i = 0; i < txns.length; i += chunkSize) {
-      const chunk = txns.slice(i, i + chunkSize);
-      algosdk.assignGroupID(chunk);
-    }
-
     dispatch(setLoader("finalizing"));
 
     try {
