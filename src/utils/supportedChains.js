@@ -20,6 +20,7 @@ export const supportedChains = {
     networkId: 1313161554,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "aurora-near",
   },
   137: {
     label: "Polygon",
@@ -28,6 +29,7 @@ export const supportedChains = {
     networkId: 137,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "matic",
   },
   42220: {
     label: "Celo",
@@ -36,6 +38,7 @@ export const supportedChains = {
     networkId: 42220,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "celo",
   },
   80001: {
     label: "Polygon Testnet",
@@ -44,6 +47,7 @@ export const supportedChains = {
     networkId: 80001,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "matic",
   },
   44787: {
     label: "Celo Alfajores",
@@ -52,6 +56,7 @@ export const supportedChains = {
     networkId: 44787,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "celo",
   },
   62320: {
     label: "Celo Baklava",
@@ -60,6 +65,7 @@ export const supportedChains = {
     networkId: 62320,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "celo",
   },
   1313161555: {
     label: "Aurora Testnet",
@@ -68,5 +74,6 @@ export const supportedChains = {
     networkId: 1313161555,
     add: addChain,
     switch: switchChain,
+    coinGeckoLabel: "aurora-near",
   },
 };

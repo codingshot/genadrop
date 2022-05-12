@@ -2,12 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import classes from "./transaction.module.css";
 import CopyToClipboard from "react-copy-to-clipboard";
 import algoIcon from "../../assets/icon-algo.svg";
-
-const Transaction = (data, date) => {
+import { supportedChains } from "../../utils/supportedChains";
+import { chainIdToParams } from "../../utils/chainConnect";
+const Transaction = (data) => {
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";
     return `${address.slice(0, width)}...${address.slice(-width)}`;
   }
+
 
   const [state, setState] = useState({
     explorer: "https://testnet.algoexplorer.io/",
@@ -19,6 +21,11 @@ const Transaction = (data, date) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  useEffect(() => {
+    if (data.chain) {
+      handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls })
+    }
+  })
   const wrapperRef = useRef(null);
 
   function useOutsideAlerter(ref) {
@@ -46,7 +53,6 @@ const Transaction = (data, date) => {
   const { explorer, isCopied, clicked } = state;
 
   const onCopyText = () => {
-    console.log("HANDLE COPY");
     handleSetState({ isCopied: true });
 
     setTimeout(() => {
@@ -161,7 +167,7 @@ const Transaction = (data, date) => {
               <td className={classes.icon}>
                 {" "}
                 {data.data.price}
-                <img src={algoIcon} alt="" />{" "}
+                <img src={data.chain ? supportedChains[data.chain].icon : algoIcon} alt="" />{" "}
               </td>
             </tr>
           ) : (

@@ -1,4 +1,4 @@
-const chainIdToParams = {
+export const chainIdToParams = {
   137: {
     chainId: "0x89",
     chainName: "Polygon Matic",

@@ -26,6 +26,8 @@ import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
 import auroraIcon from "../../assets/icon-aurora.svg";
 import { createClient } from "urql";
+import { supportedChains } from "../../utils/supportedChains";
+
 import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 
 const CollectionNFT = () => {
@@ -131,15 +133,15 @@ const CollectionNFT = () => {
 
   useEffect(() => {
     if (asset?.chain) {
-      if (asset?.chain === "1313161555") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
-          let value = Object.values(res.data)[0].usd;
-          handleSetState({
-            chainIcon: auroraIcon,
-            algoPrice: value,
-          });
+      const pair = supportedChains[asset.chain].coinGeckoLabel
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({
+          chainIcon: supportedChains[asset.chain].icon,
+          algoPrice: value,
         });
-      }
+      });
+
     } else {
       axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
@@ -304,7 +306,7 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
+                  <button type="button" className={classes.buy} disabled={asset.sold || asset?.chain} onClick={buyNft}>
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
@@ -339,7 +341,7 @@ const CollectionNFT = () => {
           <h3>Transaction History</h3>
         </div>
         <div className={classes.history}>
-          <Search data={transactionHistory} />
+          <Search data={transactionHistory} chain={asset?.chain ? asset.chain : ""} />
         </div>
       </div>
       {/* PRICE HISTORY */}
