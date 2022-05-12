@@ -1,7 +1,9 @@
 .container {
   width: 100%;
   font-size: 1rem;
-  height: 1000px;
+  height: 80vh;
+  overflow-y: hidden;
+  overflow-x: hidden;
   text-align: center;
   padding-top: 4em;
 }
@@ -97,7 +99,8 @@
     height: 300px;
   }
   .not-found h1 {
-    font-size: 30px;
+    font-size: 27px;
+    margin: 10px 0;
   }
   .text {
     font-size: 20px;

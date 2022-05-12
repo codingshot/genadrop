@@ -30,6 +30,7 @@ const List = lazy(() => import("./pages/listNFT/list"));
 const Profile = lazy(() => import("./pages/profile/profile"));
 const SingleNftCollection = lazy(() => import("./pages/singleMintCollection/singleNftCollection"));
 const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
+const Artist = lazy(() => import("./pages/artist/artist"));
 
 // const Listed = lazy(() => import('./pages/listNFT/listed'));
 
@@ -74,6 +75,7 @@ function App() {
             <Route exact path="/me/:userId/:nftId" component={List} />
             <Route exact path="/me/:userId/profile/settings" component={Profile} />
             <Route exact path="/docs" component={docsEmbed} />
+            <Route exact path="/artist" component={Artist} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>

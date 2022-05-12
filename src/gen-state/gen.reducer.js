@@ -28,6 +28,7 @@ export const INITIAL_STATE = {
   isLoading: false,
   currentDnaLayers: null,
   chainId: "",
+  proposedChain: null,
   account: "",
   connector: null,
   isRule: false,
@@ -41,6 +42,7 @@ export const INITIAL_STATE = {
   clipboardMessage: "",
   loaderMessage: "",
   didMount: false,
+  graphCollections: [],
   mainnet: !process.env.REACT_APP_ENV_STAGING,
   prompt: null,
   promptAsset: null,
@@ -191,6 +193,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         chainId: action.payload,
       };
+    case genActionTypes.SET_PROPOSED_CHAIN:
+      return {
+        ...state,
+        proposedChain: action.payload,
+      };
     case genActionTypes.SET_CONNECTOR:
       return {
         ...state,
@@ -210,6 +217,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.payload,
+      };
+    case genActionTypes.GRAPH_COLLECTIONS:
+      return {
+        ...state,
+        graphCollections: action.payload,
       };
     case genActionTypes.SET_SINGLE_NFTS:
       return {

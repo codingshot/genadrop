@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
 
 interface customIERC1155 {
     function uri(uint id) external view returns (string memory);
+    function name() external view returns (string memory);
 }
 
 contract NFTMarket is ReentrancyGuard, EIP712 {
@@ -34,9 +35,9 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
         bool isSingle,
         uint256 itemId,
         uint256[] tokenId,
-        bool isSold,
         address payable owner,
-        uint256 chain
+        uint256 chain,
+        string description
     );
 
     event MarketItemCreated(
@@ -47,7 +48,6 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
         bool isSingle,
         uint256 itemId,
         uint256 tokenId,
-        bool isSold,
         address payable owner,
         uint256 chain
     );
@@ -77,6 +77,7 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
         uint256 price,
         uint256[] memory amounts,
         string calldata category,
+        string calldata description,
         address seller
     ) public payable nonReentrant {
         require(price > 0, "No item for free here");
@@ -93,9 +94,9 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
             false,
             currentId,
             tokenIds,
-            false,
             payable(address(0)),
-            block.chainid
+            block.chainid,
+            description
         );
     }
 
@@ -121,7 +122,6 @@ contract NFTMarket is ReentrancyGuard, EIP712 {
             true,
             itemId,
             tokenId,
-            false,
             payable(address(0)),
             block.chainid
         );

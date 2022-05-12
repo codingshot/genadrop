@@ -2,7 +2,7 @@ import React, { useRef, useContext, useEffect, useState } from "react";
 import classes from "./collection-menu.module.css";
 import ArtCard from "../art-card/art-card";
 import { GenContext } from "../../gen-state/gen.context";
-import { addImage, setCombinations } from "../../gen-state/gen.actions";
+import { addImage } from "../../gen-state/gen.actions";
 import ButtonClickEffect from "../button-effect/button-effect";
 import { getCombinations, handleAddBlank, handleFileChange, handleAddTemplates } from "./collection-menu-script";
 

@@ -9,7 +9,7 @@ import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
 import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
 import infoIcon from "../../../assets/icon-info.svg";
-
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const Minter = ({ data, changeFile }) => {
@@ -25,6 +25,7 @@ const Minter = ({ data, changeFile }) => {
     dollarPrice: 0,
   });
   const { attributes, fileName, description, price, chain, preview, dollarPrice } = state;
+  const history = useHistory();
 
   const chains = [
     {
@@ -58,16 +59,16 @@ const Minter = ({ data, changeFile }) => {
       chain: "Polygon",
     },
     {
-      label: "Near",
+      label: "Aurora",
       networkId: 1313161554,
-      symbol: "NEAR",
-      chain: "Near",
+      symbol: "AURORA",
+      chain: "Aurora",
     },
     {
-      label: "Near testnet",
+      label: "Aurora testnet",
       networkId: 1313161555,
-      symbol: "NEAR",
-      chain: "Near",
+      symbol: "AURORA",
+      chain: "Aurora",
     },
   ];
 
@@ -118,8 +119,8 @@ const Minter = ({ data, changeFile }) => {
     celo: "CGLD",
     polygon: "Matic",
     "polygon Testnet": "Matic",
-    "near testnet": "Near",
-    near: "Near",
+    "aurora testnet": "Aurora",
+    aurora: "Aurora",
   };
 
   const handleAddAttribute = () => {
@@ -193,7 +194,9 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleMint(mintProps);
+      handleMint(mintProps).then((url) => {
+        history.push(`/me/${account}`);
+      });
     } else {
       if (
         !singleMintProps.fileName ||
@@ -208,7 +211,9 @@ const Minter = ({ data, changeFile }) => {
           })
         );
       }
-      handleSingleMint(singleMintProps);
+      handleSingleMint(singleMintProps).then((url) => {
+        history.push(`/me/${account}`);
+      });
     }
   };
 
@@ -217,9 +222,9 @@ const Minter = ({ data, changeFile }) => {
       const c = chains.find((e) => e.networkId.toString() === chainId.toString());
       if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
       handleSetState({ chain: c });
-      if (c.symbol === "NEAR") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.near.usd });
+      if (c.symbol === "AURORA") {
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora&vs_currencies=usd").then((res) => {
+          handleSetState({ dollarPrice: price / res.data.aurora.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
@@ -229,6 +234,12 @@ const Minter = ({ data, changeFile }) => {
     }
   }, [price, chainId]);
 
+  useEffect(() => {
+    setTimeout(() => {
+      document.documentElement.scrollTop = 200;
+    }, 500);
+  }, []);
+
   return (
     <div className={classes.container}>
       {preview ? (
@@ -236,7 +247,7 @@ const Minter = ({ data, changeFile }) => {
       ) : (
         <div className={classes.wrapper}>
           <section className={classes.asset}>
-            <div className={classes.imageContainers}>
+            <div className={`${classes.imageContainers} ${file.length > 1 && classes._}`}>
               {file.length > 1 ? (
                 file
                   .filter((_, idx) => idx < 3)
@@ -247,10 +258,7 @@ const Minter = ({ data, changeFile }) => {
                     ></div>
                   ))
               ) : (
-                <div
-                  style={{ backgroundImage: `url(${URL.createObjectURL(file[0])})` }}
-                  className={`${classes.imageContainer} ${classes.single}`}
-                ></div>
+                <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
               )}
             </div>
 
@@ -314,11 +322,12 @@ const Minter = ({ data, changeFile }) => {
               {!metadata ? (
                 <>
                   <div className={classes.attributes}>
-                    {Object.keys(attributes).map((key) => (
+                    {Object.keys(attributes).map((key, index) => (
                       <Attribute
                         key={key}
                         attribute={attributes[key]}
                         id={key}
+                        index={index}
                         removeAttribute={handleRemoveAttribute}
                         changeAttribute={handleChangeAttribute}
                       />
@@ -352,11 +361,11 @@ const Minter = ({ data, changeFile }) => {
           </section>
 
           <section className={classes.mintOptions}>
-            <div className={classes.category}>Set Mint Options</div>
             <div className={classes.info}>
               <img src={infoIcon} alt="" />
               <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
             </div>
+            <div className={classes.category}>Set Mint Options</div>
             <div className={classes.inputWrapper}>
               <label>
                 Price (USD) <span className={classes.required}>*</span>

@@ -107,7 +107,7 @@ const CollectionDescription = () => {
 
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout"># to Generate</label>
+          <label htmlFor="generate amout">Number to Generate</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
@@ -115,6 +115,15 @@ const CollectionDescription = () => {
           <div className={classes.combinations}>{combinations - rule.length}</div>
         </div>
       </div>
+      {nftLayers.length ? (
+        <div className={classes.btnWrapper}>
+          <Link to="/preview">
+            <ButtonClickEffect>
+              <Button invert>preview</Button>
+            </ButtonClickEffect>
+          </Link>
+        </div>
+      ) : null}
 
       <div className={classes.btnWrapper}>
         <div onClick={handleGenerate}>

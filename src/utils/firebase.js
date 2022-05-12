@@ -69,7 +69,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
 async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId) {
   const name = fileName.split("-")[0];
   const updates = {};
-  for (let i = 0; i < collection_id.length; i += 1) {
+  for (let i = 0; i < collection_id.length; ++i) {
     updates[collection_id[i]] = {
       id: collection_id[i],
       collection: name,
@@ -78,7 +78,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
-    await recordTransaction(collection_id[i], "Minting", owner, null, null, txId);
+    await recordTransaction(collection_id[i], "Minting", owner, null, null, txId[i]);
   }
   db.collection("collections")
     .add({
@@ -137,13 +137,22 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   return true;
 }
 
-async function readAllNft() {
+async function readAllNft(account) {
+  console.log("ACCOUNT: ", account);
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  return res;
+
+  var filtered = [];
+  res.forEach((e) => {
+    if (e.Buyer == account) {
+      filtered.push(e);
+    }
+  });
+  console.log(res);
+  return filtered;
 }
 
 // async function readData() {
