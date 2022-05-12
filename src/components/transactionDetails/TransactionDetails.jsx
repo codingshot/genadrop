@@ -10,7 +10,6 @@ const Transaction = (data) => {
     return `${address.slice(0, width)}...${address.slice(-width)}`;
   }
 
-
   const [state, setState] = useState({
     explorer: "https://testnet.algoexplorer.io/",
     isCopied: false,
@@ -23,9 +22,9 @@ const Transaction = (data) => {
 
   useEffect(() => {
     if (data.chain) {
-      handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls })
+      handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls });
     }
-  })
+  });
   const wrapperRef = useRef(null);
 
   function useOutsideAlerter(ref) {

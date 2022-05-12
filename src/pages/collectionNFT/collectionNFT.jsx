@@ -133,7 +133,7 @@ const CollectionNFT = () => {
 
   useEffect(() => {
     if (asset?.chain) {
-      const pair = supportedChains[asset.chain].coinGeckoLabel
+      const pair = supportedChains[asset.chain].coinGeckoLabel;
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
@@ -141,7 +141,6 @@ const CollectionNFT = () => {
           algoPrice: value,
         });
       });
-
     } else {
       axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
