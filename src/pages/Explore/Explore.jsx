@@ -6,17 +6,26 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Filter from "./Filter/Filter";
 import Header from "./Header/Header";
 import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-script";
-import { getNftCollection } from "../../utils";
+import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
 
 const Explore = () => {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const [state, setState] = useState({
     togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
+    loadedChain: null,
     collection: null,
     attributes: null,
     filterToDelete: null,
@@ -26,7 +35,16 @@ const Explore = () => {
       price: "high",
     },
   });
-  const { collection, NFTCollection, attributes, filter, filterToDelete, FilteredCollection, headerHeight } = state;
+  const {
+    collection,
+    NFTCollection,
+    attributes,
+    filter,
+    filterToDelete,
+    FilteredCollection,
+    headerHeight,
+    loadedChain,
+  } = state;
   const { collections, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -46,15 +64,32 @@ const Explore = () => {
   useEffect(() => {
     if (Object.keys(collections).length) {
       const collectionsFound = collections.find((col) => col.name === collectionName);
-      (async function getResult() {
-        const result = await getNftCollection(collectionsFound, mainnet);
-        handleSetState({
-          collection: collectionsFound,
-          NFTCollection: result,
-        });
-      })();
+      if (collectionsFound) {
+        (async function getResult() {
+          const result = await getNftCollection(collectionsFound, mainnet);
+          handleSetState({
+            collection: collectionsFound,
+            NFTCollection: result,
+          });
+        })();
+      } else {
+        (async function getGraphResult() {
+          const data = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
+          console.log(data.data);
+          const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
+          handleSetState({
+            collection: {
+              ...data?.data?.collection,
+              owner: data?.data?.collection?.id,
+              price: result[0].collectionPrice,
+            },
+            NFTCollection: result,
+            loadedChain: result[0].chain,
+          });
+        })();
+      }
     }
-  }, [collections]);
+  }, []);
 
   useEffect(() => {
     if (!NFTCollection) return;
@@ -112,6 +147,7 @@ const Explore = () => {
           numberOfNfts: NFTCollection && NFTCollection.length,
           imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
         }}
+        loadedChain={loadedChain}
       />
 
       <div className={classes.displayContainer}>
@@ -138,7 +174,7 @@ const Explore = () => {
               </div>
             ) : null}
           </div>
-          <Menu NFTCollection={FilteredCollection} />
+          <Menu NFTCollection={FilteredCollection} loadedChain={loadedChain} />
         </main>
       </div>
     </div>

@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getNftCollection } from "../../utils";
+import { getAuroraCollections, getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
@@ -24,6 +24,12 @@ import instagramIcon from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
+import auroraIcon from "../../assets/icon-aurora.svg";
+import { createClient } from "urql";
+import { supportedChains } from "../../utils/supportedChains";
+
+import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
+
 const CollectionNFT = () => {
   const [state, setState] = useState({
     dropdown: ["1", "3"],
@@ -34,9 +40,17 @@ const CollectionNFT = () => {
     collection: [],
     algoPrice: 0,
     isCopied: false,
+    chainIcon: algoLogo,
   });
 
-  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied } = state;
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
+  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied, chainIcon } =
+    state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -68,29 +82,72 @@ const CollectionNFT = () => {
     }, [ref]);
   }
   useOutsideAlerter(wrapperRef);
+
   useEffect(() => {
     if (Object.keys(collections).length) {
       const newCollection = collections.find((col) => col.name === collectionName);
-      (async function getResult() {
-        const collectionData = await getNftCollection(newCollection, mainnet);
-        const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
-        let tHistory = await readNftTransaction(result.Id);
-        tHistory.find((t) => {
-          if (t.type === "Minting") t.price = result.price;
-        });
-        handleSetState({
-          asset: result,
-          transactionHistory: tHistory,
-          collection: collectionData,
-          isLoading: false,
-        });
-      })();
+      if (newCollection) {
+        (async function getResult() {
+          const collectionData = await getNftCollection(newCollection, mainnet);
+          const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
+          console.log("The result", result);
+          let tHistory = await readNftTransaction(result.Id);
+          tHistory.find((t) => {
+            if (t.type === "Minting") t.price = result.price;
+          });
+          handleSetState({
+            asset: result,
+            transactionHistory: tHistory,
+            collection: collectionData,
+            isLoading: false,
+          });
+        })();
+      } else {
+        (async function getNFTDetails() {
+          //get single nft data
+          const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+          const result = await getGraphNft(data.data.nft, collectionName);
+          const trHistory = await getTransactions(data?.data?.nft?.transactions);
+
+          // get collection data
+          const collectionData = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
+          const collectionResponseData = await getGraphCollection(
+            collectionData.data.collection.nfts,
+            collectionData.data.collection
+          );
+          trHistory.find((t) => {
+            if (t.type === "Minting") t.price = result[0].price;
+          });
+          handleSetState({
+            asset: result[0],
+            isLoading: false,
+            collection: collectionResponseData,
+            transactionHistory: trHistory,
+          });
+        })();
+      }
     }
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount });
-    });
+
     document.documentElement.scrollTop = 0;
-  }, [collections, nftId]);
+  }, []);
+
+  useEffect(() => {
+    if (asset?.chain) {
+      const pair = supportedChains[asset.chain].coinGeckoLabel
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({
+          chainIcon: supportedChains[asset.chain].icon,
+          algoPrice: value,
+        });
+      });
+
+    } else {
+      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount });
+      });
+    }
+  }, [asset]);
 
   if (isLoading) {
     return (
@@ -231,7 +288,7 @@ const CollectionNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={algoLogo} alt="" />
+                <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>{asset.price}</p>
                 <span className={classes.usdValue}>
                   ($
@@ -249,7 +306,7 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
+                  <button type="button" className={classes.buy} disabled={asset.sold || asset?.chain} onClick={buyNft}>
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>
@@ -284,7 +341,7 @@ const CollectionNFT = () => {
           <h3>Transaction History</h3>
         </div>
         <div className={classes.history}>
-          <Search data={transactionHistory} />
+          <Search data={transactionHistory} chain={asset?.chain ? asset.chain : ""} />
         </div>
       </div>
       {/* PRICE HISTORY */}
@@ -314,7 +371,7 @@ const CollectionNFT = () => {
           <h3>More from this collection</h3>
         </div>
         <div className={classes.collectionItems}>
-          <NFT data={collection.filter((e) => e.name !== asset.name)} />
+          <NFT data={collection?.filter((e) => e.name !== asset.name)} />
         </div>
         <div className={classes.allCollecitons}>
           <button type="button" onClick={() => history.goBack()} className={classes.btnCollections}>

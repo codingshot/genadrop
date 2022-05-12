@@ -46,4 +46,48 @@ const CollectionsCard = ({ collection }) => {
   );
 };
 
+export const NearCollectionCard = ({ collection }) => {
+  const { name, price, description, image_url, owner } = collection;
+  const history = useHistory();
+
+  const [state, setState] = useState({ algoPrice: 0 });
+  const { algoPrice } = state;
+
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
+
+  useEffect(() => {
+    axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+      let value = Object.values(res.data)[0].usd;
+      handleSetState({ algoPrice: price * value });
+    });
+  }, []);
+
+  return (
+    <div onClick={() => history.push(`/marketplace/collections/${owner}`)} className={classes.card}>
+      <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
+
+      <div className={classes.body}>
+        <div className={classes.thumbnail}>
+          <img src={image_url} alt="" />
+        </div>
+        <div className={classes.name}>{name}</div>
+        <div className={classes.description}>
+          {description.length < 100 ? description : `${description.substring(0, 100)}...`}
+        </div>
+        <div className={classes.wrapper}>
+          <div className={classes.floorPrice}>
+            <div className={classes.floor}>FLOORPRICE</div>
+            <div className={classes.price}>
+              {price} <span className={classes.chain}>AOA</span>{" "}
+              <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default CollectionsCard;

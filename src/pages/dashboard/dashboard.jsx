@@ -13,6 +13,8 @@ import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
 
 const LodaingCards = () => (
   <div className={classes.skeleton}>
@@ -43,6 +45,12 @@ const Dashboard = () => {
     filteredCollection: null,
   });
 
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
   const { account, mainnet, singleNfts } = useContext(GenContext);
 
@@ -53,7 +61,7 @@ const Dashboard = () => {
   const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
 
   useEffect(() => {
-    if (!account) history.push("/")
+    if (!account) history.push("/");
 
     console.log(" collection length:", filteredCollection?.length);
     (async function readAllSingle() {
@@ -70,7 +78,6 @@ const Dashboard = () => {
       const userNftCollections = await fetchUserNfts(account);
       console.log(userNftCollections);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-
 
       handleSetState({ createdNfts: createdUserNfts });
     })();
@@ -183,55 +190,48 @@ const Dashboard = () => {
             <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
-          {
-            filteredCollection?.length > 0 ?
-              (
-                activeDetail === "collections" ? (
-                  <div className={classes.overview}>
-                    {filteredCollection.map((collection, idx) => (
-                      <CollectionsCard key={idx} collection={collection} />
-                    ))}
-                  </div>) :
-                  activeDetail === "created" ? (
-                    <div className={classes.overview}>
-                      {filteredCollection.map((nft, idx) => (
-                        <NftCard key={idx} nft={nft} list />
-                      ))}
-                    </div>
-                  ) :
-                    activeDetail === "collected" ? (
-                      <div className={classes.overview}>
-                        {filteredCollection.map((nft, idx) => (
-                          <NftCard key={idx} nft={nft} list />
-                        ))}
-                      </div>
-                    ) :
-                      "")
-
-
-
-              :
-              filteredCollection?.length === 0 ? (
-                filter.searchValue ? (
-                  <NotFound />
-                ) : (
-                  <h1 className={classes.noResult}>No Results Found</h1>
-                )
-              ) :
-                <div className={classes.skeleton}>
-                  {[...new Array(5)]
-                    .map((_, idx) => idx)
-                    .map((id) => (
-                      <div key={id}>
-                        <Skeleton count={1} height={300} />
-                      </div>
-                    ))}
-                </div>
-          }
-
-        </section >
-      </div >
-    </div >
+          {filteredCollection?.length > 0 ? (
+            activeDetail === "collections" ? (
+              <div className={classes.overview}>
+                {filteredCollection.map((collection, idx) => (
+                  <CollectionsCard key={idx} collection={collection} />
+                ))}
+              </div>
+            ) : activeDetail === "created" ? (
+              <div className={classes.overview}>
+                {filteredCollection.map((nft, idx) => (
+                  <NftCard key={idx} nft={nft} list />
+                ))}
+              </div>
+            ) : activeDetail === "collected" ? (
+              <div className={classes.overview}>
+                {filteredCollection.map((nft, idx) => (
+                  <NftCard key={idx} nft={nft} list />
+                ))}
+              </div>
+            ) : (
+              ""
+            )
+          ) : filteredCollection?.length === 0 ? (
+            filter.searchValue ? (
+              <NotFound />
+            ) : (
+              <h1 className={classes.noResult}>No Results Found</h1>
+            )
+          ) : (
+            <div className={classes.skeleton}>
+              {[...new Array(5)]
+                .map((_, idx) => idx)
+                .map((id) => (
+                  <div key={id}>
+                    <Skeleton count={1} height={300} />
+                  </div>
+                ))}
+            </div>
+          )}
+        </section>
+      </div>
+    </div>
   );
 };
 
