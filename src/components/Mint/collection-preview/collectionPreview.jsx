@@ -123,9 +123,15 @@ const CollectionPreview = ({
               <div
                 key={idx}
                 style={{ display: previewSelectMode ? "flex" : "block" }}
-                className={`${classes.assetWrapper} ${collectionProfile.name === f.name && classes.assetWrapperActive}`}
+                className={`${classes.assetWrapper} ${
+                  collectionProfile.name === f.name && previewSelectMode && classes.assetWrapperActive
+                }`}
               >
-                <img onClick={() => handleMintSetState({ collectionProfile: f })} src={URL.createObjectURL(f)} alt="" />
+                <img
+                  onClick={() => (previewSelectMode ? handleMintSetState({ collectionProfile: f }) : "")}
+                  src={URL.createObjectURL(f)}
+                  alt=""
+                />
                 {!previewSelectMode && (
                   <div className={classes.assetOverlay}>
                     {fileToMetadataMap[f.name].name}
