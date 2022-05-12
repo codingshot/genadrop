@@ -8,9 +8,8 @@ const ProfileImgOverlay = ({ toggleGuide, file, handleSetState, collectionProfil
   };
   const saveHandler = async () => {
     await updateZip(zip, collectionProfile.name, handleSetFileState);
-    handleSetState({ toggleGuide: false, collectionProfile: "" });
+    handleSetState({ toggleGuide: false, collectionProfile: file[0], profileSelected: true });
   };
-
   return (
     <div className={`${classes.modelContainer} ${toggleGuide ? classes.modelActive : ""}`}>
       <div className={classes.guideContainer}>

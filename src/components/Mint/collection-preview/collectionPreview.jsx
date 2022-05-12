@@ -80,7 +80,13 @@ const CollectionPreview = ({
 
   const saveHandler = async () => {
     await updateZip(zip, collectionProfile.name, handleSetFileState);
-    handleMintSetState({ preview: false, previewSelectMode: false, toggleGuide: false, collectionProfile: "" });
+    handleMintSetState({
+      preview: false,
+      previewSelectMode: false,
+      toggleGuide: false,
+      collectionProfile: file[0],
+      profileSelected: true,
+    });
   };
   return (
     <div className={classes.container}>
@@ -122,8 +128,7 @@ const CollectionPreview = ({
           ? paginate[currentPage].map((f, idx) => (
               <div
                 key={idx}
-                style={{ display: previewSelectMode ? "flex" : "block" }}
-                className={`${classes.assetWrapper} ${
+                className={`${previewSelectMode ? classes.assetWrapperSelect : classes.assetWrapper} ${
                   collectionProfile.name === f.name && previewSelectMode && classes.assetWrapperActive
                 }`}
               >

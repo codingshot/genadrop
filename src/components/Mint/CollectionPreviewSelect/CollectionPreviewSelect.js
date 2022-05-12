@@ -76,7 +76,7 @@ const CollectionPreviewSelect = ({
   }, []);
   const saveHandler = async () => {
     await updateZip(zip, collectionProfile.name, handleSetFileState);
-    handleMintSetState({ preview: false, previewSelectMode: false, toggleGuide: false, collectionProfile: "" });
+    handleMintSetState({ preview: false, previewSelectMode: false, toggleGuide: false });
   };
   const getPagination = () => {
     const arr = [];

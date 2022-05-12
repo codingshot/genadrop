@@ -12,7 +12,6 @@ import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
 import infoIcon from "../../../assets/icon-info.svg";
 import dropImg from "../../../assets/icon-1of1-light.svg";
 // Collection Profile Image Select
-import CollectionPreviewSelect from "../CollectionPreviewSelect/CollectionPreviewSelect";
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
@@ -26,9 +25,10 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     chain: null,
     preview: false,
     dollarPrice: 0,
-    collectionProfile: false,
+    collectionProfile: "",
     toggleGuide: false,
     previewSelectMode: false,
+    profileSelected: false,
   });
   const {
     attributes,
@@ -41,6 +41,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     collectionProfile,
     toggleGuide,
     previewSelectMode,
+    profileSelected,
   } = state;
   const history = useHistory();
 
@@ -314,10 +315,10 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
 
           <section className={classes.details}>
             <div className={classes.category}>Collection Logo</div>
-            <div className={classes.dropWrapper}>
+            <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
               <p>This image will also be used as collection logo</p>
               <div onClick={() => handleSetState({ toggleGuide: true })}>
-                <img src={dropImg} alt="" />
+                <img src={profileSelected ? URL.createObjectURL(file[0]) : dropImg} alt="" />
               </div>
             </div>
             <div className={classes.category}>Asset Details</div>

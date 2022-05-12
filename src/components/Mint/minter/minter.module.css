@@ -390,6 +390,9 @@
 .dropWrapper div img {
   height: 6rem;
 }
+.dropWrapperSeleted div img {
+  height: 90%;
+}
 @media screen and (max-width: 768px) {
   .container {
     padding: 2em 0.5em;
