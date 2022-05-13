@@ -23,7 +23,7 @@
   padding-top: 2em;
   padding-bottom: 3em;
   gap: 1em;
-  border-radius: 2em;
+  border-radius: 1em;
   animation: show 300ms alternate;
   margin: 4em auto;
 }
@@ -47,7 +47,7 @@
 }
 
 .heading p {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
 }
 
 .iconContainer {
@@ -78,7 +78,7 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  gap: 1em;
+  gap: 0.5em;
 }
 
 .chain {
@@ -87,7 +87,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
-  padding: 1em 0;
+  padding: 0.5em 0;
   padding-left: 1em;
   border-radius: 3em;
   background: #f9fafb;
@@ -107,12 +107,13 @@
 }
 
 .chain h4 {
+  font-size: 1rem;
   width: 100%;
   text-align: left;
 }
 
 .chain p {
-  font-size: 1rem;
+  font-size: 0.85rem;
   width: 100%;
   text-align: left;
 }
@@ -135,8 +136,12 @@
 }
 
 @media screen and (max-width: 768px) {
-  .heading p {
+  .heading h4 {
     font-size: 0.85rem;
+  }
+
+  .heading p {
+    font-size: 0.75rem;
   }
 
   .card {
