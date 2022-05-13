@@ -97,15 +97,15 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
   }, [swipeHeight]);
 
   useEffect(() => {
-    const { width } = swipeContainer.current.getBoundingClientRect();
+    const width = swipeContainer.current?.getBoundingClientRect().width;
     setSwipeWidth(width);
-    // const { height } = cardRef1.current.getBoundingClientRect();
+    // const height = cardRef1.current?.getBoundingClientRect().height;
     setSwipeHeight(300);
 
     window.addEventListener("resize", () => {
-      const { width } = swipeContainer.current.getBoundingClientRect();
+      const width = swipeContainer.current?.getBoundingClientRect().width;
       setSwipeWidth(width);
-      const { height } = cardRef1.current.getBoundingClientRect();
+      const height = cardRef1.current?.getBoundingClientRect().height;
       setSwipeHeight(height);
     });
 

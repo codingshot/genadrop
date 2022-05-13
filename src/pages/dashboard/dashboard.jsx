@@ -50,7 +50,9 @@ const Dashboard = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
+  const breakAddress = (address = "", width = 6) => {
+    address && `${address.slice(0, width)}...${address.slice(-width)}`;
+  };
 
   useEffect(() => {
     if (!account) history.push("/");

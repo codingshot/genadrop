@@ -214,7 +214,7 @@ async function signTx(connector, txns, dispatch) {
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
     dispatch(
       setNotification({
-        message: "please check wallet to confirm transaction",
+        message: "please check your wallet to confirm transaction",
         type: "warning",
       })
     );

@@ -41,7 +41,7 @@ const Header = ({ collection, getHeight }) => {
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (domMountRef.current) {
-        const res = headerRef.current.getBoundingClientRect().height;
+        const res = headerRef.current?.getBoundingClientRect().height;
         getHeight(res);
       } else {
         domMountRef.current = true;
