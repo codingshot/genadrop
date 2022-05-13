@@ -43,7 +43,7 @@ export const INITIAL_STATE = {
   loaderMessage: "",
   didMount: false,
   graphCollections: [],
-  mainnet: !process.env.REACT_APP_ENV_STAGING,
+  mainnet: process.env.REACT_APP_ENV_STAGING === "false",
   prompt: null,
   promptAsset: null,
   promptLayer: null,
