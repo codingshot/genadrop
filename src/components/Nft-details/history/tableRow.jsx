@@ -6,8 +6,6 @@ import mintIcon from "../../../assets/mint-icon.png";
 import Transaction from "../../transactionDetails/TransactionDetails";
 
 const TableRow = (data) => {
-
-
   const [state, setState] = useState({
     showTransaction: false,
   });
@@ -64,7 +62,6 @@ const TableRow = (data) => {
           handleSetState({ showTransaction: false });
         }
       }
-
 
       // Bind the event listener
       document.addEventListener("mousedown", handleClickOutside);

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import classes from "./collectionPreview.module.css";
-import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import classes from "./CollectionPreviewSelect.module.css";
 import AttributeOverlay from "../attribute-overlay/attributeOverlay";
 import { updateZip } from "../collection-single/collection-single-script";
+import { ReactComponent as ArrowIconLeft } from "../../../assets/icon-arrow-left.svg";
+import angleLeft from "../../../assets/icon-angle-left.svg";
+import angleRight from "../../../assets/icon-angle-right.svg";
 
-const CollectionPreview = ({
+const CollectionPreviewSelect = ({
   file,
   metadata,
   handleMintSetState,
-  previewSelectMode,
-  collectionProfile,
-  handleSetFileState,
   zip,
+  handleSetFileState,
+  collectionProfile,
 }) => {
   const [state, setState] = useState({
     currentPage: 1,
@@ -22,7 +23,7 @@ const CollectionPreview = ({
     attribute: {},
   });
 
-  const { currentPage, paginate, currentPageValue, fileToMetadataMap, showAttribute, attribute } = state;
+  const { currentPage, paginate, currentPageValue, showAttribute, attribute } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -44,10 +45,6 @@ const CollectionPreview = ({
     if (currentPageValue < 1 || currentPageValue > Object.keys(paginate).length) return;
     handleSetState({ currentPage: Number(currentPageValue) });
     document.documentElement.scrollTop = 0;
-  };
-
-  const handleShowAttribute = (attributes) => {
-    handleSetState({ showAttribute: true, attribute: attributes });
   };
 
   useEffect(() => {
@@ -77,17 +74,54 @@ const CollectionPreview = ({
     });
     handleSetState({ fileToMetadataMap: obj });
   }, []);
-
   const saveHandler = async () => {
     await updateZip(zip, collectionProfile.name, handleSetFileState);
-    handleMintSetState({
-      preview: false,
-      previewSelectMode: false,
-      toggleGuide: false,
-      collectionProfile: file[0],
-      profileSelected: true,
-    });
+    handleMintSetState({ preview: false, previewSelectMode: false, toggleGuide: false });
   };
+
+  const getPagination = () => {
+    const arr = [];
+    const countPerPage = 20;
+    const len = Math.ceil(file.length / countPerPage);
+    if (currentPage - 4 > 0) {
+      arr.push(1);
+      arr.push("....");
+      arr.push(currentPage - 2);
+      arr.push(currentPage - 1);
+      arr.push(currentPage);
+    } else if (currentPage - 3 > 0) {
+      arr.push(1);
+      arr.push(currentPage - 2);
+      arr.push(currentPage - 1);
+      arr.push(currentPage);
+    } else if (currentPage - 2 > 0) {
+      arr.push(currentPage - 2);
+      arr.push(currentPage - 1);
+      arr.push(currentPage);
+    } else if (currentPage - 1 > 0) {
+      arr.push(currentPage - 1);
+      arr.push(currentPage);
+    } else {
+      arr.push(currentPage);
+    }
+    if (len - (currentPage + 3) > 0) {
+      arr.push(currentPage + 1);
+      arr.push(currentPage + 2);
+      arr.push("....");
+      arr.push(len);
+    } else if (len - (currentPage + 2) > 0) {
+      arr.push(currentPage + 1);
+      arr.push(currentPage + 2);
+      arr.push(len);
+    } else if (len - (currentPage + 1) > 0) {
+      arr.push(currentPage + 1);
+      arr.push(len);
+    } else if (len - currentPage > 0) {
+      arr.push(len);
+    }
+    return arr;
+  };
+
   return (
     <div className={classes.container}>
       {showAttribute && <AttributeOverlay attribute={attribute} handleSetState={handleSetState} />}
@@ -96,71 +130,64 @@ const CollectionPreview = ({
           onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}
           className={classes.backBtn}
         >
-          <img src={arrowIconLeft} alt="" />
-          {previewSelectMode ? "Select an image" : "Back"}
+          <ArrowIconLeft />
+          Select an image
         </div>
-
+        <div className={classes.display}>
+          {Object.keys(paginate).length
+            ? paginate[currentPage].map((f, idx) => (
+                <div
+                  key={idx}
+                  className={`${classes.assetWrapper} ${
+                    collectionProfile.name === f.name && classes.assetWrapperActive
+                  }`}
+                >
+                  <img
+                    onClick={() => handleMintSetState({ collectionProfile: f })}
+                    src={URL.createObjectURL(f)}
+                    alt=""
+                  />
+                </div>
+              ))
+            : null}
+        </div>
         <div className={classes.paginate}>
           <div onClick={handlePrev} className={`${classes.pageControl} ${classes.prev}`}>
-            prev
+            <img src={angleLeft} alt="" />
           </div>
           <div className={classes.pageCount}>
-            {currentPage} of {Object.keys(paginate).length}
+            {getPagination().map((num) => (
+              <p
+                className={`${currentPage === num && classes.activePage} ${num === "...." && classes.fillerPage}`}
+                onClick={() => (num !== "...." ? handleSetState({ currentPage: num }) : "")}
+                key={num}
+              >
+                {num}
+              </p>
+            ))}
           </div>
           <div onClick={handleNext} className={`${classes.pageControl} ${classes.next}`}>
-            next
+            <img src={angleRight} alt="" />
           </div>
           <div className={classes.gotoWrapper}>
-            <div onClick={handleGoto} className={`${classes.pageControl} ${classes.goto}`}>
-              goto
-            </div>
             <input
               type="number"
               value={currentPageValue}
               onChange={(event) => handleSetState({ currentPageValue: event.target.value })}
             />
+            <div onClick={handleGoto} className={`${classes.pageControl} ${classes.goto}`}>
+              Go
+              <img src={angleRight} alt="" />
+            </div>
           </div>
         </div>
-      </div>
-
-      <div className={classes.display}>
-        {Object.keys(paginate).length
-          ? paginate[currentPage].map((f, idx) => (
-              <div
-                key={idx}
-                className={`${previewSelectMode ? classes.assetWrapperSelect : classes.assetWrapper} ${
-                  collectionProfile.name === f.name && previewSelectMode && classes.assetWrapperActive
-                }`}
-              >
-                <img
-                  onClick={() => (previewSelectMode ? handleMintSetState({ collectionProfile: f }) : "")}
-                  src={URL.createObjectURL(f)}
-                  alt=""
-                />
-                {!previewSelectMode && (
-                  <div className={classes.assetOverlay}>
-                    {fileToMetadataMap[f.name].name}
-                    <button
-                      type="button"
-                      onClick={() => handleShowAttribute(fileToMetadataMap[f.name])}
-                      className={classes.attrBtn}
-                    >
-                      View Attributes
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))
-          : null}
-      </div>
-      {previewSelectMode && (
         <div className={classes.buttonWrapper}>
           <p onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}>Cancel</p>
           <div onClick={saveHandler}>Save</div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default CollectionPreview;
+export default CollectionPreviewSelect;
