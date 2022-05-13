@@ -198,7 +198,7 @@ async function createAsset(asset, account) {
 }
 
 async function signTx(connector, txns, dispatch) {
-  const TxIds = txns.map((tx) => tx.txID());
+  const TxIds = [];
   const assetIds = [];
   // const txnsToSign = [txnsToSign];
   const requestChunkSize = 64;
@@ -272,6 +272,7 @@ async function signTx(connector, txns, dispatch) {
     );
     for (let tIndex = 0; tIndex < requestChunk.length; ++tIndex) {
       const trxId = requestChunk[tIndex].txID();
+      TxIds.push(trxId);
       await waitForConfirmation(trxId);
       const ptx = await algodTxnClient.pendingTransactionInformation(trxId).do();
       const assetID = ptx["asset-index"];
