@@ -4,7 +4,7 @@ import ArtCard from "../art-card/art-card";
 import { GenContext } from "../../gen-state/gen.context";
 import { addImage } from "../../gen-state/gen.actions";
 import ButtonClickEffect from "../button-effect/button-effect";
-import { getCombinations, handleAddBlank, handleFileChange, handleAddTemplates } from "./collection-menu-script";
+import { handleAddBlank, handleFileChange, handleAddAssets } from "./collection-menu-script";
 
 const CollectionMenu = ({ layer }) => {
   const [state, setState] = useState({
@@ -14,13 +14,6 @@ const CollectionMenu = ({ layer }) => {
   const { layerTitle, traits, id } = layer;
   const { dispatch, layers } = useContext(GenContext);
   const fileRef = useRef(null);
-  const [templateImages, setTemplateImages] = useState({
-    pointr: 0,
-    imgs: [
-      "https://cdn.iconscout.com/icon/free/png-256/reddit-3771063-3147680.png",
-      "https://cdn2.iconfinder.com/data/icons/elon-musk-1/128/Elon_musk_artificial_entrepreneur_face_intelligence_tesla-128.png",
-    ],
-  });
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -37,37 +30,37 @@ const CollectionMenu = ({ layer }) => {
     });
     dispatch(addImage(res));
   };
-
-  const handleTemplates = async () => {
-    let newCanvas = document.createElement("canvas");
-    let indicator = templateImages.pointr;
-    let templateImage = templateImages.imgs[indicator];
-    newCanvas.id = templateImage;
-    console.log("New Canvas: ", newCanvas);
-    const res = await handleAddTemplates({
-      layerId: id,
-      traits,
-      layerTitle,
-      canvas: newCanvas,
-      img: templateImage,
-      imgName: templateImage,
-    });
-    console.log("response: ", res);
-    if (res) {
-      dispatch(addImage(res));
+  const dataURLtoFile = (dataurl, filename) => {
+    let arr = dataurl.split(",");
+    let mime = arr[0].match(/:(.*?);/)[1];
+    let bstr = atob(arr[1]);
+    let n = bstr.length;
+    let u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    if (indicator < templateImages.imgs.length - 1) {
-      indicator++;
-    }
-    setTemplateImages({
-      pointr: indicator,
-      imgs: templateImages.imgs,
-    });
+    return new File([u8arr], filename, { type: mime });
   };
 
-  useEffect(() => {
-    dispatch(setCombinations(getCombinations(layers)));
-  }, [layers, dispatch]);
+  const importAll = (r) => {
+    let images = {};
+    r.keys().map((item, index) => {
+      images[item.replace("./", "")] = r(item);
+    });
+    return images;
+  };
+
+  const handleTemplates = () => {
+    let images;
+    images = importAll(require.context(`../../assets/CreateAssets/`, true, /\.(png|jpe?g|svg)$/));
+    let imgList = [];
+    let imgFiles = [];
+    Object.keys(images).map((key, value) => {
+      imgList.push(images[key].default);
+      imgFiles.push(dataURLtoFile(images[key].default, key.slice(key.indexOf("/") + 1)));
+    });
+    dispatch(addImage(handleAddAssets({ layerId: id, files: imgFiles, traits, layerTitle })));
+  };
 
   return (
     <div className={classes.container}>

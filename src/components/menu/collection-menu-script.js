@@ -4,6 +4,26 @@ export const handleFileChange = (props) => {
   const { layerId, event, traits, layerTitle } = props;
 
   const { files } = event.target;
+  console.log("imageFiles uploaded: ", files);
+  const imageFiles = Object.values(files);
+  const uniqueImageFile = [...traits];
+  const filterArr = traits.map(({ image }) => image.name);
+
+  imageFiles.forEach((imageFile) => {
+    if (!filterArr.includes(imageFile.name)) {
+      uniqueImageFile.push({
+        traitTitle: imageFile.name.split(".")[0],
+        Rarity: "1",
+        image: imageFile,
+      });
+      filterArr.push(imageFile.name);
+    }
+  });
+  return { layerId, layerTitle, traits: uniqueImageFile };
+};
+
+export const handleAddAssets = (props) => {
+  const { layerId, files, traits, layerTitle } = props;
   const imageFiles = Object.values(files);
   const uniqueImageFile = [...traits];
   const filterArr = traits.map(({ image }) => image.name);
@@ -75,11 +95,4 @@ export const handleAddTemplates = async (props) => {
     console.log("UniqueImageFile: ", uniqueImageFile.length);
     return { layerId, layerTitle, traits: uniqueImageFile };
   }
-};
-
-export const getCombinations = (layers) => {
-  const amtArr = layers.map((layer) => layer.traitsAmount);
-  const count = amtArr.reduce((acc, curr) => acc * curr, 1);
-
-  return count;
 };
