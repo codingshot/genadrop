@@ -18,12 +18,12 @@
 
 .rules {
   width: 100%;
+  align-items: center;
   background: var(--main-bg);
   padding: 2em 0.5em;
   z-index: 1;
   gap: 1em;
   display: inline-flex;
-  align-items: stretch;
   justify-content: flex-start;
   position: sticky;
   top: 3.9em;
@@ -40,13 +40,13 @@
 }
 
 .addRuleBtn {
-  padding: 0.65em 2em;
+  width: 10em;
+  height: 3em;
   background: var(--main-accent);
   color: white;
 }
 
 .showRuleBtn {
-  padding: 0.5em 2em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,6 +54,8 @@
   color: var(--main-accent);
   background: white;
   border: 1px solid var(--main-accent);
+  width: 10em;
+  height: 3em;
 }
 
 .addRuleBtn:hover {
@@ -104,16 +106,45 @@
   font-size: 2rem;
   text-transform: capitalize;
   font-style: italic;
-  /* padding: 2em 0; */
   min-height: calc(100vh - 5em);
 }
 
+.conflictGuide {
+  font-size: 0.75em;
+  color: #009987;
+  background: #edfcfa;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  height: fit-content;
+  padding: 10px 8px;
+  margin-left: auto;
+  width: 35em;
+}
+.conflictGuide img:first-child {
+  margin-right: 8px;
+  height: 20px;
+}
+.conflictGuide img:last-child {
+  margin-left: 8px;
+  cursor: pointer;
+}
+.hidden {
+  display: none;
+}
 @media screen and (max-width: 1200px) {
   .container {
     min-height: 10em;
   }
 }
-
+@media screen and (max-width: 950px) {
+  .rules {
+    flex-wrap: wrap-reverse;
+  }
+  .conflictGuide {
+    width: 100%;
+  }
+}
 @media screen and (max-width: 768px) {
   .container {
     width: 100%;
