@@ -42,7 +42,8 @@ export const INITIAL_STATE = {
   clipboardMessage: "",
   loaderMessage: "",
   didMount: false,
-  mainnet: !process.env.REACT_APP_ENV_STAGING,
+  graphCollections: [],
+  mainnet: process.env.REACT_APP_ENV_STAGING === "false",
   prompt: null,
   promptAsset: null,
   promptLayer: null,
@@ -216,6 +217,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         collections: action.payload,
+      };
+    case genActionTypes.GRAPH_COLLECTIONS:
+      return {
+        ...state,
+        graphCollections: action.payload,
       };
     case genActionTypes.SET_SINGLE_NFTS:
       return {

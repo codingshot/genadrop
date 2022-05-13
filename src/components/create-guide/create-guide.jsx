@@ -68,8 +68,9 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
         cardRef6.current.load();
       },
     };
+
     plays[swipeCount]();
-  }, [swipeCount, toggleGuide]);
+  }, [swipeCount]);
 
   useEffect(() => {
     swipeRef.current.style.transform = `translateX(-${(swipeCount - 1) * swipeWidth}px)`;
@@ -88,13 +89,15 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
     let sideVideos = sideRef.current;
     if (!sideVideos) return;
     for (let sv of sideVideos) {
-      if (sv.className.includes("create-guide__2__6-5U6")) {
+      if (sv.className.includes("outer")) {
         sv.style.height = `${swipeHeight - 64}px`;
       } else {
         sv.style.height = `${swipeHeight - 32}px`;
       }
     }
   }, [swipeHeight]);
+
+  useEffect(() => {}, [toggleGuide]);
 
   useEffect(() => {
     const width = swipeContainer.current?.getBoundingClientRect().width;
@@ -115,7 +118,7 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
     sideVideos[0].onanimationend = () => {
       setAnimate(false);
     };
-  }, []);
+  }, [toggleGuide]);
 
   return (
     <div className={`${classes.wrapper} ${toggleGuide && classes.active}`}>
@@ -136,11 +139,33 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
         </div>
 
         <div className={classes.container}>
-          <div className={`vid ${classes.leftSideCard} ${classes._2} ${animate && classes.active}`}>
+          <div className={classes.control}>
+            <img
+              src={leftCtrl}
+              alt=""
+              onMouseDown={swipeLeft}
+              className={`${classes.left} ${swipeCount > 1 && classes.active}`}
+            />
+            <img
+              src={rightCtrl}
+              alt=""
+              onMouseDown={swipeRight}
+              className={`${classes.right} ${swipeCount < maxCount && classes.active}`}
+            />
+          </div>
+          <div
+            className={`vid outer ${classes.leftSideCard} ${classes._2} ${animate && classes.active} ${
+              !guide[swipeCount - 2] && classes.hide
+            }`}
+          >
             <video src={swipeCount <= 2 ? blankImage : guide[swipeCount - 2].vid} />
           </div>
 
-          <div className={`vid ${classes.leftSideCard} ${animate && classes.active}`}>
+          <div
+            className={`vid inner ${classes.leftSideCard} ${animate && classes.active} ${
+              !guide[swipeCount - 1] && classes.hide
+            }`}
+          >
             <video src={swipeCount <= 1 ? blankImage : guide[swipeCount - 1].vid} />
           </div>
 
@@ -154,10 +179,18 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
               <video controls src={guide[6].vid} ref={cardRef6} className={classes.card}></video>
             </div>
           </div>
-          <div className={`vid ${classes.rightSideCard} ${animate && classes.active}`}>
+          <div
+            className={`vid inner ${classes.rightSideCard} ${animate && classes.active} ${
+              !guide[swipeCount + 1] && classes.hide
+            }`}
+          >
             <video src={swipeCount >= maxCount ? blankImage : guide[swipeCount + 1].vid} />
           </div>
-          <div className={`vid ${classes.rightSideCard} ${classes._2} ${animate && classes.active}`}>
+          <div
+            className={`vid outer ${classes.rightSideCard} ${classes._2} ${animate && classes.active} ${
+              !guide[swipeCount + 2] && classes.hide
+            }`}
+          >
             <video src={swipeCount >= maxCount - 1 ? blankImage : guide[swipeCount + 2].vid} />
           </div>
         </div>
@@ -169,20 +202,6 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
                 <div></div>
               </div>
             ))}
-        </div>
-        <div className={classes.control}>
-          <img
-            src={leftCtrl}
-            alt=""
-            onMouseDown={swipeLeft}
-            className={`${classes.left} ${swipeCount > 1 && classes.active}`}
-          />
-          <img
-            src={rightCtrl}
-            alt=""
-            onMouseDown={swipeRight}
-            className={`${classes.right} ${swipeCount < maxCount && classes.active}`}
-          />
         </div>
       </div>
     </div>

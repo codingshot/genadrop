@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: space-between;
   text-transform: capitalize;
-  gap: 1em;
+  gap: 0.5em;
 }
 
 .selectedPrice span {
@@ -98,6 +98,7 @@
   align-items: center;
   justify-content: center;
   gap: 2em;
+  font-size: 0.55rem;
 }
 
 .priceDropdown .dropdown > div:hover {

@@ -30,7 +30,6 @@
   background: #00b39e;
   padding: 1em;
   border-radius: 1em;
-  position: relative;
 }
 
 .container {
@@ -38,6 +37,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
 .closeBtn {
@@ -159,11 +159,16 @@
 .leftSideCard {
   height: auto;
   width: 4em;
-  background: rgba(0, 0, 0, 0.55);
+  background: transparent;
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
   overflow: hidden;
+}
+
+.rightSideCard.hide,
+.leftSideCard.hide {
+  display: none;
 }
 
 .rightSideCard._2,
@@ -259,11 +264,6 @@
     display: none;
   }
 
-  .control {
-    bottom: 1em;
-    position: static;
-  }
-
   .closeBtn button {
     padding: 0.25em 1em;
     font-size: 0.75rem;
@@ -293,11 +293,6 @@
 
   .indicator {
     padding: 1px;
-  }
-
-  .control {
-    margin-top: -1em;
-    padding: 0;
   }
 
   .control .right,

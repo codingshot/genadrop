@@ -13,6 +13,8 @@ import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
 
 const LodaingCards = () => (
   <div className={classes.skeleton}>
@@ -41,6 +43,12 @@ const Dashboard = () => {
     createdNfts: false,
     myCollections: false,
     filteredCollection: null,
+  });
+
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
   });
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
