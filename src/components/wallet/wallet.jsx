@@ -10,6 +10,7 @@ import {
   setChainId,
   setMainnet,
   setProposedChain,
+  setClipboard,
 } from "../../gen-state/gen.actions";
 import userIcon from "../../assets/user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
@@ -36,7 +37,18 @@ function ConnectWallet() {
   };
 
   const handleConnect = () => {
-    setTogglePopup(true);
+    if (window?.ethereum !== undefined) {
+      setTogglePopup(true);
+    } else {
+      dispatch(
+        setNotification({
+          message: "You need to install metamask to continue",
+          type: "error",
+        })
+      );
+
+      dispatch(setClipboard("https://metamask.io/"));
+    }
   };
 
   const handleCopy = (props) => {
@@ -58,20 +70,18 @@ function ConnectWallet() {
 
   const isAlgoConnected = async (provider) => {
     if (provider?.connected) {
-      console.log("algo connected");
       try {
         await provider.disconnect();
       } catch (error) {
         console.log("error disconneting: ", error);
       }
-      console.log("algo disconnected");
     }
   };
 
   const updateAccount = async (provider) => {
     await isAlgoConnected(provider);
-    const accounts = await ethereum.request({ method: "eth_accounts" });
-    dispatch(setAccount(accounts[0]));
+    const [accounts] = await ethereum.request({ method: "eth_accounts" });
+    accounts && dispatch(setAccount(accounts));
     const networkId = await ethereum.networkVersion;
     let isSupported = Object.keys(supportedChains).includes(networkId);
     if (!isSupported) {
@@ -98,20 +108,16 @@ function ConnectWallet() {
     if (pathname.includes("/me")) {
       history.push("/marketplace");
     }
-    console.log("disconnected");
   };
 
   useEffect(() => {
-    console.log("proposed chain change: ", proposedChain);
     if (!proposedChain) {
       setRefresh(!refresh);
-      console.log("proposed chain need refresh");
       return;
     }
     let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
     if (!isSupported) return;
     if (proposedChain === 4160) {
-      console.log("provider insider: ", connector);
       connectWithQRCode({ provider: connector, dispatch });
     } else {
       connectWithMetamask({ dispatch, supportedChains, proposedChain, connector });
@@ -130,60 +136,58 @@ function ConnectWallet() {
   }, [chainId]);
 
   useEffect(() => {
-    const { ethereum } = window;
-    let provider;
-    try {
-      provider = new WalletConnectProvider({
-        rpc: {
-          4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
-        },
+    if (window?.ethereum !== undefined) {
+      const { ethereum } = window;
+      let provider;
+      try {
+        provider = new WalletConnectProvider({
+          rpc: {
+            4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+
+      if (window.localStorage.walletconnect) {
+        let newProvider = JSON.parse(window.localStorage.walletconnect);
+        dispatch(setProposedChain(newProvider.chainId));
+      } else {
+        updateAccount(provider);
+      }
+
+      dispatch(setConnector(provider));
+
+      // initiallize account
+      // Subscribe to accounts change
+      ethereum.on("accountsChanged", function (accounts) {
+        updateAccount(provider);
       });
-    } catch (error) {
-      console.log(error);
-    }
 
-    if (window.localStorage.walletconnect) {
-      let newProvider = JSON.parse(window.localStorage.walletconnect);
-      dispatch(setProposedChain(newProvider.chainId));
+      // Subscribe to chainId change
+      ethereum.on("chainChanged", (chainId) => {
+        updateAccount(provider);
+        // window.location.reload();
+      });
+
+      // Subscribe to accounts change
+      provider.on("accountsChanged", (accounts) => {
+        dispatch(setAccount(accounts[0]));
+        dispatch(setChainId(provider.chainId));
+      });
+
+      // Subscribe to chainId change
+      provider.on("chainChanged", (chainId) => {
+        dispatch(setChainId(chainId));
+      });
+
+      // Subscribe to session disconnection
+      provider.on("disconnect", (code, reason) => {
+        disconnectWallet();
+      });
     } else {
-      updateAccount(provider);
+      console.log("metamask is not installed");
     }
-
-    // console.log("provider: ", provider);
-    dispatch(setConnector(provider));
-
-    // initiallize account
-    // Subscribe to accounts change
-    ethereum.on("accountsChanged", function (accounts) {
-      console.log("accountsChanged: ", accounts[0]);
-      updateAccount(provider);
-    });
-
-    // Subscribe to chainId change
-    ethereum.on("chainChanged", (chainId) => {
-      console.log("chainChanged: ", chainId);
-      updateAccount(provider);
-      // window.location.reload();
-    });
-
-    // Subscribe to accounts change
-    provider.on("accountsChanged", (accounts) => {
-      console.log("provider-accountsChanged: ", accounts[0]);
-      dispatch(setAccount(accounts[0]));
-      dispatch(setChainId(provider.chainId));
-    });
-
-    // Subscribe to chainId change
-    provider.on("chainChanged", (chainId) => {
-      console.log("provider-chainChanged: ", chainId);
-      dispatch(setChainId(chainId));
-    });
-
-    // Subscribe to session disconnection
-    provider.on("disconnect", (code, reason) => {
-      console.log("provider-disconnect", code, reason);
-      disconnectWallet();
-    });
   }, [refresh]);
 
   const changeNetwork = <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>;

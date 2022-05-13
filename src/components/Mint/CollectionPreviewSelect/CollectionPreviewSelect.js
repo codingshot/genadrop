@@ -78,6 +78,7 @@ const CollectionPreviewSelect = ({
     await updateZip(zip, collectionProfile.name, handleSetFileState);
     handleMintSetState({ preview: false, previewSelectMode: false, toggleGuide: false });
   };
+
   const getPagination = () => {
     const arr = [];
     const countPerPage = 20;
@@ -120,6 +121,7 @@ const CollectionPreviewSelect = ({
     }
     return arr;
   };
+
   return (
     <div className={classes.container}>
       {showAttribute && <AttributeOverlay attribute={attribute} handleSetState={handleSetState} />}
