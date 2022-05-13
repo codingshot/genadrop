@@ -164,6 +164,7 @@
   align-items: stretch;
   justify-content: flex-end;
   overflow: hidden;
+  display: none;
 }
 
 .rightSideCard.hide,
