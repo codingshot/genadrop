@@ -3,17 +3,6 @@
   max-width: 1440px;
   margin: 0 auto;
   position: relative;
-  /* transform: translateY(-10px);
-  animation: slide-down 1s forwards;
-}
-
-@keyframes slide-down {
-  from {
-    transform: translateY(-10px);
-  }
-  to {
-    transform: translateY(0);
-  } */
 }
 
 .topNav {
@@ -21,33 +10,37 @@
   max-width: 1440px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1em;
-  border-top: 1px solid gainsboro;
-  border-bottom: 1px solid gainsboro;
-  position: sticky;
-  top: 3.9em;
-  background: white;
-  padding: 2em 0;
   z-index: 10;
 }
 
 .backBtn {
-  padding: 0.5em 1em;
+  padding: 0.5em 1em 0.5em 0;
   border-radius: 2em;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+  gap: 0.5em;
+  margin-right: auto;
+  font-weight: 500;
+  font-size: 1.4em;
 }
 
-.backBtn img {
+.backBtn svg {
   transition: all 300ms;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #a0a0a0;
+  padding: 3px;
+  border-radius: 50%;
 }
-
-.backBtn:hover img {
+.backBtn svg path {
+  fill: #a0a0a0;
+}
+.backBtn:hover svg {
   transform: translateX(-50%);
 }
 
@@ -58,17 +51,18 @@
   flex-wrap: wrap;
   gap: 1em;
   padding: 0.25em;
+  margin-top: 2em;
 }
 
 .paginate input {
   padding: 0.65em;
   max-width: 6em;
-  border: 1px solid gainsboro;
-  border-radius: 0.5em;
+  border: 1px solid #c5c5c5;
+  background: #fff;
+  border-radius: 2px;
 }
 
 .pageControl {
-  padding: 0.5em 2em;
   border-radius: 2em;
   cursor: pointer;
   transition: all 300ms;
@@ -76,38 +70,64 @@
 }
 
 .pageControl.next {
-  color: white;
-  background: var(--main-accent);
 }
 
 .pageControl.next:hover {
-  background: var(--main-accent-dark);
 }
 
 .pageControl.prev {
-  color: gray;
-  background: white;
-  border: 2px solid gainsboro;
 }
 
 .pageControl.prev:hover {
-  background: whitesmoke;
 }
 
 .pageControl.goto {
-  background: var(--card-bg);
-  color: white;
+  color: var(--main-accent);
+  font-size: 0.9em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
 }
-
-.pageControl.goto:hover {
-  background: var(--card-bg2);
+.pageControl.goto img {
+  margin-left: 4px;
+  transition: all 300ms;
+}
+.pageControl.goto:hover img {
+  transform: translateX(50%);
 }
 
 .pageCount {
   white-space: nowrap;
-  color: gray;
+  display: flex;
+  color: #3e385d;
 }
-
+.pageCount p {
+  background: #fafbfe;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.pageCount p:not(:last-child) {
+  margin-right: 6px;
+}
+p.activePage {
+  border-color: var(--main-accent);
+}
+p.fillerPage {
+  cursor: initial;
+}
+.pageCount p:hover {
+  border-color: var(--main-accent);
+}
+p.fillerPage:hover {
+  border-color: transparent;
+}
 .gotoWrapper {
   display: flex;
   align-items: center;
@@ -159,7 +179,9 @@
 .assetWrapper:hover {
   border: 4px solid var(--main-accent);
 }
-
+.assetWrapperActive {
+  border: 4px solid var(--main-accent);
+}
 .attrBtn {
   width: 100%;
   margin-top: 1em;
@@ -175,42 +197,11 @@
   background: whitesmoke;
 }
 
-/* Collection Profile Image Select */
-.assetWrapperSelect {
-  width: 100%;
-  max-width: 14em;
-  position: relative;
-  overflow: hidden;
-  border-radius: 1em;
-  cursor: pointer;
-  border: 4px solid transparent;
-  transition: all 300ms;
-  display: flex;
-  padding: 6px;
-  background: #ffffff;
-  border: 1px solid #c4c4c4;
-  box-shadow: 0px 4px 30px rgb(0 0 0 / 5%);
-  border-radius: 20px;
-  cursor: pointer;
-}
-.assetWrapperSelect:hover {
-  background: var(--main-accent);
-}
-.assetWrapperSelect img {
-  border-radius: 20px;
-  width: 100%;
-}
-
-.assetWrapperActive {
-  background: var(--main-accent);
-}
-
 .buttonWrapper {
   display: flex;
   margin-top: 2.5rem;
   font-weight: 500;
   font-size: 1.25rem;
-  justify-content: center;
 }
 .buttonWrapper p,
 .buttonWrapper div {
@@ -239,7 +230,6 @@
 .buttonWrapper div:hover {
   background: var(--main-accent-dark);
 }
-
 @media screen and (max-width: 768px) {
   .topNav {
     flex-direction: column;
@@ -254,15 +244,10 @@
   .pageControl {
     font-size: 0.75rem;
   }
-
-  .backBtn {
-    align-self: flex-start;
-  }
-
-  .paginate {
-    width: 100%;
-  }
   .buttonWrapper {
     font-size: 0.9rem;
+  }
+  .backBtn {
+    align-self: flex-start;
   }
 }
