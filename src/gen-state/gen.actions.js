@@ -10,6 +10,11 @@ export const addLayer = (layer) => ({
   payload: layer,
 });
 
+export const setGraphCollection = (collections) => ({
+  type: genActionTypes.GRAPH_COLLECTIONS,
+  payload: collections,
+});
+
 export const removeLayer = (layer) => ({
   type: genActionTypes.REMOVE_LAYER,
   payload: layer,
@@ -127,6 +132,11 @@ export const setConnector = (connector) => ({
 export const setChainId = (chainId) => ({
   type: genActionTypes.SET_CHAIN_ID,
   payload: chainId,
+});
+
+export const setProposedChain = (chain) => ({
+  type: genActionTypes.SET_PROPOSED_CHAIN,
+  payload: chain,
 });
 
 export const setAccount = (account) => ({

@@ -4,9 +4,9 @@ import {
   mintToAlgo,
   mintToCelo,
   mintToPoly,
-  mintToNear,
+  mintToAurora,
   mintSingleToCelo,
-  mintSingleToNear,
+  mintSingleToAurora,
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
@@ -27,8 +27,8 @@ export const handleMint = async (args) => {
       url = await mintToCelo({ ...args });
     } else if (chain.toLowerCase() === "polygon") {
       url = await mintToPoly({ ...args });
-    } else if (chain.toLowerCase() === "near") {
-      url = await mintToNear({ ...args });
+    } else if (chain.toLowerCase() === "aurora") {
+      url = await mintToAurora({ ...args });
     } else {
       dispatch(
         setNotification({
@@ -79,8 +79,8 @@ export const handleSingleMint = async (args) => {
       url = await mintSingleToCelo({ ...args });
     } else if (chain.toLowerCase() === "polygon") {
       url = await mintSingleToPoly({ ...args });
-    } else if (chain.toLowerCase() === "near") {
-      url = await mintSingleToNear({ ...args });
+    } else if (chain.toLowerCase() === "aurora") {
+      url = await mintSingleToAurora({ ...args });
     } else {
       dispatch(
         setNotification({
@@ -91,7 +91,12 @@ export const handleSingleMint = async (args) => {
     }
 
     if (typeof url === "object") {
-      dispatch(setNotification(url.message));
+      dispatch(
+        setNotification({
+          message: url.message,
+          type: "warning",
+        })
+      );
     } else {
       dispatch(
         setNotification({

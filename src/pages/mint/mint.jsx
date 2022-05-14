@@ -1,8 +1,10 @@
+import React from "react";
+import { Link, useRouteMatch } from "react-router-dom";
 import classes from "./mint.module.css";
 import mintBg from "../../assets/mint-bg1.svg";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
-import { Link, useRouteMatch } from "react-router-dom";
+import shieldIcon from "../../assets/icon-shield-check.svg";
 
 const Mint = () => {
   const { url } = useRouteMatch();
@@ -18,13 +20,16 @@ const Mint = () => {
           mint to any of our supported blockchains!
         </p>
         <p className={classes.disclaimer}>
-          We do not own your private keys and cannot access your funds without your confirmation
+          <img src={shieldIcon} alt="" />{" "}
+          <p>We do not own your private keys and cannot access your funds without your confirmation</p>
         </p>
       </header>
 
       <main className={classes.mainWrapper}>
         <div className={`${classes.card} ${classes.collection}`}>
-          <img src={collectionIcon} alt="" />
+          <div className={classes.imageContainer}>
+            <img src={collectionIcon} alt="" />
+          </div>
           <h3 className={classes.title}> Mint a collection</h3>
           <p className={classes.description}>
             {" "}
@@ -37,14 +42,18 @@ const Mint = () => {
         </div>
 
         <div className={`${classes.card} ${classes._1of1}`}>
-          <img src={_1of1Icon} alt="" />
+          <div className={classes.imageContainer}>
+            <img src={_1of1Icon} alt="" />
+          </div>
           <h3 className={classes.title}> Mint 1 of 1 </h3>
           <p className={classes.description}>
             {" "}
             1 of 1 is a unique NFT you are minting individually. This is usually a single image in the format of Png{" "}
           </p>
           <Link to={`${url}/1of1`}>
-            <button className={classes.btn}>Mint 1 of 1</button>
+            <button type="button" className={classes.btn}>
+              Mint 1 of 1
+            </button>
           </Link>
         </div>
       </main>

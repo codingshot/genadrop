@@ -1,0 +1,303 @@
+.wrapper {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+  background: rgb(0, 0, 0, 0.75);
+}
+
+.wrapper.active {
+  display: flex;
+}
+
+.mainContainer {
+  width: 100%;
+  max-width: 56em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5em;
+  background: #00b39e;
+  padding: 1em;
+  border-radius: 1em;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.closeBtn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.closeBtn button {
+  background: white;
+  padding: 0.5em 2em;
+  border-radius: 1.5em;
+  border: none;
+  transition: all 300ms;
+}
+
+.closeBtn button:hover {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.736);
+}
+
+.heading {
+  color: white;
+  width: 100%;
+  padding: 0 6em;
+}
+
+.heading h3 {
+  font-weight: 500;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+}
+
+.heading span {
+  font-weight: 300;
+}
+
+.heading p {
+  width: 100%;
+  font-size: 1rem;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.swipeContainer {
+  width: 36em;
+  overflow: auto;
+  z-index: 1;
+}
+
+.swipeContainer.active {
+  animation: zoom 650ms forwards;
+}
+
+@keyframes zoom {
+  from {
+    transform: scale(1.05);
+  }
+  to {
+    transition: scale(1);
+  }
+}
+
+.cardContainer {
+  width: max-content;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: all 650ms;
+}
+
+.card {
+  width: 32em;
+  flex: 0 0 auto;
+  height: 100%;
+  background: gainsboro;
+}
+
+.control {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: absolute;
+  padding: 0 1em;
+}
+
+.control .right,
+.control .left {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.control .right.active,
+.control .left.active {
+  visibility: visible;
+}
+
+/* hide scrollbar */
+.swipeContainer::-webkit-scrollbar {
+  display: none;
+}
+
+.swipeContainer {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.rightSideCard,
+.leftSideCard {
+  height: auto;
+  width: 4em;
+  background: transparent;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-end;
+  overflow: hidden;
+  display: none;
+}
+
+.rightSideCard.hide,
+.leftSideCard.hide {
+  display: none;
+}
+
+.rightSideCard._2,
+.leftSideCard._2 {
+  width: 2em;
+}
+
+.leftSideCard.active {
+  animation: slideLeft 650ms forwards;
+}
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(2em) scale(1.05);
+  }
+  to {
+    transform: translateX(0) scale(1);
+  }
+}
+
+.rightSideCard.active {
+  animation: slideRight 650ms forwards;
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(-2em) scale(1.05);
+  }
+  to {
+    transform: translateX(0) scale(1);
+  }
+}
+
+.indicatorContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  padding: 2px;
+  transition: all 1s;
+}
+
+.indicator.active {
+  border-color: white;
+}
+
+.indicator > div {
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background: #adb5bd;
+}
+
+.indicator.active > div {
+  background: white;
+}
+
+@media screen and (max-width: 1000px) {
+  .mainContainer {
+    max-width: 48em;
+    gap: 1em;
+  }
+
+  .heading {
+    padding: 0 2em;
+  }
+
+  .heading h3 {
+    font-size: 0.95rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .heading {
+    padding: 0;
+  }
+
+  .heading h3 {
+    font-size: 0.85rem;
+  }
+
+  .leftSideCard,
+  .rightSideCard {
+    display: none;
+  }
+
+  .closeBtn button {
+    padding: 0.25em 1em;
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .mainContainer {
+    border-radius: 0.5em;
+  }
+
+  .heading h3 {
+    font-size: 0.75rem;
+  }
+
+  .heading span {
+    display: none;
+  }
+
+  .heading p {
+    font-size: 0.75rem;
+  }
+
+  .indicatorContainer {
+    gap: 0;
+  }
+
+  .indicator {
+    padding: 1px;
+  }
+
+  .control .right,
+  .control .left {
+    width: 2em;
+  }
+}

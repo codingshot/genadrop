@@ -12,10 +12,11 @@ import {
   removeLayer,
   setPrompt,
   promptDeleteLayer,
+  setCombinations,
 } from "../../gen-state/gen.actions";
 import Layer from "../layer/layer";
 import Prompt from "../prompt/prompt";
-import { getItemStyle, getListStyle } from "./layeroders-script";
+import { getCombinations, getItemStyle, getListStyle } from "./layeroders-script";
 import { fetchCollections } from "../../utils/firebase";
 import editIcon from "../../assets/icon-edit.svg";
 import markIcon from "../../assets/icon-mark.svg";
@@ -105,6 +106,10 @@ const LayerOrders = () => {
       dispatch(promptDeleteLayer(null));
     }
   }, [promptLayer]);
+
+  useEffect(() => {
+    dispatch(setCombinations(getCombinations(layers)));
+  }, [layers]);
 
   return (
     <div className={classes.container}>

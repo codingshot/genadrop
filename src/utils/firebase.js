@@ -17,25 +17,32 @@ import { nanoid } from "nanoid";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_ENV_STAGING
-    ? process.env.REACT_APP_API_KEY_STAGING
-    : process.env.REACT_APP_API_KEY_PROD,
-  authDomain: process.env.REACT_APP_ENV_STAGING
-    ? process.env.REACT_APP_AUTH_DOMAIN_STAGING
-    : process.env.REACT_APP_AUTH_DOMAIN_PROD,
-  projectId: process.env.REACT_APP_ENV_STAGING
-    ? process.env.REACT_APP_PROJECT_ID_STAGING
-    : process.env.REACT_APP_PROJECT_ID_PROD,
-  storageBucket: process.env.REACT_APP_ENV_STAGING
-    ? process.env.REACT_APP_STORAGE_BUCKET_STAGING
-    : process.env.REACT_APP_STORAGE_BUCKET_PROD,
-  messagingSenderId: process.env.REACT_APP_ENV_STAGING
-    ? process.env.REACT_APP_MESSAGING_SENDER_ID_STAGING
-    : process.env.REACT_APP_MESSAGING_SENDER_ID_PROD,
-  appId: process.env.REACT_APP_ENV_STAGING ? process.env.REACT_APP_ID_STAGING : process.env.REACT_APP_ID_PROD,
-  measurementId: process.env.REACT_APP_ENV_STAGING
-    ? process.env.REACT_APP_MEASUREMENT_ID_STAGING
-    : process.env.REACT_APP_MEASUREMENT_ID_PROD,
+  apiKey:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? process.env.REACT_APP_API_KEY_STAGING
+      : process.env.REACT_APP_API_KEY_PROD,
+  authDomain:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? process.env.REACT_APP_AUTH_DOMAIN_STAGING
+      : process.env.REACT_APP_AUTH_DOMAIN_PROD,
+  projectId:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? process.env.REACT_APP_PROJECT_ID_STAGING
+      : process.env.REACT_APP_PROJECT_ID_PROD,
+  storageBucket:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? process.env.REACT_APP_STORAGE_BUCKET_STAGING
+      : process.env.REACT_APP_STORAGE_BUCKET_PROD,
+  messagingSenderId:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? process.env.REACT_APP_MESSAGING_SENDER_ID_STAGING
+      : process.env.REACT_APP_MESSAGING_SENDER_ID_PROD,
+  appId:
+    process.env.REACT_APP_ENV_STAGING === "true" ? process.env.REACT_APP_ID_STAGING : process.env.REACT_APP_ID_PROD,
+  measurementId:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? process.env.REACT_APP_MEASUREMENT_ID_STAGING
+      : process.env.REACT_APP_MEASUREMENT_ID_PROD,
 };
 
 // Initialize Firebase
@@ -69,7 +76,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
 async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId) {
   const name = fileName.split("-")[0];
   const updates = {};
-  for (let i = 0; i < collection_id.length; i += 1) {
+  for (let i = 0; i < collection_id.length; ++i) {
     updates[collection_id[i]] = {
       id: collection_id[i],
       collection: name,
@@ -78,7 +85,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       mainnet,
     };
     // eslint-disable-next-line no-await-in-loop
-    await recordTransaction(collection_id[i], "Minting", owner, null, null, txId);
+    await recordTransaction(collection_id[i], "Minting", owner, null, null, txId[i]);
   }
   db.collection("collections")
     .add({
@@ -137,13 +144,22 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   return true;
 }
 
-async function readAllNft() {
+async function readAllNft(account) {
+  console.log("ACCOUNT: ", account);
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((doc) => {
     res.push(...Object.values(doc.data()));
   });
-  return res;
+
+  var filtered = [];
+  res.forEach((e) => {
+    if (e.Buyer == account) {
+      filtered.push(e);
+    }
+  });
+  console.log(res);
+  return filtered;
 }
 
 // async function readData() {

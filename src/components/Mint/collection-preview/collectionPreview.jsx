@@ -1,9 +1,18 @@
+import React, { useEffect, useState } from "react";
 import classes from "./collectionPreview.module.css";
 import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
-import { useEffect, useState } from "react";
 import AttributeOverlay from "../attribute-overlay/attributeOverlay";
+import { updateZip } from "../collection-single/collection-single-script";
 
-const CollectionPreview = ({ file, metadata, goBack }) => {
+const CollectionPreview = ({
+  file,
+  metadata,
+  handleMintSetState,
+  previewSelectMode,
+  collectionProfile,
+  handleSetFileState,
+  zip,
+}) => {
   const [state, setState] = useState({
     currentPage: 1,
     paginate: {},
@@ -16,7 +25,7 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
   const { currentPage, paginate, currentPageValue, fileToMetadataMap, showAttribute, attribute } = state;
 
   const handleSetState = (payload) => {
-    setState((state) => ({ ...state, ...payload }));
+    setState((states) => ({ ...states, ...payload }));
   };
 
   const handlePrev = () => {
@@ -37,8 +46,8 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
     document.documentElement.scrollTop = 0;
   };
 
-  const handleShowAttribute = (attribute) => {
-    handleSetState({ showAttribute: true, attribute });
+  const handleShowAttribute = (attributes) => {
+    handleSetState({ showAttribute: true, attribute: attributes });
   };
 
   useEffect(() => {
@@ -57,7 +66,7 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
 
   useEffect(() => {
     const data = [...metadata];
-    let obj = {};
+    const obj = {};
     file.forEach((f) => {
       data.forEach((m, idx) => {
         if (f.name === m.image) {
@@ -69,13 +78,26 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
     handleSetState({ fileToMetadataMap: obj });
   }, []);
 
+  const saveHandler = async () => {
+    await updateZip(zip, collectionProfile.name, handleSetFileState);
+    handleMintSetState({
+      preview: false,
+      previewSelectMode: false,
+      toggleGuide: false,
+      collectionProfile: file[0],
+      profileSelected: true,
+    });
+  };
   return (
     <div className={classes.container}>
       {showAttribute && <AttributeOverlay attribute={attribute} handleSetState={handleSetState} />}
       <div className={classes.topNav}>
-        <div onClick={() => goBack({ preview: false })} className={classes.backBtn}>
+        <div
+          onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}
+          className={classes.backBtn}
+        >
           <img src={arrowIconLeft} alt="" />
-          Back
+          {previewSelectMode ? "Select an image" : "Back"}
         </div>
 
         <div className={classes.paginate}>
@@ -104,18 +126,39 @@ const CollectionPreview = ({ file, metadata, goBack }) => {
       <div className={classes.display}>
         {Object.keys(paginate).length
           ? paginate[currentPage].map((f, idx) => (
-              <div key={idx} className={classes.assetWrapper}>
-                <img src={URL.createObjectURL(f)} alt="" />
-                <div className={classes.assetOverlay}>
-                  {fileToMetadataMap[f.name].name}
-                  <button onClick={() => handleShowAttribute(fileToMetadataMap[f.name])} className={classes.attrBtn}>
-                    View Attributes
-                  </button>
-                </div>
+              <div
+                key={idx}
+                className={`${previewSelectMode ? classes.assetWrapperSelect : classes.assetWrapper} ${
+                  collectionProfile.name === f.name && previewSelectMode && classes.assetWrapperActive
+                }`}
+              >
+                <img
+                  onClick={() => (previewSelectMode ? handleMintSetState({ collectionProfile: f }) : "")}
+                  src={URL.createObjectURL(f)}
+                  alt=""
+                />
+                {!previewSelectMode && (
+                  <div className={classes.assetOverlay}>
+                    {fileToMetadataMap[f.name].name}
+                    <button
+                      type="button"
+                      onClick={() => handleShowAttribute(fileToMetadataMap[f.name])}
+                      className={classes.attrBtn}
+                    >
+                      View Attributes
+                    </button>
+                  </div>
+                )}
               </div>
             ))
           : null}
       </div>
+      {previewSelectMode && (
+        <div className={classes.buttonWrapper}>
+          <p onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}>Cancel</p>
+          <div onClick={saveHandler}>Save</div>
+        </div>
+      )}
     </div>
   );
 };
