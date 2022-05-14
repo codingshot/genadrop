@@ -25,6 +25,7 @@ import algoLogo from "../../assets/icon-algo.svg";
 import { setLoader } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
+import { supportedChains } from "../../utils/supportedChains";
 
 const SingleNFT = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -47,9 +48,10 @@ const SingleNFT = () => {
     isLoading: true,
     transactionHistory: null,
     showSocial: false,
+    chainIcon: algoLogo,
     isCopied: false,
   });
-  const { dropdown, nftDetails, algoPrice, isLoading, showSocial, isCopied, transactionHistory } = state;
+  const { dropdown, nftDetails, algoPrice, isLoading, chainIcon, showSocial, isCopied, transactionHistory } = state;
   const history = useHistory();
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
@@ -117,7 +119,6 @@ const SingleNFT = () => {
         const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
         const result = await getGraphNft(data.data.nft);
         const trHistory = await getTransactions(data?.data?.nft?.transactions);
-
         trHistory.find((t) => {
           if (t.type === "Minting") t.price = result[0].price;
         });
@@ -128,18 +129,25 @@ const SingleNFT = () => {
         });
       })();
     }
-    // handleSetState({ })
 
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount });
-    });
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => {}, [nftDetails]);
-
   useEffect(() => {
-    // if (!nftDetails) return;
+    if (nftDetails?.chain) {
+      const pair = supportedChains[nftDetails.chain].coinGeckoLabel;
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({
+          chainIcon: supportedChains[nftDetails.chain].icon,
+          algoPrice: value,
+        });
+      });
+    } else {
+      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount });
+      });
+    }
   }, [nftDetails]);
 
   const onCopyText = () => {
@@ -259,7 +267,7 @@ const SingleNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={algoLogo} alt="" />
+                <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>{nftDetails.price}</p>
                 <span className={classes.usdValue}>
                   ($
@@ -307,7 +315,7 @@ const SingleNFT = () => {
         </div>
 
         <div className={classes.history}>
-          <Search data={transactionHistory} />
+          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
         </div>
       </div>
       <div className={classes.section}>
