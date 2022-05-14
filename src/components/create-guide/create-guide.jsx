@@ -106,14 +106,10 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
     setSwipeHeight(300);
 
     window.addEventListener("resize", () => {
-      if (swipeContainer.current) {
-        const { width } = swipeContainer.current.getBoundingClientRect();
-        setSwipeWidth(width);
-      }
-      if (cardRef1.current) {
-        const { height } = cardRef1.current.getBoundingClientRect();
-        setSwipeHeight(height);
-      }
+      const width = swipeContainer.current?.getBoundingClientRect().width;
+      setSwipeWidth(width);
+      const height = cardRef1.current?.getBoundingClientRect().height;
+      setSwipeHeight(height);
     });
 
     const sideVideos = document.querySelectorAll(".vid");
