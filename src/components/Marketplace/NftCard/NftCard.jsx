@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useRouteMatch } from "react-router-dom";
+import algoIcon from "../../../assets/icon-algo.svg";
 import classes from "./NftCard.module.css";
 
 const NftCard = ({ nft, list, extend, loadedChain }) => {
@@ -41,6 +42,8 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
             <div className={classes.listPrice}>
               <div className={classes.list}>LISTPRICE</div>
               <div className={classes.price}>
+                <img src={algoIcon} alt="" />
+
                 {price} <span className={classes.chain}>{chainName}</span>
                 <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
               </div>

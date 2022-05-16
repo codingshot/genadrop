@@ -66,7 +66,11 @@
   color: var(--main-accent);
   font-weight: bold;
 }
-
+.price img {
+  transform: translateY(20%);
+  margin-right: 10px;
+  width: 25px;
+}
 .chain {
   font-size: 0.75rem;
 }
