@@ -85,6 +85,12 @@
   font-weight: bold;
 }
 
+.price img {
+  transform: translateY(20%);
+  margin-right: 10px;
+  width: 30px;
+}
+
 .chain {
   font-weight: 300;
   font-size: 0.85em;
