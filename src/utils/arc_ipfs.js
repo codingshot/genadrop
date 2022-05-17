@@ -460,20 +460,22 @@ export async function mintSingleToAurora(singleMintProps) {
   }
 }
 
-export async function createNFT(createProps) {
+export async function createNFT(createProps, doAccountCheck) {
   const { file, dispatch, account, setNotification, setLoader } = createProps;
   const assets = [];
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
   const files = data.files["metadata.json"];
-  const userInfo = await algodClient.accountInformation(account).do();
-  const assetBalance = userInfo.account.assets.length;
-  const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
-  const estimateTxFee = 0.001 * metadata.length;
-  if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
-    return false;
+  if (doAccountCheck) {
+    const userInfo = await algodClient.accountInformation(account).do();
+    const assetBalance = userInfo.account.assets.length;
+    const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
+    const estimateTxFee = 0.001 * metadata.length;
+    if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
+      return false;
+    }
   }
   dispatch(
     setNotification({
@@ -519,7 +521,7 @@ export async function mintToAlgo(algoProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = algoProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
-    const ipfsJsonData = await createNFT({ ...algoProps });
+    const ipfsJsonData = await createNFT({ ...algoProps }, true);
     if (!ipfsJsonData) {
       return {
         message: "insufficient balance/Min balance not enough to hold assets",
