@@ -43,7 +43,6 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
               <div className={classes.list}>LISTPRICE</div>
               <div className={classes.price}>
                 <img src={algoIcon} alt="" />
-
                 {price} <span className={classes.chain}>{chainName}</span>
                 <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
               </div>

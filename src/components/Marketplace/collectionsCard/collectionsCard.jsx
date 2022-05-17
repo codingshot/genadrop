@@ -83,7 +83,6 @@ export const NearCollectionCard = ({ collection }) => {
             <div className={classes.floor}>FLOORPRICE</div>
             <div className={classes.price}>
               <img src={supportedChains[1313161554].icon} alt="" />
-
               {price} <span className={classes.chain}>AOA</span>{" "}
               <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
             </div>
