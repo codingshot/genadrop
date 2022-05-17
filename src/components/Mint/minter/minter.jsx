@@ -213,7 +213,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         );
       }
       handleMint(mintProps).then((url) => {
-        history.push(`/me/${account}`);
+        // history.push(`/me/${account}`);
       });
     } else {
       if (
@@ -230,7 +230,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         );
       }
       handleSingleMint(singleMintProps).then((url) => {
-        history.push(`/me/${account}`);
+        // history.push(`/me/${account}`);
       });
     }
   };
