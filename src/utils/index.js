@@ -28,7 +28,6 @@ export const getAuroraCollections = async (collection) => {
       console.log(error);
     }
   }
-  console.log(collectionArr);
   return collectionArr;
 };
 
