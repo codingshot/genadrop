@@ -94,6 +94,11 @@
   background: rgb(240, 240, 240);
 }
 
+.chainImg {
+  width: 2em;
+  height: 2em;
+}
+
 .chainDropdown .dropdown > div:last-child {
   border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em;

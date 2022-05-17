@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useLocation } from "react-router-dom";
-import { getSingleNfts } from "../../utils";
+import { getSingleGraphNfts, getSingleNfts } from "../../utils";
 import classes from "./singleNftCollection.module.css";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { readAllSingleNft } from "../../utils/firebase";
@@ -10,12 +10,20 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
+import { createClient } from "urql";
+import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../graphql/querries/getCollections";
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
   const { mainnet } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
+
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -71,8 +79,12 @@ const SingleNftCollection = () => {
       (async function getAlgoSingleNftCollection() {
         const singleNftCollections = await readAllSingleNft(mainnet);
         const result = await getSingleNfts(mainnet, singleNftCollections);
+        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+
+        const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
         handleSetState({
           algoCollection: result,
+          auroraCollection: allSingleNfts,
         });
       })();
     } catch (error) {
