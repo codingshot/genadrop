@@ -20,17 +20,19 @@ import blankImage from "../../assets/blank.png";
 import WalletPopup from "../wallet-popup/walletPopup";
 import { supportedChains } from "../../utils/supportedChains";
 import { connectWithMetamask, connectWithQRCode } from "./wallet-script";
+import { ethers } from "ethers";
 
 function ConnectWallet() {
   const history = useHistory();
   const { pathname } = useLocation();
   const clipboardRef = useRef(null);
-  const { dispatch, connector, account, chainId, mainnet, proposedChain } = useContext(GenContext);
+  const { dispatch, account, chainId, mainnet, proposedChain } = useContext(GenContext);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const [clipboardState, setClipboardState] = useState("Copy Address");
   const [network, setNetwork] = useState(process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet");
   const [togglePopup, setTogglePopup] = useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [provider, setProvider] = useState();
 
   const breakAddress = (address = "", width = 6) => {
     if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -100,7 +102,7 @@ function ConnectWallet() {
   };
 
   const disconnectWallet = async () => {
-    await isAlgoConnected(connector);
+    await isAlgoConnected(provider);
     dispatch(setAccount(null));
     dispatch(setChainId(null));
     dispatch(setProposedChain(-1));
@@ -111,17 +113,21 @@ function ConnectWallet() {
   };
 
   useEffect(() => {
-    if (!proposedChain) {
-      setRefresh(!refresh);
-      return;
-    }
+    if (!proposedChain) return setRefresh(!refresh);
     let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
     if (!isSupported) return;
-    if (proposedChain === 4160) {
-      connectWithQRCode({ provider: connector, dispatch });
-    } else {
-      connectWithMetamask({ dispatch, supportedChains, proposedChain, connector });
+    async function connectWallet() {
+      if (proposedChain === 4160) {
+        await connectWithQRCode({ provider, dispatch });
+        dispatch(setConnector(provider));
+      } else {
+        await connectWithMetamask({ dispatch, supportedChains, proposedChain, provider });
+        const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+        dispatch(setConnector(ethereumProvider));
+      }
     }
+
+    connectWallet();
   }, [proposedChain]);
 
   useEffect(() => {
@@ -138,9 +144,9 @@ function ConnectWallet() {
   useEffect(() => {
     if (window?.ethereum !== undefined) {
       const { ethereum } = window;
-      let provider;
+      let walletConnectProvider;
       try {
-        provider = new WalletConnectProvider({
+        walletConnectProvider = new WalletConnectProvider({
           rpc: {
             4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
           },
@@ -152,37 +158,40 @@ function ConnectWallet() {
       if (window.localStorage.walletconnect) {
         let newProvider = JSON.parse(window.localStorage.walletconnect);
         dispatch(setProposedChain(newProvider.chainId));
+        dispatch(setConnector(walletConnectProvider));
       } else {
-        updateAccount(provider);
+        updateAccount(walletConnectProvider);
+        const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+        dispatch(setConnector(ethereumProvider));
       }
 
-      dispatch(setConnector(provider));
+      setProvider(walletConnectProvider);
 
       // initiallize account
       // Subscribe to accounts change
       ethereum.on("accountsChanged", function (accounts) {
-        updateAccount(provider);
+        updateAccount(walletConnectProvider);
       });
 
       // Subscribe to chainId change
       ethereum.on("chainChanged", (chainId) => {
-        updateAccount(provider);
+        updateAccount(walletConnectProvider);
         // window.location.reload();
       });
 
       // Subscribe to accounts change
-      provider.on("accountsChanged", (accounts) => {
+      walletConnectProvider.on("accountsChanged", (accounts) => {
         dispatch(setAccount(accounts[0]));
-        dispatch(setChainId(provider.chainId));
+        dispatch(setChainId(walletConnectProvider.chainId));
       });
 
       // Subscribe to chainId change
-      provider.on("chainChanged", (chainId) => {
+      walletConnectProvider.on("chainChanged", (chainId) => {
         dispatch(setChainId(chainId));
       });
 
       // Subscribe to session disconnection
-      provider.on("disconnect", (code, reason) => {
+      walletConnectProvider.on("disconnect", (code, reason) => {
         disconnectWallet();
       });
     } else {
