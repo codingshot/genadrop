@@ -58,7 +58,7 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {allSingleNfts?.length || allSingleGraphNfts?.length ? (
+      {allSingleNfts?.length ? (
         <div className={classes.wrapper}>
           {allSingleNfts.map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />

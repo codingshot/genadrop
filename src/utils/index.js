@@ -17,6 +17,8 @@ export const getAuroraCollections = async (collection) => {
       collectionObj.name = collection[i].name;
       collectionObj.owner = collection[i].id;
       let getPrice = collection[i].nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+      let chain = collection[i].nfts.map((col) => col.chain).reduce((a, b) => a === b && a);
+      collectionObj.chain = chain;
       collectionObj.price = getPrice * 0.000000000000000001;
       collectionObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       collectionObj.description = collection[i].description;
