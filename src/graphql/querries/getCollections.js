@@ -70,3 +70,21 @@ export const GET_GRAPH_NFT = gql`
     }
   }
 `;
+
+export const GET_ALL_GRAPH_SINGLE_NFTS = gql`
+  query MyQuery {
+    nfts {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;

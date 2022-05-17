@@ -70,7 +70,7 @@ export const supportedChains = {
   1313161555: {
     label: "Aurora Testnet",
     icon: auroraIcon,
-    sybmol: "AURORA",
+    sybmol: "AOA",
     networkId: 1313161555,
     add: addChain,
     switch: switchChain,
