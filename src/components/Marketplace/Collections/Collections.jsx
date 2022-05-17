@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
@@ -6,34 +6,50 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { getAuroraCollections, getNftCollections } from "../../../utils";
 import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
-import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS } from "../../../graphql/querries/getCollections";
-import { setGraphCollection } from "../../../gen-state/gen.actions";
+import { graphQLClient } from "../../../utils/graphqlClient";
 
 const Collections = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   const [state, setState] = useState({
     algoCollection: [],
     auroraCollection: [],
   });
-  const { collections, mainnet, dispatch } = useContext(GenContext);
+  const { collections, mainnet } = useContext(GenContext);
   const { algoCollection, auroraCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
   const history = useHistory();
   const { url } = useRouteMatch();
+  // (async function getSubgraphNfts() {
+  //   const data = await useQuery(
+  //     GET_ALL_AURORA_COLLECTIONS,
+  //     {},
+  //     {
+  //       clientName: "endpoint-a",
+  //     }
+  //   ).toPromise();
+  //   const result = await getAuroraCollections(data.data?.collections);
+  //   if (result?.length) {
+  //     handleSetState({ auroraCollection: result });
+  //   } else {
+  //     handleSetState({ auroraCollection: null });
+  //   }
+  // })();
 
   useEffect(() => {
     (async function getSubgraphNfts() {
-      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      const data = await graphQLClient
+        .query(
+          GET_ALL_AURORA_COLLECTIONS,
+          {},
+          {
+            clientName: "endpoint-a",
+          }
+        )
+        .toPromise();
+      console.log(data);
       const result = await getAuroraCollections(data.data?.collections);
-      dispatch(setGraphCollection(result));
       if (result?.length) {
         handleSetState({ auroraCollection: result });
       } else {
