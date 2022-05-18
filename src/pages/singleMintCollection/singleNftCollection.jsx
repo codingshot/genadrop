@@ -144,8 +144,11 @@ const SingleNftCollection = () => {
     try {
       (async function getAlgoSingleNftCollection() {
         const result = await getSingleNfts(mainnet, singleNfts);
+        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+        const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
         handleSetState({
           algoCollection: result || [],
+          auroraCollection: allSingleNfts || [],
           loading: false,
         });
       })();
@@ -155,29 +158,6 @@ const SingleNftCollection = () => {
 
     // get singleNftCollection for other chains: polygon|celo|aurora
   }, [mainnet]);
-
-  // //  get singleNft collections for all the blockchains
-  // useEffect(() => {
-  //   try {
-  //     (async function getAlgoSingleNftCollection() {
-  //       const singleNftCollections = await readAllSingleNft(mainnet);
-  //       console.log(singleNftCollections);
-  //       const result = await getSingleNfts(mainnet, singleNftCollections);
-  //       console.log(result);
-  //       const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
-  //       const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
-  //       console.log(allSingleNfts);
-  //       handleSetState({
-  //         algoCollection: result,
-  //         auroraCollection: allSingleNfts,
-  //       });
-  //     })();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   // get singleNftCollection for other chains: polygon|celo|aurora
-  // }, [mainnet]);
 
   // compile data for all blockchains
   useEffect(() => {
