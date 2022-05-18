@@ -94,6 +94,11 @@ const CollectionDescription = () => {
     dispatch(setLoading(false));
   }, [dispatch]);
 
+  useEffect(() => {
+    if (combinations) {
+      dispatch(setMintAmount(combinations - rule.length ? parseInt(combinations - rule.length) : 0));
+    }
+  }, [combinations]);
   return (
     <div className={classes.container}>
       <div className={classes.preview_details}>
