@@ -1,0 +1,63 @@
+.container {
+  background: var(--main-accent);
+  display: flex;
+  font-weight: 600;
+  font-size: 18px;
+  color: white;
+  min-height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 4000;
+}
+.container svg {
+  cursor: pointer;
+  margin-right: 1rem;
+  min-width: 30px;
+}
+.container div {
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+.container div p {
+  margin: auto;
+}
+.hidden {
+  display: none;
+}
+.container a {
+  background: #333333;
+  height: 3em;
+  font-weight: 500;
+  font-size: 0.78em;
+  border-radius: 33px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16em;
+}
+.container a:hover {
+  background: #171a1d;
+}
+@media screen and (max-width: 988px) {
+  .container {
+    font-size: 14px;
+  }
+  .container a {
+    white-space: nowrap;
+    padding: 1.7em 1em;
+  }
+}
+@media screen and (max-width: 475px) {
+  .container {
+    flex-direction: column;
+  }
+  .container a {
+    margin-top: 1em;
+  }
+}

@@ -50,8 +50,12 @@
 
 .noResult {
   width: 100%;
-  height: 12em;
-  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10em;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 @media screen and (max-width: 1200px) {

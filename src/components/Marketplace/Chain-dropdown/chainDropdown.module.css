@@ -9,7 +9,9 @@
   border-radius: 0.25em;
   z-index: 10;
 }
-
+.chainDropdown div img {
+  width: 27px;
+}
 .selectedPrice {
   cursor: pointer;
   background: white;
