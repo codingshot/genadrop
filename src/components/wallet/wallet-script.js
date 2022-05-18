@@ -1,8 +1,8 @@
 import { setNotification, setProposedChain, setConnector } from "../../gen-state/gen.actions";
 
-const isAlgoConnected = async (connector) => {
-  if (connector.connected) {
-    await connector.disconnect();
+const isAlgoConnected = async (provider) => {
+  if (provider.connected) {
+    await provider.disconnect();
     console.log("algo disconnected");
   }
 };
@@ -23,16 +23,16 @@ export const connectWithQRCode = async ({ provider, dispatch }) => {
   }
 };
 
-export const connectWithMetamask = async ({ dispatch, connector, supportedChains, proposedChain }) => {
+export const connectWithMetamask = async ({ dispatch, provider, supportedChains, proposedChain }) => {
   let res;
   res = await supportedChains[proposedChain].switch(proposedChain);
   if (!res) {
-    await isAlgoConnected(connector);
+    await isAlgoConnected(provider);
     console.log("connected successfully");
   } else if (res.message.includes("Unrecognized")) {
     res = await supportedChains[proposedChain].add(proposedChain);
     if (!res) {
-      await isAlgoConnected(connector);
+      await isAlgoConnected(provider);
       console.log("added successfully");
     } else {
       dispatch(

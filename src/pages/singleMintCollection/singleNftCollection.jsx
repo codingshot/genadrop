@@ -2,7 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory, useLocation } from "react-router-dom";
-import { getSingleNfts } from "../../utils";
+import { createClient } from "urql";
+import { getSingleGraphNfts, getSingleNfts } from "../../utils";
 import classes from "./singleNftCollection.module.css";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import NotFound from "../../components/not-found/notFound";
@@ -10,11 +11,19 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
+import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../graphql/querries/getCollections";
+import { readAllSingleNft } from "../../utils/firebase";
 
 const SingleNftCollection = () => {
   const { singleNfts, mainnet } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
+
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -146,6 +155,29 @@ const SingleNftCollection = () => {
 
     // get singleNftCollection for other chains: polygon|celo|aurora
   }, [mainnet]);
+
+  // //  get singleNft collections for all the blockchains
+  // useEffect(() => {
+  //   try {
+  //     (async function getAlgoSingleNftCollection() {
+  //       const singleNftCollections = await readAllSingleNft(mainnet);
+  //       console.log(singleNftCollections);
+  //       const result = await getSingleNfts(mainnet, singleNftCollections);
+  //       console.log(result);
+  //       const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+  //       const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
+  //       console.log(allSingleNfts);
+  //       handleSetState({
+  //         algoCollection: result,
+  //         auroraCollection: allSingleNfts,
+  //       });
+  //     })();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+
+  //   // get singleNftCollection for other chains: polygon|celo|aurora
+  // }, [mainnet]);
 
   // compile data for all blockchains
   useEffect(() => {

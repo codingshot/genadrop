@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getNftCollections } from "../../utils";
+import { getAuroraCollections, getNftCollections } from "../../utils";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import { fetchCollections } from "../../utils/firebase";
 import { GenContext } from "../../gen-state/gen.context";
@@ -11,11 +11,19 @@ import NotFound from "../../components/not-found/notFound";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import { createClient } from "urql";
+import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
 
 const Collections = () => {
   const { mainnet } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
+
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
 
   const [state, setState] = useState({
     filteredCollection: [],
@@ -23,6 +31,7 @@ const Collections = () => {
     polyCollection: null,
     celoCollection: null,
     nearCollection: null,
+    auroraCollection: null,
     loading: true,
     allChains: null,
     filter: {
@@ -32,7 +41,16 @@ const Collections = () => {
     },
   });
 
-  const { algoCollection, polyCollection, celoCollection, nearCollection, filter, filteredCollection, loading } = state;
+  const {
+    algoCollection,
+    polyCollection,
+    celoCollection,
+    nearCollection,
+    filter,
+    filteredCollection,
+    loading,
+    auroraCollection,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -41,12 +59,13 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollection && !polyCollection && !celoCollection && !nearCollection
+        return !algoCollection && !polyCollection && !celoCollection && !nearCollection && !auroraCollection
           ? null
           : [
               ...(algoCollection || []),
               ...(polyCollection || []),
               ...(celoCollection || []),
+              ...(auroraCollection || []),
               ...(nearCollection || []),
             ];
       case "algorand":
@@ -57,6 +76,8 @@ const Collections = () => {
         return celoCollection;
       case "near":
         return nearCollection;
+      case "aurora":
+        return auroraCollection;
       default:
         break;
     }
@@ -141,6 +162,18 @@ const Collections = () => {
     }
 
     // get collection for other chains: polygon|celo|near
+  }, [mainnet]);
+
+  useEffect(() => {
+    (async function getSubgraphNfts() {
+      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      const result = await getAuroraCollections(data.data.collections);
+      if (result?.length) {
+        handleSetState({ auroraCollection: result });
+      } else {
+        handleSetState({ auroraCollection: null });
+      }
+    })();
   }, [mainnet]);
 
   // compile data for all blockchains

@@ -3,7 +3,7 @@
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import JSZip from "jszip";
 import { ethers } from "ethers";
-import { setClipboard, setLoader, setNotification } from "../gen-state/gen.actions";
+import { setLoader, setNotification } from "../gen-state/gen.actions";
 
 const algosdk = require("algosdk");
 const bs58 = require("bs58");
@@ -319,14 +319,6 @@ export async function mintSingleToAlgo(algoMintProps) {
 
 export async function mintSingleToPoly(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
-  if (connector.isWalletConnect) {
-    if (connector.chainId === 137) {
-      return { message: "not yet implemented" };
-    }
-    return {
-      message: "connect to polygon network on your wallet or select a different network",
-    };
-  }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name);
@@ -364,14 +356,6 @@ export async function mintSingleToPoly(singleMintProps) {
 
 export async function mintSingleToCelo(singleMintProps) {
   const { file, metadata, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
-  if (connector.isWalletConnect) {
-    if (connector.chainId === 137) {
-      return { message: "not yet implemented" };
-    }
-    return {
-      message: "connect to polygon network on your wallet or select a different network",
-    };
-  }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name);
@@ -413,14 +397,6 @@ export async function mintSingleToCelo(singleMintProps) {
 
 export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
-  if (connector.isWalletConnect) {
-    if (connector.chainId === 137) {
-      return { message: "not yet implemented" };
-    }
-    return {
-      message: "connect to polygon network on your wallet or select a different network",
-    };
-  }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name);
@@ -575,77 +551,61 @@ export async function mintToAlgo(algoProps) {
 
 export async function mintToCelo(celoProps) {
   const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
-  if (typeof window.ethereum !== "undefined") {
-    const ipfsJsonData = await createNFT({ ...celoProps });
-    dispatch(setLoader("preparing assets for minting"));
-    const contract = await initializeContract({
-      minterAddress: mainnet
-        ? process.env.REACT_APP_CELO_MAINNET_MINTER_ADDRESS
-        : process.env.REACT_APP_CELO_TESTNET_MINTER_ADDRESS,
-      marketAddress: mainnet
-        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
-      fileName,
-      connector,
-      account,
-      dispatch,
-      setLoader,
-    });
-    const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-    await connector.getSigner();
-    const marketContract = new ethers.Contract(
-      mainnet
-        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
-      marketAbi,
-      wallet
-    );
-    const uris = ipfsJsonData.map((asset) => asset.url);
-    const ids = ipfsJsonData.map((asset) => {
-      const uintArray = asset.metadata.toLocaleString();
-      return parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
-    });
+  const ipfsJsonData = await createNFT({ ...celoProps });
+  dispatch(setLoader("preparing assets for minting"));
+  const contract = await initializeContract({
+    minterAddress: mainnet
+      ? process.env.REACT_APP_CELO_MAINNET_MINTER_ADDRESS
+      : process.env.REACT_APP_CELO_TESTNET_MINTER_ADDRESS,
+    marketAddress: mainnet
+      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+    fileName,
+    connector,
+    account,
+    dispatch,
+    setLoader,
+  });
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    wallet
+  );
+  const uris = ipfsJsonData.map((asset) => asset.url);
+  const ids = ipfsJsonData.map((asset) => {
+    const uintArray = asset.metadata.toLocaleString();
+    return parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  });
 
-    const amounts = new Array(ids.length).fill(1);
-    let tx;
-    dispatch(setLoader("finalizing"));
-    try {
-      tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
-      await tx.wait();
-    } catch (error) {
-      console.log(error);
-      dispatch(setLoader(""));
-      return;
-    }
+  const amounts = new Array(ids.length).fill(1);
+  let tx;
+  dispatch(setLoader("finalizing"));
+  try {
+    tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
+    await tx.wait();
+  } catch (error) {
+    console.log(error);
     dispatch(setLoader(""));
-    dispatch(
-      setNotification({
-        message: "NFTs minted successfully",
-        type: "success",
-      })
-    );
-    return mainnet
-      ? `https://blockscout.celo.org/tx/${tx.hash}`
-      : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
+    return;
   }
+  dispatch(setLoader(""));
   dispatch(
     setNotification({
-      message: "download metamask",
-      type: "warning",
+      message: "NFTs minted successfully",
+      type: "success",
     })
   );
+  return mainnet
+    ? `https://blockscout.celo.org/tx/${tx.hash}`
+    : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
 }
 
 export async function mintToPoly(polyProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
-  if (connector.isWalletConnect) {
-    if (connector.chainId === 137) {
-      return { message: "not yet implemented" };
-    }
-    return {
-      message: "connect wallet to polygon network or select a different chain",
-    };
-  }
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -827,14 +787,6 @@ export async function getAlgoData(mainnet, id) {
 
 export async function mintToAurora(polyProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
-  if (connector.isWalletConnect) {
-    if (connector.chainId === 137) {
-      return { message: "not yet implemented" };
-    }
-    return {
-      message: "connect wallet to polygon network or select a different chain",
-    };
-  }
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(
     setNotification({

@@ -1,16 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { getSingleNfts } from "../../../utils";
+import { getSingleGraphNfts, getSingleNfts } from "../../../utils";
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
+import { createClient } from "urql";
+import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
 
 const SingleNft = () => {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const [state, setState] = useState({
     allSingleNfts: [],
+    allSingleGraphNfts: [],
   });
-  const { allSingleNfts } = state;
+  const { allSingleNfts, allSingleGraphNfts } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -29,6 +38,18 @@ const SingleNft = () => {
     })();
   }, [singleNfts]);
 
+  useEffect(() => {
+    try {
+      (async function getGraphResults() {
+        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+        const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
+        handleSetState({ allSingleGraphNfts: allSingleNfts });
+      })();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [singleNfts]);
+
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
@@ -40,6 +61,9 @@ const SingleNft = () => {
       {allSingleNfts?.length ? (
         <div className={classes.wrapper}>
           {allSingleNfts.map((nft) => (
+            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+          ))}
+          {allSingleGraphNfts?.map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
         </div>
