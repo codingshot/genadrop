@@ -45,6 +45,7 @@ export const supportedChains = {
     icon: polygonIcon,
     sybmol: "MATIC",
     networkId: 80001,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd",
     add: addChain,
     switch: switchChain,
     coinGeckoLabel: "matic",
@@ -70,6 +71,7 @@ export const supportedChains = {
   1313161555: {
     label: "Aurora Testnet",
     icon: auroraIcon,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd",
     sybmol: "AOA",
     networkId: 1313161555,
     add: addChain,

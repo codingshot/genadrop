@@ -12,51 +12,102 @@ import { graphQLClient } from "../../../utils/graphqlClient";
 const Collections = () => {
   const [state, setState] = useState({
     algoCollection: [],
-    auroraCollection: [],
+    auroraCollection: null,
+    graphCollection: [],
+    polygonCollection: null,
   });
   const { collections, mainnet } = useContext(GenContext);
-  const { algoCollection, auroraCollection } = state;
+  const { algoCollection, auroraCollection, polygonCollection, graphCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
   const history = useHistory();
   const { url } = useRouteMatch();
-  // (async function getSubgraphNfts() {
-  //   const data = await useQuery(
-  //     GET_ALL_AURORA_COLLECTIONS,
-  //     {},
-  //     {
-  //       clientName: "endpoint-a",
-  //     }
-  //   ).toPromise();
-  //   const result = await getAuroraCollections(data.data?.collections);
-  //   if (result?.length) {
-  //     handleSetState({ auroraCollection: result });
-  //   } else {
-  //     handleSetState({ auroraCollection: null });
-  //   }
+
+  const getAllCollectionChains = (network = "allchains") => {
+    switch (network) {
+      case "allchains":
+        return !auroraCollection && !polygonCollection
+          ? null
+          : [...(auroraCollection || []), ...(polygonCollection || [])];
+      default:
+        break;
+    }
+    return null;
+  };
+
+  (async function getDataFromEndpointA() {
+    console.log("endpoint a");
+    const result = await graphQLClient
+      .query(
+        GET_ALL_AURORA_COLLECTIONS,
+        {},
+        {
+          clientName: ["aurora", "polygon"],
+        }
+      )
+      .toPromise();
+
+    console.log("aurora", result);
+
+    return result;
+  })();
+
+  // (async function getDataFromEndpointB() {
+  //   console.log("endpoint b");
+  //   const data = await graphQLClient
+  //     .query(
+  //       GET_ALL_AURORA_COLLECTIONS,
+  //       {},
+  //       {
+  //         clientName: "polygon",
+  //       }
+  //     )
+  //     .toPromise();
+
+  //   console.log("polygon", data);
+  //   return data;
   // })();
 
-  useEffect(() => {
-    (async function getSubgraphNfts() {
-      const data = await graphQLClient
-        .query(
-          GET_ALL_AURORA_COLLECTIONS,
-          {},
-          {
-            clientName: "endpoint-a",
-          }
-        )
-        .toPromise();
-      console.log(data);
-      const result = await getAuroraCollections(data.data?.collections);
-      if (result?.length) {
-        handleSetState({ auroraCollection: result });
-      } else {
-        handleSetState({ auroraCollection: null });
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async function getAuroraCollection() {
+  //     const data = await graphQLClient
+  //       .query(
+  //         GET_ALL_AURORA_COLLECTIONS,
+  //         {},
+  //         {
+  //           clientName: "polygon",
+  //         }
+  //       )
+  //       .toPromise();
+  //     const result = await getAuroraCollections(data?.data?.collections);
+
+  //     console.log("result", data);
+  //     if (result?.length) {
+  //       handleSetState({ polygonCollection: result });
+  //     } else {
+  //       handleSetState({ polygonCollection: null });
+  //     }
+  //   })();
+  //   (async function getPolygonCollection() {
+  //     const data = await graphQLClient
+  //       .query(
+  //         GET_ALL_AURORA_COLLECTIONS,
+  //         {},
+  //         {
+  //           clientName: "aurora",
+  //         }
+  //       )
+  //       .toPromise();
+  //     const result = await getAuroraCollections(data?.data?.collections);
+  //     console.log("endpoint", result);
+  //     if (result?.length) {
+  //       handleSetState({ auroraCollection: result });
+  //     } else {
+  //       handleSetState({ auroraCollection: null });
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     try {
@@ -90,7 +141,7 @@ const Collections = () => {
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
-          {auroraCollection.map((collection, idx) => (
+          {graphCollection.map((collection, idx) => (
             <NearCollectionCard key={idx} collection={collection} />
           ))}
         </div>
