@@ -43,14 +43,27 @@ const Collections = () => {
         GET_ALL_AURORA_COLLECTIONS,
         {},
         {
-          clientName: ["aurora", "polygon"],
+          clientName: "aurora",
         }
       )
       .toPromise();
 
     console.log("aurora", result);
 
-    return result;
+    const data = await graphQLClient
+      .query(
+        GET_ALL_AURORA_COLLECTIONS,
+        {},
+        {
+          clientName: "polygon",
+        }
+      )
+      .toPromise();
+
+    console.log("data", data);
+
+
+    return [result, data];
   })();
 
   // (async function getDataFromEndpointB() {
