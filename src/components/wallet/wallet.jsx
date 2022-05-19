@@ -97,6 +97,7 @@ function ConnectWallet() {
       setTogglePopup(true);
     } else {
       dispatch(setChainId(Number(networkId)));
+
       setTogglePopup(false);
     }
   };
