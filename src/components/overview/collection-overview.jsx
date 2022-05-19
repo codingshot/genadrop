@@ -6,14 +6,17 @@ import { addRule, clearPreview, clearRule, setConflictRule } from "../../gen-sta
 import isUnique from "./collection-overview-script";
 import RulesCard from "../rulesCard/rulesCard.component";
 import { reOrderPreview } from "../../utils";
+import infoIcon from "../../assets/icon-info-regular.svg";
+import closeIcon from "../../assets/icon-close.svg";
 
 const CollectionOverview = () => {
   const { dispatch, isRule, preview, rule, layers } = useContext(GenContext);
   const [state, setState] = useState({
+    toggleInfo: false,
     showRule: false,
   });
 
-  const { showRule } = state;
+  const { showRule, toggleInfo } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -86,6 +89,11 @@ const CollectionOverview = () => {
               )}
             </>
           )}
+          <div className={`${classes.conflictGuide} ${toggleInfo && classes.hidden}`}>
+            <img src={infoIcon} alt="info" />
+            <p>Setting conflict rules for images means that the selected set of images cannot form a generative art</p>
+            <img onClick={() => handleSetState({ toggleInfo: true })} src={closeIcon} alt="close" />
+          </div>
         </div>
       ) : null}
 

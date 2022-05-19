@@ -97,7 +97,7 @@
 
 .layerorderHeader {
   width: 100%;
-  padding: 0.5em 1em;
+  padding: 0.1em 1em;
   color: black;
   font-weight: 500;
   font-size: 1.2rem;
@@ -169,4 +169,11 @@
     width: 100%;
     position: static;
   }
+}
+
+.infoText {
+  color: #7e7f81;
+  font-size: 0.75em;
+  padding: 0 1.2rem;
+  margin-bottom: 1.5em;
 }

@@ -1,4 +1,4 @@
-import { setNotification, setProposedChain } from "../../gen-state/gen.actions";
+import { setNotification, setProposedChain, setConnector } from "../../gen-state/gen.actions";
 
 const isAlgoConnected = async (walletProvider) => {
   if (walletProvider.connected) {
@@ -10,6 +10,7 @@ const isAlgoConnected = async (walletProvider) => {
 export const connectWithQRCode = async ({ walletProvider, dispatch }) => {
   try {
     await walletProvider.enable();
+    dispatch(setConnector(walletProvider));
   } catch (error) {
     console.log("error: ", error);
     dispatch(

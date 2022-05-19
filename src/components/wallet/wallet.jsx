@@ -99,6 +99,7 @@ function ConnectWallet() {
     } else {
       console.log("connected successfully");
       dispatch(setChainId(Number(networkId)));
+
       setTogglePopup(false);
       if (!accounts) {
         disconnectWallet();

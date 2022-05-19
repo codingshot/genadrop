@@ -461,11 +461,11 @@ export async function createNFT(createProps, doAccountCheck) {
   );
   for (let i = 0; i < metadata.length; i += 1) {
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
-    const imgName = `${metadata[i].name}.png`;
+    const imgName = metadata[i].image;
     const imgFile = data.files[imgName];
     const uint8array = await imgFile.async("uint8array");
-    const blob = new File([uint8array], imgName, { type: "image/png" });
-    const asset = await connectAndMint(blob, metadata[i], imgName, dispatch);
+    const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
+    const asset = await connectAndMint(blob, metadata[i], imgName);
     assets.push(asset);
   }
   dispatch(setLoader(""));
