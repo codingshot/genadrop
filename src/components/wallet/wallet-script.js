@@ -1,4 +1,4 @@
-import { setNotification, setProposedChain } from "../../gen-state/gen.actions";
+import { setNotification, setProposedChain, setConnector } from "../../gen-state/gen.actions";
 
 const isAlgoConnected = async (provider) => {
   if (provider.connected) {
@@ -10,6 +10,7 @@ const isAlgoConnected = async (provider) => {
 export const connectWithQRCode = async ({ provider, dispatch }) => {
   try {
     await provider.enable();
+    dispatch(setConnector(provider));
   } catch (error) {
     console.log("error: ", error);
     dispatch(

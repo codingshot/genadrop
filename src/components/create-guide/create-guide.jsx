@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef, useContext } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import classes from "./create-guide.module.css";
 import rightCtrl from "../../assets/ctrl-right.svg";
 import leftCtrl from "../../assets/ctrl-left.svg";
@@ -86,7 +86,7 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
   }, [swipeWidth]);
 
   useEffect(() => {
-    let sideVideos = sideRef.current;
+    const sideVideos = sideRef.current;
     if (!sideVideos) return;
     for (let sv of sideVideos) {
       if (sv.className.includes("outer")) {
@@ -112,7 +112,7 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
       setSwipeHeight(height);
     });
 
-    let sideVideos = document.querySelectorAll(".vid");
+    const sideVideos = document.querySelectorAll(".vid");
     sideRef.current = sideVideos;
 
     sideVideos[0].onanimationend = () => {
@@ -171,12 +171,12 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
 
           <div ref={swipeContainer} className={`${classes.swipeContainer} ${animate && classes.active}`}>
             <div ref={swipeRef} className={classes.cardContainer}>
-              <video controls src={guide[1].vid} ref={cardRef1} className={classes.card}></video>
-              <video controls src={guide[2].vid} ref={cardRef2} className={classes.card}></video>
-              <video controls src={guide[3].vid} ref={cardRef3} className={classes.card}></video>
-              <video controls src={guide[4].vid} ref={cardRef4} className={classes.card}></video>
-              <video controls src={guide[5].vid} ref={cardRef5} className={classes.card}></video>
-              <video controls src={guide[6].vid} ref={cardRef6} className={classes.card}></video>
+              <video controls src={guide[1].vid} ref={cardRef1} className={classes.card} />
+              <video controls src={guide[2].vid} ref={cardRef2} className={classes.card} />
+              <video controls src={guide[3].vid} ref={cardRef3} className={classes.card} />
+              <video controls src={guide[4].vid} ref={cardRef4} className={classes.card} />
+              <video controls src={guide[5].vid} ref={cardRef5} className={classes.card} />
+              <video controls src={guide[6].vid} ref={cardRef6} className={classes.card} />
             </div>
           </div>
           <div
@@ -199,7 +199,7 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
             .fill(null)
             .map((_, idx) => (
               <div key={idx} className={`${classes.indicator} ${swipeCount === idx + 1 && classes.active}`}>
-                <div></div>
+                <div />
               </div>
             ))}
         </div>

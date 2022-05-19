@@ -13,9 +13,13 @@ export const getAweaveFormat = async (nftLayers, dispatch, setLoader) => {
 ${i + 1} of ${nftLayers.length}`
           )
         );
+        const fileType =
+          nftLayers[i].image.split(";base64")[0].split("image/")[1] === "webp"
+            ? "png"
+            : nftLayers[i].image.split(";base64")[0].split("image/")[1];
         clone.push({
           name: nftLayers[i].name,
-          image: `${nftLayers[i].name}.png`,
+          image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
           attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
             trait_type,
@@ -58,9 +62,13 @@ export const getIpfsFormat = async (nftLayers, dispatch, setLoader) => {
 ${i + 1} of ${nftLayers.length}`
           )
         );
+        const fileType =
+          nftLayers[i].image.split(";base64")[0].split("image/")[1] === "webp"
+            ? "png"
+            : nftLayers[i].image.split(";base64")[0].split("image/")[1];
         clone.push({
           name: nftLayers[i].name,
-          image: `${nftLayers[i].name}.png`,
+          image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
           attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
             trait_type,

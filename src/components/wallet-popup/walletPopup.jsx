@@ -2,7 +2,7 @@ import classes from "./walletPopup.module.css";
 import closeIcon from "../../assets/icon-close.svg";
 import { useContext, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
-import { setProposedChain } from "../../gen-state/gen.actions";
+import { setProposedChain, setNotification } from "../../gen-state/gen.actions";
 import { supportedChains } from "../../utils/supportedChains";
 
 const WalletPopup = ({ setTogglePopup }) => {
@@ -22,6 +22,7 @@ const WalletPopup = ({ setTogglePopup }) => {
       if (networkId === chainId) {
         dispatch(setProposedChain(null));
       } else {
+
         dispatch(setProposedChain(chainId));
       }
       setTogglePopup(false);

@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";
+import EarlyAccess from "./components/early-access/early-access";
 import Overlay from "./components/overlay/overlay";
 import { fetchCollections, readAllSingleNft } from "./utils/firebase";
 import { GenContext } from "./gen-state/gen.context";
@@ -37,6 +38,7 @@ const Artist = lazy(() => import("./pages/artist/artist"));
 function App() {
   const { dispatch, mainnet } = useContext(GenContext);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
+  const [showEarlyAccess, setShowEarlyAccess] = useState(true);
 
   useEffect(() => {
     (async function getCollections() {
@@ -56,7 +58,10 @@ function App() {
 
   return (
     <div className="App">
-      <Navbar />
+      <div className="topSectionContainer">
+        <EarlyAccess showEarlyAccess={showEarlyAccess} setShowEarlyAccess={setShowEarlyAccess} />
+        <Navbar />
+      </div>
       <div className="Routes">
         <ErrorBoundary>
           <Switch>
