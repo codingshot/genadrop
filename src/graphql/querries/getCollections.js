@@ -23,6 +23,29 @@ export const GET_ALL_AURORA_COLLECTIONS = gql`
   }
 `;
 
+export const GET_ALL_POLYGON_COLLECTIONS = gql`
+  query MyQuery {
+    collections {
+      description
+      id
+      name
+      nfts {
+        createdAtTimestamp
+        chain
+        category
+        isSold
+        id
+        price
+        tokenID
+        tokenIPFSPath
+        owner {
+          id
+        }
+      }
+    }
+  }
+`;
+
 export const GET_GRAPH_COLLECTION = gql`
   query ($id: ID) {
     collection(id: $id) {

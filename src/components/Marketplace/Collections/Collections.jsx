@@ -6,8 +6,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { getAuroraCollections, getNftCollections } from "../../../utils";
 import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
-import { GET_ALL_AURORA_COLLECTIONS } from "../../../graphql/querries/getCollections";
-import { graphQLClient } from "../../../utils/graphqlClient";
+import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_POLYGON_COLLECTIONS } from "../../../graphql/querries/getCollections";
+import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
 
 const Collections = () => {
   const [state, setState] = useState({
@@ -36,8 +36,25 @@ const Collections = () => {
     return null;
   };
 
-  (async function getDataFromEndpointA() {
+  async function getDataFromEndpointB() {
+    console.log("endpoint b");
+    const data = await graphQLClientPolygon
+      .query(
+        GET_ALL_POLYGON_COLLECTIONS,
+        {},
+        {
+          clientName: "polygon",
+        }
+      )
+      .toPromise();
+
+    console.log("polygon", data);
+    return data;
+  }
+
+  async function getDataFromEndpointA() {
     console.log("endpoint a");
+
     const result = await graphQLClient
       .query(
         GET_ALL_AURORA_COLLECTIONS,
@@ -50,37 +67,14 @@ const Collections = () => {
 
     console.log("aurora", result);
 
-    const data = await graphQLClient
-      .query(
-        GET_ALL_AURORA_COLLECTIONS,
-        {},
-        {
-          clientName: "polygon",
-        }
-      )
-      .toPromise();
-
-    console.log("data", data);
+  }
 
 
-    return [result, data];
-  })();
 
-  // (async function getDataFromEndpointB() {
-  //   console.log("endpoint b");
-  //   const data = await graphQLClient
-  //     .query(
-  //       GET_ALL_AURORA_COLLECTIONS,
-  //       {},
-  //       {
-  //         clientName: "polygon",
-  //       }
-  //     )
-  //     .toPromise();
-
-  //   console.log("polygon", data);
-  //   return data;
-  // })();
+  useEffect(() => {
+    getDataFromEndpointA()
+    getDataFromEndpointB()
+  })
 
   // useEffect(() => {
   //   (async function getAuroraCollection() {
