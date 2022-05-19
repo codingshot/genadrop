@@ -146,7 +146,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   };
 };
 
-export const connectAndMint = async (file, metadata, imgName) => {
+export const connectAndMint = async (file, metadata, imgName, dispatch) => {
   try {
     await pinata.testAuthentication();
     return await uploadToIpfs(file, imgName, metadata);
@@ -290,7 +290,7 @@ export async function mintSingleToAlgo(algoMintProps) {
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name);
+    const asset = await connectAndMint(file, metadata, file.name, dispatch);
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
@@ -321,7 +321,7 @@ export async function mintSingleToPoly(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name);
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -358,7 +358,7 @@ export async function mintSingleToCelo(singleMintProps) {
   const { file, metadata, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name);
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -399,7 +399,7 @@ export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name);
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));

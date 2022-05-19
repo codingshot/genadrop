@@ -22,7 +22,6 @@ const WalletPopup = ({ setTogglePopup }) => {
       if (networkId === chainId) {
         dispatch(setProposedChain(null));
       } else {
-
         dispatch(setProposedChain(chainId));
       }
       setTogglePopup(false);
