@@ -32,7 +32,7 @@ function ConnectWallet() {
   const [network, setNetwork] = useState(process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet");
   const [togglePopup, setTogglePopup] = useState(false);
   const [refresh, setRefresh] = useState(false);
-  const [provider, setProvider] = useState();
+  const [walletProvider, setWalletConnectProvider] = useState();
 
   const breakAddress = (address = "", width = 6) => {
     if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -83,6 +83,7 @@ function ConnectWallet() {
   const updateAccount = async (provider) => {
     await isAlgoConnected(provider);
     const [accounts] = await ethereum.request({ method: "eth_accounts" });
+    console.log("accounts: ", account);
     accounts && dispatch(setAccount(accounts));
     const networkId = await ethereum.networkVersion;
     let isSupported = Object.keys(supportedChains).includes(networkId);
@@ -96,13 +97,30 @@ function ConnectWallet() {
       disconnectWallet();
       setTogglePopup(true);
     } else {
+      console.log("connected successfully");
       dispatch(setChainId(Number(networkId)));
       setTogglePopup(false);
+      if (!accounts) {
+        disconnectWallet();
+        dispatch(
+          setNotification({
+            message: "we could not connect this site automatically, please manually connect your site.",
+            type: "warning",
+          })
+        );
+      } else {
+        dispatch(
+          setNotification({
+            message: `Your site is connected to ${supportedChains[networkId].label}`,
+            type: "success",
+          })
+        );
+      }
     }
   };
 
   const disconnectWallet = async () => {
-    await isAlgoConnected(provider);
+    await isAlgoConnected(walletProvider);
     dispatch(setAccount(null));
     dispatch(setChainId(null));
     dispatch(setProposedChain(-1));
@@ -118,10 +136,10 @@ function ConnectWallet() {
     if (!isSupported) return;
     async function connectWallet() {
       if (proposedChain === 4160) {
-        await connectWithQRCode({ provider, dispatch });
-        dispatch(setConnector(provider));
+        await connectWithQRCode({ walletProvider, dispatch });
+        dispatch(setConnector(walletProvider));
       } else {
-        await connectWithMetamask({ dispatch, supportedChains, proposedChain, provider });
+        await connectWithMetamask({ dispatch, supportedChains, proposedChain, walletProvider });
         const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
         dispatch(setConnector(ethereumProvider));
       }
@@ -159,13 +177,14 @@ function ConnectWallet() {
         let newProvider = JSON.parse(window.localStorage.walletconnect);
         dispatch(setProposedChain(newProvider.chainId));
         dispatch(setConnector(walletConnectProvider));
+        setWalletConnectProvider(walletConnectProvider);
       } else {
         updateAccount(walletConnectProvider);
         const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
         dispatch(setConnector(ethereumProvider));
       }
 
-      setProvider(walletConnectProvider);
+      setWalletConnectProvider(walletConnectProvider);
 
       // initiallize account
       // Subscribe to accounts change
@@ -176,7 +195,6 @@ function ConnectWallet() {
       // Subscribe to chainId change
       ethereum.on("chainChanged", (chainId) => {
         updateAccount(walletConnectProvider);
-        // window.location.reload();
       });
 
       // Subscribe to accounts change
