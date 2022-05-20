@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import { ethers } from "ethers";
 import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import {
@@ -20,7 +21,6 @@ import blankImage from "../../assets/blank.png";
 import WalletPopup from "../wallet-popup/walletPopup";
 import { supportedChains } from "../../utils/supportedChains";
 import { connectWithMetamask, connectWithQRCode } from "./wallet-script";
-import { ethers } from "ethers";
 
 function ConnectWallet() {
   const history = useHistory();
@@ -80,13 +80,24 @@ function ConnectWallet() {
     }
   };
 
+  const disconnectWallet = async () => {
+    await isAlgoConnected(walletProvider);
+    dispatch(setAccount(null));
+    dispatch(setChainId(null));
+    dispatch(setProposedChain(-1));
+    setToggleDropdown(false);
+    if (pathname.includes("/me")) {
+      history.push("/marketplace");
+    }
+  };
+
   const updateAccount = async (provider) => {
     await isAlgoConnected(provider);
-    const [accounts] = await ethereum.request({ method: "eth_accounts" });
+    const [accounts] = await window.ethereum.request({ method: "eth_requestAccounts" });
     console.log("accounts: ", account);
     accounts && dispatch(setAccount(accounts));
-    const networkId = await ethereum.networkVersion;
-    let isSupported = Object.keys(supportedChains).includes(networkId);
+    const networkId = await window.ethereum.networkVersion;
+    const isSupported = Object.keys(supportedChains).includes(networkId);
     if (!isSupported) {
       dispatch(
         setNotification({
@@ -120,20 +131,9 @@ function ConnectWallet() {
     }
   };
 
-  const disconnectWallet = async () => {
-    await isAlgoConnected(walletProvider);
-    dispatch(setAccount(null));
-    dispatch(setChainId(null));
-    dispatch(setProposedChain(-1));
-    setToggleDropdown(false);
-    if (pathname.includes("/me")) {
-      history.push("/marketplace");
-    }
-  };
-
   useEffect(() => {
     if (!proposedChain) return setRefresh(!refresh);
-    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
+    const isSupported = Object.keys(supportedChains).includes(String(proposedChain));
     if (!isSupported) return;
     async function connectWallet() {
       if (proposedChain === 4160) {
@@ -175,7 +175,7 @@ function ConnectWallet() {
       }
 
       if (window.localStorage.walletconnect) {
-        let newProvider = JSON.parse(window.localStorage.walletconnect);
+        const newProvider = JSON.parse(window.localStorage.walletconnect);
         dispatch(setProposedChain(newProvider.chainId));
         dispatch(setConnector(walletConnectProvider));
         setWalletConnectProvider(walletConnectProvider);

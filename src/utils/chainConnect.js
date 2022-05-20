@@ -75,7 +75,7 @@ const chainDecimalsToHex = {
 
 export async function switchChain(chainId) {
   try {
-    await ethereum.request({
+    await window.ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [
         {
@@ -93,7 +93,7 @@ export async function switchChain(chainId) {
 
 export async function addChain(chainId) {
   try {
-    await ethereum.request({
+    await window.ethereum.request({
       method: "wallet_addEthereumChain",
       params: [chainIdToParams[chainId]],
     });
