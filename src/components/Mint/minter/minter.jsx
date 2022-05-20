@@ -213,15 +213,10 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         );
       }
       handleMint(mintProps).then((url) => {
-        // history.push(`/me/${account}`);
+        history.push(`/me/${account}`);
       });
     } else {
-      if (
-        !singleMintProps.fileName ||
-        !description ||
-        !singleMintProps.metadata?.attributes[0]?.trait_type ||
-        !singleMintProps.metadata?.attributes[0]?.value
-      ) {
+      if (!singleMintProps.fileName || !description) {
         return dispatch(
           setNotification({
             message: "fill out the missing fields",
@@ -230,7 +225,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         );
       }
       handleSingleMint(singleMintProps).then((url) => {
-        // history.push(`/me/${account}`);
+        history.push(`/me/${account}`);
       });
     }
   };
@@ -353,9 +348,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             </div>
 
             <div className={classes.inputWrapper}>
-              <label>
-                Attributes <span className={classes.required}>*</span>
-              </label>
+              <label>Attributes</label>
               {!metadata ? (
                 <>
                   <div className={classes.attributes}>

@@ -22,13 +22,6 @@ const WalletPopup = ({ setTogglePopup }) => {
       if (networkId === chainId) {
         dispatch(setProposedChain(null));
       } else {
-        console.log(chainId, supportedChains[chainId].label);
-        dispatch(
-          setNotification({
-            message: "connecting to " + supportedChains[chainId].label,
-            type: "success",
-          })
-        );
         dispatch(setProposedChain(chainId));
       }
       setTogglePopup(false);

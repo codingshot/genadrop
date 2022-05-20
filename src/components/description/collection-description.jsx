@@ -27,6 +27,10 @@ const CollectionDescription = () => {
   };
 
   const handleGenerate = async () => {
+    const getFirstLayerWithTrait = (layers) => {
+      return layers.find((layer) => layer.traits.length);
+    };
+
     if (isRule) {
       return dispatch(
         setNotification({
@@ -77,7 +81,7 @@ const CollectionDescription = () => {
       setLoader,
       layers: uniqueLayers,
       canvas: canvasRef.current,
-      image: layers[0].traits[0].image,
+      image: getFirstLayerWithTrait(layers).traits[0].image,
     });
     dispatch(setCurrentDnaLayers(dnaLayers));
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
