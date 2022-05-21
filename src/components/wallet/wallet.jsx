@@ -93,6 +93,15 @@ function ConnectWallet() {
 
   const updateAccount = async (provider) => {
     await isAlgoConnected(provider);
+    if (!window.ethereum._state.initialized) {
+      disconnectWallet();
+      dispatch(
+        setNotification({
+          message: "we could not connect this site automatically, please manually connect your site.",
+          type: "warning",
+        })
+      );
+    }
     const [accounts] = await window.ethereum.request({ method: "eth_requestAccounts" });
     console.log("accounts: ", account);
     accounts && dispatch(setAccount(accounts));
