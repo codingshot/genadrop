@@ -3,6 +3,7 @@
   font-family: neue;
   src: url("fonts/NeueHaasDisplayLight.ttf");
 }
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
   --main-bg: #ffffff;

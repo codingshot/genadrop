@@ -1,6 +1,6 @@
+import React, { useContext, useState } from "react";
 import classes from "./walletPopup.module.css";
 import closeIcon from "../../assets/icon-close.svg";
-import { useContext, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import { setProposedChain, setNotification } from "../../gen-state/gen.actions";
 import { supportedChains } from "../../utils/supportedChains";
@@ -18,7 +18,7 @@ const WalletPopup = ({ setTogglePopup }) => {
 
   const handleChain = (chainId) => {
     (async function run() {
-      let networkId = await getNetworkID();
+      const networkId = await getNetworkID();
       if (networkId === chainId) {
         dispatch(setProposedChain(null));
       } else {

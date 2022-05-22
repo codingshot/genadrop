@@ -309,13 +309,18 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           </section>
 
           <section className={classes.details}>
-            <div className={classes.category}>Collection Logo</div>
-            <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
-              <p>This image will also be used as collection logo</p>
-              <div onClick={() => handleSetState({ toggleGuide: true })}>
-                <img src={profileSelected ? URL.createObjectURL(file[0]) : dropImg} alt="" />
-              </div>
-            </div>
+            {file.length > 1 && (
+              <>
+                {" "}
+                <div className={classes.category}>Collection Logo</div>
+                <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
+                  <p>This image will also be used as collection logo</p>
+                  <div onClick={() => handleSetState({ toggleGuide: true })}>
+                    <img src={profileSelected ? URL.createObjectURL(file[0]) : dropImg} alt="" />
+                  </div>
+                </div>
+              </>
+            )}
             <div className={classes.category}>Asset Details</div>
             <div className={classes.inputWrapper}>
               <label>
@@ -437,15 +442,3 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
 };
 
 export default Minter;
-
-// : previewSelectMode ? (
-//   <CollectionPreviewSelect
-//     previewSelectMode={previewSelectMode}
-//     file={file}
-//     metadata={metadata}
-//     handleMintSetState={handleSetState}
-//     collectionProfile={collectionProfile}
-//     handleSetFileState={handleSetFileState}
-//     zip={zip}
-//   />
-// ) :
