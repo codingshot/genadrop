@@ -6,6 +6,7 @@ import listIcon from "../../../assets/icon-list.svg";
 import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
 import Copy from "../../../components/copy/copy";
+import { supportedChains } from "../../../utils/supportedChains";
 
 const Header = ({ collection, getHeight, loadedChain }) => {
   const domMountRef = useRef(false);
@@ -25,10 +26,10 @@ const Header = ({ collection, getHeight, loadedChain }) => {
 
   const getUsdValue = () => {
     if (loadedChain !== null) {
-      if (loadedChain === "1313161555") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+      if (supportedChains[loadedChain]) {
+        axios.get(supportedChains[loadedChain].livePrice).then((res) => {
           let value = Object.values(res.data)[0].usd;
-          handleSetState({ dollarPrice: value * price, chainName: "AOA" });
+          handleSetState({ dollarPrice: value * price, chainName: supportedChains[loadedChain].sybmol });
         });
       }
     } else {
@@ -62,7 +63,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
 
   const viewOnExplorer = () => {
     if (loadedChain) {
-      if (loadedChain === "1313161555") return setExplorerLink(`https://testnet.aurorascan.dev/address/${owner}`);
+      return setExplorerLink(`${supportedChains[loadedChain].explorer}/${owner}`);
     } else {
       if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
       else if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);

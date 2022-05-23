@@ -6,7 +6,7 @@ import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import { createClient } from "urql";
-import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
+import { GET_ALL_GRAPH_SINGLE_NFTS, GET_AURORA_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
 
 const SingleNft = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -41,7 +41,7 @@ const SingleNft = () => {
   useEffect(() => {
     try {
       (async function getGraphResults() {
-        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+        const data = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
         const allSingleNfts = await getSingleGraphNfts(data?.data?.nfts);
         handleSetState({ allSingleGraphNfts: allSingleNfts });
       })();

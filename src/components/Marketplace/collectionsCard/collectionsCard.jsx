@@ -26,8 +26,9 @@ const CollectionsCard = ({ collection }) => {
         });
       });
     } else {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount * price, chainIcon: algoIcon, chainName: "Algo" });
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd").then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({ algoPrice: value * price, chainIcon: algoIcon, chainName: "Algo" });
       });
     }
   }, []);
@@ -82,7 +83,7 @@ export const NearCollectionCard = ({ collection }) => {
         });
       });
     }
-  }, []);
+  }, [chain]);
 
   return (
     <div onClick={() => history.push(`/marketplace/collections/${owner}`)} className={classes.card}>

@@ -28,7 +28,13 @@ import auroraIcon from "../../assets/icon-aurora.svg";
 import { createClient } from "urql";
 import { supportedChains } from "../../utils/supportedChains";
 
-import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
+import {
+  GET_ALL_AURORA_COLLECTIONS,
+  GET_ALL_POLYGON_COLLECTIONS,
+  GET_GRAPH_COLLECTION,
+  GET_GRAPH_NFT,
+} from "../../graphql/querries/getCollections";
+import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
@@ -37,20 +43,29 @@ const CollectionNFT = () => {
     transactionHistory: null,
     showSocial: false,
     isLoading: true,
+    auroraCollection: null,
+    polygonCollection: null,
+    allGraphCollectons: [],
     collection: [],
     algoPrice: 0,
     isCopied: false,
-    chainIcon: algoLogo,
+    chainIcon: "",
   });
 
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
-  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied, chainIcon } =
-    state;
+  const {
+    dropdown,
+    asset,
+    transactionHistory,
+    collection,
+    isLoading,
+    algoPrice,
+    showSocial,
+    isCopied,
+    chainIcon,
+    auroraCollection,
+    polygonCollection,
+    allGraphCollectons,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -102,40 +117,92 @@ const CollectionNFT = () => {
             isLoading: false,
           });
         })();
-      } else {
-        (async function getNFTDetails() {
-          //get single nft data
-          const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-          const result = await getGraphNft(data.data.nft, collectionName);
-          const trHistory = await getTransactions(data?.data?.nft?.transactions);
-
-          // get collection data
-          const collectionData = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
-          const collectionResponseData = await getGraphCollection(
-            collectionData.data.collection.nfts,
-            collectionData.data.collection
-          );
-          trHistory.find((t) => {
-            if (t.type === "Minting") t.price = result[0].price;
-          });
-          handleSetState({
-            asset: result[0],
-            isLoading: false,
-            collection: collectionResponseData,
-            transactionHistory: trHistory,
-          });
-        })();
       }
     }
 
     document.documentElement.scrollTop = 0;
   }, []);
 
+  const getAllCollectionChains = () => {
+    return !auroraCollection && !polygonCollection ? null : [...(auroraCollection || []), ...(polygonCollection || [])];
+  };
+
+  async function getDataFromEndpointB() {
+    const data = await graphQLClientPolygon
+      .query(
+        GET_ALL_POLYGON_COLLECTIONS,
+        {},
+        {
+          clientName: "polygon",
+        }
+      )
+      .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
+
+    if (result?.length) {
+      handleSetState({ polygonCollection: result });
+    } else {
+      handleSetState({ polygonCollection: null });
+    }
+  }
+
+  async function getDataFromEndpointA() {
+    const data = await graphQLClient
+      .query(
+        GET_ALL_AURORA_COLLECTIONS,
+        {},
+        {
+          clientName: "aurora",
+        }
+      )
+      .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
+    if (result?.length) {
+      handleSetState({ auroraCollection: result });
+    } else {
+      handleSetState({ auroraCollection: null });
+    }
+  }
+
+  useEffect(() => {
+    getDataFromEndpointA();
+    getDataFromEndpointB();
+  }, []);
+
+  useEffect(() => {
+    (async function getGraphResult() {
+      const collection = getAllCollectionChains();
+      // filtering to get the unqiue collection
+      const filteredCollection = collection?.filter((col) => col?.owner === collectionName);
+      if (filteredCollection) {
+        // filtering to get the unique nft
+
+        const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
+        console.log(filteredId);
+        if (filteredId) {
+          const result = await getGraphNft(filteredId[0], collectionName);
+          const trHistory = await getTransactions(filteredId[0]?.transactions);
+          const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
+
+          trHistory.find((t) => {
+            if (t.type === "Minting") t.price = result[0].price;
+          });
+          handleSetState({
+            asset: result[0],
+            collection: collectionData,
+            transactionHistory: trHistory,
+            isLoading: false,
+          });
+        }
+      }
+    })();
+  }, [auroraCollection, polygonCollection]);
+
   useEffect(() => {
     if (asset?.chain) {
       const pair = supportedChains[asset.chain].coinGeckoLabel;
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0].usd;
+        let value = Object.values(res?.data)[0]?.usd;
         handleSetState({
           chainIcon: supportedChains[asset.chain].icon,
           algoPrice: value,
@@ -143,7 +210,7 @@ const CollectionNFT = () => {
       });
     } else {
       axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount });
+        handleSetState({ algoPrice: res.data.data.amount, chainIcon: algoLogo });
       });
     }
   }, [asset]);

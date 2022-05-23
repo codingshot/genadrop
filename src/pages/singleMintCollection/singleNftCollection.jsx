@@ -11,7 +11,7 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
 import { createClient } from "urql";
-import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../graphql/querries/getCollections";
+import { GET_ALL_GRAPH_SINGLE_NFTS, GET_AURORA_SINGLE_NFTS } from "../../graphql/querries/getCollections";
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
@@ -79,7 +79,7 @@ const SingleNftCollection = () => {
       (async function getAlgoSingleNftCollection() {
         const singleNftCollections = await readAllSingleNft(mainnet);
         const result = await getSingleNfts(mainnet, singleNftCollections);
-        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+        const data = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
 
         const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
         handleSetState({

@@ -59,27 +59,28 @@ export const getNftCollections = async (collections, mainnet) => {
 
 export const getGraphCollection = async (collection, mainnet) => {
   const nftArr = [];
-  console.log("trying to get chain", collection);
-  for (let i = 0; i < collection.length; i++) {
-    const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
-    try {
-      const nftObj = {};
-      nftObj.collection_name = mainnet.name;
-      nftObj.description = mainnet.description;
-      nftObj.chain = collection[i].chain;
-      nftObj.owner = mainnet.id;
-      nftObj.Id = collection[i].id;
-      let getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
-      console.log("get Price", getPrice);
-      nftObj.collectionPrice = getPrice * 0.000000000000000001;
-      nftObj.price = collection[i].price * 0.000000000000000001;
-      nftObj.sold = collection[i].isSold;
-      nftObj.ipfs_data = data;
-      nftObj.name = data.name;
-      nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-      nftArr.push(nftObj);
-    } catch (error) {
-      console.log(error);
+  if (collection) {
+    for (let i = 0; i < collection?.length; i++) {
+      const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      try {
+        const nftObj = {};
+        nftObj.collection_name = mainnet.name;
+        nftObj.description = mainnet.description;
+        nftObj.chain = collection[i].chain;
+        nftObj.owner = mainnet.id;
+        nftObj.Id = collection[i].id;
+        let getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        console.log("get Price", getPrice);
+        nftObj.collectionPrice = getPrice * 0.000000000000000001;
+        nftObj.price = collection[i].price * 0.000000000000000001;
+        nftObj.sold = collection[i].isSold;
+        nftObj.ipfs_data = data;
+        nftObj.name = data.name;
+        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftArr.push(nftObj);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   console.log(nftArr);
@@ -105,7 +106,7 @@ export const getTransactions = async (transactions) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
-  const { data } = await axios.get(collection.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+  const { data } = await axios.get(collection?.tokenIPFSPath?.replace("ipfs://", "https://ipfs.io/ipfs/"));
   const nftObj = [];
   try {
     const nftArr = {};
@@ -114,11 +115,11 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.collection?.id;
     nftArr.price = collection.price * 0.000000000000000001;
-    nftArr.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+    nftArr.image_url = data.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
     nftArr.ipfs_data = data;
-    nftArr.description = data.description;
-    nftArr.Id = collection.tokenID;
-    nftArr.properties = data.properties;
+    nftArr.description = data?.description;
+    nftArr.Id = collection?.tokenID;
+    nftArr.properties = data?.properties;
     nftObj.push(nftArr);
   } catch (error) {
     console.log(error);

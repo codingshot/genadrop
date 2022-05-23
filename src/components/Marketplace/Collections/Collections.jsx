@@ -24,20 +24,11 @@ const Collections = () => {
   const history = useHistory();
   const { url } = useRouteMatch();
 
-  const getAllCollectionChains = (network = "allchains") => {
-    switch (network) {
-      case "allchains":
-        return !auroraCollection && !polygonCollection
-          ? null
-          : [...(auroraCollection || []), ...(polygonCollection || [])];
-      default:
-        break;
-    }
-    return null;
+  const getAllCollectionChains = () => {
+    return !auroraCollection && !polygonCollection ? null : [...(auroraCollection || []), ...(polygonCollection || [])];
   };
 
   async function getDataFromEndpointB() {
-    console.log("endpoint b");
     const data = await graphQLClientPolygon
       .query(
         GET_ALL_POLYGON_COLLECTIONS,
@@ -47,15 +38,17 @@ const Collections = () => {
         }
       )
       .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
 
-    console.log("polygon", data);
-    return data;
+    if (result?.length) {
+      handleSetState({ polygonCollection: result });
+    } else {
+      handleSetState({ polygonCollection: null });
+    }
   }
 
   async function getDataFromEndpointA() {
-    console.log("endpoint a");
-
-    const result = await graphQLClient
+    const data = await graphQLClient
       .query(
         GET_ALL_AURORA_COLLECTIONS,
         {},
@@ -64,57 +57,25 @@ const Collections = () => {
         }
       )
       .toPromise();
-
-    console.log("aurora", result);
-
+    const result = await getAuroraCollections(data?.data?.collections);
+    if (result?.length) {
+      handleSetState({ auroraCollection: result });
+    } else {
+      handleSetState({ auroraCollection: null });
+    }
   }
 
-
+  useEffect(() => {
+    getDataFromEndpointA();
+    getDataFromEndpointB();
+  }, []);
 
   useEffect(() => {
-    getDataFromEndpointA()
-    getDataFromEndpointB()
-  })
-
-  // useEffect(() => {
-  //   (async function getAuroraCollection() {
-  //     const data = await graphQLClient
-  //       .query(
-  //         GET_ALL_AURORA_COLLECTIONS,
-  //         {},
-  //         {
-  //           clientName: "polygon",
-  //         }
-  //       )
-  //       .toPromise();
-  //     const result = await getAuroraCollections(data?.data?.collections);
-
-  //     console.log("result", data);
-  //     if (result?.length) {
-  //       handleSetState({ polygonCollection: result });
-  //     } else {
-  //       handleSetState({ polygonCollection: null });
-  //     }
-  //   })();
-  //   (async function getPolygonCollection() {
-  //     const data = await graphQLClient
-  //       .query(
-  //         GET_ALL_AURORA_COLLECTIONS,
-  //         {},
-  //         {
-  //           clientName: "aurora",
-  //         }
-  //       )
-  //       .toPromise();
-  //     const result = await getAuroraCollections(data?.data?.collections);
-  //     console.log("endpoint", result);
-  //     if (result?.length) {
-  //       handleSetState({ auroraCollection: result });
-  //     } else {
-  //       handleSetState({ auroraCollection: null });
-  //     }
-  //   })();
-  // }, []);
+    const collection = getAllCollectionChains();
+    handleSetState({
+      graphCollection: collection,
+    });
+  }, [auroraCollection, polygonCollection]);
 
   useEffect(() => {
     try {
