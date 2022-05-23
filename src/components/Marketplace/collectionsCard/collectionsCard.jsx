@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import classes from "./collectionsCard.module.css";
 import algoIcon from "../../../assets/icon-algo.svg";
-import { supportedChains } from "../../../utils/supportedChains.js";
+import supportedChains from "../../../utils/supportedChains.js";
 
 const CollectionsCard = ({ collection }) => {
   const { name, price, description, image_url, chain } = collection;

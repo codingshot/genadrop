@@ -1,54 +1,85 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import { ethers } from "ethers";
 import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import {
-  setConnector,
-  setAccount,
-  setNotification,
-  setChainId,
-  setMainnet,
-  setProposedChain,
-  setClipboard,
-} from "../../gen-state/gen.actions";
 import userIcon from "../../assets/user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
-import blankImage from "../../assets/blank.png";
 import WalletPopup from "../wallet-popup/walletPopup";
-import { supportedChains } from "../../utils/supportedChains";
-import { connectWithMetamask, connectWithQRCode } from "./wallet-script";
+import supportedChains from "../../utils/supportedChains";
+import {
+  setNetworkType,
+  connectWallet,
+  getConnectedChain,
+  breakAddress,
+  disconnectWallet,
+  connectWithQRCode,
+  initializeConnection,
+} from "./wallet-script";
+import { setClipboard, setNotification } from "../../gen-state/gen.actions";
 
 function ConnectWallet() {
   const history = useHistory();
   const { pathname } = useLocation();
-  const clipboardRef = useRef(null);
-  const { dispatch, account, chainId, mainnet, proposedChain } = useContext(GenContext);
-  const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [clipboardState, setClipboardState] = useState("Copy Address");
-  const [network, setNetwork] = useState(process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet");
-  const [togglePopup, setTogglePopup] = useState(false);
-  const [refresh, setRefresh] = useState(false);
-  const [walletProvider, setWalletConnectProvider] = useState();
+  const clipboardRef = useRef();
+  const walletProviderRef = useRef(0);
+  const { dispatch, account, chainId, proposedChain, mainnet } = useContext(GenContext);
 
-  const breakAddress = (address = "", width = 6) => {
-    if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
+  const [state, setState] = useState({
+    toggleDropdown: false,
+    clipboardState: "Copy Address",
+    network: null,
+    togglePopup: false,
+    walletConnectProvider: null,
+    connectionMethod: null,
+    isMetamask: true,
+    rpc: {
+      4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
+    },
+  });
+
+  const {
+    toggleDropdown,
+    clipboardState,
+    network,
+    togglePopup,
+    walletConnectProvider,
+    connectionMethod,
+    rpc,
+    isMetamask,
+  } = state;
+
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
+
+  const walletProps = {
+    dispatch,
+    supportedChains,
+    proposedChain,
+    mainnet,
+    chainId,
+    walletConnectProvider,
+    connectionMethod,
+    walletProviderRef,
+    rpc,
+    history,
+    pathname,
+    handleSetState,
   };
 
   const handleConnect = () => {
     if (window?.ethereum !== undefined) {
-      setTogglePopup(true);
+      handleSetState({ togglePopup: true });
     } else {
+      handleSetState({ togglePopup: false });
       dispatch(
         setNotification({
           message: "You need to install metamask to continue",
           type: "error",
         })
       );
-
       dispatch(setClipboard("https://metamask.io/"));
     }
   };
@@ -58,176 +89,37 @@ function ConnectWallet() {
     clipboard.select();
     clipboard.setSelectionRange(0, 99999); /* For mobile devices */
     navigator.clipboard.writeText(clipboard.value);
-    setClipboardState("Copied");
+    handleSetState({ clipboardState: "Copied" });
     setTimeout(() => {
-      setClipboardState("Copy Address");
+      handleSetState({ clipboardState: "Copy Address" });
     }, 850);
   };
 
-  const getConnectedChain = () => {
-    const c = supportedChains[chainId];
-    if (!c) return blankImage;
-    return c.icon;
-  };
-
-  const isAlgoConnected = async (provider) => {
-    if (provider?.connected) {
-      try {
-        await provider.disconnect();
-      } catch (error) {
-        console.log("error disconneting: ", error);
-      }
-    }
-  };
-
-  const disconnectWallet = async () => {
-    await isAlgoConnected(walletProvider);
-    dispatch(setAccount(null));
-    dispatch(setChainId(null));
-    dispatch(setProposedChain(-1));
-    setToggleDropdown(false);
-    if (pathname.includes("/me")) {
-      history.push("/marketplace");
-    }
-  };
-
-  const updateAccount = async (provider) => {
-    await isAlgoConnected(provider);
-    if (!window.ethereum._state.initialized) {
-      disconnectWallet();
-      dispatch(
-        setNotification({
-          message: "we could not connect this site automatically, please manually connect your site.",
-          type: "warning",
-        })
-      );
-    }
-    const [accounts] = await window.ethereum.request({ method: "eth_requestAccounts" });
-    console.log("accounts: ", account);
-    accounts && dispatch(setAccount(accounts));
-    const networkId = await window.ethereum.networkVersion;
-    const isSupported = Object.keys(supportedChains).includes(networkId);
-    if (!isSupported) {
-      dispatch(
-        setNotification({
-          message: "network not supported",
-          type: "error",
-        })
-      );
-      disconnectWallet();
-      setTogglePopup(true);
-    } else {
-      console.log("connected successfully");
-      dispatch(setChainId(Number(networkId)));
-
-      setTogglePopup(false);
-      if (!accounts) {
-        disconnectWallet();
-        dispatch(
-          setNotification({
-            message: "we could not connect this site automatically, please manually connect your site.",
-            type: "warning",
-          })
-        );
-      } else {
-        dispatch(
-          setNotification({
-            message: `Your site is connected to ${supportedChains[networkId].label}`,
-            type: "success",
-          })
-        );
-      }
-    }
+  const handleDisconnet = () => {
+    disconnectWallet(walletProps);
   };
 
   useEffect(() => {
-    if (!proposedChain) return setRefresh(!refresh);
-    const isSupported = Object.keys(supportedChains).includes(String(proposedChain));
-    if (!isSupported) return;
-    async function connectWallet() {
-      if (proposedChain === 4160) {
-        await connectWithQRCode({ walletProvider, dispatch });
-        dispatch(setConnector(walletProvider));
-      } else {
-        await connectWithMetamask({ dispatch, supportedChains, proposedChain, walletProvider });
-        const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-        dispatch(setConnector(ethereumProvider));
-      }
-    }
-
-    connectWallet();
-  }, [proposedChain]);
-
-  useEffect(() => {
-    const networkArray = [137, 1313161554, 42220];
-    if (networkArray.includes(chainId)) {
-      setNetwork("mainnet");
-      dispatch(setMainnet(true));
-    } else {
-      setNetwork("testnet");
-      dispatch(setMainnet(false));
-    }
+    setNetworkType(walletProps);
   }, [chainId]);
 
   useEffect(() => {
-    if (window?.ethereum !== undefined) {
-      const { ethereum } = window;
-      let walletConnectProvider;
-      try {
-        walletConnectProvider = new WalletConnectProvider({
-          rpc: {
-            4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
-          },
-        });
-      } catch (error) {
-        console.log(error);
-      }
+    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
+    if (!isSupported) return;
+    connectWallet(walletProps);
+  }, [proposedChain, connectionMethod]);
 
-      if (window.localStorage.walletconnect) {
-        const newProvider = JSON.parse(window.localStorage.walletconnect);
-        dispatch(setProposedChain(newProvider.chainId));
-        dispatch(setConnector(walletConnectProvider));
-        setWalletConnectProvider(walletConnectProvider);
-      } else {
-        updateAccount(walletConnectProvider);
-        const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-        dispatch(setConnector(ethereumProvider));
-      }
-
-      setWalletConnectProvider(walletConnectProvider);
-
-      // initiallize account
-      // Subscribe to accounts change
-      ethereum.on("accountsChanged", function (accounts) {
-        updateAccount(walletConnectProvider);
-      });
-
-      // Subscribe to chainId change
-      ethereum.on("chainChanged", (chainId) => {
-        updateAccount(walletConnectProvider);
-      });
-
-      // Subscribe to accounts change
-      walletConnectProvider.on("accountsChanged", (accounts) => {
-        dispatch(setAccount(accounts[0]));
-        dispatch(setChainId(walletConnectProvider.chainId));
-      });
-
-      // Subscribe to chainId change
-      walletConnectProvider.on("chainChanged", (chainId) => {
-        dispatch(setChainId(chainId));
-      });
-
-      // Subscribe to session disconnection
-      walletConnectProvider.on("disconnect", (code, reason) => {
-        disconnectWallet();
-      });
+  useEffect(() => {
+    if (walletProviderRef.current >= 2) {
+      connectWithQRCode(walletProps);
     } else {
-      console.log("metamask is not installed");
+      walletProviderRef.current = +1;
     }
-  }, [refresh]);
+  }, [walletConnectProvider]);
 
-  const changeNetwork = <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>;
+  useEffect(() => {
+    initializeConnection(walletProps);
+  }, [rpc]);
 
   const goToDashboard = (
     <div
@@ -251,7 +143,7 @@ function ConnectWallet() {
         <div>{clipboardState}</div>
         <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
       </div>
-      <div onClick={disconnectWallet} className={classes.option}>
+      <div onClick={handleDisconnet} className={classes.option}>
         <img src={disconnectIcon} alt="" />
         <div>Disconnect</div>
       </div>
@@ -260,21 +152,23 @@ function ConnectWallet() {
 
   const connected = (
     <div
-      onMouseLeave={() => setToggleDropdown(false)}
+      onMouseLeave={() => handleSetState({ toggleDropdown: false })}
       className={`${classes.connected} ${toggleDropdown && classes.active}`}
     >
-      <img className={classes.chain} src={getConnectedChain()} alt="" />
-      <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
+      <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
+      <div onClick={() => handleSetState({ toggleDropdown: !toggleDropdown })} className={classes.address}>
         <span>{breakAddress(account)}</span>
       </div>
       {dropdown}
     </div>
   );
 
+  const changeNetwork = <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>;
+
   return (
     <div>
       <div className={`${classes.popupContainer} ${togglePopup && classes.active}`}>
-        <WalletPopup setTogglePopup={setTogglePopup} />
+        <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />
       </div>
       {account ? (
         <div className={classes.container}>
