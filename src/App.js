@@ -38,7 +38,6 @@ const Artist = lazy(() => import("./pages/artist/artist"));
 function App() {
   const { dispatch, mainnet } = useContext(GenContext);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
-  const [showEarlyAccess, setShowEarlyAccess] = useState(true);
 
   useEffect(() => {
     (async function getCollections() {
@@ -59,7 +58,6 @@ function App() {
   return (
     <div className="App">
       <div className="topSectionContainer">
-        {/* <EarlyAccess showEarlyAccess={showEarlyAccess} setShowEarlyAccess={setShowEarlyAccess} /> */}
         <Navbar />
       </div>
       <div className="Routes">

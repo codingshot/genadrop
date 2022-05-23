@@ -16,8 +16,8 @@ export const getAuroraCollections = async (collection) => {
       const { data } = await axios.get(collection[i].nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
       collectionObj.name = collection[i].name;
       collectionObj.owner = collection[i].id;
-      let getPrice = collection[i].nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
-      let chain = collection[i].nfts.map((col) => col.chain).reduce((a, b) => a === b && a);
+      const getPrice = collection[i].nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+      const chain = collection[i].nfts.map((col) => col.chain).reduce((a, b) => a === b && a);
       collectionObj.chain = chain;
       collectionObj.price = getPrice * 0.000000000000000001;
       collectionObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
@@ -32,6 +32,7 @@ export const getAuroraCollections = async (collection) => {
 };
 
 export const getNftCollections = async (collections, mainnet) => {
+  console.log(collections);
   const collectionArr = [];
   for (let i = 0; i < collections.length; i += 1) {
     try {
@@ -69,7 +70,7 @@ export const getGraphCollection = async (collection, mainnet) => {
       nftObj.chain = collection[i].chain;
       nftObj.owner = mainnet.id;
       nftObj.Id = collection[i].id;
-      let getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+      const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
       console.log("get Price", getPrice);
       nftObj.collectionPrice = getPrice * 0.000000000000000001;
       nftObj.price = collection[i].price * 0.000000000000000001;

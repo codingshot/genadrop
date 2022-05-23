@@ -7,11 +7,13 @@ import Orgs from "../../components/Home/Orgs/Orgs";
 import classes from "./home.module.css";
 import { Collectors, creators } from "./home-script";
 import Docs from "../../components/Home/Docs/Docs";
+import EarlyAccess from "../../components/early-access/early-access";
 
 const Home = () => (
   <div className={classes.container}>
     <div className={classes.wrapper}>
       <Banner />
+      <EarlyAccess />
       <Orgs />
       <Features data={creators} />
       <Features data={Collectors} />

@@ -17,7 +17,7 @@ const CollectionsCard = ({ collection }) => {
   };
   useEffect(() => {
     if (supportedChains[chain]) {
-      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
           algoPrice: value * price,
@@ -71,7 +71,7 @@ export const NearCollectionCard = ({ collection }) => {
   };
 
   useEffect(() => {
-    axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+    axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
       let value = Object.values(res.data)[0].usd;
       handleSetState({ algoPrice: price * value });
     });
@@ -94,7 +94,7 @@ export const NearCollectionCard = ({ collection }) => {
             <div className={classes.floor}>FLOORPRICE</div>
             <div className={classes.price}>
               <img src={supportedChains[1313161554].icon} alt="" />
-              {price} <span className={classes.chain}>AOA</span>{" "}
+              {price} <span className={classes.chain}>ETH</span>{" "}
               <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
             </div>
           </div>
