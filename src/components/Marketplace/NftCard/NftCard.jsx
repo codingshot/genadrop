@@ -18,7 +18,7 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
 
   useEffect(() => {
     if (supportedChains[loadedChain] || supportedChains[chain]) {
-      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
           algoPrice: value * price,

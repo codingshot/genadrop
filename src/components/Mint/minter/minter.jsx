@@ -137,8 +137,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     celo: "CGLD",
     polygon: "Matic",
     "polygon Testnet": "Matic",
-    "aurora testnet": "Aurora",
-    aurora: "Aurora",
+    "aurora testnet": "ETH",
+    aurora: "ETH",
   };
 
   const handleAddAttribute = () => {
@@ -236,8 +236,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.aurora.usd });
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
+          handleSetState({ dollarPrice: price / res.data.ethereum.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
@@ -404,7 +404,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 <div className={classes.price}>
                   <input type="number" value={price} onChange={handlePrice} />
                   <span>
-                    {dollarPrice.toFixed(2)} {getUintByChain[chain?.label.toLowerCase()]}
+                    {dollarPrice.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
                   </span>
                 </div>
               ) : (

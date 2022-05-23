@@ -50,8 +50,9 @@ const SingleNFT = () => {
     showSocial: false,
     chainIcon: algoLogo,
     isCopied: false,
+    chainSymbol: ""
   });
-  const { dropdown, nftDetails, algoPrice, isLoading, chainIcon, showSocial, isCopied, transactionHistory } = state;
+  const { dropdown, chainSymbol, nftDetails, algoPrice, isLoading, chainIcon, showSocial, isCopied, transactionHistory } = state;
   const history = useHistory();
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
@@ -141,6 +142,7 @@ const SingleNFT = () => {
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
+          chainSymbol: "ETH"
         });
       });
     } else {
@@ -268,7 +270,7 @@ const SingleNFT = () => {
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
-                <p className={classes.tokenValue}>{nftDetails.price}</p>
+                <p className={classes.tokenValue}>{nftDetails.price} {chainSymbol ? chainSymbol : ""}</p>
                 <span className={classes.usdValue}>
                   ($
                   {(nftDetails.price * algoPrice).toFixed(2)})
