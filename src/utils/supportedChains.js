@@ -4,7 +4,7 @@ import celoIcon from "../assets/icon-celo.svg";
 import polygonIcon from "../assets/icon-polygon.svg";
 import { addChain, switchChain } from "./chainConnect";
 
-export const supportedChains = {
+const supportedChains = {
   4160: {
     label: "Algorand",
     icon: algoIcon,
@@ -77,3 +77,5 @@ export const supportedChains = {
     coinGeckoLabel: "aurora-near",
   },
 };
+
+export default supportedChains;

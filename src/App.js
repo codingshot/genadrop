@@ -59,7 +59,7 @@ function App() {
   return (
     <div className="App">
       <div className="topSectionContainer">
-        <EarlyAccess showEarlyAccess={showEarlyAccess} setShowEarlyAccess={setShowEarlyAccess} />
+        {/* <EarlyAccess showEarlyAccess={showEarlyAccess} setShowEarlyAccess={setShowEarlyAccess} /> */}
         <Navbar />
       </div>
       <div className="Routes">

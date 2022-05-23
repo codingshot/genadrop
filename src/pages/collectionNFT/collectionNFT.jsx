@@ -26,7 +26,7 @@ import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
 import auroraIcon from "../../assets/icon-aurora.svg";
 import { createClient } from "urql";
-import { supportedChains } from "../../utils/supportedChains";
+import supportedChains from "../../utils/supportedChains";
 
 import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 

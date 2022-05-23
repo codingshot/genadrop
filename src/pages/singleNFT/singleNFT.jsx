@@ -25,7 +25,7 @@ import algoLogo from "../../assets/icon-algo.svg";
 import { setLoader } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
-import { supportedChains } from "../../utils/supportedChains";
+import supportedChains from "../../utils/supportedChains";
 
 const SingleNFT = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
