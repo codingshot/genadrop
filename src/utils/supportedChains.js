@@ -20,7 +20,7 @@ export const supportedChains = {
     networkId: 1313161554,
     add: addChain,
     switch: switchChain,
-    coinGeckoLabel: "aurora-near",
+    coinGeckoLabel: "ethereum",
   },
   137: {
     label: "Polygon",
@@ -70,10 +70,10 @@ export const supportedChains = {
   1313161555: {
     label: "Aurora Testnet",
     icon: auroraIcon,
-    sybmol: "AOA",
+    sybmol: "ETH",
     networkId: 1313161555,
     add: addChain,
     switch: switchChain,
-    coinGeckoLabel: "aurora-near",
+    coinGeckoLabel: "ethereum",
   },
 };

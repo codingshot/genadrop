@@ -41,6 +41,7 @@ const CollectionNFT = () => {
     algoPrice: 0,
     isCopied: false,
     chainIcon: algoLogo,
+    chainSymbol: ""
   });
 
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -49,7 +50,7 @@ const CollectionNFT = () => {
     url: APIURL,
   });
 
-  const { dropdown, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied, chainIcon } =
+  const { dropdown, chainSymbol, asset, transactionHistory, collection, isLoading, algoPrice, showSocial, isCopied, chainIcon } =
     state;
 
   const handleSetState = (payload) => {
@@ -139,6 +140,7 @@ const CollectionNFT = () => {
         handleSetState({
           chainIcon: supportedChains[asset.chain].icon,
           algoPrice: value,
+          chainSymbol: "ETH"
         });
       });
     } else {
@@ -288,7 +290,7 @@ const CollectionNFT = () => {
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
-                <p className={classes.tokenValue}>{asset.price}</p>
+                <p className={classes.tokenValue}>{asset.price} {chainSymbol ? chainSymbol : ""}</p>
                 <span className={classes.usdValue}>
                   ($
                   {(asset.price * algoPrice).toFixed(2)})
