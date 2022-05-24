@@ -6,7 +6,7 @@ import listIcon from "../../../assets/icon-list.svg";
 import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
 import Copy from "../../../components/copy/copy";
-import { supportedChains } from "../../../utils/supportedChains";
+import supportedChains from "../../../utils/supportedChains";
 
 const Header = ({ collection, getHeight, loadedChain }) => {
   const domMountRef = useRef(false);
@@ -29,6 +29,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
       if (supportedChains[loadedChain]) {
         axios.get(supportedChains[loadedChain].livePrice).then((res) => {
           let value = Object.values(res.data)[0].usd;
+          console.log(value);
           handleSetState({ dollarPrice: value * price, chainName: supportedChains[loadedChain].sybmol });
         });
       }

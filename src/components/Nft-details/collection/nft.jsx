@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
-import { supportedChains } from "../../../utils/supportedChains";
 import classes from "./nft.module.css";
 import algoIcon from "../../../assets/icon-algo.svg";
+import supportedChains from "../../../utils/supportedChains";
 
 const NFT = (data) => {
   const match = useRouteMatch();

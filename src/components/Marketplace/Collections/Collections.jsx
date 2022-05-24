@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState, useMemo } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { createClient } from "urql";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -82,7 +83,7 @@ const Collections = () => {
       (async function getAlgoCollection() {
         // let collections = await fetchCollections();
         if (collections?.length) {
-          const result = await getNftCollections(collections, mainnet);
+          const result = await getNftCollections(collections.slice(0, 10), mainnet);
           handleSetState({ algoCollection: result });
         } else {
           handleSetState({ algoCollection: null });
@@ -92,7 +93,6 @@ const Collections = () => {
       console.log(error);
     }
   }, [collections]);
-
   return (
     <div className={classes.container}>
       <div className={classes.heading}>

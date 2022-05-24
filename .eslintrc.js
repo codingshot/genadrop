@@ -22,7 +22,7 @@ module.exports = {
     "no-nested-ternary": "off",
     "no-param-reassign": ["error", { props: false }],
     "jsx-a11y/no-static-element-interactions": "off",
-    "linebreak-style": ["error", process.platform === "win32" ? "windows" : "unix"],
+    "linebreak-style": ["error", "unix"],
     "react/jsx-no-useless-fragment": "off",
     radix: "off",
     "react/jsx-props-no-spreading": "off",
@@ -36,3 +36,5 @@ module.exports = {
     "react/destructuring-assignment": "off",
   },
 };
+
+// process.platform === "win32" ? "windows" : "unix"

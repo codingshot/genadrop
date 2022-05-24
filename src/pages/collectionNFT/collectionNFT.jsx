@@ -26,7 +26,7 @@ import detailsIcon from "../../assets/details.png";
 import algoLogo from "../../assets/icon-algo.svg";
 import auroraIcon from "../../assets/icon-aurora.svg";
 import { createClient } from "urql";
-import { supportedChains } from "../../utils/supportedChains";
+import supportedChains from "../../utils/supportedChains";
 
 import {
   GET_ALL_AURORA_COLLECTIONS,
@@ -54,6 +54,7 @@ const CollectionNFT = () => {
 
   const {
     dropdown,
+    chainSymbol,
     asset,
     transactionHistory,
     collection,
@@ -204,8 +205,9 @@ const CollectionNFT = () => {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
         let value = Object.values(res?.data)[0]?.usd;
         handleSetState({
-          chainIcon: supportedChains[asset.chain].icon,
+          chainIcon: supportedChains[asset?.chain].icon,
           algoPrice: value,
+          chainSymbol: supportedChains[asset?.chain].sybmol,
         });
       });
     } else {
@@ -355,7 +357,9 @@ const CollectionNFT = () => {
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
-                <p className={classes.tokenValue}>{asset.price}</p>
+                <p className={classes.tokenValue}>
+                  {asset.price} {chainSymbol ? chainSymbol : ""}
+                </p>
                 <span className={classes.usdValue}>
                   ($
                   {(asset.price * algoPrice).toFixed(2)})

@@ -4,7 +4,7 @@ import celoIcon from "../assets/icon-celo.svg";
 import polygonIcon from "../assets/icon-polygon.svg";
 import { addChain, switchChain } from "./chainConnect";
 
-export const supportedChains = {
+const supportedChains = {
   4160: {
     label: "Algorand",
     icon: algoIcon,
@@ -20,7 +20,7 @@ export const supportedChains = {
     networkId: 1313161554,
     add: addChain,
     switch: switchChain,
-    coinGeckoLabel: "aurora-near",
+    coinGeckoLabel: "ethereum",
   },
   137: {
     label: "Polygon",
@@ -72,12 +72,13 @@ export const supportedChains = {
   1313161555: {
     label: "Aurora Testnet",
     icon: auroraIcon,
-    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd",
-    explorer: "https://testnet.aurorascan.dev/address",
-    sybmol: "AOA",
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
+    sybmol: "ETH",
     networkId: 1313161555,
     add: addChain,
     switch: switchChain,
-    coinGeckoLabel: "aurora-near",
+    coinGeckoLabel: "ethereum",
   },
 };
+
+export default supportedChains;

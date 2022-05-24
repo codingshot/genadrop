@@ -156,7 +156,7 @@ const Collections = () => {
       (async function getAlgoCollection() {
         const collections = await fetchCollections(mainnet);
         const result = await getNftCollections(collections, mainnet);
-        handleSetState({ algoCollection: result, loading: false });
+        handleSetState({ algoCollection: result || [], loading: false });
       })();
     } catch (error) {
       console.log(error);
@@ -218,8 +218,10 @@ const Collections = () => {
               <CollectionsCard key={idx} collection={collection} />
             ))}
           </div>
-        ) : !filteredCollection ? (
+        ) : !filteredCollection && filter.searchValue ? (
           <NotFound />
+        ) : !filteredCollection ? (
+          <h1 className={classes.noResult}>No Results Found</h1>
         ) : (
           <div className={classes.skeleton}>
             {[...new Array(4)]

@@ -97,6 +97,7 @@ const SingleNftCollection = () => {
           .toPromise();
         const getAuroraSingleNfts = await getSingleGraphNfts(data.data.nfts);
         const getPolygonSingleNfts = await getSingleGraphNfts(polygonData.data.nfts);
+        console.log(getPolygonSingleNfts);
         handleSetState({
           algoCollection: result,
           auroraCollection: getAuroraSingleNfts,

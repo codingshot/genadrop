@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { createClient } from "urql";
 import { getSingleGraphNfts, getSingleNfts } from "../../../utils";
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
@@ -26,7 +27,7 @@ const SingleNft = () => {
   useEffect(() => {
     (async function getResult() {
       if (singleNfts?.length) {
-        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
+        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts.slice(0, 10));
         handleSetState({ allSingleNfts: allSingleNFTs });
       } else {
         handleSetState({ allSingleNfts: null });

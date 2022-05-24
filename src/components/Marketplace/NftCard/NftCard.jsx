@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useRouteMatch } from "react-router-dom";
 import algoIcon from "../../../assets/icon-algo.svg";
 import classes from "./NftCard.module.css";
-import { supportedChains } from "../../../utils/supportedChains";
+import supportedChains from "../../../utils/supportedChains";
 
 const NftCard = ({ nft, list, extend, loadedChain }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
