@@ -138,7 +138,7 @@ export const GET_AURORA_SINGLE_NFTS = gql`
 
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection: "0x289F3E728e38d3b4151EE6B95f78b6Da7c3cC54e" }) {
+    nfts(where: { collection: "0x6639b2310b94196cb8b7f2e361c8c58c683add2c" }) {
       category
       chain
       createdAtTimestamp

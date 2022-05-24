@@ -6,7 +6,7 @@ import algoIcon from "../../../assets/icon-algo.svg";
 import { supportedChains } from "../../../utils/supportedChains.js";
 
 const CollectionsCard = ({ collection }) => {
-  const { name, price, description, image_url, chain } = collection;
+  const { name, price, description, image_url, chain, owner } = collection;
   const history = useHistory();
 
   const [state, setState] = useState({ algoPrice: 0, chainIcon: "", chainName: "" });
@@ -17,7 +17,7 @@ const CollectionsCard = ({ collection }) => {
   };
   useEffect(() => {
     if (supportedChains[chain]) {
-      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+      axios.get(supportedChains[chain].livePrice).then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
           algoPrice: value * price,
@@ -31,10 +31,10 @@ const CollectionsCard = ({ collection }) => {
         handleSetState({ algoPrice: value * price, chainIcon: algoIcon, chainName: "Algo" });
       });
     }
-  }, []);
+  }, [owner]);
 
   return (
-    <div onClick={() => history.push(`/marketplace/collections/${name}`)} className={classes.card}>
+    <div onClick={() => history.push(`/marketplace/collections/${chain ? owner : name}`)} className={classes.card}>
       <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
 
       <div className={classes.body}>

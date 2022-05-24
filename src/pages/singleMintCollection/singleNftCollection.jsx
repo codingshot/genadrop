@@ -11,7 +11,12 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
 import { createClient } from "urql";
-import { GET_ALL_GRAPH_SINGLE_NFTS, GET_AURORA_SINGLE_NFTS } from "../../graphql/querries/getCollections";
+import {
+  GET_ALL_GRAPH_SINGLE_NFTS,
+  GET_AURORA_SINGLE_NFTS,
+  GET_POLYGON_SINGLE_NFTS,
+} from "../../graphql/querries/getCollections";
+import { graphQLClientPolygon } from "../../utils/graphqlClient";
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
@@ -81,10 +86,21 @@ const SingleNftCollection = () => {
         const result = await getSingleNfts(mainnet, singleNftCollections);
         const data = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
 
-        const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
+        const polygonData = await graphQLClientPolygon
+          .query(
+            GET_POLYGON_SINGLE_NFTS,
+            {},
+            {
+              clientName: "polygon",
+            }
+          )
+          .toPromise();
+        const getAuroraSingleNfts = await getSingleGraphNfts(data.data.nfts);
+        const getPolygonSingleNfts = await getSingleGraphNfts(polygonData.data.nfts);
         handleSetState({
           algoCollection: result,
-          auroraCollection: allSingleNfts,
+          auroraCollection: getAuroraSingleNfts,
+          polyCollection: getPolygonSingleNfts,
         });
       })();
     } catch (error) {

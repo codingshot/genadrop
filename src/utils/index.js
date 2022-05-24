@@ -10,7 +10,7 @@ import blankImage from "../assets/blank.png";
 
 export const getAuroraCollections = async (collection) => {
   const collectionArr = [];
-  for (let i = 0; i < collection.length; i += 1) {
+  for (let i = 0; i < collection?.length; i += 1) {
     try {
       const collectionObj = {};
       const { data } = await axios.get(collection[i].nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
@@ -111,10 +111,10 @@ export const getGraphNft = async (collection, mainnet) => {
   try {
     const nftArr = {};
     nftArr.collection_name = collection?.collection?.name;
-    nftArr.name = data.name;
+    nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.collection?.id;
-    nftArr.price = collection.price * 0.000000000000000001;
+    nftArr.price = collection?.price * 0.000000000000000001;
     nftArr.image_url = data.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.description = data?.description;

@@ -5,21 +5,17 @@ import { getSingleGraphNfts, getSingleNfts } from "../../../utils";
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
-import { createClient } from "urql";
-import { GET_ALL_GRAPH_SINGLE_NFTS, GET_AURORA_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
+import { GET_AURORA_SINGLE_NFTS, GET_POLYGON_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
+import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
 
 const SingleNft = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   const [state, setState] = useState({
     allSingleNfts: [],
     allSingleGraphNfts: [],
+    polygonSingleNfts: null,
+    auroraSingleNfts: null,
   });
-  const { allSingleNfts, allSingleGraphNfts } = state;
+  const { allSingleNfts, allSingleGraphNfts, polygonSingleNfts, auroraSingleNfts } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -38,17 +34,57 @@ const SingleNft = () => {
     })();
   }, [singleNfts]);
 
-  useEffect(() => {
-    try {
-      (async function getGraphResults() {
-        const data = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
-        const allSingleNfts = await getSingleGraphNfts(data?.data?.nfts);
-        handleSetState({ allSingleGraphNfts: allSingleNfts });
-      })();
-    } catch (error) {
-      console.log(error);
+  const getAllCollectionChains = () => {
+    return !auroraSingleNfts && !polygonSingleNfts ? null : [...(auroraSingleNfts || []), ...(polygonSingleNfts || [])];
+  };
+
+  async function getDataFromEndpointB() {
+    const data = await graphQLClientPolygon
+      .query(
+        GET_POLYGON_SINGLE_NFTS,
+        {},
+        {
+          clientName: "polygon",
+        }
+      )
+      .toPromise();
+    const result = await getSingleGraphNfts(data?.data?.nfts);
+    if (result?.length) {
+      handleSetState({ polygonSingleNfts: result });
+    } else {
+      handleSetState({ polygonSingleNfts: null });
     }
-  }, [singleNfts]);
+  }
+
+  async function getDataFromEndpointA() {
+    const data = await graphQLClient
+      .query(
+        GET_AURORA_SINGLE_NFTS,
+        {},
+        {
+          clientName: "aurora",
+        }
+      )
+      .toPromise();
+    const result = await getSingleGraphNfts(data?.data?.nfts);
+    if (result?.length) {
+      handleSetState({ auroraSingleNfts: result });
+    } else {
+      handleSetState({ auroraSingleNfts: null });
+    }
+  }
+
+  useEffect(() => {
+    getDataFromEndpointA();
+    getDataFromEndpointB();
+  }, []);
+
+  useEffect(() => {
+    const singleNfts = getAllCollectionChains();
+    handleSetState({
+      allSingleGraphNfts: singleNfts,
+    });
+  }, [auroraSingleNfts, polygonSingleNfts]);
 
   return (
     <div className={classes.container}>

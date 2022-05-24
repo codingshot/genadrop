@@ -35,7 +35,15 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
   }, [chain, loadedChain]);
 
   return (
-    <Link to={nft.collection_name ? `${match.url}/${Id}` : `/marketplace/single-mint/${Id}`}>
+    <Link
+      to={
+        nft.collection_name
+          ? `${match.url}/${Id}`
+          : chain
+          ? `/marketplace/single-mint/${chain}/${Id}`
+          : `/marketplace/single-mint/${Id}`
+      }
+    >
       <div className={classes.card}>
         <div className={classes.imageContainer}>
           <img src={image_url} alt="" />

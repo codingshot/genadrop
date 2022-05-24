@@ -76,3 +76,7 @@ export const graphQLClientPolygon = createClient({
     fetchExchange,
   ],
 });
+
+export const polygonClient = createClient({
+  url: process.env.REACT_APP_POLYGON_URL,
+});
