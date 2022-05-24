@@ -105,11 +105,11 @@ const Collections = () => {
       {algoCollection?.length ? (
         <div className={classes.wrapper}>
           {algoCollection
-            .filter((_, idx) => idx < 10)
-            .map((collection, idx) => (
+            ?.filter((_, idx) => idx < 10)
+            ?.map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
-          {graphCollection.map((collection, idx) => (
+          {graphCollection?.map((collection, idx) => (
             <NearCollectionCard key={idx} collection={collection} />
           ))}
         </div>
