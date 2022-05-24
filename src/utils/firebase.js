@@ -152,7 +152,7 @@ async function readAllNft(account) {
     res.push(...Object.values(doc.data()));
   });
 
-  var filtered = [];
+  const filtered = [];
   res.forEach((e) => {
     if (e.Buyer == account) {
       filtered.push(e);
