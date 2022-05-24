@@ -1,19 +1,29 @@
 import React, { useContext, useEffect, lazy, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
+import { createClient } from "urql";
 import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";
-import EarlyAccess from "./components/early-access/early-access";
 import Overlay from "./components/overlay/overlay";
 import { fetchCollections, readAllSingleNft } from "./utils/firebase";
 import { GenContext } from "./gen-state/gen.context";
-import { setCollections, setSingleNfts } from "./gen-state/gen.actions";
+import {
+  setCollections,
+  setSingleNfts,
+  setAlgoCollections,
+  setAlgoSingleNfts,
+  setAuroraCollections,
+  setAuroraSingleNfts,
+  setGraphCollection,
+} from "./gen-state/gen.actions";
 import Notification from "./components/Notification/Notification";
 import Clipboard from "./components/clipboard/clipboard";
 import Loader from "./components/Loader/Loader";
 import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Prompt from "./components/delete-prompt/prompt";
+import { getAuroraCollections, getNftCollections } from "./utils";
+import { GET_ALL_AURORA_COLLECTIONS } from "./graphql/querries/getCollections";
 
 const Home = lazy(() => import("./pages/home/home"));
 const Create = lazy(() => import("./pages/create/create"));
@@ -39,10 +49,35 @@ function App() {
   const { dispatch, mainnet } = useContext(GenContext);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   useEffect(() => {
     (async function getCollections() {
       const collections = await fetchCollections(mainnet);
       dispatch(setCollections(collections));
+      console.log(collections);
+      // Get ALGO Collection
+      if (collections?.length) {
+        const result = await getNftCollections(collections, mainnet);
+        console.log(result);
+        dispatch(setAlgoCollections(result));
+      } else {
+        console.log(collections);
+        dispatch(setAlgoCollections(null));
+      }
+      // Get Aurora Collection
+      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      const result = await getAuroraCollections(data.data?.collections);
+      dispatch(setGraphCollection(result));
+      if (result?.length) {
+        dispatch(setAuroraCollections(result));
+      } else {
+        dispatch(setAuroraCollections(null));
+      }
     })();
 
     (async function readAllSingle() {

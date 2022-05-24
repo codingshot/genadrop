@@ -10,6 +10,7 @@ import blankImage from "../assets/blank.png";
 
 export const getAuroraCollections = async (collection) => {
   const collectionArr = [];
+  console.log(collection);
   for (let i = 0; i < collection.length; i += 1) {
     try {
       const collectionObj = {};
@@ -32,7 +33,6 @@ export const getAuroraCollections = async (collection) => {
 };
 
 export const getNftCollections = async (collections, mainnet) => {
-  console.log(collections);
   const collectionArr = [];
   for (let i = 0; i < collections.length; i += 1) {
     try {
@@ -41,8 +41,9 @@ export const getNftCollections = async (collections, mainnet) => {
       collectionObj.price = collections[i].price;
       collectionObj.owner = collections[i].owner;
       collectionObj.description = collections[i].description;
-
+      console.log(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       const { data } = await axios.get(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      console.log(data);
 
       collectionObj.number_of_nfts = data.length;
       const {
@@ -50,6 +51,7 @@ export const getNftCollections = async (collections, mainnet) => {
       } = await getAlgoData(mainnet, data[0]);
       const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       collectionObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      console.log(collectionObj);
       collectionArr.push(collectionObj);
     } catch (error) {
       console.log(error);

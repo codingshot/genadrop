@@ -21,7 +21,8 @@ const Collections = () => {
     algoCollection: [],
     auroraCollection: [],
   });
-  const { collections, mainnet, dispatch } = useContext(GenContext);
+  const { collections, singleAlgoNfts, singleAuroraNfts, auroraCollections, algoCollections, mainnet, dispatch } =
+    useContext(GenContext);
   const { algoCollection, auroraCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -42,21 +43,25 @@ const Collections = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    try {
-      (async function getAlgoCollection() {
-        // let collections = await fetchCollections();
-        if (collections?.length) {
-          const result = await getNftCollections(collections.slice(0, 10), mainnet);
-          handleSetState({ algoCollection: result });
-        } else {
-          handleSetState({ algoCollection: null });
-        }
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [collections]);
+  // useEffect(() => {
+  //   try {
+  //     (async function getAlgoCollection() {
+  //       // let collections = await fetchCollections();
+  //       if (collections?.length) {
+  //         const result = await getNftCollections(collections.slice(0, 10), mainnet);
+  //         handleSetState({ algoCollection: result });
+  //       } else {
+  //         handleSetState({ algoCollection: null });
+  //       }
+  //     })();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [collections]);
+  // console.log(singleAlgoNfts);
+  // console.log(singleAuroraNfts);
+  console.log(auroraCollections);
+  console.log(algoCollections);
   return (
     <div className={classes.container}>
       <div className={classes.heading}>

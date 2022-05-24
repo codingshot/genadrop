@@ -35,9 +35,13 @@ export const INITIAL_STATE = {
   rule: [],
   collections: {},
   singleNfts: [],
+  algoCollections: [],
+  auroraCollections: [],
+  singleAuroraNfts: [],
+  singleAlgoNfts: [],
   notification: {
     message: "",
-    type: "", //warning, error, success
+    type: "", // warning, error, success
   },
   clipboardMessage: "",
   loaderMessage: "",
@@ -218,6 +222,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         collections: action.payload,
       };
+    case genActionTypes.SET_ALGO_COLLECTIONS:
+      return {
+        ...state,
+        algoCollections: action.payload,
+      };
+    case genActionTypes.SET_AURORA_COLLECTIONS:
+      return {
+        ...state,
+        auroraCollections: action.payload,
+      };
     case genActionTypes.GRAPH_COLLECTIONS:
       return {
         ...state,
@@ -227,6 +241,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         singleNfts: action.payload,
+      };
+    case genActionTypes.SET_ALGO_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAlgoNfts: action.payload,
+      };
+    case genActionTypes.SET_AURORA_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAuroraNfts: action.payload,
       };
     case genActionTypes.SET_FEEDBACK:
       return {

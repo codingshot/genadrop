@@ -27,16 +27,16 @@ const SingleNft = () => {
   const { url } = useRouteMatch();
   const history = useHistory();
 
-  useEffect(() => {
-    (async function getResult() {
-      if (singleNfts?.length) {
-        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts.slice(0, 10));
-        handleSetState({ allSingleNfts: allSingleNFTs });
-      } else {
-        handleSetState({ allSingleNfts: null });
-      }
-    })();
-  }, [singleNfts]);
+  // useEffect(() => {
+  //   (async function getResult() {
+  //     if (singleNfts?.length) {
+  //       const allSingleNFTs = await getSingleNfts(mainnet, singleNfts.slice(0, 10));
+  //       handleSetState({ allSingleNfts: allSingleNFTs });
+  //     } else {
+  //       handleSetState({ allSingleNfts: null });
+  //     }
+  //   })();
+  // }, [singleNfts]);
 
   useEffect(() => {
     try {
