@@ -270,7 +270,13 @@ const Preview = () => {
       return;
     }
     const urls = gifImages.map((img) => img.image);
-    const attributes = gifImages.map((img) => img.attributes);
+    const attributes = [];
+    gifImages.map((img) => {
+      return img.attributes.map((attribute) => {
+        attributes.push(attribute);
+        return attribute;
+      });
+    });
     dispatch(setLoader("generating..."));
 
     axios.post(`https://gif-generator-api.herokuapp.com/`, { urls, duration }).then((res) => {
@@ -332,6 +338,8 @@ const Preview = () => {
       gifs: [],
     });
   };
+  console.log(gifImages);
+  console.log(gifs);
   return (
     <div className={classes.wrapper}>
       <div className={classes.backBtnWrapper}>

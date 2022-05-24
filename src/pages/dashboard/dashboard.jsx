@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory, useLocation } from "react-router-dom";
+import { createClient } from "urql";
 import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
@@ -13,7 +14,6 @@ import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
-import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
 
 const LodaingCards = () => (
@@ -59,7 +59,7 @@ const Dashboard = () => {
   };
 
   const breakAddress = (address = "", width = 6) => {
-    address && `${address.slice(0, width)}...${address.slice(-width)}`;
+    return address && `${address.slice(0, width)}...${address.slice(-width)}`;
   };
 
   useEffect(() => {
@@ -148,7 +148,6 @@ const Dashboard = () => {
     }
     handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
-
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>

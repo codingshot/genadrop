@@ -68,7 +68,9 @@ const ChainDropdown = ({ onChainFilter }) => {
     <div className={classes.chainDropdown}>
       <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter })} className={classes.selectedChain}>
         <div>
-          {chainIcon[chain.toLowerCase()] && <img src={chainIcon[chain.toLowerCase()]} alt={chain} />}
+          {chainIcon[chain.toLowerCase()] && (
+            <img className={classes.chainImg} src={chainIcon[chain.toLowerCase()]} alt={chain} />
+          )}
           <span>{chain}</span>
         </div>
         <img

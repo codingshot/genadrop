@@ -143,6 +143,9 @@ const LayerOrders = () => {
       <div className={classes.layerorder}>
         <div className={classes.layerHeadWrapper}>
           <div className={classes.layerorderHeader}>Layer Orders</div>
+          <div className={classes.infoText}>
+            Please, ensure that background layer is at the bottom, you can drag layers down or up to re-order
+          </div>
         </div>
         <div className={classes.listWrapper}>
           <div className={classes.layer_trait}>

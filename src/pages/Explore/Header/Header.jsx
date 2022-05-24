@@ -26,9 +26,9 @@ const Header = ({ collection, getHeight, loadedChain }) => {
   const getUsdValue = () => {
     if (loadedChain !== null) {
       if (loadedChain === "1313161555") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
           let value = Object.values(res.data)[0].usd;
-          handleSetState({ dollarPrice: value * price, chainName: "AOA" });
+          handleSetState({ dollarPrice: value * price, chainName: "ETH" });
         });
       }
     } else {
