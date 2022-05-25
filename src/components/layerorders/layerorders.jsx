@@ -73,6 +73,7 @@ const LayerOrders = () => {
 
   const handleRename = async (event) => {
     event.preventDefault();
+    if (!inputValue) return;
     handleSetState({ renameAction: false });
     dispatch(setCollectionName(inputValue));
 
