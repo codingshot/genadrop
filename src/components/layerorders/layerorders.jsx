@@ -73,31 +73,37 @@ const LayerOrders = () => {
 
   const handleRename = async (event) => {
     event.preventDefault();
-    if (!inputValue) return;
-    try {
-      dispatch(setLoader("saving..."));
-      const names = await getCollectionsNames();
-      const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
-      if (isUnique) {
-        dispatch(
-          setNotification({
-            message: `${inputValue} already exist. try another name`,
-            type: "warning",
-          })
-        );
-      } else {
-        handleSetState({ renameAction: false });
-        dispatch(setCollectionName(inputValue));
-      }
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: "could not save your collection name, please try again.",
-          type: "error",
-        })
-      );
-    }
-    dispatch(setLoader(""));
+    handleSetState({ renameAction: false });
+    dispatch(setCollectionName(inputValue));
+
+    // This code below needs cross-examination;
+
+    // event.preventDefault();
+    // if (!inputValue) return;
+    // try {
+    //   dispatch(setLoader("saving..."));
+    //   const names = await getCollectionsNames();
+    //   const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
+    //   if (isUnique) {
+    //     dispatch(
+    //       setNotification({
+    //         message: `${inputValue} already exist. try another name`,
+    //         type: "warning",
+    //       })
+    //     );
+    //   } else {
+    //     handleSetState({ renameAction: false });
+    //     dispatch(setCollectionName(inputValue));
+    //   }
+    // } catch (error) {
+    //   dispatch(
+    //     setNotification({
+    //       message: "could not save your collection name, please try again.",
+    //       type: "error",
+    //     })
+    //   );
+    // }
+    // dispatch(setLoader(""));
   };
 
   useEffect(() => {
@@ -125,10 +131,8 @@ const LayerOrders = () => {
                 autoFocus
               />
             </form>
-          ) : collectionName ? (
-            <div className={classes.nameHeader}>{collectionName}</div>
           ) : (
-            <div className={classes.nameHeader}>Collection Name</div>
+            <div className={classes.nameHeader}>{collectionName ? collectionName : "collection name"}</div>
           )}
           <div className={classes.editBtn}>
             {renameAction ? (
