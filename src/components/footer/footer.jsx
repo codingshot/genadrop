@@ -116,10 +116,18 @@ const Footer = () => (
             </div>
           </a>
           <div className={classes.bottomRight}>
-            <a href="https://docs.google.com/document/d/16tRGt3sCIauMNDCwq5A99zYUxwU8S5bpGhI0eaJzwAw/edit?usp=sharing">
+            <a
+              href="https://docs.google.com/document/d/16tRGt3sCIauMNDCwq5A99zYUxwU8S5bpGhI0eaJzwAw/edit?usp=sharing"
+              target="_blank"
+              rel="noreferrer"
+            >
               Privacy Policy
             </a>
-            <a href="https://docs.google.com/document/d/1Ofbw5j9l3MnOFSa2cALcnJJI6iQz86SdiNmQAp1f6AE/edit?usp=sharing">
+            <a
+              href="https://docs.google.com/document/d/1Ofbw5j9l3MnOFSa2cALcnJJI6iQz86SdiNmQAp1f6AE/edit?usp=sharing"
+              target="_blank"
+              rel="noreferrer"
+            >
               Terms of Use
             </a>
           </div>
