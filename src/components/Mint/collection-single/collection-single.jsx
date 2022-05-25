@@ -66,22 +66,25 @@ const CollectionToSingleMinter = () => {
     }
   };
 
-  useEffect(() => {
-    dragRef.current.ondragover = (e) => {
-      e.preventDefault();
-      document.querySelector(".drop-area").style.border = "2px dashed green";
-    };
-    dragRef.current.ondragleave = (e) => {
-      e.preventDefault();
-      document.querySelector(".drop-area").style.border = "2px solid gainsboro";
-    };
-    dragRef.current.ondrop = (e) => {
-      e.preventDefault();
-      document.querySelector(".drop-area").style.border = "2px solid green";
-      handleFileChange({ target: e.dataTransfer });
-      console.log("update");
-    };
-  }, []);
+  // ----- styling for drag and drop image/files but the feature not working at the moment ----
+  // ----- and cause error/crashing for component rendered after so I commented out ----
+  // useEffect(() => {
+  //   dragRef.current.ondragover = (e) => {
+  //     e.preventDefault();
+  //     document.querySelector(".drop-area").style.border = "2px dashed green";
+  //   };
+  //   dragRef.current.ondragleave = (e) => {
+  //     e.preventDefault();
+  //     document.querySelector(".drop-area").style.border = "2px solid gainsboro";
+  //   };
+  //   dragRef.current.ondrop = (e) => {
+  //     e.preventDefault();
+  //     document.querySelector(".drop-area").style.border = "2px solid green";
+  //     handleFileChange({ target: e.dataTransfer });
+  //     console.log("update");
+  //   };
+  // }, []);
+  // --------------
 
   useEffect(() => {
     if (params.mintId === "collection") {
@@ -94,8 +97,6 @@ const CollectionToSingleMinter = () => {
 
   return (
     <div ref={dragRef} className={classes.container}>
-      {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
-
       {file ? (
         <Minter
           data={{ file, fileName, metadata, zip }}

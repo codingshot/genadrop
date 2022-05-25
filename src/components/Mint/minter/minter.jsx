@@ -413,8 +413,23 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             </div>
 
             <div className={classes.inputWrapper}>
-              <label>Blockchain: {chainId ? "" : "---"} </label>
-              {chainId && <div className={classes.metadata}>{chain?.label}</div>}
+              <label>
+                Blockchain:{" "}
+                {chainId
+                  ? chains.find((bchain) => {
+                      return bchain.networkId === chainId;
+                    }).label
+                  : "------"}{" "}
+              </label>
+              {chainId && (
+                <select name="blockchains" id="blockchains">
+                  {chains.map((bchain) => (
+                    <option selected={bchain.networkId === chainId && true} value={bchain.chain}>
+                      {bchain.label + " "} - {" " + bchain.symbol}
+                    </option>
+                  ))}
+                </select>
+              )}
             </div>
           </section>
 
