@@ -2,7 +2,7 @@ import { createClient, dedupExchange, cacheExchange, fetchExchange, makeOperatio
 import { authExchange } from "@urql/exchange-auth";
 
 export const graphQLClient = createClient({
-  url: process.env.REACT_APP_SUBGRAPH_URL,
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
   exchanges: [
     dedupExchange,
     cacheExchange,
@@ -20,7 +20,7 @@ export const graphQLClient = createClient({
           case "aurora": {
             const context = {
               ...operation.context,
-              url: process.env.REACT_APP_SUBGRAPH_URL,
+              url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
               fetchOptions: {
                 ...options,
               },
@@ -40,7 +40,7 @@ export const graphQLClient = createClient({
 });
 
 export const graphQLClientPolygon = createClient({
-  url: process.env.REACT_APP_SUBGRAPH_URL,
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
   exchanges: [
     dedupExchange,
     cacheExchange,
@@ -59,7 +59,7 @@ export const graphQLClientPolygon = createClient({
           case "polygon": {
             const context = {
               ...operation.context,
-              url: process.env.REACT_APP_POLYGON_URL,
+              url: "https://api.thegraph.com/subgraphs/name/prometheo/playdrop",
               fetchOptions: {
                 ...options,
               },
@@ -78,5 +78,5 @@ export const graphQLClientPolygon = createClient({
 });
 
 export const polygonClient = createClient({
-  url: process.env.REACT_APP_POLYGON_URL,
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/playdrop",
 });
