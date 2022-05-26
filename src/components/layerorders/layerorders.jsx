@@ -132,10 +132,8 @@ const LayerOrders = () => {
                 autoFocus
               />
             </form>
-          ) : collectionName ? (
-            <div className={classes.nameHeader}>{collectionName}</div>
           ) : (
-            <div className={classes.nameHeader}>Collection Name</div>
+            <div className={classes.nameHeader}>{collectionName ? collectionName : "collection name"}</div>
           )}
           <div className={classes.editBtn}>
             {renameAction ? (
