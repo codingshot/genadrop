@@ -22,8 +22,8 @@ import Loader from "./components/Loader/Loader";
 import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Prompt from "./components/delete-prompt/prompt";
-import { getAuroraCollections, getNftCollections } from "./utils";
-import { GET_ALL_AURORA_COLLECTIONS } from "./graphql/querries/getCollections";
+import { getAuroraCollections, getNftCollections, getSingleNfts, getSingleGraphNfts } from "./utils";
+import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_GRAPH_SINGLE_NFTS } from "./graphql/querries/getCollections";
 
 const Home = lazy(() => import("./pages/home/home"));
 const Create = lazy(() => import("./pages/create/create"));
@@ -59,14 +59,11 @@ function App() {
     (async function getCollections() {
       const collections = await fetchCollections(mainnet);
       dispatch(setCollections(collections));
-      console.log(collections);
       // Get ALGO Collection
       if (collections?.length) {
         const result = await getNftCollections(collections, mainnet);
-        console.log(result);
         dispatch(setAlgoCollections(result));
       } else {
-        console.log(collections);
         dispatch(setAlgoCollections(null));
       }
       // Get Aurora Collection
@@ -83,6 +80,21 @@ function App() {
     (async function readAllSingle() {
       const singleNfts = await readAllSingleNft(mainnet);
       dispatch(setSingleNfts(singleNfts));
+      // Get ALGO Signle NFTs
+      if (singleNfts?.length) {
+        const result = await getSingleNfts(mainnet, singleNfts);
+        dispatch(setAlgoSingleNfts(result));
+      } else {
+        dispatch(setAlgoSingleNfts(null));
+      }
+      // Get Aurora Signle NFTs
+      const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
+      const SingleNfts = await getSingleGraphNfts(data.data.nfts);
+      if (SingleNfts?.length) {
+        dispatch(setAuroraSingleNfts(SingleNfts));
+      } else {
+        dispatch(setAuroraSingleNfts(null));
+      }
     })();
   }, [mainnet]);
 

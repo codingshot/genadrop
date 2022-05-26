@@ -2,8 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory, useLocation } from "react-router-dom";
-import { createClient } from "urql";
-import { getSingleGraphNfts, getSingleNfts } from "../../utils";
 import classes from "./singleNftCollection.module.css";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import NotFound from "../../components/not-found/notFound";
@@ -11,29 +9,18 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
-import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../graphql/querries/getCollections";
-import { readAllSingleNft } from "../../utils/firebase";
 
 const SingleNftCollection = () => {
-  const { singleNfts, mainnet } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
-
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
 
   const [state, setState] = useState({
     togglePriceFilter: false,
     toggleChainFilter: false,
     filteredCollection: [],
-    algoCollection: null,
     polyCollection: null,
     celoCollection: null,
-    auroraCollection: null,
-    loading: true,
     allChains: null,
     filter: {
       searchValue: "",
@@ -42,8 +29,7 @@ const SingleNftCollection = () => {
     },
   });
 
-  const { algoCollection, polyCollection, celoCollection, auroraCollection, filter, filteredCollection, loading } =
-    state;
+  const { polyCollection, celoCollection, filter, filteredCollection } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -52,22 +38,22 @@ const SingleNftCollection = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollection && !polyCollection && !celoCollection && !auroraCollection
+        return !singleAlgoNfts && !polyCollection && !celoCollection && !singleAuroraNfts
           ? null
           : [
-              ...(algoCollection || []),
+              ...(singleAlgoNfts || []),
               ...(polyCollection || []),
               ...(celoCollection || []),
-              ...(auroraCollection || []),
+              ...(singleAuroraNfts || []),
             ];
       case "algorand":
-        return algoCollection;
+        return singleAlgoNfts;
       case "polygon":
         return polyCollection;
       case "celo":
         return celoCollection;
       case "aurora":
-        return auroraCollection;
+        return singleAuroraNfts;
       default:
         break;
     }
@@ -139,26 +125,6 @@ const SingleNftCollection = () => {
     sortPrice();
   };
 
-  //  get singleNft collections for all the blockchains
-  useEffect(() => {
-    try {
-      (async function getAlgoSingleNftCollection() {
-        const result = await getSingleNfts(mainnet, singleNfts);
-        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
-        const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
-        handleSetState({
-          algoCollection: result || [],
-          auroraCollection: allSingleNfts || [],
-          loading: false,
-        });
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-
-    // get singleNftCollection for other chains: polygon|celo|aurora
-  }, [mainnet]);
-
   // compile data for all blockchains
   useEffect(() => {
     const { search } = location;
@@ -168,18 +134,17 @@ const SingleNftCollection = () => {
       handleSetState({ filter: { ...filter, chain: chainParameter } });
     }
     const collection = getCollectionByChain();
-    if (loading) return collection;
     if (name) {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
-    if (filtered?.length) {
+    if (singleAlgoNfts || singleAuroraNfts) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
     return null;
-  }, [algoCollection, polyCollection, celoCollection, auroraCollection]);
+  }, [singleAlgoNfts, polyCollection, celoCollection, singleAuroraNfts]);
 
   return (
     <div className={classes.container}>
