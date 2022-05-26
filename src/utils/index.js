@@ -40,6 +40,7 @@ export const getNftCollections = async (collections, mainnet) => {
       collectionObj.price = collections[i].price;
       collectionObj.owner = collections[i].owner;
       collectionObj.description = collections[i].description;
+      console.log(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       const rawData = await axios.get(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       console.log(rawData);
       const { data } = rawData;
@@ -51,6 +52,7 @@ export const getNftCollections = async (collections, mainnet) => {
       const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       console.log(i, response);
       collectionObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      collectionObj.chain = 4160;
       collectionArr.push(collectionObj);
       console.log("end");
     } catch (error) {

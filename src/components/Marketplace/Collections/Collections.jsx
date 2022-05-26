@@ -1,67 +1,17 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useContext } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { createClient } from "urql";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getAuroraCollections, getNftCollections } from "../../../utils";
 import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
-import { GET_ALL_AURORA_COLLECTIONS } from "../../../graphql/querries/getCollections";
-import { setGraphCollection } from "../../../gen-state/gen.actions";
 
 const Collections = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+  const { auroraCollections, algoCollections } = useContext(GenContext);
 
-  const client = createClient({
-    url: APIURL,
-  });
-
-  const [state, setState] = useState({
-    algoCollection: [],
-    auroraCollection: [],
-  });
-  const { collections, singleAlgoNfts, singleAuroraNfts, auroraCollections, algoCollections, mainnet, dispatch } =
-    useContext(GenContext);
-  const { algoCollection, auroraCollection } = state;
-  const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
   const history = useHistory();
   const { url } = useRouteMatch();
 
-  useEffect(() => {
-    (async function getSubgraphNfts() {
-      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      const result = await getAuroraCollections(data.data?.collections);
-      dispatch(setGraphCollection(result));
-      if (result?.length) {
-        handleSetState({ auroraCollection: result });
-      } else {
-        handleSetState({ auroraCollection: null });
-      }
-    })();
-  }, []);
-
-  // useEffect(() => {
-  //   try {
-  //     (async function getAlgoCollection() {
-  //       // let collections = await fetchCollections();
-  //       if (collections?.length) {
-  //         const result = await getNftCollections(collections.slice(0, 10), mainnet);
-  //         handleSetState({ algoCollection: result });
-  //       } else {
-  //         handleSetState({ algoCollection: null });
-  //       }
-  //     })();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }, [collections]);
-  // console.log(singleAlgoNfts);
-  // console.log(singleAuroraNfts);
-  console.log(auroraCollections);
-  console.log(algoCollections);
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
@@ -71,18 +21,18 @@ const Collections = () => {
         </button>
       </div>
 
-      {algoCollection?.length ? (
+      {algoCollections?.length || auroraCollections?.length ? (
         <div className={classes.wrapper}>
-          {algoCollection
+          {algoCollections
             .filter((_, idx) => idx < 10)
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
-          {auroraCollection.map((collection, idx) => (
+          {auroraCollections.map((collection, idx) => (
             <NearCollectionCard key={idx} collection={collection} />
           ))}
         </div>
-      ) : !algoCollection ? (
+      ) : !algoCollections && !auroraCollections ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.skeleton}>

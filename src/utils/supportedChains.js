@@ -6,6 +6,7 @@ import { addChain, switchChain } from "./chainConnect";
 
 const supportedChains = {
   4160: {
+    id: "algorand",
     label: "Algorand",
     icon: algoIcon,
     sybmol: "ALGO",
@@ -14,6 +15,7 @@ const supportedChains = {
     switch: null,
   },
   1313161554: {
+    id: "aurora-near",
     label: "Aurora",
     icon: auroraIcon,
     sybmol: "AURORA",
@@ -23,6 +25,7 @@ const supportedChains = {
     coinGeckoLabel: "ethereum",
   },
   137: {
+    id: "matic-network",
     label: "Polygon",
     icon: polygonIcon,
     sybmol: "MATIC",
@@ -32,6 +35,7 @@ const supportedChains = {
     coinGeckoLabel: "matic",
   },
   42220: {
+    id: "celo",
     label: "Celo",
     icon: celoIcon,
     sybmol: "CGLD",
@@ -41,6 +45,7 @@ const supportedChains = {
     coinGeckoLabel: "celo",
   },
   80001: {
+    id: "matic-network",
     label: "Polygon Testnet",
     icon: polygonIcon,
     sybmol: "MATIC",
@@ -68,6 +73,7 @@ const supportedChains = {
     coinGeckoLabel: "celo",
   },
   1313161555: {
+    id: "ethereum",
     label: "Aurora Testnet",
     icon: auroraIcon,
     sybmol: "ETH",
