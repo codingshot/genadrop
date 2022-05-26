@@ -18,8 +18,6 @@ const NftCard = ({ nft, list }) => {
         setTotalPrice(value * price);
       });
   }, []);
-  console.log(chain);
-  console.log(supportedChains[chain]);
   return (
     <Link to={nft.collection_name ? `${match.url}/${Id}` : `/marketplace/single-mint/${Id}`}>
       <div className={classes.card}>
