@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import { createClient } from "urql";
 import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
@@ -31,6 +31,7 @@ const LodaingCards = () => (
 const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
+  const { url } = useRouteMatch();
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -159,6 +160,10 @@ const Dashboard = () => {
           <div className={classes.address}>
             <Copy message={account} placeholder={breakAddress(account)} />
           </div>
+
+          <Link to={`${url}/profile/settings`}>
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
 
           <div className={classes.details}>
             <div

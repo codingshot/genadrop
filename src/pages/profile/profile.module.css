@@ -2,6 +2,16 @@
   width: 100%;
   padding: 2em 1em;
   background: white;
+  animation: fade-in 650ms forwards;
+}
+
+@keyframes fade-in {
+  from {
+    transform: scale(0.9) translateY(-50px);
+  }
+  to {
+    transform: scale(1) translateY(0);
+  }
 }
 
 .wrapper {
@@ -98,7 +108,7 @@
 .submit,
 .cancel {
   padding: 0.75em 2.5em;
-  border-radius: 0.5em;
+  border-radius: 2em;
   font-size: 1rem;
   transition: all 300ms;
 }

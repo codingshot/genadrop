@@ -67,7 +67,7 @@ const CollectionNFT = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { account, connector, mainnet } = useContext(GenContext);
+  const { dispatch, account, connector, mainnet } = useContext(GenContext);
   const { collections } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
@@ -217,7 +217,7 @@ const CollectionNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(asset, account, connector, mainnet);
+    const res = await PurchaseNft(dispatch, asset, account, connector, mainnet);
     // eslint-disable-next-line no-alert
     alert(res);
   };
