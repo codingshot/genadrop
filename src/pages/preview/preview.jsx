@@ -145,34 +145,43 @@ const Preview = () => {
   };
 
   const handleCollectionName = async (value) => {
-    try {
-      dispatch(setLoader("saving..."));
-      const names = await getCollectionsNames();
-      const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
-      if (isUnique) {
-        dispatch(
-          setNotification({
-            message: `${value} already exist. try choose another name`,
-            type: "warning",
-          })
-        );
-      } else {
-        dispatch(setCollectionName(value));
-        const newLayers = nftLayers.map((asset, idx) => ({
-          ...asset,
-          name: `${value} ${getDefaultName(idx + 1)}`.trim(),
-        }));
-        dispatch(setNftLayers(newLayers));
-      }
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: "could not save your collection name, please try again.",
-          type: "error",
-        })
-      );
-    }
-    dispatch(setLoader(""));
+    dispatch(setCollectionName(value));
+    const newLayers = nftLayers.map((asset, idx) => ({
+      ...asset,
+      name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+    }));
+    dispatch(setNftLayers(newLayers));
+
+    // The code below needs cross-examination
+
+    // try {
+    //   dispatch(setLoader("saving..."));
+    //   const names = await getCollectionsNames();
+    //   const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
+    //   if (isUnique) {
+    //     dispatch(
+    //       setNotification({
+    //         message: `${value} already exist. try choose another name`,
+    //         type: "warning",
+    //       })
+    //     );
+    //   } else {
+    //     dispatch(setCollectionName(value));
+    //     const newLayers = nftLayers.map((asset, idx) => ({
+    //       ...asset,
+    //       name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+    //     }));
+    //     dispatch(setNftLayers(newLayers));
+    //   }
+    // } catch (error) {
+    //   dispatch(
+    //     setNotification({
+    //       message: "could not save your collection name, please try again.",
+    //       type: "error",
+    //     })
+    //   );
+    // }
+    // dispatch(setLoader(""));
   };
 
   const handleCollectionDescription = (event) => {
@@ -354,11 +363,7 @@ const Preview = () => {
               <h3>Collection Name </h3>
             </div>
             <div className={classes.wrapper}>
-              <TextEditor
-                placeholder={collectionName || "collectionName"}
-                submitHandler={handleCollectionName}
-                invert
-              />
+              <TextEditor placeholder={collectionName || ""} submitHandler={handleCollectionName} invert />
             </div>
 
             <div className={classes.tab}>
