@@ -6,26 +6,24 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Filter from "./Filter/Filter";
 import Header from "./Header/Header";
 import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-script";
-import { getGraphCollection, getNftCollection } from "../../utils";
+import { getAuroraCollections, getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { createClient } from "urql";
-import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
+import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_POLYGON_COLLECTIONS } from "../../graphql/querries/getCollections";
+import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 
 const Explore = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   const [state, setState] = useState({
     togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
     loadedChain: null,
+    auroraCollection: null,
+    polygonCollection: null,
+    allGraphCollection: [],
     collection: null,
     attributes: null,
     filterToDelete: null,
@@ -43,6 +41,8 @@ const Explore = () => {
     filterToDelete,
     FilteredCollection,
     headerHeight,
+    auroraCollection,
+    polygonCollection,
     loadedChain,
   } = state;
   const { collections, mainnet } = useContext(GenContext);
@@ -61,6 +61,52 @@ const Explore = () => {
     handleSetState({ headerHeight: res });
   };
 
+  const getAllCollectionChains = () => {
+    return !auroraCollection && !polygonCollection ? null : [...(auroraCollection || []), ...(polygonCollection || [])];
+  };
+
+  async function getDataFromEndpointB() {
+    const data = await graphQLClientPolygon
+      .query(
+        GET_ALL_POLYGON_COLLECTIONS,
+        {},
+        {
+          clientName: "polygon",
+        }
+      )
+      .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
+
+    if (result?.length) {
+      handleSetState({ polygonCollection: result });
+    } else {
+      handleSetState({ polygonCollection: null });
+    }
+  }
+
+  async function getDataFromEndpointA() {
+    const data = await graphQLClient
+      .query(
+        GET_ALL_AURORA_COLLECTIONS,
+        {},
+        {
+          clientName: "aurora",
+        }
+      )
+      .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
+    if (result?.length) {
+      handleSetState({ auroraCollection: result });
+    } else {
+      handleSetState({ auroraCollection: null });
+    }
+  }
+
+  useEffect(() => {
+    getDataFromEndpointA();
+    getDataFromEndpointB();
+  }, []);
+
   useEffect(() => {
     if (Object.keys(collections).length) {
       const collectionsFound = collections.find((col) => col.name === collectionName);
@@ -72,24 +118,30 @@ const Explore = () => {
             NFTCollection: result,
           });
         })();
-      } else {
-        (async function getGraphResult() {
-          const data = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
-          console.log(data.data);
-          const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
-          handleSetState({
-            collection: {
-              ...data?.data?.collection,
-              owner: data?.data?.collection?.id,
-              price: result[0].collectionPrice,
-            },
-            NFTCollection: result,
-            loadedChain: result[0].chain,
-          });
-        })();
       }
     }
   }, []);
+
+  useEffect(() => {
+    (async function getGraphResult() {
+      const collection = getAllCollectionChains();
+      const filteredCollection = collection?.filter((col) => col?.owner === collectionName);
+
+      if (filteredCollection) {
+        const result = await getGraphCollection(filteredCollection[0]?.nfts, filteredCollection[0]);
+
+        handleSetState({
+          collection: {
+            ...filteredCollection[0],
+            owner: filteredCollection[0]?.owner,
+            price: result[0]?.collectionPrice,
+          },
+          NFTCollection: result,
+          loadedChain: result[0]?.chain,
+        });
+      }
+    })();
+  }, [auroraCollection, polygonCollection]);
 
   useEffect(() => {
     if (!NFTCollection) return;
@@ -145,7 +197,7 @@ const Explore = () => {
         collection={{
           ...collection,
           numberOfNfts: NFTCollection && NFTCollection.length,
-          imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
+          imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)]?.image_url,
         }}
         loadedChain={loadedChain}
       />

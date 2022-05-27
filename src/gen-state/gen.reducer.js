@@ -37,8 +37,10 @@ export const INITIAL_STATE = {
   singleNfts: [],
   algoCollections: [],
   auroraCollections: [],
+  polygonCollections: [],
   singleAuroraNfts: [],
   singleAlgoNfts: [],
+  singlePolygonNfts: [],
   notification: {
     message: "",
     type: "", // warning, error, success
@@ -232,6 +234,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         auroraCollections: action.payload,
       };
+    case genActionTypes.SET_POLYGON_COLLECTIONS:
+      return {
+        ...state,
+        polygonCollections: action.payload,
+      };
     case genActionTypes.GRAPH_COLLECTIONS:
       return {
         ...state,
@@ -251,6 +258,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         singleAuroraNfts: action.payload,
+      };
+    case genActionTypes.SET_POLYGON_SINGLE_NFTS:
+      return {
+        ...state,
+        singlePolygonNfts: action.payload,
       };
     case genActionTypes.SET_FEEDBACK:
       return {

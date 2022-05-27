@@ -26,8 +26,10 @@ const GenContextProvider = ({ children }) => {
     collections,
     algoCollections,
     auroraCollections,
+    polygonCollections,
     singleAuroraNfts,
     singleAlgoNfts,
+    singlePolygonNfts,
     graphCollections,
     singleNfts,
     notification,
@@ -76,8 +78,10 @@ const GenContextProvider = ({ children }) => {
         promptRules,
         algoCollections,
         auroraCollections,
+        polygonCollections,
         singleAuroraNfts,
         singleAlgoNfts,
+        singlePolygonNfts,
         dispatch,
       }}
     >

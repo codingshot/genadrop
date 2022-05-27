@@ -3,11 +3,11 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
+import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
 
   const history = useHistory();
   const { url } = useRouteMatch();
@@ -21,7 +21,7 @@ const Collections = () => {
         </button>
       </div>
 
-      {algoCollections?.length || auroraCollections?.length ? (
+      {algoCollections?.length || auroraCollections?.length || polygonCollections?.length ? (
         <div className={classes.wrapper}>
           {algoCollections
             .filter((_, idx) => idx < 10)
@@ -29,10 +29,13 @@ const Collections = () => {
               <CollectionsCard key={idx} collection={collection} />
             ))}
           {auroraCollections.map((collection, idx) => (
-            <NearCollectionCard key={idx} collection={collection} />
+            <CollectionsCard key={idx} collection={collection} />
+          ))}
+          {polygonCollections.map((collection, idx) => (
+            <CollectionsCard key={idx} collection={collection} />
           ))}
         </div>
-      ) : !algoCollections && !auroraCollections ? (
+      ) : !algoCollections && !auroraCollections && !polygonCollections ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.skeleton}>

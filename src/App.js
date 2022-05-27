@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, lazy, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
-import { createClient } from "urql";
 import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";
 import Overlay from "./components/overlay/overlay";
@@ -13,8 +12,9 @@ import {
   setAlgoCollections,
   setAlgoSingleNfts,
   setAuroraCollections,
+  setPolygonCollections,
   setAuroraSingleNfts,
-  setGraphCollection,
+  setPolygonSingleNfts,
 } from "./gen-state/gen.actions";
 import Notification from "./components/Notification/Notification";
 import Clipboard from "./components/clipboard/clipboard";
@@ -23,7 +23,13 @@ import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Prompt from "./components/delete-prompt/prompt";
 import { getAuroraCollections, getNftCollections, getSingleNfts, getSingleGraphNfts } from "./utils";
-import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_GRAPH_SINGLE_NFTS } from "./graphql/querries/getCollections";
+import {
+  GET_ALL_AURORA_COLLECTIONS,
+  GET_ALL_POLYGON_COLLECTIONS,
+  GET_AURORA_SINGLE_NFTS,
+  GET_POLYGON_SINGLE_NFTS,
+} from "./graphql/querries/getCollections";
+import { graphQLClient, graphQLClientPolygon } from "./utils/graphqlClient";
 
 const Home = lazy(() => import("./pages/home/home"));
 const Create = lazy(() => import("./pages/create/create"));
@@ -49,51 +55,100 @@ function App() {
   const { dispatch, mainnet } = useContext(GenContext);
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   useEffect(() => {
-    (async function getCollections() {
+    // Get ALGO Collection
+    (async function getALgoCollections() {
       const collections = await fetchCollections(mainnet);
       dispatch(setCollections(collections));
-      // Get ALGO Collection
       if (collections?.length) {
         const result = await getNftCollections(collections, mainnet);
         dispatch(setAlgoCollections(result));
       } else {
         dispatch(setAlgoCollections(null));
       }
-      // Get Aurora Collection
-      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      const result = await getAuroraCollections(data.data?.collections);
-      dispatch(setGraphCollection(result));
+    })();
+    // get Aurora Collections
+    (async function getDataFromEndpointA() {
+      const data = await graphQLClient
+        .query(
+          GET_ALL_AURORA_COLLECTIONS,
+          {},
+          {
+            clientName: "aurora",
+          }
+        )
+        .toPromise();
+      const result = await getAuroraCollections(data?.data?.collections);
       if (result?.length) {
         dispatch(setAuroraCollections(result));
       } else {
         dispatch(setAuroraCollections(null));
       }
     })();
+    // Get Polygon Collections
+    (async function getDataFromEndpointB() {
+      const data = await graphQLClientPolygon
+        .query(
+          GET_ALL_POLYGON_COLLECTIONS,
+          {},
+          {
+            clientName: "polygon",
+          }
+        )
+        .toPromise();
+      const result = await getAuroraCollections(data?.data?.collections);
 
+      if (result?.length) {
+        dispatch(setPolygonCollections(result));
+      } else {
+        dispatch(setPolygonCollections(null));
+      }
+    })();
+    // Get ALGO Signle NFTs
     (async function readAllSingle() {
       const singleNfts = await readAllSingleNft(mainnet);
       dispatch(setSingleNfts(singleNfts));
-      // Get ALGO Signle NFTs
       if (singleNfts?.length) {
         const result = await getSingleNfts(mainnet, singleNfts);
         dispatch(setAlgoSingleNfts(result));
       } else {
         dispatch(setAlgoSingleNfts(null));
       }
-      // Get Aurora Signle NFTs
-      const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
-      const SingleNfts = await getSingleGraphNfts(data.data.nfts);
-      if (SingleNfts?.length) {
-        dispatch(setAuroraSingleNfts(SingleNfts));
+    })();
+    // Get Aurora Signle NFTs
+    (async function getDataFromEndpointA() {
+      const data = await graphQLClient
+        .query(
+          GET_AURORA_SINGLE_NFTS,
+          {},
+          {
+            clientName: "aurora",
+          }
+        )
+        .toPromise();
+      const result = await getSingleGraphNfts(data?.data?.nfts);
+      if (result?.length) {
+        dispatch(setAuroraSingleNfts(result));
       } else {
         dispatch(setAuroraSingleNfts(null));
+      }
+    })();
+    // Get Polygon Signle NFTs
+    (async function getDataFromEndpointB() {
+      const data = await graphQLClientPolygon
+        .query(
+          GET_POLYGON_SINGLE_NFTS,
+          {},
+          {
+            clientName: "polygon",
+          }
+        )
+        .toPromise();
+      const result = await getSingleGraphNfts(data?.data?.nfts);
+      if (result?.length) {
+        dispatch(setPolygonSingleNfts(result));
+      } else {
+        dispatch(setPolygonSingleNfts(null));
       }
     })();
   }, [mainnet]);
@@ -118,6 +173,7 @@ function App() {
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
             <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} />
+            <Route exact path="/marketplace/single-mint/:chainId/:nftId" component={SingleNFT} />
             <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />

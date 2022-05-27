@@ -11,13 +11,12 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
 
   const [state, setState] = useState({
     filteredCollection: [],
-    polyCollection: null,
     celoCollection: null,
     nearCollection: null,
     allChains: null,
@@ -28,7 +27,7 @@ const Collections = () => {
     },
   });
 
-  const { polyCollection, celoCollection, nearCollection, filter, filteredCollection } = state;
+  const { celoCollection, nearCollection, filter, filteredCollection } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -37,11 +36,11 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollections && !polyCollection && !celoCollection && !nearCollection && !auroraCollections
+        return !algoCollections && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
           ? null
           : [
               ...(algoCollections || []),
-              ...(polyCollection || []),
+              ...(polygonCollections || []),
               ...(celoCollection || []),
               ...(auroraCollections || []),
               ...(nearCollection || []),
@@ -49,7 +48,7 @@ const Collections = () => {
       case "algorand":
         return algoCollections;
       case "polygon":
-        return polyCollection;
+        return polygonCollections;
       case "celo":
         return celoCollection;
       case "near":
@@ -146,7 +145,7 @@ const Collections = () => {
       handleSetState({ filteredCollection: null });
     }
     return null;
-  }, [algoCollections, polyCollection, celoCollection, auroraCollections]);
+  }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
 
   return (
     <div className={classes.container}>

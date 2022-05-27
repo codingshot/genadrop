@@ -175,6 +175,10 @@ export const setAuroraCollections = (collections) => ({
   type: genActionTypes.SET_AURORA_COLLECTIONS,
   payload: collections,
 });
+export const setPolygonCollections = (collections) => ({
+  type: genActionTypes.SET_POLYGON_COLLECTIONS,
+  payload: collections,
+});
 export const setSingleNfts = (nfts) => ({
   type: genActionTypes.SET_SINGLE_NFTS,
   payload: nfts,
@@ -185,6 +189,10 @@ export const setAlgoSingleNfts = (nfts) => ({
 });
 export const setAuroraSingleNfts = (nfts) => ({
   type: genActionTypes.SET_AURORA_SINGLE_NFTS,
+  payload: nfts,
+});
+export const setPolygonSingleNfts = (nfts) => ({
+  type: genActionTypes.SET_POLYGON_SINGLE_NFTS,
   payload: nfts,
 });
 
