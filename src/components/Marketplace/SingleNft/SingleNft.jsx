@@ -1,109 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { createClient } from "urql";
-import { getSingleGraphNfts, getSingleNfts } from "../../../utils";
+
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
-import { GET_AURORA_SINGLE_NFTS, GET_POLYGON_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
-import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
-import { setNotification } from "../../../gen-state/gen.actions";
 
 const SingleNft = () => {
-  const [state, setState] = useState({
-    allSingleNfts: [],
-    allSingleGraphNfts: [],
-    polygonSingleNfts: null,
-    auroraSingleNfts: null,
-  });
-  const { allSingleNfts, allSingleGraphNfts, polygonSingleNfts, auroraSingleNfts } = state;
-  const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
-  const { singleNfts, mainnet, dispatch } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+
   const { url } = useRouteMatch();
   const history = useHistory();
-
-  useEffect(() => {
-    (async function getResult() {
-      if (singleNfts?.length) {
-        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts.slice(0, 10));
-        handleSetState({ allSingleNfts: allSingleNFTs });
-      } else {
-        handleSetState({ allSingleNfts: null });
-      }
-    })();
-  }, [singleNfts]);
-
-  const getAllCollectionChains = () => {
-    return !auroraSingleNfts && !polygonSingleNfts ? null : [...(auroraSingleNfts || []), ...(polygonSingleNfts || [])];
-  };
-
-  async function getDataFromEndpointB() {
-    const { data, error } = await graphQLClientPolygon
-      .query(
-        GET_POLYGON_SINGLE_NFTS,
-        {},
-        {
-          clientName: "polygon",
-        }
-      )
-      .toPromise();
-    if (error) {
-      return dispatch(
-        setNotification({
-          message: error.message,
-          type: "warning",
-        })
-      );
-    }
-    const result = await getSingleGraphNfts(data?.nfts);
-
-    if (result?.length) {
-      handleSetState({ polygonSingleNfts: result });
-    } else {
-      handleSetState({ polygonSingleNfts: null });
-    }
-  }
-
-  async function getDataFromEndpointA() {
-    const { data, error } = await graphQLClient
-      .query(
-        GET_AURORA_SINGLE_NFTS,
-        {},
-        {
-          clientName: "aurora",
-        }
-      )
-      .toPromise();
-    if (error) {
-      return dispatch(
-        setNotification({
-          message: error.message,
-          type: "warning",
-        })
-      );
-    }
-    const result = await getSingleGraphNfts(data?.nfts);
-    if (result?.length) {
-      handleSetState({ auroraSingleNfts: result });
-    } else {
-      handleSetState({ auroraSingleNfts: null });
-    }
-  }
-
-  useEffect(() => {
-    getDataFromEndpointA();
-    getDataFromEndpointB();
-  }, []);
-
-  useEffect(() => {
-    const singleNfts = getAllCollectionChains();
-    handleSetState({
-      allSingleGraphNfts: singleNfts,
-    });
-  }, [auroraSingleNfts, polygonSingleNfts]);
 
   return (
     <div className={classes.container}>
@@ -113,16 +20,19 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {allSingleNfts?.length ? (
+      {singleAlgoNfts?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <div className={classes.wrapper}>
-          {allSingleNfts.map((nft) => (
+          {singleAlgoNfts.slice(0, 10).map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
-          {allSingleGraphNfts?.map((nft) => (
+          {singleAuroraNfts?.map((nft) => (
+            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+          ))}
+          {singlePolygonNfts?.map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
         </div>
-      ) : !allSingleNfts ? (
+      ) : !singleAlgoNfts && !singleAuroraNfts && !singlePolygonNfts ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.wrapper}>

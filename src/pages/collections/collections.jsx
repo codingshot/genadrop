@@ -3,38 +3,22 @@ import Skeleton from "react-loading-skeleton";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getAuroraCollections, getNftCollections } from "../../utils";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
-import { fetchCollections } from "../../utils/firebase";
 import { GenContext } from "../../gen-state/gen.context";
 import NotFound from "../../components/not-found/notFound";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import { createClient } from "urql";
-import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
-import { polygonClient } from "../../utils/graphqlClient";
-import { setNotification } from "../../gen-state/gen.actions";
 
 const Collections = () => {
-  const { mainnet, dispatch } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
 
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   const [state, setState] = useState({
     filteredCollection: [],
-    algoCollection: null,
-    polyCollection: null,
     celoCollection: null,
     nearCollection: null,
-    auroraCollection: null,
-    loading: true,
     allChains: null,
     filter: {
       searchValue: "",
@@ -43,16 +27,7 @@ const Collections = () => {
     },
   });
 
-  const {
-    algoCollection,
-    polyCollection,
-    celoCollection,
-    nearCollection,
-    filter,
-    filteredCollection,
-    loading,
-    auroraCollection,
-  } = state;
+  const { celoCollection, nearCollection, filter, filteredCollection } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -61,25 +36,25 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollection && !polyCollection && !celoCollection && !nearCollection && !auroraCollection
+        return !algoCollections && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
           ? null
           : [
-              ...(algoCollection || []),
-              ...(polyCollection || []),
+              ...(algoCollections || []),
+              ...(polygonCollections || []),
               ...(celoCollection || []),
-              ...(auroraCollection || []),
+              ...(auroraCollections || []),
               ...(nearCollection || []),
             ];
       case "algorand":
-        return algoCollection;
+        return algoCollections;
       case "polygon":
-        return polyCollection;
+        return polygonCollections;
       case "celo":
         return celoCollection;
       case "near":
         return nearCollection;
       case "aurora":
-        return auroraCollection;
+        return auroraCollections;
       default:
         break;
     }
@@ -151,43 +126,6 @@ const Collections = () => {
     sortPrice();
   };
 
-  // fetch data from different blockchains
-  useEffect(() => {
-    try {
-      (async function getAlgoCollection() {
-        const collections = await fetchCollections(mainnet);
-        const result = await getNftCollections(collections, mainnet);
-        handleSetState({ algoCollection: result || [], loading: false });
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-
-    // get collection for other chains: polygon|celo|near
-  }, [mainnet]);
-
-  useEffect(() => {
-    (async function getSubgraphNfts() {
-      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      const { data: polygonData, error } = await polygonClient.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      if (error) {
-        return dispatch(
-          setNotification({
-            message: error.message,
-            type: "warning",
-          })
-        );
-      }
-      const polygonResult = await getAuroraCollections(polygonData?.collections);
-      const result = await getAuroraCollections(data?.data?.collections);
-      if (result?.length) {
-        handleSetState({ auroraCollection: result, polyCollection: polygonResult });
-      } else {
-        handleSetState({ auroraCollection: null, polyCollection: null });
-      }
-    })();
-  }, [mainnet]);
-
   // compile data for all blockchains
   useEffect(() => {
     const { search } = location;
@@ -197,18 +135,17 @@ const Collections = () => {
       handleSetState({ filter: { ...filter, chain: chainParameter } });
     }
     const collection = getCollectionByChain();
-    if (loading) return collection;
     if (name) {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
-    if (filtered?.length) {
+    if (algoCollections || auroraCollections) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
     return null;
-  }, [algoCollection, polyCollection, celoCollection, nearCollection]);
+  }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
 
   return (
     <div className={classes.container}>
