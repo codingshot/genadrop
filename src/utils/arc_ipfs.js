@@ -444,14 +444,19 @@ export async function createNFT(createProps, doAccountCheck) {
   const files = data.files["metadata.json"];
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
-  if (doAccountCheck) {
-    const userInfo = await algodClient.accountInformation(account).do();
-    const assetBalance = userInfo.account.assets.length;
-    const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
-    const estimateTxFee = 0.001 * metadata.length;
-    if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
-      return false;
+  try {
+    if (doAccountCheck) {
+      const userInfo = await algodClient.accountInformation(account).do();
+      const assetBalance = userInfo.account.assets.length;
+      const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
+      const estimateTxFee = 0.001 * metadata.length;
+      if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
+        return false;
+      }
     }
+  } catch (error) {
+    console.log("this is the error", error)
+    alert(error.message)
   }
   dispatch(
     setNotification({
