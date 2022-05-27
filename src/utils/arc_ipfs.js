@@ -446,8 +446,8 @@ export async function createNFT(createProps, doAccountCheck) {
   const metadata = JSON.parse(metadataString);
   try {
     if (doAccountCheck) {
-      const userInfo = await algodClient.accountInformation(account).do();
-      const assetBalance = userInfo.account.assets.length;
+      const userInfo = await algodClient.accountInformation(account).exclude("all").do();
+      const assetBalance = userInfo.account["total-assets-opted-in"];
       const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
       const estimateTxFee = 0.001 * metadata.length;
       if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
@@ -456,7 +456,6 @@ export async function createNFT(createProps, doAccountCheck) {
     }
   } catch (error) {
     console.log("this is the error", error)
-    alert(error.message)
   }
   dispatch(
     setNotification({
