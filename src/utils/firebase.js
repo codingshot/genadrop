@@ -112,16 +112,22 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
 }
 
 async function writeUserProfile(userObj, user) {
-  db.collection("profile")
-    .doc(`${user}`)
-    .set(
-      {
-        ...userObj,
-      },
-      {
-        merge: true,
-      }
-    );
+  try {
+    let lendy = await db
+      .collection("profile")
+      .doc(`${user}`)
+      .set(
+        {
+          ...userObj,
+        },
+        {
+          merge: true,
+        }
+      );
+  } catch (error) {
+    return { message: "profile upload failed" };
+  }
+  return userObj;
 }
 
 async function readNftTransaction(assetId) {
@@ -220,11 +226,9 @@ async function readUserProfile(userAddress) {
   const docRef = doc(db, "profile", userAddress);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
     return docSnap.data();
   }
   // doc.data() will be undefined in this case
-  console.log("No such document!");
   return {};
 }
 

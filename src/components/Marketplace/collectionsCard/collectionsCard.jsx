@@ -6,10 +6,10 @@ import algoIcon from "../../../assets/icon-algo.svg";
 import supportedChains from "../../../utils/supportedChains.js";
 
 const CollectionsCard = ({ collection }) => {
-  const { name, price, description, image_url, chain } = collection;
+  const { name, price, description, image_url, chain, owner } = collection;
   const history = useHistory();
 
-  const [state, setState] = useState({ algoPrice: 0, chainIcon: "", chainName: "Algo" });
+  const [state, setState] = useState({ algoPrice: 0, chainIcon: "", chainName: "" });
   const { algoPrice, chainIcon, chainName } = state;
 
   const handleSetState = (payload) => {
@@ -17,7 +17,7 @@ const CollectionsCard = ({ collection }) => {
   };
   useEffect(() => {
     if (supportedChains[chain]) {
-      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
+      axios.get(supportedChains[chain].livePrice).then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
           algoPrice: value * price,
@@ -26,14 +26,15 @@ const CollectionsCard = ({ collection }) => {
         });
       });
     } else {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount * price, chainIcon: algoIcon, chainName: "Algo" });
+      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd").then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({ algoPrice: value * price, chainIcon: algoIcon, chainName: "Algo" });
       });
     }
-  }, []);
+  }, [owner]);
 
   return (
-    <div onClick={() => history.push(`/marketplace/collections/${name}`)} className={classes.card}>
+    <div onClick={() => history.push(`/marketplace/collections/${chain ? owner : name}`)} className={classes.card}>
       <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
 
       <div className={classes.body}>
@@ -60,22 +61,29 @@ const CollectionsCard = ({ collection }) => {
 };
 
 export const NearCollectionCard = ({ collection }) => {
-  const { name, price, description, image_url, owner } = collection;
+  const { name, price, description, image_url, owner, chain } = collection;
   const history = useHistory();
 
-  const [state, setState] = useState({ algoPrice: 0 });
-  const { algoPrice } = state;
+  const [state, setState] = useState({ algoPrice: 0, chainName: "", chainIcon: "" });
+  const { algoPrice, chainIcon, chainName } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
   useEffect(() => {
-    axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-      let value = Object.values(res.data)[0].usd;
-      handleSetState({ algoPrice: price * value });
-    });
-  }, []);
+    if (supportedChains[chain]) {
+      console.log(chain);
+      axios.get(supportedChains[chain].livePrice).then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({
+          algoPrice: value * price,
+          chainName: supportedChains[chain].sybmol,
+          chainIcon: supportedChains[chain].icon,
+        });
+      });
+    }
+  }, [chain]);
 
   return (
     <div onClick={() => history.push(`/marketplace/collections/${owner}`)} className={classes.card}>
@@ -93,8 +101,8 @@ export const NearCollectionCard = ({ collection }) => {
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOORPRICE</div>
             <div className={classes.price}>
-              <img src={supportedChains[1313161554].icon} alt="" />
-              {price} <span className={classes.chain}>ETH</span>{" "}
+              <img src={chainIcon} alt="" />
+              {price} <span className={classes.chain}>{chainName}</span>{" "}
               <span className={classes.usdPrice}>({algoPrice.toFixed(2)} USD)</span>
             </div>
           </div>

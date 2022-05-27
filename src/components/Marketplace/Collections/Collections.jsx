@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from "react";
+import React, { useEffect, useContext, useState, useMemo } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { createClient } from "urql";
 import Skeleton from "react-loading-skeleton";
@@ -7,40 +7,76 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { getAuroraCollections, getNftCollections } from "../../../utils";
 import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
-import { GET_ALL_AURORA_COLLECTIONS } from "../../../graphql/querries/getCollections";
-import { setGraphCollection } from "../../../gen-state/gen.actions";
+import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_POLYGON_COLLECTIONS } from "../../../graphql/querries/getCollections";
+import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
 
 const Collections = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   const [state, setState] = useState({
     algoCollection: [],
-    auroraCollection: [],
+    auroraCollection: null,
+    graphCollection: [],
+    polygonCollection: null,
   });
-  const { collections, mainnet, dispatch } = useContext(GenContext);
-  const { algoCollection, auroraCollection } = state;
+  const { collections, mainnet } = useContext(GenContext);
+  const { algoCollection, auroraCollection, polygonCollection, graphCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
   const history = useHistory();
   const { url } = useRouteMatch();
 
+  const getAllCollectionChains = () => {
+    return !auroraCollection && !polygonCollection ? null : [...(auroraCollection || []), ...(polygonCollection || [])];
+  };
+
+  async function getDataFromEndpointB() {
+    const data = await graphQLClientPolygon
+      .query(
+        GET_ALL_POLYGON_COLLECTIONS,
+        {},
+        {
+          clientName: "polygon",
+        }
+      )
+      .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
+
+    if (result?.length) {
+      handleSetState({ polygonCollection: result });
+    } else {
+      handleSetState({ polygonCollection: null });
+    }
+  }
+
+  async function getDataFromEndpointA() {
+    const data = await graphQLClient
+      .query(
+        GET_ALL_AURORA_COLLECTIONS,
+        {},
+        {
+          clientName: "aurora",
+        }
+      )
+      .toPromise();
+    const result = await getAuroraCollections(data?.data?.collections);
+    if (result?.length) {
+      handleSetState({ auroraCollection: result });
+    } else {
+      handleSetState({ auroraCollection: null });
+    }
+  }
+
   useEffect(() => {
-    (async function getSubgraphNfts() {
-      const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      const result = await getAuroraCollections(data.data?.collections);
-      dispatch(setGraphCollection(result));
-      if (result?.length) {
-        handleSetState({ auroraCollection: result });
-      } else {
-        handleSetState({ auroraCollection: null });
-      }
-    })();
+    getDataFromEndpointA();
+    getDataFromEndpointB();
   }, []);
+
+  useEffect(() => {
+    const collection = getAllCollectionChains();
+    handleSetState({
+      graphCollection: collection,
+    });
+  }, [auroraCollection, polygonCollection]);
 
   useEffect(() => {
     try {
@@ -69,11 +105,11 @@ const Collections = () => {
       {algoCollection?.length ? (
         <div className={classes.wrapper}>
           {algoCollection
-            .filter((_, idx) => idx < 10)
-            .map((collection, idx) => (
+            ?.filter((_, idx) => idx < 10)
+            ?.map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
-          {auroraCollection.map((collection, idx) => (
+          {graphCollection?.map((collection, idx) => (
             <NearCollectionCard key={idx} collection={collection} />
           ))}
         </div>

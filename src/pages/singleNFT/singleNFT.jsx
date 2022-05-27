@@ -25,6 +25,7 @@ import algoLogo from "../../assets/icon-algo.svg";
 import { setLoader } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
+import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
 
 const SingleNFT = () => {
@@ -37,7 +38,7 @@ const SingleNFT = () => {
   const { account, connector, mainnet, dispatch } = useContext(GenContext);
 
   const {
-    params: { nftId },
+    params: { chainId, nftId },
   } = useRouteMatch();
   const { singleNfts } = useContext(GenContext);
   const wrapperRef = useRef(null);
@@ -127,17 +128,38 @@ const SingleNFT = () => {
       })();
     } else {
       (async function getNftDetails() {
+        // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
         const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-        const result = await getGraphNft(data.data.nft);
-        const trHistory = await getTransactions(data?.data?.nft?.transactions);
-        trHistory.find((t) => {
-          if (t.type === "Minting") t.price = result[0].price;
-        });
-        handleSetState({
-          nftDetails: result[0],
-          isLoading: false,
-          transactionHistory: trHistory,
-        });
+        const polygonData = await polygonClient.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+        if (polygonData?.data?.nft !== null) {
+          const polygonResult = await getGraphNft(polygonData?.data?.nft);
+
+          if (polygonResult[0]?.chain === chainId) {
+            const trHistory = await getTransactions(polygonData?.data?.nft?.transactions);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = polygonResult[0].price;
+            });
+            handleSetState({
+              nftDetails: polygonResult[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+        if (data?.data?.nft !== null) {
+          const result = await getGraphNft(data?.data?.nft);
+          if (result[0]?.chain === chainId) {
+            const trHistory = await getTransactions(data?.data?.nft?.transactions);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = result[0].price;
+            });
+            handleSetState({
+              nftDetails: result[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
       })();
     }
 

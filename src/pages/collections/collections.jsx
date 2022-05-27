@@ -13,6 +13,7 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
+import { polygonClient } from "../../utils/graphqlClient";
 
 const Collections = () => {
   const { mainnet } = useContext(GenContext);
@@ -167,11 +168,13 @@ const Collections = () => {
   useEffect(() => {
     (async function getSubgraphNfts() {
       const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      const polygonData = await polygonClient.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      const polygonResult = await getAuroraCollections(polygonData.data.collections);
       const result = await getAuroraCollections(data.data.collections);
       if (result?.length) {
-        handleSetState({ auroraCollection: result });
+        handleSetState({ auroraCollection: result, polyCollection: polygonResult });
       } else {
-        handleSetState({ auroraCollection: null });
+        handleSetState({ auroraCollection: null, polyCollection: null });
       }
     })();
   }, [mainnet]);
