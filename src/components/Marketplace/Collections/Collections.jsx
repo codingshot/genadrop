@@ -9,6 +9,7 @@ import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collecti
 import { GenContext } from "../../../gen-state/gen.context";
 import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_POLYGON_COLLECTIONS } from "../../../graphql/querries/getCollections";
 import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
+import { setNotification } from "../../../gen-state/gen.actions";
 
 const Collections = () => {
   const [state, setState] = useState({
@@ -17,7 +18,7 @@ const Collections = () => {
     graphCollection: [],
     polygonCollection: null,
   });
-  const { collections, mainnet } = useContext(GenContext);
+  const { collections, mainnet, dispatch } = useContext(GenContext);
   const { algoCollection, auroraCollection, polygonCollection, graphCollection } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -30,7 +31,7 @@ const Collections = () => {
   };
 
   async function getDataFromEndpointB() {
-    const data = await graphQLClientPolygon
+    const { data, error } = await graphQLClientPolygon
       .query(
         GET_ALL_POLYGON_COLLECTIONS,
         {},
@@ -39,7 +40,15 @@ const Collections = () => {
         }
       )
       .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+    const result = await getAuroraCollections(data?.collections);
 
     if (result?.length) {
       handleSetState({ polygonCollection: result });
@@ -49,7 +58,7 @@ const Collections = () => {
   }
 
   async function getDataFromEndpointA() {
-    const data = await graphQLClient
+    const { data, error } = await graphQLClient
       .query(
         GET_ALL_AURORA_COLLECTIONS,
         {},
@@ -58,7 +67,15 @@ const Collections = () => {
         }
       )
       .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+    const result = await getAuroraCollections(data?.collections);
     if (result?.length) {
       handleSetState({ auroraCollection: result });
     } else {
