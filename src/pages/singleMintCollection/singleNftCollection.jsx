@@ -17,10 +17,11 @@ import {
   GET_POLYGON_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
 import { graphQLClientPolygon } from "../../utils/graphqlClient";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const SingleNftCollection = () => {
   const domMountRef = useRef(false);
-  const { mainnet } = useContext(GenContext);
+  const { mainnet, dispatch } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
 
@@ -84,8 +85,16 @@ const SingleNftCollection = () => {
       (async function getAlgoSingleNftCollection() {
         const singleNftCollections = await readAllSingleNft(mainnet);
         const result = await getSingleNfts(mainnet, singleNftCollections);
-        const data = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
+        const { data, error } = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
 
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        }
         const polygonData = await graphQLClientPolygon
           .query(
             GET_POLYGON_SINGLE_NFTS,

@@ -14,9 +14,10 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
 import { polygonClient } from "../../utils/graphqlClient";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const Collections = () => {
-  const { mainnet } = useContext(GenContext);
+  const { mainnet, dispatch } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
 
@@ -168,9 +169,17 @@ const Collections = () => {
   useEffect(() => {
     (async function getSubgraphNfts() {
       const data = await client.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      const polygonData = await polygonClient.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
-      const polygonResult = await getAuroraCollections(polygonData.data.collections);
-      const result = await getAuroraCollections(data.data.collections);
+      const { data: polygonData, error } = await polygonClient.query(GET_ALL_AURORA_COLLECTIONS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const polygonResult = await getAuroraCollections(polygonData?.collections);
+      const result = await getAuroraCollections(data?.data?.collections);
       if (result?.length) {
         handleSetState({ auroraCollection: result, polyCollection: polygonResult });
       } else {

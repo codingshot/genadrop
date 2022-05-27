@@ -8,6 +8,7 @@ import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import { GET_AURORA_SINGLE_NFTS, GET_POLYGON_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
 import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
+import { setNotification } from "../../../gen-state/gen.actions";
 
 const SingleNft = () => {
   const [state, setState] = useState({
@@ -20,7 +21,7 @@ const SingleNft = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const { singleNfts, mainnet } = useContext(GenContext);
+  const { singleNfts, mainnet, dispatch } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
 
@@ -40,7 +41,7 @@ const SingleNft = () => {
   };
 
   async function getDataFromEndpointB() {
-    const data = await graphQLClientPolygon
+    const { data, error } = await graphQLClientPolygon
       .query(
         GET_POLYGON_SINGLE_NFTS,
         {},
@@ -49,7 +50,16 @@ const SingleNft = () => {
         }
       )
       .toPromise();
-    const result = await getSingleGraphNfts(data?.data?.nfts);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+    const result = await getSingleGraphNfts(data?.nfts);
+
     if (result?.length) {
       handleSetState({ polygonSingleNfts: result });
     } else {
@@ -58,7 +68,7 @@ const SingleNft = () => {
   }
 
   async function getDataFromEndpointA() {
-    const data = await graphQLClient
+    const { data, error } = await graphQLClient
       .query(
         GET_AURORA_SINGLE_NFTS,
         {},
@@ -67,7 +77,15 @@ const SingleNft = () => {
         }
       )
       .toPromise();
-    const result = await getSingleGraphNfts(data?.data?.nfts);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+    const result = await getSingleGraphNfts(data?.nfts);
     if (result?.length) {
       handleSetState({ auroraSingleNfts: result });
     } else {

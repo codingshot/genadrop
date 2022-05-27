@@ -14,6 +14,7 @@ import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDrop
 import { createClient } from "urql";
 import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_POLYGON_COLLECTIONS } from "../../graphql/querries/getCollections";
 import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -45,7 +46,7 @@ const Explore = () => {
     polygonCollection,
     loadedChain,
   } = state;
-  const { collections, mainnet } = useContext(GenContext);
+  const { collections, mainnet, dispatch } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -66,7 +67,7 @@ const Explore = () => {
   };
 
   async function getDataFromEndpointB() {
-    const data = await graphQLClientPolygon
+    const { data, error } = await graphQLClientPolygon
       .query(
         GET_ALL_POLYGON_COLLECTIONS,
         {},
@@ -75,7 +76,15 @@ const Explore = () => {
         }
       )
       .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+    const result = await getAuroraCollections(data?.collections);
 
     if (result?.length) {
       handleSetState({ polygonCollection: result });
@@ -85,7 +94,7 @@ const Explore = () => {
   }
 
   async function getDataFromEndpointA() {
-    const data = await graphQLClient
+    const { data, error } = await graphQLClient
       .query(
         GET_ALL_AURORA_COLLECTIONS,
         {},
@@ -94,7 +103,15 @@ const Explore = () => {
         }
       )
       .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+    const result = await getAuroraCollections(data?.collections);
     if (result?.length) {
       handleSetState({ auroraCollection: result });
     } else {
