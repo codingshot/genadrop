@@ -44,10 +44,12 @@ const supportedChains = {
     label: "Polygon Testnet",
     icon: polygonIcon,
     sybmol: "MATIC",
+    explorer: "https://mumbai.polygonscan.com/address",
     networkId: 80001,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd",
     add: addChain,
     switch: switchChain,
-    coinGeckoLabel: "matic",
+    coinGeckoLabel: "matic-network",
   },
   44787: {
     label: "Celo Alfajores",
@@ -70,6 +72,7 @@ const supportedChains = {
   1313161555: {
     label: "Aurora Testnet",
     icon: auroraIcon,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     sybmol: "ETH",
     networkId: 1313161555,
     add: addChain,

@@ -18,7 +18,7 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
 
   useEffect(() => {
     if (supportedChains[loadedChain] || supportedChains[chain]) {
-      axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
+      axios.get(supportedChains[chain].livePrice || supportedChains[loadedChain].livePrice).then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
           algoPrice: value * price,
@@ -35,7 +35,15 @@ const NftCard = ({ nft, list, extend, loadedChain }) => {
   }, [chain, loadedChain]);
 
   return (
-    <Link to={nft.collection_name ? `${match.url}/${Id}` : `/marketplace/single-mint/${Id}`}>
+    <Link
+      to={
+        nft.collection_name
+          ? `${match.url}/${Id}`
+          : chain
+          ? `/marketplace/single-mint/${chain}/${Id}`
+          : `/marketplace/single-mint/${Id}`
+      }
+    >
       <div className={classes.card}>
         <div className={classes.imageContainer}>
           <img src={image_url} alt="" />
