@@ -15,6 +15,7 @@ import {
   setPolygonCollections,
   setAuroraSingleNfts,
   setPolygonSingleNfts,
+  setNotification,
 } from "./gen-state/gen.actions";
 import Notification from "./components/Notification/Notification";
 import Clipboard from "./components/clipboard/clipboard";
@@ -69,7 +70,7 @@ function App() {
     })();
     // get Aurora Collections
     (async function getDataFromEndpointA() {
-      const data = await graphQLClient
+      const { data, error } = await graphQLClient
         .query(
           GET_ALL_AURORA_COLLECTIONS,
           {},
@@ -78,16 +79,25 @@ function App() {
           }
         )
         .toPromise();
-      const result = await getAuroraCollections(data?.data?.collections);
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getAuroraCollections(data?.collections);
       if (result?.length) {
         dispatch(setAuroraCollections(result));
       } else {
         dispatch(setAuroraCollections(null));
       }
+      return null;
     })();
     // Get Polygon Collections
     (async function getDataFromEndpointB() {
-      const data = await graphQLClientPolygon
+      const { data, error } = await graphQLClientPolygon
         .query(
           GET_ALL_POLYGON_COLLECTIONS,
           {},
@@ -96,13 +106,22 @@ function App() {
           }
         )
         .toPromise();
-      const result = await getAuroraCollections(data?.data?.collections);
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getAuroraCollections(data?.collections);
 
       if (result?.length) {
         dispatch(setPolygonCollections(result));
       } else {
         dispatch(setPolygonCollections(null));
       }
+      return null;
     })();
     // Get ALGO Signle NFTs
     (async function readAllSingle() {
@@ -117,7 +136,7 @@ function App() {
     })();
     // Get Aurora Signle NFTs
     (async function getDataFromEndpointA() {
-      const data = await graphQLClient
+      const { data, error } = await graphQLClient
         .query(
           GET_AURORA_SINGLE_NFTS,
           {},
@@ -126,16 +145,25 @@ function App() {
           }
         )
         .toPromise();
-      const result = await getSingleGraphNfts(data?.data?.nfts);
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
       if (result?.length) {
         dispatch(setAuroraSingleNfts(result));
       } else {
         dispatch(setAuroraSingleNfts(null));
       }
+      return null;
     })();
     // Get Polygon Signle NFTs
     (async function getDataFromEndpointB() {
-      const data = await graphQLClientPolygon
+      const { data, error } = await graphQLClientPolygon
         .query(
           GET_POLYGON_SINGLE_NFTS,
           {},
@@ -144,12 +172,21 @@ function App() {
           }
         )
         .toPromise();
-      const result = await getSingleGraphNfts(data?.data?.nfts);
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
       if (result?.length) {
         dispatch(setPolygonSingleNfts(result));
       } else {
         dispatch(setPolygonSingleNfts(null));
       }
+      return null;
     })();
   }, [mainnet]);
 

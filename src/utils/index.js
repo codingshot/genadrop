@@ -211,18 +211,18 @@ export const getSingleNfts = async (mainnet, nfts) => {
 
 export const getSingleGraphNfts = async (nfts) => {
   const nftArr = [];
-  for (let i = 0; i < nfts.length; i++) {
+  for (let i = 0; i < nfts?.length; i++) {
     try {
       const nftObj = {};
       const { data } = await axios.get(nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
-      nftObj.Id = nfts[i].id;
-      nftObj.price = nfts[i].price * 0.000000000000000001;
-      nftObj.owner = nfts[i].owner.id;
-      nftObj.sold = nfts[i].isSold;
-      nftObj.chain = nfts[i].chain;
-      nftObj.description = data.description;
-      nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-      nftObj.name = data.name;
+      nftObj.Id = nfts[i]?.id;
+      nftObj.price = nfts[i]?.price * 0.000000000000000001;
+      nftObj.owner = nfts[i]?.owner?.id;
+      nftObj.sold = nfts[i]?.isSold;
+      nftObj.chain = nfts[i]?.chain;
+      nftObj.description = data?.description;
+      nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      nftObj.name = data?.name;
       nftArr.push(nftObj);
     } catch (error) {
       console.log(error);

@@ -22,7 +22,7 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setLoader } from "../../gen-state/gen.actions";
+import { setLoader, setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
 import { polygonClient } from "../../utils/graphqlClient";
@@ -129,7 +129,15 @@ const SingleNFT = () => {
     } else {
       (async function getNftDetails() {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
-        const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+        const { data, error } = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        }
         const polygonData = await polygonClient.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
         if (polygonData?.data?.nft !== null) {
           const polygonResult = await getGraphNft(polygonData?.data?.nft);
