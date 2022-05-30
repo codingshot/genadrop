@@ -19,10 +19,10 @@ const Mint = () => {
           file to <br />
           mint to any of our supported blockchains!
         </p>
-        <p className={classes.disclaimer}>
+        <div className={classes.disclaimer}>
           <img src={shieldIcon} alt="" />{" "}
           <p>We do not own your private keys and cannot access your funds without your confirmation</p>
-        </p>
+        </div>
       </header>
 
       <main className={classes.mainWrapper}>

@@ -32,7 +32,6 @@ export const getAuroraCollections = async (collection) => {
 };
 
 export const getNftCollections = async (collections, mainnet) => {
-  console.log(collections);
   const collectionArr = [];
   for (let i = 0; i < collections.length; i += 1) {
     try {
@@ -41,15 +40,14 @@ export const getNftCollections = async (collections, mainnet) => {
       collectionObj.price = collections[i].price;
       collectionObj.owner = collections[i].owner;
       collectionObj.description = collections[i].description;
-
       const { data } = await axios.get(collections[i].url.replace("ipfs://", "https://ipfs.io/ipfs/"));
-
       collectionObj.number_of_nfts = data.length;
       const {
         asset: { params },
       } = await getAlgoData(mainnet, data[0]);
       const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
       collectionObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      collectionObj.chain = 4160;
       collectionArr.push(collectionObj);
     } catch (error) {
       console.log(error);
@@ -202,6 +200,7 @@ export const getSingleNfts = async (mainnet, nfts) => {
       nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
       nftObj.name = response.data.name;
       nftObj.description = response.data.description;
+      nftObj.chain = 4160;
       nftArr.push(nftObj);
     } catch (error) {
       console.error("get collection result failed");
@@ -212,18 +211,18 @@ export const getSingleNfts = async (mainnet, nfts) => {
 
 export const getSingleGraphNfts = async (nfts) => {
   const nftArr = [];
-  for (let i = 0; i < nfts.length; i++) {
+  for (let i = 0; i < nfts?.length; i++) {
     try {
       const nftObj = {};
       const { data } = await axios.get(nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
-      nftObj.Id = nfts[i].id;
-      nftObj.price = nfts[i].price * 0.000000000000000001;
-      nftObj.owner = nfts[i].owner.id;
-      nftObj.sold = nfts[i].isSold;
-      nftObj.chain = nfts[i].chain;
-      nftObj.description = data.description;
-      nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-      nftObj.name = data.name;
+      nftObj.Id = nfts[i]?.id;
+      nftObj.price = nfts[i]?.price * 0.000000000000000001;
+      nftObj.owner = nfts[i]?.owner?.id;
+      nftObj.sold = nfts[i]?.isSold;
+      nftObj.chain = nfts[i]?.chain;
+      nftObj.description = data?.description;
+      nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      nftObj.name = data?.name;
       nftArr.push(nftObj);
     } catch (error) {
       console.log(error);

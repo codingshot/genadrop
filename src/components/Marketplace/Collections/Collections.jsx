@@ -1,98 +1,17 @@
-import React, { useEffect, useContext, useState, useMemo } from "react";
+import React, { useContext } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { createClient } from "urql";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getAuroraCollections, getNftCollections } from "../../../utils";
-import CollectionsCard, { NearCollectionCard } from "../collectionsCard/collectionsCard";
+import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
-import { GET_ALL_AURORA_COLLECTIONS, GET_ALL_POLYGON_COLLECTIONS } from "../../../graphql/querries/getCollections";
-import { graphQLClient, graphQLClientPolygon } from "../../../utils/graphqlClient";
 
 const Collections = () => {
-  const [state, setState] = useState({
-    algoCollection: [],
-    auroraCollection: null,
-    graphCollection: [],
-    polygonCollection: null,
-  });
-  const { collections, mainnet } = useContext(GenContext);
-  const { algoCollection, auroraCollection, polygonCollection, graphCollection } = state;
-  const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
+  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+
   const history = useHistory();
   const { url } = useRouteMatch();
 
-  const getAllCollectionChains = () => {
-    return !auroraCollection && !polygonCollection ? null : [...(auroraCollection || []), ...(polygonCollection || [])];
-  };
-
-  async function getDataFromEndpointB() {
-    const data = await graphQLClientPolygon
-      .query(
-        GET_ALL_POLYGON_COLLECTIONS,
-        {},
-        {
-          clientName: "polygon",
-        }
-      )
-      .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
-
-    if (result?.length) {
-      handleSetState({ polygonCollection: result });
-    } else {
-      handleSetState({ polygonCollection: null });
-    }
-  }
-
-  async function getDataFromEndpointA() {
-    const data = await graphQLClient
-      .query(
-        GET_ALL_AURORA_COLLECTIONS,
-        {},
-        {
-          clientName: "aurora",
-        }
-      )
-      .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
-    if (result?.length) {
-      handleSetState({ auroraCollection: result });
-    } else {
-      handleSetState({ auroraCollection: null });
-    }
-  }
-
-  useEffect(() => {
-    getDataFromEndpointA();
-    getDataFromEndpointB();
-  }, []);
-
-  useEffect(() => {
-    const collection = getAllCollectionChains();
-    handleSetState({
-      graphCollection: collection,
-    });
-  }, [auroraCollection, polygonCollection]);
-
-  useEffect(() => {
-    try {
-      (async function getAlgoCollection() {
-        // let collections = await fetchCollections();
-        if (collections?.length) {
-          const result = await getNftCollections(collections.slice(0, 10), mainnet);
-          handleSetState({ algoCollection: result });
-        } else {
-          handleSetState({ algoCollection: null });
-        }
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [collections]);
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
@@ -102,18 +21,21 @@ const Collections = () => {
         </button>
       </div>
 
-      {algoCollection?.length ? (
+      {algoCollections?.length || auroraCollections?.length || polygonCollections?.length ? (
         <div className={classes.wrapper}>
-          {algoCollection
-            ?.filter((_, idx) => idx < 10)
-            ?.map((collection, idx) => (
+          {algoCollections
+            .filter((_, idx) => idx < 10)
+            .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
-          {graphCollection?.map((collection, idx) => (
-            <NearCollectionCard key={idx} collection={collection} />
+          {auroraCollections.map((collection, idx) => (
+            <CollectionsCard key={idx} collection={collection} />
+          ))}
+          {polygonCollections.map((collection, idx) => (
+            <CollectionsCard key={idx} collection={collection} />
           ))}
         </div>
-      ) : !algoCollection ? (
+      ) : !algoCollections && !auroraCollections && !polygonCollections ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.skeleton}>

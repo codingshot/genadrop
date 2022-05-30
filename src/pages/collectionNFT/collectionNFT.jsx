@@ -35,6 +35,7 @@ import {
   GET_GRAPH_NFT,
 } from "../../graphql/querries/getCollections";
 import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
@@ -72,7 +73,7 @@ const CollectionNFT = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { dispatch, account, connector, mainnet } = useContext(GenContext);
+  const { account, connector, mainnet, dispatch } = useContext(GenContext);
   const { collections } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
@@ -129,7 +130,7 @@ const CollectionNFT = () => {
   };
 
   async function getDataFromEndpointB() {
-    const data = await graphQLClientPolygon
+    const { data, error } = await graphQLClientPolygon
       .query(
         GET_ALL_POLYGON_COLLECTIONS,
         {},
@@ -138,7 +139,16 @@ const CollectionNFT = () => {
         }
       )
       .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+
+    const result = await getAuroraCollections(data?.collections);
 
     if (result?.length) {
       handleSetState({ polygonCollection: result });
@@ -148,7 +158,7 @@ const CollectionNFT = () => {
   }
 
   async function getDataFromEndpointA() {
-    const data = await graphQLClient
+    const { data, error } = await graphQLClient
       .query(
         GET_ALL_AURORA_COLLECTIONS,
         {},
@@ -157,7 +167,17 @@ const CollectionNFT = () => {
         }
       )
       .toPromise();
-    const result = await getAuroraCollections(data?.data?.collections);
+
+    if (error) {
+      return dispatch(
+        setNotification({
+          message: error.message,
+          type: "warning",
+        })
+      );
+    }
+
+    const result = await getAuroraCollections(data?.collections);
     if (result?.length) {
       handleSetState({ auroraCollection: result });
     } else {

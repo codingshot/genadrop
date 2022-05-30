@@ -1,43 +1,25 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory, useLocation } from "react-router-dom";
-import { getSingleGraphNfts, getSingleNfts } from "../../utils";
 import classes from "./singleNftCollection.module.css";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
-import { readAllSingleNft } from "../../utils/firebase";
 import NotFound from "../../components/not-found/notFound";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
-import { createClient } from "urql";
-import {
-  GET_ALL_GRAPH_SINGLE_NFTS,
-  GET_AURORA_SINGLE_NFTS,
-  GET_POLYGON_SINGLE_NFTS,
-} from "../../graphql/querries/getCollections";
-import { graphQLClientPolygon } from "../../utils/graphqlClient";
 
 const SingleNftCollection = () => {
-  const domMountRef = useRef(false);
-  const { mainnet } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
-
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
 
   const [state, setState] = useState({
     togglePriceFilter: false,
     toggleChainFilter: false,
     filteredCollection: [],
-    algoCollection: null,
-    polyCollection: null,
     celoCollection: null,
-    auroraCollection: null,
     allChains: null,
     filter: {
       searchValue: "",
@@ -46,83 +28,82 @@ const SingleNftCollection = () => {
     },
   });
 
-  const { algoCollection, polyCollection, celoCollection, auroraCollection, filter, filteredCollection, allChains } =
-    state;
+  const { celoCollection, filter, filteredCollection } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const getCollectionByChain = () => {
-    switch (filter.chain) {
-      case "All Chains":
-        return allChains;
-      case "Algorand":
-        return algoCollection;
-      case "Polygon":
-        return polyCollection;
-      case "Celo":
+  const getCollectionByChain = (network = filter.chain) => {
+    switch (network.toLowerCase().replace(/ /g, "")) {
+      case "allchains":
+        return !singleAlgoNfts && !singlePolygonNfts && !celoCollection && !singleAuroraNfts
+          ? null
+          : [
+              ...(singleAlgoNfts || []),
+              ...(singlePolygonNfts || []),
+              ...(celoCollection || []),
+              ...(singleAuroraNfts || []),
+            ];
+      case "algorand":
+        return singleAlgoNfts;
+      case "polygon":
+        return singlePolygonNfts;
+      case "celo":
         return celoCollection;
-      case "Aurora":
-        return auroraCollection;
+      case "aurora":
+        return singleAuroraNfts;
       default:
         break;
     }
+    return null;
   };
 
-  const updateHistory = () => {
+  // get search result for all blockchains
+  const searchHandler = (value) => {
+    handleSetState({ filter: { ...filter, searchValue: value } });
+    const { search } = location;
+    const chainParam = new URLSearchParams(search).get("chain");
     const params = new URLSearchParams({
-      chain: filter.chain.toLowerCase().replace(/ /g, ""), // for close the space in all chains
-      ...(filter.searchValue && { search: filter.searchValue.toLowerCase() }),
+      search: value,
+      ...(chainParam && { chain: chainParam }),
     });
     history.replace({ pathname: location.pathname, search: params.toString() });
-  };
-
-  //  get singleNft collections for all the blockchains
-  useEffect(() => {
-    try {
-      (async function getAlgoSingleNftCollection() {
-        const singleNftCollections = await readAllSingleNft(mainnet);
-        const result = await getSingleNfts(mainnet, singleNftCollections);
-        const data = await client.query(GET_AURORA_SINGLE_NFTS).toPromise();
-
-        const polygonData = await graphQLClientPolygon
-          .query(
-            GET_POLYGON_SINGLE_NFTS,
-            {},
-            {
-              clientName: "polygon",
-            }
-          )
-          .toPromise();
-        const getAuroraSingleNfts = await getSingleGraphNfts(data.data.nfts);
-        const getPolygonSingleNfts = await getSingleGraphNfts(polygonData.data.nfts);
-        console.log(getPolygonSingleNfts);
-        handleSetState({
-          algoCollection: result,
-          auroraCollection: getAuroraSingleNfts,
-          polyCollection: getPolygonSingleNfts,
-        });
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-
-    // get singleNftCollection for other chains: polygon|celo|aurora
-  }, [mainnet]);
-
-  // get search result for different blockchains ****
-  useEffect(() => {
     const collection = getCollectionByChain();
     if (!collection) return;
-    const filtered = collection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
+    const filtered = collection.filter((col) => col.name.toLowerCase().includes(value.toLowerCase()));
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
-    updateHistory();
-  }, [filter.searchValue]);
+  };
+
+  const chainChange = (value) => {
+    const { search } = location;
+    const name = new URLSearchParams(search).get("search");
+    const params = new URLSearchParams({
+      chain: value.toLowerCase().replace(/ /g, ""),
+      ...(name && { search: name }),
+    });
+    history.replace({ pathname: location.pathname, search: params.toString() });
+    handleSetState({ filter: { ...filter, chain: value } });
+    const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
+    if (collection) {
+      if (filter.searchValue) {
+        const filtered = collection.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
+        if (filtered.length) {
+          handleSetState({ filteredCollection: filtered });
+        } else {
+          handleSetState({ filteredCollection: null });
+        }
+      } else {
+        handleSetState({ filteredCollection: collection });
+      }
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+  };
 
   // sort by price function for different blockchains
   const sortPrice = (collection) => {
@@ -134,30 +115,35 @@ const SingleNftCollection = () => {
       sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
+    return sorted;
   };
 
-  // render blockchains
-  useEffect(() => {
-    if (domMountRef.current) {
-      sortPrice(getCollectionByChain());
-    } else {
-      domMountRef.current = true;
-    }
-    updateHistory();
-  }, [filter.chain, filter.price, algoCollection, polyCollection, celoCollection, auroraCollection, allChains]);
+  // Price update
+  const priceUpdate = (value) => {
+    handleSetState({ filter: { ...filter, price: value } });
+    sortPrice();
+  };
 
   // compile data for all blockchains
   useEffect(() => {
-    handleSetState({
-      allChains: [
-        ...(algoCollection || []),
-        ...(polyCollection || []),
-        ...(celoCollection || []),
-        ...(auroraCollection || []),
-      ],
-    });
-  }, [algoCollection, polyCollection, celoCollection, auroraCollection]);
-
+    const { search } = location;
+    const name = new URLSearchParams(search).get("search");
+    const chainParameter = new URLSearchParams(search).get("chain");
+    if (chainParameter) {
+      handleSetState({ filter: { ...filter, chain: chainParameter } });
+    }
+    const collection = getCollectionByChain();
+    if (name) {
+      handleSetState({ filter: { ...filter, searchValue: name } });
+    }
+    const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
+    if (singleAlgoNfts || singleAuroraNfts) {
+      handleSetState({ filteredCollection: filtered });
+    } else {
+      handleSetState({ filteredCollection: null });
+    }
+    return null;
+  }, [singleAlgoNfts, singlePolygonNfts, celoCollection, singleAuroraNfts]);
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
@@ -165,24 +151,26 @@ const SingleNftCollection = () => {
           <h3>1 of 1s</h3>
         </div>
         <div className={classes.searchAndFilter}>
-          <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
-          <ChainDropdown onChainFilter={(value) => handleSetState({ filter: { ...filter, chain: value } })} />
-          <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
+          <SearchBar onSearch={searchHandler} />
+          <ChainDropdown onChainFilter={chainChange} />
+          <PriceDropdown onPriceFilter={priceUpdate} />
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
-            {filteredCollection.map((nft, idx) => (
-              <NftCard key={idx} nft={nft} />
+            {filteredCollection.map((nft) => (
+              <NftCard key={nft.Id} nft={nft} />
             ))}
           </div>
-        ) : !filteredCollection ? (
+        ) : !filteredCollection && filter.searchValue ? (
           <NotFound />
+        ) : !filteredCollection ? (
+          <h1 className={classes.noResult}>No Results Found</h1>
         ) : (
           <div className={classes.skeleton}>
-            {Array(5)
-              .fill(null)
-              .map((_, idx) => (
-                <div key={idx}>
+            {[...new Array(5)]
+              .map((_, idx) => idx)
+              .map((id) => (
+                <div key={id}>
                   <Skeleton count={1} height={200} />
                   <Skeleton count={3} height={40} />
                 </div>
