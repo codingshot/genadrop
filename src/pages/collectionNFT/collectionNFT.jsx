@@ -294,7 +294,7 @@ const CollectionNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(asset, account, connector, mainnet);
+    const res = await PurchaseNft(dispatch, asset, account, connector, mainnet);
     // eslint-disable-next-line no-alert
     alert(res);
   };
