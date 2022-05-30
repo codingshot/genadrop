@@ -8,7 +8,7 @@ import classes from "./list.module.css";
 import { PurchaseNft } from "../../../utils/arc_ipfs";
 
 const List = () => {
-  const { account, connector } = useContext(GenContext);
+  const { dispatch, account, connector } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -31,7 +31,7 @@ const List = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector);
+    const res = await PurchaseNft(dispatch, nftDetails, account, connector);
     // eslint-disable-next-line no-alert
     alert(res);
   };

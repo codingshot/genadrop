@@ -100,6 +100,18 @@
   width: 100%;
 }
 
+.editProfile {
+  border: 1px solid var(--main-accent);
+  color: var(--main-accent);
+  padding: 0.5em 0.5em;
+  border-radius: 0.5em;
+  transition: all 300ms;
+}
+
+.editProfile:hover {
+  box-shadow: 2px 2px 15px gainsboro;
+}
+
 .main {
   padding: 2em;
   border-radius: 1em;
