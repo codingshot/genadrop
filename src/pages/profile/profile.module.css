@@ -88,6 +88,10 @@
   outline: 1px solid var(--main-accent);
 }
 
+.option.invalid input {
+  outline: 1px solid red;
+}
+
 .social {
   width: 100%;
   display: flex;

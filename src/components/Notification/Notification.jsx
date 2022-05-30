@@ -28,7 +28,7 @@ const Notification = () => {
     handleSetState({ toggleFeedback: true });
     setTimeout(() => {
       handleSetState({ toggleFeedback: false });
-    }, 8000);
+    }, 5000);
   }, [notification]);
 
   useEffect(() => {
@@ -46,7 +46,7 @@ const Notification = () => {
 
   return (
     <div
-      style={{ top: loaderMessage ? "8em" : "4em" }}
+      style={{ top: loaderMessage ? "8em" : "5em" }}
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
       <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>
