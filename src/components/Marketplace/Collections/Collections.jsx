@@ -24,14 +24,14 @@ const Collections = () => {
       {algoCollections?.length || auroraCollections?.length || polygonCollections?.length ? (
         <div className={classes.wrapper}>
           {algoCollections
-            .filter((_, idx) => idx < 10)
+            ?.filter((_, idx) => idx < 10)
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
             ))}
-          {auroraCollections.map((collection, idx) => (
+          {auroraCollections?.map((collection, idx) => (
             <CollectionsCard key={idx} collection={collection} />
           ))}
-          {polygonCollections.map((collection, idx) => (
+          {polygonCollections?.map((collection, idx) => (
             <CollectionsCard key={idx} collection={collection} />
           ))}
         </div>

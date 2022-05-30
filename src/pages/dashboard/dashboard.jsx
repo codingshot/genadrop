@@ -60,7 +60,7 @@ const Dashboard = () => {
       const userNftCollections = await fetchUserNfts(account);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
-      handleSetState({ createdNfts: [...createdUserNfts, ...aurroraNFTs] });
+      handleSetState({ createdNfts: [...(createdUserNfts || []), ...(aurroraNFTs || [])] });
     })();
     // Get User Collected NFTs
     (async function getCollectedNfts() {
