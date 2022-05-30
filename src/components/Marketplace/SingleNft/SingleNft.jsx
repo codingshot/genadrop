@@ -22,7 +22,7 @@ const SingleNft = () => {
       </div>
       {singleAlgoNfts?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <div className={classes.wrapper}>
-          {singleAlgoNfts.slice(0, 10).map((nft) => (
+          {singleAlgoNfts?.slice(0, 10).map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
           {singleAuroraNfts?.map((nft) => (
