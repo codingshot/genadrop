@@ -30,19 +30,23 @@ const PriceDropdown = ({ onPriceFilter }) => {
         </div>
       </div>
       <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-        <div onClick={() => priceUpdate("low")}>
-          price
-          <div className={classes.priceInfo}>
-            <span>Low to High</span> <img src={arrowUp} alt="" />
+        {priceFilter === "high" && (
+          <div onClick={() => priceUpdate("low")}>
+            price
+            <div className={classes.priceInfo}>
+              <span>Low to High</span> <img src={arrowUp} alt="" />
+            </div>
           </div>
-        </div>
-        <div onClick={() => priceUpdate("high")}>
-          price
-          <div className={classes.priceInfo}>
-            <span>High to Low</span>
-            <img src={arrowDown} alt="" />
+        )}
+        {priceFilter === "low" && (
+          <div onClick={() => priceUpdate("high")}>
+            price
+            <div className={classes.priceInfo}>
+              <span>High to Low</span>
+              <img src={arrowDown} alt="" />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

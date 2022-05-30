@@ -455,7 +455,7 @@ export async function createNFT(createProps, doAccountCheck) {
       }
     }
   } catch (error) {
-    console.log("this is the error", error)
+    console.log("this is the error", error);
   }
   dispatch(
     setNotification({
