@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getAuroraCollections, getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
+import { getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
@@ -23,19 +23,7 @@ import facebookIcon from "../../assets/facebook.svg";
 import instagramIcon from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
-import algoLogo from "../../assets/icon-algo.svg";
-import auroraIcon from "../../assets/icon-aurora.svg";
-import { createClient } from "urql";
 import supportedChains from "../../utils/supportedChains";
-
-import {
-  GET_ALL_AURORA_COLLECTIONS,
-  GET_ALL_POLYGON_COLLECTIONS,
-  GET_GRAPH_COLLECTION,
-  GET_GRAPH_NFT,
-} from "../../graphql/querries/getCollections";
-import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
-import { setNotification } from "../../gen-state/gen.actions";
 
 const CollectionNFT = () => {
   const [state, setState] = useState({
@@ -44,41 +32,26 @@ const CollectionNFT = () => {
     transactionHistory: null,
     showSocial: false,
     isLoading: true,
-    auroraCollection: null,
-    polygonCollection: null,
     allGraphCollectons: [],
     collection: [],
     algoPrice: 0,
     isCopied: false,
-    chainIcon: "",
+    totalPrice: 0,
   });
 
-  const {
-    dropdown,
-    chainSymbol,
-    asset,
-    transactionHistory,
-    collection,
-    isLoading,
-    algoPrice,
-    showSocial,
-    isCopied,
-    chainIcon,
-    auroraCollection,
-    polygonCollection,
-    allGraphCollectons,
-  } = state;
+  const { dropdown, totalPrice, asset, transactionHistory, collection, isLoading, showSocial, isCopied } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { account, connector, mainnet, dispatch } = useContext(GenContext);
-  const { collections } = useContext(GenContext);
+  const { account, collections, connector, mainnet, dispatch, auroraCollections, polygonCollections } =
+    useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
   const [, , , collectionName, nftId] = url.split("/");
   const wrapperRef = useRef(null);
+
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -108,7 +81,7 @@ const CollectionNFT = () => {
           const collectionData = await getNftCollection(newCollection, mainnet);
           const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
           console.log("The result", result);
-          let tHistory = await readNftTransaction(result.Id);
+          const tHistory = await readNftTransaction(result.Id);
           tHistory.find((t) => {
             if (t.type === "Minting") t.price = result.price;
           });
@@ -123,83 +96,23 @@ const CollectionNFT = () => {
     }
 
     document.documentElement.scrollTop = 0;
-  }, []);
+  }, [nftId]);
 
   const getAllCollectionChains = () => {
-    return !auroraCollection && !polygonCollection ? null : [...(auroraCollection || []), ...(polygonCollection || [])];
+    return !auroraCollections && !polygonCollections
+      ? null
+      : [...(auroraCollections || []), ...(polygonCollections || [])];
   };
-
-  async function getDataFromEndpointB() {
-    const { data, error } = await graphQLClientPolygon
-      .query(
-        GET_ALL_POLYGON_COLLECTIONS,
-        {},
-        {
-          clientName: "polygon",
-        }
-      )
-      .toPromise();
-    if (error) {
-      return dispatch(
-        setNotification({
-          message: error.message,
-          type: "warning",
-        })
-      );
-    }
-
-    const result = await getAuroraCollections(data?.collections);
-
-    if (result?.length) {
-      handleSetState({ polygonCollection: result });
-    } else {
-      handleSetState({ polygonCollection: null });
-    }
-  }
-
-  async function getDataFromEndpointA() {
-    const { data, error } = await graphQLClient
-      .query(
-        GET_ALL_AURORA_COLLECTIONS,
-        {},
-        {
-          clientName: "aurora",
-        }
-      )
-      .toPromise();
-
-    if (error) {
-      return dispatch(
-        setNotification({
-          message: error.message,
-          type: "warning",
-        })
-      );
-    }
-
-    const result = await getAuroraCollections(data?.collections);
-    if (result?.length) {
-      handleSetState({ auroraCollection: result });
-    } else {
-      handleSetState({ auroraCollection: null });
-    }
-  }
-
-  useEffect(() => {
-    getDataFromEndpointA();
-    getDataFromEndpointB();
-  }, []);
 
   useEffect(() => {
     (async function getGraphResult() {
-      const collection = getAllCollectionChains();
+      const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
-      const filteredCollection = collection?.filter((col) => col?.owner === collectionName);
+      const filteredCollection = allCollections?.filter((col) => col?.owner === collectionName);
       if (filteredCollection) {
         // filtering to get the unique nft
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
-        console.log(filteredId);
         if (filteredId) {
           const result = await getGraphNft(filteredId[0], collectionName);
           const trHistory = await getTransactions(filteredId[0]?.transactions);
@@ -217,23 +130,16 @@ const CollectionNFT = () => {
         }
       }
     })();
-  }, [auroraCollection, polygonCollection]);
+  }, [auroraCollections, polygonCollections, nftId]);
 
   useEffect(() => {
     if (asset?.chain) {
-      const pair = supportedChains[asset.chain].coinGeckoLabel;
-      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res?.data)[0]?.usd;
-        handleSetState({
-          chainIcon: supportedChains[asset?.chain].icon,
-          algoPrice: value,
-          chainSymbol: supportedChains[asset?.chain].sybmol,
+      axios
+        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[asset?.chain]?.id}&vs_currencies=usd`)
+        .then((res) => {
+          const value = Object.values(res.data)[0].usd;
+          handleSetState({ totalPrice: value * asset.price });
         });
-      });
-    } else {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount, chainIcon: algoLogo });
-      });
     }
   }, [asset]);
 
@@ -294,9 +200,11 @@ const CollectionNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(dispatch, asset, account, connector, mainnet);
-    // eslint-disable-next-line no-alert
-    alert(res);
+    const res = await PurchaseNft({ dispatch, nftDetails: asset, account, connector, mainnet });
+    if (res) {
+      // eslint-disable-next-line no-alert
+      alert(res);
+    }
   };
 
   const icons = [
@@ -376,14 +284,11 @@ const CollectionNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={chainIcon} alt="" />
+                <img src={supportedChains[asset.chain].icon} alt="" />
                 <p className={classes.tokenValue}>
-                  {asset.price} {chainSymbol ? chainSymbol : ""}
+                  {asset.price} {supportedChains[asset.chain].sybmol}
                 </p>
-                <span className={classes.usdValue}>
-                  ($
-                  {(asset.price * algoPrice).toFixed(2)})
-                </span>
+                <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
               </span>
             </div>
 
@@ -396,7 +301,7 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold || asset?.chain} onClick={buyNft}>
+                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
                     <img src={walletIcon} alt="" />
                     Buy now
                   </button>

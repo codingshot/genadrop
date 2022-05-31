@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import { createClient } from "urql";
 import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
