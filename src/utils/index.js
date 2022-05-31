@@ -110,14 +110,16 @@ export const getGraphNft = async (collection, mainnet) => {
   try {
     const nftArr = {};
     nftArr.collection_name = collection?.collection?.name;
+    nftArr.collection_contract = collection?.collection?.id;
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
-    nftArr.owner = collection?.collection?.id;
+    nftArr.owner = collection?.owner?.id;
     nftArr.price = collection?.price * 0.000000000000000001;
     nftArr.image_url = data.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.description = data?.description;
     nftArr.Id = collection?.tokenID;
+    nftArr.marketId = collection?.id;
     nftArr.properties = data?.properties;
     nftObj.push(nftArr);
   } catch (error) {
