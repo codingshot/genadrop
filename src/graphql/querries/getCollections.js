@@ -18,7 +18,9 @@ export const GET_ALL_AURORA_COLLECTIONS = gql`
           id
         }
         tokenID
-
+        owner {
+          id
+        }
         tokenIPFSPath
         transactions {
           id
@@ -53,6 +55,9 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
           id
         }
         tokenID
+        owner {
+          id
+        }
 
         tokenIPFSPath
         transactions {
@@ -83,6 +88,9 @@ export const GET_GRAPH_COLLECTION = gql`
         price
         tokenID
         tokenIPFSPath
+        owner {
+          id
+        }
       }
     }
   }
@@ -102,6 +110,9 @@ export const GET_GRAPH_NFT = gql`
         id
       }
       tokenID
+      owner {
+        id
+      }
 
       tokenIPFSPath
       transactions {
