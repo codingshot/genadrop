@@ -679,6 +679,7 @@ export async function mintToPoly(polyProps) {
 
 export async function PurchaseNft(args) {
   const { dispatch, nftDetails, account, connector, mainnet } = args;
+  console.log("initing", mainnet, connector);
   initAlgoClients(mainnet);
   if (!account) {
     return dispatch(
@@ -697,7 +698,9 @@ export async function PurchaseNft(args) {
       })
     );
   }
+  console.log("no eve if",!connector?.isWalletConnect )
   const params = await algodTxnClient.getTransactionParams().do();
+  console.log("wake up", params);
   const enc = new TextEncoder();
   const note = enc.encode("Nft Purchase");
   const note2 = enc.encode("Platform fee");
@@ -711,7 +714,9 @@ export async function PurchaseNft(args) {
     );
   }
 
+  console.log("before acct check")
   const userBalance = await algodClient.accountInformation(account).do();
+  console.log("stopped it")
   if (algosdk.microalgosToAlgos(userBalance.account.amount) <= nftDetails.price) {
     dispatch(
       setNotification({
@@ -895,10 +900,45 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
   return art;
 }
 
-export async function purchasePolygonNfts(connector, mainnet, itemId, price) {
+export async function purchasePolygonNfts(buyProps) {
+  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  console.log("un what?", nftDetails, buyProps);
+  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
-    return;
+    return dispatch(
+      setNotification({
+        message: "connect wallet",
+        type: "warning",
+      })
+    );
   }
+  console.log("provide o", connector.provider)
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
+  const signature = await wallet._signTypedData(
+    // Domain
+    {
+      name: "GenaDrop",
+      version: "1.0.0",
+      chainId,
+      verifyingContract: mainnet
+        ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+    },
+    // Types
+    {
+      NFT: [
+        { name: "tokenId", type: "uint256" },
+        { name: "account", type: "address" },
+        { name: "price", type: "uint256" },
+        { name: "seller", type: "address" },
+        { name: "nftContract", type: "address" },
+      ],
+    },
+    // Value
+    { tokenId, account, price, seller, nftContract }
+  );
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
@@ -907,11 +947,76 @@ export async function purchasePolygonNfts(connector, mainnet, itemId, price) {
     connector.getSigner()
   );
   try {
-    await contract.nftSale(itemId, { value: price });
+    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    await tx.wait();
+    return mainnet ? `https://polygonscan.com/tx/${tx.hash}` : `https://mumbai.polygonscan.com/tx/${tx.hash}`;
   } catch (error) {
-    console.log(error);
+    console.log("erooric data", error, error.data);
+    return dispatch(
+      setNotification({
+        message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+        type: "warning",
+      })
+    );
   }
-  return true;
+}
+
+export async function purchaseAuroragonNfts(buyProps) {
+  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  if (!connector) {
+    return dispatch(
+      setNotification({
+        message: "connect wallet",
+        type: "warning",
+      })
+    );
+  }
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const { chainId } = connector._network;
+  const signature = await wallet._signTypedData(
+    // Domain
+    {
+      name: "GenaDrop",
+      version: "1.0.0",
+      chainId,
+      verifyingContract: mainnet
+        ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+    },
+    // Types
+    {
+      NFT: [
+        { name: "tokenId", type: "uint256" },
+        { name: "account", type: "address" },
+        { name: "price", type: "uint256" },
+        { name: "seller", type: "address" },
+        { name: "nftContract", type: "address" },
+      ],
+    },
+    // Value
+    { tokenId, account, price, seller, nftContract }
+  );
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    connector.getSigner()
+  );
+  try {
+    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    await tx.wait();
+    return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
+  } catch (error) {
+    console.log("erooric data", error, error.data);
+    return dispatch(
+      setNotification({
+        message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+        type: "warning",
+      })
+    );
+  }
 }
 
 export { pinata, write };
