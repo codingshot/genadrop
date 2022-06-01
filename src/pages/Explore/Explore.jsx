@@ -92,6 +92,7 @@ const Explore = () => {
           NFTCollection: result,
           loadedChain: result[0]?.chain,
         });
+
       }
     })();
   }, [auroraCollections, polygonCollections]);

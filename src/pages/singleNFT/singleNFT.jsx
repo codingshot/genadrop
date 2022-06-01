@@ -182,7 +182,7 @@ const SingleNFT = () => {
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
-          chainSymbol: "ETH",
+          chainSymbol: supportedChains[nftDetails.chain].symbol,
         });
       });
     } else {
