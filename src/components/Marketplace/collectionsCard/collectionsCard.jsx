@@ -20,7 +20,10 @@ const CollectionsCard = ({ collection }) => {
       });
   }, []);
   return (
-    <div onClick={() => history.push(`/marketplace/collections/${chain ? owner : name}`)} className={classes.card}>
+    <div
+      onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? owner : name}`)}
+      className={classes.card}
+    >
       <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
 
       <div className={classes.body}>

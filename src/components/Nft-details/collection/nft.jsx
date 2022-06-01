@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import classes from "./nft.module.css";
 import algoIcon from "../../../assets/icon-algo.svg";
@@ -7,14 +7,14 @@ import supportedChains from "../../../utils/supportedChains";
 const NFT = (data) => {
   const match = useRouteMatch();
 
-  return data.data.map((nft, idx) => {
+  return data.data.map((nft) => {
     let chainName = "Algo";
     if (nft?.chain) {
       chainName = supportedChains[nft?.chain].sybmol;
     }
     return (
       <Link to={`${match.url.split("/").slice(0, -1).join("/")}/${nft.Id}`}>
-        <div key={idx} className={classes.collectionItem}>
+        <div key={nft.Id} className={classes.collectionItem}>
           <img src={nft.image_url} alt="" />
           <span className={classes.collectionName}>{nft.collection_name}</span>
           <span className={classes.itemName}>{nft.name}</span>
