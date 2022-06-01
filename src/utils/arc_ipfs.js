@@ -742,7 +742,6 @@ export async function PurchaseNft(args) {
     suggestedParams: params,
   });
   txns.push(txn2);
-  algosdk.assignGroupID(txns);
   try {
     await signTx(connector, txns, dispatch);
   } catch (error) {
