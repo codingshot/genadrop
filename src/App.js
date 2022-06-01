@@ -209,7 +209,7 @@ function App() {
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
-            <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} />
+            {/* <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} /> */}
             <Route exact path="/marketplace/single-mint/:chainId/:nftId" component={SingleNFT} />
             <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />

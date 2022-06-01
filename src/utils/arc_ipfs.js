@@ -680,6 +680,15 @@ export async function mintToPoly(polyProps) {
 export async function PurchaseNft(args) {
   const { dispatch, nftDetails, account, connector, mainnet } = args;
   initAlgoClients(mainnet);
+  if (!account) {
+    return dispatch(
+      setNotification({
+        message: "connect wallet",
+        type: "warning",
+      })
+    );
+  }
+  console.log(connector);
   if (!connector?.isWalletConnect && !(connector?.chainId === 4160)) {
     return dispatch(
       setNotification({
