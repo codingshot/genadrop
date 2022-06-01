@@ -8,8 +8,10 @@ const CollectionsCard = ({ collection }) => {
   const { name, price, description, image_url, chain, owner } = collection;
   const history = useHistory();
 
+
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
+    console.log("LLLL: ", collection);
     axios
       .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`)
       .then((res) => {
