@@ -138,12 +138,23 @@ const SingleNFT = () => {
             })
           );
         }
-        const polygonData = await polygonClient.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-        if (polygonData?.data?.nft !== null) {
-          const polygonResult = await getGraphNft(polygonData?.data?.nft);
-
+        const { data: polygonData, error: polygonError } = await polygonClient
+          .query(GET_GRAPH_NFT, { id: nftId })
+          .toPromise();
+        if (polygonError) {
+          return dispatch(
+            setNotification({
+              message: polygonError.message,
+              type: "warning",
+            })
+          );
+        }
+        if (polygonData?.nft !== null) {
+          const polygonResult = await getGraphNft(polygonData?.nft);
+          console.log(polygonResult);
           if (polygonResult[0]?.chain === chainId) {
-            const trHistory = await getTransactions(polygonData?.data?.nft?.transactions);
+            const trHistory = await getTransactions(polygonData?.nft?.transactions);
+            console.log(trHistory);
             trHistory.find((t) => {
               if (t.type === "Minting") t.price = polygonResult[0].price;
             });
@@ -155,11 +166,12 @@ const SingleNFT = () => {
           }
         }
         if (data?.data?.nft !== null) {
-          const result = await getGraphNft(data?.data?.nft);
+          const result = await getGraphNft(data?.nft);
           if (result[0]?.chain === chainId) {
-            const trHistory = await getTransactions(data?.data?.nft?.transactions);
+            const trHistory = await getTransactions(data?.nft?.transactions);
+            console.log(trHistory);
             trHistory.find((t) => {
-              if (t.type === "Minting") t.price = result[0].price;
+              if (t.type === "Minting") t.price = result[0]?.price;
             });
             handleSetState({
               nftDetails: result[0],
