@@ -56,8 +56,8 @@ const CollectionMenu = ({ layer }) => {
     let imgList = [];
     let imgFiles = [];
     Object.keys(images).map((key, value) => {
-      imgList.push(images[key].default);
-      imgFiles.push(dataURLtoFile(images[key].default, key.slice(key.indexOf("/") + 1)));
+      images[key].default[0] === "d" &&
+        imgFiles.push(dataURLtoFile(images[key].default, key.slice(key.indexOf("/") + 1)));
     });
     dispatch(addImage(handleAddAssets({ layerId: id, files: imgFiles, traits, layerTitle })));
   };
@@ -86,7 +86,7 @@ const CollectionMenu = ({ layer }) => {
           </button>
           <ButtonClickEffect>
             <button type="button" onClick={handleTemplates} className={classes.addBlankBtn}>
-              Add Template Images
+              Available Asset Images
             </button>
           </ButtonClickEffect>
           {traits[0] && (

@@ -8,7 +8,6 @@ const CollectionsCard = ({ collection }) => {
   const { name, price, description, image_url, chain, owner } = collection;
   const history = useHistory();
 
-
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     console.log("LLLL: ", collection);
