@@ -3,9 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getNftCollections } from "../../utils";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
-import { fetchCollections } from "../../utils/firebase";
 import { GenContext } from "../../gen-state/gen.context";
 import NotFound from "../../components/not-found/notFound";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
@@ -13,17 +11,14 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 
 const Collections = () => {
-  const { mainnet } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
   const location = useLocation();
   const history = useHistory();
 
   const [state, setState] = useState({
     filteredCollection: [],
-    algoCollection: null,
-    polyCollection: null,
     celoCollection: null,
     nearCollection: null,
-    loading: true,
     allChains: null,
     filter: {
       searchValue: "",
@@ -32,7 +27,7 @@ const Collections = () => {
     },
   });
 
-  const { algoCollection, polyCollection, celoCollection, nearCollection, filter, filteredCollection, loading } = state;
+  const { celoCollection, nearCollection, filter, filteredCollection } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -41,22 +36,25 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollection && !polyCollection && !celoCollection && !nearCollection
+        return !algoCollections && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
           ? null
           : [
-              ...(algoCollection || []),
-              ...(polyCollection || []),
+              ...(algoCollections || []),
+              ...(polygonCollections || []),
               ...(celoCollection || []),
+              ...(auroraCollections || []),
               ...(nearCollection || []),
             ];
       case "algorand":
-        return algoCollection;
+        return algoCollections;
       case "polygon":
-        return polyCollection;
+        return polygonCollections;
       case "celo":
         return celoCollection;
       case "near":
         return nearCollection;
+      case "aurora":
+        return auroraCollections;
       default:
         break;
     }
@@ -128,21 +126,6 @@ const Collections = () => {
     sortPrice();
   };
 
-  // fetch data from different blockchains
-  useEffect(() => {
-    try {
-      (async function getAlgoCollection() {
-        const collections = await fetchCollections(mainnet);
-        const result = await getNftCollections(collections, mainnet);
-        handleSetState({ algoCollection: result, loading: false });
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-
-    // get collection for other chains: polygon|celo|near
-  }, [mainnet]);
-
   // compile data for all blockchains
   useEffect(() => {
     const { search } = location;
@@ -152,18 +135,17 @@ const Collections = () => {
       handleSetState({ filter: { ...filter, chain: chainParameter } });
     }
     const collection = getCollectionByChain();
-    if (loading) return collection;
     if (name) {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
-    if (filtered?.length) {
+    if (algoCollections || auroraCollections) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
     return null;
-  }, [algoCollection, polyCollection, celoCollection, nearCollection]);
+  }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
 
   return (
     <div className={classes.container}>
@@ -182,8 +164,10 @@ const Collections = () => {
               <CollectionsCard key={idx} collection={collection} />
             ))}
           </div>
-        ) : !filteredCollection ? (
+        ) : !filteredCollection && filter.searchValue ? (
           <NotFound />
+        ) : !filteredCollection ? (
+          <h1 className={classes.noResult}>No Results Found</h1>
         ) : (
           <div className={classes.skeleton}>
             {[...new Array(4)]

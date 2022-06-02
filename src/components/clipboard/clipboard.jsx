@@ -46,7 +46,13 @@ const Clipboard = () => {
     <div
       style={{
         top:
-          notification.message && loaderMessage ? "10em" : loaderMessage ? "6em" : notification.message ? "8em" : "4em",
+          notification.message && loaderMessage
+            ? "12em"
+            : loaderMessage
+            ? "6em"
+            : notification.message
+            ? "10em"
+            : "4em",
       }}
       className={`${classes.container} ${toggleClipboard && classes.active}`}
     >

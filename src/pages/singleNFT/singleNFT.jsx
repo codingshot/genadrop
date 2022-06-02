@@ -6,7 +6,7 @@ import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { GenContext } from "../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../utils";
+import { getGraphNft, getSingleNftDetails, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -22,13 +22,23 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setLoader } from "../../gen-state/gen.actions";
+import { setLoader, setNotification } from "../../gen-state/gen.actions";
+import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
+import { createClient } from "urql";
+import { polygonClient } from "../../utils/graphqlClient";
+import supportedChains from "../../utils/supportedChains";
 
 const SingleNFT = () => {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+
+  const client = createClient({
+    url: APIURL,
+  });
+
   const { account, connector, mainnet, dispatch } = useContext(GenContext);
 
   const {
-    params: { nftId },
+    params: { chainId, nftId },
   } = useRouteMatch();
   const { singleNfts } = useContext(GenContext);
   const wrapperRef = useRef(null);
@@ -39,9 +49,21 @@ const SingleNFT = () => {
     isLoading: true,
     transactionHistory: null,
     showSocial: false,
+    chainIcon: algoLogo,
     isCopied: false,
+    chainSymbol: "",
   });
-  const { dropdown, nftDetails, algoPrice, isLoading, showSocial, isCopied, transactionHistory } = state;
+  const {
+    dropdown,
+    chainSymbol,
+    nftDetails,
+    algoPrice,
+    isLoading,
+    chainIcon,
+    showSocial,
+    isCopied,
+    transactionHistory,
+  } = state;
   const history = useHistory();
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
@@ -90,32 +112,96 @@ const SingleNFT = () => {
 
   useEffect(() => {
     const nft = singleNfts.filter((NFT) => String(NFT.id) === nftId)[0];
+    if (nft) {
+      (async function getNftDetails() {
+        const tHistory = await readNftTransaction(nftId);
 
-    (async function getNftDetails() {
-      const tHistory = await readNftTransaction(nftId);
+        const NFTDetails = await getSingleNftDetails(mainnet, nft);
+        tHistory.find((t) => {
+          if (t.type === "Minting") t.price = NFTDetails.price;
+        });
+        handleSetState({
+          nftDetails: NFTDetails,
+          isLoading: false,
+          transactionHistory: tHistory,
+        });
+      })();
+    } else {
+      (async function getNftDetails() {
+        // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
+        const { data, error } = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        }
+        const { data: polygonData, error: polygonError } = await polygonClient
+          .query(GET_GRAPH_NFT, { id: nftId })
+          .toPromise();
+        if (polygonError) {
+          return dispatch(
+            setNotification({
+              message: polygonError.message,
+              type: "warning",
+            })
+          );
+        }
+        if (polygonData?.nft !== null) {
+          const polygonResult = await getGraphNft(polygonData?.nft);
+          console.log(polygonResult);
+          if (polygonResult[0]?.chain === chainId) {
+            const trHistory = await getTransactions(polygonData?.nft?.transactions);
+            console.log(trHistory);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = polygonResult[0].price;
+            });
+            handleSetState({
+              nftDetails: polygonResult[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+        if (data?.data?.nft !== null) {
+          const result = await getGraphNft(data?.nft);
+          if (result[0]?.chain === chainId) {
+            const trHistory = await getTransactions(data?.nft?.transactions);
+            console.log(trHistory);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = result[0]?.price;
+            });
+            handleSetState({
+              nftDetails: result[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+      })();
+    }
 
-      const NFTDetails = await getSingleNftDetails(mainnet, nft);
-      tHistory.find((t) => {
-        if (t.type === "Minting") t.price = NFTDetails.price;
-      });
-      handleSetState({
-        nftDetails: NFTDetails,
-        isLoading: false,
-        transactionHistory: tHistory,
-      });
-    })();
-    // handleSetState({ })
-
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount });
-    });
     document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => {}, [nftDetails]);
-
   useEffect(() => {
-    // if (!nftDetails) return;
+    if (nftDetails?.chain) {
+      const pair = supportedChains[nftDetails.chain].coinGeckoLabel;
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({
+          chainIcon: supportedChains[nftDetails.chain].icon,
+          algoPrice: value,
+          chainSymbol: supportedChains[nftDetails.chain].symbol,
+        });
+      });
+    } else {
+      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount });
+      });
+    }
   }, [nftDetails]);
 
   const onCopyText = () => {
@@ -235,8 +321,10 @@ const SingleNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={algoLogo} alt="" />
-                <p className={classes.tokenValue}>{nftDetails.price}</p>
+                <img src={chainIcon} alt="" />
+                <p className={classes.tokenValue}>
+                  {nftDetails.price} {chainSymbol ? chainSymbol : ""}
+                </p>
                 <span className={classes.usdValue}>
                   ($
                   {(nftDetails.price * algoPrice).toFixed(2)})
@@ -283,7 +371,7 @@ const SingleNFT = () => {
         </div>
 
         <div className={classes.history}>
-          <Search data={transactionHistory} />
+          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
         </div>
       </div>
       <div className={classes.section}>

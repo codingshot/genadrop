@@ -1,33 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { getSingleNfts } from "../../../utils";
+
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const SingleNft = () => {
-  const [state, setState] = useState({
-    allSingleNfts: [],
-  });
-  const { allSingleNfts } = state;
-  const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
-  const { singleNfts, mainnet } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+
   const { url } = useRouteMatch();
   const history = useHistory();
-
-  useEffect(() => {
-    (async function getResult() {
-      if (singleNfts?.length) {
-        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
-        handleSetState({ allSingleNfts: allSingleNFTs });
-      } else {
-        handleSetState({ allSingleNfts: null });
-      }
-    })();
-  }, [singleNfts]);
 
   return (
     <div className={classes.container}>
@@ -37,13 +20,19 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {allSingleNfts?.length ? (
+      {singleAlgoNfts?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <div className={classes.wrapper}>
-          {allSingleNfts.map((nft) => (
+          {singleAlgoNfts?.slice(0, 10).map((nft) => (
+            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+          ))}
+          {singleAuroraNfts?.map((nft) => (
+            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+          ))}
+          {singlePolygonNfts?.map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
         </div>
-      ) : !allSingleNfts ? (
+      ) : !singleAlgoNfts && !singleAuroraNfts && !singlePolygonNfts ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.wrapper}>

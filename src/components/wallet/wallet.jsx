@@ -1,42 +1,87 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
-import WalletConnectProvider from "@walletconnect/web3-provider";
 import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import {
-  setConnector,
-  setAccount,
-  setNotification,
-  setChainId,
-  setMainnet,
-  setProposedChain,
-} from "../../gen-state/gen.actions";
 import userIcon from "../../assets/user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
-import blankImage from "../../assets/blank.png";
 import WalletPopup from "../wallet-popup/walletPopup";
-import { supportedChains } from "../../utils/supportedChains";
-import { connectWithMetamask, connectWithQRCode } from "./wallet-script";
+import supportedChains from "../../utils/supportedChains";
+import {
+  setNetworkType,
+  connectWallet,
+  getConnectedChain,
+  breakAddress,
+  disconnectWallet,
+  connectWithQRCode,
+  initializeConnection,
+} from "./wallet-script";
+import { setClipboard, setNotification } from "../../gen-state/gen.actions";
 
 function ConnectWallet() {
   const history = useHistory();
   const { pathname } = useLocation();
-  const clipboardRef = useRef(null);
-  const { dispatch, connector, account, chainId, mainnet, proposedChain } = useContext(GenContext);
-  const [toggleDropdown, setToggleDropdown] = useState(false);
-  const [clipboardState, setClipboardState] = useState("Copy Address");
-  const [network, setNetwork] = useState(process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet");
-  const [togglePopup, setTogglePopup] = useState(false);
-  const [refresh, setRefresh] = useState(false);
+  const clipboardRef = useRef();
+  const walletProviderRef = useRef(0);
+  const { dispatch, account, chainId, proposedChain, mainnet } = useContext(GenContext);
 
-  const breakAddress = (address = "", width = 6) => {
-    if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
+  const [state, setState] = useState({
+    toggleDropdown: false,
+    clipboardState: "Copy Address",
+    network: null,
+    togglePopup: false,
+    walletConnectProvider: null,
+    connectionMethod: null,
+    isMetamask: true,
+    rpc: {
+      4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
+    },
+  });
+
+  const {
+    toggleDropdown,
+    clipboardState,
+    network,
+    togglePopup,
+    walletConnectProvider,
+    connectionMethod,
+    rpc,
+    isMetamask,
+  } = state;
+
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
+
+  const walletProps = {
+    dispatch,
+    supportedChains,
+    proposedChain,
+    mainnet,
+    chainId,
+    walletConnectProvider,
+    connectionMethod,
+    walletProviderRef,
+    rpc,
+    history,
+    pathname,
+    handleSetState,
   };
 
   const handleConnect = () => {
-    setTogglePopup(true);
+    if (window?.ethereum !== undefined) {
+      handleSetState({ togglePopup: true });
+    } else {
+      handleSetState({ togglePopup: false });
+      dispatch(
+        setNotification({
+          message: "You need to install metamask to continue",
+          type: "error",
+        })
+      );
+      dispatch(setClipboard("https://metamask.io/"));
+    }
   };
 
   const handleCopy = (props) => {
@@ -44,149 +89,37 @@ function ConnectWallet() {
     clipboard.select();
     clipboard.setSelectionRange(0, 99999); /* For mobile devices */
     navigator.clipboard.writeText(clipboard.value);
-    setClipboardState("Copied");
+    handleSetState({ clipboardState: "Copied" });
     setTimeout(() => {
-      setClipboardState("Copy Address");
+      handleSetState({ clipboardState: "Copy Address" });
     }, 850);
   };
 
-  const getConnectedChain = () => {
-    const c = supportedChains[chainId];
-    if (!c) return blankImage;
-    return c.icon;
-  };
-
-  const isAlgoConnected = async (provider) => {
-    if (provider?.connected) {
-      console.log("algo connected");
-      try {
-        await provider.disconnect();
-      } catch (error) {
-        console.log("error disconneting: ", error);
-      }
-      console.log("algo disconnected");
-    }
-  };
-
-  const updateAccount = async (provider) => {
-    await isAlgoConnected(provider);
-    const accounts = await ethereum.request({ method: "eth_accounts" });
-    dispatch(setAccount(accounts[0]));
-    const networkId = await ethereum.networkVersion;
-    let isSupported = Object.keys(supportedChains).includes(networkId);
-    if (!isSupported) {
-      dispatch(
-        setNotification({
-          message: "network not supported",
-          type: "error",
-        })
-      );
-      disconnectWallet();
-      setTogglePopup(true);
-    } else {
-      dispatch(setChainId(Number(networkId)));
-      setTogglePopup(false);
-    }
-  };
-
-  const disconnectWallet = async () => {
-    await isAlgoConnected(connector);
-    dispatch(setAccount(null));
-    dispatch(setChainId(null));
-    dispatch(setProposedChain(-1));
-    setToggleDropdown(false);
-    if (pathname.includes("/me")) {
-      history.push("/marketplace");
-    }
-    console.log("disconnected");
+  const handleDisconnet = () => {
+    disconnectWallet(walletProps);
   };
 
   useEffect(() => {
-    console.log("proposed chain change: ", proposedChain);
-    if (!proposedChain) {
-      setRefresh(!refresh);
-      console.log("proposed chain need refresh");
-      return;
-    }
-    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
-    if (!isSupported) return;
-    if (proposedChain === 4160) {
-      console.log("provider insider: ", connector);
-      connectWithQRCode({ provider: connector, dispatch });
-    } else {
-      connectWithMetamask({ dispatch, supportedChains, proposedChain, connector });
-    }
-  }, [proposedChain]);
-
-  useEffect(() => {
-    const networkArray = [137, 1313161554, 42220];
-    if (networkArray.includes(chainId)) {
-      setNetwork("mainnet");
-      dispatch(setMainnet(true));
-    } else {
-      setNetwork("testnet");
-      dispatch(setMainnet(false));
-    }
+    setNetworkType(walletProps);
   }, [chainId]);
 
   useEffect(() => {
-    const { ethereum } = window;
-    let provider;
-    try {
-      provider = new WalletConnectProvider({
-        rpc: {
-          4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
+    if (!isSupported) return;
+    connectWallet(walletProps);
+  }, [proposedChain, connectionMethod]);
 
-    if (window.localStorage.walletconnect) {
-      let newProvider = JSON.parse(window.localStorage.walletconnect);
-      dispatch(setProposedChain(newProvider.chainId));
+  useEffect(() => {
+    if (walletProviderRef.current >= 2) {
+      connectWithQRCode(walletProps);
     } else {
-      updateAccount(provider);
+      walletProviderRef.current = +1;
     }
+  }, [walletConnectProvider]);
 
-    // console.log("provider: ", provider);
-    dispatch(setConnector(provider));
-
-    // initiallize account
-    // Subscribe to accounts change
-    ethereum.on("accountsChanged", function (accounts) {
-      console.log("accountsChanged: ", accounts[0]);
-      updateAccount(provider);
-    });
-
-    // Subscribe to chainId change
-    ethereum.on("chainChanged", (chainId) => {
-      console.log("chainChanged: ", chainId);
-      updateAccount(provider);
-      // window.location.reload();
-    });
-
-    // Subscribe to accounts change
-    provider.on("accountsChanged", (accounts) => {
-      console.log("provider-accountsChanged: ", accounts[0]);
-      dispatch(setAccount(accounts[0]));
-      dispatch(setChainId(provider.chainId));
-    });
-
-    // Subscribe to chainId change
-    provider.on("chainChanged", (chainId) => {
-      console.log("provider-chainChanged: ", chainId);
-      dispatch(setChainId(chainId));
-    });
-
-    // Subscribe to session disconnection
-    provider.on("disconnect", (code, reason) => {
-      console.log("provider-disconnect", code, reason);
-      disconnectWallet();
-    });
-  }, [refresh]);
-
-  const changeNetwork = <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>;
+  useEffect(() => {
+    initializeConnection(walletProps);
+  }, [rpc]);
 
   const goToDashboard = (
     <div
@@ -210,7 +143,7 @@ function ConnectWallet() {
         <div>{clipboardState}</div>
         <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
       </div>
-      <div onClick={disconnectWallet} className={classes.option}>
+      <div onClick={handleDisconnet} className={classes.option}>
         <img src={disconnectIcon} alt="" />
         <div>Disconnect</div>
       </div>
@@ -219,21 +152,23 @@ function ConnectWallet() {
 
   const connected = (
     <div
-      onMouseLeave={() => setToggleDropdown(false)}
+      onMouseLeave={() => handleSetState({ toggleDropdown: false })}
       className={`${classes.connected} ${toggleDropdown && classes.active}`}
     >
-      <img className={classes.chain} src={getConnectedChain()} alt="" />
-      <div onClick={() => setToggleDropdown(!toggleDropdown)} className={classes.address}>
+      <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
+      <div onClick={() => handleSetState({ toggleDropdown: !toggleDropdown })} className={classes.address}>
         <span>{breakAddress(account)}</span>
       </div>
       {dropdown}
     </div>
   );
 
+  const changeNetwork = <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>;
+
   return (
     <div>
       <div className={`${classes.popupContainer} ${togglePopup && classes.active}`}>
-        <WalletPopup setTogglePopup={setTogglePopup} />
+        <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />
       </div>
       {account ? (
         <div className={classes.container}>

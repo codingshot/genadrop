@@ -6,6 +6,7 @@ import listIcon from "../../../assets/icon-list.svg";
 import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
 import Copy from "../../../components/copy/copy";
+import supportedChains from "../../../utils/supportedChains";
 
 const Header = ({ collection, getHeight, loadedChain }) => {
   const domMountRef = useRef(false);
@@ -13,45 +14,40 @@ const Header = ({ collection, getHeight, loadedChain }) => {
   const [explorerLink, setExplorerLink] = useState("");
   const [state, setState] = useState({
     dollarPrice: 0,
-    chainName: "",
   });
-  const { dollarPrice, chainName } = state;
+  const { dollarPrice } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-
   const { name, owner, price, imageUrl, numberOfNfts, description, nfts } = collection;
-
   const getUsdValue = () => {
-    if (loadedChain !== null) {
-      if (loadedChain === "1313161555") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd").then((res) => {
-          let value = Object.values(res.data)[0].usd;
-          handleSetState({ dollarPrice: value * price, chainName: "AOA" });
+    if (loadedChain) {
+      axios
+        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[loadedChain].id}&vs_currencies=usd`)
+        .then((res) => {
+          const value = Object.values(res.data)[0].usd;
+          handleSetState({ dollarPrice: value * price });
         });
-      }
-    } else {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        const amount = res.data.data.amount * price;
-        if (isNaN(amount)) {
-          handleSetState({ dollarPrice: 0, chainName: "Algo" });
-        } else {
-          handleSetState({ dollarPrice: amount, chainName: "Algo" });
-        }
-      });
     }
+  };
+  const viewOnExplorer = () => {
+    if (loadedChain && loadedChain !== 4160) {
+      return setExplorerLink(`${supportedChains[loadedChain]?.explorer}/${owner}`);
+    }
+    if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
+    if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
   };
 
   useEffect(() => {
     getUsdValue();
     viewOnExplorer();
-  }, [price]);
+  }, [price, loadedChain]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (domMountRef.current) {
-        const res = headerRef.current.getBoundingClientRect().height;
+        const res = headerRef.current?.getBoundingClientRect().height;
         getHeight(res);
       } else {
         domMountRef.current = true;
@@ -59,15 +55,6 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     });
     getHeight(500);
   }, []);
-
-  const viewOnExplorer = () => {
-    if (loadedChain) {
-      if (loadedChain === "1313161555") return setExplorerLink(`https://testnet.aurorascan.dev/address/${owner}`);
-    } else {
-      if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
-      else if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
-    }
-  };
 
   return (
     <header ref={headerRef} className={classes.container}>
@@ -120,7 +107,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
             <div className={classes.price}>
               <span style={{ marginRight: 3 }}>{price}</span>
               <span className={classes.chain}>
-                {chainName} ({dollarPrice.toFixed(2)} USD)
+                {supportedChains[loadedChain]?.sybmol} ({dollarPrice.toFixed(2)} USD)
               </span>
             </div>
           </div>

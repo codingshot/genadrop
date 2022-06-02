@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useHistory, useLocation } from "react-router-dom";
+import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
@@ -13,24 +13,11 @@ import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
-import { createClient } from "urql";
-import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
-
-const LodaingCards = () => (
-  <div className={classes.skeleton}>
-    {[...new Array(5)]
-      .map((_, idx) => idx)
-      .map((id) => (
-        <div key={id}>
-          <Skeleton count={1} height={300} />
-        </div>
-      ))}
-  </div>
-);
 
 const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
+  const { url } = useRouteMatch();
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -45,25 +32,21 @@ const Dashboard = () => {
     filteredCollection: null,
   });
 
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
-  const { account, mainnet, singleNfts } = useContext(GenContext);
+  const { account, mainnet, singleNfts, singleAlgoNfts, singleAuroraNfts } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const breakAddress = (address = "", width = 6) => `${address.slice(0, width)}...${address.slice(-width)}`;
+  const breakAddress = (address = "", width = 6) => {
+    return address && `${address.slice(0, width)}...${address.slice(-width)}`;
+  };
 
   useEffect(() => {
     if (!account) history.push("/");
 
-    console.log(" collection length:", filteredCollection?.length);
+    // Get User created Collections
     (async function readAllSingle() {
       const userCollections = await fetchUserCollections(account);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
@@ -73,25 +56,23 @@ const Dashboard = () => {
         myCollections: myNftsCollections,
       });
     })();
-
-    (async function getCollections() {
+    // Get User Created NFTs
+    (async function getUserNFTs() {
       const userNftCollections = await fetchUserNfts(account);
-      console.log(userNftCollections);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-
-      handleSetState({ createdNfts: createdUserNfts });
+      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
+      handleSetState({ createdNfts: [...(createdUserNfts || []), ...(aurroraNFTs || [])] });
     })();
-
-    (async function getCollections() {
-      const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
-      const collectedNFTS = allSingleNFTs.filter((nft) => nft.buyer === account);
+    // Get User Collected NFTs
+    (async function getCollectedNfts() {
+      const collectedNFTS = singleAlgoNfts?.filter((nft) => nft.buyer === account);
       console.log("===>", collectedNFTS);
 
       handleSetState({
         collectedNfts: collectedNFTS,
       });
     })();
-  }, [account]);
+  }, [account, singleNfts]);
 
   // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
@@ -158,6 +139,10 @@ const Dashboard = () => {
           <div className={classes.address}>
             <Copy message={account} placeholder={breakAddress(account)} />
           </div>
+
+          <Link to={`${url}/profile/settings`}>
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
 
           <div className={classes.details}>
             <div

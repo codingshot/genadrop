@@ -17,7 +17,7 @@ const SingleNFT = () => {
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { dispatch, singleNfts } = useContext(GenContext);
   const { url } = useRouteMatch();
   const wrapperRef = useRef(null);
 
@@ -172,7 +172,7 @@ const SingleNFT = () => {
   };
 
   const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector);
+    const res = await PurchaseNft(dispatch, nftDetails, account, connector);
     // eslint-disable-next-line no-alert
     alert(res);
   };

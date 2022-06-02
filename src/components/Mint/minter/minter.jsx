@@ -137,8 +137,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     celo: "CGLD",
     polygon: "Matic",
     "polygon Testnet": "Matic",
-    "aurora testnet": "Aurora",
-    aurora: "Aurora",
+    "aurora testnet": "ETH",
+    aurora: "ETH",
   };
 
   const handleAddAttribute = () => {
@@ -216,12 +216,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         history.push(`/me/${account}`);
       });
     } else {
-      if (
-        !singleMintProps.fileName ||
-        !description ||
-        !singleMintProps.metadata?.attributes[0]?.trait_type ||
-        !singleMintProps.metadata?.attributes[0]?.value
-      ) {
+      if (!singleMintProps.fileName || !description) {
         return dispatch(
           setNotification({
             message: "fill out the missing fields",
@@ -241,8 +236,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=aurora&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.aurora.usd });
+        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
+          handleSetState({ dollarPrice: price / res.data.ethereum.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
@@ -314,13 +309,18 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           </section>
 
           <section className={classes.details}>
-            <div className={classes.category}>Collection Logo</div>
-            <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
-              <p>This image will also be used as collection logo</p>
-              <div onClick={() => handleSetState({ toggleGuide: true })}>
-                <img src={profileSelected ? URL.createObjectURL(file[0]) : dropImg} alt="" />
-              </div>
-            </div>
+            {file.length > 1 && (
+              <>
+                {" "}
+                <div className={classes.category}>Collection Logo</div>
+                <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
+                  <p>This image will also be used as collection logo</p>
+                  <div onClick={() => handleSetState({ toggleGuide: true })}>
+                    <img src={profileSelected ? URL.createObjectURL(file[0]) : dropImg} alt="" />
+                  </div>
+                </div>
+              </>
+            )}
             <div className={classes.category}>Asset Details</div>
             <div className={classes.inputWrapper}>
               <label>
@@ -348,9 +348,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             </div>
 
             <div className={classes.inputWrapper}>
-              <label>
-                Attributes <span className={classes.required}>*</span>
-              </label>
+              <label>Attributes</label>
               {!metadata ? (
                 <>
                   <div className={classes.attributes}>
@@ -406,7 +404,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 <div className={classes.price}>
                   <input type="number" value={price} onChange={handlePrice} />
                   <span>
-                    {dollarPrice.toFixed(2)} {getUintByChain[chain?.label.toLowerCase()]}
+                    {dollarPrice.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
                   </span>
                 </div>
               ) : (
@@ -444,15 +442,3 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
 };
 
 export default Minter;
-
-// : previewSelectMode ? (
-//   <CollectionPreviewSelect
-//     previewSelectMode={previewSelectMode}
-//     file={file}
-//     metadata={metadata}
-//     handleMintSetState={handleSetState}
-//     collectionProfile={collectionProfile}
-//     handleSetFileState={handleSetFileState}
-//     zip={zip}
-//   />
-// ) :

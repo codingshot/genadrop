@@ -4,6 +4,7 @@ import classes from "./mint.module.css";
 import mintBg from "../../assets/mint-bg1.svg";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
+import shieldIcon from "../../assets/icon-shield-check.svg";
 
 const Mint = () => {
   const { url } = useRouteMatch();
@@ -18,9 +19,10 @@ const Mint = () => {
           file to <br />
           mint to any of our supported blockchains!
         </p>
-        <p className={classes.disclaimer}>
-          We do not own your private keys and cannot access your funds without your confirmation
-        </p>
+        <div className={classes.disclaimer}>
+          <img src={shieldIcon} alt="" />{" "}
+          <p>We do not own your private keys and cannot access your funds without your confirmation</p>
+        </div>
       </header>
 
       <main className={classes.mainWrapper}>

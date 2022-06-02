@@ -74,30 +74,37 @@ const LayerOrders = () => {
   const handleRename = async (event) => {
     event.preventDefault();
     if (!inputValue) return;
-    try {
-      dispatch(setLoader("saving..."));
-      const names = await getCollectionsNames();
-      const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
-      if (isUnique) {
-        dispatch(
-          setNotification({
-            message: `${inputValue} already exist. try another name`,
-            type: "warning",
-          })
-        );
-      } else {
-        handleSetState({ renameAction: false });
-        dispatch(setCollectionName(inputValue));
-      }
-    } catch (error) {
-      dispatch(
-        setNotification({
-          message: "could not save your collection name, please try again.",
-          type: "error",
-        })
-      );
-    }
-    dispatch(setLoader(""));
+    handleSetState({ renameAction: false });
+    dispatch(setCollectionName(inputValue));
+
+    // This code below needs cross-examination;
+
+    // event.preventDefault();
+    // if (!inputValue) return;
+    // try {
+    //   dispatch(setLoader("saving..."));
+    //   const names = await getCollectionsNames();
+    //   const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
+    //   if (isUnique) {
+    //     dispatch(
+    //       setNotification({
+    //         message: `${inputValue} already exist. try another name`,
+    //         type: "warning",
+    //       })
+    //     );
+    //   } else {
+    //     handleSetState({ renameAction: false });
+    //     dispatch(setCollectionName(inputValue));
+    //   }
+    // } catch (error) {
+    //   dispatch(
+    //     setNotification({
+    //       message: "could not save your collection name, please try again.",
+    //       type: "error",
+    //     })
+    //   );
+    // }
+    // dispatch(setLoader(""));
   };
 
   useEffect(() => {
@@ -125,10 +132,8 @@ const LayerOrders = () => {
                 autoFocus
               />
             </form>
-          ) : collectionName ? (
-            <div className={classes.nameHeader}>{collectionName}</div>
           ) : (
-            <div className={classes.nameHeader}>Collection Name</div>
+            <div className={classes.nameHeader}>{collectionName ? collectionName : "collection name"}</div>
           )}
           <div className={classes.editBtn}>
             {renameAction ? (
@@ -143,6 +148,9 @@ const LayerOrders = () => {
       <div className={classes.layerorder}>
         <div className={classes.layerHeadWrapper}>
           <div className={classes.layerorderHeader}>Layer Orders</div>
+          <div className={classes.infoText}>
+            Please, ensure that background layer is at the bottom, you can drag layers down or up to re-order
+          </div>
         </div>
         <div className={classes.listWrapper}>
           <div className={classes.layer_trait}>
