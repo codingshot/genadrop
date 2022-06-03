@@ -698,7 +698,7 @@ export async function PurchaseNft(args) {
       })
     );
   }
-  console.log("no eve if",!connector?.isWalletConnect )
+  console.log("no eve if", !connector?.isWalletConnect);
   const params = await algodTxnClient.getTransactionParams().do();
   console.log("wake up", params);
   const enc = new TextEncoder();
@@ -714,9 +714,9 @@ export async function PurchaseNft(args) {
     );
   }
 
-  console.log("before acct check")
+  console.log("before acct check");
   const userBalance = await algodClient.accountInformation(account).do();
-  console.log("stopped it")
+  console.log("stopped it");
   if (algosdk.microalgosToAlgos(userBalance.account.amount) <= nftDetails.price) {
     dispatch(
       setNotification({
@@ -912,7 +912,7 @@ export async function purchasePolygonNfts(buyProps) {
       })
     );
   }
-  console.log("provide o", connector.provider)
+  console.log("provide o", connector.provider);
   const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   const { chainId } = connector._network;
   price = ethers.utils.parseEther(price.toString()).toString();

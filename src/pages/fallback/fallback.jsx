@@ -4,13 +4,14 @@ import classes from "./fallback.module.css";
 import notFound from "../../assets/404.svg";
 import home from "../../assets/home-svg.svg";
 import homeWhite from "../../assets/home-white.svg";
+import { ReactComponent as GobackArrow } from "../../assets/icon-goback-arrow.svg";
 
 const Fallback = () => {
   const [changeImage, setChangeImage] = useState(homeWhite);
   const history = useHistory();
 
   useLayoutEffect(() => {
-    let hideFooter = document.getElementById("hide-footer");
+    const hideFooter = document.getElementById("hide-footer");
     if (hideFooter) {
       hideFooter.style.display = "none";
     }
@@ -27,6 +28,7 @@ const Fallback = () => {
       </div>
       <div className={classes["button-container"]}>
         <div onClick={() => history.goBack()} className={classes["go-back"]}>
+          <GobackArrow />
           Go Back
         </div>
         <div
