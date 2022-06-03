@@ -4,15 +4,18 @@ import saleIcon from "../../../assets/sale-icon.png";
 import transferIcon from "../../../assets/transfer-icon.png";
 import mintIcon from "../../../assets/mint-icon.png";
 import Transaction from "../../transactionDetails/TransactionDetails";
+import { readUserProfile } from "../../../utils/firebase";
 
 const TableRow = (data) => {
   const [state, setState] = useState({
     showTransaction: false,
+    to: "",
+    from: "",
   });
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const { showTransaction } = state;
+  const { showTransaction, to, from } = state;
 
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";
@@ -72,6 +75,22 @@ const TableRow = (data) => {
     }, [ref]);
   }
 
+  const getUsername = (address) => {
+
+  }
+  useEffect(() => {
+    readUserProfile(to).then(data => {
+      if (data)
+        setState({ to: data.username })
+    });
+
+    readUserProfile(from).then(data => {
+      if (data)
+        setState({ from: data.username })
+
+    });
+
+  }, [to, from])
   useOutsideAlerter(wrapperRef);
   return (
     <>
@@ -92,8 +111,8 @@ const TableRow = (data) => {
         <td>{!data.txId ? "--" : breakAddress(data.txId)}</td>
         <td>{getDate(data.date)}</td>
         <td>{!data.price ? "--" : data.price}</td>
-        <td>{breakAddress(data.to)}</td>
-        <td>{breakAddress(data.from)}</td>
+        <td>{to ? to : breakAddress(data.to)}</td>
+        <td>{from ? from : breakAddress(data.from)}</td>
       </tr>
     </>
   );
