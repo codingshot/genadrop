@@ -61,12 +61,18 @@ const mintAbi = [
 //  => str + byte.toString(16).padStart(2, '0'), '');
 
 const pinFileToIPFS = async (pinataApiIFPSKey, pinataSecretApiKey, file, metadata, option) => {
+  console.log("test");
   const url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
   const data = new FormData();
   data.append("file", file);
 
   data.append("pinataMetadata", metadata);
   data.append("pinataOptions", option);
+  console.log(pinataApiIFPSKey);
+  console.log(pinataSecretApiKey);
+  for (const value of data.values()) {
+    console.log(value);
+  }
   return axios
     .post(url, data, {
       maxBodyLength: "Infinity", // this is needed to prevent axios from erroring out with large files
@@ -76,8 +82,9 @@ const pinFileToIPFS = async (pinataApiIFPSKey, pinataSecretApiKey, file, metadat
       },
     })
     .then((response) => response.data)
-    .catch(() => {
+    .catch((err) => {
       // handle error here
+      console.log(err);
     });
 };
 
@@ -124,7 +131,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   });
 
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
-
+  console.log(resultFile);
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
   metadata.properties = [...asset.attributes];
@@ -438,6 +445,8 @@ export async function mintSingleToAurora(singleMintProps) {
 
 export async function createNFT(createProps, doAccountCheck) {
   const { file, dispatch, account, setNotification, setLoader } = createProps;
+  console.log(createProps);
+  console.log(typeof dispatch);
   const assets = [];
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
@@ -469,7 +478,7 @@ export async function createNFT(createProps, doAccountCheck) {
     const imgFile = data.files[imgName];
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
-    const asset = await connectAndMint(blob, metadata[i], imgName);
+    const asset = await connectAndMint(blob, metadata[i], imgName, dispatch);
     assets.push(asset);
   }
   dispatch(setLoader(""));
@@ -805,6 +814,7 @@ export async function getAlgoData(mainnet, id) {
 export async function mintToAurora(polyProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
+  console.log(dispatch);
   dispatch(
     setNotification({
       message: "preparing assets for minting",
@@ -963,7 +973,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
