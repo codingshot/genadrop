@@ -10,22 +10,28 @@ import blankImage from "../assets/blank.png";
 
 export const getAuroraCollections = async (collection) => {
   const collectionArr = [];
-  for (let i = 0; i < collection?.length; i += 1) {
-    try {
-      const collectionObj = {};
-      const { data } = await axios.get(collection[i].nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
-      collectionObj.name = collection[i].name;
-      collectionObj.owner = collection[i].id;
-      const getPrice = collection[i].nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
-      const chain = collection[i].nfts.map((col) => col.chain).reduce((a, b) => a === b && a);
-      collectionObj.chain = chain;
-      collectionObj.price = getPrice * 0.000000000000000001;
-      collectionObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-      collectionObj.description = collection[i].description;
-      collectionObj.nfts = collection[i].nfts;
-      collectionArr.push(collectionObj);
-    } catch (error) {
-      console.log(error);
+  if (collection) {
+    for (let i = 0; i < collection.length; i += 1) {
+      try {
+        const collectionObj = {};
+        for (let j = 0; j < collection[i].nfts.length; j++) {
+          const { data } = await axios.get(
+            collection[i]?.nfts[j].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
+          );
+          collectionObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        }
+        collectionObj.name = collection[i]?.name;
+        collectionObj.owner = collection[i]?.id;
+        const getPrice = collection[i]?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        const chain = collection[i]?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
+        collectionObj.chain = chain;
+        collectionObj.price = getPrice * 0.000000000000000001;
+        collectionObj.description = collection[i]?.description;
+        collectionObj.nfts = collection[i]?.nfts;
+        collectionArr.push(collectionObj);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
   return collectionArr;
@@ -105,8 +111,8 @@ export const getTransactions = async (transactions) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
+  console.log(collection);
   const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
-  console.log(data);
   const nftObj = [];
   try {
     const nftArr = {};
