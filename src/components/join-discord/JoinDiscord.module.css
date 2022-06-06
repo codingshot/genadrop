@@ -18,6 +18,7 @@
 }
 .container img {
   margin-top: -50px;
+  margin-bottom: -20px;
 }
 
 .container a {
@@ -65,7 +66,9 @@
     justify-content: center;
     padding: 1em 0;
   }
-
+  .container img {
+    margin-bottom: 0;
+  }
   .container a {
     align-content: center;
     min-width: 44%;
@@ -75,5 +78,8 @@
 @media screen and (max-width: 480px) {
   .container p {
     font-size: 1.6rem;
+  }
+  .container img {
+    width: 100%;
   }
 }
