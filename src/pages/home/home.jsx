@@ -22,7 +22,7 @@ const Home = () => (
     <div className={`${classes.wrapper} ${classes.withBg}`}>
       <Docs />
     </div>
-    <div style={{ paddingBottom: "1rem" }} className={classes.wrapper}>
+    <div style={{ paddingBottom: "0rem" }} className={classes.wrapper}>
       <Review />
     </div>
     <div className={`${classes.wrapper} ${classes.withBg}`}>
