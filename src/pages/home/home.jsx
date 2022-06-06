@@ -8,6 +8,7 @@ import classes from "./home.module.css";
 import { Collectors, creators } from "./home-script";
 import Docs from "../../components/Home/Docs/Docs";
 import EarlyAccess from "../../components/early-access/early-access";
+import JoinDiscord from "../../components/join-discord/JoinDiscord";
 
 const Home = () => (
   <div className={classes.container}>
@@ -21,8 +22,13 @@ const Home = () => (
     <div className={`${classes.wrapper} ${classes.withBg}`}>
       <Docs />
     </div>
-    <div className={classes.wrapper}>
+    <div style={{ paddingBottom: "1rem" }} className={classes.wrapper}>
       <Review />
+    </div>
+    <div className={`${classes.wrapper} ${classes.withBg}`}>
+      <JoinDiscord />
+    </div>
+    <div className={classes.wrapper}>
       <FAQ />
     </div>
   </div>
