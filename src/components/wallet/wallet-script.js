@@ -74,6 +74,8 @@ export const initializeConnection = (walletProps) => {
 
     // Subscribe to chainId change
     ethereum.on("chainChanged", (chainId) => {
+      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+      dispatch(setConnector(ethereumProvider));
       WS.updateAccount(walletProps);
     });
     handleSetState({ isMetamask: true });
@@ -89,6 +91,10 @@ export const setNetworkType = ({ dispatch, chainId, handleSetState }) => {
   if (networkArray.includes(chainId)) {
     handleSetState({ network: "mainnet" });
     dispatch(setMainnet(true));
+  } else if (chainId === 4160) {
+    // specal case for algorand
+    handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
+    dispatch(setMainnet(process.env.REACT_APP_ENV_STAGING === "false"));
   } else {
     handleSetState({ network: "testnet" });
     dispatch(setMainnet(false));
