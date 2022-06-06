@@ -111,8 +111,8 @@ export const getTransactions = async (transactions) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
+  console.log(collection);
   const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
-  console.log(data);
   const nftObj = [];
   try {
     const nftArr = {};

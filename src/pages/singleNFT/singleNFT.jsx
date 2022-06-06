@@ -165,7 +165,7 @@ const SingleNFT = () => {
             });
           }
         }
-        if (data?.data?.nft !== null) {
+        if (data?.nft !== null) {
           const result = await getGraphNft(data?.nft);
           if (result[0]?.chain === chainId) {
             const trHistory = await getTransactions(data?.nft?.transactions);
