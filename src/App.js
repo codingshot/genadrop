@@ -87,13 +87,15 @@ function App() {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
-      if (result?.length) {
-        dispatch(setAuroraCollections(result));
-      } else {
-        dispatch(setAuroraCollections(null));
+      if (data) {
+        const result = await getAuroraCollections(data.collections);
+        if (result?.length) {
+          dispatch(setAuroraCollections(result));
+        } else {
+          dispatch(setAuroraCollections(null));
+        }
+        return null;
       }
-      return null;
     })();
     // Get Polygon Collections
     (async function getDataFromEndpointB() {

@@ -34,7 +34,16 @@ const Dashboard = () => {
   });
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, username } = state;
-  const { account, mainnet, singleNfts, singleAlgoNfts, singleAuroraNfts } = useContext(GenContext);
+  const {
+    account,
+    mainnet,
+    singleNfts,
+    singleAlgoNfts,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    auroraCollections,
+    polygonCollections,
+  } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -48,13 +57,14 @@ const Dashboard = () => {
     if (!account) history.push("/");
 
     // Get User created Collections
-    (async function readAllSingle() {
+    (async function getCreatedCollections() {
       const userCollections = await fetchUserCollections(account);
       const myNftsCollections = await getNftCollections(userCollections, mainnet);
-
       console.log("===>", myNftsCollections);
+      const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
       handleSetState({
-        myCollections: myNftsCollections,
+        myCollections: [...(myNftsCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
       });
     })();
     // Get User Created NFTs
@@ -62,7 +72,8 @@ const Dashboard = () => {
       const userNftCollections = await fetchUserNfts(account);
       const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
-      handleSetState({ createdNfts: [...(createdUserNfts || []), ...(aurroraNFTs || [])] });
+      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
+      handleSetState({ createdNfts: [...(createdUserNfts || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
     })();
     // Get User Collected NFTs
     (async function getCollectedNfts() {
