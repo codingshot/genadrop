@@ -102,7 +102,9 @@ const Explore = () => {
       attributes: mapAttributeToFilter(NFTCollection),
       FilteredCollection: NFTCollection,
     });
+
   }, [NFTCollection]);
+
 
   useEffect(() => {
     if (!NFTCollection) return;
