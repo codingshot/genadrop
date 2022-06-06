@@ -74,6 +74,8 @@ export const initializeConnection = (walletProps) => {
 
     // Subscribe to chainId change
     ethereum.on("chainChanged", (chainId) => {
+      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+      dispatch(setConnector(ethereumProvider));
       WS.updateAccount(walletProps);
     });
     handleSetState({ isMetamask: true });
