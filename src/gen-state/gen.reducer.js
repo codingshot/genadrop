@@ -199,6 +199,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         chainId: action.payload,
       };
+
     case genActionTypes.SET_PROPOSED_CHAIN:
       return {
         ...state,
@@ -309,6 +310,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         promptRules: action.payload,
       };
+
     default:
       return state;
   }

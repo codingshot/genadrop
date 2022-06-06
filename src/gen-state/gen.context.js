@@ -82,6 +82,7 @@ const GenContextProvider = ({ children }) => {
         singleAuroraNfts,
         singleAlgoNfts,
         singlePolygonNfts,
+
         dispatch,
       }}
     >

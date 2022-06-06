@@ -42,10 +42,11 @@ const Header = ({ collection, getHeight, loadedChain }) => {
   };
 
   useEffect(() => {
-    readUserProfile(owner).then(data => {
-      if (data)
-        setUsername(data.username)
-    });
+    if (owner)
+      readUserProfile(owner).then(data => {
+        if (data)
+          setUsername(data.username)
+      });
 
   }, [owner])
   useEffect(() => {

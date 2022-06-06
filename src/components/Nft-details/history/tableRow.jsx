@@ -99,7 +99,7 @@ const TableRow = (data) => {
           <Transaction data={data} date={getDate(data.date)} chain={data.chain} />
         </div>
       ) : (
-        ""
+        null
       )}
       <tr className={classes.transaction} onClick={handleClick}>
         <td>
