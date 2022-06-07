@@ -45,7 +45,7 @@ const CollectionNFT = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections, chainId } =
+  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections } =
     useContext(GenContext);
   const {
     params: { collectionName, nftId },
@@ -75,12 +75,11 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    if (Number(chainId) !== 4160) return;
     const cacheCollection = JSON.parse(window.localStorage.activeCollection);
-    const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
     let result = activeCollection.find((col) => col.Id === Number(nftId));
-    result = result || cacheCollection[nftId];
+    result = result || cacheCollection ? cacheCollection[nftId] : null;
     if (result) {
+      const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
       (async function getResult() {
         const tHistory = await readNftTransaction(result.Id);
         tHistory.find((t) => {
@@ -94,7 +93,6 @@ const CollectionNFT = () => {
         });
       })();
     }
-
     document.documentElement.scrollTop = 0;
   }, [nftId]);
 
@@ -105,7 +103,6 @@ const CollectionNFT = () => {
   };
 
   useEffect(() => {
-    if (Number(chainId) === 4160) return;
     (async function getGraphResult() {
       const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
