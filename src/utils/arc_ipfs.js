@@ -292,7 +292,7 @@ export async function mintSingleToAlgo(algoMintProps) {
       const { assetID, txId } = await signTx(connector, [txn], dispatch);
       await write.writeNft(account, undefined, assetID[0], price, false, null, null, mainnet, txId[0]);
       // notification: asset minted
-      return `https://testnet.algoexplorer.io/asset/${assetID}`;
+      return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
     } catch (error) {
       console.log(error.message);
       return {
@@ -434,16 +434,25 @@ export async function createNFT(createProps, doAccountCheck) {
   const metadata = JSON.parse(metadataString);
   try {
     if (doAccountCheck) {
-      const userInfo = await algodClient.accountInformation(account).exclude("all").do();
-      const assetBalance = userInfo.account["total-assets-opted-in"];
-      const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
-      const estimateTxFee = 0.001 * metadata.length;
-      if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
-        return false;
+      alert("doing checkings");
+      try {
+        const userInfo = await algodClient.accountInformation(account).exclude("all").do();
+        const assetBalance = userInfo.account["total-assets-opted-in"];
+        const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
+        alert(userBalance);
+        const estimateTxFee = 0.001 * metadata.length;
+        alert((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance);
+        if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
+          alert("returning false");
+          return false;
+        }
+      } catch (error) {
+        console.log("SUS", error);
       }
     }
   } catch (error) {
     console.log("this is the error", error);
+    alert(error);
   }
   dispatch(
     setNotification({
@@ -518,7 +527,7 @@ export async function mintToAlgo(algoProps) {
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
       await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
       dispatch(setLoader(""));
-      return `https://testnet.algoexplorer.io/tx/${txId[0]}`;
+      return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
       console.log(error);
       return {
@@ -769,7 +778,7 @@ export async function PurchaseNft(args) {
     mainnet
   );
   await write.recordTransaction(nftDetails.Id, "Sale", account, nftDetails.owner, nftDetails.price, tx.txId);
-  return `https://testnet.algoexplorer.io/tx/${tx.txId}`;
+  return mainnet ? `https://algoexplorer.io/tx/${tx.txId}` : `https://testnet.algoexplorer.io/tx/${tx.txId}`;
 }
 
 export async function getAlgoData(mainnet, id) {

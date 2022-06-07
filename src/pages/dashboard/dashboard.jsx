@@ -7,7 +7,7 @@ import CollectionsCard from "../../components/Marketplace/collectionsCard/collec
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
 import { getNftCollections, getSingleNfts } from "../../utils";
-import { fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
+import { fetchUserCollections, fetchUserNfts, readUserProfile } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
@@ -30,9 +30,10 @@ const Dashboard = () => {
     createdNfts: false,
     myCollections: false,
     filteredCollection: null,
+    username: "",
   });
 
-  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
+  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, username } = state;
   const {
     account,
     mainnet,
@@ -84,7 +85,14 @@ const Dashboard = () => {
         collectedNfts: collectedNFTS,
       });
     })();
-  }, [account, singleNfts]);
+
+    (async function getUsername() {
+      const data = await readUserProfile(account);
+
+      handleSetState({ username: data.username });
+      console.log("Username: ", data.username);
+    })();
+  }, [account, singleNfts, username]);
 
   // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
@@ -148,6 +156,7 @@ const Dashboard = () => {
             <img src={avatar} alt="" />
           </div>
 
+          {username ? <div className={classes.username}> {username}</div> : ""}
           <div className={classes.address}>
             <Copy message={account} placeholder={breakAddress(account)} />
           </div>

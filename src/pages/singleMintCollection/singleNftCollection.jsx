@@ -110,7 +110,7 @@ const SingleNftCollection = () => {
   // sort by price function for different blockchains
   const sortPrice = (price) => {
     let sorted = [];
-    if (price === "low") {
+    if (price === "high") {
       sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
       sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));

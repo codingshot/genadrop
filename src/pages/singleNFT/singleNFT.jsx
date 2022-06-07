@@ -174,7 +174,7 @@ const SingleNFT = () => {
             });
           }
         }
-        if (data?.data?.nft !== null) {
+        if (data?.nft !== null) {
           const result = await getGraphNft(data?.nft);
           if (result[0]?.chain === chainId) {
             const trHistory = await getTransactions(data?.nft?.transactions);
@@ -289,7 +289,8 @@ const SingleNFT = () => {
     // eslint-disable-next-line no-alert
     // alert(res);
     dispatch(setLoader(""));
-    if (res) history.push(`/me/${account}`);
+    // if (res) history.push(`/me/${account}`);
+    if (res) history.push("/marketplace");
   };
   return (
     <div className={classes.container}>

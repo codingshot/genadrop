@@ -140,7 +140,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     algorand: "Algo",
     celo: "CGLD",
     polygon: "Matic",
-    "polygon Testnet": "Matic",
+    "polygon testnet": "Matic",
     "aurora testnet": "ETH",
     aurora: "ETH",
   };

@@ -12,24 +12,6 @@ import Welcome from "./pages/welcome/welcome";
 import Prompt from "./components/delete-prompt/prompt";
 import FetchData from "./renderless/fetch-data/fetchData.component";
 
-// import Home from "./pages/home/home";
-// import Create from "./pages/create/create";
-// import Mint from "./pages/mint/mint";
-// import CollectionToSingleMinter from "./components/Mint/collection-single/collection-single";
-// import Marketplace from "./pages/Marketplace/Marketplace";
-// import Preview from "./pages/preview/preview";
-// import Explore from "./pages/Explore/Explore";
-// import Fallback from "./pages/fallback/fallback";
-// import CollectionNFT from "./pages/collectionNFT/collectionNFT";
-// import Collections from "./pages/collections/collections";
-// import Dashboard from "./pages/dashboard/dashboard";
-// import docsEmbed from "./pages/docs/docsEmbed";
-// import List from "./pages/listNFT/list";
-// import Profile from "./pages/profile/profile";
-// import SingleNftCollection from "./pages/singleMintCollection/singleNftCollection";
-// import SingleNFT from "./pages/singleNFT/singleNFT";
-// import Artist from "./pages/artist/artist";
-
 const Home = lazy(() => import("./pages/home/home"));
 const Create = lazy(() => import("./pages/create/create"));
 const Mint = lazy(() => import("./pages/mint/mint"));
