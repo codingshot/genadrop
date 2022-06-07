@@ -141,6 +141,10 @@ const Collections = () => {
     return null;
   }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
 
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+  }, []);
+
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>

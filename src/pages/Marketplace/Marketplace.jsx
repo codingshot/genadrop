@@ -2,7 +2,7 @@ import React from "react";
 import Collections from "../../components/Marketplace/Collections/Collections";
 import SingleNft from "../../components/Marketplace/SingleNft/SingleNft";
 import classes from "./Marketplace.module.css";
-import bannerImg from "../../assets/banner1.svg";
+import bannerImg from "../../assets/banner2.png";
 
 const Marketplace = () => (
   <div className={classes.container}>
