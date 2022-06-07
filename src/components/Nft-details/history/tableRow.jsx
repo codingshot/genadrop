@@ -75,22 +75,16 @@ const TableRow = (data) => {
     }, [ref]);
   }
 
-  const getUsername = (address) => {
-
-  }
+  const getUsername = (address) => {};
   useEffect(() => {
-    readUserProfile(to).then(data => {
-      if (data)
-        setState({ to: data.username })
+    readUserProfile(to).then((data) => {
+      if (data) setState({ to: data.username });
     });
 
-    readUserProfile(from).then(data => {
-      if (data)
-        setState({ from: data.username })
-
+    readUserProfile(from).then((data) => {
+      if (data) setState({ from: data.username });
     });
-
-  }, [to, from])
+  }, [to, from]);
   useOutsideAlerter(wrapperRef);
   return (
     <>
@@ -98,9 +92,7 @@ const TableRow = (data) => {
         <div ref={wrapperRef}>
           <Transaction data={data} date={getDate(data.date)} chain={data.chain} />
         </div>
-      ) : (
-        null
-      )}
+      ) : null}
       <tr className={classes.transaction} onClick={handleClick}>
         <td>
           <span className={classes.icon}>

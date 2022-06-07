@@ -70,11 +70,26 @@
   border-radius: 50%;
   padding: 0.25em;
   cursor: pointer;
+  position: relative;
 }
 
 .user img {
   width: 1em;
   height: 1em;
+}
+
+.user:hover::before {
+  content: attr(data-status);
+  position: absolute;
+  right: 100%;
+  top: 100%;
+  white-space: nowrap;
+  background: white;
+  color: red;
+  border-radius: 0.25em;
+  border-bottom-right-radius: 0;
+  padding: 0 0.5em;
+  box-shadow: -2px 0 15px rgb(0, 0, 0, 0.5);
 }
 
 .chain {

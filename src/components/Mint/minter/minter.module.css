@@ -3,6 +3,16 @@
   background: white;
   border-radius: 0.5em;
   padding: 2em 1em;
+  animation: show 650ms;
+}
+
+@keyframes show {
+  from {
+    transform: scale(0.99) translateY(1em);
+  }
+  to {
+    transform: scale(1) translateY(0);
+  }
 }
 
 .container textarea:hover,
@@ -65,21 +75,20 @@
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  box-shadow: 0 0 15px gainsboro;
   border-radius: 0.5em;
   position: absolute;
 }
 
 .imageContainer:nth-child(2) {
   transform: translate(1.5em, -1.5em);
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
+  /* filter: blur(2px);
+  -webkit-filter: blur(2px); */
 }
 
 .imageContainer:nth-child(1) {
   transform: translate(3em, -3em);
-  filter: blur(4px);
-  -webkit-filter: blur(4px);
+  /* filter: blur(4px);
+  -webkit-filter: blur(4px); */
 }
 
 .singleImage {
@@ -421,11 +430,11 @@
   }
 
   .imageContainer:nth-child(2) {
-    transform: translate(4x, -1.5em);
+    transform: translate(0, -1.5em);
   }
 
   .imageContainer:nth-child(1) {
-    transform: translate(-8px, -3em);
+    transform: translate(0, -3em);
   }
 
   .imageContainers._ {

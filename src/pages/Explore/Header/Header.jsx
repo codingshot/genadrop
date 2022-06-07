@@ -43,12 +43,10 @@ const Header = ({ collection, getHeight, loadedChain }) => {
 
   useEffect(() => {
     if (owner)
-      readUserProfile(owner).then(data => {
-        if (data)
-          setUsername(data.username)
+      readUserProfile(owner).then((data) => {
+        if (data) setUsername(data.username);
       });
-
-  }, [owner])
+  }, [owner]);
   useEffect(() => {
     getUsdValue();
     viewOnExplorer();
@@ -86,7 +84,9 @@ const Header = ({ collection, getHeight, loadedChain }) => {
                   <Copy
                     message={owner}
                     placeholder={
-                      username ? username : owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`
+                      username
+                        ? username
+                        : owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`
                     }
                   />
                 </span>

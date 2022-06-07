@@ -42,6 +42,8 @@ const GenContextProvider = ({ children }) => {
     promptAsset,
     promptLayer,
     promptRules,
+    toggleWalletPopup,
+    activeCollection,
   } = state;
 
   return (
@@ -82,7 +84,8 @@ const GenContextProvider = ({ children }) => {
         singleAuroraNfts,
         singleAlgoNfts,
         singlePolygonNfts,
-
+        toggleWalletPopup,
+        activeCollection,
         dispatch,
       }}
     >

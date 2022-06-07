@@ -46,7 +46,7 @@ const Notification = () => {
 
   return (
     <div
-      style={{ top: loaderMessage ? "8em" : "5em" }}
+      style={{ top: loaderMessage ? "9em" : "5em" }}
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
       <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>

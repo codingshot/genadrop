@@ -5,6 +5,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 1em;
   color: white;
   top: 0;
   left: 0;
@@ -14,7 +16,46 @@
 }
 
 .overlay.isLoading {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.1);
   width: 100vw;
   height: 100vh;
+}
+
+.loader {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.dotOne,
+.dotTwo,
+.dotThree {
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: 50%;
+  background: var(--main-accent-dark);
+  animation: blink 300ms infinite alternate linear;
+}
+
+.dotOne {
+  animation-delay: 0ms;
+}
+
+.dotTwo {
+  animation-delay: 150ms;
+}
+
+.dotThree {
+  animation-delay: 300ms;
+}
+
+@keyframes blink {
+  from {
+    background: transparent;
+  }
+  to {
+    background: var(--main-accent);
+  }
 }
