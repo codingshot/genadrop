@@ -777,6 +777,7 @@ export async function PurchaseNft(args) {
     new Date(),
     mainnet
   );
+  dispatch(setLoader(""));
   await write.recordTransaction(nftDetails.Id, "Sale", account, nftDetails.owner, nftDetails.price, tx.txId);
   return mainnet ? `https://algoexplorer.io/tx/${tx.txId}` : `https://testnet.algoexplorer.io/tx/${tx.txId}`;
 }

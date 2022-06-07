@@ -139,6 +139,11 @@ const SingleNftCollection = () => {
     return null;
   }, [singleAlgoNfts, singlePolygonNfts, celoCollection, singleAuroraNfts]);
 
+  useEffect(() => {
+    window.localStorage.activeAlgoNft = null;
+    document.documentElement.scrollTop = 0;
+  }, []);
+
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
