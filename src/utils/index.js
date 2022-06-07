@@ -134,6 +134,80 @@ export const getNftCollection = async (collection, mainnet) => {
   const nftArr = [];
   const urlIPF = collection.url.replace("ipfs://", "https://ipfs.io/ipfs/");
   const { data } = await axios.get(urlIPF);
+  const IPFSurls = [];
+  const result = [];
+  // for (let i = 0; i < data.length; i += 1) {
+  //   const {
+  //     asset: { params },
+  //   } = await getAlgoData(mainnet, data[i]);
+  //   const url = params.url.replace("ipfs://", "https://ipfs.io/ipfs/");
+  //   console.log(i);
+  //   IPFSurls.push(url);
+  //   result.push({ algo_data: params });
+  // // }
+  // console.log(IPFSurls);
+  // const urls = [
+  //   "https://ipfs.io/ipfs/QmRUoBGsos5hEsAp6oPhLhfp7kQrSzFZDM3xN9t6ywWqai",
+  //   "https://ipfs.io/ipfs/QmXeTtxKojyRQVoCtXpFhzK9ei6jFUinSkWzsxUTvkbC8D",
+  //   "https://ipfs.io/ipfs/QmTbVGpmAukbMcpSc8MR59Yr41kTowqw8mHz4oRGU6cZ5c",
+  //   "https://ipfs.io/ipfs/QmRqGkttGnsC76T4HcgdgkMAVrepnvC2EPczmALDV2uc8D",
+  // ];
+  const fetchNFTs = async (id) => {
+    try {
+      const {
+        asset: { params },
+      } = await getAlgoData(mainnet, id);
+      const nftObj = {};
+      nftObj.collection_name = collection.name;
+      nftObj.owner = collection.owner;
+      nftObj.price = collection.price;
+      nftObj.algo_data = params;
+      nftObj.Id = id;
+      const url = params.url.replace("ipfs://", "https://ipfs.io/ipfs/");
+      const response = await axios.get(url);
+
+      const assetInfo = await readSIngleUserNft(collection.owner, id);
+
+      nftObj.sold = assetInfo.sold;
+      nftObj.ipfs_data = response.data;
+      nftObj.name = response.data.name;
+      nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+      nftObj.chain = 4160;
+      return nftObj;
+    } catch (err) {
+      return {};
+    }
+  };
+  // const callprice = async () => {
+  //   const responses = await Promise.all(IPFSurls.map(async (item) => (await axios.get(item)).data));
+  //   console.log(responses);
+  //   // now `responses` is an array of the response data
+  // };
+  const callprice = async () => {
+    const responses = await Promise.all(data.map(async (item) => await fetchNFTs(item)));
+    console.log(responses);
+    // now `responses` is an array of the response data
+  };
+  await callprice();
+  // axios
+  //   .all(IPFSurls)
+  //   .then(
+  //     axios.spread((...responses) => {
+  //       const responseOne = responses[0];
+  //       const responseTwo = responses[1];
+  //       const responesThree = responses[2];
+  //       console.log(responses);
+  //       // console.log(responseOne);
+  //       // console.log(responseTwo);
+  //       // console.log(responesThree);
+
+  //       // use/access the results
+  //     })
+  //   )
+  //   .catch((errors) => {
+  //     // react on errors.
+  //     console.log(errors);
+  //   });
   for (let i = 0; i < data.length; i += 1) {
     try {
       const nftObj = {};
@@ -147,7 +221,9 @@ export const getNftCollection = async (collection, mainnet) => {
       nftObj.Id = data[i];
       const urlIPF = params.url.replace("ipfs://", "https://ipfs.io/ipfs/");
       const response = await axios.get(urlIPF);
+
       const assetInfo = await readSIngleUserNft(collection.owner, data[i]);
+
       nftObj.sold = assetInfo.sold;
       nftObj.ipfs_data = response.data;
       nftObj.name = response.data.name;
