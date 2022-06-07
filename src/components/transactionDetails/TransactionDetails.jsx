@@ -21,7 +21,7 @@ const Transaction = (data) => {
   };
 
   useEffect(() => {
-    if (data.chain) {
+    if (data.chain && data.chain !== 4160) {
       handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls });
     }
   });

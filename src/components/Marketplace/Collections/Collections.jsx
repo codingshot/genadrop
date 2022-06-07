@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
@@ -12,6 +12,10 @@ const Collections = () => {
 
   const history = useHistory();
   const { url } = useRouteMatch();
+
+  useEffect(() => {
+    window.localStorage.activeCollection = null;
+  }, []);
 
   return (
     <div className={classes.container}>

@@ -434,16 +434,16 @@ export async function createNFT(createProps, doAccountCheck) {
   const metadata = JSON.parse(metadataString);
   try {
     if (doAccountCheck) {
-      alert("doing checkings");
+      // alert("doing checkings");
       try {
         const userInfo = await algodClient.accountInformation(account).exclude("all").do();
         const assetBalance = userInfo.account["total-assets-opted-in"];
         const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
-        alert(userBalance);
+        // alert(userBalance);
         const estimateTxFee = 0.001 * metadata.length;
-        alert((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance);
+        // alert((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance);
         if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
-          alert("returning false");
+          // alert("returning false");
           return false;
         }
       } catch (error) {
@@ -452,7 +452,7 @@ export async function createNFT(createProps, doAccountCheck) {
     }
   } catch (error) {
     console.log("this is the error", error);
-    alert(error);
+    // alert(error);
   }
   dispatch(
     setNotification({

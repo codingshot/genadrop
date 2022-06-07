@@ -76,10 +76,10 @@ const CollectionNFT = () => {
 
   useEffect(() => {
     const cacheCollection = JSON.parse(window.localStorage.activeCollection);
-    const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
     let result = activeCollection.find((col) => col.Id === Number(nftId));
-    result = result || cacheCollection[nftId];
+    result = result || cacheCollection ? cacheCollection[nftId] : null;
     if (result) {
+      const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
       (async function getResult() {
         const tHistory = await readNftTransaction(result.Id);
         tHistory.find((t) => {
@@ -93,7 +93,6 @@ const CollectionNFT = () => {
         });
       })();
     }
-
     document.documentElement.scrollTop = 0;
   }, [nftId]);
 
