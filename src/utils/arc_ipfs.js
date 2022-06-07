@@ -275,9 +275,10 @@ async function signTx(connector, txns, dispatch) {
   }
   // const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
   // await waitForConfirmation(tx.txId);
-
+  alert("signing end: ");
   return { assetID: assetIds, txId: TxIds };
 }
+
 export async function mintSingleToAlgo(algoMintProps) {
   const { file, metadata, account, connector, dispatch, price, mainnet } = algoMintProps;
   initAlgoClients(mainnet);
@@ -434,16 +435,16 @@ export async function createNFT(createProps, doAccountCheck) {
   const metadata = JSON.parse(metadataString);
   try {
     if (doAccountCheck) {
-      alert("doing checkings");
+      // alert("doing checkings");
       try {
         const userInfo = await algodClient.accountInformation(account).exclude("all").do();
         const assetBalance = userInfo.account["total-assets-opted-in"];
         const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
-        alert(userBalance);
+        // alert(userBalance);
         const estimateTxFee = 0.001 * metadata.length;
         alert((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance);
         if ((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance) {
-          alert("returning false");
+          // alert("returning false");
           return false;
         }
       } catch (error) {
@@ -452,7 +453,7 @@ export async function createNFT(createProps, doAccountCheck) {
     }
   } catch (error) {
     console.log("this is the error", error);
-    alert(error);
+    // alert(error);
   }
   dispatch(
     setNotification({
@@ -743,6 +744,7 @@ export async function PurchaseNft(args) {
   txns.push(txn2);
   try {
     await signTx(connector, txns, dispatch);
+    alert("returned signtx");
   } catch (error) {
     dispatch(
       setNotification({
@@ -753,6 +755,7 @@ export async function PurchaseNft(args) {
     return;
   }
 
+  alert("continued");
   const rtxn = algosdk.makeAssetTransferTxnWithSuggestedParams(
     process.env.REACT_APP_GENADROP_MANAGER_ADDRESS,
     account,
@@ -779,6 +782,7 @@ export async function PurchaseNft(args) {
   );
   dispatch(setLoader(""));
   await write.recordTransaction(nftDetails.Id, "Sale", account, nftDetails.owner, nftDetails.price, tx.txId);
+  alert("end of purchase");
   return mainnet ? `https://algoexplorer.io/tx/${tx.txId}` : `https://testnet.algoexplorer.io/tx/${tx.txId}`;
 }
 

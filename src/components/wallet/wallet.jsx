@@ -110,7 +110,7 @@ function ConnectWallet() {
   const goToDashboard = (
     <div
       onClick={() => {
-        return;
+        // return;
         history.push(`/me/${account}`);
       }}
       className={classes.user}

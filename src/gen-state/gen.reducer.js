@@ -36,10 +36,10 @@ export const INITIAL_STATE = {
   collections: {},
   singleNfts: [],
   algoCollections: {},
+  singleAlgoNfts: {},
   auroraCollections: [],
   polygonCollections: [],
   singleAuroraNfts: [],
-  singleAlgoNfts: {},
   singlePolygonNfts: [],
   activeCollection: [],
   notification: {

@@ -32,7 +32,7 @@ const FetchData = () => {
       if (collections?.length) {
         getNftCollections({ collections, mainnet, dispatch });
       } else {
-        dispatch(setAlgoCollections(null));
+        dispatch(setAlgoCollections({}));
       }
     })();
 
@@ -43,7 +43,7 @@ const FetchData = () => {
       if (singleNfts?.length) {
         getSingleNfts({ mainnet, singleNfts, dispatch });
       } else {
-        dispatch(setAlgoSingleNfts(null));
+        dispatch(setAlgoSingleNfts({}));
       }
     })();
 
