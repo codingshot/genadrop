@@ -241,20 +241,17 @@ async function readUserCollection(userAddress) {
   return res;
 }
 
-async function readAllSingleNft(mainnet) {
+async function fetchAlgoSingle(mainnet) {
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((docs) => {
     res.push(...Object.values(docs.data()));
   });
-  const response =
-    mainnet === null
-      ? res.filter((asset) => asset.collection === null)
-      : res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
+  const response = res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
   return response;
 }
 
-async function fetchCollections(mainnet) {
+async function fetchAlgoCollections(mainnet) {
   const collections = await readAllCollection(mainnet);
   return collections;
 }
@@ -281,14 +278,14 @@ export {
   readUserCollection,
   readAllUserNft,
   readSIngleUserNft,
-  fetchCollections,
+  fetchAlgoCollections,
   fetchUserCollections,
   fetchUserNfts,
   fetchAllNfts,
   writeNft,
   recordTransaction,
   readNftTransaction,
-  readAllSingleNft,
+  fetchAlgoSingle,
   readUserProfile,
   writeUserProfile,
 };

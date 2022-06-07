@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useRouteMatch } from "react-router-dom";
 
@@ -8,9 +8,14 @@ import { GenContext } from "../../../gen-state/gen.context";
 
 const SingleNft = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const { url } = useRouteMatch();
   const history = useHistory();
+
+  useEffect(() => {
+    window.localStorage.activeAlgoNft = null;
+  }, []);
 
   return (
     <div className={classes.container}>
@@ -20,9 +25,9 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {singleAlgoNfts?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
+      {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <div className={classes.wrapper}>
-          {singleAlgoNfts?.slice(0, 10).map((nft) => (
+          {singleAlgoNftsArr?.slice(0, 10).map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
           {singleAuroraNfts?.map((nft) => (
@@ -32,7 +37,7 @@ const SingleNft = () => {
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
         </div>
-      ) : !singleAlgoNfts && !singleAuroraNfts && !singlePolygonNfts ? (
+      ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.wrapper}>

@@ -7,13 +7,13 @@ import supportedChains from "../../../utils/supportedChains";
 const NFT = (data) => {
   const match = useRouteMatch();
 
-  return data.data.map((nft) => {
+  return data.data.map((nft, idx) => {
     let chainName = "Algo";
     if (nft?.chain) {
       chainName = supportedChains[nft?.chain].sybmol;
     }
     return (
-      <Link to={`${match.url.split("/").slice(0, -1).join("/")}/${nft.Id}`}>
+      <Link key={idx} to={`${match.url.split("/").slice(0, -1).join("/")}/${nft.Id}`}>
         <div key={nft.Id} className={classes.collectionItem}>
           <img src={nft.image_url} alt="" />
           <span className={classes.collectionName}>{nft.collection_name}</span>

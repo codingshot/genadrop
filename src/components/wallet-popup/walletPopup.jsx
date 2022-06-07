@@ -4,7 +4,7 @@ import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
-import { setProposedChain } from "../../gen-state/gen.actions";
+import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 
 const WalletPopup = ({ handleSetState }) => {
@@ -26,7 +26,7 @@ const WalletPopup = ({ handleSetState }) => {
 
   const handleProposedChain = async () => {
     dispatch(setProposedChain(activeChain));
-    handleSetState({ togglePopup: false });
+    dispatch(setToggleWalletPopup(false));
     setConnectionMethods(false);
   };
 
@@ -51,7 +51,7 @@ const WalletPopup = ({ handleSetState }) => {
         <div className={classes.iconContainer}>
           <img
             onClick={() => {
-              handleSetState({ togglePopup: false });
+              dispatch(setToggleWalletPopup(false));
               setShowMoreOptions(false);
               setConnectionMethods(false);
             }}

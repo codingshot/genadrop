@@ -7,6 +7,8 @@ import {
   setChainId,
   setAccount,
   setMainnet,
+  setClipboard,
+  setToggleWalletPopup,
 } from "../../gen-state/gen.actions";
 import { chainIdToParams } from "../../utils/chainConnect";
 import blankImage from "../../assets/blank.png";
@@ -40,6 +42,7 @@ export const initializeConnection = (walletProps) => {
     let storedProvider = JSON.parse(window.localStorage.walletconnect);
     dispatch(setProposedChain(storedProvider.chainId));
     dispatch(setConnector(walletConnectProvider));
+    handleSetState({ overrideWalletConnect: true });
   }
 
   // Subscribe to accounts change
@@ -84,9 +87,12 @@ export const initializeConnection = (walletProps) => {
   }
 };
 
-export const setNetworkType = ({ dispatch, chainId, handleSetState }) => {
+export const setNetworkType = ({ dispatch, chainId, handleSetState, mainnet }) => {
   const networkArray = [137, 1313161554, 42220];
-  if (networkArray.includes(chainId)) {
+  if (chainId === 4160) {
+    handleSetState({ network: mainnet ? "mainnet" : "testnet" });
+    dispatch(setMainnet(mainnet));
+  } else if (networkArray.includes(chainId)) {
     handleSetState({ network: "mainnet" });
     dispatch(setMainnet(true));
   } else {
@@ -155,6 +161,22 @@ export const connectWithMetamask = async (walletProps) => {
   }
 };
 
+export const initConnectWallet = (walletProps) => {
+  const { dispatch } = walletProps;
+  if (window?.ethereum !== undefined) {
+    dispatch(setToggleWalletPopup(true));
+  } else {
+    dispatch(setToggleWalletPopup(false));
+    dispatch(
+      setNotification({
+        message: "You need to install metamask to continue",
+        type: "error",
+      })
+    );
+    dispatch(setClipboard("https://metamask.io/"));
+  }
+};
+
 export const connectWallet = async (walletProps) => {
   const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
   if (connectionMethod === "metamask") {
@@ -193,7 +215,7 @@ export const updateAccount = async (walletProps) => {
   const { dispatch, walletConnectProvider, handleSetState } = walletProps;
   const { ethereum } = window;
   const [accounts] = await ethereum.request({
-    method: "eth_requestAccounts",
+    method: "eth_accounts", //eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
   });
   const networkId = await ethereum.networkVersion;
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
@@ -206,9 +228,9 @@ export const updateAccount = async (walletProps) => {
       })
     );
     WS.disconnectWallet(walletProps);
-    handleSetState({ togglePopup: true });
+    dispatch(setToggleWalletPopup(true));
   } else {
-    handleSetState({ togglePopup: false });
+    dispatch(setToggleWalletPopup(false));
     if (!accounts) {
       WS.disconnectWallet(walletProps);
       dispatch(

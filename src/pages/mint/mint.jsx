@@ -1,13 +1,30 @@
-import React from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import React, { useContext, useEffect } from "react";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./mint.module.css";
 import mintBg from "../../assets/mint-bg1.svg";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
+import { initConnectWallet } from "../../components/wallet/wallet-script";
+import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
+  const history = useHistory();
   const { url } = useRouteMatch();
+  const { dispatch, chainId } = useContext(GenContext);
+
+  useEffect(() => {
+    if (window.localStorage.walletconnect || chainId) return;
+    initConnectWallet({ dispatch });
+  }, []);
+
+  const handleMint = (target) => {
+    if (window.localStorage.walletconnect || chainId) {
+      history.push(`${url}/${target}`);
+    } else {
+      initConnectWallet({ dispatch });
+    }
+  };
 
   return (
     <div style={{ backgroundImage: `url(${mintBg})` }} className={classes.container}>
@@ -36,9 +53,9 @@ const Mint = () => {
             Mint your collection downloaded from Genadrop Creat app. These are collections of NFTs with mix and match
             traits in a Zip file.{" "}
           </p>
-          <Link to={`${url}/collection`}>
-            <button className={classes.btn}>Mint collection</button>
-          </Link>
+          <button onClick={() => handleMint("collection")} className={classes.btn}>
+            Mint collection
+          </button>
         </div>
 
         <div className={`${classes.card} ${classes._1of1}`}>
@@ -50,11 +67,9 @@ const Mint = () => {
             {" "}
             1 of 1 is a unique NFT you are minting individually. This is usually a single image in the format of Png{" "}
           </p>
-          <Link to={`${url}/1of1`}>
-            <button type="button" className={classes.btn}>
-              Mint 1 of 1
-            </button>
-          </Link>
+          <button onClick={() => handleMint("1of1")} type="button" className={classes.btn}>
+            Mint 1 of 1
+          </button>
         </div>
       </main>
     </div>
