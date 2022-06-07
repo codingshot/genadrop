@@ -340,10 +340,15 @@ const SingleNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {nftDetails?.chain?.length ? (
+                    <button type="button" className={classes.sold} disabled={nftDetails.chain} onClick={buyNft}>
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
+                      Buy now
+                    </button>
+                  )}
                 </>
               )}
             </div>

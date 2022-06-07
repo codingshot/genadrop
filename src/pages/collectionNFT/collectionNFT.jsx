@@ -11,7 +11,7 @@ import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
 import { getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import { PurchaseNft, purchasePolygonNfts } from "../../utils/arc_ipfs";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
@@ -301,10 +301,17 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {asset?.chain?.length ? (
+                    <button type="button" className={classes.sold} disabled={asset.chain} onClick={buyNft}>
+                      {/* <img src={walletIcon} alt="" /> */}
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
+                      <img src={walletIcon} alt="" />
+                      Buy now
+                    </button>
+                  )}
                   {/* <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid
