@@ -75,8 +75,9 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    const cacheCollection = JSON.parse(window.localStorage.activeCollection);
-    const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
+    if (!window.localStorage.activeCollection) return;
+    const cacheCollection = JSON.parse(window.localStorage?.activeCollection);
+    const collection = activeCollection?.length ? activeCollection : Object.values(cacheCollection);
     let result = activeCollection.find((col) => col.Id === Number(nftId));
     result = result || cacheCollection[nftId];
     if (result) {

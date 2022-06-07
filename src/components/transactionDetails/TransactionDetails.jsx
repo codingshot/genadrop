@@ -11,7 +11,8 @@ const Transaction = (data) => {
   }
 
   const [state, setState] = useState({
-    explorer: "https://testnet.algoexplorer.io/",
+    explorer:
+      process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
     isCopied: false,
     showDrop: false,
     clicked: "",
@@ -21,7 +22,7 @@ const Transaction = (data) => {
   };
 
   useEffect(() => {
-    if (data.chain) {
+    if (chainIdToParams[data?.chain]) {
       handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls });
     }
   });

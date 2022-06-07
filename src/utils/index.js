@@ -151,7 +151,6 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.owner = mainnet.id;
         nftObj.Id = collection[i].id;
         const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
-        console.log("get Price", getPrice);
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
         nftObj.price = collection[i].price * 0.000000000000000001;
         nftObj.sold = collection[i].isSold;
@@ -186,7 +185,6 @@ export const getTransactions = async (transactions) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
-  console.log(collection);
   const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
   const nftObj = [];
   try {
