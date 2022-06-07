@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
+import { getGraphCollection, getGraphNft, getTransactions } from "../../utils";
 import { PurchaseNft } from "../../utils/arc_ipfs";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
@@ -45,11 +45,12 @@ const CollectionNFT = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { account, collections, connector, mainnet, dispatch, auroraCollections, polygonCollections } =
+  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections } =
     useContext(GenContext);
-  const { url } = useRouteMatch();
+  const {
+    params: { collectionName, nftId },
+  } = useRouteMatch();
   const history = useHistory();
-  const [, , , collectionName, nftId] = url.split("/");
   const wrapperRef = useRef(null);
 
   function useOutsideAlerter(ref) {
@@ -74,25 +75,23 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    if (Object.keys(collections).length) {
-      const newCollection = collections.find((col) => col.name === collectionName);
-      if (newCollection) {
-        (async function getResult() {
-          const collectionData = await getNftCollection(newCollection, mainnet);
-          const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
-          console.log("The result", result);
-          const tHistory = await readNftTransaction(result.Id);
-          tHistory.find((t) => {
-            if (t.type === "Minting") t.price = result.price;
-          });
-          handleSetState({
-            asset: result,
-            transactionHistory: tHistory,
-            collection: collectionData,
-            isLoading: false,
-          });
-        })();
-      }
+    const cacheCollection = JSON.parse(window.localStorage.activeCollection);
+    const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
+    let result = activeCollection.find((col) => col.Id === Number(nftId));
+    result = result || cacheCollection[nftId];
+    if (result) {
+      (async function getResult() {
+        const tHistory = await readNftTransaction(result.Id);
+        tHistory.find((t) => {
+          if (t.type === "Minting") t.price = result.price;
+        });
+        handleSetState({
+          asset: result,
+          transactionHistory: tHistory,
+          collection,
+          isLoading: false,
+        });
+      })();
     }
 
     document.documentElement.scrollTop = 0;
@@ -391,8 +390,8 @@ const CollectionNFT = () => {
               </CopyToClipboard>
             </div>
             <div className={classes.shareContent}>
-              {icons.map((icon) => (
-                <a href={icon.link} target="_blank" rel="noreferrer">
+              {icons.map((icon, idx) => (
+                <a key={idx} href={icon.link} target="_blank" rel="noreferrer">
                   <img
                     className={classes.shareIcon}
                     onClick={() => handleSetState({ text: icon.link })}
@@ -404,8 +403,8 @@ const CollectionNFT = () => {
             </div>
           </div>
           <div className={classes.shareContent}>
-            {icons.map((icon) => (
-              <a href={icon.link} target="_blank" rel="noreferrer">
+            {icons.map((icon, idx) => (
+              <a key={idx} href={icon.link} target="_blank" rel="noreferrer">
                 <img
                   className={classes.shareIcon}
                   onClick={() => handleSetState({ text: icon.link })}

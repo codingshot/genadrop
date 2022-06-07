@@ -100,7 +100,6 @@ const Transaction = (data) => {
             <td>Date</td>
             <td> {data.date}</td>
           </tr>
-
           <tr>
             <td>From</td>
             <td

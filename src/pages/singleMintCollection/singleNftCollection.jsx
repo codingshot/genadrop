@@ -12,6 +12,8 @@ import { GenContext } from "../../gen-state/gen.context";
 
 const SingleNftCollection = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
+
   const location = useLocation();
   const history = useHistory();
 
@@ -37,16 +39,16 @@ const SingleNftCollection = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !singleAlgoNfts && !singlePolygonNfts && !celoCollection && !singleAuroraNfts
+        return !singleAlgoNftsArr && !singlePolygonNfts && !celoCollection && !singleAuroraNfts
           ? null
           : [
-              ...(singleAlgoNfts || []),
+              ...(singleAlgoNftsArr || []),
               ...(singlePolygonNfts || []),
               ...(celoCollection || []),
               ...(singleAuroraNfts || []),
             ];
       case "algorand":
-        return singleAlgoNfts;
+        return singleAlgoNftsArr;
       case "polygon":
         return singlePolygonNfts;
       case "celo":
@@ -106,22 +108,14 @@ const SingleNftCollection = () => {
   };
 
   // sort by price function for different blockchains
-  const sortPrice = (collection) => {
-    if (!collection) return handleSetState({ filteredCollection: null });
+  const sortPrice = (price) => {
     let sorted = [];
-    if (filter.price === "low") {
-      sorted = collection.sort((a, b) => Number(a.price) - Number(b.price));
+    if (price === "high") {
+      sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
+      sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
-    return sorted;
-  };
-
-  // Price update
-  const priceUpdate = (value) => {
-    handleSetState({ filter: { ...filter, price: value } });
-    sortPrice();
   };
 
   // compile data for all blockchains
@@ -137,23 +131,24 @@ const SingleNftCollection = () => {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
-    if (singleAlgoNfts || singleAuroraNfts) {
+    if (singleAlgoNftsArr || singleAuroraNfts) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
     return null;
   }, [singleAlgoNfts, singlePolygonNfts, celoCollection, singleAuroraNfts]);
+
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
-        <div className={classes.heading}>
-          <h3>1 of 1s</h3>
-        </div>
-        <div className={classes.searchAndFilter}>
-          <SearchBar onSearch={searchHandler} />
-          <ChainDropdown onChainFilter={chainChange} />
-          <PriceDropdown onPriceFilter={priceUpdate} />
+        <div className={classes.header}>
+          <h1>1 of 1s</h1>
+          <div className={classes.searchAndFilter}>
+            <SearchBar onSearch={searchHandler} />
+            <ChainDropdown onChainFilter={chainChange} />
+            <PriceDropdown onPriceFilter={sortPrice} />
+          </div>
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
@@ -164,7 +159,7 @@ const SingleNftCollection = () => {
         ) : !filteredCollection && filter.searchValue ? (
           <NotFound />
         ) : !filteredCollection ? (
-          <h1 className={classes.noResult}>No Results Found</h1>
+          <NotFound />
         ) : (
           <div className={classes.skeleton}>
             {[...new Array(5)]

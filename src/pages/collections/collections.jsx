@@ -12,6 +12,8 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
+
   const location = useLocation();
   const history = useHistory();
 
@@ -36,17 +38,17 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollections && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
+        return !algoCollectionsArr && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
           ? null
           : [
-              ...(algoCollections || []),
+              ...(algoCollectionsArr || []),
               ...(polygonCollections || []),
               ...(celoCollection || []),
               ...(auroraCollections || []),
               ...(nearCollection || []),
             ];
       case "algorand":
-        return algoCollections;
+        return algoCollectionsArr;
       case "polygon":
         return polygonCollections;
       case "celo":
@@ -108,22 +110,14 @@ const Collections = () => {
   };
 
   // sort by price function for different blockchains
-  const sortPrice = (collection) => {
-    if (!collection) return handleSetState({ filteredCollection: null });
+  const sortPrice = (price) => {
     let sorted = [];
-    if (filter.price === "low") {
-      sorted = collection.sort((a, b) => Number(a.price) - Number(b.price));
+    if (price === "high") {
+      sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
     } else {
-      sorted = collection.sort((a, b) => Number(b.price) - Number(a.price));
+      sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: sorted });
-    return sorted;
-  };
-
-  // Price update
-  const priceUpdate = (value) => {
-    handleSetState({ filter: { ...filter, price: value } });
-    sortPrice();
   };
 
   // compile data for all blockchains
@@ -139,7 +133,7 @@ const Collections = () => {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
-    if (algoCollections || auroraCollections) {
+    if (algoCollectionsArr || auroraCollections) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
@@ -155,7 +149,7 @@ const Collections = () => {
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={searchHandler} />
             <ChainDropdown onChainFilter={chainChange} />
-            <PriceDropdown onPriceFilter={priceUpdate} />
+            <PriceDropdown onPriceFilter={sortPrice} />
           </div>
         </div>
         {filteredCollection?.length ? (
@@ -167,7 +161,7 @@ const Collections = () => {
         ) : !filteredCollection && filter.searchValue ? (
           <NotFound />
         ) : !filteredCollection ? (
-          <h1 className={classes.noResult}>No Results Found</h1>
+          <NotFound />
         ) : (
           <div className={classes.skeleton}>
             {[...new Array(4)]

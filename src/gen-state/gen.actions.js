@@ -134,7 +134,6 @@ export const setChainId = (chainId) => ({
   payload: chainId,
 });
 
-
 export const setProposedChain = (chain) => ({
   type: genActionTypes.SET_PROPOSED_CHAIN,
   payload: chain,
@@ -240,4 +239,14 @@ export const promptDeleteLayer = (layer) => ({
 export const promptDeleteRules = (rules) => ({
   type: genActionTypes.PROMPT_DELETE_RULES,
   payload: rules,
+});
+
+export const setToggleWalletPopup = (state) => ({
+  type: genActionTypes.TOGGLE_WALLET_POPUP,
+  payload: state,
+});
+
+export const setActiveCollection = (collection) => ({
+  type: genActionTypes.SET_ACTIVE_COLLECTION,
+  payload: collection,
 });

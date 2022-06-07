@@ -37,27 +37,14 @@ export const handleMint = async (args) => {
         })
       );
     }
-
-    if (typeof url === "object") {
-      dispatch(
-        setNotification({
-          message: url.message,
-          type: "error",
-        })
-      );
-    } else {
-      dispatch(setClipboard(url));
-    }
     dispatch(setLoader(""));
+    return url;
   } catch (error) {
-    console.error(error);
+    console.error("error: ==========>", error);
     dispatch(setLoader(""));
-    dispatch(
-      setNotification({
-        message: "connect your wallet and try again.",
-        type: "warning",
-      })
-    );
+    return {
+      message: "Minting failed. This might be due to poor or no internet connection",
+    };
   }
 };
 
@@ -89,32 +76,13 @@ export const handleSingleMint = async (args) => {
         })
       );
     }
-
-    if (typeof url === "object") {
-      dispatch(
-        setNotification({
-          message: url.message,
-          type: "warning",
-        })
-      );
-    } else {
-      dispatch(
-        setNotification({
-          message: "asset minted successfully",
-          type: "success",
-        })
-      );
-      dispatch(setClipboard(url));
-    }
     dispatch(setLoader(""));
+    return url;
   } catch (error) {
-    console.error(error);
+    console.error("error: ==========>", error);
     dispatch(setLoader(""));
-    dispatch(
-      setNotification({
-        message: "connect your wallet and try again.",
-        type: "warning",
-      })
-    );
+    return {
+      message: "Minting failed. This might be due to poor or no internet connection",
+    };
   }
 };

@@ -30,7 +30,7 @@ const Dashboard = () => {
     createdNfts: false,
     myCollections: false,
     filteredCollection: null,
-    username: ""
+    username: "",
   });
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, username } = state;
@@ -44,6 +44,7 @@ const Dashboard = () => {
     auroraCollections,
     polygonCollections,
   } = useContext(GenContext);
+  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -59,7 +60,7 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       const userCollections = await fetchUserCollections(account);
-      const myNftsCollections = await getNftCollections(userCollections, mainnet);
+      const myNftsCollections = await getNftCollections({ userCollections, mainnet });
       console.log("===>", myNftsCollections);
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
       const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
@@ -70,14 +71,14 @@ const Dashboard = () => {
     // Get User Created NFTs
     (async function getUserNFTs() {
       const userNftCollections = await fetchUserNfts(account);
-      const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
+      const createdUserNfts = await getSingleNfts({ mainnet, userNftCollections });
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
       handleSetState({ createdNfts: [...(createdUserNfts || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
     })();
     // Get User Collected NFTs
     (async function getCollectedNfts() {
-      const collectedNFTS = singleAlgoNfts?.filter((nft) => nft.buyer === account);
+      const collectedNFTS = singleAlgoNftsArr?.filter((nft) => nft.buyer === account);
       console.log("===>", collectedNFTS);
 
       handleSetState({
@@ -88,7 +89,7 @@ const Dashboard = () => {
     (async function getUsername() {
       const data = await readUserProfile(account);
 
-      handleSetState({ username: data.username })
+      handleSetState({ username: data.username });
       console.log("Username: ", data.username);
     })();
   }, [account, singleNfts, username]);
