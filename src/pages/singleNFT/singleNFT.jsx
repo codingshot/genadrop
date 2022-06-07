@@ -192,6 +192,7 @@ const SingleNFT = () => {
         console.log({ error });
       }
     })();
+    document.documentElement.scrollTop = 0;
   }, []);
 
   useEffect(() => {
@@ -286,12 +287,33 @@ const SingleNFT = () => {
   const buyNft = async () => {
     dispatch(setLoader("Executing transaction..."));
     const res = await PurchaseNft(buyProps);
-    // eslint-disable-next-line no-alert
-    // alert(res);
-    dispatch(setLoader(""));
-    // if (res) history.push(`/me/${account}`);
-    if (res) history.push("/marketplace");
+    if (res) {
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        // history.push(`/me/${account}`);
+        history.push(`/marketplace`);
+        window.location.reload();
+      }, 1500);
+    } else {
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+      setTimeout(() => {
+        // history.push(`/me/${account}`);
+        history.push(`/marketplace`);
+        window.location.reload();
+      }, 1500);
+    }
   };
+
   return (
     <div className={classes.container}>
       <div className={classes.section1}>
