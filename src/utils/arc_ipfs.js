@@ -798,8 +798,15 @@ export async function PurchaseNft(args) {
 
 export async function getAlgoData(mainnet, id) {
   initAlgoClients(mainnet);
-  const data = await algodClient.getAssetByID(id).do();
-  return data;
+
+  // const data = await algodClient.getAssetByID(id).do();
+  const data = await axios.get(`https://algoindexer.testnet.algoexplorerapi.io/v2/assets?asset-id=${id}`, {
+    headers: {
+      accept: "application/json",
+    },
+  });
+  console.log(data.data.assets[0].params);
+  return data.data.assets[0].params;
 }
 
 export async function mintToAurora(polyProps) {
@@ -963,7 +970,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({

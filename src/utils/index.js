@@ -154,9 +154,8 @@ export const getNftCollection = async (collection, mainnet) => {
   // ];
   const fetchNFTs = async (id) => {
     try {
-      const {
-        asset: { params },
-      } = await getAlgoData(mainnet, id);
+      const params = await getAlgoData(mainnet, id);
+      console.log(params);
       const nftObj = {};
       nftObj.collection_name = collection.name;
       nftObj.owner = collection.owner;
