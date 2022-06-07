@@ -14,9 +14,9 @@
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  border-radius: 1em;
+  border-radius: 0.5em;
   background: white;
-  box-shadow: 0 0 15px gainsboro;
+  box-shadow: 0 0 10px rgb(0, 0, 0, 0.2);
 }
 
 .displayWrapper {

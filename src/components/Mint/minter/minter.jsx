@@ -1,18 +1,17 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import { setClipboard, setLoader, setNotification } from "../../../gen-state/gen.actions";
+import { setClipboard, setLoader, setLoading, setNotification } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
 import { handleMint, handleSingleMint } from "./minter-script";
 import classes from "./minter.module.css";
 import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
-import leftArrow from "../../../assets/icon-bg-arrow-left.svg";
 import infoIcon from "../../../assets/icon-info.svg";
 import dropImg from "../../../assets/icon-1of1-light.svg";
-// Collection Profile Image Select
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
+import Popup from "../popup/popup.component";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -29,6 +28,11 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     toggleGuide: false,
     previewSelectMode: false,
     profileSelected: false,
+    popupProps: {
+      url: null,
+      isError: null,
+      popup: false,
+    },
   });
   const {
     attributes,
@@ -42,8 +46,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     toggleGuide,
     previewSelectMode,
     profileSelected,
+    popupProps,
   } = state;
-  const history = useHistory();
 
   const chains = [
     {
@@ -136,7 +140,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     algorand: "Algo",
     celo: "CGLD",
     polygon: "Matic",
-    "polygon Testnet": "Matic",
+    "polygon testnet": "Matic",
     "aurora testnet": "ETH",
     aurora: "ETH",
   };
@@ -212,8 +216,26 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           })
         );
       }
+      dispatch(setLoading(true));
       handleMint(mintProps).then((url) => {
-        history.push(`/me/${account}`);
+        dispatch(setLoading(false));
+        if (typeof url === "object") {
+          handleSetState({
+            popupProps: {
+              url: url.message,
+              isError: true,
+              popup: true,
+            },
+          });
+        } else {
+          handleSetState({
+            popupProps: {
+              url,
+              isError: false,
+              popup: true,
+            },
+          });
+        }
       });
     } else {
       if (!singleMintProps.fileName || !description) {
@@ -224,8 +246,26 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           })
         );
       }
+      dispatch(setLoading(true));
       handleSingleMint(singleMintProps).then((url) => {
-        history.push(`/me/${account}`);
+        dispatch(setLoading(false));
+        if (typeof url === "object") {
+          handleSetState({
+            popupProps: {
+              url: url.message,
+              isError: true,
+              popup: true,
+            },
+          });
+        } else {
+          handleSetState({
+            popupProps: {
+              url,
+              isError: false,
+              popup: true,
+            },
+          });
+        }
       });
     }
   };
@@ -247,13 +287,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     }
   }, [price, chainId]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      document.documentElement.scrollTop = 200;
-    }, 500);
-  }, []);
   return (
     <div className={classes.container}>
+      <Popup handleSetState={handleSetState} popupProps={popupProps} />
       {preview ? (
         <CollectionPreview
           previewSelectMode={previewSelectMode}
@@ -297,11 +333,6 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 Change asset
               </button>
             </div>
-            {file.length > 1 ? (
-              <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview_}>
-                <img src={leftArrow} alt="" />
-              </div>
-            ) : null}
           </section>
 
           <section className={classes.type}>
@@ -422,7 +453,14 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             <button type="button" onClick={setMint} className={classes.mintBtn}>
               Mint
             </button>
-            <button type="button" onClick={changeFile} className={classes.cancelBtn}>
+            <button
+              type="button"
+              onClick={() => {
+                window.location.reload();
+                changeFile;
+              }}
+              className={classes.cancelBtn}
+            >
               Cancel
             </button>
           </section>

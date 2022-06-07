@@ -21,7 +21,7 @@ const Transaction = (data) => {
   };
 
   useEffect(() => {
-    if (data.chain) {
+    if (data.chain && data.chain !== 4160) {
       handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls });
     }
   });
@@ -99,7 +99,6 @@ const Transaction = (data) => {
             <td>Date</td>
             <td> {data.date}</td>
           </tr>
-
           <tr>
             <td>From</td>
             <td

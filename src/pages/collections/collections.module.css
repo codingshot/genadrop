@@ -6,12 +6,12 @@
 }
 
 .innerContainer {
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   padding: 2em;
   border-radius: 1em;
   background: white;
-  box-shadow: 0 0 15px gainsboro;
 }
 
 .header {
@@ -39,13 +39,18 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   justify-items: center;
-  gap: 2em;
+  gap: 1em;
 }
 
 .skeleton {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 2em;
+  z-index: 0;
+}
+
+.skeleton * {
+  z-index: 0;
 }
 
 .noResult {
@@ -85,9 +90,7 @@
   .searchAndFilter > div {
     width: 100%;
   }
-}
 
-@media screen and (max-width: 540px) {
   .wrapper,
   .skeleton {
     grid-template-columns: repeat(1, 1fr);

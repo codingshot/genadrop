@@ -18,7 +18,7 @@
 
 .mainContainer {
   width: 100%;
-  max-width: 56em;
+  max-width: 48em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,17 +62,20 @@
 .heading {
   color: white;
   width: 100%;
-  padding: 0 6em;
+  max-width: 36em;
 }
 
 .heading h3 {
-  font-weight: 500;
+  font-weight: 400;
   margin-bottom: 0.5em;
   font-size: 1rem;
 }
 
-.heading span {
+.heading .description {
+  width: 100%;
   font-weight: 300;
+  text-align: center;
+  display: none;
 }
 
 .heading p {
@@ -242,24 +245,12 @@
     gap: 1em;
   }
 
-  .heading {
-    padding: 0 2em;
-  }
-
   .heading h3 {
     font-size: 0.95rem;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .heading {
-    padding: 0;
-  }
-
-  .heading h3 {
-    font-size: 0.85rem;
-  }
-
   .leftSideCard,
   .rightSideCard {
     display: none;

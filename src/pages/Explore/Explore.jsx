@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Explore.module.css";
@@ -13,7 +13,9 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 
 const Explore = () => {
+  const collectionNameRef = useRef(true);
   const [state, setState] = useState({
+    toggleFilter: true,
     togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
@@ -29,6 +31,7 @@ const Explore = () => {
     },
   });
   const {
+    toggleFilter,
     collection,
     NFTCollection,
     attributes,
@@ -38,7 +41,7 @@ const Explore = () => {
     headerHeight,
     loadedChain,
   } = state;
-  const { collections, mainnet, auroraCollections, polygonCollections } = useContext(GenContext);
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -61,20 +64,15 @@ const Explore = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(collections).length) {
-      const collectionsFound = collections.find((col) => col.name === collectionName);
-      if (collectionsFound) {
-        (async function getResult() {
-          const result = await getNftCollection(collectionsFound, mainnet);
-          handleSetState({
-            collection: collectionsFound,
-            NFTCollection: result,
-            loadedChain: result[0]?.chain,
-          });
-        })();
+    if (Object.keys(algoCollections).length) {
+      const collection = algoCollections[collectionName];
+      if (collection && collectionNameRef.current) {
+        collectionNameRef.current = false;
+        handleSetState({ collection });
+        getNftCollection({ collection, mainnet, dispatch, handleSetState });
       }
     }
-  }, []);
+  }, [algoCollections]);
 
   useEffect(() => {
     (async function getGraphResult() {
@@ -156,7 +154,13 @@ const Explore = () => {
       />
 
       <div className={classes.displayContainer}>
-        <Filter handleFilter={handleFilter} filterToDelete={filterToDelete} attributes={attributes} />
+        <Filter
+          handleFilter={handleFilter}
+          filterToDelete={filterToDelete}
+          attributes={attributes}
+          toggleFilter={toggleFilter}
+          handleExploreSetState={(prop) => handleSetState({ ...prop })}
+        />
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
@@ -179,7 +183,7 @@ const Explore = () => {
               </div>
             ) : null}
           </div>
-          <Menu NFTCollection={FilteredCollection} loadedChain={loadedChain} />
+          <Menu NFTCollection={FilteredCollection} loadedChain={loadedChain} toggleFilter={toggleFilter} />
         </main>
       </div>
     </div>

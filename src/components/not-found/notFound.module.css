@@ -4,10 +4,11 @@
   align-items: center;
   justify-content: center;
   gap: 2em;
+  padding: 3em 1em;
 }
 
 .imageContainer {
-  width: 20vmax;
+  width: 12vmax;
 }
 
 .imageContainer img {
