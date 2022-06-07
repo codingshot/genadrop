@@ -1,49 +1,43 @@
 .menu {
   width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 1em;
-  white-space: nowrap;
 }
 
-.loader {
-  width: 100%;
-  max-width: 15em;
+.menu.resize {
+  grid-template-columns: repeat(3, 1fr);
 }
 
-.nftCardWrapper {
-  width: 100%;
-  max-width: 15em;
-}
-
-@media screen and (max-width: 768px) {
-  .displayWrapper {
-    width: 100%;
-  }
-
+@media screen and (max-width: 1200px) {
   .menu {
-    flex-wrap: unset;
-    justify-content: unset;
-    white-space: unset;
-    display: grid;
     grid-template-columns: repeat(3, 1fr);
   }
-}
 
-@media screen and (max-width: 580px) {
-  .loadingContainer,
-  .menu {
+  .menu.resize {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media screen and (max-width: 480px) {
-  .loadingContainer,
+@media screen and (max-width: 900px) {
   .menu {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .menu.resize {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .menu.resize {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .menu,
+  .menu.resize {
+    grid-template-columns: repeat(1, 1fr);
   }
 }

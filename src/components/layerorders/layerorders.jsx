@@ -17,7 +17,7 @@ import {
 import Layer from "../layer/layer";
 import Prompt from "../prompt/prompt";
 import { getCombinations, getItemStyle, getListStyle } from "./layeroders-script";
-import { fetchCollections } from "../../utils/firebase";
+import { fetchAlgoCollections } from "../../utils/firebase";
 import editIcon from "../../assets/icon-edit.svg";
 import markIcon from "../../assets/icon-mark.svg";
 import plusIcon from "../../assets/icon-plus.svg";
@@ -63,7 +63,7 @@ const LayerOrders = () => {
   };
 
   const getCollectionsNames = async () => {
-    const collections = await fetchCollections();
+    const collections = await fetchAlgoCollections();
     const names = [];
     collections.forEach((col) => {
       names.push(col.name);

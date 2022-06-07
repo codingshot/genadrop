@@ -35,15 +35,16 @@ export const INITIAL_STATE = {
   rule: [],
   collections: {},
   singleNfts: [],
-  algoCollections: [],
+  algoCollections: {},
   auroraCollections: [],
   polygonCollections: [],
   singleAuroraNfts: [],
-  singleAlgoNfts: [],
+  singleAlgoNfts: {},
   singlePolygonNfts: [],
+  activeCollection: [],
   notification: {
     message: "",
-    type: "", // warning, error, success
+    type: "", // warning, error, success, default
   },
   clipboardMessage: "",
   loaderMessage: "",
@@ -54,6 +55,7 @@ export const INITIAL_STATE = {
   promptAsset: null,
   promptLayer: null,
   promptRules: null,
+  toggleWalletPopup: false,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -199,6 +201,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         chainId: action.payload,
       };
+
     case genActionTypes.SET_PROPOSED_CHAIN:
       return {
         ...state,
@@ -308,6 +311,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         promptRules: action.payload,
+      };
+    case genActionTypes.TOGGLE_WALLET_POPUP:
+      return {
+        ...state,
+        toggleWalletPopup: action.payload,
+      };
+    case genActionTypes.SET_ACTIVE_COLLECTION:
+      return {
+        ...state,
+        activeCollection: action.payload,
       };
     default:
       return state;

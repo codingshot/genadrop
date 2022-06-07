@@ -5,7 +5,7 @@ import classes from "./collectionsCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 
 const CollectionsCard = ({ collection }) => {
-  const { name, price, description, image_url, chain, owner } = collection;
+  const { name, price, description, image_url, chain, owner, nfts } = collection;
   const history = useHistory();
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -29,9 +29,7 @@ const CollectionsCard = ({ collection }) => {
           <img src={image_url} alt="collection-profile-img" />
         </div>
         <div className={classes.name}>{name}</div>
-        <div className={classes.description}>
-          {description.length < 100 ? description : `${description.substring(0, 100)}...`}
-        </div>
+        <div className={classes.description}>{description}</div>
         <div className={classes.wrapper}>
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOORPRICE</div>
@@ -41,6 +39,7 @@ const CollectionsCard = ({ collection }) => {
               <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
             </div>
           </div>
+          <div className={classes.nftCount}>{nfts?.length} NFTs</div>
         </div>
       </div>
     </div>
