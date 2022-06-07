@@ -50,16 +50,39 @@ const CollectionMenu = ({ layer }) => {
     return images;
   };
 
+  const imageURLtoFile = async (dataurl) => {
+    let index = dataurl.lastIndexOf("/") + 1;
+    let filename = dataurl.substr(index);
+    const response = await fetch(dataurl);
+    // here image is url/location of image
+    const blob = await response.blob();
+    const file = new File([blob], filename, { type: blob.type });
+    // console.log("file: ", file);
+    return file;
+  };
+
   const handleTemplates = () => {
     let images;
-    images = importAll(require.context(`../../assets/CreateAssets/`, true, /\.(png|jpe?g|svg)$/));
     let imgList = [];
     let imgFiles = [];
+    images = importAll(require.context(`../../../public/assets/CreateAssets/`, true, /\.(png|jpe?g|svg)$/));
     Object.keys(images).map((key, value) => {
-      images[key].default[0] === "d" &&
-        imgFiles.push(dataURLtoFile(images[key].default, key.slice(key.indexOf("/") + 1)));
+      images[key].default[0] === "d"
+        ? imgFiles.push(dataURLtoFile(images[key].default, key.slice(key.indexOf("/") + 1)))
+        : imgList.push(images[key].default);
     });
-    dispatch(addImage(handleAddAssets({ layerId: id, files: imgFiles, traits, layerTitle })));
+    Promise.all(
+      imgList.map((img) => {
+        return imageURLtoFile(img);
+      })
+    )
+      .then((results) => {
+        imgFiles.push(...results);
+        return imgFiles;
+      })
+      .then((results) => {
+        dispatch(addImage(handleAddAssets({ layerId: id, files: results, traits, layerTitle })));
+      });
   };
 
   return (
