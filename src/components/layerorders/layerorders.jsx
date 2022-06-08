@@ -62,6 +62,29 @@ const LayerOrders = () => {
     dispatch(setPrompt(promptDeleteLayer(layer)));
   };
 
+  const handleAddSampleLayers = () => {
+    const sampleLayers = [
+      { layerName: "Background-Sample", dirName: "Background" },
+      { layerName: "Bottom Lid-Sample", dirName: "BottomLid" },
+      { layerName: "Eye Color-Sample", dirName: "EyeColor" },
+      { layerName: "Eye Ball-Sample", dirName: "EyeBall" },
+      { layerName: "Goo-Sample", dirName: "Goo" },
+      { layerName: "Iris-Sample", dirName: "Iris" },
+      { layerName: "Shine-Sample", dirName: "Shine" },
+      { layerName: "Top Lid-Sample", dirName: "TopLid" },
+    ];
+    sampleLayers.map((sample) => {
+      dispatch(
+        addLayer({
+          id: uuid(),
+          traitsAmount: 0,
+          layerTitle: sample.layerName,
+          traits: [],
+        })
+      );
+    });
+  };
+
   const getCollectionsNames = async () => {
     const collections = await fetchAlgoCollections();
     const names = [];
@@ -200,13 +223,23 @@ const LayerOrders = () => {
               />
             </div>
           ) : (
-            <button
-              type="button"
-              className={classes.addBtn}
-              onClick={() => !isRule && handleSetState({ prompt: true })}
-            >
-              Add Layer <img src={plusIcon} alt="plus-icon" />
-            </button>
+            <>
+              <button
+                type="button"
+                className={classes.addBtn}
+                onClick={() => !isRule && handleSetState({ prompt: true })}
+              >
+                Add Layer <img src={plusIcon} alt="plus-icon" />
+              </button>
+              <button
+                style={{ marginTop: "10px" }}
+                type="button"
+                className={classes.addBtn}
+                onClick={handleAddSampleLayers}
+              >
+                Try Our Samples!
+              </button>
+            </>
           )}
         </div>
       </div>

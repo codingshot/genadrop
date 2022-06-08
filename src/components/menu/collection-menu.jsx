@@ -14,6 +14,23 @@ const CollectionMenu = ({ layer }) => {
   const { layerTitle, traits, id } = layer;
   const { dispatch, layers } = useContext(GenContext);
   const fileRef = useRef(null);
+  const sampleLayers = [
+    { layerName: "Background-Sample", dirName: "Background" },
+    { layerName: "Bottom Lid-Sample", dirName: "BottomLid" },
+    { layerName: "Eye Color-Sample", dirName: "EyeColor" },
+    { layerName: "Eye Ball-Sample", dirName: "EyeBall" },
+    { layerName: "Goo-Sample", dirName: "Goo" },
+    { layerName: "Iris-Sample", dirName: "Iris" },
+    { layerName: "Shine-Sample", dirName: "Shine" },
+    { layerName: "Top Lid-Sample", dirName: "TopLid" },
+  ];
+
+  useEffect(() => {
+    let sampleLayerName = "";
+    sampleLayerName = sampleLayers.filter((sLayer) => sLayer.layerName === layerTitle);
+    // eslint-disable-next-line no-use-before-define
+    hanldeSampleLayer(sampleLayerName[0].dirName);
+  }, []);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -30,6 +47,7 @@ const CollectionMenu = ({ layer }) => {
     });
     dispatch(addImage(res));
   };
+  // helper to add sample images
   const dataURLtoFile = (dataurl, filename) => {
     let arr = dataurl.split(",");
     let mime = arr[0].match(/:(.*?);/)[1];
@@ -41,15 +59,15 @@ const CollectionMenu = ({ layer }) => {
     }
     return new File([u8arr], filename, { type: mime });
   };
-
+  // helper to add sample images
   const importAll = (r) => {
-    let images = {};
+    const images = {};
     r.keys().map((item, index) => {
       images[item.replace("./", "")] = r(item);
     });
     return images;
   };
-
+  // helper to add sample images
   const imageURLtoFile = async (dataurl) => {
     let index = dataurl.lastIndexOf("/") + 1;
     let filename = dataurl.substr(index);
@@ -60,13 +78,48 @@ const CollectionMenu = ({ layer }) => {
     // console.log("file: ", file);
     return file;
   };
-
-  const handleTemplates = () => {
+  // helper to add sample images
+  const hanldeSampleLayer = (layerName) => {
     let images;
     let imgList = [];
     let imgFiles = [];
-    images = importAll(require.context(`../../../public/assets/CreateAssets/`, true, /\.(png|jpe?g|svg)$/));
+    // Don't try fixing this, require.context() requires literal string as input not variable, that's why I use swtich case in this situation.
+    switch (layerName) {
+      case "Background":
+        images = importAll(
+          require.context(`../../../public/assets/CreateAssets/Background`, false, /\.(png|jpe?g|svg)$/)
+        );
+        break;
+      case "BottomLid":
+        images = importAll(
+          require.context(`../../../public/assets/CreateAssets/BottomLid`, false, /\.(png|jpe?g|svg)$/)
+        );
+        break;
+      case "EyeColor":
+        images = importAll(
+          require.context(`../../../public/assets/CreateAssets/EyeColor`, false, /\.(png|jpe?g|svg)$/)
+        );
+        break;
+      case "EyeBall":
+        images = importAll(require.context(`../../../public/assets/CreateAssets/EyeBall`, false, /\.(png|jpe?g|svg)$/));
+        break;
+      case "Goo":
+        images = importAll(require.context(`../../../public/assets/CreateAssets/Goo`, false, /\.(png|jpe?g|svg)$/));
+        break;
+      case "Iris":
+        images = importAll(require.context(`../../../public/assets/CreateAssets/Iris`, false, /\.(png|jpe?g|svg)$/));
+        break;
+      case "Shine":
+        images = importAll(require.context(`../../../public/assets/CreateAssets/Shine`, false, /\.(png|jpe?g|svg)$/));
+        break;
+      case "TopLid":
+        images = importAll(require.context(`../../../public/assets/CreateAssets/TopLid`, false, /\.(png|jpe?g|svg)$/));
+        break;
+      default:
+        images = importAll(require.context(`../../../public/assets/CreateAssets/`, false, /\.(png|jpe?g|svg)$/));
+    }
     Object.keys(images).map((key, value) => {
+      // eslint-disable-next-line no-unused-expressions
       images[key].default[0] === "d"
         ? imgFiles.push(dataURLtoFile(images[key].default, key.slice(key.indexOf("/") + 1)))
         : imgList.push(images[key].default);
@@ -107,11 +160,6 @@ const CollectionMenu = ({ layer }) => {
           <button type="button" onClick={() => fileRef.current.click()} className={classes.uploadBtn}>
             upload
           </button>
-          <ButtonClickEffect>
-            <button type="button" onClick={handleTemplates} className={classes.addBlankBtn}>
-              Available Asset Images
-            </button>
-          </ButtonClickEffect>
           {traits[0] && (
             <ButtonClickEffect>
               <button type="button" onClick={handleBlank} className={classes.addBlankBtn}>
