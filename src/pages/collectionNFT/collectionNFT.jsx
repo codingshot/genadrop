@@ -299,10 +299,17 @@ const CollectionNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {asset?.chain?.length ? (
+                    <button type="button" className={classes.sold} disabled={asset.chain} onClick={buyNft}>
+                      {/* <img src={walletIcon} alt="" /> */}
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
+                      <img src={walletIcon} alt="" />
+                      Buy now
+                    </button>
+                  )}
                   {/* <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid
