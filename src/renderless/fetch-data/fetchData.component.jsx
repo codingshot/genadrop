@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
+import { fetchAlgoCollections, fetchAlgoSingle, fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
 import {
   setCollections,
   setSingleNfts,
@@ -22,7 +22,7 @@ import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 
 const FetchData = () => {
-  const { dispatch, mainnet } = useContext(GenContext);
+  const { dispatch, mainnet, account } = useContext(GenContext);
 
   useEffect(() => {
     // Get ALGO Collection
@@ -160,6 +160,32 @@ const FetchData = () => {
       return null;
     })();
   }, [mainnet]);
+
+  useEffect(() => {
+    (async function run() {
+      console.log({ account });
+      if (!account) return;
+      const userCollections = await fetchUserCollections(account);
+      const userNftCollections = await fetchUserNfts(account);
+
+      // console.log({ userCollections });
+      // console.log(userNftCollections);
+
+      let collections = [];
+      let singles = [];
+
+      userNftCollections?.forEach((nft) => {
+        if (nft.collection) {
+          collections.push(nft);
+        } else {
+          singles.push(nft);
+        }
+      });
+
+      // console.log({collections});
+      // console.log({singles});
+    })();
+  }, [account]);
 
   return null;
 };

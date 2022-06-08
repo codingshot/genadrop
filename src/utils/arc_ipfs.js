@@ -664,25 +664,8 @@ export async function mintToPoly(polyProps) {
 
 export async function PurchaseNft(args) {
   const { dispatch, nftDetails, account, connector, mainnet } = args;
-  console.log("initing", mainnet, connector);
+  dispatch(setLoader("executing transaction..."));
   initAlgoClients(mainnet);
-  if (!account) {
-    return dispatch(
-      setNotification({
-        message: "connect wallet",
-        type: "warning",
-      })
-    );
-  }
-  console.log(connector);
-  if (!connector?.isWalletConnect && !(connector?.chainId === 4160)) {
-    return dispatch(
-      setNotification({
-        message: "connect wallet to algorand network",
-        type: "warning",
-      })
-    );
-  }
   console.log("no eve if", !connector?.isWalletConnect);
   const params = await algodTxnClient.getTransactionParams().do();
   console.log("wake up", params);
@@ -690,15 +673,6 @@ export async function PurchaseNft(args) {
   const note = enc.encode("Nft Purchase");
   const note2 = enc.encode("Platform fee");
   const txns = [];
-  if (!connector) {
-    return dispatch(
-      setNotification({
-        message: "connect wallet",
-        type: "warning",
-      })
-    );
-  }
-
   console.log("before acct check");
   const userBalance = await algodClient.accountInformation(account).do();
   console.log("stopped it");

@@ -4,10 +4,17 @@ import axios from "axios";
 import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
 import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
-import { getAlgoData } from "./arc_ipfs";
+import { getAlgoData, PurchaseNft } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
-import { setActiveCollection, setAlgoCollections, setAlgoSingleNfts } from "../gen-state/gen.actions";
+import {
+  setActiveCollection,
+  setAlgoCollections,
+  setAlgoSingleNfts,
+  setLoader,
+  setNotification,
+} from "../gen-state/gen.actions";
+import supportedChains from "./supportedChains";
 
 export const getAuroraCollections = async (collection) => {
   const collectionArr = [];
@@ -211,7 +218,7 @@ export const getGraphNft = async (collection, mainnet) => {
   return nftObj;
 };
 
-export const getUserNftCollection = async (mainnet, data) => {
+export const getUserBoughtNftCollection = async (mainnet, data) => {
   const nftArr = [];
   for (let i = 0; i < data?.length; i += 1) {
     try {
@@ -281,10 +288,56 @@ export const getSingleNftDetails = async (mainnet, nft) => {
   return nftDetails;
 };
 
-// export const getNftData = async (mainnet, collection, assetName) => {
-//   const collectionData = await getNftCollection({ mainnet, collection });
-//   return collectionData.find((asset) => asset.name === assetName);
-// };
+export const buyNft = async (buyProps) => {
+  const {
+    dispatch,
+    history,
+    account,
+    nftDetails: { chain },
+    chainId,
+  } = buyProps;
+
+  if (!account) {
+    return dispatch(
+      setNotification({
+        message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,
+        type: "error",
+      })
+    );
+  }
+
+  if (chainId !== chain) {
+    return dispatch(
+      setNotification({
+        message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,
+        type: "warning",
+      })
+    );
+  }
+
+  const res = await PurchaseNft(buyProps);
+
+  if (res) {
+    dispatch(
+      setNotification({
+        message: "transaction successful",
+        type: "success",
+      })
+    );
+    setTimeout(() => {
+      // history.push(`/me/${account}`);
+      history.push(`/marketplace`);
+      window.location.reload();
+    }, 6000);
+  } else {
+    dispatch(
+      setNotification({
+        message: "transaction failed",
+        type: "error",
+      })
+    );
+  }
+};
 
 export const getImageSize = async (img) =>
   new Promise((resolve) => {
