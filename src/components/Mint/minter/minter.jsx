@@ -433,7 +433,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               </label>
               {chainId ? (
                 <div className={classes.price}>
-                  <input type="number" value={price} onChange={handlePrice} />
+                  <input type="number" min="0" value={price} onChange={handlePrice} />
                   <span>
                     {dollarPrice.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
                   </span>

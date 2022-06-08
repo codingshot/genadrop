@@ -52,7 +52,6 @@ export const graphQLClientPolygon = createClient({
         }
 
         const { clientName, fetchOptions } = operation.context;
-        console.log("client name", clientName);
         const options = typeof fetchOptions === "function" ? fetchOptions() : fetchOptions ?? {};
 
         switch (clientName) {

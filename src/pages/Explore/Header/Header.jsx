@@ -34,11 +34,15 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     }
   };
   const viewOnExplorer = () => {
+    console.log(loadedChain);
     if (loadedChain && loadedChain !== 4160) {
       return setExplorerLink(`${supportedChains[loadedChain]?.explorer}/${owner}`);
     }
-    if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
-    if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    if (process.env.REACT_APP_ENV_STAGING === "false") {
+      return setExplorerLink(`https://algoexplorer.io/${owner}`);
+    } else {
+      return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    }
   };
 
   useEffect(() => {

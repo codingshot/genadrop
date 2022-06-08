@@ -297,21 +297,28 @@ const CollectionNFT = () => {
             <div className={classes.btns}>
               {nftDetails.sold ? (
                 <>
-                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
                     SOLD!
                   </button>
                 </>
               ) : (
                 <>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={() => buyNft(buyProps)}
-                  >
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {Number(nftDetails.chain) !== 4160 ? (
+                    <button className={classes.sold} disabled={nftDetails.chain}>
+                      {/* <img src={walletIcon} alt="" /> */}
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={classes.buy}
+                      disabled={nftDetails.sold}
+                      onClick={() => buyNft(buyProps)}
+                    >
+                      <img src={walletIcon} alt="" />
+                      Buy now
+                    </button>
+                  )}
                   {/* <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid

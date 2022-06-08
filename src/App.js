@@ -50,7 +50,8 @@ import Artist from "./pages/artist/artist";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
-  if (showWelcomeScreen) {
+
+  if (showWelcomeScreen && window.sessionStorage.showWelcomeScreen === undefined) {
     return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
   }
 
