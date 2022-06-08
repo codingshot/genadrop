@@ -7,11 +7,13 @@ import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
 import Copy from "../../../components/copy/copy";
 import supportedChains from "../../../utils/supportedChains";
+import { readUserProfile } from "../../../utils/firebase";
 
 const Header = ({ collection, getHeight, loadedChain }) => {
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
   const [explorerLink, setExplorerLink] = useState("");
+  const [username, setUsername] = useState("");
   const [state, setState] = useState({
     dollarPrice: 0,
   });
@@ -32,13 +34,23 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     }
   };
   const viewOnExplorer = () => {
+    console.log(loadedChain);
     if (loadedChain && loadedChain !== 4160) {
       return setExplorerLink(`${supportedChains[loadedChain]?.explorer}/${owner}`);
     }
-    if (collection.mainnet === true) return setExplorerLink(`https://algoexplorer.io/${owner}`);
-    if (collection.mainnet === false) return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    if (process.env.REACT_APP_ENV_STAGING === "false") {
+      return setExplorerLink(`https://algoexplorer.io/${owner}`);
+    } else {
+      return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    }
   };
 
+  useEffect(() => {
+    if (owner)
+      readUserProfile(owner).then((data) => {
+        if (data) setUsername(data.username);
+      });
+  }, [owner]);
   useEffect(() => {
     getUsdValue();
     viewOnExplorer();
@@ -76,7 +88,9 @@ const Header = ({ collection, getHeight, loadedChain }) => {
                   <Copy
                     message={owner}
                     placeholder={
-                      owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`
+                      username
+                        ? username
+                        : owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`
                     }
                   />
                 </span>

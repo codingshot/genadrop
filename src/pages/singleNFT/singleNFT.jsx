@@ -6,7 +6,7 @@ import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { GenContext } from "../../gen-state/gen.context";
-import { getGraphNft, getSingleNftDetails, getTransactions } from "../../utils";
+import { getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -40,7 +40,7 @@ const SingleNFT = () => {
   const {
     params: { chainId, nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { singleAlgoNfts } = useContext(GenContext);
   const wrapperRef = useRef(null);
   const [state, setState] = useState({
     dropdown: ["1", "3"],
@@ -111,23 +111,34 @@ const SingleNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    const nft = singleNfts.filter((NFT) => String(NFT.id) === nftId)[0];
-    if (nft) {
+    if (Number(chainId) !== 4160) return;
+    let nftDetails = null;
+    const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
+    if (cacheNftDetails) {
+      nftDetails = cacheNftDetails;
+    } else {
+      nftDetails = singleAlgoNfts[nftId];
+    }
+    if (nftDetails) {
+      window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
-
-        const NFTDetails = await getSingleNftDetails(mainnet, nft);
         tHistory.find((t) => {
-          if (t.type === "Minting") t.price = NFTDetails.price;
+          if (t.type === "Minting") t.price = nftDetails.price;
         });
         handleSetState({
-          nftDetails: NFTDetails,
+          nftDetails,
           isLoading: false,
           transactionHistory: tHistory,
         });
       })();
-    } else {
-      (async function getNftDetails() {
+    }
+  }, [singleAlgoNfts]);
+
+  useEffect(() => {
+    if (Number(chainId) === 4160) return;
+    (async function getNftDetails() {
+      try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
         const { data, error } = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
         if (error) {
@@ -151,10 +162,8 @@ const SingleNFT = () => {
         }
         if (polygonData?.nft !== null) {
           const polygonResult = await getGraphNft(polygonData?.nft);
-          console.log(polygonResult);
           if (polygonResult[0]?.chain === chainId) {
             const trHistory = await getTransactions(polygonData?.nft?.transactions);
-            console.log(trHistory);
             trHistory.find((t) => {
               if (t.type === "Minting") t.price = polygonResult[0].price;
             });
@@ -165,11 +174,10 @@ const SingleNFT = () => {
             });
           }
         }
-        if (data?.data?.nft !== null) {
+        if (data?.nft !== null) {
           const result = await getGraphNft(data?.nft);
           if (result[0]?.chain === chainId) {
             const trHistory = await getTransactions(data?.nft?.transactions);
-            console.log(trHistory);
             trHistory.find((t) => {
               if (t.type === "Minting") t.price = result[0]?.price;
             });
@@ -180,15 +188,16 @@ const SingleNFT = () => {
             });
           }
         }
-      })();
-    }
-
+      } catch (error) {
+        console.log({ error });
+      }
+    })();
     document.documentElement.scrollTop = 0;
   }, []);
 
   useEffect(() => {
-    if (nftDetails?.chain) {
-      const pair = supportedChains[nftDetails.chain].coinGeckoLabel;
+    const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
+    if (Number(chainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
@@ -197,7 +206,8 @@ const SingleNFT = () => {
           chainSymbol: supportedChains[nftDetails.chain].symbol,
         });
       });
-    } else {
+    }
+    if (Number(chainId) === 4160) {
       axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
@@ -260,7 +270,7 @@ const SingleNFT = () => {
             <span className={classes.description}>{attribute.value}</span>
           </div>
         ) : nftDetails.properties.length === 1 ? (
-          <span> No Attributes Available</span>
+          <span key={idx}> No Attributes Available</span>
         ) : (
           <></>
         );
@@ -277,11 +287,33 @@ const SingleNFT = () => {
   const buyNft = async () => {
     dispatch(setLoader("Executing transaction..."));
     const res = await PurchaseNft(buyProps);
-    // eslint-disable-next-line no-alert
-    // alert(res);
-    dispatch(setLoader(""));
-    if (res) history.push(`/me/${account}`);
+    if (res) {
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        // history.push(`/me/${account}`);
+        history.push(`/marketplace`);
+        window.location.reload();
+      }, 1500);
+    } else {
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+      setTimeout(() => {
+        // history.push(`/me/${account}`);
+        history.push(`/marketplace`);
+        window.location.reload();
+      }, 1500);
+    }
   };
+
   return (
     <div className={classes.container}>
       <div className={classes.section1}>
@@ -340,10 +372,15 @@ const SingleNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {nftDetails?.chain?.length ? (
+                    <button type="button" className={classes.sold} disabled={nftDetails.chain} onClick={buyNft}>
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
+                      Buy now
+                    </button>
+                  )}
                 </>
               )}
             </div>

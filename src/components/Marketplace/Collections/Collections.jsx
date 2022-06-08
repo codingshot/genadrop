@@ -8,9 +8,14 @@ import { GenContext } from "../../../gen-state/gen.context";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const history = useHistory();
   const { url } = useRouteMatch();
+
+  useEffect(() => {
+    window.localStorage.activeCollection = null;
+  }, []);
 
   return (
     <div className={classes.container}>
@@ -21,9 +26,9 @@ const Collections = () => {
         </button>
       </div>
 
-      {algoCollections?.length || auroraCollections?.length || polygonCollections?.length ? (
+      {algoCollectionsArr?.length || auroraCollections?.length || polygonCollections?.length ? (
         <div className={classes.wrapper}>
-          {algoCollections
+          {algoCollectionsArr
             ?.filter((_, idx) => idx < 10)
             .map((collection, idx) => (
               <CollectionsCard key={idx} collection={collection} />
@@ -35,7 +40,7 @@ const Collections = () => {
             <CollectionsCard key={idx} collection={collection} />
           ))}
         </div>
-      ) : !algoCollections && !auroraCollections && !polygonCollections ? (
+      ) : !algoCollectionsArr && !auroraCollections && !polygonCollections ? (
         <h1 className={classes.noResult}> No Results Found</h1>
       ) : (
         <div className={classes.skeleton}>

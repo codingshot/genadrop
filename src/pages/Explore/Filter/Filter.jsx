@@ -6,21 +6,20 @@ import filterIcon from "../../../assets/icon-filter.svg";
 import dropdownIcon from "../../../assets/icon-dropdown.svg";
 import Dropdown from "../Dropdown/Dropdown";
 
-const Filter = ({ attributes, handleFilter, filterToDelete }) => {
+const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handleExploreSetState }) => {
   const [state, setState] = useState({
-    toggleFilter: true,
     toggleAttribute: true,
     toggleLayer: -1,
     lowestPrice: "0",
     highestPrice: "0",
     filter: {
       priceRange: { min: 0, max: 0 },
-      onlyListed: false,
+      onlyListed: true,
       attributes: [],
     },
   });
 
-  const { toggleFilter, lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter } = state;
+  const { lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -87,7 +86,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
     <>
       {toggleFilter ? (
         <aside className={classes.sidebar}>
-          <div onClick={() => handleSetState({ toggleFilter: !toggleFilter })} className={classes.filterHeading}>
+          <div onClick={() => handleExploreSetState({ toggleFilter: !toggleFilter })} className={classes.filterHeading}>
             <div>
               <img src={filterIcon} alt="" />
               <span>Filter</span>
@@ -192,7 +191,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete }) => {
         </aside>
       ) : (
         <aside className={classes.sidebar2}>
-          <img onClick={() => handleSetState({ toggleFilter: !toggleFilter })} src={arrowIconRight} alt="" />
+          <img onClick={() => handleExploreSetState({ toggleFilter: !toggleFilter })} src={arrowIconRight} alt="" />
         </aside>
       )}
     </>
