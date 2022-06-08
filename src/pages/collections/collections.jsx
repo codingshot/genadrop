@@ -142,6 +142,7 @@ const Collections = () => {
   }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
 
   useEffect(() => {
+    window.localStorage.activeCollection = {};
     document.documentElement.scrollTop = 0;
   }, []);
 
