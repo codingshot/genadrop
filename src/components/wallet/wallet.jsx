@@ -111,7 +111,6 @@ function ConnectWallet() {
     <div
       onClick={() => {
         history.push(`/me/${account}`);
-        window.location.reload();
       }}
       className={classes.user}
     >

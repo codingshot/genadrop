@@ -48,16 +48,6 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!account) history.push("/");
-    // Get User created Collections
-    (async function getCreatedCollections() {
-      const collections = await fetchUserCollections(account);
-      const algoCollections = await getUserNftCollections({ collections, mainnet });
-      const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      handleSetState({
-        myCollections: [...(algoCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
-      });
-    })();
     // Get User Created NFTs
     (async function getUserNFTs() {
       const singles = [];
@@ -79,6 +69,17 @@ const Dashboard = () => {
       const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
       console.log({ algoCollectedNfts });
       handleSetState({ collectedNfts: algoCollectedNfts });
+    })();
+
+    // Get User created Collections
+    (async function getCreatedCollections() {
+      const collections = await fetchUserCollections(account);
+      const algoCollections = await getUserNftCollections({ collections, mainnet });
+      const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      handleSetState({
+        myCollections: [...(algoCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
+      });
     })();
 
     (async function getUsername() {

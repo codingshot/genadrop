@@ -50,7 +50,6 @@ const SuccessPopup = (props) => {
         <button
           onClick={() => {
             history.push(`/me/${account}`);
-            window.location.reload();
           }}
           className={`${classes.actionBtn} ${classes._1}`}
         >

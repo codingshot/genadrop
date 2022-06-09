@@ -385,9 +385,8 @@ export const buyNft = async (buyProps) => {
       })
     );
     setTimeout(() => {
-      // history.push(`/me/${account}`);
-      history.push(`/marketplace`);
-      window.location.reload();
+      history.push(`/me/${account}`);
+      // history.push(`/marketplace`);
     }, 3000);
   } else {
     dispatch(setLoading(false));
