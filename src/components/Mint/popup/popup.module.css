@@ -107,19 +107,6 @@
   position: relative;
 }
 
-.actionBtn._1:hover::before {
-  content: attr(data-status);
-  position: absolute;
-  top: 100%;
-  white-space: nowrap;
-  background: white;
-  color: red;
-  border-radius: 0.25em;
-  border-bottom-right-radius: 0;
-  padding: 0 0.5em;
-  box-shadow: -2px 0 15px rgb(0, 0, 0, 0.5);
-}
-
 .actionBtn._2 {
   background: white;
   color: var(--main-accent);

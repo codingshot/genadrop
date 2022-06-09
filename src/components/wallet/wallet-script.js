@@ -224,12 +224,6 @@ export const updateAccount = async (walletProps) => {
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
   let isSupported = Object.keys(supportedChains).includes(networkId);
   if (!isSupported) {
-    dispatch(
-      setNotification({
-        message: "network not supported",
-        type: "error",
-      })
-    );
     WS.disconnectWallet(walletProps);
     dispatch(setToggleWalletPopup(true));
   } else {

@@ -161,32 +161,6 @@ const FetchData = () => {
     })();
   }, [mainnet]);
 
-  useEffect(() => {
-    (async function run() {
-      console.log({ account });
-      if (!account) return;
-      const userCollections = await fetchUserCollections(account);
-      const userNftCollections = await fetchUserNfts(account);
-
-      // console.log({ userCollections });
-      // console.log(userNftCollections);
-
-      let collections = [];
-      let singles = [];
-
-      userNftCollections?.forEach((nft) => {
-        if (nft.collection) {
-          collections.push(nft);
-        } else {
-          singles.push(nft);
-        }
-      });
-
-      // console.log({collections});
-      // console.log({singles});
-    })();
-  }, [account]);
-
   return null;
 };
 

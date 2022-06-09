@@ -49,10 +49,9 @@ const SuccessPopup = (props) => {
       <div className={classes.actionBtnContainer}>
         <button
           onClick={() => {
-            return;
             history.push(`/me/${account}`);
+            window.location.reload();
           }}
-          data-status="coming soon"
           className={`${classes.actionBtn} ${classes._1}`}
         >
           Go to Dashboard

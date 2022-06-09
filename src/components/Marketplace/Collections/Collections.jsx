@@ -5,6 +5,7 @@ import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
+import NotFound from "../../not-found/notFound";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
@@ -41,20 +42,18 @@ const Collections = () => {
           ))}
         </div>
       ) : !algoCollectionsArr && !auroraCollections && !polygonCollections ? (
-        <h1 className={classes.noResult}> No Results Found</h1>
+        <NotFound />
       ) : (
         <div className={classes.skeleton}>
-          {[...new Array(4)]
-            .map((_, idx) => idx)
-            .map((id) => (
-              <div key={id}>
-                <Skeleton count={1} height={250} />
-                <br />
-                <Skeleton count={1} height={30} />
-                <br />
-                <Skeleton count={1} height={30} />
-              </div>
-            ))}
+          {[...new Array(4)].map((id) => (
+            <div key={id}>
+              <Skeleton count={1} height={250} />
+              <br />
+              <Skeleton count={1} height={30} />
+              <br />
+              <Skeleton count={1} height={30} />
+            </div>
+          ))}
         </div>
       )}
     </div>

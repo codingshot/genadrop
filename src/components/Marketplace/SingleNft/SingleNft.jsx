@@ -5,6 +5,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
+import NotFound from "../../not-found/notFound";
 
 const SingleNft = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
@@ -38,17 +39,18 @@ const SingleNft = () => {
           ))}
         </div>
       ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts ? (
-        <h1 className={classes.noResult}> No Results Found</h1>
+        <NotFound />
       ) : (
         <div className={classes.wrapper}>
-          {[...new Array(5)]
-            .map((_, idx) => idx)
-            .map((id) => (
-              <div key={id}>
-                <Skeleton count={1} height={200} />
-                <Skeleton count={3} height={40} />
-              </div>
-            ))}
+          {[...new Array(4)].map((id) => (
+            <div key={id}>
+              <Skeleton count={1} height={250} />
+              <br />
+              <Skeleton count={1} height={30} />
+              <br />
+              <Skeleton count={1} height={30} />
+            </div>
+          ))}
         </div>
       )}
     </div>

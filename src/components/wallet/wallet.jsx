@@ -110,11 +110,10 @@ function ConnectWallet() {
   const goToDashboard = (
     <div
       onClick={() => {
-        return;
-        // history.push(`/me/${account}`);
+        history.push(`/me/${account}`);
+        window.location.reload();
       }}
       className={classes.user}
-      data-status="coming soon"
     >
       <img src={userIcon} alt="" />
     </div>
