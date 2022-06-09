@@ -140,13 +140,13 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   justify-items: center;
-  gap: 2em;
+  gap: 1em;
 }
 
 .skeleton {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 2em;
+  gap: 1em;
 }
 
 @media screen and (max-width: 1280px) {

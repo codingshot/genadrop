@@ -45,7 +45,7 @@
 .skeleton {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2em;
+  gap: 1em;
   z-index: 0;
 }
 

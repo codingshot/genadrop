@@ -5,6 +5,7 @@ import classes from "./Notification.module.css";
 import warningIcon from "../../assets/icon-warning.svg";
 import successIcon from "../../assets/icon-success.svg";
 import errorIcon from "../../assets/icon-error.svg";
+import blankIcon from "../../assets/blank.png";
 
 const Notification = () => {
   const feedbackRef = useRef(null);
@@ -21,6 +22,7 @@ const Notification = () => {
     warning: warningIcon,
     error: errorIcon,
     success: successIcon,
+    default: blankIcon,
   };
 
   useEffect(() => {
