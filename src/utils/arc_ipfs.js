@@ -460,15 +460,22 @@ export async function createNFT(createProps, doAccountCheck) {
       type: "warning",
     })
   );
-  for (let i = 0; i < metadata.length; i += 1) {
-    dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
-    const imgName = metadata[i].image;
-    const imgFile = data.files[imgName];
-    const uint8array = await imgFile.async("uint8array");
-    const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
-    const asset = await connectAndMint(blob, metadata[i], imgName);
-    assets.push(asset);
-  }
+  // for (let i = 0; i < metadata.length; i += 1) {
+  dispatch(setLoader(`uploading ${metadata.length}`));
+  const uploadingAsset = async (metadataSingle) => {
+    try {
+      const imgName = metadataSingle.image;
+      const imgFile = data.files[imgName];
+      const uint8array = await imgFile.async("uint8array");
+      const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
+      const asset = await connectAndMint(blob, metadataSingle, imgName);
+      return asset;
+    } catch (err) {
+      return {};
+    }
+  };
+  const res = await Promise.allSettled(metadata.map((metadataSingle) => uploadingAsset(metadataSingle)));
+  console.log(res);
   dispatch(setLoader(""));
   dispatch(
     setNotification({
@@ -512,11 +519,21 @@ export async function mintToAlgo(algoProps) {
         type: "default",
       })
     );
-    for (let i = 0; i < ipfsJsonData.length; ++i) {
-      dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
-      const txn = await createAsset(ipfsJsonData[i], account);
-      txns.push(txn);
-    }
+    dispatch(setLoader(`constructing assets (${ipfsJsonData.length})`));
+    // for (let i = 0; i < ipfsJsonData.length; ++i) {
+    const constructingAssets = async (ipfsSingleJsonData) => {
+      try {
+        const txn = await createAsset(ipfsSingleJsonData, account);
+        // txns.push(txn);
+        return txn;
+      } catch (err) {
+        return {};
+      }
+    };
+    const res = await Promise.allSettled(
+      ipfsJsonData.map((ipfsSingleJsonData) => constructingAssets(ipfsSingleJsonData))
+    );
+    console.log(res);
     dispatch(setLoader("finalizing"));
 
     try {

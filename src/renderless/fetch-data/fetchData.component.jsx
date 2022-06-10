@@ -40,6 +40,7 @@ const FetchData = () => {
     // Get ALGO Signle NFTs
     (async function getAlgoSingle() {
       const singleNfts = await fetchAlgoSingle(mainnet);
+      console.log(singleNfts);
       dispatch(setSingleNfts(singleNfts));
       if (singleNfts?.length) {
         getSingleNfts({ mainnet, singleNfts, dispatch });
