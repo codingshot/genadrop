@@ -167,14 +167,15 @@ const SingleNftCollection = () => {
           <NotFound />
         ) : (
           <div className={classes.skeleton}>
-            {[...new Array(5)]
-              .map((_, idx) => idx)
-              .map((id) => (
-                <div key={id}>
-                  <Skeleton count={1} height={200} />
-                  <Skeleton count={3} height={40} />
-                </div>
-              ))}
+            {[...new Array(5)].map((id) => (
+              <div key={id}>
+                <Skeleton count={1} height={200} />
+                <br />
+                <Skeleton count={1} height={30} />
+                <br />
+                <Skeleton count={1} height={30} />{" "}
+              </div>
+            ))}
           </div>
         )}
       </div>

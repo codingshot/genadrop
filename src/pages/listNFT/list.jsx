@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useRouteMatch, Link } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
-import { getUserNftCollection } from "../../utils";
+import { getUserBoughtNftCollection } from "../../utils";
 import classes from "./list.module.css";
-import { fetchAllNfts, writeNft } from "../../utils/firebase";
+import { fetchUserBoughtNfts, writeNft } from "../../utils/firebase";
 
 const List = () => {
   const { account, mainnet } = useContext(GenContext);
@@ -46,8 +46,8 @@ const List = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      const userNftCollections = await fetchAllNfts(account);
-      const result = await getUserNftCollection(mainnet, userNftCollections);
+      const userNftCollections = await fetchUserBoughtNfts(account);
+      const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
 
       const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
 
@@ -58,8 +58,6 @@ const List = () => {
       });
     })();
   }, []);
-
-  useEffect(() => {}, [nftDetails]);
 
   if (isLoading) {
     return (
