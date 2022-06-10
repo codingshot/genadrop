@@ -923,7 +923,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({

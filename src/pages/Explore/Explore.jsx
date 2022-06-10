@@ -65,7 +65,7 @@ const Explore = () => {
 
   useEffect(() => {
     if (Object.keys(algoCollections).length) {
-      const collection = algoCollections[collectionName];
+      const collection = algoCollections[collectionName.trimEnd()];
       if (collection && collectionNameRef.current) {
         collectionNameRef.current = false;
         handleSetState({ collection });
@@ -183,7 +183,12 @@ const Explore = () => {
               </div>
             ) : null}
           </div>
-          <Menu NFTCollection={FilteredCollection} loadedChain={loadedChain} toggleFilter={toggleFilter} />
+          <Menu
+            NFTCollection={FilteredCollection}
+            loadedChain={loadedChain}
+            chain={algoCollections[collectionName.trimEnd()]?.chain}
+            toggleFilter={toggleFilter}
+          />
         </main>
       </div>
     </div>

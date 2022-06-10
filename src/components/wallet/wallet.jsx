@@ -89,7 +89,7 @@ function ConnectWallet() {
   }, [chainId]);
 
   useEffect(() => {
-    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
+    const isSupported = Object.keys(supportedChains).includes(String(proposedChain));
     if (!isSupported) return;
     connectWallet(walletProps);
   }, [proposedChain, connectionMethod]);
