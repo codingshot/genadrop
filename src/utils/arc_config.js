@@ -1,7 +1,7 @@
 module.exports = {
   algodClientUrl: "https://testnet-api.algonode.cloud",
   algodNodeUrl: "https://node.testnet.algoexplorerapi.io",
-  algodMainClientUrl: "https://algoindexer.algoexplorerapi.io",
+  algodMainClientUrl: "https://mainnet-api.algonode.cloud",
   algoMaindNodeUrl: "https://node.algoexplorerapi.io",
   algodClientPort: "",
   algodClientToken: "",
