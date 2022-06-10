@@ -28,7 +28,6 @@ const FetchData = () => {
     // Get ALGO Collection
     (async function getALgoCollections() {
       const collections = await fetchAlgoCollections(mainnet);
-      console.log(collections);
       dispatch(setCollections(collections));
       if (collections?.length) {
         getNftCollections({ collections, mainnet, dispatch });
@@ -40,7 +39,6 @@ const FetchData = () => {
     // Get ALGO Signle NFTs
     (async function getAlgoSingle() {
       const singleNfts = await fetchAlgoSingle(mainnet);
-      console.log(singleNfts);
       dispatch(setSingleNfts(singleNfts));
       if (singleNfts?.length) {
         getSingleNfts({ mainnet, singleNfts, dispatch });

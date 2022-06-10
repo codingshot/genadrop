@@ -40,9 +40,8 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     }
     if (process.env.REACT_APP_ENV_STAGING === "false") {
       return setExplorerLink(`https://algoexplorer.io/${owner}`);
-    } else {
-      return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
     }
+    return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
   };
 
   useEffect(() => {
@@ -72,7 +71,15 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     <header ref={headerRef} className={classes.container}>
       <div className={classes.wrapper}>
         {imageUrl ? (
-          <img className={classes.imageContainer} src={imageUrl} alt="asset" />
+          <img
+            className={classes.imageContainer}
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null; // prevents looping
+              currentTarget.src = imageUrl;
+            }}
+            src={imageUrl}
+            alt="asset"
+          />
         ) : (
           <div className={classes.imageLoadingContainer}>
             <Skeleton count={1} height={200} />
@@ -88,9 +95,8 @@ const Header = ({ collection, getHeight, loadedChain }) => {
                   <Copy
                     message={owner}
                     placeholder={
-                      username
-                        ? username
-                        : owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`
+                      username ||
+                      (owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`)
                     }
                   />
                 </span>

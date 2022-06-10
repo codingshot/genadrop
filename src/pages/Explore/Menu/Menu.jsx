@@ -17,20 +17,7 @@ const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
         });
     }
   }, [chain]);
-  const loadNFTs = () => {
-    // for (let index = 0; index < Math.ceil(NFTCollection.length / 100) + 1; index += 1) {
-    //   console.log(index * 100);
-    //   console.log((index + 1) * 100);
-    const index = 0;
-    setTimeout(
-      () =>
-        NFTCollection.slice(index * 100, (index + 1) * 100).map((nft, idx) => (
-          <NftCard chinPrice={chinPrice} key={nft.Id} nft={nft} index={idx} loadedChain={loadedChain} />
-        )),
-      1000 * index
-    );
-    // }
-  };
+
   return (
     <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
       {NFTCollection

@@ -460,22 +460,15 @@ export async function createNFT(createProps, doAccountCheck) {
       type: "warning",
     })
   );
-  // for (let i = 0; i < metadata.length; i += 1) {
-  dispatch(setLoader(`uploading ${metadata.length}`));
-  const uploadingAsset = async (metadataSingle) => {
-    try {
-      const imgName = metadataSingle.image;
-      const imgFile = data.files[imgName];
-      const uint8array = await imgFile.async("uint8array");
-      const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
-      const asset = await connectAndMint(blob, metadataSingle, imgName);
-      return asset;
-    } catch (err) {
-      return {};
-    }
-  };
-  const res = await Promise.allSettled(metadata.map((metadataSingle) => uploadingAsset(metadataSingle)));
-  console.log(res);
+  for (let i = 0; i < metadata.length; i += 1) {
+    dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
+    const imgName = metadata[i].image;
+    const imgFile = data.files[imgName];
+    const uint8array = await imgFile.async("uint8array");
+    const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
+    const asset = await connectAndMint(blob, metadata[i], imgName);
+    assets.push(asset);
+  }
   dispatch(setLoader(""));
   dispatch(
     setNotification({
@@ -519,21 +512,11 @@ export async function mintToAlgo(algoProps) {
         type: "default",
       })
     );
-    dispatch(setLoader(`constructing assets (${ipfsJsonData.length})`));
-    // for (let i = 0; i < ipfsJsonData.length; ++i) {
-    const constructingAssets = async (ipfsSingleJsonData) => {
-      try {
-        const txn = await createAsset(ipfsSingleJsonData, account);
-        // txns.push(txn);
-        return txn;
-      } catch (err) {
-        return {};
-      }
-    };
-    const res = await Promise.allSettled(
-      ipfsJsonData.map((ipfsSingleJsonData) => constructingAssets(ipfsSingleJsonData))
-    );
-    console.log(res);
+    for (let i = 0; i < ipfsJsonData.length; ++i) {
+      dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
+      const txn = await createAsset(ipfsJsonData[i], account);
+      txns.push(txn);
+    }
     dispatch(setLoader("finalizing"));
 
     try {
@@ -778,20 +761,6 @@ export async function getAlgoData(mainnet, id) {
   const data = await algodClient.getAssetByID(id).do();
   return data;
 }
-// export async function getAlgoData(mainnet, id) {
-//   initAlgoClients(mainnet);
-
-//   // const data = await algodClient.getAssetByID(id).do();
-//   try {
-//     const data = await algodClient.getAssetByID(id).do();
-//     // const data = await axios.get("https://algoindexer.testnet.algoexplorerapi.io/v2/assets/93791312");
-//     // console.log(data);
-//     console.log(data);
-//     return data.data.data;
-//   } catch {
-//     return "";
-//   }
-// }
 
 export async function mintToAurora(polyProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
