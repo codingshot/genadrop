@@ -129,6 +129,7 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
+  console.log({ singleNfts });
   const nftsArr = [];
   for (let i = 0; i < singleNfts?.length; i += 1) {
     try {
