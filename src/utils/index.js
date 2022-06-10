@@ -108,7 +108,7 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
       const nftObj = {};
       nftObj.Id = singleNfts[i].id;
       nftObj.price = singleNfts[i].price;
-      nftObj.buyer = singleNfts[i].buyer;
+      nftObj.buyer = singleNfts[i].Buyer;
       nftObj.owner = singleNfts[i].owner;
       nftObj.sold = singleNfts[i].sold;
       nftObj.dateSold = singleNfts[i].dateSold;
@@ -135,13 +135,14 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
+  console.log({ singleNfts });
   const nftsArr = [];
   for (let i = 0; i < singleNfts?.length; i += 1) {
     try {
       const nftObj = {};
       nftObj.Id = singleNfts[i].id;
       nftObj.price = singleNfts[i].price;
-      nftObj.buyer = singleNfts[i].buyer;
+      nftObj.buyer = singleNfts[i].Buyer;
       nftObj.owner = singleNfts[i].owner;
       nftObj.sold = singleNfts[i].sold;
       nftObj.dateSold = singleNfts[i].dateSold;
