@@ -6,11 +6,10 @@ import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { GenContext } from "../../gen-state/gen.context";
-import { getGraphNft, getSingleNftDetails, getTransactions } from "../../utils";
+import { buyNft, getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import { PurchaseNft } from "../../utils/arc_ipfs";
 import copiedIcon from "../../assets/copied.svg";
 import copyIcon from "../../assets/copy-solid.svg";
 import walletIcon from "../../assets/wallet-icon.png";
@@ -22,24 +21,22 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setLoader } from "../../gen-state/gen.actions";
+import { setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
+import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
 
 const SingleNFT = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
   const client = createClient({
     url: APIURL,
   });
-
-  const { account, connector, mainnet, dispatch } = useContext(GenContext);
-
+  const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
+  const history = useHistory();
   const {
-    params: { nftId },
+    params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
   const wrapperRef = useRef(null);
   const [state, setState] = useState({
     dropdown: ["1", "3"],
@@ -63,7 +60,17 @@ const SingleNFT = () => {
     isCopied,
     transactionHistory,
   } = state;
-  const history = useHistory();
+
+  const buyProps = {
+    dispatch,
+    account,
+    connector,
+    mainnet,
+    nftDetails,
+    history,
+    chainId,
+  };
+
   const Explorers = [
     { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
     { matic: [{ testnet: "https://mumbai.polygonscan.com/tx/" }, { mainnet: "https://polygonscan.com/tx/" }] },
@@ -77,16 +84,11 @@ const SingleNFT = () => {
       ],
     },
   ];
+
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const buyProps = {
-    dispatch,
-    account,
-    connector,
-    mainnet,
-    nftDetails,
-  };
+
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -110,52 +112,103 @@ const SingleNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    const nft = singleNfts.filter((NFT) => String(NFT.id) === nftId)[0];
-    if (nft) {
+    if (Number(nftChainId) !== 4160) return;
+    let nftDetails = null;
+    const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
+    if (cacheNftDetails) {
+      nftDetails = cacheNftDetails;
+    } else {
+      nftDetails = singleAlgoNfts[nftId];
+    }
+    if (nftDetails) {
+      window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
-
-        const NFTDetails = await getSingleNftDetails(mainnet, nft);
         tHistory.find((t) => {
-          if (t.type === "Minting") t.price = NFTDetails.price;
+          if (t.type === "Minting") t.price = nftDetails.price;
         });
         handleSetState({
-          nftDetails: NFTDetails,
+          nftDetails,
           isLoading: false,
           transactionHistory: tHistory,
         });
       })();
-    } else {
-      (async function getNftDetails() {
-        const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-        const result = await getGraphNft(data.data.nft);
-        const trHistory = await getTransactions(data?.data?.nft?.transactions);
-        trHistory.find((t) => {
-          if (t.type === "Minting") t.price = result[0].price;
-        });
-        handleSetState({
-          nftDetails: result[0],
-          isLoading: false,
-          transactionHistory: trHistory,
-        });
-      })();
     }
+  }, [singleAlgoNfts]);
 
+  useEffect(() => {
+    if (Number(nftChainId) === 4160) return;
+    (async function getNftDetails() {
+      try {
+        // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
+        const { data, error } = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        }
+        const { data: polygonData, error: polygonError } = await polygonClient
+          .query(GET_GRAPH_NFT, { id: nftId })
+          .toPromise();
+        if (polygonError) {
+          return dispatch(
+            setNotification({
+              message: polygonError.message,
+              type: "warning",
+            })
+          );
+        }
+        if (polygonData?.nft !== null) {
+          const polygonResult = await getGraphNft(polygonData?.nft);
+          if (polygonResult[0]?.chain === nftChainId) {
+            const trHistory = await getTransactions(polygonData?.nft?.transactions);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = polygonResult[0].price;
+            });
+            handleSetState({
+              nftDetails: polygonResult[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+        if (data?.nft !== null) {
+          const result = await getGraphNft(data?.nft);
+          if (result[0]?.chain === nftChainId) {
+            const trHistory = await getTransactions(data?.nft?.transactions);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = result[0]?.price;
+            });
+            handleSetState({
+              nftDetails: result[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+      } catch (error) {
+        console.log({ error });
+      }
+    })();
     document.documentElement.scrollTop = 0;
   }, []);
 
   useEffect(() => {
-    if (nftDetails?.chain) {
-      const pair = supportedChains[nftDetails.chain].coinGeckoLabel;
+    const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
+    if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
         let value = Object.values(res.data)[0].usd;
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
-          chainSymbol: "ETH",
+          chainSymbol: supportedChains[nftDetails.chain].symbol,
         });
       });
-    } else {
+    }
+    if (Number(nftChainId) === 4160) {
       axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
@@ -218,7 +271,7 @@ const SingleNFT = () => {
             <span className={classes.description}>{attribute.value}</span>
           </div>
         ) : nftDetails.properties.length === 1 ? (
-          <span> No Attributes Available</span>
+          <span key={idx}> No Attributes Available</span>
         ) : (
           <></>
         );
@@ -232,14 +285,6 @@ const SingleNFT = () => {
     content: attributeContent(),
   };
 
-  const buyNft = async () => {
-    dispatch(setLoader("Executing transaction..."));
-    const res = await PurchaseNft(buyProps);
-    // eslint-disable-next-line no-alert
-    // alert(res);
-    dispatch(setLoader(""));
-    if (res) history.push(`/me/${account}`);
-  };
   return (
     <div className={classes.container}>
       <div className={classes.section1}>
@@ -292,16 +337,26 @@ const SingleNFT = () => {
             <div className={classes.btns}>
               {nftDetails.sold ? (
                 <>
-                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
                     SOLD!
                   </button>
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {Number(nftDetails.chain) !== 4160 ? (
+                    <button className={classes.sold} disabled={nftDetails.chain}>
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={classes.buy}
+                      disabled={nftDetails.sold}
+                      onClick={() => buyNft(buyProps)}
+                    >
+                      Buy now
+                    </button>
+                  )}
                 </>
               )}
             </div>

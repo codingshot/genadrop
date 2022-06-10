@@ -1,45 +1,55 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./profile.module.css";
 import twitterIcon from "../../assets/icon-twitter-accent.svg";
-import youtubeIcon from "../../assets/icon-youtube-accent.svg";
 import instagramIcon from "../../assets/icon-instagram.svg";
 import discordIcon from "../../assets/icon-discord-accent.svg";
+import { readUserProfile } from "../../utils/firebase";
+import { handleCancel, handleInputChange, handleSave } from "./profile-script";
 
 const Profile = () => {
-  const { account } = useContext(GenContext);
+  const history = useHistory();
+  const { account, dispatch } = useContext(GenContext);
+
   const [state, setState] = useState({
     subscribe: false,
+    username: "",
     email: "",
     twitter: "",
     discord: "",
-    youtube: "",
     instagram: "",
   });
-  const { subscribe, email, twitter, discord, youtube, instagram } = state;
+
+  const [validation, setValidation] = useState({
+    isEmail: true,
+    isTwitter: true,
+    isDiscord: true,
+    isInstagram: true,
+  });
+
+  const { subscribe, email, twitter, discord, username, instagram } = state;
+  const { isEmail, isDiscord, isTwitter, isInstagram } = validation;
+
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    handleSetState({ [name]: value });
+  const handleSetValidation = (payload) => {
+    setValidation((val) => ({ ...val, ...payload }));
   };
 
-  const history = useHistory();
+  const inputProps = { handleSetState, handleSetValidation };
+  const saveProps = { account, state, dispatch, handleSetValidation };
+  const cancelProps = { handleSetState, history };
 
-  const handleCancel = () => {
-    handleSetState({
-      subscribe: false,
-      email: "",
-      twitter: "",
-      discord: "",
-      youtube: "",
-      instagram: "",
-    });
-    history.goBack();
-  };
+  useEffect(() => {
+    (async function updateProfile() {
+      if (!account) return;
+      const res = await readUserProfile(account);
+      handleSetState(res);
+    })();
+  }, [account]);
 
   return (
     <div className={classes.container}>
@@ -53,8 +63,24 @@ const Profile = () => {
         </div>
 
         <div className={classes.option}>
+          <h3>Username</h3>
+          <input
+            type="text"
+            value={username}
+            name="username"
+            onChange={(event) => handleInputChange({ event, ...inputProps })}
+          />
+        </div>
+
+        <div className={`${classes.option} ${!isEmail && classes.invalid}`}>
           <h3>Email</h3>
-          <input type="email" value={email} name="email" onChange={handleInputChange} placeholder="me@gmail.com" />
+          <input
+            type="email"
+            value={email}
+            name="email"
+            onChange={(event) => handleInputChange({ event, ...inputProps })}
+            placeholder="me@gmail.com"
+          />
         </div>
 
         <div className={classes.option}>
@@ -74,43 +100,50 @@ const Profile = () => {
         <section className={classes.social}>
           <h2 className={classes.subheading}>Social Media</h2>
 
-          <div className={classes.option}>
+          <div className={`${classes.option} ${!isTwitter && classes.invalid}`}>
             <label>
               <img src={twitterIcon} alt="" />
               <div>Twitter</div>
             </label>
-            <input type="text" value={twitter} name="twitter" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={`https://twitter.com/${twitter}`}
+              name="twitter"
+              onChange={(event) => handleInputChange({ event, ...inputProps })}
+            />
           </div>
 
-          <div className={classes.option}>
+          <div className={`${classes.option} ${!isInstagram && classes.invalid}`}>
             <label>
               <img src={instagramIcon} alt="" />
               <div>Instagram</div>
             </label>
-            <input type="text" value={instagram} name="instagram" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={`https://www.instagram.com/${instagram}`}
+              name="instagram"
+              onChange={(event) => handleInputChange({ event, ...inputProps })}
+            />
           </div>
 
-          <div className={classes.option}>
-            <label>
-              <img src={youtubeIcon} alt="" />
-              <div>Youtube</div>
-            </label>
-            <input type="text" value={youtube} name="youtube" onChange={handleInputChange} />
-          </div>
-
-          <div className={classes.option}>
+          <div className={`${classes.option} ${!isDiscord && classes.invalid}`}>
             <label>
               <img src={discordIcon} alt="" />
               <div>Discord</div>
             </label>
-            <input type="text" value={discord} name="discord" onChange={handleInputChange} />
+            <input
+              type="text"
+              value={discord}
+              name="discord"
+              onChange={(event) => handleInputChange({ event, ...inputProps })}
+            />
           </div>
 
           <div className={classes.buttons}>
-            <button type="button" className={classes.submit}>
+            <button type="button" onClick={() => handleSave(saveProps)} className={classes.submit}>
               Save Changes
             </button>
-            <button type="button" onClick={handleCancel} className={classes.cancel}>
+            <button type="button" onClick={() => handleCancel(cancelProps)} className={classes.cancel}>
               Cancel
             </button>
           </div>

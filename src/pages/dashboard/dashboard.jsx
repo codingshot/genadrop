@@ -1,36 +1,23 @@
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { useHistory, useLocation } from "react-router-dom";
-import { createClient } from "urql";
+import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
 import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import { getNftCollections, getSingleNfts } from "../../utils";
-import { fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
+import { getUserNftCollections, getUserSingleNfts } from "../../utils";
+import { fetchUserBoughtNfts, fetchUserCollections, fetchUserNfts, readUserProfile } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
-import { GET_ALL_AURORA_COLLECTIONS } from "../../graphql/querries/getCollections";
-
-const LodaingCards = () => (
-  <div className={classes.skeleton}>
-    {[...new Array(5)]
-      .map((_, idx) => idx)
-      .map((id) => (
-        <div key={id}>
-          <Skeleton count={1} height={300} />
-        </div>
-      ))}
-  </div>
-);
 
 const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
+  const { url } = useRouteMatch();
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -39,20 +26,17 @@ const Dashboard = () => {
       price: "high",
     },
     activeDetail: "created",
-    collectedNfts: false,
-    createdNfts: false,
-    myCollections: false,
+    collectedNfts: null,
+    createdNfts: null,
+    myCollections: null,
     filteredCollection: null,
+    username: "",
   });
 
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, username } = state;
 
-  const client = createClient({
-    url: APIURL,
-  });
-
-  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection } = state;
-  const { account, mainnet, singleNfts } = useContext(GenContext);
+  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } =
+    useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -64,34 +48,44 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (!account) history.push("/");
+    // Get User Created NFTs
+    (async function getUserNFTs() {
+      const singles = [];
+      const singleNfts = await fetchUserNfts(account);
+      singleNfts?.forEach((nft) => {
+        if (!nft.collection) {
+          singles.push(nft);
+        }
+      });
+      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts: singles });
+      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
+      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
+      handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
+    })();
 
-    console.log(" collection length:", filteredCollection?.length);
-    (async function readAllSingle() {
-      const userCollections = await fetchUserCollections(account);
-      const myNftsCollections = await getNftCollections(userCollections, mainnet);
+    (async function getUserCollectedNfts() {
+      // get collected nfts from the same fetch result
+      const collectedNfts = await fetchUserBoughtNfts(account);
+      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
+      console.log({ algoCollectedNfts });
+      handleSetState({ collectedNfts: algoCollectedNfts });
+    })();
 
-      console.log("===>", myNftsCollections);
+    // Get User created Collections
+    (async function getCreatedCollections() {
+      const collections = await fetchUserCollections(account);
+      const algoCollections = await getUserNftCollections({ collections, mainnet });
+      const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
       handleSetState({
-        myCollections: myNftsCollections,
+        myCollections: [...(algoCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
       });
     })();
 
-    (async function getCollections() {
-      const userNftCollections = await fetchUserNfts(account);
-      console.log(userNftCollections);
-      const createdUserNfts = await getSingleNfts(mainnet, userNftCollections);
-
-      handleSetState({ createdNfts: createdUserNfts });
-    })();
-
-    (async function getCollections() {
-      const allSingleNFTs = await getSingleNfts(mainnet, singleNfts);
-      const collectedNFTS = allSingleNFTs.filter((nft) => nft.buyer === account);
-      console.log("===>", collectedNFTS);
-
-      handleSetState({
-        collectedNfts: collectedNFTS,
-      });
+    (async function getUsername() {
+      const data = await readUserProfile(account);
+      handleSetState({ username: data.username });
+      console.log("Username: ", data.username);
     })();
   }, [account]);
 
@@ -142,12 +136,13 @@ const Dashboard = () => {
     }
     let filteredNFTCollection = collection;
     if (collection) {
-      filteredNFTCollection = collection?.filter((col) =>
+      filteredNFTCollection = collection.filter((col) =>
         col.name.toLowerCase().includes(name ? name.toLowerCase() : "")
       );
     }
     handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
+
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
@@ -156,9 +151,14 @@ const Dashboard = () => {
             <img src={avatar} alt="" />
           </div>
 
+          {username ? <div className={classes.username}> {username}</div> : ""}
           <div className={classes.address}>
             <Copy message={account} placeholder={breakAddress(account)} />
           </div>
+
+          <Link to={`${url}/profile/settings`}>
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
 
           <div className={classes.details}>
             <div
@@ -217,17 +217,19 @@ const Dashboard = () => {
             filter.searchValue ? (
               <NotFound />
             ) : (
-              <h1 className={classes.noResult}>No Results Found</h1>
+              <NotFound />
             )
           ) : (
             <div className={classes.skeleton}>
-              {[...new Array(5)]
-                .map((_, idx) => idx)
-                .map((id) => (
-                  <div key={id}>
-                    <Skeleton count={1} height={300} />
-                  </div>
-                ))}
+              {[...new Array(5)].map((id) => (
+                <div key={id}>
+                  <Skeleton count={1} height={200} />
+                  <br />
+                  <Skeleton count={1} height={30} />
+                  <br />
+                  <Skeleton count={1} height={30} />
+                </div>
+              ))}
             </div>
           )}
         </section>

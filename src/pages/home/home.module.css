@@ -1,16 +1,15 @@
 .container {
   width: 100%;
   margin-bottom: 8em;
-  transform: scale(0.98);
-  animation: breath 1s forwards;
+  animation: breath 1650ms forwards;
 }
 
 @keyframes breath {
   from {
-    transform: scale(0.98);
+    transform: scale(0.98) translateY(-2em);
   }
   to {
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 

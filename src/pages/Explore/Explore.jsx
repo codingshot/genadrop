@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Explore.module.css";
@@ -11,21 +11,16 @@ import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
-import { createClient } from "urql";
-import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION } from "../../graphql/querries/getCollections";
 
 const Explore = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-
-  const client = createClient({
-    url: APIURL,
-  });
-
+  const collectionNameRef = useRef(true);
   const [state, setState] = useState({
+    toggleFilter: true,
     togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
     loadedChain: null,
+    allGraphCollection: [],
     collection: null,
     attributes: null,
     filterToDelete: null,
@@ -36,6 +31,7 @@ const Explore = () => {
     },
   });
   const {
+    toggleFilter,
     collection,
     NFTCollection,
     attributes,
@@ -45,7 +41,7 @@ const Explore = () => {
     headerHeight,
     loadedChain,
   } = state;
-  const { collections, mainnet } = useContext(GenContext);
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -61,35 +57,42 @@ const Explore = () => {
     handleSetState({ headerHeight: res });
   };
 
+  const getAllCollectionChains = () => {
+    return !auroraCollections && !polygonCollections
+      ? null
+      : [...(auroraCollections || []), ...(polygonCollections || [])];
+  };
+
   useEffect(() => {
-    if (Object.keys(collections).length) {
-      const collectionsFound = collections.find((col) => col.name === collectionName);
-      if (collectionsFound) {
-        (async function getResult() {
-          const result = await getNftCollection(collectionsFound, mainnet);
-          handleSetState({
-            collection: collectionsFound,
-            NFTCollection: result,
-          });
-        })();
-      } else {
-        (async function getGraphResult() {
-          const data = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
-          console.log(data.data);
-          const result = await getGraphCollection(data.data.collection.nfts, data.data.collection);
-          handleSetState({
-            collection: {
-              ...data?.data?.collection,
-              owner: data?.data?.collection?.id,
-              price: result[0].collectionPrice,
-            },
-            NFTCollection: result,
-            loadedChain: result[0].chain,
-          });
-        })();
+    if (Object.keys(algoCollections).length) {
+      const collection = algoCollections[collectionName.trimEnd()];
+      if (collection && collectionNameRef.current) {
+        collectionNameRef.current = false;
+        handleSetState({ collection });
+        getNftCollection({ collection, mainnet, dispatch, handleSetState });
       }
     }
-  }, []);
+  }, [algoCollections]);
+
+  useEffect(() => {
+    (async function getGraphResult() {
+      const allCollection = getAllCollectionChains();
+      const filteredCollection = allCollection?.filter((col) => col?.owner === collectionName);
+      if (filteredCollection?.length) {
+        const result = await getGraphCollection(filteredCollection[0]?.nfts, filteredCollection[0]);
+
+        handleSetState({
+          collection: {
+            ...filteredCollection[0],
+            owner: filteredCollection[0]?.owner,
+            price: result[0]?.collectionPrice,
+          },
+          NFTCollection: result,
+          loadedChain: result[0]?.chain,
+        });
+      }
+    })();
+  }, [auroraCollections, polygonCollections]);
 
   useEffect(() => {
     if (!NFTCollection) return;
@@ -145,13 +148,19 @@ const Explore = () => {
         collection={{
           ...collection,
           numberOfNfts: NFTCollection && NFTCollection.length,
-          imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)].image_url,
+          imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)]?.image_url,
         }}
         loadedChain={loadedChain}
       />
 
       <div className={classes.displayContainer}>
-        <Filter handleFilter={handleFilter} filterToDelete={filterToDelete} attributes={attributes} />
+        <Filter
+          handleFilter={handleFilter}
+          filterToDelete={filterToDelete}
+          attributes={attributes}
+          toggleFilter={toggleFilter}
+          handleExploreSetState={(prop) => handleSetState({ ...prop })}
+        />
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
@@ -174,7 +183,12 @@ const Explore = () => {
               </div>
             ) : null}
           </div>
-          <Menu NFTCollection={FilteredCollection} loadedChain={loadedChain} />
+          <Menu
+            NFTCollection={FilteredCollection}
+            loadedChain={loadedChain}
+            chain={algoCollections[collectionName.trimEnd()]?.chain}
+            toggleFilter={toggleFilter}
+          />
         </main>
       </div>
     </div>

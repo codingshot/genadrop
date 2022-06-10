@@ -35,9 +35,16 @@ export const INITIAL_STATE = {
   rule: [],
   collections: {},
   singleNfts: [],
+  algoCollections: {},
+  singleAlgoNfts: {},
+  auroraCollections: [],
+  polygonCollections: [],
+  singleAuroraNfts: [],
+  singlePolygonNfts: [],
+  activeCollection: [],
   notification: {
     message: "",
-    type: "", //warning, error, success
+    type: "", // warning, error, success, default
   },
   clipboardMessage: "",
   loaderMessage: "",
@@ -48,6 +55,7 @@ export const INITIAL_STATE = {
   promptAsset: null,
   promptLayer: null,
   promptRules: null,
+  toggleWalletPopup: false,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -193,6 +201,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         chainId: action.payload,
       };
+
     case genActionTypes.SET_PROPOSED_CHAIN:
       return {
         ...state,
@@ -218,6 +227,21 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         collections: action.payload,
       };
+    case genActionTypes.SET_ALGO_COLLECTIONS:
+      return {
+        ...state,
+        algoCollections: action.payload,
+      };
+    case genActionTypes.SET_AURORA_COLLECTIONS:
+      return {
+        ...state,
+        auroraCollections: action.payload,
+      };
+    case genActionTypes.SET_POLYGON_COLLECTIONS:
+      return {
+        ...state,
+        polygonCollections: action.payload,
+      };
     case genActionTypes.GRAPH_COLLECTIONS:
       return {
         ...state,
@@ -227,6 +251,21 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         singleNfts: action.payload,
+      };
+    case genActionTypes.SET_ALGO_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAlgoNfts: action.payload,
+      };
+    case genActionTypes.SET_AURORA_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAuroraNfts: action.payload,
+      };
+    case genActionTypes.SET_POLYGON_SINGLE_NFTS:
+      return {
+        ...state,
+        singlePolygonNfts: action.payload,
       };
     case genActionTypes.SET_FEEDBACK:
       return {
@@ -272,6 +311,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         promptRules: action.payload,
+      };
+    case genActionTypes.TOGGLE_WALLET_POPUP:
+      return {
+        ...state,
+        toggleWalletPopup: action.payload,
+      };
+    case genActionTypes.SET_ACTIVE_COLLECTION:
+      return {
+        ...state,
+        activeCollection: action.payload,
       };
     default:
       return state;

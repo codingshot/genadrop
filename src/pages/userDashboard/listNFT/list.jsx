@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
+import { buyNft, getSingleNftDetails } from "../../../utils";
 import classes from "./list.module.css";
-import { PurchaseNft } from "../../../utils/arc_ipfs";
 
 const List = () => {
-  const { account, connector } = useContext(GenContext);
-
+  const { dispatch, account, connector, mainnet, chainId } = useContext(GenContext);
+  const history = useHistory();
   const {
     params: { nftId },
   } = useRouteMatch();
@@ -21,19 +20,25 @@ const List = () => {
     chain: "Algo",
     price: "",
   });
+
   const { nftDetails, isLoading, price, chain } = state;
+
+  const buyProps = {
+    dispatch,
+    account,
+    connector,
+    mainnet,
+    nftDetails,
+    history,
+    chainId,
+  };
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
   const handlePrice = (event) => {
     handleSetState({ price: event.target.value });
-  };
-
-  const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector);
-    // eslint-disable-next-line no-alert
-    alert(res);
   };
 
   useEffect(() => {
@@ -96,14 +101,16 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-              <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
+              ({" "}
+              <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={() => buyNft(buyProps)}>
+                ){" "}
                 <div>
                   <img src="/assets/price-tage.svg" alt="" />
                   SET PRICE
                 </div>
                 <span>Sell the NFT at a fixed price</span>
               </button>
-              <button type="button" className={classes.bid} disabled={nftDetails.sold} onClick={buyNft}>
+              <button type="button" className={classes.bid} disabled={nftDetails.sold} onClick={() => buyNft(buyProps)}>
                 <div>
                   <img src="/assets/bid.png" alt="" />
                   HIGHEST BID

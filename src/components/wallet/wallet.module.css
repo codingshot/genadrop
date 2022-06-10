@@ -70,6 +70,7 @@
   border-radius: 50%;
   padding: 0.25em;
   cursor: pointer;
+  position: relative;
 }
 
 .user img {

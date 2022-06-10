@@ -8,7 +8,6 @@
 .wrapper {
   width: 100%;
   background: var(--main-bg);
-  box-shadow: 0 0 15px gainsboro;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,7 +15,6 @@
   gap: 1em;
   margin-bottom: 2em;
   padding: 2em 1em;
-  border-radius: 1em;
 }
 
 .imageLoadingContainer {

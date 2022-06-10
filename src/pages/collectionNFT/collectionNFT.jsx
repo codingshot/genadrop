@@ -10,8 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getAuroraCollections, getGraphCollection, getGraphNft, getNftCollection, getTransactions } from "../../utils";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import { buyNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
@@ -23,56 +22,45 @@ import facebookIcon from "../../assets/facebook.svg";
 import instagramIcon from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
-import algoLogo from "../../assets/icon-algo.svg";
-import auroraIcon from "../../assets/icon-aurora.svg";
-import { createClient } from "urql";
 import supportedChains from "../../utils/supportedChains";
 
-import { GET_ALL_AURORA_COLLECTIONS, GET_GRAPH_COLLECTION, GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
-
 const CollectionNFT = () => {
+  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections, chainId } =
+    useContext(GenContext);
+  const {
+    params: { collectionName, nftId },
+  } = useRouteMatch();
+  const history = useHistory();
+  const wrapperRef = useRef(null);
   const [state, setState] = useState({
     dropdown: ["1", "3"],
-    asset: null,
+    nftDetails: null,
     transactionHistory: null,
     showSocial: false,
     isLoading: true,
+    allGraphCollectons: [],
     collection: [],
     algoPrice: 0,
     isCopied: false,
-    chainIcon: algoLogo,
-    chainSymbol: "",
+    totalPrice: 0,
   });
 
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+  const { dropdown, totalPrice, nftDetails, transactionHistory, collection, isLoading, showSocial, isCopied } = state;
 
-  const client = createClient({
-    url: APIURL,
-  });
-
-  const {
-    dropdown,
-    chainSymbol,
-    asset,
-    transactionHistory,
-    collection,
-    isLoading,
-    algoPrice,
-    showSocial,
-    isCopied,
-    chainIcon,
-  } = state;
+  const buyProps = {
+    dispatch,
+    nftDetails,
+    account,
+    connector,
+    mainnet,
+    history,
+    chainId,
+  };
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const { account, connector, mainnet } = useContext(GenContext);
-  const { collections } = useContext(GenContext);
-  const { url } = useRouteMatch();
-  const history = useHistory();
-  const [, , , collectionName, nftId] = url.split("/");
-  const wrapperRef = useRef(null);
   function useOutsideAlerter(ref) {
     useEffect(() => {
       /**
@@ -95,70 +83,75 @@ const CollectionNFT = () => {
   useOutsideAlerter(wrapperRef);
 
   useEffect(() => {
-    if (Object.keys(collections).length) {
-      const newCollection = collections.find((col) => col.name === collectionName);
-      if (newCollection) {
-        (async function getResult() {
-          const collectionData = await getNftCollection(newCollection, mainnet);
-          const result = collectionData.find((assetD) => assetD.Id === Number(nftId));
-          console.log("The result", result);
-          let tHistory = await readNftTransaction(result.Id);
-          tHistory.find((t) => {
-            if (t.type === "Minting") t.price = result.price;
-          });
-          handleSetState({
-            asset: result,
-            transactionHistory: tHistory,
-            collection: collectionData,
-            isLoading: false,
-          });
-        })();
-      } else {
-        (async function getNFTDetails() {
-          //get single nft data
-          const data = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-          const result = await getGraphNft(data.data.nft, collectionName);
-          const trHistory = await getTransactions(data?.data?.nft?.transactions);
+    const cacheCollection = JSON.parse(window.localStorage.activeCollection);
+    let result = activeCollection.find((col) => col.Id === Number(nftId));
+    result = result || cacheCollection ? cacheCollection[nftId] : null;
+    if (result) {
+      const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
+      (async function getResult() {
+        const tHistory = await readNftTransaction(result.Id);
+        tHistory.find((t) => {
+          if (t.type === "Minting") t.price = result.price;
+        });
+        handleSetState({
+          nftDetails: result,
+          transactionHistory: tHistory,
+          collection,
+          isLoading: false,
+        });
+      })();
+    }
+    document.documentElement.scrollTop = 0;
+  }, [nftId]);
 
-          // get collection data
-          const collectionData = await client.query(GET_GRAPH_COLLECTION, { id: collectionName }).toPromise();
-          const collectionResponseData = await getGraphCollection(
-            collectionData.data.collection.nfts,
-            collectionData.data.collection
-          );
+  const getAllCollectionChains = () => {
+    return !auroraCollections && !polygonCollections
+      ? null
+      : [...(auroraCollections || []), ...(polygonCollections || [])];
+  };
+
+  useEffect(() => {
+    (async function getGraphResult() {
+      const allCollections = getAllCollectionChains();
+      // filtering to get the unqiue collection
+      const filteredCollection = allCollections?.filter((col) => col?.owner === collectionName);
+      if (filteredCollection) {
+        // filtering to get the unique nft
+
+        const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
+        if (filteredId) {
+          const result = await getGraphNft(filteredId[0], collectionName);
+          const trHistory = await getTransactions(filteredId[0]?.transactions);
+          const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
+
           trHistory.find((t) => {
             if (t.type === "Minting") t.price = result[0].price;
           });
           handleSetState({
-            asset: result[0],
-            isLoading: false,
-            collection: collectionResponseData,
+            nftDetails: result[0],
+            collection: collectionData,
             transactionHistory: trHistory,
+            isLoading: false,
           });
-        })();
+        }
       }
-    }
-
-    document.documentElement.scrollTop = 0;
-  }, []);
+    })();
+  }, [auroraCollections, polygonCollections, nftId]);
 
   useEffect(() => {
-    if (asset?.chain) {
-      const pair = supportedChains[asset.chain].coinGeckoLabel;
-      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0].usd;
-        handleSetState({
-          chainIcon: supportedChains[asset.chain].icon,
-          algoPrice: value,
-          chainSymbol: "ETH",
+    if (nftDetails?.chain) {
+      axios
+        .get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${
+            supportedChains[nftDetails?.chain]?.id
+          }&vs_currencies=usd`
+        )
+        .then((res) => {
+          const value = Object.values(res.data)[0].usd;
+          handleSetState({ totalPrice: value * nftDetails.price });
         });
-      });
-    } else {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount });
-      });
     }
-  }, [asset]);
+  }, [nftDetails]);
 
   if (isLoading) {
     return (
@@ -190,7 +183,7 @@ const CollectionNFT = () => {
   const description = {
     icon: detailsIcon,
     title: "Description",
-    content: `${asset.ipfs_data.description}`,
+    content: `${nftDetails.ipfs_data.description}`,
   };
 
   const graph = {
@@ -201,7 +194,7 @@ const CollectionNFT = () => {
 
   const attributeContent = () => (
     <div className={classes.attributesContainer}>
-      {asset.ipfs_data.properties.map((attribute, idx) => (
+      {nftDetails.ipfs_data.properties.map((attribute, idx) => (
         <div key={idx} className={classes.attribute}>
           <span className={classes.title}>{attribute.trait_type}</span>
           <span className={classes.description}>{attribute.value}</span>
@@ -214,12 +207,6 @@ const CollectionNFT = () => {
     icon: descriptionIcon,
     title: "Attributes",
     content: attributeContent(),
-  };
-
-  const buyNft = async () => {
-    const res = await PurchaseNft(asset, account, connector, mainnet);
-    // eslint-disable-next-line no-alert
-    alert(res);
   };
 
   const icons = [
@@ -247,7 +234,7 @@ const CollectionNFT = () => {
     <div className={classes.container}>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
-          <img className={classes.nft} src={asset.image_url} alt="" />
+          <img className={classes.nft} src={nftDetails.image_url} alt="" />
 
           <div className={classes.feature}>
             <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
@@ -258,9 +245,9 @@ const CollectionNFT = () => {
             <div className={classes.mainDetails}>
               <div className={classes.collectionHeader}>
                 <div className={classes.collectionName} onClick={() => history.goBack()}>
-                  {asset.collection_name}
+                  {nftDetails.collection_name}
                 </div>
-                <div className={classes.nftId}>{asset.name}</div>
+                <div className={classes.nftId}>{nftDetails.name}</div>
               </div>
 
               <div className={classes.icons}>
@@ -299,30 +286,39 @@ const CollectionNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={chainIcon} alt="" />
+                <img src={supportedChains[nftDetails.chain].icon} alt="" />
                 <p className={classes.tokenValue}>
-                  {asset.price} {chainSymbol ? chainSymbol : ""}
+                  {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
                 </p>
-                <span className={classes.usdValue}>
-                  ($
-                  {(asset.price * algoPrice).toFixed(2)})
-                </span>
+                <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
               </span>
             </div>
 
             <div className={classes.btns}>
-              {asset.sold ? (
+              {nftDetails.sold ? (
                 <>
-                  <button type="button" className={classes.sold} disabled={asset.sold}>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
                     SOLD!
                   </button>
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold || asset?.chain} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {Number(nftDetails.chain) !== 4160 ? (
+                    <button className={classes.sold} disabled={nftDetails.chain}>
+                      {/* <img src={walletIcon} alt="" /> */}
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={classes.buy}
+                      disabled={nftDetails.sold}
+                      onClick={() => buyNft(buyProps)}
+                    >
+                      <img src={walletIcon} alt="" />
+                      Buy now
+                    </button>
+                  )}
                   {/* <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid
@@ -354,7 +350,7 @@ const CollectionNFT = () => {
           <h3>Transaction History</h3>
         </div>
         <div className={classes.history}>
-          <Search data={transactionHistory} chain={asset?.chain ? asset.chain : ""} />
+          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
         </div>
       </div>
       {/* PRICE HISTORY */}
@@ -371,7 +367,7 @@ const CollectionNFT = () => {
         <div className={classes.code}>
           <CopyBlock
             language="json"
-            text={JSON.stringify(asset.ipfs_data.properties, null, 2)}
+            text={JSON.stringify(nftDetails.ipfs_data.properties, null, 2)}
             showLineNumbers={false}
             theme={dracula}
             wrapLines
@@ -384,7 +380,7 @@ const CollectionNFT = () => {
           <h3>More from this collection</h3>
         </div>
         <div className={classes.collectionItems}>
-          <NFT data={collection?.filter((e) => e.name !== asset.name)} />
+          <NFT data={collection?.filter((e) => e.name !== nftDetails.name)} />
         </div>
         <div className={classes.allCollecitons}>
           <button type="button" onClick={() => history.goBack()} className={classes.btnCollections}>
@@ -409,8 +405,8 @@ const CollectionNFT = () => {
               </CopyToClipboard>
             </div>
             <div className={classes.shareContent}>
-              {icons.map((icon) => (
-                <a href={icon.link} target="_blank" rel="noreferrer">
+              {icons.map((icon, idx) => (
+                <a key={idx} href={icon.link} target="_blank" rel="noreferrer">
                   <img
                     className={classes.shareIcon}
                     onClick={() => handleSetState({ text: icon.link })}
@@ -422,8 +418,8 @@ const CollectionNFT = () => {
             </div>
           </div>
           <div className={classes.shareContent}>
-            {icons.map((icon) => (
-              <a href={icon.link} target="_blank" rel="noreferrer">
+            {icons.map((icon, idx) => (
+              <a key={idx} href={icon.link} target="_blank" rel="noreferrer">
                 <img
                   className={classes.shareIcon}
                   onClick={() => handleSetState({ text: icon.link })}

@@ -164,23 +164,6 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   return true;
 }
 
-async function readAllNft(account) {
-  const querySnapshot = await db.collection("listed").get();
-  const res = [];
-  querySnapshot.forEach((docs) => {
-    res.push(...Object.values(docs.data()));
-  });
-
-  var filtered = [];
-  res.forEach((e) => {
-    if (e.Buyer === account) {
-      filtered.push(e);
-    }
-  });
-  console.log(res);
-  return filtered;
-}
-
 // async function readData() {
 //   const dbRef = ref(getDatabase());
 //   await get(child(dbRef, 'list'))
@@ -196,30 +179,9 @@ async function readAllNft(account) {
 //     });
 // }
 
-async function readAllUserNft(userAddress) {
-  const querySnapshot = await db.collection("listed").doc(userAddress).get();
-  try {
-    const res = Object.values(querySnapshot.data());
-    return res;
-  } catch (error) {
-    console.log(error);
-    return null;
-  }
-}
-
 async function readSIngleUserNft(userAddress, assetId) {
   const querySnapshot = await db.collection("listed").doc(userAddress).get();
   return Object.values(querySnapshot.data()).find((asset) => asset.id === assetId);
-}
-
-async function readAllCollection(mainnet) {
-  const querySnapshot = await db.collection("collections").get();
-  const res = [];
-  querySnapshot.forEach((docs) => {
-    res.push(docs.data());
-  });
-  const response = mainnet === null ? res : res.filter((asset) => asset.mainnet === mainnet);
-  return response;
 }
 
 async function readUserProfile(userAddress) {
@@ -232,8 +194,28 @@ async function readUserProfile(userAddress) {
   return {};
 }
 
-async function readUserCollection(userAddress) {
-  const querySnapshot = await db.collection("collections").where("owner", "==", userAddress).get();
+async function fetchAlgoSingle(mainnet) {
+  const querySnapshot = await db.collection("listed").get();
+  const res = [];
+  querySnapshot.forEach((docs) => {
+    res.push(...Object.values(docs.data()));
+  });
+  const response = res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
+  return response;
+}
+
+async function fetchAlgoCollections(mainnet) {
+  const querySnapshot = await db.collection("collections").get();
+  const res = [];
+  querySnapshot.forEach((docs) => {
+    res.push(docs.data());
+  });
+  const response = mainnet === null ? res : res.filter((asset) => asset.mainnet === mainnet);
+  return response;
+}
+
+async function fetchUserCollections(account) {
+  const querySnapshot = await db.collection("collections").where("owner", "==", account).get();
   const res = [];
   querySnapshot.forEach((docs) => {
     res.push(docs.data());
@@ -241,54 +223,44 @@ async function readUserCollection(userAddress) {
   return res;
 }
 
-async function readAllSingleNft(mainnet) {
+async function fetchUserNfts(account) {
+  const querySnapshot = await db.collection("listed").doc(account).get();
+  try {
+    const res = Object.values(querySnapshot.data());
+    return res;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+async function fetchUserBoughtNfts(account) {
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((docs) => {
     res.push(...Object.values(docs.data()));
   });
-  const response =
-    mainnet === null
-      ? res.filter((asset) => asset.collection === null)
-      : res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
-  return response;
-}
 
-async function fetchCollections(mainnet) {
-  const collections = await readAllCollection(mainnet);
-  return collections;
-}
-
-async function fetchUserCollections(account) {
-  const userCollection = await readUserCollection(account);
-  return userCollection;
-}
-
-async function fetchUserNfts(account) {
-  const userNfts = await readAllUserNft(account);
-  return userNfts;
-}
-
-async function fetchAllNfts(account) {
-  const nfts = await readAllNft(account);
-  return nfts;
+  const filtered = [];
+  res.forEach((e) => {
+    if (e.Buyer === account) {
+      filtered.push(e);
+    }
+  });
+  return filtered;
 }
 
 export {
   writeUserData,
-  readAllCollection,
-  readAllNft,
-  readUserCollection,
-  readAllUserNft,
   readSIngleUserNft,
-  fetchCollections,
+  fetchAlgoCollections,
+  fetchAlgoSingle,
   fetchUserCollections,
   fetchUserNfts,
-  fetchAllNfts,
+  fetchUserBoughtNfts,
   writeNft,
   recordTransaction,
   readNftTransaction,
-  readAllSingleNft,
   readUserProfile,
   writeUserProfile,
 };

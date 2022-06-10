@@ -16,24 +16,24 @@ import {
   disconnectWallet,
   connectWithQRCode,
   initializeConnection,
+  initConnectWallet,
 } from "./wallet-script";
-import { setClipboard, setNotification } from "../../gen-state/gen.actions";
 
 function ConnectWallet() {
   const history = useHistory();
   const { pathname } = useLocation();
   const clipboardRef = useRef();
   const walletProviderRef = useRef(0);
-  const { dispatch, account, chainId, proposedChain, mainnet } = useContext(GenContext);
+  const { dispatch, account, chainId, proposedChain, mainnet, toggleWalletPopup } = useContext(GenContext);
 
   const [state, setState] = useState({
     toggleDropdown: false,
     clipboardState: "Copy Address",
     network: null,
-    togglePopup: false,
     walletConnectProvider: null,
     connectionMethod: null,
     isMetamask: true,
+    overrideWalletConnect: false,
     rpc: {
       4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
     },
@@ -43,8 +43,8 @@ function ConnectWallet() {
     toggleDropdown,
     clipboardState,
     network,
-    togglePopup,
     walletConnectProvider,
+    overrideWalletConnect,
     connectionMethod,
     rpc,
     isMetamask,
@@ -69,21 +69,6 @@ function ConnectWallet() {
     handleSetState,
   };
 
-  const handleConnect = () => {
-    if (window?.ethereum !== undefined) {
-      handleSetState({ togglePopup: true });
-    } else {
-      handleSetState({ togglePopup: false });
-      dispatch(
-        setNotification({
-          message: "You need to install metamask to continue",
-          type: "error",
-        })
-      );
-      dispatch(setClipboard("https://metamask.io/"));
-    }
-  };
-
   const handleCopy = (props) => {
     const { navigator, clipboard } = props;
     clipboard.select();
@@ -104,18 +89,19 @@ function ConnectWallet() {
   }, [chainId]);
 
   useEffect(() => {
-    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
+    const isSupported = Object.keys(supportedChains).includes(String(proposedChain));
     if (!isSupported) return;
     connectWallet(walletProps);
   }, [proposedChain, connectionMethod]);
 
   useEffect(() => {
-    if (walletProviderRef.current >= 2) {
+    if (walletProviderRef.current >= 2 || overrideWalletConnect) {
+      handleSetState({ overrideWalletConnect: false });
       connectWithQRCode(walletProps);
     } else {
       walletProviderRef.current = +1;
     }
-  }, [walletConnectProvider]);
+  }, [walletConnectProvider, overrideWalletConnect]);
 
   useEffect(() => {
     initializeConnection(walletProps);
@@ -134,7 +120,7 @@ function ConnectWallet() {
 
   const dropdown = (
     <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
-      <div onClick={handleConnect} className={classes.option}>
+      <div onClick={() => initConnectWallet(walletProps)} className={classes.option}>
         <img src={switchIcon} alt="" />
         <div>Switch network</div>
       </div>
@@ -153,10 +139,11 @@ function ConnectWallet() {
   const connected = (
     <div
       onMouseLeave={() => handleSetState({ toggleDropdown: false })}
+      onMouseOver={() => handleSetState({ toggleDropdown: true })}
       className={`${classes.connected} ${toggleDropdown && classes.active}`}
     >
       <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
-      <div onClick={() => handleSetState({ toggleDropdown: !toggleDropdown })} className={classes.address}>
+      <div className={classes.address}>
         <span>{breakAddress(account)}</span>
       </div>
       {dropdown}
@@ -167,7 +154,7 @@ function ConnectWallet() {
 
   return (
     <div>
-      <div className={`${classes.popupContainer} ${togglePopup && classes.active}`}>
+      <div className={`${classes.popupContainer} ${toggleWalletPopup && classes.active}`}>
         <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />
       </div>
       {account ? (
@@ -177,7 +164,7 @@ function ConnectWallet() {
           {goToDashboard}
         </div>
       ) : (
-        <div className={classes.connect} onClick={handleConnect}>
+        <div className={classes.connect} onClick={() => initConnectWallet(walletProps)}>
           Connect Wallet
         </div>
       )}

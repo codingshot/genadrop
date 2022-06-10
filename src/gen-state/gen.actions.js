@@ -167,9 +167,32 @@ export const setCollections = (collections) => ({
   type: genActionTypes.SET_COLLECTIONS,
   payload: collections,
 });
-
+export const setAlgoCollections = (collections) => ({
+  type: genActionTypes.SET_ALGO_COLLECTIONS,
+  payload: collections,
+});
+export const setAuroraCollections = (collections) => ({
+  type: genActionTypes.SET_AURORA_COLLECTIONS,
+  payload: collections,
+});
+export const setPolygonCollections = (collections) => ({
+  type: genActionTypes.SET_POLYGON_COLLECTIONS,
+  payload: collections,
+});
 export const setSingleNfts = (nfts) => ({
   type: genActionTypes.SET_SINGLE_NFTS,
+  payload: nfts,
+});
+export const setAlgoSingleNfts = (nfts) => ({
+  type: genActionTypes.SET_ALGO_SINGLE_NFTS,
+  payload: nfts,
+});
+export const setAuroraSingleNfts = (nfts) => ({
+  type: genActionTypes.SET_AURORA_SINGLE_NFTS,
+  payload: nfts,
+});
+export const setPolygonSingleNfts = (nfts) => ({
+  type: genActionTypes.SET_POLYGON_SINGLE_NFTS,
   payload: nfts,
 });
 
@@ -216,4 +239,14 @@ export const promptDeleteLayer = (layer) => ({
 export const promptDeleteRules = (rules) => ({
   type: genActionTypes.PROMPT_DELETE_RULES,
   payload: rules,
+});
+
+export const setToggleWalletPopup = (state) => ({
+  type: genActionTypes.TOGGLE_WALLET_POPUP,
+  payload: state,
+});
+
+export const setActiveCollection = (collection) => ({
+  type: genActionTypes.SET_ACTIVE_COLLECTION,
+  payload: collection,
 });

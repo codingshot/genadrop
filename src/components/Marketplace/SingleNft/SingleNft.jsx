@@ -1,54 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { createClient } from "urql";
-import { getSingleGraphNfts, getSingleNfts } from "../../../utils";
+
 import NftCard from "../NftCard/NftCard";
 import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
-import { GET_ALL_GRAPH_SINGLE_NFTS } from "../../../graphql/querries/getCollections";
+import NotFound from "../../not-found/notFound";
 
 const SingleNft = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
-  const client = createClient({
-    url: APIURL,
-  });
-
-  const [state, setState] = useState({
-    allSingleNfts: [],
-    allSingleGraphNfts: [],
-  });
-  const { allSingleNfts, allSingleGraphNfts } = state;
-  const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
-  const { singleNfts, mainnet } = useContext(GenContext);
   const { url } = useRouteMatch();
   const history = useHistory();
 
   useEffect(() => {
-    (async function getResult() {
-      if (singleNfts?.length) {
-        const allSingleNFTs = await getSingleNfts(mainnet, singleNfts.slice(0, 10));
-        handleSetState({ allSingleNfts: allSingleNFTs });
-      } else {
-        handleSetState({ allSingleNfts: null });
-      }
-    })();
-  }, [singleNfts]);
-
-  useEffect(() => {
-    try {
-      (async function getGraphResults() {
-        const data = await client.query(GET_ALL_GRAPH_SINGLE_NFTS).toPromise();
-        const allSingleNfts = await getSingleGraphNfts(data.data.nfts);
-        handleSetState({ allSingleGraphNfts: allSingleNfts });
-      })();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [singleNfts]);
+    window.localStorage.activeAlgoNft = null;
+  }, []);
 
   return (
     <div className={classes.container}>
@@ -58,27 +26,31 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {allSingleNfts?.length ? (
+      {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <div className={classes.wrapper}>
-          {allSingleNfts.map((nft) => (
+          {singleAlgoNftsArr?.slice(0, 10).map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
-          {allSingleGraphNfts?.map((nft) => (
+          {singleAuroraNfts?.map((nft) => (
+            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+          ))}
+          {singlePolygonNfts?.map((nft) => (
             <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
           ))}
         </div>
-      ) : !allSingleNfts ? (
-        <h1 className={classes.noResult}> No Results Found</h1>
+      ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts ? (
+        <NotFound />
       ) : (
         <div className={classes.wrapper}>
-          {[...new Array(5)]
-            .map((_, idx) => idx)
-            .map((id) => (
-              <div key={id}>
-                <Skeleton count={1} height={200} />
-                <Skeleton count={3} height={40} />
-              </div>
-            ))}
+          {[...new Array(4)].map((id) => (
+            <div key={id}>
+              <Skeleton count={1} height={250} />
+              <br />
+              <Skeleton count={1} height={30} />
+              <br />
+              <Skeleton count={1} height={30} />
+            </div>
+          ))}
         </div>
       )}
     </div>

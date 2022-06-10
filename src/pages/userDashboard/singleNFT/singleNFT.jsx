@@ -3,21 +3,19 @@ import Skeleton from "react-loading-skeleton";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
+import { buyNft, getSingleNftDetails } from "../../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../../components/Nft-details/graph/graph";
 import DropItem from "../../../components/Nft-details/dropItem/dropItem";
-import { PurchaseNft } from "../../../utils/arc_ipfs";
 
 const SingleNFT = () => {
-  const { account, connector } = useContext(GenContext);
-
+  const { account, connector, mainnet, dispatch, singleNfts, chainId } = useContext(GenContext);
+  const history = useHistory();
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
   const { url } = useRouteMatch();
   const wrapperRef = useRef(null);
 
@@ -30,6 +28,16 @@ const SingleNFT = () => {
     showSocial: false,
     isCopied: false,
   });
+
+  const buyProps = {
+    dispatch,
+    account,
+    connector,
+    mainnet,
+    nftDetails,
+    history,
+    chainId,
+  };
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -171,12 +179,6 @@ const SingleNFT = () => {
     content: details(),
   };
 
-  const buyNft = async () => {
-    const res = await PurchaseNft(nftDetails, account, connector);
-    // eslint-disable-next-line no-alert
-    alert(res);
-  };
-
   return (
     <div className={classes.container}>
       <div className={classes.section1}>
@@ -254,7 +256,12 @@ const SingleNFT = () => {
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={buyNft}>
+                  <button
+                    type="button"
+                    className={classes.buy}
+                    disabled={nftDetails.sold}
+                    onClick={() => buyNft(buyProps)}
+                  >
                     <img src="/assets/wallet-icon.png" alt="" />
                     List
                   </button>

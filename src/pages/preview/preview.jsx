@@ -23,7 +23,7 @@ import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
 import { getDefaultName } from "../../utils";
 import { handleDownload } from "../../utils/index2";
-import { fetchCollections } from "../../utils/firebase";
+import { fetchAlgoCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
@@ -135,14 +135,15 @@ const Preview = () => {
   const handleDescription = (input) => {
     dispatch(addDescription({ id: input.id, description: input.value }));
   };
-  const getCollectionsNames = async () => {
-    const collections = await fetchCollections();
-    const names = [];
-    collections.forEach((col) => {
-      names.push(col.name);
-    });
-    return names;
-  };
+
+  // const getCollectionsNames = async () => {
+  //   const collections = await fetchAlgoCollections();
+  //   const names = [];
+  //   collections.forEach((col) => {
+  //     names.push(col.name);
+  //   });
+  //   return names;
+  // };
 
   const handleCollectionName = async (value) => {
     dispatch(setCollectionName(value));
@@ -347,8 +348,6 @@ const Preview = () => {
       gifs: [],
     });
   };
-  console.log(gifImages);
-  console.log(gifs);
   return (
     <div className={classes.wrapper}>
       <div className={classes.backBtnWrapper}>

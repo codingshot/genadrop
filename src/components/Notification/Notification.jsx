@@ -5,6 +5,7 @@ import classes from "./Notification.module.css";
 import warningIcon from "../../assets/icon-warning.svg";
 import successIcon from "../../assets/icon-success.svg";
 import errorIcon from "../../assets/icon-error.svg";
+import blankIcon from "../../assets/blank.png";
 
 const Notification = () => {
   const feedbackRef = useRef(null);
@@ -21,6 +22,7 @@ const Notification = () => {
     warning: warningIcon,
     error: errorIcon,
     success: successIcon,
+    default: blankIcon,
   };
 
   useEffect(() => {
@@ -28,7 +30,7 @@ const Notification = () => {
     handleSetState({ toggleFeedback: true });
     setTimeout(() => {
       handleSetState({ toggleFeedback: false });
-    }, 8000);
+    }, 5000);
   }, [notification]);
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const Notification = () => {
 
   return (
     <div
-      style={{ top: loaderMessage ? "8em" : "4em" }}
+      style={{ top: loaderMessage ? "9em" : "5em" }}
       className={`${classes.container} ${toggleFeedback && classes.active}`}
     >
       <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>
