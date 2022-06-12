@@ -94,11 +94,11 @@ export const setNetworkType = ({ dispatch, chainId, handleSetState, mainnet }) =
   if (networkArray.includes(chainId)) {
     handleSetState({ network: "mainnet" });
     dispatch(setMainnet(true));
-  } else (chainId === 4160) {
+  } else {
     // specal case for algorand
     handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
     dispatch(setMainnet(process.env.REACT_APP_ENV_STAGING === "false"));
-  } 
+  }
 };
 
 export const connectWithQRCode = async ({ walletConnectProvider, dispatch, rpc, supportedChains }) => {
