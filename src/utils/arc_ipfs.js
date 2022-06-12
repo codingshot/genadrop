@@ -709,7 +709,7 @@ export async function PurchaseNft(args) {
 
   const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: account,
-    to: process.env.REACT_APP_GENADROP_TAX_ADDRESS,
+    to: process.env.REACT_APP_GENADROP_ALGO_TAX_ADDRESS,
     amount: platformFee * 1000000,
     note: note2,
     suggestedParams: params,
