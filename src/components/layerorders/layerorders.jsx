@@ -64,14 +64,14 @@ const LayerOrders = () => {
 
   const handleAddSampleLayers = () => {
     const sampleLayers = [
-      { layerName: "Background-Sample", dirName: "Background" },
+      { layerName: "Goo-Sample", dirName: "Goo" },
+      { layerName: "Top Lid-Sample", dirName: "TopLid" },
       { layerName: "Bottom Lid-Sample", dirName: "BottomLid" },
+      { layerName: "Shine-Sample", dirName: "Shine" },
+      { layerName: "Iris-Sample", dirName: "Iris" },
       { layerName: "Eye Color-Sample", dirName: "EyeColor" },
       { layerName: "Eye Ball-Sample", dirName: "EyeBall" },
-      { layerName: "Goo-Sample", dirName: "Goo" },
-      { layerName: "Iris-Sample", dirName: "Iris" },
-      { layerName: "Shine-Sample", dirName: "Shine" },
-      { layerName: "Top Lid-Sample", dirName: "TopLid" },
+      { layerName: "Background-Sample", dirName: "Background" },
     ];
     sampleLayers.map((sample) => {
       dispatch(
