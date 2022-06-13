@@ -89,7 +89,7 @@ function ConnectWallet() {
   }, [chainId]);
 
   useEffect(() => {
-    let isSupported = Object.keys(supportedChains).includes(String(proposedChain));
+    const isSupported = Object.keys(supportedChains).includes(String(proposedChain));
     if (!isSupported) return;
     connectWallet(walletProps);
   }, [proposedChain, connectionMethod]);
@@ -110,11 +110,9 @@ function ConnectWallet() {
   const goToDashboard = (
     <div
       onClick={() => {
-        return;
-        // history.push(`/me/${account}`);
+        history.push(`/me/${account}`);
       }}
       className={classes.user}
-      data-status="coming soon"
     >
       <img src={userIcon} alt="" />
     </div>

@@ -102,11 +102,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: black;
-  font-size: 2rem;
   text-transform: capitalize;
-  font-style: italic;
   min-height: calc(100vh - 5em);
+  flex-direction: column;
+  text-align: center;
+  color: rgba(108, 117, 125, 1);
+}
+
+.fallback h4 {
+  margin-bottom: 1em;
 }
 
 .conflictGuide {
@@ -166,5 +170,9 @@
   .showRuleBtn,
   .addRuleBtn {
     font-size: 0.85rem;
+  }
+
+  .fallback img {
+    width: 18em;
   }
 }

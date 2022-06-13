@@ -10,8 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { getGraphCollection, getGraphNft, getTransactions } from "../../utils";
-import { PurchaseNft } from "../../utils/arc_ipfs";
+import { buyNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
@@ -26,9 +25,16 @@ import detailsIcon from "../../assets/details.png";
 import supportedChains from "../../utils/supportedChains";
 
 const CollectionNFT = () => {
+  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections, chainId } =
+    useContext(GenContext);
+  const {
+    params: { collectionName, nftId },
+  } = useRouteMatch();
+  const history = useHistory();
+  const wrapperRef = useRef(null);
   const [state, setState] = useState({
     dropdown: ["1", "3"],
-    asset: null,
+    nftDetails: null,
     transactionHistory: null,
     showSocial: false,
     isLoading: true,
@@ -39,19 +45,21 @@ const CollectionNFT = () => {
     totalPrice: 0,
   });
 
-  const { dropdown, totalPrice, asset, transactionHistory, collection, isLoading, showSocial, isCopied } = state;
+  const { dropdown, totalPrice, nftDetails, transactionHistory, collection, isLoading, showSocial, isCopied } = state;
+
+  const buyProps = {
+    dispatch,
+    nftDetails,
+    account,
+    connector,
+    mainnet,
+    history,
+    chainId,
+  };
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-
-  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections } =
-    useContext(GenContext);
-  const {
-    params: { collectionName, nftId },
-  } = useRouteMatch();
-  const history = useHistory();
-  const wrapperRef = useRef(null);
 
   function useOutsideAlerter(ref) {
     useEffect(() => {
@@ -86,7 +94,7 @@ const CollectionNFT = () => {
           if (t.type === "Minting") t.price = result.price;
         });
         handleSetState({
-          asset: result,
+          nftDetails: result,
           transactionHistory: tHistory,
           collection,
           isLoading: false,
@@ -120,7 +128,7 @@ const CollectionNFT = () => {
             if (t.type === "Minting") t.price = result[0].price;
           });
           handleSetState({
-            asset: result[0],
+            nftDetails: result[0],
             collection: collectionData,
             transactionHistory: trHistory,
             isLoading: false,
@@ -131,15 +139,19 @@ const CollectionNFT = () => {
   }, [auroraCollections, polygonCollections, nftId]);
 
   useEffect(() => {
-    if (asset?.chain) {
+    if (nftDetails?.chain) {
       axios
-        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[asset?.chain]?.id}&vs_currencies=usd`)
+        .get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${
+            supportedChains[nftDetails?.chain]?.id
+          }&vs_currencies=usd`
+        )
         .then((res) => {
           const value = Object.values(res.data)[0].usd;
-          handleSetState({ totalPrice: value * asset.price });
+          handleSetState({ totalPrice: value * nftDetails.price });
         });
     }
-  }, [asset]);
+  }, [nftDetails]);
 
   if (isLoading) {
     return (
@@ -171,7 +183,7 @@ const CollectionNFT = () => {
   const description = {
     icon: detailsIcon,
     title: "Description",
-    content: `${asset.ipfs_data.description}`,
+    content: `${nftDetails.ipfs_data.description}`,
   };
 
   const graph = {
@@ -182,7 +194,7 @@ const CollectionNFT = () => {
 
   const attributeContent = () => (
     <div className={classes.attributesContainer}>
-      {asset.ipfs_data.properties.map((attribute, idx) => (
+      {nftDetails.ipfs_data.properties.map((attribute, idx) => (
         <div key={idx} className={classes.attribute}>
           <span className={classes.title}>{attribute.trait_type}</span>
           <span className={classes.description}>{attribute.value}</span>
@@ -195,14 +207,6 @@ const CollectionNFT = () => {
     icon: descriptionIcon,
     title: "Attributes",
     content: attributeContent(),
-  };
-
-  const buyNft = async () => {
-    const res = await PurchaseNft({ dispatch, nftDetails: asset, account, connector, mainnet });
-    if (res) {
-      // eslint-disable-next-line no-alert
-      alert(res);
-    }
   };
 
   const icons = [
@@ -230,7 +234,7 @@ const CollectionNFT = () => {
     <div className={classes.container}>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
-          <img className={classes.nft} src={asset.image_url} alt="" />
+          <img className={classes.nft} src={nftDetails.image_url} alt="" />
 
           <div className={classes.feature}>
             <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
@@ -241,9 +245,9 @@ const CollectionNFT = () => {
             <div className={classes.mainDetails}>
               <div className={classes.collectionHeader}>
                 <div className={classes.collectionName} onClick={() => history.goBack()}>
-                  {asset.collection_name}
+                  {nftDetails.collection_name}
                 </div>
-                <div className={classes.nftId}>{asset.name}</div>
+                <div className={classes.nftId}>{nftDetails.name}</div>
               </div>
 
               <div className={classes.icons}>
@@ -282,27 +286,39 @@ const CollectionNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={supportedChains[asset.chain].icon} alt="" />
+                <img src={supportedChains[nftDetails.chain].icon} alt="" />
                 <p className={classes.tokenValue}>
-                  {asset.price} {supportedChains[asset.chain].sybmol}
+                  {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
                 </p>
                 <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
               </span>
             </div>
 
             <div className={classes.btns}>
-              {asset.sold ? (
+              {nftDetails.sold ? (
                 <>
-                  <button type="button" className={classes.sold} disabled={asset.sold}>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
                     SOLD!
                   </button>
                 </>
               ) : (
                 <>
-                  <button type="button" className={classes.buy} disabled={asset.sold} onClick={buyNft}>
-                    <img src={walletIcon} alt="" />
-                    Buy now
-                  </button>
+                  {Number(nftDetails.chain) !== 4160 ? (
+                    <button className={classes.sold} disabled={nftDetails.chain}>
+                      {/* <img src={walletIcon} alt="" /> */}
+                      Coming Soon
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={classes.buy}
+                      disabled={nftDetails.sold}
+                      onClick={() => buyNft(buyProps)}
+                    >
+                      <img src={walletIcon} alt="" />
+                      Buy now
+                    </button>
+                  )}
                   {/* <button type="button" className={classes.bid}>
                     <img src={bidIcon} alt="" />
                     Place Bid
@@ -334,7 +350,7 @@ const CollectionNFT = () => {
           <h3>Transaction History</h3>
         </div>
         <div className={classes.history}>
-          <Search data={transactionHistory} chain={asset?.chain ? asset.chain : ""} />
+          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
         </div>
       </div>
       {/* PRICE HISTORY */}
@@ -351,7 +367,7 @@ const CollectionNFT = () => {
         <div className={classes.code}>
           <CopyBlock
             language="json"
-            text={JSON.stringify(asset.ipfs_data.properties, null, 2)}
+            text={JSON.stringify(nftDetails.ipfs_data.properties, null, 2)}
             showLineNumbers={false}
             theme={dracula}
             wrapLines
@@ -364,7 +380,7 @@ const CollectionNFT = () => {
           <h3>More from this collection</h3>
         </div>
         <div className={classes.collectionItems}>
-          <NFT data={collection?.filter((e) => e.name !== asset.name)} />
+          <NFT data={collection?.filter((e) => e.name !== nftDetails.name)} />
         </div>
         <div className={classes.allCollecitons}>
           <button type="button" onClick={() => history.goBack()} className={classes.btnCollections}>

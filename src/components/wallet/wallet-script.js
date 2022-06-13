@@ -94,13 +94,10 @@ export const setNetworkType = ({ dispatch, chainId, handleSetState, mainnet }) =
   if (networkArray.includes(chainId)) {
     handleSetState({ network: "mainnet" });
     dispatch(setMainnet(true));
-  } else if (chainId === 4160) {
+  } else {
     // specal case for algorand
     handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
     dispatch(setMainnet(process.env.REACT_APP_ENV_STAGING === "false"));
-  } else {
-    handleSetState({ network: "testnet" });
-    dispatch(setMainnet(false));
   }
 };
 
@@ -224,12 +221,6 @@ export const updateAccount = async (walletProps) => {
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
   let isSupported = Object.keys(supportedChains).includes(networkId);
   if (!isSupported) {
-    dispatch(
-      setNotification({
-        message: "network not supported",
-        type: "error",
-      })
-    );
     WS.disconnectWallet(walletProps);
     dispatch(setToggleWalletPopup(true));
   } else {

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
+import { fetchAlgoCollections, fetchAlgoSingle, fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
 import {
   setCollections,
   setSingleNfts,
@@ -22,7 +22,7 @@ import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 
 const FetchData = () => {
-  const { dispatch, mainnet } = useContext(GenContext);
+  const { dispatch, mainnet, account } = useContext(GenContext);
 
   useEffect(() => {
     // Get ALGO Collection

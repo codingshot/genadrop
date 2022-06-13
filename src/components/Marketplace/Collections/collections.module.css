@@ -10,19 +10,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 2em;
+  margin-bottom: 4em;
   border-radius: 0.5em;
-  padding: 0.25em 1em;
+  padding: 1em;
   position: sticky;
   top: 4em;
   z-index: 10;
   background: white;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  border: 1px solid gainsboro;
 }
 
 .heading h3 {
   font-size: 1.4rem;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .heading button {
@@ -85,6 +85,7 @@
 @media screen and (max-width: 768px) {
   .heading {
     top: 3em;
+    margin-bottom: 2em;
   }
 }
 

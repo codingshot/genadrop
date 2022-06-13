@@ -437,8 +437,8 @@ export async function createNFT(createProps, doAccountCheck) {
       // alert("doing checkings");
       try {
         const userInfo = await algodClient.accountInformation(account).exclude("all").do();
-        const assetBalance = userInfo.account["total-assets-opted-in"];
-        const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
+        const assetBalance = userInfo["total-assets-opted-in"];
+        const userBalance = algosdk.microalgosToAlgos(userInfo.amount);
         // alert(userBalance);
         const estimateTxFee = 0.001 * metadata.length;
         // alert((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance);
@@ -664,25 +664,8 @@ export async function mintToPoly(polyProps) {
 
 export async function PurchaseNft(args) {
   const { dispatch, nftDetails, account, connector, mainnet } = args;
-  console.log("initing", mainnet, connector);
+  dispatch(setLoader("executing transaction..."));
   initAlgoClients(mainnet);
-  if (!account) {
-    return dispatch(
-      setNotification({
-        message: "connect wallet",
-        type: "warning",
-      })
-    );
-  }
-  console.log(connector);
-  if (!connector?.isWalletConnect && !(connector?.chainId === 4160)) {
-    return dispatch(
-      setNotification({
-        message: "connect wallet to algorand network",
-        type: "warning",
-      })
-    );
-  }
   console.log("no eve if", !connector?.isWalletConnect);
   const params = await algodTxnClient.getTransactionParams().do();
   console.log("wake up", params);
@@ -690,19 +673,10 @@ export async function PurchaseNft(args) {
   const note = enc.encode("Nft Purchase");
   const note2 = enc.encode("Platform fee");
   const txns = [];
-  if (!connector) {
-    return dispatch(
-      setNotification({
-        message: "connect wallet",
-        type: "warning",
-      })
-    );
-  }
-
   console.log("before acct check");
   const userBalance = await algodClient.accountInformation(account).do();
-  console.log("stopped it");
-  if (algosdk.microalgosToAlgos(userBalance.account.amount) <= nftDetails.price) {
+  console.log("stopped it", userBalance);
+  if (algosdk.microalgosToAlgos(userBalance.amount) <= nftDetails.price) {
     dispatch(
       setNotification({
         message: "insufficent fund to cover cost",
@@ -735,7 +709,7 @@ export async function PurchaseNft(args) {
 
   const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: account,
-    to: process.env.REACT_APP_GENADROP_MANAGER_ADDRESS,
+    to: process.env.REACT_APP_GENADROP_ALGO_TAX_ADDRESS,
     amount: platformFee * 1000000,
     note: note2,
     suggestedParams: params,
@@ -949,7 +923,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({

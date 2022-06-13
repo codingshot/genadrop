@@ -8,6 +8,7 @@ import RulesCard from "../rulesCard/rulesCard.component";
 import { reOrderPreview } from "../../utils";
 import infoIcon from "../../assets/icon-info-regular.svg";
 import closeIcon from "../../assets/icon-close.svg";
+import createIcon from "../../assets/create-icon2.svg";
 
 const CollectionOverview = () => {
   const { dispatch, isRule, preview, rule, layers } = useContext(GenContext);
@@ -100,7 +101,11 @@ const CollectionOverview = () => {
       {layers.length ? (
         layers.map((layer) => <CollectionMenu key={layer.id} layer={layer} />)
       ) : (
-        <div className={classes.fallback}>Add layers To generate art</div>
+        <div className={classes.fallback}>
+          <img src={createIcon} alt="" />
+          <h4>Add layers To generate art</h4>
+          <p>Click on “Add Layer” button to add layers for your arts</p>
+        </div>
       )}
     </div>
   );
