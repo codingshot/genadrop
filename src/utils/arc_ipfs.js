@@ -437,8 +437,8 @@ export async function createNFT(createProps, doAccountCheck) {
       // alert("doing checkings");
       try {
         const userInfo = await algodClient.accountInformation(account).exclude("all").do();
-        const assetBalance = userInfo.account["total-assets-opted-in"];
-        const userBalance = algosdk.microalgosToAlgos(userInfo.account.amount);
+        const assetBalance = userInfo["total-assets-opted-in"];
+        const userBalance = algosdk.microalgosToAlgos(userInfo.amount);
         // alert(userBalance);
         const estimateTxFee = 0.001 * metadata.length;
         // alert((assetBalance + metadata.length) * 0.1 + estimateTxFee > userBalance);
@@ -675,8 +675,8 @@ export async function PurchaseNft(args) {
   const txns = [];
   console.log("before acct check");
   const userBalance = await algodClient.accountInformation(account).do();
-  console.log("stopped it");
-  if (algosdk.microalgosToAlgos(userBalance.account.amount) <= nftDetails.price) {
+  console.log("stopped it", userBalance);
+  if (algosdk.microalgosToAlgos(userBalance.amount) <= nftDetails.price) {
     dispatch(
       setNotification({
         message: "insufficent fund to cover cost",
