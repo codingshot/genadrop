@@ -15,21 +15,25 @@ const CollectionMenu = ({ layer }) => {
   const { dispatch, layers } = useContext(GenContext);
   const fileRef = useRef(null);
   const sampleLayers = [
-    { layerName: "Background-Sample", dirName: "Background" },
-    { layerName: "Bottom Lid-Sample", dirName: "BottomLid" },
-    { layerName: "Eye Color-Sample", dirName: "EyeColor" },
-    { layerName: "Eye Ball-Sample", dirName: "EyeBall" },
-    { layerName: "Goo-Sample", dirName: "Goo" },
-    { layerName: "Iris-Sample", dirName: "Iris" },
-    { layerName: "Shine-Sample", dirName: "Shine" },
-    { layerName: "Top Lid-Sample", dirName: "TopLid" },
+    { layerName: "Background", dirName: "Background" },
+    { layerName: "Bottom Lid", dirName: "BottomLid" },
+    { layerName: "Eye Color", dirName: "EyeColor" },
+    { layerName: "Eye Ball", dirName: "EyeBall" },
+    { layerName: "Goo", dirName: "Goo" },
+    { layerName: "Iris", dirName: "Iris" },
+    { layerName: "Shine", dirName: "Shine" },
+    { layerName: "Top Lid", dirName: "TopLid" },
   ];
 
   useEffect(() => {
     let sampleLayerName = "";
-    sampleLayerName = sampleLayers.filter((sLayer) => sLayer.layerName === layerTitle);
+    sampleLayerName = sampleLayers.find((sLayer) => {
+      return sLayer.layerName === layerTitle;
+    });
     // eslint-disable-next-line no-use-before-define
-    hanldeSampleLayer(sampleLayerName[0].dirName);
+    if (sampleLayerName) {
+      hanldeSampleLayer(sampleLayerName.dirName);
+    }
   }, []);
 
   const handleSetState = (payload) => {

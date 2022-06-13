@@ -116,7 +116,7 @@ const CollectionDescription = () => {
 
       <div className={classes.input}>
         <div className={classes.action}>
-          <label htmlFor="generate amout">Number to Generate</label>
+          <label htmlFor="generate amout"># to Generate</label>
           <input onChange={handleChange} type="number" min="0" />
         </div>
         <div className={classes.action}>
@@ -140,16 +140,6 @@ const CollectionDescription = () => {
             <Button>Generate {mintAmount}</Button>
           </ButtonClickEffect>
         </div>
-      </div>
-
-      <div className={classes.btnWrapper}>
-        {nftLayers.length && (
-          <Link to="/preview">
-            <ButtonClickEffect>
-              <Button invert>Preview</Button>
-            </ButtonClickEffect>
-          </Link>
-        )}
       </div>
       <canvas style={{ display: "none" }} ref={canvasRef} />
     </div>
