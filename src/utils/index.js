@@ -470,10 +470,10 @@ export const handleImage = async (props) => {
   const ctx = canvas.getContext("2d");
   for (const img of images) {
     const resImage = await new Promise((resolve) => {
-      const mewImage = new Image();
-      mewImage.src = URL.createObjectURL(img);
-      mewImage.onload = () => {
-        resolve(mewImage);
+      const newImage = new Image();
+      newImage.src = URL.createObjectURL(img);
+      newImage.onload = () => {
+        resolve(newImage);
       };
     });
     if (resImage) ctx.drawImage(resImage, 0, 0, width, height);
@@ -494,6 +494,31 @@ export const handleBlankImage = async (props) => {
     };
   });
   if (image) ctx.drawImage(image, 0, 0, width, height);
+};
+
+export const handleTemplateImage = async (props) => {
+  const { img, canvas } = props;
+  let { height, width } = await getImageSize(img);
+  console.log("canvas being drawed on: ", canvas);
+  if (height) {
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+  }
+  const ctx = canvas.getContext("2d");
+  const resImage = await new Promise((resolve) => {
+    const newImage = new Image();
+    newImage.src = img;
+    newImage.crossOrigin = "anonymous";
+    newImage.onload = () => {
+      resolve(newImage);
+    };
+  });
+  if (resImage) {
+    ctx.drawImage(resImage, 0, 0, width, height);
+    return true;
+  } else {
+    return false;
+  }
 };
 
 export const reOrderPreview = ({ preview, layers }) => {
