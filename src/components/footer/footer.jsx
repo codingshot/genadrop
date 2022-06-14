@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./footer.module.css";
+import classes from "./Footer.module.css";
 import logo from "../../assets/genadrop-logo-light.svg";
 import twitterIcon from "../../assets/icon-twitter.svg";
 import discordIcon from "../../assets/icon-discord.svg";

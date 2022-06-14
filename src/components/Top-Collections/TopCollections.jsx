@@ -5,7 +5,7 @@ import classes from "./TopCollections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import CollectionNFTCard from "../Collection-NFT-Card/CollectionNFTCard";
 import { GenContext } from "../../gen-state/gen.context";
-import NotFound from "../not-found/notFound";
+import NotFound from "../Not-Found/NotFound";
 
 const TopCollections = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);

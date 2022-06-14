@@ -7,14 +7,14 @@ import Orgs from "../../components/Home/Orgs/Orgs";
 import classes from "./Home.module.css";
 import { Collectors, creators } from "./Home-Script";
 import Docs from "../../components/Home/Docs/Docs";
-import EarlyAccess from "../../components/early-access/early-access";
-import JoinDiscord from "../../components/join-discord/JoinDiscord";
+import Announcement from "../../components/Announcement/Announcement";
+import JoinDiscord from "../../components/Join-Discord/JoinDiscord";
 
 const Home = () => (
   <div className={classes.container}>
     <div className={classes.wrapper}>
       <Banner />
-      <EarlyAccess />
+      <Announcement />
       <Orgs />
       <Features data={creators} />
       <Features data={Collectors} />
