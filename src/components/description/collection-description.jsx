@@ -34,7 +34,7 @@ const CollectionDescription = () => {
     if (isRule) {
       return dispatch(
         setNotification({
-          message: "finish adding conflict rule and try again",
+          message: "Finish adding conflict rule and try again",
           type: "warning",
         })
       );
@@ -42,7 +42,7 @@ const CollectionDescription = () => {
     if (!mintAmount) {
       return dispatch(
         setNotification({
-          message: "set the number to generate",
+          message: "Set the number to generate",
           type: "warning",
         })
       );
@@ -50,7 +50,7 @@ const CollectionDescription = () => {
     if (!combinations) {
       return dispatch(
         setNotification({
-          message: "uplaod images and try again",
+          message: "Upload images and try again",
           type: "warning",
         })
       );
@@ -58,7 +58,7 @@ const CollectionDescription = () => {
     if (mintAmount > combinations - rule.length) {
       return dispatch(
         setNotification({
-          message: "cannot generate more than the possible combinations",
+          message: "Cannot generate more than the possible combinations",
           type: "warning",
         })
       );
@@ -87,7 +87,7 @@ const CollectionDescription = () => {
     dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
     dispatch(
       setNotification({
-        message: "done! click on the preview button to view assets.",
+        message: "Done! Click on the preview button to view assets.",
         type: "success",
       })
     );
@@ -137,7 +137,7 @@ const CollectionDescription = () => {
       <div className={classes.btnWrapper}>
         <div onClick={handleGenerate}>
           <ButtonClickEffect>
-            <Button>generate {mintAmount}</Button>
+            <Button>Generate {mintAmount}</Button>
           </ButtonClickEffect>
         </div>
       </div>
