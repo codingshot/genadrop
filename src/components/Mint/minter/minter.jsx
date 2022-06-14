@@ -20,10 +20,10 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     attributes: { [Date.now()]: { trait_type: "", value: "" } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
-    price: 0,
+    price: "",
     chain: null,
     preview: false,
-    dollarPrice: "",
+    dollarPrice: 0,
     collectionProfile: "",
     toggleGuide: false,
     previewSelectMode: false,
@@ -179,10 +179,11 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
   };
 
   const handlePrice = (event) => {
-    handleSetState({ dollarPrice: event.target.value > 0 ? event.target.value : "" });
+    handleSetState({ price: event.target.value > 0 ? event.target.value : 0 });
   };
 
   const setMint = () => {
+    console.log(singleMintProps);
     if (!chainId) {
       return dispatch(
         setNotification({
@@ -199,7 +200,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           type: "error",
         })
       );
-    if (!parseInt(dollarPrice)) {
+    if (!parseInt(price)) {
       return dispatch(
         setNotification({
           message: "enter a valid price",
@@ -277,15 +278,15 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
         axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-          handleSetState({ price: dollarPrice / res.data.ethereum.usd });
+          handleSetState({ dollarPrice: price * res.data.ethereum.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
-          handleSetState({ price: dollarPrice / res.data.data.amount });
+          handleSetState({ dollarPrice: price * res.data.data.amount });
         });
       }
     }
-  }, [dollarPrice, chainId]);
+  }, [price, chainId]);
 
   return (
     <div className={classes.container}>
@@ -429,13 +430,13 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             <div className={classes.category}>Set Mint Options</div>
             <div className={classes.inputWrapper}>
               <label>
-                Price (USD) <span className={classes.required}>*</span>
+                Price ({getUintByChain[chain?.label.toLowerCase()]}) <span className={classes.required}>*</span>
               </label>
               {chainId ? (
                 <div className={classes.price}>
-                  <input type="number" min="0" value={dollarPrice} onChange={handlePrice} />
+                  <input type="number" min="0" value={price} onChange={handlePrice} />
                   <span>
-                    {price.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
+                    {dollarPrice.toFixed(4)} USD
                   </span>
                 </div>
               ) : (
