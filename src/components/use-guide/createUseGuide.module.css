@@ -1,0 +1,186 @@
+.container {
+  display: none;
+  position: fixed;
+  z-index: 10000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.container.active {
+  display: flex;
+}
+
+.guideContainer {
+  width: 100%;
+  max-width: 48em;
+  padding: 0.5em;
+  border-radius: 1em;
+  background: white;
+}
+
+.closeIconContainer {
+  margin-bottom: 1em;
+  margin-top: 1em;
+  margin-right: 1em;
+  width: 1.6em;
+  height: 1.6em;
+  float: right;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25em;
+  cursor: pointer;
+  background: var(--main-hover);
+  transition: all 300ms;
+  box-shadow: 0 0 5px gainsboro;
+}
+
+.close {
+  width: 50%;
+}
+
+.closeIconContainer:hover {
+  box-shadow: 0 0 12px gray;
+}
+
+.content {
+  width: 100%;
+  max-height: 24em;
+  overflow: auto;
+  padding: 1em;
+  user-select: none;
+}
+
+.title {
+  font-weight: bold;
+  margin-bottom: 1em;
+  font-size: 1.2rem;
+  color: var(--main-accent);
+}
+
+.subTitle {
+  margin-bottom: 1em;
+}
+
+.more {
+  margin-bottom: 1em;
+}
+
+.preview {
+  width: 100%;
+  min-height: 20em;
+}
+
+.introControl,
+.control {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+  position: relative;
+  padding-right: 1em;
+  padding-top: 1em;
+  border-top: 1px solid gainsboro;
+}
+
+.introControl > button,
+.control .next,
+.control .prev {
+  padding: 0.5em 1em;
+  border-radius: 1em;
+  font-size: 0.85rem;
+  transition: all 150ms;
+  border: 1px solid gainsboro;
+  outline: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  text-transform: capitalize;
+}
+
+.introControl > button:hover,
+.control > button:hover {
+  outline: 2px solid gainsboro;
+}
+
+.control > button img {
+  transition: all 300ms;
+}
+
+.control > .next.active:hover img {
+  transform: translateX(5px);
+}
+
+.control > .prev.active:hover img {
+  transform: translateX(-5px);
+}
+
+.control .prev.active {
+  border: 1px solid var(--main-accent);
+}
+
+.control .next {
+  background: var(--main-accent);
+  color: white;
+}
+
+.control .next.active {
+  background: var(--main-accent);
+  color: white;
+}
+
+.introControl > button:first-child {
+  background: transparent;
+}
+
+.introControl > button:last-child {
+  background: var(--main-accent);
+  color: white;
+}
+
+.indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  margin: 0 auto;
+}
+
+.indicator > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: gainsboro;
+  cursor: pointer;
+}
+
+.indicator > span.active {
+  background: var(--main-accent);
+}
+
+@media screen and (max-width: 480px) {
+  .introControl > button,
+  .control .next,
+  .control .prev {
+    padding: 0.5em 1em;
+    font-size: 0.65rem;
+  }
+
+  .indicator {
+    gap: 0;
+  }
+
+  .indicator > * {
+    margin-right: 0.25em;
+  }
+}

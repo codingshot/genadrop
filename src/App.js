@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { lazy, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
-import Footer from "./components/Footer/Footer";
+import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";
+import Overlay from "./components/overlay/overlay";
 import Notification from "./components/Notification/Notification";
 import Clipboard from "./components/Clipboard/Clipboard";
 import Loader from "./components/Loader/Loader";
-import ErrorBoundary from "./components/Error-Boundary/ErrorBoundary";
+import ErrorBoundary from "./components/error-boundary/error-boundary";
 import WelcomeScreen from "./pages/Welcome-Screen/WelcomeScreen";
+import Prompt from "./components/delete-prompt/prompt";
 import FetchData from "./renderless/fetch-data/fetchData.component";
 import Home from "./pages/Home/Home";
 import Create from "./pages/Create/Create";
@@ -26,8 +28,6 @@ import Profile from "./pages/Profile/Profile";
 import SingleNFTs from "./pages/Single-NFTs/SingleNFTs";
 import SingleNFTDetail from "./pages/Single-NFT-Detail/SingleNFTDetail";
 import Artist from "./pages/Artist/Artist";
-import ConfirmDelete from "./components/Confirm-Delete/ConfirmDelete";
-import LoadingOverlay from "./components/Loading-Overlay/LoadingOverlay";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -70,11 +70,11 @@ function App() {
         </ErrorBoundary>
       </div>
       <Footer />
-      <LoadingOverlay />
+      <Overlay />
       <Notification />
       <Clipboard />
       <Loader />
-      <ConfirmDelete />
+      <Prompt />
       <FetchData />
     </div>
   );

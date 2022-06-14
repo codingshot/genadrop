@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
-import WalletConnect from "../Wallet-Connect/WalletConnect";
+import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
 import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
@@ -53,7 +53,7 @@ const Navbar = () => {
           </Link>
         </ul>
         <div className={classes.wallet}>
-          <WalletConnect setToggleNav={(states) => handleSetState({ dropdown: states })} />
+          <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
         </div>
       </nav>
       {dropdown ? (

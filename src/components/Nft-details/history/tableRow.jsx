@@ -3,7 +3,7 @@ import classes from "./tableRow.module.css";
 import saleIcon from "../../../assets/sale-icon.png";
 import transferIcon from "../../../assets/transfer-icon.png";
 import mintIcon from "../../../assets/mint-icon.png";
-import TransactionDetails from "../../Transaction-Details/TransactionDetails";
+import Transaction from "../../transactionDetails/TransactionDetails";
 import { readUserProfile } from "../../../utils/firebase";
 
 const TableRow = (data) => {
@@ -90,7 +90,7 @@ const TableRow = (data) => {
     <>
       {showTransaction ? (
         <div ref={wrapperRef}>
-          <TransactionDetails data={data} date={getDate(data.date)} chain={data.chain} />
+          <Transaction data={data} date={getDate(data.date)} chain={data.chain} />
         </div>
       ) : null}
       <tr className={classes.transaction} onClick={handleClick}>

@@ -1,4 +1,4 @@
-import classes from "./WalletPopup.module.css";
+import classes from "./walletPopup.module.css";
 import closeIcon from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";

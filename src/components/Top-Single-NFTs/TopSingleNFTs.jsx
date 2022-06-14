@@ -4,7 +4,7 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import SingleNFTCard from "../Single-NFT-Card/SingleNFTCard";
 import classes from "./TopSingleNFTs.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import NotFound from "../Not-Found/NotFound";
+import NotFound from "../not-found/notFound";
 
 const TopSingleNFTs = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);

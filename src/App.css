@@ -1,4 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap");
+@font-face {
+  font-family: neue;
+  src: url("fonts/NeueHaasDisplayLight.ttf");
+}
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {

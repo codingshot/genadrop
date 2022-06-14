@@ -5,7 +5,7 @@ import classes from "./Collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import CollectionNFTCard from "../../components/Collection-NFT-Card/CollectionNFTCard";
 import { GenContext } from "../../gen-state/gen.context";
-import NotFound from "../../components/Not-Found/NotFound";
+import NotFound from "../../components/not-found/notFound";
 import PriceDropdown from "../../components/Price-Dropdown/PriceDropdown";
 import ChainDropdown from "../../components/Chain-Dropdown/ChainDropdown";
 import SearchBar from "../../components/Search-Bar/SearchBar.component";

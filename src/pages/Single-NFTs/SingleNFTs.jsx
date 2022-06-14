@@ -4,7 +4,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./SingleNFTs.module.css";
 import SingleNFTCard from "../../components/Single-NFT-Card/SingleNFTCard";
-import NotFound from "../../components/Not-Found/NotFound";
+import NotFound from "../../components/not-found/notFound";
 import SearchBar from "../../components/Search-Bar/SearchBar.component";
 import ChainDropdown from "../../components/Chain-Dropdown/ChainDropdown";
 import PriceDropdown from "../../components/Price-Dropdown/PriceDropdown";

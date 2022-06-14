@@ -12,7 +12,7 @@ import classes from "./UserDashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Search-Bar/SearchBar.component";
 import PriceDropdown from "../../components/Price-Dropdown/PriceDropdown";
-import NotFound from "../../components/Not-Found/NotFound";
+import NotFound from "../../components/not-found/notFound";
 
 const Dashboard = () => {
   const location = useLocation();

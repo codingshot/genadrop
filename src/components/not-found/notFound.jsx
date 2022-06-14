@@ -1,6 +1,6 @@
 import React from "react";
 import icon from "../../assets/icon-not-found.svg";
-import classes from "./NotFound.module.css";
+import classes from "./notFound.module.css";
 
 const NotFound = () => (
   <div className={classes.container}>
