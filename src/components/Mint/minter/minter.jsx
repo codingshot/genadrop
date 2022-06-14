@@ -20,10 +20,10 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     attributes: { [Date.now()]: { trait_type: "", value: "" } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
-    price: "",
+    price: 0,
     chain: null,
     preview: false,
-    dollarPrice: 0,
+    dollarPrice: "",
     collectionProfile: "",
     toggleGuide: false,
     previewSelectMode: false,
@@ -179,7 +179,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
   };
 
   const handlePrice = (event) => {
-    handleSetState({ price: event.target.value > 0 ? event.target.value : 0 });
+    handleSetState({ dollarPrice: event.target.value > 0 ? event.target.value : "" });
   };
 
   const setMint = () => {
@@ -199,7 +199,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           type: "error",
         })
       );
-    if (!parseInt(price)) {
+    if (!parseInt(dollarPrice)) {
       return dispatch(
         setNotification({
           message: "enter a valid price",
@@ -277,15 +277,15 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
         axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.ethereum.usd });
+          handleSetState({ price: dollarPrice / res.data.ethereum.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
-          handleSetState({ dollarPrice: price / res.data.data.amount });
+          handleSetState({ price: dollarPrice / res.data.data.amount });
         });
       }
     }
-  }, [price, chainId]);
+  }, [dollarPrice, chainId]);
 
   return (
     <div className={classes.container}>
@@ -433,9 +433,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               </label>
               {chainId ? (
                 <div className={classes.price}>
-                  <input type="number" min="0" value={price} onChange={handlePrice} />
+                  <input type="number" min="0" value={dollarPrice} onChange={handlePrice} />
                   <span>
-                    {dollarPrice.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
+                    {price.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
                   </span>
                 </div>
               ) : (
