@@ -6,7 +6,7 @@
   position: relative;
   width: 12em;
   background: white;
-  border-radius: 0.25em;
+  border-radius: 40px;
   z-index: 10;
 }
 
@@ -14,14 +14,17 @@
   font-size: 0.85rem;
 }
 
+
 .selectedPrice {
   cursor: pointer;
   background: white;
   color: #000000;
-  border: 1px solid gainsboro;
+  border: 1px solid #009987;
+  color: #009987;
   padding: 0.5em;
-  border-top-left-radius: 0.25em;
-  border-top-right-radius: 0.25em;
+  /* border-top-left-radius: 0.25em;
+  border-top-right-radius: 0.25em; */
+  border-radius: 2.5em;
   transition: all 300ms;
   display: flex;
   align-items: center;
@@ -106,8 +109,9 @@
 }
 
 .priceDropdown .dropdown > div:last-child {
-  border-bottom-left-radius: 0.25em;
-  border-bottom-right-radius: 0.25em;
+  /* border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em; */
+  border-radius: 2.5em;
 }
 
 .dropdownIcon {
