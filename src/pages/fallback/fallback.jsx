@@ -1,6 +1,6 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import classes from "./fallback.module.css";
+import classes from "./Fallback.module.css";
 import notFound from "../../assets/404.svg";
 import home from "../../assets/home-svg.svg";
 import homeWhite from "../../assets/home-white.svg";

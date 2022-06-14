@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
-import NftCard from "../../../components/Marketplace/NftCard/NftCard";
 import classes from "./Menu.module.css";
 import supportedChains from "../../../utils/supportedChains";
+import SingleNFTCard from "../../../components/Single-NFT-Card/SingleNFTCard";
 
 const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
   const [chinPrice, setChainPrice] = useState(0);
@@ -22,7 +22,7 @@ const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
     <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
       {NFTCollection
         ? NFTCollection.map((nft, idx) => (
-            <NftCard chinPrice={chinPrice} key={nft.Id} nft={nft} index={idx} loadedChain={loadedChain} />
+            <SingleNFTCard chinPrice={chinPrice} key={nft.Id} nft={nft} index={idx} loadedChain={loadedChain} />
           ))
         : [...new Array(8)]
             .map((_, idx) => idx)

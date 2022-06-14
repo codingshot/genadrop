@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useHistory, useLocation } from "react-router-dom";
-import classes from "./collections.module.css";
+import classes from "./Collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
+import CollectionNFTCard from "../../components/Collection-NFT-Card/CollectionNFTCard";
 import { GenContext } from "../../gen-state/gen.context";
 import NotFound from "../../components/not-found/notFound";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
-import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import PriceDropdown from "../../components/Price-Dropdown/PriceDropdown";
+import ChainDropdown from "../../components/Chain-Dropdown/ChainDropdown";
+import SearchBar from "../../components/Search-Bar/SearchBar.component";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
@@ -160,7 +160,7 @@ const Collections = () => {
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
             {filteredCollection.map((collection, idx) => (
-              <CollectionsCard key={idx} collection={collection} />
+              <CollectionNFTCard key={idx} collection={collection} />
             ))}
           </div>
         ) : !filteredCollection && filter.searchValue ? (

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
-import classes from "./mint.module.css";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import classes from "./Mint.module.css";
 import mintBg from "../../assets/mint-bg1.svg";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";

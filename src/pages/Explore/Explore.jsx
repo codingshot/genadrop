@@ -9,8 +9,8 @@ import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-scri
 import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import closeIcon from "../../assets/icon-close.svg";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import SearchBar from "../../components/Search-Bar/SearchBar.component";
+import PriceDropdown from "../../components/Price-Dropdown/PriceDropdown";
 
 const Explore = () => {
   const collectionNameRef = useRef(true);

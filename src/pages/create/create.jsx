@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import LayerOrders from "../../components/layerorders/layerorders";
 import CollectionDescription from "../../components/description/collection-description";
 import CollectionOverview from "../../components/overview/collection-overview";
-import classes from "./create.module.css";
+import classes from "./Create.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import iconHelp from "../../assets/icon-help.svg";
 import CreateGuide from "../../components/create-guide/create-guide";

@@ -5,7 +5,7 @@ import classes from "./Header.module.css";
 import listIcon from "../../../assets/icon-list.svg";
 import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
-import Copy from "../../../components/copy/copy";
+import ClipboardCopy from "../../../components/Clipboard-Copy/Clipboard-Copy";
 import supportedChains from "../../../utils/supportedChains";
 import { readUserProfile } from "../../../utils/firebase";
 
@@ -92,7 +92,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
               <div>
                 Created by
                 <span className={classes.address}>
-                  <Copy
+                  <ClipboardCopy
                     message={owner}
                     placeholder={
                       username ||

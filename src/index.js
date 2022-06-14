@@ -4,7 +4,7 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import GenContextProvider from "./gen-state/gen.context";
-import Loading from "./pages/loading/loading";
+import Loading from "./components/Loading/Loading";
 
 if (module.hot) {
   module.hot.accept();

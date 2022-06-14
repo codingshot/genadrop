@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
-import classes from "./profile.module.css";
+import classes from "./Profile.module.css";
 import twitterIcon from "../../assets/icon-twitter-accent.svg";
 import instagramIcon from "../../assets/icon-instagram.svg";
 import discordIcon from "../../assets/icon-discord-accent.svg";
 import { readUserProfile } from "../../utils/firebase";
-import { handleCancel, handleInputChange, handleSave } from "./profile-script";
+import { handleCancel, handleInputChange, handleSave } from "./Profile-Script";
 
 const Profile = () => {
   const history = useHistory();

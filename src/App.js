@@ -5,54 +5,39 @@ import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";
 import Overlay from "./components/overlay/overlay";
 import Notification from "./components/Notification/Notification";
-import Clipboard from "./components/clipboard/clipboard";
+import Clipboard from "./components/Clipboard/Clipboard";
 import Loader from "./components/Loader/Loader";
 import ErrorBoundary from "./components/error-boundary/error-boundary";
-import Welcome from "./pages/welcome/welcome";
+import WelcomeScreen from "./pages/Welcome-Screen/WelcomeScreen";
 import Prompt from "./components/delete-prompt/prompt";
 import FetchData from "./renderless/fetch-data/fetchData.component";
-
-import Home from "./pages/home/home";
-import Create from "./pages/create/create";
-import Mint from "./pages/mint/mint";
+import Home from "./pages/Home/Home";
+import Create from "./pages/Create/Create";
+import Mint from "./pages/Mint/Mint";
 import CollectionToSingleMinter from "./components/Mint/collection-single/collection-single";
 import Marketplace from "./pages/Marketplace/Marketplace";
-import Preview from "./pages/preview/preview";
+import NFTPreview from "./pages/NFT-Preview/NFTPreview";
 import Explore from "./pages/Explore/Explore";
-import Fallback from "./pages/fallback/fallback";
-import CollectionNFT from "./pages/collectionNFT/collectionNFT";
-import Collections from "./pages/collections/collections";
-import Dashboard from "./pages/dashboard/dashboard";
-import docsEmbed from "./pages/docs/docsEmbed";
-import List from "./pages/listNFT/list";
-import Profile from "./pages/profile/profile";
-import SingleNftCollection from "./pages/singleMintCollection/singleNftCollection";
-import SingleNFT from "./pages/singleNFT/singleNFT";
-import Artist from "./pages/artist/artist";
-
-// const Home = lazy(() => import("./pages/home/home"));
-// const Create = lazy(() => import("./pages/create/create"));
-// const Mint = lazy(() => import("./pages/mint/mint"));
-// const CollectionToSingleMinter = lazy(() => import("./components/Mint/collection-single/collection-single"));
-// const Marketplace = lazy(() => import("./pages/Marketplace/Marketplace"));
-// const Preview = lazy(() => import("./pages/preview/preview"));
-// const Explore = lazy(() => import("./pages/Explore/Explore"));
-// const Fallback = lazy(() => import("./pages/fallback/fallback"));
-// const CollectionNFT = lazy(() => import("./pages/collectionNFT/collectionNFT"));
-// const Collections = lazy(() => import("./pages/collections/collections"));
-// const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
-// const docsEmbed = lazy(() => import("./pages/docs/docsEmbed"));
-// const List = lazy(() => import("./pages/listNFT/list"));
-// const Profile = lazy(() => import("./pages/profile/profile"));
-// const SingleNftCollection = lazy(() => import("./pages/singleMintCollection/singleNftCollection"));
-// const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
-// const Artist = lazy(() => import("./pages/artist/artist"));
+import Fallback from "./pages/Fallback/Fallback";
+import CollectionDetail from "./pages/Collection-Detail/CollectionDetail";
+import Collections from "./pages/Collections/Collections";
+import UserDashboard from "./pages/User-Dashboard/UserDashboard";
+import DocsEmbed from "./pages/Docs-Embed/DocsEmbed";
+import List from "./pages/ListNFT/List";
+import Profile from "./pages/Profile/Profile";
+import SingleNFTs from "./pages/Single-NFTs/SingleNFTs";
+import SingleNFTDetail from "./pages/Single-NFT-Detail/SingleNFTDetail";
+import Artist from "./pages/Artist/Artist";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
 
+  /**
+   * Ensures that welcome-screen component shows only once a user visits
+   * the website for the first time
+   */
   if (showWelcomeScreen && window.sessionStorage.showWelcomeScreen === undefined) {
-    return <Welcome showWelcomeScreen={setShowWelcomeScreen} />;
+    return <WelcomeScreen showWelcomeScreen={setShowWelcomeScreen} />;
   }
 
   return (
@@ -65,20 +50,20 @@ function App() {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/create" component={Create} />
-            <Route exact path="/preview" component={Preview} />
+            <Route exact path="/preview" component={NFTPreview} />
             <Route exact path="/mint" component={Mint} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/marketplace" component={Marketplace} />
-            <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
+            <Route exact path="/marketplace/single-mint" component={SingleNFTs} />
             {/* <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} /> */}
-            <Route exact path="/marketplace/single-mint/:chainId/:nftId" component={SingleNFT} />
+            <Route exact path="/marketplace/single-mint/:chainId/:nftId" component={SingleNFTDetail} />
             <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
-            <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />
-            <Route exact path="/me/:userId" component={Dashboard} />
+            <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionDetail} />
+            <Route exact path="/me/:userId" component={UserDashboard} />
             <Route exact path="/me/:userId/:nftId" component={List} />
             <Route exact path="/me/:userId/profile/settings" component={Profile} />
-            <Route exact path="/docs" component={docsEmbed} />
+            <Route exact path="/docs" component={DocsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route component={Fallback} />
           </Switch>

@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { useRouteMatch, Link } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserBoughtNftCollection } from "../../utils";
-import classes from "./list.module.css";
+import classes from "./List.module.css";
 import { fetchUserBoughtNfts, writeNft } from "../../utils/firebase";
 
 const List = () => {
@@ -54,7 +54,7 @@ const List = () => {
       handleSetState({
         nftDetails: nft,
         isLoading: false,
-        image_url: nft.image_url,
+        image_url: nft.image_url, //has error
       });
     })();
   }, []);

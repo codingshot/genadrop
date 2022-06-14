@@ -2,7 +2,7 @@ import React, { useRef, useContext, useEffect, useState } from "react";
 
 import { setClipboard } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
-import classes from "./clipboard.module.css";
+import classes from "./Clipboard.module.css";
 import linkIcon from "../../assets/icon-link.svg";
 import closeIcon from "../../assets/icon-close.svg";
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import { useRouteMatch, Link } from "react-router-dom";
-import classes from "./listed.module.css";
+import classes from "./Listed.module.css";
 
 const Listed = ({ location }) => {
   const { image_url = "no image found!" } = location.state || {};

@@ -3,7 +3,7 @@ import classes from "./collection-menu.module.css";
 import ArtCard from "../art-card/art-card";
 import { GenContext } from "../../gen-state/gen.context";
 import { addImage } from "../../gen-state/gen.actions";
-import ButtonClickEffect from "../button-effect/button-effect";
+import ButtonEffects from "../Button-Effects/ButtonEffects";
 import { handleAddBlank, handleFileChange, handleAddAssets } from "./collection-menu-script";
 
 const CollectionMenu = ({ layer }) => {
@@ -165,11 +165,11 @@ const CollectionMenu = ({ layer }) => {
             upload
           </button>
           {traits[0] && (
-            <ButtonClickEffect>
+            <ButtonEffects>
               <button type="button" onClick={handleBlank} className={classes.addBlankBtn}>
                 Add blank image
               </button>
-            </ButtonClickEffect>
+            </ButtonEffects>
           )}
         </div>
       </section>

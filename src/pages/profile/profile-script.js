@@ -1,6 +1,6 @@
 import { setLoader, setNotification } from "../../gen-state/gen.actions";
 import { writeUserProfile } from "../../utils/firebase";
-import * as PS from "./profile-script";
+import * as PS from "./Profile-Script";
 
 export const handleValidate = (state) => {
   const discordRegex = /^.{3,32}#[0-9]{4}$/;

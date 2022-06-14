@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext } from "react";
 import classes from "./collection-preview.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import { getImageSize } from "../../utils";
-import ButtonClickEffect from "../button-effect/button-effect";
+import ButtonEffects from "../Button-Effects/ButtonEffects";
 import { setPreview } from "../../gen-state/gen.actions";
 import { handleImage } from "./collection-preview-script";
 
@@ -48,7 +48,7 @@ const CollectionPreview = () => {
       <canvas className={classes.canvas} ref={canvasRef} />
       {preview.length ? (
         <button type="button" onClick={handleDownload}>
-          <ButtonClickEffect>Download</ButtonClickEffect>
+          <ButtonEffects>Download</ButtonEffects>
         </button>
       ) : null}
     </div>

@@ -9,10 +9,10 @@ import {
   setNftLayers,
 } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
-import Button from "../button/button";
+import Button from "../Button/Button";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
-import ButtonClickEffect from "../button-effect/button-effect";
+import ButtonEffects from "../Button-Effects/ButtonEffects";
 import { createDna, createUniqueLayer, generateArt, parseLayers } from "./collection-description-script";
 import CollectionPreview from "../preview/collection-preview";
 
@@ -127,18 +127,18 @@ const CollectionDescription = () => {
       {nftLayers.length ? (
         <div className={classes.btnWrapper}>
           <Link to="/preview">
-            <ButtonClickEffect>
+            <ButtonEffects>
               <Button invert>preview</Button>
-            </ButtonClickEffect>
+            </ButtonEffects>
           </Link>
         </div>
       ) : null}
 
       <div className={classes.btnWrapper}>
         <div onClick={handleGenerate}>
-          <ButtonClickEffect>
+          <ButtonEffects>
             <Button>Generate {mintAmount}</Button>
-          </ButtonClickEffect>
+          </ButtonEffects>
         </div>
       </div>
       <canvas style={{ display: "none" }} ref={canvasRef} />
