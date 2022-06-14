@@ -80,6 +80,15 @@ const pinFileToIPFS = async (pinataApiIFPSKey, pinataSecretApiKey, file, metadat
       // handle error here
     });
 };
+// setting a delay as not exceed the API limit
+const getDelayTime = (index, data, batch) => {
+  const reqPagination = [...new Array(Math.floor(data.length / batch) + 1)].map((_, idx) => (idx + 1) * batch);
+  for (const base of reqPagination) {
+    if (index < base) {
+      return (Math.floor(base / batch) - 1) * 1000;
+    }
+  }
+};
 
 const waitForConfirmation = async (txId) => {
   const response = await algodTxnClient.status().do();
@@ -187,6 +196,7 @@ async function createAsset(asset, account) {
     reserve: reserveAddr,
     suggestedParams: params,
   });
+  console.log(txn);
   return txn;
 }
 
@@ -460,15 +470,43 @@ export async function createNFT(createProps, doAccountCheck) {
       type: "warning",
     })
   );
-  for (let i = 0; i < metadata.length; i += 1) {
-    dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
-    const imgName = metadata[i].image;
-    const imgFile = data.files[imgName];
-    const uint8array = await imgFile.async("uint8array");
-    const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
-    const asset = await connectAndMint(blob, metadata[i], imgName);
-    assets.push(asset);
+  dispatch(setLoader(`uploading of ${metadata.length}`));
+  function fetchAuroraCollection(ipfsJsonDataSingle, ipfsJsonData, idx) {
+    return new Promise((resolve, reject) => {
+      const delay = getDelayTime(idx, ipfsJsonData, 20);
+      setTimeout(async () => {
+        try {
+          const imgName = ipfsJsonDataSingle.image;
+          const imgFile = data.files[imgName];
+          const uint8array = await imgFile.async("uint8array");
+          const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
+          const asset = await connectAndMint(blob, ipfsJsonDataSingle, imgName);
+          resolve(asset);
+        } catch (err) {
+          console.log(err);
+          reject(err);
+        }
+      }, delay);
+    });
   }
+  const responses = await Promise.allSettled(
+    metadata.map((ipfsJsonDataSingle, idx) => fetchAuroraCollection(ipfsJsonDataSingle, metadata, idx))
+  );
+  console.log(responses);
+  responses.forEach((element) => {
+    if (element?.status === "fulfilled") {
+      assets.push(element.value);
+    }
+  });
+  // for (let i = 0; i < metadata.length; i += 1) {
+  //   dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
+  //   const imgName = metadata[i].image;
+  //   const imgFile = data.files[imgName];
+  //   const uint8array = await imgFile.async("uint8array");
+  //   const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
+  //   const asset = await connectAndMint(blob, metadata[i], imgName);
+  //   assets.push(asset);
+  // }
   dispatch(setLoader(""));
   dispatch(
     setNotification({
@@ -496,6 +534,20 @@ export async function initializeContract(contractProps) {
 
 export async function mintToAlgo(algoProps) {
   const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = algoProps;
+  function fetchAuroraCollection(ipfsJsonDataSingle, ipfsJsonData, idx) {
+    return new Promise((resolve, reject) => {
+      const delay = getDelayTime(idx, ipfsJsonData, 20);
+      setTimeout(async () => {
+        try {
+          const txn = await createAsset(ipfsJsonDataSingle, account);
+          resolve(txn);
+        } catch (err) {
+          console.log(err);
+          reject(err);
+        }
+      }, delay);
+    });
+  }
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps }, true);
@@ -512,28 +564,39 @@ export async function mintToAlgo(algoProps) {
         type: "default",
       })
     );
-    for (let i = 0; i < ipfsJsonData.length; ++i) {
-      dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
-      const txn = await createAsset(ipfsJsonData[i], account);
-      txns.push(txn);
-    }
+    dispatch(setLoader(`constructing assets  of ${ipfsJsonData.length}`));
+
+    const responses = await Promise.allSettled(
+      ipfsJsonData.map((data, idx) => fetchAuroraCollection(data, ipfsJsonData, idx))
+    );
+    console.log(responses);
+    responses.forEach((element) => {
+      if (element?.status === "fulfilled") {
+        txns.push(element.value);
+      }
+    });
+    // for (let i = 0; i < ipfsJsonData.length; ++i) {
+    //   dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
+    //   const txn = await createAsset(ipfsJsonData[i], account);
+    //   txns.push(txn);
+    // }
     dispatch(setLoader("finalizing"));
 
-    try {
-      const { assetID, txId } = await signTx(connector, txns, dispatch);
-      const collectionHash = await pinata.pinJSONToIPFS(assetID, {
-        pinataMetadata: { name: "collection" },
-      });
-      const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-      await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
-      dispatch(setLoader(""));
-      return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
-    } catch (error) {
-      console.log(error);
-      return {
-        message: `${error.message}`,
-      };
-    }
+    // try {
+    //   const { assetID, txId } = await signTx(connector, txns, dispatch);
+    //   const collectionHash = await pinata.pinJSONToIPFS(assetID, {
+    //     pinataMetadata: { name: "collection" },
+    //   });
+    //   const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
+    //   await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
+    //   dispatch(setLoader(""));
+    //   return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
+    // } catch (error) {
+    //   console.log(error);
+    //   return {
+    //     message: `${error.message}`,
+    //   };
+    // }
   }
   return { message: "connect wallet to algorand network or select a different chain" };
 }
