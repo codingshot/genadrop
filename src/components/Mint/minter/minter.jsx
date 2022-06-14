@@ -179,11 +179,10 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
   };
 
   const handlePrice = (event) => {
-    handleSetState({ price: event.target.value > 0 ? event.target.value : 0 });
+    handleSetState({ price: event.target.value > 0 ? event.target.value : "" });
   };
 
   const setMint = () => {
-    console.log(singleMintProps);
     if (!chainId) {
       return dispatch(
         setNotification({
