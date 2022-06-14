@@ -4,10 +4,10 @@ import wrongSvg from "../../assets/something_wrong.svg";
 import home from "../../assets/home-svg.svg";
 import homeWhite from "../../assets/home-white.svg";
 import refresh from "../../assets/bx_refresh.svg";
-import classes from "./Error.module.css";
+import classes from "./something_wrong.module.css";
 import refresh_green from "../../assets/bx_refresh_green.svg";
 
-const Error = () => {
+const SomethingWentWrong = () => {
   const [changeImage, setChangeImage] = useState(home);
   const [refreshColor, setRefreshColor] = useState(refresh);
   const history = useHistory();
@@ -56,4 +56,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default SomethingWentWrong;
