@@ -3,7 +3,7 @@ import Skeleton from "react-loading-skeleton";
 import { useRouteMatch, Link } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserBoughtNftCollection } from "../../utils";
-import classes from "./List.module.css";
+import classes from "./ListNFT.module.css";
 import { fetchUserBoughtNfts, writeNft } from "../../utils/firebase";
 
 const List = () => {

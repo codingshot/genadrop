@@ -23,7 +23,7 @@ import CollectionDetail from "./pages/Collection-Detail/CollectionDetail";
 import Collections from "./pages/Collections/Collections";
 import UserDashboard from "./pages/User-Dashboard/UserDashboard";
 import DocsEmbed from "./pages/Docs-Embed/DocsEmbed";
-import List from "./pages/ListNFT/List";
+import ListNFT from "./pages/ListNFT/ListNFT";
 import Profile from "./pages/Profile/Profile";
 import SingleNFTs from "./pages/Single-NFTs/SingleNFTs";
 import SingleNFTDetail from "./pages/Single-NFT-Detail/SingleNFTDetail";
@@ -61,7 +61,7 @@ function App() {
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionDetail} />
             <Route exact path="/me/:userId" component={UserDashboard} />
-            <Route exact path="/me/:userId/:nftId" component={List} />
+            <Route exact path="/me/:userId/:nftId" component={ListNFT} />
             <Route exact path="/me/:userId/profile/settings" component={Profile} />
             <Route exact path="/docs" component={DocsEmbed} />
             <Route exact path="/artist" component={Artist} />
