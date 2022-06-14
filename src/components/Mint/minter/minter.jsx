@@ -277,11 +277,11 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
         axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.ethereum.usd });
+          handleSetState({ dollarPrice: price * res.data.ethereum.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
-          handleSetState({ dollarPrice: price / res.data.data.amount });
+          handleSetState({ dollarPrice: price * res.data.data.amount });
         });
       }
     }
