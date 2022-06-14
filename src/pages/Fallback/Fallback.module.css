@@ -1,0 +1,128 @@
+.container {
+  width: 100%;
+  font-size: 1rem;
+  text-align: center;
+  padding-top: 4em;
+  max-height: calc(100vh - 65px);
+  overflow-y: hidden;
+}
+
+.container h1 {
+  font-weight: 700;
+  font-size: 40px;
+  margin: 1.5vw 0;
+}
+
+.text {
+  font-size: 20px;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 40px;
+}
+
+.button-container {
+  margin-top: 2.5vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.go-back svg {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  transition: 0.4s;
+}
+
+.go-back:hover {
+  background-color: var(--main-accent);
+  color: white;
+}
+.go-back:hover svg {
+  transform: translate(-6px, 0px);
+}
+.go-back:hover svg path {
+  stroke: white;
+  fill: white;
+}
+
+.go-back {
+  width: 200px;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  margin-right: 40px;
+  color: var(--main-accent);
+  font-size: 20px;
+  border: 1px solid var(--main-accent);
+  transition: 0.4s;
+  font-weight: 600;
+  border-radius: 100px;
+  cursor: pointer;
+}
+
+.home:hover {
+  background: none;
+  color: var(--main-accent);
+}
+
+.home {
+  width: 200px;
+  cursor: pointer;
+  height: 60px;
+  background-color: var(--main-accent);
+  color: white;
+  font-size: 20px;
+  transition: 0.4s;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--main-accent);
+  font-weight: 600;
+  border-radius: 100px;
+}
+.go-back img {
+  width: 25px;
+  height: 20px;
+  margin-right: 10px;
+}
+.not-found img {
+  max-width: 100%;
+  height: 35vh;
+}
+.home img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  transition: 0.4s;
+  margin-bottom: 3px;
+  background: none;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding-top: 2em;
+    max-height: calc(100vh - 6em);
+  }
+  .not-found h1 {
+    font-size: 30px;
+  }
+  .text {
+    font-size: 20px;
+  }
+  .go-back {
+    margin-right: 10px;
+  }
+  .go-back,
+  .home {
+    width: 170px;
+    height: 50px;
+    font-size: 17px;
+  }
+}

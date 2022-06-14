@@ -1,0 +1,131 @@
+/* Accordion */
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 1em;
+  padding-top: 2em;
+  margin: 0 auto;
+  margin-bottom: 8em;
+  display: flex;
+  flex-direction: column;
+}
+
+.nft {
+  width: 15rem;
+  align-self: center;
+  border: 5px solid #e5e8eb;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+}
+
+.container span {
+  align-self: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.section {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e5e8eb;
+  border-radius: 10px;
+  margin-top: 1.5rem;
+}
+
+.feature {
+  margin-bottom: 1rem;
+  border: solid 1px #e5e8eb;
+  border-radius: 10px;
+}
+
+.mainDetails {
+  padding: 0.8rem 0.5rem;
+  border-bottom: 1px solid #e5e8eb;
+  display: flex;
+  flex-direction: row;
+  background-color: #f3f4f7;
+  border-radius: 10px 10px 0 0;
+}
+
+.nftId {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.buy {
+  flex-direction: row;
+  margin: 1rem 0.5rem 1rem 0;
+  color: white;
+  padding: 0 0.5rem;
+  height: 3rem;
+  width: 11rem;
+  border-radius: 5px;
+  font-weight: bold;
+  background-color: var(--main-accent);
+}
+
+.buy:hover,
+.detailContent img:hover {
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1440px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .container {
+    max-width: 1000px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 540px;
+    padding: 0 2em;
+  }
+
+  .section1 {
+    flex-direction: column;
+  }
+
+  .v_subsection1 {
+    width: 100%;
+    margin-bottom: 1rem;
+    max-width: 222rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0 0.5em;
+  }
+  .section1 {
+    flex-direction: column;
+  }
+
+  .buy {
+    width: 95%;
+  }
+
+  .nftName {
+    flex-direction: column;
+  }
+}
+
+.detailContent {
+  padding: 1rem;
+}
+.detailContent img {
+  width: 50px;
+}

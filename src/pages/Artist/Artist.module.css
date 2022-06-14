@@ -1,0 +1,236 @@
+.container {
+  width: 100%;
+  padding-bottom: 6em;
+  background: white;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 1em;
+}
+@media screen and (max-width: 1440px) {
+  .wrapper {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    max-width: 1000px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper {
+    max-width: 768px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    max-width: 540px;
+    padding: 0 2em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: 0 1em;
+  }
+}
+
+/* ################################################ */
+
+.joinContainer {
+  width: 100%;
+  max-width: 1440px;
+  margin: auto;
+}
+.join_wrapper {
+  background: url("../../assets/wavesArtist.svg");
+  height: 40rem;
+  display: flex;
+  display: flex;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.joinContainer h3 {
+  font-size: 2.25em;
+  font-style: normal;
+  font-weight: 700;
+  text-align: center;
+}
+.joinContainer p {
+  font-size: 1.375rem;
+  font-weight: 400;
+  margin: 1.375rem auto 0;
+  text-align: center;
+}
+.joinContainer a {
+  background: transparent;
+  border: 3px solid var(--main-accent);
+  box-sizing: border-box;
+  border-radius: 37.44px;
+  width: 16.875rem;
+  height: 4rem;
+  color: var(--main-accent);
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin: 4.5rem auto 5.5rem;
+  transition: 0.3s ease-in-out;
+}
+.joinContainer a:hover {
+  background: var(--main-accent);
+  color: white;
+}
+@media screen and (max-width: 1440px) {
+  .joinContainer {
+    max-width: 1200px;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .joinContainer {
+    max-width: 1000px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .joinContainer {
+    max-width: 768px;
+  }
+  .lineBreak {
+    display: none;
+  }
+  .joinContainer a {
+    margin: 2.5rem auto 5.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .joinContainer {
+    max-width: 540px;
+    padding: 0 2em;
+  }
+  .joinContainer h3 {
+    font-size: calc(1rem + 2vmin);
+  }
+  .joinContainer p {
+    font-size: 1rem;
+  }
+  .joinContainer a {
+    font-size: 1rem;
+    width: 12.875rem;
+    height: 3.5rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .joinContainer {
+    padding: 0 1em;
+  }
+}
+
+/* ################################################################### */
+
+.heroContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* width: 50%; */
+}
+.content h3 {
+  font-size: 2.25em;
+  font-style: normal;
+  font-weight: 700;
+}
+.content p {
+  font-size: 1.375rem;
+  font-weight: 400;
+  margin-top: 1.375rem;
+}
+.content div {
+  margin-top: 5rem;
+}
+.applyBtn {
+  background: var(--main-accent);
+  border: 3px solid var(--main-accent);
+  box-sizing: border-box;
+  border-radius: 37.44px;
+  width: 16.875rem;
+  height: 4rem;
+  color: #ffffff;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: 2.4rem;
+  transition: 0.3s ease-in-out;
+}
+.applyBtn:hover {
+  background: white;
+  color: var(--main-accent);
+}
+.imgContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+.imgContainer img {
+  margin-right: 5%;
+  width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .lineBreak {
+    display: none;
+  }
+  .applyBtn {
+    margin-top: 3rem;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .heroContainer {
+    flex-direction: column;
+  }
+  .imgContainer {
+    justify-content: center;
+  }
+  .imgContainer img {
+    margin: 0;
+  }
+  .content div {
+    margin-top: 3rem;
+  }
+  .applyBtn {
+    margin: 2rem auto 0;
+  }
+  .lineBreak {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content h3 {
+    font-size: calc(1rem + 2vmin);
+  }
+  .content p {
+    font-size: 1rem;
+  }
+  .applyBtn {
+    font-size: 1rem;
+    width: 12.875rem;
+    height: 3.5rem;
+  }
+}

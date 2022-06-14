@@ -1,0 +1,149 @@
+.container {
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--main-accent);
+  padding: 2em;
+}
+
+.topLeft {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 1em;
+}
+
+.socialIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.socialIcons img {
+  width: 1.6em;
+  transition: all 300ms;
+}
+
+.socialIcons .icon {
+  padding: 0.5em;
+  transition: all 300ms;
+  border-radius: 0.25em;
+  background: #00cc9b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  height: 3rem;
+  width: 3rem;
+}
+
+.icon img {
+  width: 2rem;
+}
+
+.socialIcons .icon:hover {
+  transform: scale(1.1);
+  background: var(--main-accent-dark);
+}
+
+.topRight {
+  color: white;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4em;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.links .title {
+  font-weight: bold;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+.bottom {
+  width: 100%;
+  background: #333333;
+  padding: 1em;
+  color: white;
+}
+
+.bottomRight {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  padding: 0 1em;
+}
+
+.bottomRight a {
+  white-space: nowrap;
+}
+
+.build span {
+  color: red;
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 3em;
+  }
+
+  .bottom {
+    padding: 2em 1em;
+  }
+
+  .topLeft {
+    width: 100%;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+
+  .topLeft img {
+    width: 4em;
+  }
+
+  .topRight {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2em;
+  }
+
+  .build {
+    text-align: center;
+  }
+
+  .socialIcons img {
+    width: 1.4em;
+  }
+}
