@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classes from "./priceDropdown.module.css";
-import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import dropdownIcon from "../../../assets/down-arrow.svg";
 import arrowDown from "../../../assets/icon-arrow-down-long.svg";
 import arrowUp from "../../../assets/icon-arrow-up-long.svg";
 

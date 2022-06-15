@@ -6,6 +6,7 @@ import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
 import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import allChainsIcon from "../../../assets/all-chains.svg";
 
 const chainIcon = {
   polygon: polygonIcon,
@@ -38,6 +39,7 @@ const ChainDropdown = ({ onChainFilter }) => {
     {
       id: 0,
       name: "All Chains",
+      img: allChainsIcon,
     },
     {
       id: 2,
@@ -68,10 +70,12 @@ const ChainDropdown = ({ onChainFilter }) => {
     <div className={classes.chainDropdown}>
       <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter })} className={classes.selectedChain}>
         <div>
-          {chainIcon[chain.toLowerCase()] && (
+          {chainIcon[chain.toLowerCase()] ? (
             <img className={classes.chainImg} src={chainIcon[chain.toLowerCase()]} alt={chain} />
+          ) : (
+            <img className={classes.chainImg} src={allChainsIcon} alt={chain} />
           )}
-          <span>{chain}</span>
+          <span className={classes.chainName}>{chain}</span>
         </div>
         <img
           src={dropdownIcon}
