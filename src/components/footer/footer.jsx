@@ -5,6 +5,8 @@ import twitterIcon from "../../assets/icon-twitter.svg";
 import discordIcon from "../../assets/icon-discord.svg";
 import linkedInIcon from "../../assets/icon-linkedin.svg";
 import youTubeIcon from "../../assets/icon-youtube.svg";
+import telegram from "../../assets/telegram.svg";
+import linktree from "../../assets/linktree.svg";
 
 const footerLinks = [
   {
@@ -57,6 +59,9 @@ const Footer = () => (
               <img src={logo} alt="" />
             </a>
             <div className={classes.socialIcons}>
+              <a className={classes.icon} href="https://linktr.ee/Genadrop" target="_blank" rel="noopener noreferrer">
+                <img src={linktree} alt="Genadrop linktree" />
+              </a>
               <a
                 className={classes.icon}
                 href="https://discord.gg/4vdtmQqz6d"
@@ -73,6 +78,14 @@ const Footer = () => (
                 rel="noopener noreferrer"
               >
                 <img src={twitterIcon} alt="Minority Programmers Twitter" />
+              </a>
+              <a
+                className={classes.icon}
+                href="https://t.me/+4BDhz2QLaa05NzEx"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src={telegram} alt="Genadrop Telegram" />
               </a>
 
               <a

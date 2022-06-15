@@ -434,9 +434,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               {chainId ? (
                 <div className={classes.price}>
                   <input type="number" min="0" value={price} onChange={handlePrice} />
-                  <span>
-                    {dollarPrice.toFixed(4)} USD
-                  </span>
+                  <span>{dollarPrice.toFixed(4)} USD</span>
                 </div>
               ) : (
                 <span className={classes.warn}>Connect wallet to add price</span>
