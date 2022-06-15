@@ -14,7 +14,8 @@ const WalletPopup = ({ handleSetState }) => {
   const [activeChain, setActiveChain] = useState(null);
   const [showMetamask, setMetamask] = useState(true);
 
-  const handleChain = (chainId) => {
+  const handleChain = (chainId, isComingSoon = undefined) => {
+    if (isComingSoon) return;
     if (chainId === 4160) {
       setMetamask(false);
     } else {
@@ -74,10 +75,16 @@ const WalletPopup = ({ handleSetState }) => {
             {Object.values(supportedChains)
               .filter((chain) => showMoreOptions || [137, 42220, 1313161554, 4160].includes(chain.networkId))
               .map((chain, idx) => (
-                <div onClick={() => handleChain(chain.networkId)} key={idx} className={classes.chain}>
+                <div
+                  onClick={() => handleChain(chain.networkId, chain.comingSoon)}
+                  key={idx}
+                  className={`${classes.chain} ${chain.comingSoon && classes.comingSoon}`}
+                >
                   <img src={chain.icon} alt="" />
                   <div className={classes.name}>
-                    <h4>{chain.label}</h4>
+                    <h4>
+                      {chain.label} {chain.comingSoon ? <span>Coming soon</span> : ""}
+                    </h4>
                     <p className={classes.action}>connect to your {chain.name} wallet</p>
                   </div>
                 </div>

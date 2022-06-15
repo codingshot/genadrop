@@ -179,7 +179,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
   };
 
   const handlePrice = (event) => {
-    handleSetState({ price: event.target.value > 0 ? event.target.value : 0 });
+    handleSetState({ price: event.target.value > 0 ? event.target.value : "" });
   };
 
   const setMint = () => {
@@ -277,11 +277,11 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
         axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price / res.data.ethereum.usd });
+          handleSetState({ dollarPrice: price * res.data.ethereum.usd });
         });
       } else {
         axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
-          handleSetState({ dollarPrice: price / res.data.data.amount });
+          handleSetState({ dollarPrice: price * res.data.data.amount });
         });
       }
     }
@@ -429,14 +429,12 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             <div className={classes.category}>Set Mint Options</div>
             <div className={classes.inputWrapper}>
               <label>
-                Price (USD) <span className={classes.required}>*</span>
+                Price ({getUintByChain[chain?.label.toLowerCase()]}) <span className={classes.required}>*</span>
               </label>
               {chainId ? (
                 <div className={classes.price}>
                   <input type="number" min="0" value={price} onChange={handlePrice} />
-                  <span>
-                    {dollarPrice.toFixed(4)} {getUintByChain[chain?.label.toLowerCase()]}
-                  </span>
+                  <span>{dollarPrice.toFixed(4)} USD</span>
                 </div>
               ) : (
                 <span className={classes.warn}>Connect wallet to add price</span>
