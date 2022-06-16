@@ -147,3 +147,16 @@
     width: 1.4em;
   }
 }
+@media screen and (max-width: 460px) {
+  .socialIcons {
+    margin: auto;
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5em;
+  }
+  .socialIcons .icon {
+    height: 2.5rem;
+    width: 2.5rem;
+  }
+}
