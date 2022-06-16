@@ -6,7 +6,7 @@
   position: relative;
   width: 12em;
   background: white;
-  border-radius: 2.5em;
+  /* border-radius: 2.5em; */
   z-index: 10;
 }
 
@@ -111,10 +111,10 @@
   background: rgb(240, 240, 240);
 }
 
-.priceDropdown .dropdown > div:last-child {
+.priceDropdown .dropdown > div {
   /* border-bottom-left-radius: 0.25em;
   border-bottom-right-radius: 0.25em; */
-  border-radius: 2.5em;
+  border-radius: 0.25em;
 }
 
 .dropdownIcon {
