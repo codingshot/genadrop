@@ -180,6 +180,7 @@ async function createAsset(asset, account) {
   const total = 1;
   const { metadata } = asset;
   const metadataUint8Array = new Uint8Array(metadata);
+  console.log(metadataUint8Array);
 
   const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
     from: account,
@@ -439,8 +440,10 @@ export async function createNFT(createProps, doAccountCheck) {
   const assets = [];
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
+  console.log(data);
   const files = data.files["metadata.json"];
   const metadataString = await files.async("string");
+  console.log(metadataString);
   const metadata = JSON.parse(metadataString);
   try {
     if (doAccountCheck) {
@@ -478,9 +481,12 @@ export async function createNFT(createProps, doAccountCheck) {
         try {
           const imgName = ipfsJsonDataSingle.image;
           const imgFile = data.files[imgName];
+          console.log(imgFile);
           const uint8array = await imgFile.async("uint8array");
+          console.log(uint8array);
           const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
           const asset = await connectAndMint(blob, ipfsJsonDataSingle, imgName);
+          console.log(asset);
           resolve(asset);
         } catch (err) {
           console.log(err);
@@ -540,6 +546,7 @@ export async function mintToAlgo(algoProps) {
       setTimeout(async () => {
         try {
           const txn = await createAsset(ipfsJsonDataSingle, account);
+          console.log(txn);
           resolve(txn);
         } catch (err) {
           console.log(err);
