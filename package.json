@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "@json-rpc-tools/utils": "^1.7.6",
+    "@openzeppelin/contracts": "^4.6.0",
     "@pinata/sdk": "^1.1.23",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
