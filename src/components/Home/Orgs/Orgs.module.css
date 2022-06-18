@@ -2,8 +2,15 @@
   width: 100%;
   margin-bottom: 4em;
   position: relative;
-  padding-bottom: 10em;
-  padding-top: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1280px;
 }
 
 .heading {
@@ -30,7 +37,7 @@
 .orgs {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 1em;
 }
@@ -40,7 +47,8 @@
   z-index: -1;
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: space-around;
   height: 100%;
   top: 0;
   left: 0;
@@ -52,14 +60,15 @@
 
 .bgIcons img {
   width: 6em;
+  margin-top: -4em;
 }
 
 .bgIcons img:first-child {
-  align-self: flex-start;
+  margin-right: 12em;
 }
 
 .bgIcons img:last-child {
-  align-self: flex-end;
+  margin-left: 12em;
 }
 
 @media screen and (max-width: 1200px) {
@@ -70,12 +79,15 @@
   .heading span {
     white-space: nowrap;
   }
+
+  .bgIcons {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 768px) {
   .container {
-    padding-bottom: 5em;
-    margin-bottom: 3em;
+    margin-bottom: 4em;
   }
 
   .orgs img {

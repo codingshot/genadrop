@@ -5,32 +5,22 @@ import Review from "../../components/Home/Review/Review";
 import FAQ from "../../components/Home/FAQ/FAQ";
 import Orgs from "../../components/Home/Orgs/Orgs";
 import classes from "./home.module.css";
-import { Collectors, creators } from "./home-script";
 import Docs from "../../components/Home/Docs/Docs";
-import EarlyAccess from "../../components/early-access/early-access";
-import JoinDiscord from "../../components/join-discord/JoinDiscord";
+import GenadropCreatedNFTs from "../../components/Home/Genadrop-Created-NFTs/GenadropCreatedNFTs";
+import JoinDiscord from "../../components/Home/Join-Discord/JoinDiscord";
+import EarlyAccess from "../../components/Home/early-access/early-access";
 
 const Home = () => (
   <div className={classes.container}>
-    <div className={classes.wrapper}>
-      <Banner />
-      <EarlyAccess />
-      <Orgs />
-      <Features data={creators} />
-      <Features data={Collectors} />
-    </div>
-    <div className={`${classes.wrapper} ${classes.withBg}`}>
-      <Docs />
-    </div>
-    <div style={{ paddingBottom: "0rem" }} className={classes.wrapper}>
-      <Review />
-    </div>
-    <div className={`${classes.wrapper} ${classes.withBg}`}>
-      <JoinDiscord />
-    </div>
-    <div className={classes.wrapper}>
-      <FAQ />
-    </div>
+    <Banner />
+    <EarlyAccess />
+    <Orgs />
+    <GenadropCreatedNFTs />
+    <Features />
+    <Docs />
+    <Review />
+    <JoinDiscord />
+    <FAQ />
   </div>
 );
 
