@@ -5,7 +5,7 @@ import mintBg from "../../assets/mint-bg1.svg";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
-import { initConnectWallet } from "../../components/Wallet/wallet-script";
+import { initConnectWallet } from "../../components/wallet/wallet-script";
 import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
