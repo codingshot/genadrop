@@ -11,12 +11,6 @@ module.exports = {
     ecmaVersion: 2020,
     sourceType: "module",
   },
-  "import/no-extraneous-dependencies": [
-    "error",
-    {
-      devDependencies: true,
-    },
-  ],
   plugins: ["react", "only-warn"],
   rules: {
     "react/function-component-definition": "off",
