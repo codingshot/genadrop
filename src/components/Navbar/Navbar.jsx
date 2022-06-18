@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
-import ConnectWallet from "../Wallet/wallet";
+import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
 import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
