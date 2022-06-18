@@ -20,7 +20,14 @@ const Banner = () => {
       <div className={classes.wrapper}>
         <div className={classes.content}>
           <div className={classes.title}>
-            The No code Art <br /> tool for NFT <span>Creation</span>
+            The No code Art <br /> tool for NFT
+            <div className={classes.features}>
+              <div className={classes.fWrapper}>
+                <div>Creation</div>
+                <div>Minting</div>
+                <div>Marketplace</div>
+              </div>
+            </div>
           </div>
           <div className={classes.description}>
             Generate all combinations from your art assets, preview and edit meta data, upload to ipfs, mint, and list
