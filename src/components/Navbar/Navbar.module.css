@@ -7,6 +7,7 @@
   box-shadow: 0 0 5px gainsboro;
   z-index: 1;
   padding: 0.5em 2em;
+  gap: 8em;
 }
 
 .logoContainer {
@@ -60,6 +61,35 @@
   display: none;
 }
 
+.searchAndNavWrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2em;
+}
+
+.searchContainer {
+  flex: 1;
+  border: 1px solid gainsboro;
+  padding: 0.5em;
+  border-radius: 2em;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 0.25em;
+}
+
+.searchContainer img {
+  width: 1.4em;
+}
+
+.searchInput {
+  width: 100%;
+  border: 1px solid transparent;
+  outline: none;
+}
+
 .navContainer {
   display: flex;
   align-items: center;
@@ -75,7 +105,7 @@
   gap: 1em;
   font-size: 1rem;
   text-transform: capitalize;
-  margin-right: 10vw;
+  margin-right: 4em;
 }
 
 .navItem {
@@ -111,7 +141,6 @@
 }
 
 .wallet {
-  width: 18em;
   text-align: right;
   display: flex;
   align-items: center;
@@ -126,9 +155,13 @@
   .container input {
     max-width: 20em;
   }
+
+  .navList {
+    margin-right: 2em;
+  }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
   .container {
     background: var(--main-bg);
   }
@@ -156,26 +189,25 @@
   }
 
   .navContainer {
-    width: 95%;
-    margin-right: 2.5%;
+    width: 100%;
     position: absolute;
+    justify-content: center;
     flex-direction: column-reverse;
     gap: 2em;
     right: 0;
-    top: 3em;
-    padding: 0 1em;
+    top: 4em;
+    padding: 0 2em;
     max-height: 0;
     overflow: hidden;
     transition: max-height 650ms;
-    border-bottom-right-radius: 1em;
-    border-bottom-left-radius: 1em;
   }
 
   .navContainer.active {
-    max-height: 100vh;
-    box-shadow: 0 0 15px gainsboro;
+    max-height: 20em;
     justify-content: center;
     align-items: center;
+    /* border-bottom: 1px solid gainsboro; */
+    box-shadow: 0px 4px 8px rgb(0, 0, 0, 0.1);
   }
 
   .navContainer input {
@@ -208,7 +240,7 @@
     text-align: center;
     font-weight: 700;
     border: 1px solid gainsboro;
-    border-radius: 0.5em;
+    border-radius: 2em;
   }
 
   .navItem:hover {

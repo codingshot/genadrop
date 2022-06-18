@@ -1,0 +1,192 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+}
+
+.popupContainer {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: none;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 10000;
+}
+
+.popupContainer.active {
+  display: block;
+}
+
+.connect {
+  width: 100%;
+  max-width: 12em;
+  padding: 0.5em 1.5em;
+  border-radius: 2em;
+  cursor: pointer;
+  color: white;
+  background: var(--main-accent);
+  text-align: center;
+  border: 1px solid var(--main-accent);
+  transition: background 300ms;
+}
+
+.connect:hover {
+  background: var(--main-accent-dark);
+}
+
+.connected {
+  width: 100%;
+  max-width: 10em;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.5em;
+  color: white;
+  cursor: pointer;
+  position: relative;
+  background: var(--main-accent);
+  transition: all 150ms;
+  padding: 0.25em 0.25em;
+  border-radius: 2em;
+}
+
+.connected.active {
+  border-bottom-right-radius: 0;
+}
+
+.connected:hover {
+  background: var(--main-accent-dark);
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+.user img {
+  width: 1em;
+  height: 1em;
+}
+
+.chain {
+  height: 24px;
+  width: 24px;
+  background: white;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.address {
+  flex: 1;
+  color: var(--main-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25em;
+  position: relative;
+  font-size: 0.8rem;
+}
+
+.network {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  gap: 0.25em;
+  cursor: default;
+}
+
+.activeNetwork {
+  font-size: 0.75rem;
+}
+
+.network img {
+  filter: invert(1);
+  width: 0.5em;
+  transition: all 300ms;
+}
+
+.networkDrop {
+  position: absolute;
+  bottom: 0;
+  transform: translateY(90%);
+  visibility: hidden;
+  transition: all 200ms;
+  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+  padding: 0.25em 0.5em;
+  background: white;
+}
+
+.network:hover .networkDrop {
+  visibility: visible;
+  transform: translateY(100%);
+}
+
+.network:hover img {
+  transform: rotate(180deg);
+}
+
+.network .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f1b56e;
+}
+
+.network img {
+  width: 0.65em;
+}
+
+.dropdown {
+  width: 100%;
+  min-width: 12em;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  background: whitesmoke;
+  position: absolute;
+  top: 2.4em;
+  right: 0;
+  color: black;
+  border-radius: 0.5em;
+  transition: all 150ms;
+  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+
+.dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  border-top-right-radius: 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em 1em;
+  transition: all 300ms;
+}
+
+.option:hover {
+  background: rgb(230, 230, 230);
+}
+
+.option div {
+  white-space: nowrap;
+}
+
+.option img {
+  width: 1.2em;
+}

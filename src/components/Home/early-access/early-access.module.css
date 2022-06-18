@@ -1,0 +1,58 @@
+.container {
+  width: 100%;
+  padding: 0 1em;
+  margin-bottom: 6em;
+}
+
+.wrapper {
+  background: #dff1f0;
+  color: #00a898;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1.8rem;
+  width: fit-content;
+  margin: auto;
+}
+
+.wrapper div svg {
+  margin-right: 0.5rem;
+  min-width: 26px;
+}
+.wrapper a svg {
+  margin-left: 1.25rem;
+  transition: 0.2s ease-in;
+}
+.wrapper a svg:hover {
+  transform: translate(6px, 0px);
+}
+.wrapper div {
+  width: 100%;
+  align-items: center;
+  display: flex;
+}
+.wrapper div p {
+  margin: auto;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 1.25em;
+}
+.hidden {
+  display: none;
+}
+.wrapper a {
+  display: flex;
+  align-items: center;
+}
+@media screen and (max-width: 988px) {
+  .wrapper div p {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    margin-bottom: 4em;
+  }
+}

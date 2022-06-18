@@ -322,6 +322,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               <div className={classes.innerAssetInfo}>
                 <p>{fName}</p>
                 <p>Number of assets: {file.length}</p>
+                <div></div>
                 {file.length > 1 ? (
                   <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
                     <span>view all assets</span>
@@ -429,7 +430,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             <div className={classes.category}>Set Mint Options</div>
             <div className={classes.inputWrapper}>
               <label>
-                Price ({getUintByChain[chain?.label.toLowerCase()]}) <span className={classes.required}>*</span>
+                List Price ({getUintByChain[chain?.label.toLowerCase()]}) <span className={classes.required}>*</span>
               </label>
               {chainId ? (
                 <div className={classes.price}>
