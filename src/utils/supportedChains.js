@@ -2,6 +2,8 @@ import algoIcon from "../assets/icon-algo.svg";
 import auroraIcon from "../assets/icon-aurora.svg";
 import celoIcon from "../assets/icon-celo.svg";
 import polygonIcon from "../assets/icon-polygon.svg";
+import nearIcon from "../assets/icon-near.svg";
+import solanaIcon from "../assets/icon-solana.svg";
 import { addChain, switchChain } from "./chainConnect";
 
 const supportedChains = {
@@ -88,6 +90,58 @@ const supportedChains = {
     add: addChain,
     switch: switchChain,
     coinGeckoLabel: "ethereum",
+  },
+  "add-near-id": {
+    id: "near",
+    label: "Near",
+    icon: nearIcon,
+    livePrice: "",
+    symbol: "",
+    networkId: null,
+    explorer: "",
+    add: null,
+    switch: null,
+    coinGeckoLabel: "",
+    comingSoon: true,
+  },
+  "add-near-t-id": {
+    id: "near",
+    label: "Near Testnet",
+    icon: nearIcon,
+    livePrice: "",
+    symbol: "",
+    networkId: null,
+    explorer: "",
+    add: null,
+    switch: null,
+    coinGeckoLabel: "",
+    comingSoon: true,
+  },
+  "add-solana-id": {
+    id: "solana",
+    label: "Solana",
+    icon: solanaIcon,
+    livePrice: "",
+    symbol: "",
+    networkId: null,
+    explorer: "",
+    add: null,
+    switch: null,
+    coinGeckoLabel: "",
+    comingSoon: true,
+  },
+  "add-solana-t-id": {
+    id: "solana",
+    label: "Solana Testnet",
+    icon: solanaIcon,
+    livePrice: "",
+    symbol: "",
+    networkId: null,
+    explorer: "",
+    add: null,
+    switch: null,
+    coinGeckoLabel: "",
+    comingSoon: true,
   },
 };
 

@@ -1,13 +1,24 @@
 .searchInput {
   width: 100%;
   flex: 1;
-  padding: 0.5em;
+  padding: 0 25px;
   transition: all 300ms;
   border-radius: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   border: 1px solid gainsboro;
   outline: 1px solid transparent;
 }
 
-.searchInput:focus {
+.searchInput:focus-within {
   outline: 1px solid gray;
+}
+.searchInput > input {
+  border: none;
+  padding: 10px 25px;
+  width: 100%;
+}
+.searchInput > input:focus {
+  outline: none;
 }

@@ -14,11 +14,6 @@ const FQA = () => {
 
   const FAQS = [
     {
-      id: "1",
-      question: "Does GenaDrop have any documentation have any docs?",
-      answer: "genadrop.com/docs",
-    },
-    {
       id: "2",
       question: "what are the requirements for each asset ?",
       answer:
@@ -74,11 +69,13 @@ const FQA = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>Frequently Asked Questions</div>
-      <div className={classes.FQAs}>
-        {FAQS.map((FAQ, index) => (
-          <FQACard key={FAQ.id} FAQ={FAQ} id={index} dropdown={dropdown} handleSetState={handleSetState} />
-        ))}
+      <div className={classes.wrapper}>
+        <div className={classes.heading}>Frequently Asked Questions</div>
+        <div className={classes.FQAs}>
+          {FAQS.map((FAQ, index) => (
+            <FQACard key={FAQ.id} FAQ={FAQ} id={index} dropdown={dropdown} handleSetState={handleSetState} />
+          ))}
+        </div>
       </div>
     </div>
   );
