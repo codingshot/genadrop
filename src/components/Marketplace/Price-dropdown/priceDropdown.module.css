@@ -1,5 +1,6 @@
 .priceDropdown {
   z-index: 1 !important;
+  color: var(--main-accent);
 }
 
 .priceDropdown {
@@ -17,11 +18,10 @@
 .selectedPrice {
   cursor: pointer;
   background: white;
-  color: #000000;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--main-accent);
   padding: 0.5em;
-  border-top-left-radius: 0.25em;
-  border-top-right-radius: 0.25em;
+  border-radius: 2em;
+  /* border-top-right-radius: 0.25em; */
   transition: all 300ms;
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@
   padding: 0.25em 0.5em;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--main-accent);
   border-top-left-radius: 0.25em;
   border-top-right-radius: 0.25em;
   cursor: pointer;
@@ -86,7 +86,7 @@
 
 .priceDropdown .dropdown > div {
   padding: 0.5em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--main-accent);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -106,8 +106,8 @@
 }
 
 .priceDropdown .dropdown > div:last-child {
-  border-bottom-left-radius: 0.25em;
-  border-bottom-right-radius: 0.25em;
+  border-radius: 2em;
+  /* border-bottom-right-radius: 2em; */
 }
 
 .dropdownIcon {

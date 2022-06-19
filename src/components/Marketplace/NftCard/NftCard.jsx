@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useRouteMatch } from "react-router-dom";
 import classes from "./NftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
+import Copy from "../../copy/copy";
+import { GenContext } from "../../../gen-state/gen.context";
+import avatar from "../../../assets/avatar.png";
 
 const NftCard = ({ nft, list, chinPrice }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
-
+  const breakAddress = (address = "", width = 6) => {
+    return address && `${address.slice(0, width)}...${address.slice(-width)}`;
+  };
+  const { account } = useContext(GenContext);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
@@ -23,7 +29,13 @@ const NftCard = ({ nft, list, chinPrice }) => {
   return (
     <Link
       to={
-        nft.collection_name
+        nft.sold
+          ? nft.collection_name
+            ? `${match.url}/${Id}`
+            : chain
+            ? `/marketplace/single-mint/preview/${chain}/${Id}`
+            : `/marketplace/single-mint/preview/${Id}`
+          : nft.collection_name
           ? `${match.url}/${Id}`
           : chain
           ? `/marketplace/single-mint/${chain}/${Id}`
@@ -45,23 +57,30 @@ const NftCard = ({ nft, list, chinPrice }) => {
           <div className={classes.collectionName}>{collection_name}</div>
           <div className={classes.name}>{name}</div>
           <div className={classes.chainLogo} />
+          <div className={classes.creator}>
+            <img src={avatar} alt="" />
+            <div className={classes.creatorAddress}>
+              <div className={classes.createdBy}> Created By</div>
+              <div className={classes.address}>{breakAddress(account)}</div>
+            </div>
+          </div>
           <div className={classes.wrapper}>
             <div className={classes.listPrice}>
-              <div className={classes.list}>LISTPRICE</div>
+              <div className={classes.list}>LIST PRICE</div>
               <div className={classes.price}>
                 <img src={supportedChains[chain].icon} alt="" />
-                {price} <span className={classes.chain}>{supportedChains[chain].sybmol}</span>
+                {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain].sybmol}</span>
                 <span className={classes.usdPrice}>
                   ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} USD)
                 </span>
               </div>
             </div>
             {list ? (
-              ""
-            ) : (
               <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
-                {nft.sold ? "SOLD!" : "Buy"}
+                {nft.sold ? "List" : "Buy"}
               </button>
+            ) : (
+              ""
             )}
           </div>
         </div>
