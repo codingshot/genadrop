@@ -109,6 +109,12 @@
   gap: 0.5em;
   color: var(--main-accent);
   cursor: pointer;
+  transition: color 300ms;
+}
+
+.btn_video_m:hover,
+.btn_video:hover {
+  color: var(--main-accent-dark);
 }
 
 .btn_video_m {
@@ -117,6 +123,12 @@
 
 .btn_video img {
   width: 1.6em;
+  transition: all 100ms;
+}
+
+.btn_video_m:hover img,
+.btn_video:hover img {
+  width: 1.5em;
 }
 
 .illustration {
