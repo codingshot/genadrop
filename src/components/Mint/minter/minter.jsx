@@ -12,6 +12,7 @@ import infoIcon from "../../../assets/icon-info.svg";
 import dropImg from "../../../assets/icon-1of1-light.svg";
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
+import questionMark from "../../../assets/icon-question.svg";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -320,9 +321,18 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
 
             <div className={classes.assetInfo}>
               <div className={classes.innerAssetInfo}>
-                <p>{fName}</p>
-                <p>Number of assets: {file.length}</p>
-                <div></div>
+                <div className={classes.assetInfoTitle}>
+                  <span>{fName}</span>
+                </div>
+                <div>
+                  <span>Number of assets:</span> <p>{file.length}</p>
+                </div>
+                {chainId === 4160 && (
+                  <div>
+                    <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file.length * 0.01} ALGO</p>
+                    <img src={questionMark} alt="info" />
+                  </div>
+                )}
                 {file.length > 1 ? (
                   <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
                     <span>view all assets</span>
