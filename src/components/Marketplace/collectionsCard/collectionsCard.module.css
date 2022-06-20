@@ -5,6 +5,7 @@
   transition: all 250ms;
   border: 1px solid gainsboro;
   overflow: hidden;
+  max-width: 32em;
 }
 
 .card:hover {
@@ -19,7 +20,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 20em;
+  height: 16em;
 }
 
 .body {

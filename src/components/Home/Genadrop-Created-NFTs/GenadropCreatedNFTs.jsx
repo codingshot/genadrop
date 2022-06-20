@@ -4,7 +4,7 @@ import NFT1 from "../../../assets/nft-1.png";
 import NFT2 from "../../../assets/nft-2.png";
 import NFT3 from "../../../assets/nft-3.png";
 import NFT4 from "../../../assets/nft-4.png";
-import GenadropCarousel from "../../Genadrop-Carousel/GenadropCarousel";
+import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 
 const cardArr = [
   {
@@ -49,14 +49,14 @@ const GenadropCreatedNFTs = () => {
         NFTs created with <span>Genadrop</span>
       </div>
       <div className={classes.description}>Browse notable NFTs created with Genadrop NFT Creator</div>
-      <GenadropCarousel cardWidth={cardWidth} gap={16}>
+      <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
         {cardArr.map((card, id) => (
           <div key={id} ref={cardRef} className={classes.card}>
             <img src={card.NFT} alt="" />
             <div className={classes.name}>{card.name}</div>
           </div>
         ))}
-      </GenadropCarousel>
+      </GenadropCarouselCard>
     </div>
   );
 };

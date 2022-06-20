@@ -4,7 +4,7 @@ import axios from "axios";
 import classes from "./collectionsCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 
-const CollectionsCard = ({ collection }) => {
+const CollectionsCard = ({ collection, useWidth }) => {
   const { name, price, description, image_url, chain, owner, nfts } = collection;
   const history = useHistory();
 
@@ -19,6 +19,7 @@ const CollectionsCard = ({ collection }) => {
   }, []);
   return (
     <div
+      style={useWidth ? { width: useWidth } : {}}
       onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? owner : name}`)}
       className={classes.card}
     >

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import GenadropCarousel from "../../Genadrop-Carousel/GenadropCarousel";
+import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 import classes from "./Review.module.css";
 import { reviews } from "./Reviews-Script";
 
@@ -31,7 +31,7 @@ const Review = () => {
         Keep Up To Date for <span>Early Access</span>
       </div>
       <div className={classes.description}>See what the buzz about GenaDrop is on twitter.</div>
-      <GenadropCarousel cardWidth={cardWidth} gap={16}>
+      <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
         {reviews.map((review, id) => (
           <a href={review.url} target="_blank" rel="noreferrer" key={id} ref={cardRef} className={classes.card}>
             <div className={classes.header}>
@@ -51,7 +51,7 @@ const Review = () => {
             </div>
           </a>
         ))}
-      </GenadropCarousel>
+      </GenadropCarouselCard>
     </div>
   );
 };

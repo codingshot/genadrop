@@ -3,6 +3,7 @@
   border-radius: 0.5em;
   border: 1px solid gainsboro;
   transition: all 300ms;
+  max-width: 32em;
 }
 
 .card:hover {

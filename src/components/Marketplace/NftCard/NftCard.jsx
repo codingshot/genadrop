@@ -4,7 +4,7 @@ import { Link, useRouteMatch } from "react-router-dom";
 import classes from "./NftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 
-const NftCard = ({ nft, list, chinPrice }) => {
+const NftCard = ({ nft, list, chinPrice, useWidth }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
 
@@ -30,7 +30,7 @@ const NftCard = ({ nft, list, chinPrice }) => {
           : `/marketplace/single-mint/${Id}`
       }
     >
-      <div className={classes.card}>
+      <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
         <div className={classes.imageContainer}>
           <img
             onError={({ currentTarget }) => {
