@@ -31,6 +31,7 @@ import SingleNFT from "./pages/singleNFT/singleNFT";
 import Artist from "./pages/artist/artist";
 import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
 import Listed from "./pages/userDashboard/listNFT/listed";
+import Partner from "./pages/Partner/Partner";
 
 // const Home = lazy(() => import("./pages/home/home"));
 // const Create = lazy(() => import("./pages/create/create"));
@@ -85,6 +86,7 @@ function App() {
             <Route exact path="/me/:userId/profile/settings" component={Profile} />
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
+            <Route exact path="/partner" component={Partner} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
