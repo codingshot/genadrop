@@ -467,9 +467,9 @@ export async function createNFT(createProps, doAccountCheck) {
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
     const asset = await connectAndMint(blob, metadata[i], imgName);
-    console.log("asset confirmed?", asset);
     assets.push(asset);
   }
+  console.log("all assets logged!:", assets)
   dispatch(setLoader(""));
   dispatch(
     setNotification({
@@ -513,6 +513,7 @@ export async function mintToAlgo(algoProps) {
         type: "default",
       })
     );
+    console.log("same data, different ange", ipfsJsonData)
     for (let i = 0; i < ipfsJsonData.length; ++i) {
       dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
@@ -863,7 +864,6 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
 
 export async function purchasePolygonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  console.log("un what?", nftDetails, buyProps);
   let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
@@ -873,7 +873,6 @@ export async function purchasePolygonNfts(buyProps) {
       })
     );
   }
-  console.log("provide o", connector.provider);
   const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   const { chainId } = connector._network;
   price = ethers.utils.parseEther(price.toString()).toString();
