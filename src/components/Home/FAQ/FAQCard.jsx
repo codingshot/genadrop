@@ -11,23 +11,11 @@ const FQACard = ({ dropdown, id, handleSetState, FAQ: { question, answer } }) =>
 
   return (
     <div className={classes.container}>
-      <div onClick={handleDropdown} className={classes.question}>
-        <span>Q.</span>
+      <div onClick={handleDropdown} className={`${classes.question} ${dropdown === String(id) && classes.active}`}>
         <p className={classes.title}>{question}</p>
         <span>{dropdown === String(id) ? <img src={closeIcon} alt="" /> : <img src={openIcon} alt="" />}</span>
       </div>
-      <div className={`${classes.answer} ${dropdown === String(id) && classes.dropdown}`}>
-        <span>A.</span>
-        <p>
-          {id === 0 ? (
-            <a target="_blank" rel="noreferrer" href="https://www.genadrop.com/docs">
-              {answer}
-            </a>
-          ) : (
-            answer
-          )}
-        </p>
-      </div>
+      <div className={`${classes.answer} ${dropdown === String(id) && classes.active}`}>{answer}</div>
     </div>
   );
 };

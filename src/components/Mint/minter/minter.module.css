@@ -123,6 +123,7 @@
   padding: 1em;
   border-radius: 1em;
   background: #d0ebe9e4;
+  flex-wrap: wrap;
 }
 
 .innerAssetInfo {
@@ -131,8 +132,32 @@
   align-items: flex-start;
   justify-content: center;
   gap: 0.5em;
+  font-size: 1.25rem;
 }
-
+.innerAssetInfo div {
+  display: flex;
+  align-items: center;
+}
+.innerAssetInfo div span {
+  font-weight: 500;
+  color: #6c757d;
+}
+.innerAssetInfo div p {
+  font-weight: 600;
+  color: #333333;
+  display: flex;
+  align-items: center;
+  margin-left: 8px;
+  margin-right: 2px;
+}
+.innerAssetInfo .assetInfoTitle > span {
+  font-weight: 600;
+  color: #000000;
+}
+.assetInfoMintPrice {
+  background: rgba(0, 153, 135, 0.17);
+  padding: 4px 10px;
+}
 .required {
   color: red;
 }

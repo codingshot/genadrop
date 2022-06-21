@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import userIcon from "../../assets/user.svg";
+import userIcon from "../../assets/icon-user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
+import chevronDown from "../../assets/icon-chevron-down.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
@@ -150,7 +151,14 @@ function ConnectWallet() {
     </div>
   );
 
-  const changeNetwork = <div className={classes.network}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>;
+  const changeNetwork = (
+    <div className={classes.network}>
+      <div className={classes.dot} />{" "}
+      <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
+      {/* <img src={chevronDown} alt="" />
+      <div className={classes.networkDrop}>{network === "mainnet" ? "Testnet" : "Mainnet"}</div> */}
+    </div>
+  );
 
   return (
     <div>

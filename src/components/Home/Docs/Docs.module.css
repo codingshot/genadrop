@@ -2,88 +2,90 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  grid-gap: 10em;
-  gap: 10em;
-  padding: 1em;
-  max-width: 1440px;
-  margin: auto;
+  justify-content: center;
+  margin-bottom: 8em;
+  background: var(--bg-color-accent);
+  padding: 4em 1em;
 }
 
-.container p {
+.wrapper {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 2em;
+}
+
+.image {
+  width: 100%;
+  max-width: 24em;
+}
+
+.content {
+  max-width: 32em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.heading {
+  color: var(--text-color-accent-dark);
+}
+
+.description {
   font-size: 2.5rem;
-  font-weight: bold;
+  color: var(--text-color-accent-dark);
+  border-top: 2px solid var(--main-accent);
+  border-bottom: 2px solid var(--main-accent);
+  margin: 0.25em 0;
 }
 
-.container p > span {
-  color: var(--main-accent);
-}
-
-.container button {
+.link {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1em;
-  background: var(--main-accent);
-  padding: 0.75em 2em;
-  border-radius: 0.5em;
-  color: white;
-  font-size: 1rem;
+  color: var(--text-color-main-dark);
+  gap: 0.5em;
   transition: all 300ms;
 }
 
-.container button:hover {
-  outline: 2px solid var(--main-accent);
-  background: var(--main-accent-dark);
+.link:hover {
+  color: var(--main-accent-dark);
 }
 
-.container button > img {
-  width: 1.5em;
+.link img {
+  width: 1em;
 }
 
-@media screen and (max-width: 1440px) {
-  .container {
-    justify-content: space-between;
-    gap: 1em;
+@media screen and (max-width: 1200px) {
+  .image {
+    max-width: 20em;
   }
 
-  .container p {
-    margin-right: unset;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .container img {
-    width: 8em;
-  }
-
-  .container p {
+  .description {
     font-size: 2rem;
   }
+}
 
-  .container button > img {
-    width: 1em;
+@media screen and (max-width: 1200px) {
+  .container {
+    margin-bottom: 4em;
   }
 }
 
 @media screen and (max-width: 768px) {
-  .container {
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 1em 0;
+  .wrapper {
+    flex-direction: column;
   }
 
-  button {
-    align-content: center;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .container img {
-    width: 4em;
+  .image {
+    max-width: 20em;
   }
 
-  .container p {
-    font-size: 1.6rem;
+  .description {
+    font-size: 2rem;
   }
 }

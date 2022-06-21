@@ -1,6 +1,15 @@
 .container {
   width: 100%;
-  margin-bottom: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1em;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 4em;
 }
 
 .heading {
@@ -26,8 +35,8 @@
   }
 }
 
-@media screen and (max-width: 768px) {
-  .container {
-    margin-bottom: 3em;
+@media screen and (max-width: 900px) {
+  .wrapper {
+    padding: 0;
   }
 }
