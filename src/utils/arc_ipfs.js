@@ -467,6 +467,7 @@ export async function createNFT(createProps, doAccountCheck) {
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
     const asset = await connectAndMint(blob, metadata[i], imgName);
+    console.log("asset confirmed?", asset);
     assets.push(asset);
   }
   dispatch(setLoader(""));
