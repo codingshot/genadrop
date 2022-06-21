@@ -29,13 +29,12 @@
 }
 
 .wallet {
-  background: white !important;
-  border: 1px solid var(--main-accent) !important;
+  background: rgb(236, 236, 236);
+  height: 2.5rem;
   font-size: 1rem;
   font-weight: bold;
   transition: all 300ms;
 }
-
 .option {
   width: 100%;
   margin-bottom: 2em;
@@ -58,6 +57,33 @@
 .warn.active {
   display: block;
   margin: 0.5em 0;
+}
+
+.images {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3rem;
+}
+
+.profile {
+  width: 200px;
+  height: 200px;
+  margin-right: 5rem;
+}
+.profile img {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+.banner {
+  width: 400px;
+  height: 200px;
+}
+.banner img {
+  border-radius: 10px;
+  width: 400px;
+  height: 200px;
 }
 
 .option label {
@@ -183,6 +209,36 @@
   .social {
     gap: 1em;
   }
+
+  .images {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile {
+    width: 150px;
+    height: 150px;
+    margin: auto;
+    margin-bottom: 30px;
+  }
+  .profile img {
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+  }
+
+  .banner {
+    width: 200px;
+    height: 100px;
+  }
+  .banner img {
+    border-radius: 10px;
+    width: 200px;
+    height: 100px;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -193,4 +249,40 @@
     font-size: 0.85rem;
     transition: all 300ms;
   }
+}
+
+.copyIcon {
+  width: 1.2em;
+}
+
+.copyIcon:hover {
+  transform: scale(0.8);
+  cursor: pointer;
+}
+
+.copyIcon.active {
+  transform: scale(0.8);
+  border: 1px solid var(--main-accent);
+}
+
+.text {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid gainsboro;
+  border-radius: 5px;
+  background: rgb(236, 236, 236);
+}
+
+.text input {
+  border: none;
+  font-size: 13px;
+}
+
+.text img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-top: 0.3rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
 }

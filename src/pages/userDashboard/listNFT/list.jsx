@@ -45,6 +45,7 @@ const List = () => {
     const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
     (async function getNftDetails() {
       const nftdetails = await getSingleNftDetails(nft);
+
       handleSetState({ nftDetails: nftdetails, isLoading: false });
     })();
 
