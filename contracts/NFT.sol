@@ -388,21 +388,12 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
         bytes memory data
     ) internal virtual {
         require(to != address(0), "ERC1155: mint to the zero address");
-        require(ids.length == amounts.length, "ERC1155: ids and amounts length mismatch");
-        require(ids.length == uris.length, "ERC1155: ids and uris length mismatch");
-
-        address operator = _msgSender();
-
-        _beforeTokenTransfer(operator, address(0), to, ids, amounts, data);
 
         for (uint256 i = 0; i < ids.length; i++) {
-            _balances[ids[i]][to] += amounts[i];
+            _balances[ids[i]][to] += 1;
             _setTokenURI(ids[i], uris[i]); // this increases gas cost, will implement better alternative
         }
-
-        emit TransferBatch(operator, address(0), to, ids, amounts);
-
-        _doSafeBatchTransferAcceptanceCheck(operator, address(0), to, ids, amounts, data);
+        emit TransferBatch(_msgSender(), address(0), to, ids, amounts);
     }
 
     /**

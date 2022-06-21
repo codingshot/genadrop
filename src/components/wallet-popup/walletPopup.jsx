@@ -14,6 +14,14 @@ const WalletPopup = ({ handleSetState }) => {
   const [activeChain, setActiveChain] = useState(null);
   const [showMetamask, setMetamask] = useState(true);
 
+  let connectOptions = [];
+  for (let key in supportedChains) {
+    if (key !== "4160") {
+      connectOptions.push(supportedChains[key]);
+    }
+  }
+  connectOptions.unshift(supportedChains[4160]);
+
   const handleChain = (chainId, isComingSoon = undefined) => {
     if (isComingSoon) return;
     if (chainId === 4160) {
@@ -72,8 +80,8 @@ const WalletPopup = ({ handleSetState }) => {
 
         <div className={classes.wrapper}>
           <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
-            {Object.values(supportedChains)
-              .filter((chain) => showMoreOptions || [137, 42220, 1313161554, 4160].includes(chain.networkId))
+            {connectOptions
+              .filter((chain) => showMoreOptions || [4160, 42220, 1313161554, 137].includes(chain.networkId))
               .map((chain, idx) => (
                 <div
                   onClick={() => handleChain(chain.networkId, chain.comingSoon)}
