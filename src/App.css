@@ -22,6 +22,12 @@
   --card-bg1: #27292c;
   --card-bg2: #212529;
   --card-bg3: #000000;
+  --text-color-light: #757575;
+  --text-color-dark: #333333;
+  --text-color-accent-dark: #030b5d;
+  --text-color-main-dark: #00cc9b;
+  --bg-color-accent: #f2f3ff;
+  --border-color-light: #b2c5d0;
 }
 
 li {
@@ -50,7 +56,7 @@ a {
 
 .Routes {
   width: 100%;
-  min-height: calc(100vh - 19em);
+  min-height: calc(100vh - 21em);
 }
 .topSectionContainer {
   z-index: 15;

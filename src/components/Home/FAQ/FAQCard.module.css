@@ -1,5 +1,8 @@
 .container {
   width: 100%;
+  padding: 1em;
+  border-radius: 0.5em;
+  border: 1px solid var(--border-color-light);
 }
 
 .answer,
@@ -12,21 +15,18 @@
 }
 
 .question {
-  border-left: 6px solid var(--main-accent);
-  background: var(--card-bg1);
-  color: white;
-  padding: 0.5em 1em;
   cursor: pointer;
+  padding: 1em 0;
+  font-weight: 600;
+  transition: all 300ms;
 }
 
-.question span {
+.question.active {
   color: var(--main-accent);
-  font-size: 2rem;
-  font-weight: bold;
 }
 
 .question img {
-  width: 0.85em;
+  width: 1.4em;
 }
 
 .title {
@@ -34,27 +34,17 @@
 }
 
 .answer {
-  border-left: 6px solid #ffe161;
   max-height: 0;
   overflow: hidden;
-  transition: max-height 650ms;
-  padding: 0 1em;
-  color: black;
-}
-
-.answer span {
-  color: #ffe161;
-  font-size: 2rem;
-  font-weight: bold;
+  transition: all 1250ms;
 }
 
 .answer a {
   color: var(--main-accent);
 }
 
-.answer.dropdown {
+.answer.active {
   max-height: 100vh;
-  padding: 0.5em 1em;
 }
 
 .container p {

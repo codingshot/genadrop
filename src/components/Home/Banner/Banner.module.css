@@ -1,0 +1,198 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4em 1em;
+}
+
+.container * {
+  transition: max-width 300ms;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
+}
+
+.content {
+  width: 100%;
+  max-width: 36em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+}
+
+.title {
+  font-size: 2rem;
+}
+
+.features {
+  height: 1.6em;
+  overflow: hidden;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 0.5em;
+}
+
+.fWrapper {
+  animation: slide 4000ms infinite alternate;
+  font-weight: bold;
+  color: var(--main-accent);
+}
+
+@keyframes slide {
+  0%,
+  20% {
+    transform: translateY(0em);
+  }
+  40%,
+  60% {
+    transform: translateY(-1.5em);
+  }
+  80%,
+  100% {
+    transform: translateY(-3em);
+  }
+}
+
+.btns {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.btn_create,
+.btn_explore {
+  padding: 0.75em 3em;
+  border-radius: 2em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.btn_create {
+  background: var(--main-accent);
+  color: white;
+}
+
+.btn_explore {
+  background: white;
+  color: var(--main-accent);
+  border: 1px solid var(--main-accent);
+}
+
+.btn_create:hover {
+  background: var(--main-accent-dark);
+}
+
+.btn_explore:hover {
+  background: var(--main-accent);
+  color: white;
+}
+
+.btn_video_m,
+.btn_video {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  color: var(--main-accent);
+  cursor: pointer;
+  transition: color 300ms;
+}
+
+.btn_video_m:hover,
+.btn_video:hover {
+  color: var(--main-accent-dark);
+}
+
+.btn_video_m {
+  display: none;
+}
+
+.btn_video img {
+  width: 1.6em;
+  transition: all 100ms;
+}
+
+.btn_video_m:hover img,
+.btn_video:hover img {
+  width: 1.5em;
+}
+
+.illustration {
+  width: 100%;
+  max-width: 56em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 1280px) {
+  .content {
+    gap: 1em;
+  }
+
+  .title {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .container {
+    padding: 2em 1em;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    gap: 2em;
+  }
+
+  .content {
+    max-width: 30em;
+  }
+
+  .title {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  .description {
+    text-align: center;
+  }
+
+  .btns {
+    justify-content: center;
+  }
+
+  .btn_video {
+    display: none;
+  }
+
+  .btn_video_m {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .content {
+    gap: 1em;
+  }
+
+  .btn_explore,
+  .btn_create {
+    padding: 0.5em 2em;
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useRouteMatch, Link } from "react-router-dom";
+import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserBoughtNftCollection } from "../../utils";
 import classes from "./list.module.css";
@@ -13,6 +13,7 @@ const List = () => {
     params: { nftId },
   } = useRouteMatch();
   const match = useRouteMatch();
+  const history = useHistory();
 
   const [state, setState] = useState({
     nftDetails: null,
@@ -32,7 +33,7 @@ const List = () => {
 
   const listNFT = async () => {
     // eslint-disable-next-line no-alert
-    if (!price) alert("price can't be empty");
+    if (!price) return alert("price can't be empty");
     await writeNft(
       nftDetails.algo_data.creator,
       nftDetails.collection_name,
@@ -50,12 +51,14 @@ const List = () => {
       const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
 
       const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
-
-      handleSetState({
-        nftDetails: nft,
-        isLoading: false,
-        image_url: nft.image_url,
-      });
+      if (!nft) history.goBack();
+      else {
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+          image_url: nft.image_url,
+        });
+      }
     })();
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./profile.module.css";
@@ -7,10 +7,21 @@ import instagramIcon from "../../assets/icon-instagram.svg";
 import discordIcon from "../../assets/icon-discord-accent.svg";
 import { readUserProfile } from "../../utils/firebase";
 import { handleCancel, handleInputChange, handleSave } from "./profile-script";
+import avatar from "../../assets/avatar.png";
+import bg from "../../assets/bg.png";
+import copyIcon from "../../assets/icon-copy.svg";
+import { getConnectedChain } from "../../components/wallet/wallet-script";
 
 const Profile = () => {
   const history = useHistory();
-  const { account, dispatch } = useContext(GenContext);
+  const { account, dispatch, chainId } = useContext(GenContext);
+  const [copied, setCopy] = useState(false);
+  const copyRef = useRef(null);
+
+  const handleCopy = (props) => {
+    const { navigator, copy } = props;
+    navigator.clipboard.writeText(account);
+  };
 
   const [state, setState] = useState({
     subscribe: false,
@@ -55,11 +66,30 @@ const Profile = () => {
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <h1 className={classes.heading}>Profile Settings</h1>
-
+        <div className={classes.images}>
+          <div className={classes.profile}>
+            <span>Profile Images</span>
+            <img src={avatar} alt="" />
+          </div>
+          <div className={classes.banner}>
+            <span>Profile Banner</span>
+            <img src={bg} alt="" />
+          </div>
+        </div>
         <div className={classes.option}>
           <h3>Wallet Address</h3>
+          <div
+            className={classes.text}
+            onMouseDown={() => setCopy(true)}
+            onMouseUp={() => setCopy(false)}
+            onClick={() => handleCopy({ navigator, copy: copyRef.xcurrent })}
+          >
+            <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
+            <input className={account && classes.wallet} type="text" value={account} disabled />
+            <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />
+          </div>
+
           <p>To update your address just change your account in your wallet.</p>
-          <input className={account && classes.wallet} type="text" value={account} disabled />
         </div>
 
         <div className={classes.option}>

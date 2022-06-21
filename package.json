@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "@json-rpc-tools/utils": "^1.7.6",
+    "@openzeppelin/contracts": "^4.6.0",
     "@pinata/sdk": "^1.1.23",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
@@ -23,7 +24,7 @@
     "chart.js": "^3.7.1",
     "comlink-loader": "^2.0.0",
     "dotenv": "^10.0.0",
-    "ethers": "^5.5.2",
+    "ethers": "^5.6.8",
     "file-loader": "^6.2.0",
     "file-saver": "^2.0.5",
     "firebase": "^9.6.4",
@@ -32,6 +33,7 @@
     "image-data-uri": "^2.0.1",
     "ipfs": "^0.60.0",
     "js-file-download": "^0.4.12",
+    "jsdoc": "^3.6.10",
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "merge-images": "^2.0.0",
@@ -47,6 +49,7 @@
     "react-dom": "^17.0.2",
     "react-edit-text": "^4.2.0",
     "react-loading-skeleton": "^3.0.2",
+    "react-lottie": "^1.2.3",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3",
     "react-share": "^4.4.0",
@@ -69,7 +72,8 @@
     "lint": "eslint \"./**/*.{js,jsx}\"",
     "lint:fix": "npm run lint -- --fix",
     "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "doc": "jsdoc -c jsdoc.json"
   },
   "eslintConfig": {
     "extends": [
@@ -90,6 +94,9 @@
     ]
   },
   "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.6",
+    "@nomiclabs/hardhat-waffle": "^2.0.3",
+    "chai": "^4.3.6",
     "eslint": "^7.11.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-node": "^4.1.0",
@@ -101,6 +108,8 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "4.3.0",
+    "ethereum-waffle": "^3.4.4",
+    "hardhat": "^2.9.9",
     "husky": "^7.0.0",
     "prettier": "2.6.2"
   }

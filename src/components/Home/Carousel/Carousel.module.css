@@ -1,0 +1,20 @@
+.card {
+  width: 21.5em;
+  border: 1px solid black;
+  flex: 0 0 auto;
+}
+
+.card:hover img {
+  transform: translateY(-0.5em);
+}
+
+.card img {
+  width: 100%;
+  transition: transform 650ms;
+}
+
+.card .name {
+  border: 1px solid red;
+  width: 100%;
+  text-align: center;
+}

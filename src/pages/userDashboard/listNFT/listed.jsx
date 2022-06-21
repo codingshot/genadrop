@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
+import { getSingleNftDetails, getUserBoughtNftCollection } from "../../../utils";
 import classes from "./listed.module.css";
+import { fetchUserBoughtNfts } from "../../../utils/firebase";
 
 const Listed = () => {
-  // const { account, connector } = useContext(GenContext);
+  const { account, mainnet } = useContext(GenContext);
 
   const {
     params: { nftId },
   } = useRouteMatch();
   const { singleNfts } = useContext(GenContext);
-
+  const history = useHistory();
   const [state, setState] = useState({
     isLoading: true,
   });
@@ -23,10 +24,13 @@ const Listed = () => {
   };
 
   useEffect(() => {
-    const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
-    (async function getNftDetails() {
-      const nftdetails = await getSingleNftDetails(nft);
-      handleSetState({ nftDetails: nftdetails, isLoading: false });
+    (async function getUserCollection() {
+      const userNftCollections = await fetchUserBoughtNfts(account);
+      const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
+
+      const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
+      if (!nft) history.push("/");
+      handleSetState({ nftDetails: nft, isLoading: false });
     })();
     document.documentElement.scrollTop = 0;
   }, []);
@@ -96,9 +100,20 @@ const Listed = () => {
           <img src="/assets/link.svg" alt="" />
         </div>
       </div>
-      <button type="button" className={classes.view}>
-        View Item
-      </button>
+      <Link
+        to={
+          nftDetails.collection_name
+            ? `${match.url}/${Id}`
+            : nftDetails.chain
+            ? `/marketplace/single-mint/${nftDetails.chain}/${nftDetails.Id}`
+            : `/marketplace/single-mint/${nftDetails.Id}`
+        }
+        className={classes.view}
+      >
+        <button type="button" className={classes.viewtext}>
+          View Item
+        </button>
+      </Link>
     </div>
   );
 };
