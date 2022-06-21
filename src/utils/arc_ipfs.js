@@ -138,6 +138,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     pinataMetadata: { name: asset.name },
   });
   const jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash);
+  console.log("result meta for each", resultMeta)
   return {
     name: asset.name,
     url: `ipfs://${resultMeta.IpfsHash}`,
@@ -152,6 +153,7 @@ export const connectAndMint = async (file, metadata, imgName, dispatch) => {
     return await uploadToIpfs(file, imgName, metadata);
   } catch (error) {
     console.error(error);
+    alert("Error uploading")
   }
 };
 
