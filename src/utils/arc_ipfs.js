@@ -147,13 +147,18 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   };
 };
 
-export const connectAndMint = async (file, metadata, imgName, dispatch) => {
+export const connectAndMint = async (file, metadata, imgName, retryTimes) => {
   try {
     await pinata.testAuthentication();
     return await uploadToIpfs(file, imgName, metadata);
   } catch (error) {
     console.error(error);
-    alert("Error uploading")
+    if (retryTimes === 1) {
+      alert("network error while uploading file");
+      throw error;
+    }
+    console.log("retrying upload", retryTimes)
+    return connectAndMint(file, metadata, imgName, retryTimes - 1)
   }
 };
 
@@ -286,7 +291,7 @@ export async function mintSingleToAlgo(algoMintProps) {
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, dispatch);
+    const asset = await connectAndMint(file, metadata, file.name, 4);
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
@@ -348,7 +353,7 @@ export async function mintSingleToCelo(singleMintProps) {
   const { file, metadata, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  const asset = await connectAndMint(file, metadata, file.name, 4);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -389,7 +394,7 @@ export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  const asset = await connectAndMint(file, metadata, file.name, 4);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -468,7 +473,7 @@ export async function createNFT(createProps, doAccountCheck) {
     const imgFile = data.files[imgName];
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
-    const asset = await connectAndMint(blob, metadata[i], imgName);
+    const asset = await connectAndMint(blob, metadata[i], imgName, 4);
     assets.push(asset);
   }
   console.log("all assets logged!:", assets)
