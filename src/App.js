@@ -29,6 +29,8 @@ import Profile from "./pages/profile/profile";
 import SingleNftCollection from "./pages/singleMintCollection/singleNftCollection";
 import SingleNFT from "./pages/singleNFT/singleNFT";
 import Artist from "./pages/artist/artist";
+import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
+import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 
 // const Home = lazy(() => import("./pages/home/home"));
@@ -73,11 +75,14 @@ function App() {
             <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
             {/* <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} /> */}
             <Route exact path="/marketplace/single-mint/:chainId/:nftId" component={SingleNFT} />
+            <Route exact path="/marketplace/single-mint/preview/:chainId/:nftId" component={ListSingleNFT} />
+            <Route exact path="/marketplace/single-mint/list/:chainId/:nftId" component={List} />
+            <Route exact path="/marketplace/single-mint/list/:chainId/:nftId/listed" component={Listed} />
             <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />
             <Route exact path="/me/:userId" component={Dashboard} />
-            <Route exact path="/me/:userId/:nftId" component={List} />
+            {/* <Route exact path="/me/:userId/:nftId" component={List} /> */}
             <Route exact path="/me/:userId/profile/settings" component={Profile} />
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />

@@ -169,19 +169,19 @@
   /* font-weight: 30px; */
 }
 
-.buy,
+.list,
 .bid,
 .sold {
   flex-direction: row;
   margin: 1rem 0.5rem 1rem 0;
   color: white;
-  padding: 0 1rem;
+  padding: 0 3rem;
   height: 35px;
   border-radius: 5px;
   font-weight: bold;
 }
 
-.buy {
+.list {
   background-color: var(--main-accent);
 }
 
@@ -194,13 +194,13 @@
   background-color: #707a83;
 }
 
-.buy img,
+.list img,
 .bid img {
   width: 14px;
   margin-right: 3px;
 }
 
-.buy:hover,
+.list:hover,
 .bid:hover {
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
@@ -302,6 +302,9 @@
   .section1 {
     flex-direction: column;
   }
+  .history {
+    overflow: scroll;
+  }
 
   .v_subsection1 {
     width: 100%;
@@ -324,7 +327,7 @@
     grid-template-columns: auto auto;
   }
 
-  .buy {
+  .list {
     width: 95%;
   }
 
@@ -335,7 +338,7 @@
 
 .share {
   position: fixed;
-  width: 15rem;
+  width: 25rem;
   height: 7rem;
   top: 0;
   margin: auto;
@@ -354,16 +357,25 @@
   flex-direction: row;
   justify-content: space-evenly;
   width: 10rem;
-  margin: 1rem 0;
+  margin: 0.5em auto;
 }
 .shareicon {
   width: 1rem;
-
   margin-left: 4px;
+  transition: transform 0.2s ease-in-out;
+  top: -15px;
+}
+.shareicon:hover {
+  cursor: pointer;
+  animation: slidein 0.4s;
+  transform: scale(1.05);
+  transition: all 0.2s ease-in-out;
 }
 
 .shareIcon {
-  border-radius: 50%;
+  /* border-radius: 50%; */
+  width: 2rem;
+  height: 2rem;
 }
 .copy {
   display: flex;
@@ -373,7 +385,17 @@
 .textArea {
   width: 20rem;
 }
-
+.copy input {
+  display: block;
+  width: 100%;
+  padding: 0.25em;
+  resize: none;
+  border: 1px solid gainsboro;
+  border-radius: 0.25em;
+  font-size: 1rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .row {
   border-bottom: 1px solid #707a83;
 }
