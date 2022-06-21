@@ -1,33 +1,66 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
+import { useHistory, useRouteMatch, Link } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { GenContext } from "../../../gen-state/gen.context";
-import { buyNft, getSingleNftDetails } from "../../../utils";
+import { getGraphNft, getTransactions } from "../../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../../components/Nft-details/graph/graph";
 import DropItem from "../../../components/Nft-details/dropItem/dropItem";
+import copiedIcon from "../../../assets/copied.svg";
+import copyIcon from "../../../assets/copy-solid.svg";
+import twitterIcon from "../../../assets/twitter.svg";
+import facebookIcon from "../../../assets/facebook.svg";
+import whatsappIcon from "../../../assets/whatsapp.svg";
+import descriptionIcon from "../../../assets/description-icon.png";
+import detailsIcon from "../../../assets/details.png";
+import Search from "../../../components/Nft-details/history/search";
+import { readNftTransaction } from "../../../utils/firebase";
+import algoLogo from "../../../assets/icon-algo.svg";
+import { setNotification } from "../../../gen-state/gen.actions";
+import { GET_GRAPH_NFT } from "../../../graphql/querries/getCollections";
+import { createClient } from "urql";
+import { polygonClient } from "../../../utils/graphqlClient";
+import supportedChains from "../../../utils/supportedChains";
 
-const SingleNFT = () => {
-  const { account, connector, mainnet, dispatch, singleNfts, chainId } = useContext(GenContext);
+const ListSingleNFT = (nft) => {
+  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
+  const client = createClient({
+    url: APIURL,
+  });
+  const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
+  const { Id, collection_name, name, price, image_url, chain } = nft;
+
   const history = useHistory();
   const {
-    params: { nftId },
+    params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
-  const { url } = useRouteMatch();
   const wrapperRef = useRef(null);
-
   const [state, setState] = useState({
+    dropdown: ["1", "3"],
     nftDetails: null,
-    dropdown: "",
     algoPrice: 0,
     isLoading: true,
     transactionHistory: null,
     showSocial: false,
+    chainIcon: algoLogo,
     isCopied: false,
+    chainSymbol: "",
   });
+  const {
+    dropdown,
+    chainSymbol,
+    nftDetails,
+    algoPrice,
+    isLoading,
+    chainIcon,
+    showSocial,
+    isCopied,
+    transactionHistory,
+  } = state;
 
   const buyProps = {
     dispatch,
@@ -38,6 +71,20 @@ const SingleNFT = () => {
     history,
     chainId,
   };
+
+  const Explorers = [
+    { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
+    { matic: [{ testnet: "https://mumbai.polygonscan.com/tx/" }, { mainnet: "https://polygonscan.com/tx/" }] },
+    {
+      near: [{ testnet: "https://testnet.aurorascan.dev/tx/" }, { mainnet: "https://explorer.mainnet.aurora.dev/tx/" }],
+    },
+    {
+      celo: [
+        { mainnet: "https://alfajores-blockscout.celo-testnet.org/tx/" },
+        { testnet: "https://explorer.celo.org/tx/" },
+      ],
+    },
+  ];
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -62,38 +109,114 @@ const SingleNFT = () => {
       };
     }, [ref]);
   }
+
   useOutsideAlerter(wrapperRef);
 
-  const { dropdown, nftDetails, isLoading, showSocial, isCopied } = state;
+  useEffect(() => {
+    if (Number(nftChainId) !== 4160) return;
+    let nftDetails = null;
+    const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
+    if (cacheNftDetails) {
+      nftDetails = cacheNftDetails;
+    } else {
+      nftDetails = singleAlgoNfts[nftId];
+    }
+    if (nftDetails) {
+      window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
+      (async function getNftDetails() {
+        const tHistory = await readNftTransaction(nftId);
+        tHistory.find((t) => {
+          if (t.type === "Minting") t.price = nftDetails.price;
+        });
+        handleSetState({
+          nftDetails,
+          isLoading: false,
+          transactionHistory: tHistory,
+        });
+      })();
+
+      console.log("NFT DETAILS: ", nftDetails);
+    }
+  }, [singleAlgoNfts]);
 
   useEffect(() => {
-    const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
+    if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
-      const nftdetails = await getSingleNftDetails(nft);
-      handleSetState({ nftDetails: nftdetails, isLoading: false });
+      try {
+        // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
+        const { data, error } = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        }
+        const { data: polygonData, error: polygonError } = await polygonClient
+          .query(GET_GRAPH_NFT, { id: nftId })
+          .toPromise();
+        if (polygonError) {
+          return dispatch(
+            setNotification({
+              message: polygonError.message,
+              type: "warning",
+            })
+          );
+        }
+        if (polygonData?.nft !== null) {
+          const polygonResult = await getGraphNft(polygonData?.nft);
+          if (polygonResult[0]?.chain === nftChainId) {
+            const trHistory = await getTransactions(polygonData?.nft?.transactions);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = polygonResult[0].price;
+            });
+            handleSetState({
+              nftDetails: polygonResult[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+        if (data?.nft !== null) {
+          const result = await getGraphNft(data?.nft);
+          if (result[0]?.chain === nftChainId) {
+            const trHistory = await getTransactions(data?.nft?.transactions);
+            trHistory.find((t) => {
+              if (t.type === "Minting") t.price = result[0]?.price;
+            });
+            handleSetState({
+              nftDetails: result[0],
+              isLoading: false,
+              transactionHistory: trHistory,
+            });
+          }
+        }
+      } catch (error) {
+        console.log({ error });
+      }
     })();
-
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount });
-    });
+    document.documentElement.scrollTop = 0;
   }, []);
 
-  useEffect(() => {}, [nftDetails]);
-
-  const icons = [
-    {
-      icon: "/assets/facebook.svg",
-      link: "https://www.facebook.com",
-    },
-    {
-      icon: "/assets/instagram.svg",
-      link: "https://www.instagram.com",
-    },
-    {
-      icon: "/assets/twitter.svg",
-      link: "https://www.twitter.com/mpa",
-    },
-  ];
+  useEffect(() => {
+    const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
+    if (Number(nftChainId) !== 4160 && pair) {
+      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
+        let value = Object.values(res.data)[0].usd;
+        handleSetState({
+          chainIcon: supportedChains[nftDetails.chain].icon,
+          algoPrice: value,
+          chainSymbol: supportedChains[nftDetails.chain].symbol,
+        });
+      });
+    }
+    if (Number(nftChainId) === 4160) {
+      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
+        handleSetState({ algoPrice: res.data.data.amount });
+      });
+    }
+  }, [nftDetails]);
 
   const onCopyText = () => {
     handleSetState({ isCopied: true });
@@ -131,52 +254,38 @@ const SingleNFT = () => {
   }
 
   const description = {
-    icon: "/assets/details.png",
+    icon: detailsIcon,
     title: "Description",
     content: `${nftDetails.description}`,
   };
 
   const graph = {
-    icon: "/assets/details.png",
+    icon: detailsIcon,
     title: "Price History",
-    content: <Graph details="" />,
+    content: <Graph details={transactionHistory} />,
   };
 
   const attributeContent = () => (
     <div className={classes.attributesContainer}>
-      {nftDetails.properties.map((attribute, idx) => (
-        <div key={idx} className={classes.attribute}>
-          <span className={classes.title}>{attribute.trait_type}</span>
-          <span className={classes.description}>{attribute.value}</span>
-        </div>
-      ))}
+      {nftDetails.properties.map((attribute, idx) => {
+        return attribute.trait_type && attribute.value ? (
+          <div key={idx} className={classes.attribute}>
+            <span className={classes.title}>{attribute.trait_type}</span>
+            <span className={classes.description}>{attribute.value}</span>
+          </div>
+        ) : nftDetails.properties.length === 1 ? (
+          <span key={idx}> No Attributes Available</span>
+        ) : (
+          <></>
+        );
+      })}
     </div>
   );
 
   const attributesItem = {
-    icon: "/assets/description-icon.png",
+    icon: descriptionIcon,
     title: "Attributes",
     content: attributeContent(),
-  };
-
-  const details = () => (
-    <div className={classes.detailContent}>
-      <div className={classes.row}>
-        Mint Address <span>sdfgs</span>
-      </div>
-      <div className={classes.row}>
-        Token Address <span>sdgds</span>
-      </div>
-      <div className={classes.row}>
-        Owner <span>sdgds</span>
-      </div>
-    </div>
-  );
-
-  const detailsItem = {
-    icon: "/assets/description-icon.png",
-    title: "Details",
-    content: details(),
   };
 
   return (
@@ -198,19 +307,6 @@ const SingleNFT = () => {
 
               <div className={classes.icons}>
                 <svg
-                  className={`${classes.icon} ${classes.refresh}`}
-                  width="17"
-                  height="18"
-                  viewBox="0 0 17 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M13.6719 3.32812L16.0156 0.984375V8.01562H8.98438L12.2188 4.78125C11.0312 3.59375 9.625 3 8 3C6.34375 3 4.92188 3.59375 3.73438 4.78125C2.57812 5.9375 2 7.34375 2 9C2 10.6562 2.57812 12.0781 3.73438 13.2656C4.92188 14.4219 6.34375 15 8 15C9.15625 15 10.2812 14.6094 11.375 13.8281C12.5 13.0469 13.2656 12.1094 13.6719 11.0156H15.7344C15.2969 12.7656 14.3594 14.2031 12.9219 15.3281C11.4844 16.4531 9.84375 17.0156 8 17.0156C5.8125 17.0156 3.9375 16.2344 2.375 14.6719C0.8125 13.1094 0.03125 11.2188 0.03125 9C0.03125 6.78125 0.8125 4.89062 2.375 3.32812C3.9375 1.76562 5.8125 0.984375 8 0.984375C8.9375 0.984375 9.95312 1.21875 11.0469 1.6875C12.1719 2.125 13.0469 2.67188 13.6719 3.32812Z"
-                    fill="#707A83"
-                  />
-                </svg>
-                <svg
                   onClick={() => {
                     handleSetState({ showSocial: true });
                   }}
@@ -226,59 +322,27 @@ const SingleNFT = () => {
                     fill="#707A83"
                   />
                 </svg>
-
-                <svg
-                  className={`${classes.icon} ${classes.dots}`}
-                  width="6"
-                  height="18"
-                  viewBox="0 0 6 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1.59375 13.5938C2 13.1875 2.46875 12.9844 3 12.9844C3.53125 12.9844 4 13.1875 4.40625 13.5938C4.8125 14 5.01562 14.4688 5.01562 15C5.01562 15.5312 4.8125 16 4.40625 16.4062C4 16.8125 3.53125 17.0156 3 17.0156C2.46875 17.0156 2 16.8125 1.59375 16.4062C1.1875 16 0.984375 15.5312 0.984375 15C0.984375 14.4688 1.1875 14 1.59375 13.5938ZM1.59375 7.59375C2 7.1875 2.46875 6.98438 3 6.98438C3.53125 6.98438 4 7.1875 4.40625 7.59375C4.8125 8 5.01562 8.46875 5.01562 9C5.01562 9.53125 4.8125 10 4.40625 10.4062C4 10.8125 3.53125 11.0156 3 11.0156C2.46875 11.0156 2 10.8125 1.59375 10.4062C1.1875 10 0.984375 9.53125 0.984375 9C0.984375 8.46875 1.1875 8 1.59375 7.59375ZM4.40625 4.40625C4 4.8125 3.53125 5.01562 3 5.01562C2.46875 5.01562 2 4.8125 1.59375 4.40625C1.1875 4 0.984375 3.53125 0.984375 3C0.984375 2.46875 1.1875 2 1.59375 1.59375C2 1.1875 2.46875 0.984375 3 0.984375C3.53125 0.984375 4 1.1875 4.40625 1.59375C4.8125 2 5.01562 2.46875 5.01562 3C5.01562 3.53125 4.8125 4 4.40625 4.40625Z"
-                    fill="#707A83"
-                  />
-                </svg>
               </div>
             </div>
             <div className={classes.priceSection}>
               <span className={classes.title}>Owned by you</span>
             </div>
-
             <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
-                    <img src="/assets/wallet-icon.png" alt="" />
-                    Listed!
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    type="button"
-                    className={classes.buy}
-                    disabled={nftDetails.sold}
-                    onClick={() => buyNft(buyProps)}
-                  >
-                    <img src="/assets/wallet-icon.png" alt="" />
-                    List
-                  </button>
-                </>
-              )}
+              <Link
+                to={
+                  nft.collection_name
+                    ? `${match.url}/${nftDetails.Id}`
+                    : nftDetails.chain
+                    ? `/marketplace/single-mint/list/${nftDetails.chain}/${nftDetails.Id}`
+                    : `/marketplace/single-mint/list/${nftDetails.Id}`
+                }
+              >
+                <button className={classes.list}>List</button>
+              </Link>
             </div>
-          </div>
-          {/* PRICE HISTORY */}
-          <div className={classes.feature}>
-            <DropItem key={2} item={graph} id={2} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
           <div className={classes.feature}>
             <DropItem key={3} item={description} id={3} dropdown={dropdown} handleSetState={handleSetState} />
-          </div>
-
-          <div className={classes.feature}>
-            <DropItem key={4} item={detailsItem} id={4} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
       </div>
@@ -288,7 +352,16 @@ const SingleNFT = () => {
         <div className={classes.heading}>
           <h3>Transaction History</h3>
         </div>
-        <div className={classes.tableContainer}>Coming soon...</div>
+
+        <div className={classes.history}>
+          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
+        </div>
+      </div>
+      <div className={classes.section}>
+        <div className={classes.heading}>
+          <h3>Price History</h3>
+        </div>
+        <div className={classes.tableContainer}>{graph.content}</div>
       </div>
 
       <div className={classes.section}>
@@ -308,30 +381,31 @@ const SingleNFT = () => {
       </div>
 
       {showSocial ? (
-        <div ref={wrapperRef} className={classes.share}>
-          <div className={classes.copy}>
-            <input type="text" value={url} readOnly className={classes.textArea} />
-            <CopyToClipboard text={url} onCopy={onCopyText}>
-              <div className={classes.copy_area}>
-                {!isCopied ? (
-                  <img className={classes.shareicon} src="/assets/copy-solid.svg" alt="" />
-                ) : (
-                  <img className={classes.shareicon} src="/assets/copied.svg" alt="" />
-                )}
-              </div>
-            </CopyToClipboard>
-          </div>
-          <div className={classes.shareContent}>
-            {icons.map((icon) => (
-              <a href={icon.link} target="_blank" rel="noreferrer">
-                <img
-                  className={classes.shareIcon}
-                  onClick={() => handleSetState({ text: icon.link })}
-                  src={icon.icon}
-                  alt=""
-                />
-              </a>
-            ))}
+        <div>
+          <div ref={wrapperRef} className={classes.share}>
+            <div className={classes.copy}>
+              <input type="text" value={window.location.href} readOnly className={classes.textArea} />
+              <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
+                <div className={classes.copy_area}>
+                  {!isCopied ? (
+                    <img className={classes.shareicon} src={copyIcon} alt="" />
+                  ) : (
+                    <img className={classes.shareicon} src={copiedIcon} alt="" />
+                  )}
+                </div>
+              </CopyToClipboard>
+            </div>
+            <div className={classes.shareContent}>
+              <FacebookShareButton url={window.location.href}>
+                <img className={classes.shareIcon} src={facebookIcon} alt="facebook" />
+              </FacebookShareButton>
+              <TwitterShareButton url={window.location.href}>
+                <img className={classes.shareIcon} src={twitterIcon} alt="twitter" />
+              </TwitterShareButton>
+              <WhatsappShareButton url={window.location.href}>
+                <img className={classes.shareIcon} src={whatsappIcon} alt="twitter" />
+              </WhatsappShareButton>
+            </div>
           </div>
         </div>
       ) : (
@@ -341,4 +415,4 @@ const SingleNFT = () => {
   );
 };
 
-export default SingleNFT;
+export default ListSingleNFT;

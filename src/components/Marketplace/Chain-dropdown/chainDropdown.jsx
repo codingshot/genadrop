@@ -5,7 +5,7 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
-import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import dropdownIcon from "../../../assets/down-arrow.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
 
 const chainIcon = {
