@@ -85,7 +85,7 @@
   visibility: visible;
   opacity: 1;
   margin-top: 0.25em;
-  border-radius: 2.5em;
+  border-radius: 0.25em;
   transform: translateY(0em);
 }
 
