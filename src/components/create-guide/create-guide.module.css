@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: center;
   gap: 1.5em;
-  background: #00b39e;
+  background: var(--main-700);
   padding: 1em;
   border-radius: 1em;
 }
@@ -48,7 +48,7 @@
 }
 
 .closeBtn button {
-  background: white;
+  background: var(--main-bg);
   padding: 0.5em 2em;
   border-radius: 1.5em;
   border: none;
@@ -56,7 +56,7 @@
 }
 
 .closeBtn button:hover {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.736);
+  box-shadow: var(--shadow-light-8);
 }
 
 .heading {
@@ -117,7 +117,7 @@
   width: 32em;
   flex: 0 0 auto;
   height: 100%;
-  background: gainsboro;
+  background: var(--main-bg);
 }
 
 .control {
@@ -236,7 +236,7 @@
 }
 
 .indicator.active > div {
-  background: white;
+  background: var(--main-bg);
 }
 
 @media screen and (max-width: 1000px) {

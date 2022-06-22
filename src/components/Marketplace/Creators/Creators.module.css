@@ -10,7 +10,7 @@
 
 .wrapper {
   width: 100%;
-  max-width: 1440px;
+  max-width: max-content;
 }
 
 .heading {
@@ -18,7 +18,6 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1em;
-  padding: 0 1em;
 }
 
 .heading h3 {
@@ -28,15 +27,13 @@
 
 .heading button {
   cursor: pointer;
-  padding: 0.5em 2.5em;
-  border-radius: 2em;
-  color: var(--main-accent);
+  color: var(--main-700);
   transition: background 300ms;
   font-size: 1rem;
 }
 
 .heading button:hover {
-  background: var(--main-accent-dark);
+  color: var(--main-900);
 }
 
 .innerWrapper {
@@ -55,7 +52,7 @@
   padding: 1.2em;
   border-radius: 1em;
   gap: 4em;
-  background: white;
+  background: var(--main-bg);
 }
 
 .profile {
@@ -70,14 +67,14 @@
   width: 4em;
   height: 4em;
   border-radius: 1em;
-  background: gainsboro;
+  background: var(--text-light-300);
 }
 
 .name {
   width: max-content;
   max-width: 10em;
   font-size: 1rem;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .profile .text {
@@ -94,7 +91,7 @@
   padding: 2em;
   border-radius: 1em;
   background: #eceffe;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .count {

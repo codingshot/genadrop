@@ -2,7 +2,7 @@
   width: 100%;
   padding: 0 1em;
   margin-bottom: 4em;
-  background: white;
+  background: var(--main-bg);
 }
 
 .container > input {
@@ -14,8 +14,15 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5em;
-  background: white;
+  background: var(--main-bg);
   padding: 0 1em;
+}
+
+.headingWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
 }
 
 .heading h3 {
@@ -27,14 +34,14 @@
   cursor: pointer;
   padding: 0.5em 2.5em;
   border-radius: 2em;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   transition: background 300ms;
   font-size: 1rem;
 }
 
 .heading button:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .wrapper {
@@ -87,6 +94,22 @@
 
   .heading {
     flex-direction: column;
-    gap: 0.5em;
+    gap: 1em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0;
+  }
+
+  .heading h3 {
+    font-size: 1rem;
+  }
+
+  .headingWrapper {
+    gap: 1em;
+    width: 100%;
+    justify-content: space-between;
   }
 }

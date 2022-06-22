@@ -128,7 +128,7 @@ const Collections = () => {
     if (chainParameter) {
       handleSetState({ filter: { ...filter, chain: chainParameter } });
     }
-    const collection = getCollectionByChain();
+    const collection = getCollectionByChain(chainParameter ? chainParameter.toLowerCase() : "All Chains");
     if (name) {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }

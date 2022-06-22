@@ -11,12 +11,19 @@
 }
 
 .heading {
-  margin-bottom: 1em;
+  text-align: center;
+  max-width: 38em;
+  margin: 0 auto;
+  margin-bottom: 2em;
 }
 
 .heading h3 {
   font-size: 2rem;
   font-weight: 600;
+}
+
+.heading p {
+  font-size: 1.2rem;
 }
 
 .card {
@@ -29,10 +36,29 @@
   justify-content: center;
   gap: 2em;
   border: 1px solid transparent;
+  position: relative;
+  cursor: pointer;
+  transition: all 300ms;
 }
 
 .card img {
   width: 3em;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-light-8);
+}
+
+.card.inActive:hover .soon {
+  font-size: 1rem;
+  transform: translateY(-3.25em);
+}
+
+.soon {
+  font-size: 0.75rem;
+  position: absolute;
+  bottom: 1em;
+  transition: all 300ms;
 }
 
 @media screen and (max-width: 900px) {

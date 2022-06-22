@@ -17,7 +17,7 @@
   gap: 2em;
   padding: 1.4em 4em;
   border-radius: 4em;
-  box-shadow: 0 5px 5px rgb(220, 220, 220, 0.5);
+  box-shadow: var(--shadow-light-5);
 }
 
 .wrapper input {
@@ -25,7 +25,7 @@
   width: 100%;
   border-radius: 2em;
   outline: none;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   padding: 0 1em;
   font-size: 1.2rem;
   background: #f5f6fa;
@@ -34,6 +34,6 @@
 .wrapper button {
   padding: 1em 3em;
   border-radius: 2em;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }

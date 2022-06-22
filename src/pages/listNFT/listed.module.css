@@ -61,7 +61,7 @@
   width: 11rem;
   border-radius: 5px;
   font-weight: bold;
-  background-color: var(--main-accent);
+  background-color: var(--main-700);
 }
 
 .buy:hover,

@@ -1,9 +1,9 @@
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import classes from "./Banner.module.css";
-import img1 from "../../../assets/banner-1.svg";
-import img2 from "../../../assets/banner-2.svg";
-import img3 from "../../../assets/banner-3.svg";
+import img1 from "../../../assets/banner-1.png";
+import img2 from "../../../assets/banner-2.png";
+import img3 from "../../../assets/banner-3.png";
 import bannerImg from "../../../assets/banner.png";
 
 const Banner = () => {
@@ -11,12 +11,18 @@ const Banner = () => {
   const [animate, setAnimate] = useState(false);
   const [counter, setCounter] = useState(0);
   const cardRef = useRef();
+  const bannerRef = useRef();
 
   const handleSet = () => {
     const img = [...image];
     img.unshift(img.pop());
     setImage(img);
     setAnimate(true);
+  };
+
+  const handleClick = () => {
+    const height = bannerRef.current.getBoundingClientRect().height;
+    document.documentElement.scrollTop = height;
   };
 
   useEffect(() => {
@@ -34,14 +40,16 @@ const Banner = () => {
   }, [counter]);
 
   return (
-    <div style={{ backgroundImage: `url(${bannerImg})` }} className={classes.container}>
+    <div ref={bannerRef} style={{ backgroundImage: `url(${bannerImg})` }} className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.content}>
           <div className={classes.title}>Explore Unique and Exclusive NFTs across different blockchains</div>
           <div className={classes.description}>
             The first NFT marketplace that enables creators to create their generative NFTs and embed licenses{" "}
           </div>
-          <div className={classes.btn}>Explore</div>
+          <div onClick={handleClick} className={classes.btn}>
+            Explore
+          </div>
         </div>
         <div className={`${classes.cardContainer} ${animate && classes.active}`}>
           <img src={image[0]} alt="" className={classes.cardLeft} />

@@ -7,6 +7,7 @@ import classes from "./SingleNft.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
+import DateFilter from "../Date-Filter/DateFilter";
 
 const SingleNft = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
@@ -22,7 +23,10 @@ const SingleNft = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <h3>1 of 1s</h3>
+        <div className={classes.headingWrapper}>
+          <h3>1 of 1s</h3>
+          <DateFilter />
+        </div>
         <button type="button" onClick={() => history.push(`${url}/single-mint`)}>
           view all
         </button>

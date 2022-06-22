@@ -36,7 +36,7 @@
   padding: 6px;
   background: #ffffff;
   border: 1px solid #c4c4c4;
-  box-shadow: 0px 4px 30px rgb(0 0 0 / 5%);
+  box-shadow: var(--shadow-light-5);
   border-radius: 20px;
   height: 200px;
   width: 200px;
@@ -44,20 +44,20 @@
   cursor: pointer;
 }
 .imgContainer > div:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 .imgContainer div img {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  background: white;
+  background: var(--main-bg);
   border-radius: 20px;
 }
 
 .line {
   height: 2px;
   width: 100%;
-  background: #c4c4c4;
+  background: var(--text-light-500);
   margin-top: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -68,7 +68,7 @@
 .buttonConatiner div,
 .buttonConatiner p {
   border-radius: 2.375rem;
-  border: 3px solid var(--main-accent);
+  border: 3px solid var(--main-700);
   font-weight: 500;
   font-size: 1.25rem;
   width: 11.8rem;
@@ -80,26 +80,26 @@
   transition: 0.3s ease;
 }
 .buttonConatiner p {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 .buttonConatiner div {
   color: #fff;
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 .buttonConatiner div:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 .buttonConatiner p:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: #fff;
 }
 div.active {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 .viewALlBtn {
   width: fit-content;
   margin: 0.5rem auto auto;
-  color: var(--main-accent);
+  color: var(--main-700);
   font-size: 1.25rem;
   font-weight: 500;
   cursor: pointer;

@@ -2,7 +2,7 @@
   width: 100%;
   padding: 1em;
   border-radius: 0.5em;
-  border: 1px solid var(--border-color-light);
+  border: 1px solid var(--text-light-700);
 }
 
 .answer,
@@ -22,7 +22,7 @@
 }
 
 .question.active {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .question img {
@@ -40,7 +40,7 @@
 }
 
 .answer a {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .answer.active {

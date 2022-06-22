@@ -8,7 +8,7 @@ import allChains from "../../../assets/all-chains.svg";
 
 export const chains = [
   {
-    name: "All Blockchains",
+    name: "All Chains",
     icon: allChains,
     color: "#009987",
     border: "#009987",
@@ -34,10 +34,10 @@ export const chains = [
   {
     name: "Celo",
     icon: celoIcon,
-    color: "white",
+    color: "#000000",
     border: "transparent",
-    bg: "#212529",
-    isComingSoon: false,
+    bg: "#FFEA94",
+    isComingSoon: true,
   },
   {
     name: "Aurora",
@@ -50,17 +50,17 @@ export const chains = [
   {
     name: "Near",
     icon: nearIcon,
-    color: "black",
+    color: "#000000",
     border: "transparent",
     bg: "#E1EBF5",
-    isComingSoon: false,
+    isComingSoon: true,
   },
   {
     name: "Solana",
     icon: solanaIcon,
-    color: "black",
+    color: "#FFFFFF",
     border: "transparent",
-    bg: "#E1E34B",
-    isComingSoon: false,
+    bg: "#000000",
+    isComingSoon: true,
   },
 ];

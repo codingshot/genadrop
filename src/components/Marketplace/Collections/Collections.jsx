@@ -7,6 +7,7 @@ import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
+import DateFilter from "../Date-Filter/DateFilter";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
@@ -22,7 +23,10 @@ const Collections = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <h3>Top Collections</h3>
+        <div className={classes.headingWrapper}>
+          <h3>Top Collections</h3>
+          <DateFilter />
+        </div>
         <button type="button" onClick={() => history.push(`${url}/collections`)}>
           view all
         </button>

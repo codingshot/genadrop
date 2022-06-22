@@ -2,7 +2,7 @@
   width: 20em;
   position: sticky;
   top: 5em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 0.5em;
   padding: 1em 0;
 }
@@ -98,7 +98,7 @@
 .layerorderHeader {
   width: 100%;
   padding: 0.1em 1em;
-  color: black;
+  color: var(--text-dark-900);
   font-weight: 500;
   font-size: 1.2rem;
 }
@@ -146,7 +146,7 @@
 
 .addBtn {
   width: 100%;
-  background: var(--main-accent);
+  background: var(--main-700);
   border: none;
   cursor: pointer;
   padding: 0.75em 1em;
@@ -160,8 +160,8 @@
 }
 
 .addBtn:hover {
-  background: var(--main-accent-dark);
-  outline: 2px solid var(--main-accent);
+  background: var(--main-900);
+  outline: 2px solid var(--main-700);
 }
 
 @media screen and (max-width: 768px) {

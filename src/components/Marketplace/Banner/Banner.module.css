@@ -38,8 +38,14 @@
   display: inline-block;
   padding: 0.75em 4em;
   border-radius: 2em;
-  background: white;
-  color: var(--main-accent);
+  background: var(--main-bg);
+  color: var(--main-700);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--main-100);
+  color: var(--main-900);
 }
 
 .cardContainer {
@@ -69,7 +75,7 @@
 }
 
 .indicator > div.active {
-  background: white;
+  background: var(--main-bg);
 }
 
 .cardLeft,

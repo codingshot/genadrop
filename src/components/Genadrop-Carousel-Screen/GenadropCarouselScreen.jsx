@@ -3,16 +3,17 @@ import classes from "./GenadropCarouselScreen.module.css";
 import iconRight from "../../assets/icon-angle-right.svg";
 import iconLeft from "../../assets/icon-angle-left.svg";
 
-const GenadropCarouselScreen = ({ children, cardWidth, gap = 16 }) => {
+const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) => {
   const cardContainerRef = useRef(null);
   const wrapperRef = useRef(null);
 
   const [state, setState] = useState({
     wrapperWidth: 0,
     slideCount: 0,
+    scrollLength: 0,
   });
 
-  const { wrapperWidth, slideCount } = state;
+  const { wrapperWidth, slideCount, scrollLength } = state;
   const [slideActiveCount, setSlideActiveCount] = useState(0);
 
   const handleSetState = (payload) => {
@@ -31,9 +32,10 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16 }) => {
 
   useEffect(() => {
     const width = wrapperRef.current && wrapperRef.current.getBoundingClientRect().width;
-    const cardsInView = Math.floor(width / (cardWidth + gap / 1.5));
-    const axisLen = slideActiveCount * cardsInView * cardWidth + slideActiveCount * cardsInView * gap;
-    cardContainerRef.current.style.transform = `translateX(-${axisLen}px)`;
+    const cardsInView = Math.floor(width / (cardWidth + gap / 2));
+    const scrollLength = slideActiveCount * cardsInView * cardWidth + slideActiveCount * cardsInView * gap;
+    handleSetState({ scrollLength });
+    cardContainerRef.current.style.transform = `translateX(-${scrollLength}px)`;
   }, [slideActiveCount]);
 
   useEffect(() => {
@@ -53,14 +55,20 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16 }) => {
   useEffect(() => {
     const width = wrapperRef.current && wrapperRef.current.getBoundingClientRect().width;
     const cardTotalLength = children.length;
-    const cardsInView = Math.floor(width / (cardWidth + gap / 1.5));
+    const cardsInView = Math.floor(width / (cardWidth + gap / 2));
     const slideCount = getCount(cardTotalLength, cardsInView);
     handleSetState({ slideCount });
     if (!slideCount) {
       setSlideActiveCount(0);
     }
-    setSlideActiveCount(0);
+    let res = Math.floor(Math.floor(scrollLength / (cardWidth + gap / 2)) / slideActiveCount / cardsInView);
+    if (slideActiveCount === 0) return;
+    setSlideActiveCount(res);
   }, [wrapperWidth, children]);
+
+  useEffect(() => {
+    setSlideActiveCount(0);
+  }, [init]);
 
   return (
     <div className={classes.container}>

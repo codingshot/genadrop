@@ -3,7 +3,7 @@
   align-items: center;
   padding: 0.25em;
   border-radius: 2em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
 }
 
 .container div {
@@ -20,4 +20,10 @@
 .container div.active {
   background: gray;
   color: white;
+}
+
+@media screen and (max-width: 480px) {
+  .container div {
+    font-size: 0.65rem;
+  }
 }

@@ -2,9 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 import { chains } from "./Chains-Script";
 import classes from "./Chains.module.css";
+import { useHistory, useRouteMatch, useLocation } from "react-router-dom";
 
 const Chains = () => {
   const cardRef = useRef(null);
+  const history = useHistory();
+  const location = useLocation();
+
+  const { url } = useRouteMatch();
 
   const [state, setState] = useState({
     cardWidth: 0,
@@ -14,6 +19,11 @@ const Chains = () => {
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
+  };
+
+  const handleClick = (name, isComingSoon) => {
+    if (isComingSoon) return;
+    history.push(`${url}/collections/${`?chain=${name}`}`);
   };
 
   useEffect(() => {
@@ -33,13 +43,15 @@ const Chains = () => {
         <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
           {chains.map((chain, idx) => (
             <div
+              onClick={() => handleClick(chain.name, chain.isComingSoon)}
               style={{ background: chain.bg, borderColor: chain.border, color: chain.color }}
               key={idx}
               ref={cardRef}
-              className={classes.card}
+              className={`${classes.card} ${chain.isComingSoon && classes.inActive}`}
             >
               <img src={chain.icon} alt="" />
               <div>{chain.name}</div>
+              {chain.isComingSoon ? <div className={classes.soon}>coming soon</div> : null}
             </div>
           ))}
         </GenadropCarouselCard>
