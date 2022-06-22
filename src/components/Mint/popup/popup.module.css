@@ -20,7 +20,7 @@
 .popupContainer {
   width: 100%;
   max-width: 32em;
-  background: white;
+  background: var(--main-bg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -45,12 +45,13 @@
 .imgContainer {
   padding: 1em;
   border-radius: 2em;
-  box-shadow: -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12);
+  box-shadow: var(--shadow-light-5);
   margin-bottom: 1em;
 }
+/* -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12); */
 
 .container .heading {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .container .heading.error {
@@ -68,7 +69,7 @@
 }
 
 .closeBtn:hover {
-  box-shadow: 0 0 15px gainsboro;
+  box-shadow: var(--shadow-light-8);
 }
 
 .actionBtnContainer {
@@ -102,23 +103,23 @@
 }
 
 .actionBtn._1 {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   position: relative;
 }
 
 .actionBtn._2 {
-  background: white;
-  color: var(--main-accent);
-  border-color: var(--main-accent);
+  background: var(--main-bg);
+  color: var(--main-700);
+  border-color: var(--main-700);
 }
 
 .actionBtn._1:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .actionBtn._2:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -154,7 +155,7 @@
 .url {
   flex: 1;
   max-width: 20em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -176,14 +177,14 @@
 
 .copyBtn {
   padding: 0.25em 0.5em;
-  background: var(--main-hover);
+  background: var(--main-100);
   color: gray;
   width: 5em;
   text-align: center;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   transition: all 300ms;
 }
 
 .copyBtn:hover {
-  background: var(--main-hover-dark);
+  background: var(--main-100-dark);
 }

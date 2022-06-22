@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  background: white;
+  background: var(--main-bg);
   padding: 2em 1em;
 }
 
@@ -18,16 +18,16 @@
   flex-direction: column;
   gap: 2em;
   padding: 2em;
-  background: white;
-  /* box-shadow: 0 0 15px gainsboro; */
+  background: var(--main-bg);
+  /* box-shadow: var(--shadow-light-5);
   overflow: hidden;
   border-radius: 1em;
   margin-bottom: 2em;
 }
 
 .profile {
-  color: var(--main-accent);
-  border: 2px solid var(--main-accent);
+  color: var(--main-700);
+  border: 2px solid var(--main-700);
   border-radius: 0.5em;
   padding: 0.5em 1em;
 }
@@ -49,7 +49,7 @@
   border-radius: 0.5em;
   background: rgba(0, 153, 135, 0.1);
   cursor: pointer;
-  color: var(--main-accent);
+  color: var(--main-700);
   transition: all 100ms;
 }
 
@@ -81,13 +81,13 @@
 }
 
 .detail.active {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
 .detail.active span {
-  background: white;
-  color: var(--main-accent);
+  background: var(--main-bg);
+  color: var(--main-700);
 }
 
 .banner {
@@ -117,29 +117,29 @@
   width: 100%;
 }
 .socialIcon {
-  /* background-color: var(--main-accent); */
+  /* background-color: var(--main-700); */
   width: 2rem;
   height: 2rem;
   margin-right: 5px;
 }
 
 .editProfile {
-  border: 1px solid var(--main-accent);
-  color: var(--main-accent);
+  border: 1px solid var(--main-700);
+  color: var(--main-700);
   padding: 0.5em 0.5em;
   border-radius: 0.5em;
   transition: all 300ms;
 }
 
 .editProfile:hover {
-  box-shadow: 2px 2px 15px gainsboro;
+  box-shadow: var(--shadow-light-8);
 }
 
 .main {
   padding: 2em;
   border-radius: 1em;
-  background: white;
-  box-shadow: 0 0 15px gainsboro;
+  background: var(--main-bg);
+  box-shadow: var(--shadow-light-5);
 }
 .username {
   font-size: 2rem;

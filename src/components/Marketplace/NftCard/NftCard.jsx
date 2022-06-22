@@ -7,7 +7,7 @@ import Copy from "../../copy/copy";
 import { GenContext } from "../../../gen-state/gen.context";
 import avatar from "../../../assets/avatar.png";
 
-const NftCard = ({ nft, list, chinPrice }) => {
+const NftCard = ({ nft, list, chinPrice, useWidth }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
   const breakAddress = (address = "", width = 6) => {
@@ -42,7 +42,7 @@ const NftCard = ({ nft, list, chinPrice }) => {
           : `/marketplace/single-mint/${Id}`
       }
     >
-      <div className={classes.card}>
+      <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
         <div className={classes.imageContainer}>
           <img
             onError={({ currentTarget }) => {

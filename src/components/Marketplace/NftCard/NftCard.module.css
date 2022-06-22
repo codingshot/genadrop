@@ -1,15 +1,16 @@
 .card {
   width: 100%;
-  border-radius: 1em;
-  border: 1px solid gainsboro;
+  border-radius: 0.5em;
+  border: 1px solid var(--text-light-500);
   transition: all 300ms;
+  max-width: 32em;
   height: 26rem;
 }
 
 .card:hover {
   cursor: pointer;
   transform: translateY(-5px);
-  box-shadow: 0 0 10px #a3a3a3;
+  box-shadow: var(--shadow-light-8);
 }
 
 .imageContainer {
@@ -19,7 +20,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 250px;
+  height: 16em;
 }
 
 .creator {
@@ -36,14 +37,16 @@
 .creatoAddress {
   flex-direction: column;
 }
+
 .address {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
+
 .imageContainer img {
   object-fit: cover;
-  width: 15rem;
-  height: 15rem;
-  border-radius: 1em;
+  border-radius: 0.5em;
+  width: 100%;
+  height: 100%;
 }
 
 .cardBody {
@@ -82,7 +85,7 @@
 }
 
 .price {
-  color: var(--main-accent);
+  color: var(--main-700);
   font-weight: bold;
 }
 .price img {
@@ -98,14 +101,14 @@
   font-size: 1rem;
   padding: 0.25em 1.5em;
   border-radius: 2em;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   transition: all 300ms;
 }
 
 .button:hover {
-  background: var(--main-accent-dark);
-  outline: 2px solid var(--main-accent);
+  background: var(--main-900);
+  outline: 2px solid var(--main-700);
 }
 .buttonSold {
   background-color: #707a83;

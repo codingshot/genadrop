@@ -2,7 +2,7 @@
   width: 100%;
   height: 8em;
   overflow: auto;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   padding: 0.5em;
   border-radius: 0.25em;
 }
@@ -10,7 +10,7 @@
 .container h4 {
   margin-bottom: 0.5em;
   font-weight: 500;
-  color: black;
+  color: var(--text-dark-900);
 }
 
 .container p {
@@ -24,7 +24,7 @@
 
 .container p > span {
   font-size: 0.85rem;
-  color: black;
+  color: var(--text-dark-900);
 }
 
 @media screen and (max-width: 1200px) {

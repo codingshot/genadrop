@@ -1,0 +1,257 @@
+.container {
+  width: 100%;
+  margin-bottom: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em 1em;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4em;
+}
+
+.content {
+  flex: 1;
+  color: white;
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 0.75em;
+}
+
+.description {
+  margin-bottom: 1em;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75em 4em;
+  border-radius: 2em;
+  background: var(--main-bg);
+  color: var(--main-700);
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--main-100);
+  color: var(--main-900);
+}
+
+.cardContainer {
+  width: 100%;
+  max-width: 48vw;
+  height: 32vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.indicator {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+}
+
+.indicator > div {
+  width: 3em;
+  height: 4px;
+  background: gray;
+}
+
+.indicator > div.active {
+  background: var(--main-bg);
+}
+
+.cardLeft,
+.cardRight,
+.cardCenter {
+  position: absolute;
+  border-radius: 1.4em;
+}
+
+.cardLeft,
+.cardRight {
+  width: 28vw;
+}
+
+.cardLeft {
+  left: 0;
+  z-index: 0;
+}
+
+.cardRight {
+  right: 0;
+  z-index: 1;
+}
+
+.cardCenter {
+  width: 40vw;
+}
+
+.cardCenter {
+  z-index: 3;
+}
+
+.cardContainer.active .cardLeft {
+  animation: left 850ms forwards cubic-bezier(0.95, 0.39, 0, 0.99);
+}
+
+.cardContainer.active .cardRight {
+  animation: right 850ms forwards cubic-bezier(0.95, 0.39, 0, 0.99);
+}
+
+.cardContainer.active .cardCenter {
+  animation: center 850ms forwards cubic-bezier(0.95, 0.39, 0, 0.99);
+}
+
+@keyframes left {
+  from {
+    transform: translateX(20vw);
+    opacity: 0.5;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes right {
+  from {
+    transform: translateX(-4vw);
+    opacity: 0.5;
+    width: 40vw;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+    width: 28vw;
+  }
+}
+
+@keyframes center {
+  from {
+    width: 28vw;
+    transform: translateX(-10vw);
+  }
+
+  to {
+    transform: translateX(0);
+    width: 40vw;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .title {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper {
+    flex-direction: column-reverse;
+    gap: 2em;
+  }
+
+  .content {
+    align-self: flex-start;
+    max-width: 36em;
+  }
+
+  .cardContainer {
+    max-width: 80%;
+    height: 48vw;
+  }
+
+  .cardCenter {
+    width: 80%;
+  }
+
+  .cardLeft,
+  .cardRight {
+    width: 60%;
+  }
+
+  @keyframes left {
+    from {
+      transform: translateX(40%);
+      opacity: 0.5;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes right {
+    from {
+      transform: translateX(-10%);
+      opacity: 0.5;
+      width: 80%;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+      width: 60%;
+    }
+  }
+
+  @keyframes center {
+    from {
+      width: 60%;
+      transform: translateX(-20%);
+    }
+
+    to {
+      transform: translateX(0);
+      width: 80%;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .cardCenter,
+  .cardRight,
+  .cardLeft {
+    border-radius: 0.5em;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .cardContainer {
+    max-width: 100%;
+    height: 60vw;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .indicator > div {
+    width: 2em;
+    height: 3px;
+  }
+}

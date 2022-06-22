@@ -7,21 +7,21 @@
 }
 
 .container button {
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   padding: 0.5em 1em;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25em;
-  background: rgb(241, 117, 117);
+  background: var(--error-300);
 }
 
 ._0 {
-  background: #c4c4c4 !important;
+  background: var(--text-light-500) !important;
 }
 
 .container input::placeholder {
-  color: gainsboro;
+  color: var(--text-light-500);
 }
 
 .container img {

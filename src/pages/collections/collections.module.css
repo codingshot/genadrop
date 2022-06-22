@@ -2,7 +2,7 @@
   padding: 1em;
   padding-top: 2em;
   padding-bottom: 4em;
-  background: white;
+  background: var(--main-bg);
 }
 
 .innerContainer {
@@ -11,7 +11,7 @@
   margin: 0 auto;
   padding: 2em;
   border-radius: 1em;
-  background: white;
+  background: var(--main-bg);
 }
 
 .header {

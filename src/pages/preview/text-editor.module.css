@@ -15,7 +15,7 @@
   flex: 1;
   padding: 0.25em;
   border: none;
-  outline: 1px solid gainsboro;
+  outline: 1px solid var(--text-light-500);
 }
 
 .container button {

@@ -73,7 +73,7 @@ const CollectionToSingleMinter = () => {
     };
     dragRef.current.ondragleave = (e) => {
       e.preventDefault();
-      document.querySelector(".drop-area").style.border = "2px solid gainsboro";
+      document.querySelector(".drop-area").style.border = "2px solid var(--text-light-500)";
     };
     dragRef.current.ondrop = (e) => {
       e.preventDefault();

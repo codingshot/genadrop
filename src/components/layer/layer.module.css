@@ -41,12 +41,12 @@
 }
 
 .renameBtn:hover {
-  /* background: var(--main-accent); */
+  /* background: var(--main-700); */
   background: gray;
 }
 
 .editBtn:hover {
-  /* background: var(--main-accent); */
+  /* background: var(--main-700); */
   background: gray;
 }
 

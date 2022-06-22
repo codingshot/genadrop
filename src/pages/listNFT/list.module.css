@@ -104,12 +104,12 @@
 }
 
 .buy {
-  background-color: var(--main-accent);
+  background-color: var(--main-700);
 }
 
 .bid {
-  border: 1px solid var(--main-accent);
-  color: var(--main-accent);
+  border: 1px solid var(--main-700);
+  color: var(--main-700);
 }
 
 .buy img,
@@ -213,7 +213,7 @@
   display: block;
   padding: 0.25em;
   resize: none;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 0.25em;
   font-size: 1rem;
 }
