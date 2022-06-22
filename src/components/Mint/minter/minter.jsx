@@ -329,7 +329,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 </div>
                 {chainId === 4160 && (
                   <div>
-                    <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file.length * 0.01} ALGO</p>
+                    <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file.length * 0.1} ALGO</p>
                     <img src={questionMark} alt="info" />
                   </div>
                 )}
