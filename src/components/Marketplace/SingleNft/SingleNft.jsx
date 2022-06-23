@@ -29,13 +29,13 @@ const SingleNft = () => {
       {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <div className={classes.wrapper}>
           {singleAlgoNftsArr?.slice(0, 10).map((nft) => (
-            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+            <NftCard key={nft.Id} nft={nft} listed extend="/single-mint" />
           ))}
           {singleAuroraNfts?.map((nft) => (
-            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+            <NftCard key={nft.Id} nft={nft} listed extend="/single-mint" />
           ))}
           {singlePolygonNfts?.map((nft) => (
-            <NftCard key={nft.Id} nft={nft} extend="/single-mint" />
+            <NftCard key={nft.Id} nft={nft} listed extend="/single-mint" />
           ))}
         </div>
       ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts ? (

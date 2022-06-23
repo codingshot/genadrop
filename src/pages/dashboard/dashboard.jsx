@@ -73,10 +73,8 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       const collectedNfts = await fetchUserBoughtNfts(account);
-      console.log("BFT: ", collectedNfts);
 
       const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-      console.log({ algoCollectedNfts });
       handleSetState({ collectedNfts: algoCollectedNfts });
     })();
 
@@ -243,13 +241,13 @@ const Dashboard = () => {
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} list />
+                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} list />
+                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
                 ))}
               </div>
             ) : (
