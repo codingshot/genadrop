@@ -21,7 +21,7 @@
   background: var(--main-bg);
   padding: 2em 4em;
   border-radius: 0.5em;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
 }
 
 .heading {

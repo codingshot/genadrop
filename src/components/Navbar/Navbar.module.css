@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-between;
   background: var(--main-bg);
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   z-index: 1;
   padding: 0.5em 2em;
   gap: 12em;
@@ -103,7 +103,7 @@
   width: 100%;
   border: 1px solid transparent;
   outline: none;
-  padding: 0 0.5em;
+  padding: 0.25em 0.5em;
 }
 
 .navContainer {
@@ -224,7 +224,7 @@
     max-height: 20em;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow-light-5);
+    box-shadow: var(--shadow-light-1);
   }
 
   .navList {
@@ -263,6 +263,12 @@
   .drop {
     bottom: 0;
     right: 0.5em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .searchContainer button {
+    display: none;
   }
 }
 

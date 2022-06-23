@@ -7,7 +7,7 @@
   transition: all 100ms;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   border: 1px solid transparent;
 }
 
@@ -142,5 +142,5 @@
 }
 
 .removeIcon:hover {
-  box-shadow: var(--shadow-light-8);
+  box-shadow: var(--shadow-dark);
 }
