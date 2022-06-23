@@ -26,6 +26,7 @@ import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
 import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
+import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
 
 const SingleNFT = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -285,6 +286,12 @@ const SingleNFT = () => {
     content: attributeContent(),
   };
 
+  const similar = {
+    icon: "",
+    title: "Similar NFTs",
+    content: <SimilarNFTs data={nftDetails} />,
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.section1}>
@@ -410,6 +417,9 @@ const SingleNFT = () => {
         </div>
       </div>
 
+      <div className={classes.feature}>
+        <DropItem key={4} item={similar} id={4} dropdown={dropdown} handleSetState={handleSetState} />
+      </div>
       {showSocial ? (
         <div>
           <div ref={wrapperRef} className={classes.share}>
