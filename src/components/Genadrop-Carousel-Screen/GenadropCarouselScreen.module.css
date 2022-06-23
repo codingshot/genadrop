@@ -38,14 +38,14 @@
   display: none;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   transition: all 300ms;
 }
 
 .ctrlBtn_left:hover,
 .ctrlBtn_right:hover {
   background: rgb(255, 255, 255, 1);
-  box-shadow: var(--shadow-light-8);
+  box-shadow: var(--shadow-dark);
 }
 
 .ctrlBtn_left {

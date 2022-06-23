@@ -349,7 +349,7 @@
   background-color: white;
   z-index: 10000;
   border-radius: 20px;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
 }
 
 .shareContent {

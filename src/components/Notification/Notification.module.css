@@ -39,23 +39,24 @@
 .notification.error {
   background: var(--error-100);
   border: 1px solid var(--error-500);
-  color: var(--error-500);
+  color: var(--error-600);
 }
 
 .notification.warning {
   background: var(--warning-300);
   border: 1px solid var(--warning-500);
-  color: var(--warning-500);
+  color: var(--warning-600);
 }
 
 .notification.success {
   background: var(--success-500);
   border: 1px solid var(--success-700);
-  color: white;
+  color: var(--main-bg);
 }
 
 .notification.default {
-  background: var(--card-bg);
+  background: var(--text-dark-900);
+  color: var(--main-bg);
 }
 
 .container.active {
