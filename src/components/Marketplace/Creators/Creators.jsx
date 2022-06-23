@@ -5,7 +5,7 @@ const Creators = () => {
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.heading}>
-          <h3>Popuplar Creators</h3>
+          <h3>Popular Creators</h3>
           <button>See all</button>
         </div>
         <div className={classes.innerWrapper}>
