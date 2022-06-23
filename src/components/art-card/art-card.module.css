@@ -7,12 +7,12 @@
   transition: all 100ms;
   display: flex;
   flex-direction: column;
-  box-shadow: 1px 1px 5px rgb(201, 201, 201);
+  box-shadow: var(--shadow-light-5);
   border: 1px solid transparent;
 }
 
 .container.active {
-  border: 3px solid var(--main-accent);
+  border: 3px solid var(--main-700);
 }
 
 .container.inActive {
@@ -20,7 +20,7 @@
 }
 
 .container.active .addRuleBtn {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .container * {
@@ -56,18 +56,13 @@
 
 .action i {
   font-weight: bold;
-  color: var(--icon-color);
-}
-
-.action i:hover {
-  color: var(--icon-color-dark);
 }
 
 .details {
   width: 100%;
   bottom: 0;
   left: 0;
-  color: black;
+  color: var(--text-dark-900);
   background: var(--main-bg);
   display: flex;
   flex-direction: column;
@@ -100,7 +95,7 @@
 }
 
 .reset {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 
 .reset * {
@@ -121,8 +116,8 @@
   height: 100%;
   text-align: left;
   padding: 0.25em;
-  color: black;
-  border: 1px solid gainsboro;
+  color: var(--text-dark-900);
+  border: 1px solid var(--text-light-500);
 }
 
 .details input:focus {
@@ -147,5 +142,5 @@
 }
 
 .removeIcon:hover {
-  box-shadow: 0 0 10px gray;
+  box-shadow: var(--shadow-light-8);
 }

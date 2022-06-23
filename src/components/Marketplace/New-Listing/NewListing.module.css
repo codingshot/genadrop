@@ -1,0 +1,76 @@
+.container {
+  width: 100%;
+  padding: 0 1em;
+  margin-bottom: 4em;
+  background: var(--main-bg);
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--main-bg);
+  padding: 0 1em;
+  margin-bottom: 0.5em;
+}
+
+.heading h3 {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.heading button {
+  cursor: pointer;
+  padding: 0.5em 2.5em;
+  border-radius: 2em;
+  background: var(--main-700);
+  color: white;
+  transition: background 300ms;
+  font-size: 1rem;
+}
+
+.heading button:hover {
+  background: var(--main-900);
+}
+
+.noResult {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10em;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.skeleton {
+  width: 20em;
+}
+
+@media screen and (max-width: 900px) {
+  .heading h3 {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .heading {
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .heading {
+    gap: 0.5em;
+  }
+
+  .heading button {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0;
+  }
+}

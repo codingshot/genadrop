@@ -1,14 +1,15 @@
 .card {
   width: 100%;
-  border-radius: 2em;
-  background: white;
+  border-radius: 0.5em;
+  background: var(--main-bg);
   transition: all 250ms;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   overflow: hidden;
+  max-width: 32em;
 }
 
 .card:hover {
-  box-shadow: 4px 4px 4px gainsboro;
+  box-shadow: var(--shadow-light-5);
   transform: translateY(-5px);
   cursor: pointer;
 }
@@ -19,7 +20,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   width: 100%;
-  height: 20em;
+  height: 16em;
 }
 
 .body {
@@ -42,8 +43,8 @@
   position: absolute;
   top: 0;
   transform: translateY(-50%);
-  background: white;
-  box-shadow: 0 0 15px gainsboro;
+  background: var(--main-bg);
+  box-shadow: var(--shadow-light-5);
 }
 
 .thumbnail img {
@@ -85,7 +86,7 @@
 }
 
 .price {
-  color: var(--main-accent);
+  color: var(--main-700);
   font-weight: bold;
 }
 
@@ -102,7 +103,7 @@
 
 .nftCount {
   padding: 0.5em 1.5em;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   border-radius: 2em;
   font-size: 0.85rem;

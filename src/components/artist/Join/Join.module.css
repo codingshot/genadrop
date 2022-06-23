@@ -25,12 +25,12 @@
 }
 .container a {
   background: transparent;
-  border: 3px solid var(--main-accent);
+  border: 3px solid var(--main-700);
   box-sizing: border-box;
   border-radius: 37.44px;
   width: 16.875rem;
   height: 4rem;
-  color: var(--main-accent);
+  color: var(--main-700);
   font-size: 1.5rem;
   display: flex;
   justify-content: center;
@@ -40,7 +40,7 @@
   transition: 0.3s ease-in-out;
 }
 .container a:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 @media screen and (max-width: 1440px) {

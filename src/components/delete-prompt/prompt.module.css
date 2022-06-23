@@ -11,7 +11,7 @@
   z-index: 100000;
   overflow: hidden;
   font-style: italic;
-  color: black;
+  color: var(--text-dark-900);
 }
 
 .container.isActive {
@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 2em;
   padding: 2em;
-  background: white;
+  background: var(--main-bg);
   border-radius: 0.5em;
   z-index: 100;
 }
@@ -49,15 +49,15 @@
 }
 
 .accept {
-  background: rgb(255, 0, 0, 1);
+  background: var(--error-500);
   color: white;
   outline: 2px solid transparent;
 }
 
 .accept:hover {
-  outline: 2px solid rgb(255, 0, 0, 0.5);
+  outline: 2px solid var(--error-700);
 }
 
 .reject:hover {
-  background: gainsboro;
+  background: var(--main-bg);
 }

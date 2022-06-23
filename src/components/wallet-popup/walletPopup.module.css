@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 28em;
   overflow: auto;
-  background: white;
+  background: var(--main-bg);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -69,7 +69,7 @@
 }
 
 .iconContainer img:hover {
-  background: gainsboro;
+  background: var(--main-bg);
 }
 
 .wrapper {
@@ -110,7 +110,7 @@
 }
 
 .chain:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -150,7 +150,7 @@
   border-radius: 1em;
   padding: 0.15em 1em;
   transition: all 300ms;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .viewBtn:hover {
@@ -164,7 +164,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  background: white;
+  background: var(--main-bg);
 }
 
 .connectionMethods.active {
@@ -175,7 +175,7 @@
   width: 100%;
   padding: 1em 0;
   border: 1px solid transparent;
-  box-shadow: 0 0 5px gainsboro;
+  box-shadow: var(--shadow-light-5);
   display: flex;
   align-items: center;
   justify-content: stretch;
@@ -188,8 +188,8 @@
 }
 
 .connectionMethod:hover {
-  box-shadow: 0 0 15px gainsboro;
-  border: 1px solid gainsboro;
+  box-shadow: var(--shadow-light-8);
+  border: 1px solid var(--text-light-500);
 }
 
 .connectionMethod.metamask {

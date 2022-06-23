@@ -52,7 +52,7 @@
   font-size: 1.5rem;
   font-weight: bold;
 }
-.buy{
+.buy {
   flex-direction: row;
   margin: 1rem 0.5rem 1rem 0;
   color: white;
@@ -61,23 +61,24 @@
   width: 11rem;
   border-radius: 5px;
   font-weight: bold;
-  background-color: var(--main-accent);
+  background-color: var(--main-700);
 }
-.view{
+.view {
   margin: 1rem auto;
 }
 
-.viewtext{
+.viewtext {
   color: white;
   padding: 0 0.5rem;
   height: 4rem;
   width: 14rem;
   border-radius: 5px;
   font-weight: bold;
-  background-color: var(--main-accent);
+  background-color: var(--main-700);
 }
 .buy:hover,
-.detailContent img:hover, .view:hover {
+.detailContent img:hover,
+.view:hover {
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
   cursor: pointer;

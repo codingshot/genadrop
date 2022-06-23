@@ -21,7 +21,7 @@
   position: sticky;
   top: 11em;
   border: 1px solid #c4c4c4;
-  box-shadow: 0px 0px 2px rgba(55, 125, 255, 0.46);
+  box-shadow: var(--shadow-light-5);
   border-radius: 0.5em;
 }
 
@@ -58,7 +58,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px gainsboro;
+  box-shadow: var(--shadow-light-5);
   background: var(--main-bg);
   cursor: pointer;
   margin-bottom: 1em;
@@ -90,20 +90,20 @@
 }
 .detailGif {
   border-radius: 30px;
-  border-color: var(--main-accent);
+  border-color: var(--main-700);
   cursor: pointer;
   margin-right: 1.6875em;
-  box-shadow: 0px 3px 7px #a8bdd1;
+  box-shadow: var(--shadow-light-5);
 }
 .detailGif:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 .detailGif:hover p {
   color: white;
 }
 .detailGif:hover span:last-child {
-  color: var(--main-accent);
-  background: white;
+  color: var(--main-700);
+  background: var(--main-bg);
 }
 .detail span:last-child {
   background: #4b4b5a;
@@ -114,7 +114,7 @@
 .detailGif p {
   margin: auto;
   font-weight: 500;
-  color: var(--main-accent);
+  color: var(--main-700);
   display: flex;
   align-items: center;
 }
@@ -127,8 +127,8 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2em;
-  background: var(--main-accent);
-  border: 1px solid var(--main-accent);
+  background: var(--main-700);
+  border: 1px solid var(--main-700);
 }
 
 .detail i {
@@ -146,7 +146,7 @@
   border-radius: 0.25em;
   margin-bottom: 2em;
   border: 1px solid #c4c4c4;
-  box-shadow: 0px 0px 2px rgba(55, 125, 255, 0.46);
+  box-shadow: var(--shadow-light-5);
 }
 
 .collectionDetail img {
@@ -158,12 +158,12 @@
   width: 100%;
   border-radius: 0.25em;
   border: 1px solid #c4c4c4;
-  box-shadow: 0px 0px 2px rgba(55, 125, 255, 0.46);
+  box-shadow: var(--shadow-light-5);
   padding: 0.6rem 0rem 0.3rem 0.8rem;
 }
 
 .collectionDetail textarea:focus {
-  outline: 1px solid gainsboro;
+  outline: 1px solid var(--text-light-500);
 }
 
 .collectionDetail .tab {
@@ -178,15 +178,15 @@
   width: 36px;
   border-radius: 0.75em;
   padding: 0px 0;
-  background: gainsboro;
+  background: var(--main-bg);
   cursor: pointer;
   padding: 2px 2px;
   transition: all 300ms;
 }
 
 .collectionDetail .toggleContainer.active {
-  background: var(--main-accent);
-  border: 1px solid gainsboro;
+  background: var(--main-700);
+  border: 1px solid var(--text-light-500);
 }
 
 .collectionDetail .toggle {
@@ -199,7 +199,7 @@
 
 .collectionDetail .toggle.active {
   transform: translateX(100%);
-  background: white;
+  background: var(--main-bg);
 }
 
 .actionContainer {
@@ -213,7 +213,7 @@
 
 .actionContainer h3 {
   margin-top: -20px;
-  background: white;
+  background: var(--main-bg);
   width: fit-content;
   padding-right: 6px;
   margin-left: -5px;
@@ -234,21 +234,21 @@
 }
 
 .actionContainer .btnWrapper > button {
-  border: 1px solid var(--main-accent);
+  border: 1px solid var(--main-700);
   width: 100%;
   border: none;
   height: 3rem;
   font-size: 1rem;
   border-radius: 0.25em;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   cursor: pointer;
   transition: all 300ms;
 }
 
 .actionContainer .btnWrapper > button:hover {
-  background: var(--main-accent-dark);
-  outline: 2px solid var(--main-accent);
+  background: var(--main-900);
+  outline: 2px solid var(--main-700);
 }
 
 .preview {
@@ -277,8 +277,8 @@
   align-items: center;
   justify-content: center;
   padding: 0.5em;
-  background: white;
-  box-shadow: 0 0 15px gainsboro;
+  background: var(--main-bg);
+  box-shadow: var(--shadow-light-5);
   border-radius: 0.15em;
   transition: all 300ms;
 }
@@ -289,7 +289,7 @@
 }
 
 .card > .iconClose:hover {
-  box-shadow: 0 0 10px gray;
+  box-shadow: var(--shadow-light-5);
 }
 
 .asset {
@@ -297,12 +297,12 @@
   width: 100%;
   border-top-right-radius: 0.5em;
   border-top-left-radius: 0.5em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
 }
 
 .cardBody {
   background: var(--card-bg1);
-  box-shadow: 1px 1px 5px rgb(201, 201, 201);
+  box-shadow: var(--shadow-light-5);
   color: white;
   display: flex;
   flex-direction: column;
@@ -316,7 +316,7 @@
 
 .cardBody .textWrapper {
   width: 100%;
-  color: black;
+  color: var(--text-dark-900);
 }
 
 .cardBody .textWrapper {
@@ -365,9 +365,9 @@
 
 .buttonContainer button:first-child,
 .nftDonwload {
-  background: white;
+  background: var(--main-bg);
   border-color: white;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 .buttonContainer button:last-child:hover {
   background: var(--card-bg3);
@@ -376,8 +376,8 @@
 }
 .buttonContainer button:first-child:hover,
 .nftDonwload {
-  background: var(--main-accent-dark);
-  border-color: var(--main-accent-dark);
+  background: var(--main-900);
+  border-color: var(--main-900);
   color: white;
 }
 .foramtWrapper {
@@ -389,7 +389,7 @@
   gap: 1em;
   width: 100%;
   border: 1px solid #c4c4c4;
-  box-shadow: 0px 0px 1.01498px rgb(55 125 255 / 46%);
+  box-shadow: var(--shadow-light-5);
   padding: 0.6rem 0.8rem;
   padding-bottom: 1.3rem;
 }
@@ -413,7 +413,7 @@
 }
 
 .radioBtn.clicked::before {
-  background: white;
+  background: var(--main-bg);
 }
 
 .paginate {
@@ -426,15 +426,15 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 1em;
-  border-top: 1px solid gainsboro;
-  border-bottom: 1px solid gainsboro;
+  border-top: 1px solid var(--text-light-500);
+  border-bottom: 1px solid var(--text-light-500);
   padding: 0.25em;
 }
 
 .paginate input {
   padding: 0.65em;
   max-width: 6em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 0.25em;
 }
 
@@ -462,13 +462,13 @@
 }
 .btnWrapper > button.gifButton {
   margin-top: 2em;
-  background: white;
-  border: 1px solid var(--main-accent);
-  color: var(--main-accent);
+  background: var(--main-bg);
+  border: 1px solid var(--main-700);
+  color: var(--main-700);
   transition: 0.3s ease-in;
 }
 .btnWrapper > button.gifButton:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   outline: none;
 }
@@ -480,7 +480,7 @@
   padding: 0.75em;
 }
 .cheked {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 .galleryGif {
   background: #f6fdff;
@@ -494,7 +494,7 @@
 .galleryGifLine {
   height: 3px;
   width: 100%;
-  box-shadow: 0px 3px 7px rgb(111 116 164 / 79%);
+  box-shadow: var(--shadow-light-5);
   background: #ced4da;
   margin-bottom: 0.7rem;
 }
@@ -583,8 +583,8 @@
 }
 
 .mintBtn {
-  background: var(--main-accent);
-  border: 2px solid var(--main-accent);
+  background: var(--main-700);
+  border: 2px solid var(--main-700);
   color: white;
   font-size: 1rem;
   transition: all 300ms;
@@ -593,20 +593,20 @@
   margin-right: 8px;
 }
 .mintBtn:hover {
-  background: var(--main-accent-dark);
-  border: 2px solid var(--main-accent);
+  background: var(--main-900);
+  border: 2px solid var(--main-700);
   cursor: pointer;
 }
 
 .cancelBtn {
-  border: 2px solid var(--main-accent);
-  background: white;
+  border: 2px solid var(--main-700);
+  background: var(--main-bg);
   transition: all 300ms;
   font-size: 1rem;
 }
 
 .cancelBtn:hover {
-  border: 2px solid var(--main-accent-dark);
+  border: 2px solid var(--main-900);
 }
 .durationWrapper {
   padding: 0 0.5rem;
@@ -657,13 +657,13 @@
   padding-left: 1em;
   border-radius: 5px;
   border: 1px solid #adb5bd;
-  background: white;
+  background: var(--main-bg);
   transition: all 300ms;
   font-size: 1rem;
   width: 100%;
 }
 .durationInput input:focus {
-  border: 2px solid var(--main-accent);
+  border: 2px solid var(--main-700);
   outline: none;
 }
 .durationInput input::placeholder {
@@ -781,14 +781,14 @@
   cursor: pointer;
 }
 .gifAllBtn div {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
-  border: 1px solid var(--main-accent);
+  border: 1px solid var(--main-700);
   margin-left: 20px;
 }
 .gifAllBtn div:hover {
-  background: var(--main-accent-dark);
-  border: 2px solid var(--main-accent);
+  background: var(--main-900);
+  border: 2px solid var(--main-700);
 }
 .gifAllBtn p {
   color: #f1423b;
@@ -852,7 +852,7 @@
 
   .detailsView {
     top: 3em;
-    border: 1px solid gainsboro;
+    border: 1px solid var(--text-light-500);
     border-radius: 0.5em;
   }
   .sidebarActive {

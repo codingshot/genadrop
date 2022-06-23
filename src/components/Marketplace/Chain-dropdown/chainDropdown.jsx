@@ -5,8 +5,9 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
-import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import dropdownIcon from "../../../assets/down-arrow.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
+import supportedChains from "../../../utils/supportedChains";
 
 const chainIcon = {
   polygon: polygonIcon,
@@ -35,33 +36,7 @@ const ChainDropdown = ({ onChainFilter }) => {
       handleSetState({ chain: name });
     }
   }, []);
-  const chains = [
-    {
-      id: 0,
-      name: "All Chains",
-      img: allChainsIcon,
-    },
-    {
-      id: 2,
-      name: "Algorand",
-      img: algoIcon,
-    },
-    {
-      id: 3,
-      name: "Polygon",
-      img: polygonIcon,
-    },
-    {
-      id: 4,
-      name: "Aurora",
-      img: auroraIcon,
-    },
-    {
-      id: 5,
-      name: "Celo",
-      img: celoIcon,
-    },
-  ];
+
   const chainHandler = (name) => {
     onChainFilter(name);
     handleSetState({ chain: name, toggleChainFilter: false });
@@ -84,11 +59,24 @@ const ChainDropdown = ({ onChainFilter }) => {
         />
       </div>
       <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
-        {chains.map((chainE) => (
-          <div key={chainE.id} onClick={() => chainHandler(chainE.name)}>
-            {chainE.img ? <img src={chainE.img} alt={chainE.name} /> : <p />} <span>{chainE.name}</span>
-          </div>
-        ))}
+        {[
+          <div onClick={() => chainHandler("All Chains")} className={classes.chain}>
+            <img src={allChainsIcon} alt="All Chains" /> <span>All Chains</span>
+          </div>,
+          ...Object.values(supportedChains)
+            .filter((chainE) => chainE.isMainnet)
+            .map((chainE) => (
+              <div
+                key={chainE.id}
+                onClick={() => {
+                  !chainE.comingSoon ? chainHandler(chainE.label) : {};
+                }}
+                className={`${classes.chain} ${chainE.comingSoon && classes.inActive}`}
+              >
+                {chainE.icon ? <img src={chainE.icon} alt={chainE.label} /> : <p />} <span>{chainE.label}</span>
+              </div>
+            )),
+        ]}
       </div>
     </div>
   );

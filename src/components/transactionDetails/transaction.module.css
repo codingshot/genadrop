@@ -11,7 +11,7 @@
   background-color: white;
   z-index: 10000;
   border-radius: 20px;
-  box-shadow: 0 0 15px gray;
+  box-shadow: var(--shadow-light-5);
   text-align: center;
 }
 
@@ -37,7 +37,7 @@ th:first-child {
 .subTitle {
   font-weight: 400;
   font-size: 20px;
-  color: var(--main-accent);
+  color: var(--main-700);
   background-color: rgba(0, 153, 135, 0.12);
   margin-top: 0.5rem;
 }

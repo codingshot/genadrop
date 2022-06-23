@@ -46,7 +46,7 @@
 .fWrapper {
   animation: slide 4000ms infinite alternate;
   font-weight: bold;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 @keyframes slide {
@@ -82,22 +82,22 @@
 }
 
 .btn_create {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
 .btn_explore {
-  background: white;
-  color: var(--main-accent);
-  border: 1px solid var(--main-accent);
+  background: var(--main-bg);
+  color: var(--main-700);
+  border: 1px solid var(--main-700);
 }
 
 .btn_create:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .btn_explore:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -107,14 +107,14 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
-  color: var(--main-accent);
+  color: var(--main-700);
   cursor: pointer;
   transition: color 300ms;
 }
 
 .btn_video_m:hover,
 .btn_video:hover {
-  color: var(--main-accent-dark);
+  color: var(--main-900);
 }
 
 .btn_video_m {

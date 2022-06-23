@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   padding: 2em 1em;
-  background: white;
+  background: var(--main-bg);
   animation: fade-in 650ms forwards;
 }
 
@@ -18,10 +18,10 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  background: white;
+  background: var(--main-bg);
   padding: 2em 4em;
   border-radius: 0.5em;
-  box-shadow: 0 0 15px gainsboro;
+  box-shadow: var(--shadow-light-5);
 }
 
 .heading {
@@ -103,15 +103,15 @@
   font-size: 1rem;
   padding: 0.5em;
   border-radius: 0.25em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   background: rgb(236, 236, 236);
   transition: all 300ms;
   outline: 2px solid transparent;
 }
 
 .option input:focus {
-  background: white;
-  outline: 1px solid var(--main-accent);
+  background: var(--main-bg);
+  outline: 1px solid var(--main-700);
 }
 
 .option.invalid input {
@@ -144,26 +144,26 @@
 }
 
 .submit {
-  background: var(--main-accent);
+  background: var(--main-700);
   border: 2px solid transparent;
   color: white;
 }
 
 .submit:hover {
-  background: var(--main-accent-dark);
-  border: 2px solid var(--main-accent);
+  background: var(--main-900);
+  border: 2px solid var(--main-700);
 }
 
 .cancel {
-  border: 2px solid var(--main-accent);
+  border: 2px solid var(--main-700);
 }
 
 .cancel:hover {
-  background: var(--main-hover);
+  background: var(--main-100);
 }
 
 .toggleButton {
-  background: gainsboro;
+  background: var(--main-bg);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -177,13 +177,13 @@
 }
 
 .toggleButton.active {
-  background: var(--main-accent);
+  background: var(--main-700);
   border: 1px solid transparent;
 }
 
 .toggleButton.active .toggle {
   transform: translateX(23px);
-  background: white;
+  background: var(--main-bg);
 }
 
 .toggleButton .toggle {
@@ -191,7 +191,7 @@
   height: 20px;
   border-radius: 50%;
   transition: all 300ms;
-  background: white;
+  background: var(--main-bg);
 }
 
 @media screen and (max-width: 1000px) {
@@ -262,13 +262,13 @@
 
 .copyIcon.active {
   transform: scale(0.8);
-  border: 1px solid var(--main-accent);
+  border: 1px solid var(--main-700);
 }
 
 .text {
   display: flex;
   flex-direction: row;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 5px;
   background: rgb(236, 236, 236);
 }

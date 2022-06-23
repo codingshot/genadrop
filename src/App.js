@@ -26,7 +26,7 @@ import Dashboard from "./pages/dashboard/dashboard";
 import docsEmbed from "./pages/docs/docsEmbed";
 import List from "./pages/listNFT/list";
 import Profile from "./pages/profile/profile";
-import SingleNftCollection from "./pages/singleMintCollection/singleNftCollection";
+import SingleNftCollection from "./pages/singleNftCollection/singleNftCollection";
 import SingleNFT from "./pages/singleNFT/singleNFT";
 import Artist from "./pages/artist/artist";
 import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
@@ -47,7 +47,7 @@ import Partner from "./pages/Partner/Partner";
 // const docsEmbed = lazy(() => import("./pages/docs/docsEmbed"));
 // const List = lazy(() => import("./pages/listNFT/list"));
 // const Profile = lazy(() => import("./pages/profile/profile"));
-// const SingleNftCollection = lazy(() => import("./pages/singleMintCollection/singleNftCollection"));
+// const SingleNftCollection = lazy(() => import("./pages/singleNftCollection/singleNftCollection"));
 // const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
 // const Artist = lazy(() => import("./pages/artist/artist"));
 

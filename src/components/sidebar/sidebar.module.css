@@ -40,7 +40,7 @@
   position: absolute;
   width: 0.3em;
   height: 0.3em;
-  background: var(--main-accent);
+  background: var(--main-700);
   bottom: -0.5em;
   left: 0em;
   opacity: 0;

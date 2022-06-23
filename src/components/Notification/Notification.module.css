@@ -37,20 +37,20 @@
 }
 
 .notification.error {
-  background: var(--main-error);
-  border: 1px solid var(--main-error-dark);
-  color: var(--main-error-dark);
+  background: var(--error-100);
+  border: 1px solid var(--error-500);
+  color: var(--error-500);
 }
 
 .notification.warning {
-  background: var(--main-warning);
-  border: 1px solid var(--main-warning-dark);
-  color: var(--main-warning-dark);
+  background: var(--warning-300);
+  border: 1px solid var(--warning-500);
+  color: var(--warning-500);
 }
 
 .notification.success {
-  background: var(--main-success);
-  border: 1px solid var(--main-success-dark);
+  background: var(--success-500);
+  border: 1px solid var(--success-700);
   color: white;
 }
 
