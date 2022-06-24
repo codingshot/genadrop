@@ -21,6 +21,7 @@ import { fetchAlgoCollections } from "../../utils/firebase";
 import editIcon from "../../assets/icon-edit.svg";
 import markIcon from "../../assets/icon-mark.svg";
 import plusIcon from "../../assets/icon-plus.svg";
+import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
 
 const LayerOrders = () => {
   const { layers, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
@@ -29,9 +30,10 @@ const LayerOrders = () => {
     inputValue: "",
     renameAction: false,
     activeInput: false,
+    alert: false,
   });
 
-  const { prompt, inputValue, renameAction, activeInput } = state;
+  const { prompt, inputValue, renameAction, activeInput, alert } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -139,6 +141,16 @@ const LayerOrders = () => {
 
   useEffect(() => {
     dispatch(setCombinations(getCombinations(layers)));
+    layers.forEach((data) => {
+      if (data.exists) {
+        dispatch(
+          setNotification({
+            message: `${data.layerTitle} already exists`,
+            type: "warning",
+          })
+        );
+      }
+    });
   }, [layers]);
 
   return (

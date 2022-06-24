@@ -2,7 +2,16 @@ import { getDefaultName } from "../utils";
 
 export const addLayer = (layers, layerToAdd) => {
   const result = layers.find((layer) => layer.layerTitle === layerToAdd.layerTitle);
-  if (result) return layers;
+  if (result) {
+    const existingLayer = layers.map((data) => {
+      if (result.layerTitle === data.layerTitle) {
+        return { ...data, exists: true };
+      } else {
+        return { ...data, exists: false };
+      }
+    });
+    return existingLayer;
+  }
   return [...layers, layerToAdd];
 };
 
