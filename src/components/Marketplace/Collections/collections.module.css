@@ -78,7 +78,7 @@
   }
 
   .heading h3 {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
   }
 }
 
@@ -105,13 +105,9 @@
     padding: 0;
   }
 
-  .heading h3 {
-    font-size: 1rem;
-  }
-
   .headingWrapper {
     gap: 1em;
     width: 100%;
-    justify-content: space-between;
+    flex-direction: column;
   }
 }

@@ -17,7 +17,7 @@
   gap: 2em;
   padding: 1.4em 4em;
   border-radius: 4em;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
 }
 
 .wrapper input {

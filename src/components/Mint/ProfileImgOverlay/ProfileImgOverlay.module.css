@@ -36,7 +36,7 @@
   padding: 6px;
   background: #ffffff;
   border: 1px solid #c4c4c4;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   border-radius: 20px;
   height: 200px;
   width: 200px;

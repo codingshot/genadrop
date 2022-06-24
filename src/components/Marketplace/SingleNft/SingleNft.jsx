@@ -25,7 +25,7 @@ const SingleNft = () => {
       <div className={classes.heading}>
         <div className={classes.headingWrapper}>
           <h3>1 of 1s</h3>
-          <DateFilter />
+          {/* <DateFilter /> */}
         </div>
         <button type="button" onClick={() => history.push(`${url}/single-mint`)}>
           view all
@@ -36,13 +36,13 @@ const SingleNft = () => {
           {[
             ...singleAlgoNftsArr
               ?.filter((_, idx) => idx < 3)
-              .map((nft, idx) => <NftCard useWidth="20em" key={idx} nft={nft} />),
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx} nft={nft} listed />),
             ...singleAuroraNfts
               ?.filter((_, idx) => idx < 3)
-              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 10} nft={nft} />),
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 10} nft={nft} listed />),
             ...singlePolygonNfts
               ?.filter((_, idx) => idx < 3)
-              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} />),
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} listed />),
           ]}
         </GenadropCarouselScreen>
       ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts ? (

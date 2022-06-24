@@ -34,7 +34,6 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     }
   };
   const viewOnExplorer = () => {
-    console.log(loadedChain);
     if (loadedChain && loadedChain !== 4160) {
       return setExplorerLink(`${supportedChains[loadedChain]?.explorer}/${owner}`);
     }

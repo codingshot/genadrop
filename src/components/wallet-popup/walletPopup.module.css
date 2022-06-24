@@ -105,8 +105,13 @@
 }
 
 .chain.comingSoon {
-  background: #c4c4c4;
+  background: var(--text-light-500);
   cursor: default;
+}
+
+.chain.comingSoon:hover {
+  background: var(--text-light-500);
+  color: inherit;
 }
 
 .chain:hover {
@@ -175,7 +180,7 @@
   width: 100%;
   padding: 1em 0;
   border: 1px solid transparent;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   display: flex;
   align-items: center;
   justify-content: stretch;
@@ -188,7 +193,7 @@
 }
 
 .connectionMethod:hover {
-  box-shadow: var(--shadow-light-8);
+  box-shadow: var(--shadow-dark);
   border: 1px solid var(--text-light-500);
 }
 

@@ -110,6 +110,7 @@
 }
 
 .networkDrop {
+  width: max-content;
   position: absolute;
   bottom: 0;
   transform: translateY(90%);
@@ -117,8 +118,14 @@
   transition: all 200ms;
   border: 1px solid var(--text-light-500);
   border-radius: 0.5em;
-  padding: 0.25em 0.5em;
+  padding: 0.5em 1em;
   background: var(--main-bg);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.networkDrop:hover {
+  background: var(--text-light-200);
 }
 
 .network:hover .networkDrop {

@@ -5,10 +5,6 @@ import closeIcon from "../../../assets/icon-close.svg";
 const AttributeOverlay = ({ attribute, handleSetState }) => {
   const { file, name, description, attributes } = attribute;
 
-  useEffect(() => {
-    console.log(attribute);
-  }, [attribute]);
-
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>

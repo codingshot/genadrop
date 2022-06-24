@@ -56,7 +56,7 @@
 }
 
 .closeBtn button:hover {
-  box-shadow: var(--shadow-light-8);
+  box-shadow: var(--shadow-dark);
 }
 
 .heading {

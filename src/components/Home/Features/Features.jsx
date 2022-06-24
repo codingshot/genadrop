@@ -12,7 +12,6 @@ const Features = () => {
       for (let card of cards) {
         let cardTop = card.getBoundingClientRect().top;
         if (cardTop + offSet <= window.innerHeight) {
-          console.log(true);
           card.children[0].style.transform = "translateX(0)";
           card.children[1].style.transform = "translateX(0)";
         } else {

@@ -21,9 +21,3 @@
   background: gray;
   color: white;
 }
-
-@media screen and (max-width: 480px) {
-  .container div {
-    font-size: 0.65rem;
-  }
-}

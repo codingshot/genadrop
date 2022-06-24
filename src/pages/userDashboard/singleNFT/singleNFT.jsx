@@ -134,8 +134,6 @@ const ListSingleNFT = (nft) => {
           transactionHistory: tHistory,
         });
       })();
-
-      console.log("NFT DETAILS: ", nftDetails);
     }
   }, [singleAlgoNfts]);
 

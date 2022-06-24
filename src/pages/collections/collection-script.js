@@ -13,7 +13,7 @@ const transformArrayOfArraysToArrayOfObjects = (data) => {
 
   return data.map((el) => {
     const obj = {};
-    if (el.length !== 9) return console.log("data format not valid");
+    if (el.length !== 9) return;
     el.forEach((i, idx) => {
       obj[transformShape[idx]] = i;
     });

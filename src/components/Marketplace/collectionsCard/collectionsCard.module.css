@@ -9,7 +9,7 @@
 }
 
 .card:hover {
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   transform: translateY(-5px);
   cursor: pointer;
 }
@@ -44,7 +44,7 @@
   top: 0;
   transform: translateY(-50%);
   background: var(--main-bg);
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
 }
 
 .thumbnail img {

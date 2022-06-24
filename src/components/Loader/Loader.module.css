@@ -11,7 +11,7 @@
   padding: 0.5em 1.5em;
   border-radius: 0.25em;
   transition: all 300ms;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   display: flex;
   align-items: center;
   justify-content: center;

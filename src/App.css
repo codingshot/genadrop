@@ -8,11 +8,12 @@
   --card-bg3: #000000;
   --text-light-300: #f2f3ff;
 
+  --shadow-dark: 0 0 15px rgb(0, 0, 0, 0.25);
   --shadow-dark-1: 0px 24px 33px -9px rgba(0, 0, 0, 0.36);
   --shadow-dark-2: 0px 16px 25px -9px rgba(0, 0, 0, 0.32);
   --shadow-dark-2: 0px 12px 19px -7px rgba(0, 0, 0, 0.28);
 
-  /* --shadow: 0px */
+  --shadow-light: 0 0 15px rgb(0, 0, 0, 0.1);
   --shadow-light-1: 0px 1px 1px rgba(0, 0, 0, 0.08);
   --shadow-light-2: 0px 2px 3px rgba(0, 0, 0, 0.08);
   --shadow-light-3: 0px 4px 5px -1px rgba(0, 0, 0, 0.08);
