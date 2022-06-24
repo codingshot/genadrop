@@ -19,7 +19,7 @@
   gap: 2em;
   padding: 2em;
   background: var(--main-bg);
-  box-shadow: var(--shadow-light);
+   box-shadow: var(--shadow-light-5);
   overflow: hidden;
   border-radius: 1em;
   margin-bottom: 2em;
