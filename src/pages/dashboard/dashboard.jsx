@@ -240,13 +240,13 @@ const Dashboard = () => {
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} list />
+                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} list />
+                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
                 ))}
               </div>
             ) : (

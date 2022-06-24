@@ -21,11 +21,12 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setNotification } from "../../gen-state/gen.actions";
+import { setLoading, setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
 import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
+import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
 
 const SingleNFT = () => {
   const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
@@ -109,19 +110,18 @@ const SingleNFT = () => {
     }, [ref]);
   }
 
-  useOutsideAlerter(wrapperRef);
-
   useEffect(() => {
+    dispatch(setLoading(true));
     if (Number(nftChainId) !== 4160) return;
     let nftDetails = null;
-    const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
-    if (cacheNftDetails) {
-      nftDetails = cacheNftDetails;
-    } else {
-      nftDetails = singleAlgoNfts[nftId];
-    }
+    // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
+    // if (cacheNftDetails) {
+    //   nftDetails = cacheNftDetails;
+    // } else {
+    nftDetails = singleAlgoNfts[nftId];
+    // }
     if (nftDetails) {
-      window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
+      // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
         tHistory.find((t) => {
@@ -132,11 +132,15 @@ const SingleNFT = () => {
           isLoading: false,
           transactionHistory: tHistory,
         });
+        dispatch(setLoading(false));
+        document.documentElement.scrollTop = 0;
       })();
     }
-  }, [singleAlgoNfts]);
+  }, [singleAlgoNfts, nftId]);
 
   useEffect(() => {
+    dispatch(setLoading(true));
+
     if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
       try {
@@ -192,9 +196,10 @@ const SingleNFT = () => {
       } catch (error) {
         console.log({ error });
       }
+      dispatch(setLoading(false));
     })();
     document.documentElement.scrollTop = 0;
-  }, []);
+  }, [nftId]);
 
   useEffect(() => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
@@ -283,6 +288,12 @@ const SingleNFT = () => {
     icon: descriptionIcon,
     title: "Attributes",
     content: attributeContent(),
+  };
+
+  const similar = {
+    icon: "",
+    title: "Similar NFTs",
+    content: <SimilarNFTs data={nftDetails} />,
   };
 
   return (
@@ -410,6 +421,9 @@ const SingleNFT = () => {
         </div>
       </div>
 
+      <div className={classes.feature}>
+        <DropItem key={4} item={similar} id={4} dropdown={dropdown} handleSetState={handleSetState} />
+      </div>
       {showSocial ? (
         <div>
           <div ref={wrapperRef} className={classes.share}>
