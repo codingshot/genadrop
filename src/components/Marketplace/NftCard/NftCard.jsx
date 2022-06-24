@@ -42,7 +42,6 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           ? `/marketplace/single-mint/${chain}/${Id}`
           : `/marketplace/single-mint/${Id}`
       }
-      onClick={() => window.location.reload()}
     >
       <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
         <div className={classes.imageContainer}>

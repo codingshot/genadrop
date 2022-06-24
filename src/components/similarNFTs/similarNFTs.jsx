@@ -27,27 +27,31 @@ const SimilarNFTs = (data) => {
     if (["137", "80001"].includes(chain)) {
       console.log("CHAIN: ", chain);
       handleSetState({ nfts: singlePolygonNfts });
+      // similarity();
     } else if (["1313161554", "1313161555"].includes(chain)) {
       console.log("CHAIN: ", chain);
       handleSetState({ nfts: singleAuroraNfts });
+      similarity(singleAuroraNfts);
     } else {
       console.log("CHAIN: ", chain);
-      handleSetState({ nfts: singleAlgoNftsArr });
-      console.log(nfts);
+      similarity(singleAlgoNftsArr);
     }
 
-    similarity();
+    // similarity();
   }, []);
 
-  const similarity = () => {
+  const similarity = (x) => {
     const s1 = data.data.description;
     let current_traits = [];
+
     data.data.properties.forEach((trait) => {
       current_traits.push(trait.trait_type);
     });
-    console.log("NFTS1: ", nfts);
 
-    nfts?.forEach((e) => {
+    console.log("NFTS1: ", x);
+    let nftsx = x;
+
+    nftsx?.forEach((e) => {
       // description similarity
       var longer = s1;
       var shorter = e.description;
@@ -67,7 +71,7 @@ const SimilarNFTs = (data) => {
       // properties similarity
       let nft_traits = [];
 
-      e.properties.forEach((trait) => {
+      e.properties?.forEach((trait) => {
         nft_traits.push(trait.trait_type);
       });
       nft_traits = nft_traits.filter((p) => current_traits.includes(p));
@@ -75,9 +79,11 @@ const SimilarNFTs = (data) => {
     });
 
     // sort nfts by similarity
-    nfts.sort(compare);
-
-    console.log("NFTS2: ", nfts);
+    nftsx.sort(compare);
+    nftsx.reverse();
+    nftsx.shift();
+    console.log("NFTS2: ", nftsx);
+    handleSetState({ nfts: nftsx });
   };
 
   function editDistance(s1, s2) {
@@ -104,10 +110,10 @@ const SimilarNFTs = (data) => {
   }
 
   function compare(a, b) {
-    if (a.last_nom < b.last_nom) {
+    if (a.similarity < b.similarity) {
       return -1;
     }
-    if (a.last_nom > b.last_nom) {
+    if (a.similarity > b.similarity) {
       return 1;
     }
     return 0;

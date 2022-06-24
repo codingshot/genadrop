@@ -1,10 +1,10 @@
 .card {
-  width: 2em;
+  width: 100%;
   border-radius: 0.5em;
   border: 1px solid var(--text-light-500);
   transition: all 300ms;
   max-width: 32em;
-  height: 26rem;
+  height: 28rem;
 }
 
 .card:hover {
