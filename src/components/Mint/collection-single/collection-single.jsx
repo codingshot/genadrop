@@ -52,7 +52,7 @@ const CollectionToSingleMinter = () => {
   const handleFileChange = (event) => {
     handleSetState({ fileName: "", file: null, metadata: null, zip: null });
     const uploadedFile = event.target.files[0];
-    if (!uploadedFile) return console.log("no file found");
+    if (!uploadedFile) return;
     const name = uploadedFile.name.replace(/\.+\s*\./, ".").split(".");
     const uploadedFileName = name.slice(0, name.length - 1).join(".");
     const fileType = name.slice(name.length - 1).join();
@@ -79,7 +79,6 @@ const CollectionToSingleMinter = () => {
       e.preventDefault();
       document.querySelector(".drop-area").style.border = "2px solid green";
       handleFileChange({ target: e.dataTransfer });
-      console.log("update");
     };
   }, []);
 

@@ -9,6 +9,7 @@ import {
   setMainnet,
   setClipboard,
   setToggleWalletPopup,
+  setSwitchWalletNotification,
 } from "../../gen-state/gen.actions";
 import { chainIdToParams } from "../../utils/chainConnect";
 import blankImage from "../../assets/blank.png";
@@ -84,21 +85,13 @@ export const initializeConnection = (walletProps) => {
     handleSetState({ isMetamask: true });
     handleSetState({ walletConnectProvider });
   } else {
-    console.log("metamask not installed");
     handleSetState({ isMetamask: false });
   }
 };
 
-export const setNetworkType = ({ dispatch, chainId, handleSetState, mainnet }) => {
-  const networkArray = [137, 1313161554, 42220];
-  if (networkArray.includes(chainId)) {
-    handleSetState({ network: "mainnet" });
-    dispatch(setMainnet(true));
-  } else {
-    // specal case for algorand
-    handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
-    dispatch(setMainnet(process.env.REACT_APP_ENV_STAGING === "false"));
-  }
+export const setNetworkType = ({ dispatch, handleSetState }) => {
+  dispatch(setMainnet(process.env.REACT_APP_ENV_STAGING === "false"));
+  handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
 };
 
 export const connectWithQRCode = async ({ walletConnectProvider, dispatch, rpc, supportedChains }) => {
@@ -212,14 +205,21 @@ export const disconnectWalletConnectProvider = async (walletConnectProvider) => 
 };
 
 export const updateAccount = async (walletProps) => {
-  const { dispatch, walletConnectProvider, handleSetState } = walletProps;
+  const { dispatch, walletConnectProvider, mainnet } = walletProps;
   const { ethereum } = window;
   const [accounts] = await ethereum.request({
     method: "eth_accounts", //eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
   });
   const networkId = await ethereum.networkVersion;
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  let isSupported = Object.keys(supportedChains).includes(networkId);
+  const getEnv = mainnet === supportedChains[networkId].isMainnet;
+  if (!getEnv) {
+    WS.disconnectWallet(walletProps);
+    dispatch(setSwitchWalletNotification(true));
+    return;
+  }
+  dispatch(setSwitchWalletNotification(false));
+  const isSupported = Object.keys(supportedChains).includes(networkId);
   if (!isSupported) {
     WS.disconnectWallet(walletProps);
     dispatch(setToggleWalletPopup(true));

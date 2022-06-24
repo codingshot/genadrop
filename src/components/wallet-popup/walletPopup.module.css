@@ -105,8 +105,13 @@
 }
 
 .chain.comingSoon {
-  background: #c4c4c4;
+  background: var(--text-light-500);
   cursor: default;
+}
+
+.chain.comingSoon:hover {
+  background: var(--text-light-500);
+  color: inherit;
 }
 
 .chain:hover {
