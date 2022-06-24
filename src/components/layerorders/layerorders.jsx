@@ -141,9 +141,9 @@ const LayerOrders = () => {
 
   useEffect(() => {
     dispatch(setCombinations(getCombinations(layers)));
-    layers.forEach((data) => {
-      if (data.exists) {
-        dispatch(
+    layers?.slice(-1)?.map((data) => {
+      if (data?.exists === true) {
+        return dispatch(
           setNotification({
             message: `${data.layerTitle} already exists`,
             type: "warning",
