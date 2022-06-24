@@ -25,7 +25,7 @@ const Collections = () => {
       <div className={classes.heading}>
         <div className={classes.headingWrapper}>
           <h3>Top Collections</h3>
-          <DateFilter />
+          {/* <DateFilter /> */}
         </div>
         <button type="button" onClick={() => history.push(`${url}/collections`)}>
           view all

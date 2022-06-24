@@ -13,12 +13,12 @@ const Marketplace = () => (
   <div className={classes.container}>
     <Banner />
     <Chains />
-    <NewListing />
+    {/* <NewListing /> */}
     <Collections />
     <SingleNft />
-    <Creators />
-    <HotAuctions />
-    <Subscribe />
+    {/* <Creators /> */}
+    {/* <HotAuctions /> */}
+    {/* <Subscribe /> */}
   </div>
 );
 
