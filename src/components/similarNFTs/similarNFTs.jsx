@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
-import GenadropCarouselScreen from "../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 import NftCard from "../Marketplace/NftCard/NftCard";
 import classes from "./similarNFTs.module.css";
+import GenadropCarouselScreen from "../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 
 const SimilarNFTs = (data) => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
@@ -12,11 +12,10 @@ const SimilarNFTs = (data) => {
   const cardRef = useRef(null);
 
   const [state, setState] = useState({
-    chain: null,
-    nfts: null,
+    nfts: [],
   });
 
-  const { chain, nfts } = state;
+  const { nfts } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -25,24 +24,30 @@ const SimilarNFTs = (data) => {
   useEffect(() => {
     const chain = data.data.chain;
 
-    if (["137", "80001"].includes(chain)) handleSetState({ nfts: singlePolygonNfts });
-    else if (["1313161554", "1313161555"].includes(chain)) handleSetState({ nfts: singleAuroraNfts });
-    else handleSetState({ nfts: singleAlgoNftsArr });
+    if (["137", "80001"].includes(chain)) {
+      console.log("CHAIN: ", chain);
+      handleSetState({ nfts: singlePolygonNfts });
+    } else if (["1313161554", "1313161555"].includes(chain)) {
+      console.log("CHAIN: ", chain);
+      handleSetState({ nfts: singleAuroraNfts });
+    } else {
+      console.log("CHAIN: ", chain);
+      handleSetState({ nfts: singleAlgoNftsArr });
+      console.log(nfts);
+    }
 
-    handleSetState({ chain });
-
-    // similarity();
+    similarity();
   }, []);
 
   const similarity = () => {
-    let nfts = singleAlgoNftsArr;
     const s1 = data.data.description;
     let current_traits = [];
     data.data.properties.forEach((trait) => {
       current_traits.push(trait.trait_type);
     });
+    console.log("NFTS1: ", nfts);
 
-    nfts.forEach((e) => {
+    nfts?.forEach((e) => {
       // description similarity
       var longer = s1;
       var shorter = e.description;
@@ -58,13 +63,21 @@ const SimilarNFTs = (data) => {
       } else {
         e["similarity"] = (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
       }
+
       // properties similarity
       let nft_traits = [];
+
       e.properties.forEach((trait) => {
         nft_traits.push(trait.trait_type);
       });
       nft_traits = nft_traits.filter((p) => current_traits.includes(p));
+      e["similarity"] += nft_traits.length / current_traits.length;
     });
+
+    // sort nfts by similarity
+    nfts.sort(compare);
+
+    console.log("NFTS2: ", nfts);
   };
 
   function editDistance(s1, s2) {
@@ -90,26 +103,24 @@ const SimilarNFTs = (data) => {
     return costs[s2.length];
   }
 
+  function compare(a, b) {
+    if (a.last_nom < b.last_nom) {
+      return -1;
+    }
+    if (a.last_nom > b.last_nom) {
+      return 1;
+    }
+    return 0;
+  }
+
   return (
     <div className={classes.container}>
-      <GenadropCarouselScreen cardWidth={16 * 25} gap={16}>
-        {["137", "80001"].includes(chain)
-          ? singlePolygonNfts.map((nft, id) => (
-              <div key={id} useWidth="25em" ref={cardRef} className={classes.card}>
-                <NftCard key={nft.Id} nft={nft} listed extend="/single-mint" />
-              </div>
-            ))
-          : ["1313161554", "1313161555"].includes(chain)
-          ? singlePolygonNfts.map((nft, id) => (
-              <div key={id} useWidth="25em" ref={cardRef} className={classes.card}>
-                <NftCard key={nft.Id} nft={nft} listed extend="/single-mint" />
-              </div>
-            ))
-          : singleAlgoNftsArr.map((nft, id) => (
-              <div key={id} useWidth="25em" ref={cardRef} className={classes.card}>
-                <NftCard key={nft.Id} nft={nft} listed extend="/single-mint" />
-              </div>
-            ))}
+      <GenadropCarouselScreen cardWidth={16 * 20} gap={16}>
+        {nfts?.map((nft, id) => (
+          <div key={id} ref={cardRef} className={classes.card}>
+            <NftCard useWidth="20em" key={nft.Id} nft={nft} listed extend="/single-mint" />
+          </div>
+        ))}
       </GenadropCarouselScreen>
     </div>
   );

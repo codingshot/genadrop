@@ -1,5 +1,5 @@
 .card {
-  width: 100%;
+  width: 2em;
   border-radius: 0.5em;
   border: 1px solid var(--text-light-500);
   transition: all 300ms;

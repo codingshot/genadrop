@@ -111,7 +111,9 @@ const SingleNFT = () => {
   }
 
   useOutsideAlerter(wrapperRef);
-
+  useEffect(() => {
+    window.localStorage.activeAlgoNft = null;
+  }, []);
   useEffect(() => {
     if (Number(nftChainId) !== 4160) return;
     let nftDetails = null;
