@@ -21,7 +21,7 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setNotification } from "../../gen-state/gen.actions";
+import { setLoading, setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { createClient } from "urql";
 import { polygonClient } from "../../utils/graphqlClient";
@@ -111,6 +111,7 @@ const SingleNFT = () => {
   }
 
   useEffect(() => {
+    dispatch(setLoading(true));
     if (Number(nftChainId) !== 4160) return;
     let nftDetails = null;
     // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
@@ -131,11 +132,15 @@ const SingleNFT = () => {
           isLoading: false,
           transactionHistory: tHistory,
         });
+        dispatch(setLoading(false));
+        document.documentElement.scrollTop = 0;
       })();
     }
-  }, [singleAlgoNfts]);
+  }, [singleAlgoNfts, nftId]);
 
   useEffect(() => {
+    dispatch(setLoading(true));
+
     if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
       try {
@@ -191,9 +196,10 @@ const SingleNFT = () => {
       } catch (error) {
         console.log({ error });
       }
+      dispatch(setLoading(false));
     })();
     document.documentElement.scrollTop = 0;
-  }, []);
+  }, [nftId]);
 
   useEffect(() => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
