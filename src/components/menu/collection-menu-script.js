@@ -4,7 +4,6 @@ export const handleFileChange = (props) => {
   const { layerId, event, traits, layerTitle } = props;
 
   const { files } = event.target;
-  console.log("imageFiles uploaded: ", files);
   const imageFiles = Object.values(files);
   const uniqueImageFile = [...traits];
   const filterArr = traits.map(({ image }) => image.name);
@@ -72,19 +71,13 @@ export const handleAddBlank = async (props) => {
 
 export const handleAddTemplates = async (props) => {
   const { canvas, img, traits, layerTitle, layerId, imgName } = props;
-  console.log("img in template: ", img);
-  console.log("imgName: ", imgName);
-  console.log("layerId: ", layerId);
   let drawed = false;
   drawed = await handleTemplateImage({ img, canvas });
-  console.log("drawed? ", drawed);
   if (drawed) {
-    console.log("current canvas", canvas);
     const imageUrl = canvas.toDataURL("image/webp", 1);
     const imageFile = new File([dataURItoBlob(imageUrl)], imgName, { type: "image/jpeg" });
     const uniqueImageFile = [...traits];
     const filterArr = traits.map(({ image }) => image.name);
-    console.log("Filter Arrary: ", filterArr);
     if (!filterArr.includes(imageFile.name)) {
       uniqueImageFile.push({
         traitTitle: "sampleImage" + img,
@@ -92,7 +85,6 @@ export const handleAddTemplates = async (props) => {
         image: imageFile,
       });
     }
-    console.log("UniqueImageFile: ", uniqueImageFile.length);
     return { layerId, layerTitle, traits: uniqueImageFile };
   }
 };

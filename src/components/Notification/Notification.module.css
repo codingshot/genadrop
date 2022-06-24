@@ -43,9 +43,9 @@
 }
 
 .notification.warning {
-  background: var(--warning-300);
+  background: var(--warning-200);
   border: 1px solid var(--warning-500);
-  color: var(--warning-600);
+  color: var(--warning-700);
 }
 
 .notification.success {
