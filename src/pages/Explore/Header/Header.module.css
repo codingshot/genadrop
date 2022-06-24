@@ -44,7 +44,7 @@
   width: calc(12 * 16px);
   height: calc(12 * 16px);
   border-radius: 50%;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
 }
 
 .details {

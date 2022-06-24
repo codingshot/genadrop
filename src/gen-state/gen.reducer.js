@@ -46,6 +46,7 @@ export const INITIAL_STATE = {
     message: "",
     type: "", // warning, error, success, default
   },
+  switchWalletNotification: false,
   clipboardMessage: "",
   loaderMessage: "",
   didMount: false,
@@ -267,10 +268,15 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         singlePolygonNfts: action.payload,
       };
-    case genActionTypes.SET_FEEDBACK:
+    case genActionTypes.SET_NOTIFICATION:
       return {
         ...state,
         notification: action.payload,
+      };
+    case genActionTypes.SET_SWITCH_WALLET_NOTIFICATION:
+      return {
+        ...state,
+        switchWalletNotification: action.payload,
       };
     case genActionTypes.SET_CLIPBOARD:
       return {

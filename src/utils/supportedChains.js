@@ -14,7 +14,7 @@ const supportedChains = {
     symbol: "ALGO",
     networkId: 4160,
     add: null,
-    isMainnet: true,
+    isMainnet: process.env.REACT_APP_ENV_STAGING === "false",
     switch: null,
   },
   1313161554: {

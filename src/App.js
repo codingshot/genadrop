@@ -11,7 +11,6 @@ import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Prompt from "./components/delete-prompt/prompt";
 import FetchData from "./renderless/fetch-data/fetchData.component";
-
 import Home from "./pages/home/home";
 import Create from "./pages/create/create";
 import Mint from "./pages/mint/mint";
@@ -32,6 +31,7 @@ import Artist from "./pages/artist/artist";
 import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
 import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
+import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
 
 // const Home = lazy(() => import("./pages/home/home"));
 // const Create = lazy(() => import("./pages/create/create"));
@@ -94,6 +94,7 @@ function App() {
       <Footer />
       <Overlay />
       <Notification />
+      <SwitchWalletNotification />
       <Clipboard />
       <Loader />
       <Prompt />

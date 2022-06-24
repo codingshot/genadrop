@@ -38,13 +38,13 @@
   gap: 1em;
   background: var(--main-bg);
   border: 1px solid #e5e8eb;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   cursor: pointer;
   transition: all 300ms;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-light-8);
+  box-shadow: var(--shadow-dark);
 }
 
 .header {

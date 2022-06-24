@@ -4,7 +4,7 @@
   padding: 2em;
   border-radius: 1em;
   background: var(--main-bg);
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
 }
 
 .heading {

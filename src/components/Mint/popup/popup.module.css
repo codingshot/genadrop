@@ -45,7 +45,7 @@
 .imgContainer {
   padding: 1em;
   border-radius: 2em;
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   margin-bottom: 1em;
 }
 /* -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12); */
@@ -69,7 +69,7 @@
 }
 
 .closeBtn:hover {
-  box-shadow: var(--shadow-light-8);
+  box-shadow: var(--shadow-dark);
 }
 
 .actionBtnContainer {

@@ -4,7 +4,7 @@
   color: var(--text-dark-900);
   border-radius: 1em;
   background: var(--main-bg);
-  box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light);
   padding: 2em;
   background: var(--main-bg);
   position: relative;
