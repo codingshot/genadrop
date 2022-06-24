@@ -23,7 +23,7 @@
 }
 
 .heading span {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .description {
@@ -73,22 +73,22 @@
 }
 
 .fHeading {
-  color: var(--text-color-light);
+  color: var(--text-dark-900-light);
 }
 
 .fTitle {
   font-weight: 600;
   font-size: 1.2rem;
-  color: var(--text-color-dark);
+  color: var(--text-dark-900-dark);
 }
 
 .fDescription {
-  color: var(--text-color-light);
+  color: var(--text-dark-900-light);
 }
 
 .fLink {
   width: max-content;
-  color: var(--main-accent);
+  color: var(--main-700);
   font-weight: 600;
   display: flex;
   align-items: center;

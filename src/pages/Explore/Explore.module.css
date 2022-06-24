@@ -4,7 +4,7 @@
   padding-top: 2em;
   padding-bottom: 6em;
   position: relative;
-  background: white;
+  background: var(--main-bg);
 }
 
 .displayContainer {
@@ -15,8 +15,8 @@
   justify-content: flex-start;
   gap: 1em;
   border-radius: 0.5em;
-  background: white;
-  box-shadow: 0 0 10px rgb(0, 0, 0, 0.2);
+  background: var(--main-bg);
+  box-shadow: var(--shadow-light);
 }
 
 .displayWrapper {
@@ -36,7 +36,7 @@
 }
 
 .filteredItem {
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   padding: 0.5em;
   display: flex;
   align-items: center;
@@ -70,7 +70,7 @@
 }
 
 .clearFilter:hover {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .searchAndFilter {

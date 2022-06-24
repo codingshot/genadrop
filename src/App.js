@@ -11,7 +11,6 @@ import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Prompt from "./components/delete-prompt/prompt";
 import FetchData from "./renderless/fetch-data/fetchData.component";
-
 import Home from "./pages/home/home";
 import Create from "./pages/create/create";
 import Mint from "./pages/mint/mint";
@@ -26,12 +25,13 @@ import Dashboard from "./pages/dashboard/dashboard";
 import docsEmbed from "./pages/docs/docsEmbed";
 import List from "./pages/listNFT/list";
 import Profile from "./pages/profile/profile";
-import SingleNftCollection from "./pages/singleMintCollection/singleNftCollection";
+import SingleNftCollection from "./pages/singleNftCollection/singleNftCollection";
 import SingleNFT from "./pages/singleNFT/singleNFT";
 import Artist from "./pages/artist/artist";
 import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
 import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
+import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
 
 // const Home = lazy(() => import("./pages/home/home"));
 // const Create = lazy(() => import("./pages/create/create"));
@@ -47,7 +47,7 @@ import Partner from "./pages/Partner/Partner";
 // const docsEmbed = lazy(() => import("./pages/docs/docsEmbed"));
 // const List = lazy(() => import("./pages/listNFT/list"));
 // const Profile = lazy(() => import("./pages/profile/profile"));
-// const SingleNftCollection = lazy(() => import("./pages/singleMintCollection/singleNftCollection"));
+// const SingleNftCollection = lazy(() => import("./pages/singleNftCollection/singleNftCollection"));
 // const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
 // const Artist = lazy(() => import("./pages/artist/artist"));
 
@@ -94,6 +94,7 @@ function App() {
       <Footer />
       <Overlay />
       <Notification />
+      <SwitchWalletNotification />
       <Clipboard />
       <Loader />
       <Prompt />

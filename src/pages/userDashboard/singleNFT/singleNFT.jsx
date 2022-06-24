@@ -134,8 +134,6 @@ const ListSingleNFT = (nft) => {
           transactionHistory: tHistory,
         });
       })();
-
-      console.log("NFT DETAILS: ", nftDetails);
     }
   }, [singleAlgoNfts]);
 
@@ -328,16 +326,17 @@ const ListSingleNFT = (nft) => {
               <span className={classes.title}>Owned by you</span>
             </div>
             <div className={classes.btns}>
-              <Link to = {
-                 nft.collection_name
-                 ? `${match.url}/${nftDetails.Id}`
-                 : nftDetails.chain
-                 ? `/marketplace/single-mint/list/${nftDetails.chain}/${nftDetails.Id}`
-                 : `/marketplace/single-mint/list/${nftDetails.Id}`
-              }>
-              <button className={classes.list}>List</button>
+              <Link
+                to={
+                  nft.collection_name
+                    ? `${match.url}/${nftDetails.Id}`
+                    : nftDetails.chain
+                    ? `/marketplace/single-mint/list/${nftDetails.chain}/${nftDetails.Id}`
+                    : `/marketplace/single-mint/list/${nftDetails.Id}`
+                }
+              >
+                <button className={classes.list}>List</button>
               </Link>
-              
             </div>
           </div>
           <div className={classes.feature}>

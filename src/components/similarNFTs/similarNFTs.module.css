@@ -1,0 +1,8 @@
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+.wrapper {
+  flex-direction: row;
+}

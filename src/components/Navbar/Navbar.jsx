@@ -4,21 +4,32 @@ import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
 import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
-import searchIcon from "../../assets/icon-search.svg";
 import closeIcon from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
 
 const Navbar = () => {
   const [state, setState] = useState({
     dropdown: false,
+    value: "",
   });
-  const { dropdown } = state;
+  const { dropdown, value } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
   const { pathname } = useLocation();
   const history = useHistory();
+
+  const handleSubmit = (e, value) => {
+    e.preventDefault();
+    if (!value) return;
+    handleSetState({ value: "" });
+    history.push(`/marketplace/collections/${`?search=${value}`}`);
+  };
+
+  const handleChange = (e) => {
+    handleSetState({ value: e.target.value });
+  };
 
   useEffect(() => {
     window.sessionStorage.showWelcomeScreen = true;
@@ -32,10 +43,10 @@ const Navbar = () => {
         <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
-        <div className={classes.searchContainer}>
-          <img src={searchIcon} alt="" />
-          <input type="text" className={classes.searchInput} />
-        </div>
+        <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
+          <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
+          <button type="submit">search</button>
+        </form>
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />
           <ul className={classes.navList}>

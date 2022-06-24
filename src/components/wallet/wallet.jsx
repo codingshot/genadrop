@@ -19,6 +19,7 @@ import {
   initializeConnection,
   initConnectWallet,
 } from "./wallet-script";
+import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
 
 function ConnectWallet() {
   const history = useHistory();
@@ -83,6 +84,10 @@ function ConnectWallet() {
 
   const handleDisconnet = () => {
     disconnectWallet(walletProps);
+  };
+
+  const handleNetworkClick = () => {
+    dispatch(setSwitchWalletNotification(true));
   };
 
   useEffect(() => {
@@ -155,13 +160,15 @@ function ConnectWallet() {
     <div className={classes.network}>
       <div className={classes.dot} />{" "}
       <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-      {/* <img src={chevronDown} alt="" />
-      <div className={classes.networkDrop}>{network === "mainnet" ? "Testnet" : "Mainnet"}</div> */}
+      <img src={chevronDown} alt="" />
+      <div onClick={handleNetworkClick} className={classes.networkDrop}>
+        {network === "mainnet" ? "Switch to testnet" : "Switch to mainnet"}
+      </div>
     </div>
   );
 
   return (
-    <div>
+    <>
       <div className={`${classes.popupContainer} ${toggleWalletPopup && classes.active}`}>
         <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />
       </div>
@@ -176,7 +183,7 @@ function ConnectWallet() {
           Connect Wallet
         </div>
       )}
-    </div>
+    </>
   );
 }
 

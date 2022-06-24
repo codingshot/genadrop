@@ -1,5 +1,5 @@
 .sidebar {
-  border-right: 1px solid gainsboro;
+  border-right: 1px solid var(--text-light-500);
   width: 100%;
   max-width: 20em;
   position: sticky;
@@ -24,7 +24,7 @@
 }
 
 .filterHeading:hover {
-  background: var(--main-hover);
+  background: var(--main-100);
 }
 
 .filterHeading > div {
@@ -35,7 +35,7 @@
 }
 
 .filterHeading span {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .attributeFilter .title {
@@ -44,8 +44,8 @@
   justify-content: flex-start;
   gap: 1em;
   padding: 1em;
-  border-bottom: 2px solid gainsboro;
-  border-top: 2px solid gainsboro;
+  border-bottom: 2px solid var(--text-light-500);
+  border-top: 2px solid var(--text-light-500);
 }
 
 .statusFilter {
@@ -57,7 +57,7 @@
 }
 
 .toggleButton {
-  background: gainsboro;
+  background: var(--main-bg);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -71,13 +71,13 @@
 }
 
 .toggleButton.active {
-  background: white;
-  border: 1px solid gainsboro;
+  background: var(--main-bg);
+  border: 1px solid var(--text-light-500);
 }
 
 .toggleButton.active .toggle {
   transform: translateX(23px);
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 
 .toggleButton .toggle {
@@ -85,7 +85,7 @@
   height: 20px;
   border-radius: 50%;
   transition: all 300ms;
-  background: white;
+  background: var(--main-bg);
 }
 
 .priceFilter {
@@ -105,7 +105,7 @@
 .priceFilter .filterInput input {
   padding: 0.75em;
   border-radius: 0.5em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
 }
 
 .priceFilter > div {
@@ -118,7 +118,7 @@
 }
 
 .priceFilter button {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   padding: 1em;
   border-radius: 0.25em;
@@ -126,8 +126,8 @@
 }
 
 .priceFilter button:hover {
-  background: var(--main-accent-dark);
-  outline: 2px solid var(--main-accent);
+  background: var(--main-900);
+  outline: 2px solid var(--main-700);
 }
 
 .attributeFilter .title {
@@ -156,7 +156,7 @@
   cursor: pointer;
   padding: 1em;
   border-radius: 0.25em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
 }
 
 .layerIcon {
@@ -179,7 +179,7 @@
   overflow: hidden;
   visibility: hidden;
   border-radius: 0.25em;
-  background: gainsboro;
+  background: var(--main-bg);
 }
 
 .layer.active {
@@ -223,7 +223,7 @@
   justify-content: center;
   align-items: flex-start;
   height: calc(100vh - 5.5em);
-  border-right: 1px solid gainsboro;
+  border-right: 1px solid var(--text-light-500);
   position: sticky;
   top: 5em;
   cursor: pointer;
@@ -243,7 +243,7 @@
 }
 
 .sidebar2 img:hover {
-  background: var(--main-hover);
+  background: var(--main-100);
 }
 
 @media screen and (max-width: 768px) {

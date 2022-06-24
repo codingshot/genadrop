@@ -21,7 +21,7 @@
   max-width: 48em;
   padding: 0.5em;
   border-radius: 1em;
-  background: white;
+  background: var(--main-bg);
 }
 
 .closeIconContainer {
@@ -36,9 +36,9 @@
   justify-content: center;
   border-radius: 0.25em;
   cursor: pointer;
-  background: var(--main-hover);
+  background: var(--main-100);
   transition: all 300ms;
-  box-shadow: 0 0 5px gainsboro;
+  box-shadow: var(--shadow-light);
 }
 
 .close {
@@ -46,7 +46,7 @@
 }
 
 .closeIconContainer:hover {
-  box-shadow: 0 0 12px gray;
+  box-shadow: var(--shadow-dark);
 }
 
 .content {
@@ -61,7 +61,7 @@
   font-weight: bold;
   margin-bottom: 1em;
   font-size: 1.2rem;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .subTitle {
@@ -89,7 +89,7 @@
   position: relative;
   padding-right: 1em;
   padding-top: 1em;
-  border-top: 1px solid gainsboro;
+  border-top: 1px solid var(--text-light-500);
 }
 
 .introControl > button,
@@ -99,7 +99,7 @@
   border-radius: 1em;
   font-size: 0.85rem;
   transition: all 150ms;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   outline: 2px solid transparent;
   display: flex;
   align-items: center;
@@ -110,7 +110,7 @@
 
 .introControl > button:hover,
 .control > button:hover {
-  outline: 2px solid gainsboro;
+  outline: 2px solid var(--text-light-500);
 }
 
 .control > button img {
@@ -126,16 +126,16 @@
 }
 
 .control .prev.active {
-  border: 1px solid var(--main-accent);
+  border: 1px solid var(--main-700);
 }
 
 .control .next {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
 .control .next.active {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -144,7 +144,7 @@
 }
 
 .introControl > button:last-child {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -160,12 +160,12 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: gainsboro;
+  background: var(--main-bg);
   cursor: pointer;
 }
 
 .indicator > span.active {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 
 @media screen and (max-width: 480px) {

@@ -20,12 +20,12 @@
   border-radius: 0.2em;
   transition: all 300ms;
   border: none;
-  background: white;
-  box-shadow: 0 0 5px gainsboro;
+  background: var(--main-bg);
+  box-shadow: var(--shadow-light);
 }
 
 .container button * {
-  color: black;
+  color: var(--text-dark-900);
 }
 
 .container button:hover {

@@ -7,7 +7,7 @@
   max-width: 1440px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
 }
 
@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-accent);
+  background: var(--main-700);
   padding: 2em;
 }
 
@@ -45,7 +45,7 @@
   padding: 0.5em;
   transition: all 300ms;
   border-radius: 0.25em;
-  background: #00cc9b;
+  background: var(--main-600);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +60,7 @@
 
 .socialIcons .icon:hover {
   transform: scale(1.1);
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .topRight {

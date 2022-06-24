@@ -1,36 +1,65 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import classes from "./styles.module.css";
-import banner from "../../../assets/banner.gif";
+import { useRef, useEffect, useState } from "react";
+import classes from "./Banner.module.css";
+import img1 from "../../../assets/banner-1.png";
+import img2 from "../../../assets/banner-2.png";
+import img3 from "../../../assets/banner-3.png";
+import bannerImg from "../../../assets/banner.png";
 
 const Banner = () => {
-  const history = useHistory();
+  const [image, setImage] = useState([img1, img2, img3]);
+  const [animate, setAnimate] = useState(false);
+  const [counter, setCounter] = useState(0);
+  const cardRef = useRef();
+  const bannerRef = useRef();
+
+  const handleSet = () => {
+    const img = [...image];
+    img.unshift(img.pop());
+    setImage(img);
+    setAnimate(true);
+  };
+
+  const handleClick = () => {
+    const height = bannerRef.current.getBoundingClientRect().height;
+    document.documentElement.scrollTop = height;
+  };
+
+  useEffect(() => {
+    cardRef.current.onanimationend = () => {
+      setAnimate(false);
+    };
+
+    setInterval(() => {
+      setCounter((c) => (c >= image.length - 1 ? 0 : c + 1));
+    }, 5000);
+  }, []);
+
+  useEffect(() => {
+    handleSet();
+  }, [counter]);
 
   return (
-    <div className={classes.container}>
-      <div className={classes.innerContainer}>
-        <div className={classes.bannerText}>
-          <h4 className={classes.heading}>
-            The no code NFT art,
-            <br />
-            creator tool, minter + marketplace
-            <br />
-          </h4>
-          <p className={classes.description}>
-            The first NFT marketplace that enables creators to create their generative NFTs and embed licenses when they
-            mint NFTs. Creators know what they are selling, collectors know what they are buying.
-          </p>
-          <div className={classes.pageLinks}>
-            <button type="button" className={classes.createBtn} onClick={() => history.push("./create")}>
-              Create
-            </button>
-            <button type="button" className={classes.mintBtn} onClick={() => history.push("./mint")}>
-              Mint
-            </button>
+    <div ref={bannerRef} style={{ backgroundImage: `url(${bannerImg})` }} className={classes.container}>
+      <div className={classes.wrapper}>
+        <div className={classes.content}>
+          <div className={classes.title}>Explore Unique and Exclusive NFTs across different blockchains</div>
+          <div className={classes.description}>
+            The first NFT marketplace that enables creators to create their generative NFTs and embed licenses{" "}
+          </div>
+          <div onClick={handleClick} className={classes.btn}>
+            Explore
           </div>
         </div>
-        <div className={classes.imageContainer}>
-          <img src={banner} alt="" />
+        <div className={`${classes.cardContainer} ${animate && classes.active}`}>
+          <img src={image[0]} alt="" className={classes.cardLeft} />
+          <img src={image[1]} alt="" ref={cardRef} className={classes.cardCenter} />
+          <img src={image[2]} alt="" className={classes.cardRight} />
+          <div className={classes.indicator}>
+            <div className={`${counter === 0 && classes.active}`}></div>
+            <div className={`${counter === 1 && classes.active}`}></div>
+            <div className={`${counter === 2 && classes.active}`}></div>
+          </div>
         </div>
       </div>
     </div>

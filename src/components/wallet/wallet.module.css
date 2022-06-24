@@ -2,8 +2,8 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5em;
+  justify-content: flex-end;
+  gap: 1em;
 }
 
 .popupContainer {
@@ -28,38 +28,35 @@
   border-radius: 2em;
   cursor: pointer;
   color: white;
-  background: var(--main-accent);
+  background: var(--main-700);
   text-align: center;
-  border: 1px solid var(--main-accent);
+  border: 1px solid var(--main-700);
   transition: background 300ms;
 }
 
 .connect:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .connected {
-  width: 100%;
-  max-width: 10em;
+  width: max-content;
   display: flex;
   align-items: stretch;
   justify-content: center;
   gap: 0.5em;
-  color: white;
+  color: var(--main-700);
   cursor: pointer;
   position: relative;
-  background: var(--main-accent);
+  background: var(--main-bg);
   transition: all 150ms;
   padding: 0.25em 0.25em;
   border-radius: 2em;
-}
-
-.connected.active {
-  border-bottom-right-radius: 0;
+  padding: 0.25em 0.5em;
+  border: 1px solid var(--main-700);
 }
 
 .connected:hover {
-  background: var(--main-accent-dark);
+  color: var(--main-900);
 }
 
 .user {
@@ -78,14 +75,13 @@
 .chain {
   height: 24px;
   width: 24px;
-  background: white;
+  background: var(--main-bg);
   border-radius: 50%;
   display: inline-block;
 }
 
 .address {
   flex: 1;
-  color: var(--main-bg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -114,15 +110,22 @@
 }
 
 .networkDrop {
+  width: max-content;
   position: absolute;
   bottom: 0;
   transform: translateY(90%);
   visibility: hidden;
   transition: all 200ms;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 0.5em;
-  padding: 0.25em 0.5em;
-  background: white;
+  padding: 0.5em 1em;
+  background: var(--main-bg);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.networkDrop:hover {
+  background: var(--text-light-200);
 }
 
 .network:hover .networkDrop {
@@ -152,23 +155,22 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  background: whitesmoke;
+  background: var(--main-bg);
   position: absolute;
-  top: 2.4em;
-  right: 0;
-  color: black;
+  top: 2.5em;
+  color: var(--text-dark-900);
   border-radius: 0.5em;
   transition: all 150ms;
   visibility: hidden;
   opacity: 0;
   overflow: hidden;
   font-size: 0.85rem;
+  border: 1px solid var(--main-700);
 }
 
 .dropdown.active {
   visibility: visible;
   opacity: 1;
-  border-top-right-radius: 0;
 }
 
 .option {
@@ -180,7 +182,7 @@
 }
 
 .option:hover {
-  background: rgb(230, 230, 230);
+  background: whitesmoke;
 }
 
 .option div {
@@ -189,4 +191,10 @@
 
 .option img {
   width: 1.2em;
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    justify-content: space-between;
+  }
 }

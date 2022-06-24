@@ -133,8 +133,6 @@ export const getNftCollections = async ({ collections, mainnet, dispatch }) => {
   const responses = await Promise.allSettled(
     collections.map((collection, idx) => fetchCollection(collection, idx, collections, mainnet))
   );
-  console.log(responses);
-
   // removing rejected responses
   const collectionsObj = {};
   responses.forEach((element) => {
@@ -150,8 +148,6 @@ export const getUserNftCollections = async ({ collections, mainnet }) => {
   const responses = await Promise.allSettled(
     collections.map((collection, idx) => fetchCollection(collection, idx, collections, mainnet))
   );
-  console.log(responses);
-
   // removing rejected responses
   const collectionsArr = [];
   responses.forEach((element) => {
@@ -164,7 +160,6 @@ export const getUserNftCollections = async ({ collections, mainnet }) => {
 
 export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
   const responses = await Promise.allSettled(singleNfts.map((NFT, idx) => fetchNFT(NFT, idx, singleNfts, mainnet)));
-  console.log(responses);
   const nftArr = [];
   const nftsObj = {};
   // removing rejected responses
@@ -180,7 +175,6 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
   const responses = await Promise.allSettled(singleNfts.map((NFT, idx) => fetchNFT(NFT, idx, singleNfts, mainnet)));
-  console.log(responses);
   const nftArr = [];
   // removing rejected responses
   responses.forEach((element) => {
@@ -499,7 +493,6 @@ export const handleBlankImage = async (props) => {
 export const handleTemplateImage = async (props) => {
   const { img, canvas } = props;
   let { height, width } = await getImageSize(img);
-  console.log("canvas being drawed on: ", canvas);
   if (height) {
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);

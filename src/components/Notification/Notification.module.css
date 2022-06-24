@@ -37,25 +37,26 @@
 }
 
 .notification.error {
-  background: var(--main-error);
-  border: 1px solid var(--main-error-dark);
-  color: var(--main-error-dark);
+  background: var(--error-100);
+  border: 1px solid var(--error-500);
+  color: var(--error-600);
 }
 
 .notification.warning {
-  background: var(--main-warning);
-  border: 1px solid var(--main-warning-dark);
-  color: var(--main-warning-dark);
+  background: var(--warning-200);
+  border: 1px solid var(--warning-500);
+  color: var(--warning-700);
 }
 
 .notification.success {
-  background: var(--main-success);
-  border: 1px solid var(--main-success-dark);
-  color: white;
+  background: var(--success-500);
+  border: 1px solid var(--success-700);
+  color: var(--main-bg);
 }
 
 .notification.default {
-  background: var(--card-bg);
+  background: var(--text-dark-900);
+  color: var(--main-bg);
 }
 
 .container.active {

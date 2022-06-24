@@ -31,7 +31,7 @@
   text-decoration: underline;
   margin: 5px 0;
   font-size: 16px;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .usdPrice {
@@ -44,7 +44,7 @@
   width: calc(12 * 16px);
   height: calc(12 * 16px);
   border-radius: 50%;
-  box-shadow: 0px 5px 5px gainsboro;
+  box-shadow: var(--shadow-light);
 }
 
 .details {
@@ -58,14 +58,14 @@
 
 .detailContentWrapper {
   width: 16em;
-  background: white;
+  background: var(--main-bg);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1em;
   border-radius: 0.5em;
   gap: 1em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
 }
 
 .detailContentWrapper img {
@@ -78,11 +78,11 @@
 }
 
 .address:hover {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .price {
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 
 .chain {

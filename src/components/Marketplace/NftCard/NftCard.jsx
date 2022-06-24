@@ -7,7 +7,7 @@ import Copy from "../../copy/copy";
 import { GenContext } from "../../../gen-state/gen.context";
 import avatar from "../../../assets/avatar.png";
 
-const NftCard = ({ nft, list, chinPrice }) => {
+const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
   const breakAddress = (address = "", width = 6) => {
@@ -26,10 +26,11 @@ const NftCard = ({ nft, list, chinPrice }) => {
         });
     }
   }, []);
+
   return (
     <Link
       to={
-        nft.sold
+        fromDashboard
           ? nft.collection_name
             ? `${match.url}/${Id}`
             : chain
@@ -42,7 +43,7 @@ const NftCard = ({ nft, list, chinPrice }) => {
           : `/marketplace/single-mint/${Id}`
       }
     >
-      <div className={classes.card}>
+      <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
         <div className={classes.imageContainer}>
           <img
             onError={({ currentTarget }) => {
@@ -75,12 +76,14 @@ const NftCard = ({ nft, list, chinPrice }) => {
                 </span>
               </div>
             </div>
-            {list ? (
+            {listed ? (
+              <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
+                {nft.sold ? "Sold" : "Buy"}
+              </button>
+            ) : (
               <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
                 {nft.sold ? "List" : "Buy"}
               </button>
-            ) : (
-              ""
             )}
           </div>
         </div>

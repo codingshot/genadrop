@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  align-items: center;
+  padding: 0.25em;
+  border-radius: 2em;
+  border: 1px solid var(--text-light-500);
+}
+
+.container div {
+  width: 6em;
+  text-align: center;
+  padding: 0.25em 0;
+  border-radius: 1em;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.container div.active {
+  background: gray;
+  color: white;
+}

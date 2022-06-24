@@ -4,14 +4,14 @@
   z-index: 2000;
   right: 10px;
   top: 4em;
-  background: gainsboro;
-  color: black;
+  background: var(--main-bg);
+  color: var(--text-dark-900);
   visibility: hidden;
   opacity: 0;
   padding: 0.5em 1.5em;
   border-radius: 0.25em;
   transition: all 300ms;
-  box-shadow: 0 0 15px gainsboro;
+  box-shadow: var(--shadow-light);
   display: flex;
   align-items: center;
   justify-content: center;

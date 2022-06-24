@@ -138,7 +138,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     pinataMetadata: { name: asset.name },
   });
   const jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash);
-  console.log("result meta for each", resultMeta)
   return {
     name: asset.name,
     url: `ipfs://${resultMeta.IpfsHash}`,
@@ -157,8 +156,7 @@ export const connectAndMint = async (file, metadata, imgName, retryTimes) => {
       alert("network error while uploading file");
       throw error;
     }
-    console.log("retrying upload", retryTimes)
-    return connectAndMint(file, metadata, imgName, retryTimes - 1)
+    return connectAndMint(file, metadata, imgName, retryTimes - 1);
   }
 };
 
@@ -476,7 +474,6 @@ export async function createNFT(createProps, doAccountCheck) {
     const asset = await connectAndMint(blob, metadata[i], imgName, 4);
     assets.push(asset);
   }
-  console.log("all assets logged!:", assets)
   dispatch(setLoader(""));
   dispatch(
     setNotification({
@@ -520,7 +517,6 @@ export async function mintToAlgo(algoProps) {
         type: "default",
       })
     );
-    console.log("same data, different ange", ipfsJsonData)
     for (let i = 0; i < ipfsJsonData.length; ++i) {
       dispatch(setLoader(`constructing assets ${i + 1} of ${ipfsJsonData.length}`));
       const txn = await createAsset(ipfsJsonData[i], account);
@@ -675,16 +671,12 @@ export async function PurchaseNft(args) {
   const { dispatch, nftDetails, account, connector, mainnet } = args;
   dispatch(setLoader("executing transaction..."));
   initAlgoClients(mainnet);
-  console.log("no eve if", !connector?.isWalletConnect);
   const params = await algodTxnClient.getTransactionParams().do();
-  console.log("wake up", params);
   const enc = new TextEncoder();
   const note = enc.encode("Nft Purchase");
   const note2 = enc.encode("Platform fee");
   const txns = [];
-  console.log("before acct check");
   const userBalance = await algodClient.accountInformation(account).do();
-  console.log("stopped it", userBalance);
   if (algosdk.microalgosToAlgos(userBalance.amount) <= nftDetails.price) {
     dispatch(
       setNotification({

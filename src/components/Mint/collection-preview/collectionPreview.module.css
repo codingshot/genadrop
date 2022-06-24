@@ -13,11 +13,11 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1em;
-  border-top: 1px solid gainsboro;
-  border-bottom: 1px solid gainsboro;
+  border-top: 1px solid var(--text-light-500);
+  border-bottom: 1px solid var(--text-light-500);
   position: sticky;
   top: 3.9em;
-  background: white;
+  background: var(--main-bg);
   padding: 2em 0;
   z-index: 10;
 }
@@ -52,7 +52,7 @@
 .paginate input {
   padding: 0.65em;
   max-width: 6em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 0.5em;
 }
 
@@ -66,17 +66,17 @@
 
 .pageControl.next {
   color: white;
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 
 .pageControl.next:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .pageControl.prev {
   color: gray;
-  background: white;
-  border: 2px solid gainsboro;
+  background: var(--main-bg);
+  border: 2px solid var(--text-light-500);
 }
 
 .pageControl.prev:hover {
@@ -122,7 +122,7 @@
   cursor: pointer;
   border: 4px solid transparent;
   transition: all 300ms;
-  box-shadow: 0 0 4px gainsboro;
+  box-shadow: var(--shadow-light);
 }
 
 .assetWrapper img {
@@ -133,7 +133,7 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: var(--main-accent);
+  background: var(--main-700);
   bottom: 0;
   left: 0;
   transform: translateY(100%);
@@ -147,14 +147,14 @@
 }
 
 .assetWrapper:hover {
-  border: 4px solid var(--main-accent);
+  border: 4px solid var(--main-700);
 }
 
 .attrBtn {
   width: 100%;
   margin-top: 1em;
   background: var(--main-bg);
-  color: var(--main-accent);
+  color: var(--main-700);
   padding: 0.75em;
   border-radius: 2em;
   font-size: 1rem;
@@ -179,12 +179,12 @@
   padding: 6px;
   background: #ffffff;
   border: 1px solid #c4c4c4;
-  box-shadow: 0px 4px 30px rgb(0 0 0 / 5%);
+  box-shadow: var(--shadow-light);
   border-radius: 20px;
   cursor: pointer;
 }
 .assetWrapperSelect:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 .assetWrapperSelect img {
   border-radius: 20px;
@@ -192,7 +192,7 @@
 }
 
 .assetWrapperActive {
-  background: var(--main-accent);
+  background: var(--main-700);
 }
 
 .buttonWrapper {
@@ -204,7 +204,7 @@
 }
 .buttonWrapper p,
 .buttonWrapper div {
-  border: 3px solid var(--main-accent);
+  border: 3px solid var(--main-700);
   border-radius: 37px;
   height: 2.8em;
   width: 9.5em;
@@ -216,18 +216,18 @@
 }
 .buttonWrapper p {
   margin-right: 1em;
-  color: var(--main-accent);
+  color: var(--main-700);
 }
 .buttonWrapper p:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 .buttonWrapper div {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 .buttonWrapper div:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 @media screen and (max-width: 768px) {

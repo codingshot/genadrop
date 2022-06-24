@@ -1,33 +1,99 @@
 @import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap");
-@font-face {
-  font-family: neue;
-  src: url("fonts/NeueHaasDisplayLight.ttf");
-}
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --main-bg: #ffffff;
-  --main-accent: #009987;
-  --main-accent-dark: #037568;
-  --main-hover: #eff5f4;
-  --main-light: #d0ebe9e4;
-  --main-success: #00cc9b;
-  --main-success-dark: #009987;
-  --main-error: #ffe3d6;
-  --main-error-dark: #ff3236;
-  --main-warning: #ffeda6;
-  --main-warning-dark: #ffad0d;
-  --text-color: #000000;
   --card-bg: #3d3d3d;
   --card-bg1: #27292c;
   --card-bg2: #212529;
   --card-bg3: #000000;
-  --text-color-light: #757575;
-  --text-color-dark: #333333;
-  --text-color-accent-dark: #030b5d;
-  --text-color-main-dark: #00cc9b;
-  --bg-color-accent: #f2f3ff;
-  --border-color-light: #b2c5d0;
+  --text-light-300: #f2f3ff;
+
+  --shadow-dark: 0 0 15px rgb(0, 0, 0, 0.25);
+  --shadow-dark-1: 0px 24px 33px -9px rgba(0, 0, 0, 0.36);
+  --shadow-dark-2: 0px 16px 25px -9px rgba(0, 0, 0, 0.32);
+  --shadow-dark-2: 0px 12px 19px -7px rgba(0, 0, 0, 0.28);
+
+  --shadow-light: 0 0 15px rgb(0, 0, 0, 0.1);
+  --shadow-light-1: 0px 1px 1px rgba(0, 0, 0, 0.08);
+  --shadow-light-2: 0px 2px 3px rgba(0, 0, 0, 0.08);
+  --shadow-light-3: 0px 4px 5px -1px rgba(0, 0, 0, 0.08);
+  --shadow-light-4: 0px 6px 7px -2px rgba(0, 0, 0, 0.08);
+  --shadow-light-5: 0px 8px 11px -3px rgba(0, 0, 0, 0.08);
+  --shadow-light-6: 0px 12px 19px -5px rgba(0, 0, 0, 0.08);
+  --shadow-light-7: 0px 24px 24px -16px rgba(0, 0, 0, 0.1);
+  --shadow-light-8: 0px 12px 24px -5px rgba(0, 0, 0, 0.1);
+
+  --main-bg: #ffffff;
+
+  --main-100: #f2faf9;
+  --main-200: #d9f0ed;
+  --main-300: #bfe5e1;
+  --main-400: #a6dbd5;
+  --main-500: #80ccc3;
+  --main-600: #59bdb1;
+  --main-700: #009987;
+  --main-800: #028777;
+  --main-900: #037568;
+
+  --info-100: #d3e5fe;
+  --info-200: #a7c9fd;
+  --info-300: #7ba8f9;
+  --info-400: #598cf4;
+  --info-500: #2561ed;
+  --info-600: #1b4acb;
+  --info-700: #1236aa;
+  --info-800: #0b2589;
+  --info-900: #071971;
+
+  --success-100: #ebfcd5;
+  --success-200: #d4f9ac;
+  --success-300: #b1ee80;
+  --success-400: #8fde5d;
+  --success-500: #5fc92e;
+  --success-600: #44ac21;
+  --success-700: #2d9017;
+  --success-800: #1a740e;
+  --success-900: #0d6008;
+
+  --warning-100: #fff5ce;
+  --warning-200: #ffe89e;
+  --warning-300: #ffd76d;
+  --warning-400: #ffc749;
+  --warning-500: #ffad0d;
+  --warning-600: #db8c09;
+  --warning-700: #b76f06;
+  --warning-800: #935404;
+  --warning-900: #7a4102;
+
+  --error-100: #ffe3d6;
+  --error-200: #ffc0ad;
+  --error-300: #ff9783;
+  --error-400: #ff6f65;
+  --error-500: #ff3236;
+  --error-600: #db2438;
+  --error-700: #b71938;
+  --error-800: #930f35;
+  --error-900: #7a0933;
+
+  --text-light-100: #fafafb;
+  --text-light-200: #f5f6f7;
+  --text-light-300: #eeeff2;
+  --text-light-400: #e2e4e8;
+  --text-light-500: #cacdd5;
+  --text-light-600: #b2b7c2;
+  --text-light-700: #a4a9b6;
+  --text-light-800: #959cab;
+  --text-light-900: #8c93a3;
+
+  --text-dark-100: #747c90;
+  --text-dark-200: #656e85;
+  --text-dark-300: #5c657d;
+  --text-dark-400: #525c76;
+  --text-dark-500: #49536e;
+  --text-dark-600: #3a4662;
+  --text-dark-700: #2c3857;
+  --text-dark-800: #192648;
+  --text-dark-900: #0f1d40;
 }
 
 li {
@@ -58,17 +124,16 @@ a {
   width: 100%;
   min-height: calc(100vh - 21em);
 }
+
 .topSectionContainer {
   z-index: 15;
   position: sticky;
   top: 0;
 }
+
 * {
-  /* font-family: 'Frank Ruhl Libre', serif; */
-  /* font-family: 'Roboto', sans-serif; */
   font-display: fallback;
   font-family: "Poppins", sans-serif;
-  /* font-family: neue; */
 }
 
 /* width */

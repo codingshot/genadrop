@@ -5,8 +5,8 @@
 }
 
 .wrapper {
-  background: #dff1f0;
-  color: #00a898;
+  background: var(--main-200);
+  color: var(--main-700);
   border-radius: 10px;
   display: flex;
   align-items: center;

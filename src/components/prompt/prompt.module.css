@@ -9,8 +9,8 @@
   margin-bottom: 0.5em;
   font-size: 1rem;
   padding: 0.25em;
-  color: black;
-  background: white;
+  color: var(--text-dark-900);
+  background: var(--main-bg);
   outline: none;
   border-radius: 0.25em;
   border: 1px solid var(--card-bg);
@@ -24,25 +24,25 @@
 }
 
 .buttons button {
-  background: white;
-  color: black;
+  background: var(--main-bg);
+  color: var(--text-dark-900);
   outline: none;
   padding: 0.25em 1.5em;
   border-radius: 0.25em;
   cursor: pointer;
   transition: all 0.3s;
-  border: 1px solid #151616;
+  border: 1px solid var();
 }
 
 .buttons button:first-child {
-  background: #151616;
-  color: white;
+  background: var(--text-dark-700);
+  color: var(--main-bg);
 }
 
 .buttons button:hover {
-  outline: 1px solid var(--main-accent);
+  outline: 1px solid var(--main-700);
 }
 
 .buttons button:first-child:hover {
-  background: #303333;
+  background: var(--text-dark-900);
 }

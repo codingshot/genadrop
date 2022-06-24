@@ -2,7 +2,7 @@
   width: calc(100% - 20em);
   background: var(--main-bg);
   z-index: 1;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-radius: 0.5em;
   padding: 1em;
 }
@@ -42,7 +42,7 @@
 .addRuleBtn {
   width: 10em;
   height: 3em;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -51,19 +51,19 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
-  color: var(--main-accent);
-  background: white;
-  border: 1px solid var(--main-accent);
+  color: var(--main-700);
+  background: var(--main-bg);
+  border: 1px solid var(--main-700);
   width: 10em;
   height: 3em;
 }
 
 .addRuleBtn:hover {
-  background: var(--main-accent-dark);
+  background: var(--main-900);
 }
 
 .showRuleBtn:hover {
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
 }
 
@@ -75,14 +75,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   transition: all 300ms;
 }
 
 .showRuleBtn:hover .ruleCount {
-  background: white;
-  color: var(--main-accent);
+  background: var(--main-bg);
+  color: var(--main-700);
 }
 
 .ruleCardWrapper {

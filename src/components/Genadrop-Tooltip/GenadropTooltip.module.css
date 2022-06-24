@@ -1,0 +1,47 @@
+.container {
+  width: 100%;
+  display: inline;
+  width: max-content;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container img {
+  width: 1em;
+  height: 1em;
+  border: 1px solid var(--main-700);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.container:hover::before {
+  content: "";
+  position: absolute;
+  top: -0.25em;
+  transform: translateY(-100%);
+  border-top: 1em solid #626277;
+  border-right: 1em solid transparent;
+  border-left: 1em solid transparent;
+}
+
+.card {
+  width: max-content;
+  max-width: 20em;
+  border-radius: 0.25em;
+  padding: 0.5em;
+  padding-bottom: 1em;
+  text-align: center;
+  position: absolute;
+  top: -1.25em;
+  font-size: 0.85rem;
+  background: #626277;
+  color: var(--main-bg);
+  transform: translateX(0) translateY(-100%);
+  visibility: hidden;
+}
+
+.container:hover .card {
+  visibility: visible;
+}

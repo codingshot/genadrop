@@ -10,7 +10,7 @@
 }
 
 .header {
-  color: black;
+  color: var(--text-dark-900);
   margin-bottom: 0.5em;
   font-weight: 500;
 }
@@ -26,7 +26,7 @@
   gap: 1em;
   padding: 0.5em;
   margin-bottom: 1em;
-  border: 1px solid gainsboro;
+  border: 1px solid var(--text-light-500);
   border-top-right-radius: 0.25em;
   border-top-left-radius: 0.25em;
 }
@@ -56,7 +56,7 @@
 
 .uploadBtn {
   flex: 1;
-  background: var(--main-accent);
+  background: var(--main-700);
   color: white;
   border: none;
   padding: 0.75em;
@@ -71,6 +71,6 @@
   outline: 1px solid var(--card-bg);
 }
 .uploadBtn:hover {
-  background: var(--main-accent-dark);
-  outline: 1px solid var(--main-accent);
+  background: var(--main-900);
+  outline: 1px solid var(--main-700);
 }

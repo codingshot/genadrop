@@ -24,7 +24,6 @@ const Listed = () => {
 
   useEffect(() => {
     const nft = singleNfts.filter((singleNft) => String(singleNft.id) === nftId)[0];
-    console.log("Detail: ", nft);
 
     (async function getNftDetails() {
       const nftdetails = await getSingleNftDetails(nft);
