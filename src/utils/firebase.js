@@ -84,6 +84,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       price: priceValue,
       chain: "algo",
       mainnet,
+      createdAt: new Date(),
     };
     // eslint-disable-next-line no-await-in-loop
     await recordTransaction(collection_id[i], "Minting", owner, null, null, txId[i]);
@@ -96,6 +97,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       owner,
       description,
       mainnet,
+      createdAt: new Date()
     })
     .then(() => {})
     .catch((error) => {
@@ -148,6 +150,7 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
     price,
     dateSold,
     mainnet,
+    createdAt: new Date(),
   };
   db.collection("listed")
     .doc(`${owner}`)
