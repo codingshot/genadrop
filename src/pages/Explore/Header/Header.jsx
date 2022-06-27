@@ -38,7 +38,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
       return setExplorerLink(`${supportedChains[loadedChain]?.explorer}/${owner}`);
     }
     if (process.env.REACT_APP_ENV_STAGING === "false") {
-      return setExplorerLink(`https://algoexplorer.io/${owner}`);
+      return setExplorerLink(`https://algoexplorer.io/address/${owner}`);
     }
     return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
   };
