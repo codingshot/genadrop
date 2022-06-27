@@ -67,6 +67,7 @@ export const handleSave = async ({ account, state, dispatch, handleSetValidation
       );
     }
     dispatch(setLoader(""));
+    history.goBack();
   } else {
     dispatch(
       setNotification({
@@ -76,7 +77,6 @@ export const handleSave = async ({ account, state, dispatch, handleSetValidation
     );
   }
   handleSetValidation(validate);
-  history.goBack();
 };
 
 export const handleInputChange = ({ event, handleSetState, handleSetValidation }) => {
