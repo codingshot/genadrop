@@ -31,7 +31,8 @@ import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
 import CaretDown from "../../assets/icon-CaretDown.svg";
 import CaretUP from "../../assets/icon-CaretUp.svg";
-
+import tooltip from "../../assets/tooltip.svg";
+import ReactTooltip from "react-tooltip";
 const Preview = () => {
   const {
     nftLayers,
@@ -399,6 +400,15 @@ const Preview = () => {
                   className={`${classes.radioBtn} ${outputFormat === "ipfs" && classes.clicked}`}
                 />
                 <p>IPFS</p>
+                <div className={classes.tooltip}></div>
+                <ReactTooltip></ReactTooltip>
+
+                <ReactTooltip id="tooltip" backgroundColor="#626277" effect="solid">
+                  <span className={classes.ipfs_tip}>
+                    IPFS is a peer-to-peer (p2p) <br /> storage network for <br /> storing and sharing data.
+                  </span>
+                </ReactTooltip>
+                <img data-tip data-for="tooltip" src={tooltip} alt="" />
               </label>
               <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
                 <input

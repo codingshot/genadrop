@@ -51,7 +51,7 @@ const Profile = () => {
   };
 
   const inputProps = { handleSetState, handleSetValidation };
-  const saveProps = { account, state, dispatch, handleSetValidation };
+  const saveProps = { account, state, dispatch, handleSetValidation, history };
   const cancelProps = { handleSetState, history };
 
   useEffect(() => {
