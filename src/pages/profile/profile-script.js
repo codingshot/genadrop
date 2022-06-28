@@ -45,7 +45,7 @@ export const getValidName = (name) => {
   return `is${first + rest}`;
 };
 
-export const handleSave = async ({ account, state, dispatch, handleSetValidation }) => {
+export const handleSave = async ({ account, state, dispatch, handleSetValidation, history }) => {
   const validate = PS.handleValidate(state);
   let isValid = Object.values(validate).every((i) => i === true);
   if (isValid) {
@@ -67,6 +67,7 @@ export const handleSave = async ({ account, state, dispatch, handleSetValidation
       );
     }
     dispatch(setLoader(""));
+    history.goBack();
   } else {
     dispatch(
       setNotification({

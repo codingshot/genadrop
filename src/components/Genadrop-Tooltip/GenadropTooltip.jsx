@@ -1,5 +1,5 @@
 import classes from "./GenadropTooltip.module.css";
-import infoIcon from "../../assets/icon-question-mark.svg";
+import infoIcon from "../../assets/tooltip.svg";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
