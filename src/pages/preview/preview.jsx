@@ -32,7 +32,6 @@ import warnIcon from "../../assets/icon-warn.svg";
 import CaretDown from "../../assets/icon-CaretDown.svg";
 import CaretUP from "../../assets/icon-CaretUp.svg";
 import tooltip from "../../assets/tooltip.svg";
-import ReactTooltip from "react-tooltip";
 import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 const Preview = () => {
   const {
