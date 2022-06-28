@@ -33,6 +33,7 @@ import CaretDown from "../../assets/icon-CaretDown.svg";
 import CaretUP from "../../assets/icon-CaretUp.svg";
 import tooltip from "../../assets/tooltip.svg";
 import ReactTooltip from "react-tooltip";
+import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 const Preview = () => {
   const {
     nftLayers,
@@ -401,14 +402,9 @@ const Preview = () => {
                 />
                 <p>IPFS</p>
                 <div className={classes.tooltip}></div>
-                <ReactTooltip></ReactTooltip>
-
-                <ReactTooltip id="tooltip" backgroundColor="#626277" effect="solid">
-                  <span className={classes.ipfs_tip}>
-                    IPFS is a peer-to-peer (p2p) <br /> storage network for <br /> storing and sharing data.
-                  </span>
-                </ReactTooltip>
-                <img data-tip data-for="tooltip" src={tooltip} alt="" />
+                <GenadropToolTip
+                  content={`IPFS is a peer-to-peer (p2p) storage network for storing and sharing data.`}
+                />
               </label>
               <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
                 <input
