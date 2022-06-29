@@ -33,7 +33,7 @@
   cursor: text;
 }
 .wrapper {
-  max-width: 1280px;
+  max-width: 48em;
   display: flex;
   margin: auto;
   flex-direction: column;
@@ -57,14 +57,13 @@
   justify-content: center;
   gap: 2em;
   border: 1px solid var(--text-light-500);
-  padding: 3em 1em;
+  padding: 1em;
   border: 1px solid #c4c4c4;
   border-radius: 20px;
   position: relative;
 }
 
 .imageContainers {
-  max-width: 48em;
   width: 40%;
   position: relative;
   margin-bottom: 3em;
@@ -122,7 +121,6 @@
 
 .assetInfo {
   width: 100%;
-  max-width: 48em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -277,7 +275,7 @@ div.showPreview > span {
   font-weight: 500;
 }
 .inputWrapper label div {
-  margin-left: 8px;
+  margin-left: 0.5em;
 }
 .inputWrapper label div svg path {
   margin: auto;
@@ -453,7 +451,7 @@ div.showPreview > span {
 .dropWrapper > div {
   width: 60%;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23E5E8EBFF' stroke-width='6' stroke-dasharray='10%2c 12' stroke-dashoffset='3' stroke-linecap='round'/%3e%3c/svg%3e");
-  border-radius: 8px;
+  border-radius: 0.5em;
   background-repeat: no-repeat;
   display: flex;
   align-items: center;
