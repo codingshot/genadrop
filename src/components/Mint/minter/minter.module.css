@@ -279,9 +279,10 @@ div.showPreview > span {
 .inputWrapper label div {
   margin-left: 8px;
 }
-.inputWrapper label div img {
+.inputWrapper label div svg path {
   margin: auto;
   padding: 1px;
+  fill: var(--main-700);
 }
 .inputWrapper textarea,
 .inputWrapper input,
@@ -473,10 +474,13 @@ div.showPreview > span {
 .priceTooltip div {
   margin-left: 0.625em;
 }
-.priceTooltip div img {
-  border: 2px solid var(--main-700);
+.priceTooltip div svg {
+  /* border: 2px solid var(--main-700); */
   height: 1.1em;
   width: 1.1em;
+}
+.priceTooltip div svg path {
+  fill: var(--main-700);
 }
 .mintForm {
   display: flex;
