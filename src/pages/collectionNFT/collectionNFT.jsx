@@ -25,16 +25,8 @@ import detailsIcon from "../../assets/details.png";
 import supportedChains from "../../utils/supportedChains";
 
 const CollectionNFT = () => {
-  const {
-    account,
-    activeCollection,
-    connector,
-    mainnet,
-    dispatch,
-    auroraCollections,
-    polygonCollections,
-    chainId,
-  } = useContext(GenContext);
+  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections, chainId } =
+    useContext(GenContext);
   const {
     params: { collectionName, nftId },
   } = useRouteMatch();

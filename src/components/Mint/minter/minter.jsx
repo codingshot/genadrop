@@ -456,7 +456,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                   <label>Blockchain: {chainId ? "" : "---"} </label>
                   {chainId && (
                     <div className={classes.chinLabel}>
-                      <img src={supportedChains[chainId].icon} alt="" />
+                      <img src={supportedChains[chainId]?.icon} alt="" />
                       {chain?.label}
                     </div>
                   )}
