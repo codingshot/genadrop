@@ -188,7 +188,7 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
         ...updates,
       },
       { merge: true }
-    )
+    );
   if (!sold) {
     await recordTransaction(assetId, "Minting", owner, null, null, txId);
   }
@@ -230,7 +230,7 @@ async function fetchAlgoSingle(mainnet) {
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((docs) => {
-    data = docs.data()
+    data = docs.data();
     res.push(...Object.values(docs.data()));
   });
   // console.log("BEFORE FILTER", res)
@@ -294,7 +294,7 @@ async function listNft(prevOwner, collection, assetId, price, newOwner, mainnet)
   const batch = db.batch();
   prevUpdates[assetId] = {
     relisted: false,
-  }
+  };
   updates[assetId] = {
     id: assetId,
     collection: collection || null,
@@ -323,7 +323,7 @@ async function listNft(prevOwner, collection, assetId, price, newOwner, mainnet)
     txDate: new Date(),
   };
 
-  const prevNftRef = db.collection("listed").doc(`${prevOwner}`)
+  const prevNftRef = db.collection("listed").doc(`${prevOwner}`);
   const newNftRef = db.collection("listed").doc(`${newOwner}`);
   const recordRef = db.collection("transactions").doc(`${assetId}`);
   batch.set(prevNftRef, prevUpdates, { merge: true });
