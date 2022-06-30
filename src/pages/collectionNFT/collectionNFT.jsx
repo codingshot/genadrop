@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
@@ -304,7 +304,7 @@ const CollectionNFT = () => {
               ) : (
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.sold} disabled={nftDetails.chain}>
+                    <button className={classes.sold} onClick={() => buyGraphNft(buyProps)}>
                       {/* <img src={walletIcon} alt="" /> */}
                       Coming Soon
                     </button>

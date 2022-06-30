@@ -4,7 +4,7 @@ import axios from "axios";
 import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
 import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
-import { getAlgoData, PurchaseNft } from "./arc_ipfs";
+import { getAlgoData, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
@@ -378,6 +378,59 @@ export const getSingleNftDetails = async (mainnet, nft) => {
     console.error("get collection result failed");
   }
   return nftDetails;
+};
+
+export const buyGraphNft = async (buyProps) => {
+  const {
+    dispatch,
+    history,
+    account,
+    nftDetails: { chain },
+    chainId,
+  } = buyProps;
+  console.log(buyProps);
+
+  if (!account) {
+    return dispatch(
+      setNotification({
+        message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,
+        type: "error",
+      })
+    );
+  }
+
+  if (chainId != chain) {
+    return dispatch(
+      setNotification({
+        message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,
+        type: "warning",
+      })
+    );
+  }
+  dispatch(setLoading(true));
+  const res = await purchasePolygonNfts(buyProps);
+
+  if (res) {
+    dispatch(setLoading(false));
+    dispatch(
+      setNotification({
+        message: "transaction successful",
+        type: "success",
+      })
+    );
+    setTimeout(() => {
+      history.push(`/me/${account}`);
+      // history.push(`/marketplace`);
+    }, 3000);
+  } else {
+    dispatch(setLoading(false));
+    dispatch(
+      setNotification({
+        message: "transaction failed",
+        type: "error",
+      })
+    );
+  }
 };
 
 export const buyNft = async (buyProps) => {
