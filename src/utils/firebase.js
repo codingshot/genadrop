@@ -2,6 +2,7 @@ import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
 import { doc, getDoc } from "firebase/firestore";
+import { query, where, getDocs } from "firebase/firestore";
 
 // const {
 //   getDatabase,
@@ -83,6 +84,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       collection: name,
       price: priceValue,
       chain: "algo",
+      relisted: false,
       mainnet,
       createdAt: new Date(),
     };
@@ -97,7 +99,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       owner,
       description,
       mainnet,
-      createdAt: new Date()
+      createdAt: new Date(),
     })
     .then(() => {})
     .catch((error) => {
@@ -139,13 +141,14 @@ async function readNftTransaction(assetId) {
 }
 
 async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet, txId) {
-  const updates = {};
+  let updates = {};
   updates[assetId] = {
     id: assetId,
     collection: collection || null,
     sold: !!sold,
     Buyer: buyer,
     chain: "algo",
+    relisted: false,
     owner,
     price,
     dateSold,
@@ -160,6 +163,32 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
       },
       { merge: true }
     );
+
+  updates = {
+    id: assetId,
+    collection: collection || null,
+    sold: !!sold,
+    Buyer: buyer,
+    chain: "algo",
+    relisted: false,
+    owner,
+    price,
+    dateSold,
+    mainnet,
+    createdAt: new Date(),
+  };
+
+  await db
+    .collection("nfts")
+    .doc(`${owner}`)
+    .collection(`${assetId}`)
+    .doc("properties")
+    .set(
+      {
+        ...updates,
+      },
+      { merge: true }
+    )
   if (!sold) {
     await recordTransaction(assetId, "Minting", owner, null, null, txId);
   }
@@ -201,10 +230,12 @@ async function fetchAlgoSingle(mainnet) {
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((docs) => {
+    data = docs.data()
     res.push(...Object.values(docs.data()));
   });
-  const response = res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
-  return response;
+  // console.log("BEFORE FILTER", res)
+  // const response = res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
+  return res;
 }
 
 async function fetchAlgoCollections(mainnet) {
@@ -253,6 +284,55 @@ async function fetchUserBoughtNfts(account) {
   return filtered;
 }
 
+async function listNft(prevOwner, collection, assetId, price, newOwner, mainnet) {
+  let asset = await readSIngleUserNft(prevOwner, assetId);
+  if (asset.buyer !== newOwner) {
+    return { message: "you do not own this nft" };
+  }
+  const updates = {};
+  const prevUpdates = {};
+  const batch = db.batch();
+  prevUpdates[assetId] = {
+    relisted: false,
+  }
+  updates[assetId] = {
+    id: assetId,
+    collection: collection || null,
+    chain: "algo",
+    owner: newOwner,
+    price,
+    mainnet,
+    createdAt: new Date(),
+  };
+
+  updates[assetId] = {
+    id: assetId,
+    collection,
+    price,
+    chain: "algo",
+    mainnet,
+    createdAt: new Date(),
+  };
+  const transactionRecords = {};
+  transactionRecords[nanoid()] = {
+    type: "ReListing",
+    buyer: newOwner,
+    seller: prevOwner,
+    price,
+    txId: "",
+    txDate: new Date(),
+  };
+
+  const prevNftRef = db.collection("listed").doc(`${prevOwner}`)
+  const newNftRef = db.collection("listed").doc(`${newOwner}`);
+  const recordRef = db.collection("transactions").doc(`${assetId}`);
+  batch.set(prevNftRef, prevUpdates, { merge: true });
+  batch.set(newNftRef, updates, { merge: true });
+  batch.set(recordRef, transactionRecords, { merge: true });
+  await batch.commit();
+  return { message: "Nft has been relisted" };
+}
+
 export {
   writeUserData,
   readSIngleUserNft,
@@ -266,4 +346,5 @@ export {
   readNftTransaction,
   readUserProfile,
   writeUserProfile,
+  listNft,
 };

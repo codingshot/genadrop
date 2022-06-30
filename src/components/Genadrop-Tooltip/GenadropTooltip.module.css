@@ -8,7 +8,7 @@
   justify-content: center;
 }
 
-.container img {
+.container svg {
   width: 1em;
   height: 1em;
   /* border: 1px solid var(--main-700); */
