@@ -114,8 +114,18 @@ const Collections = () => {
     let sorted = [];
     if (price === "high") {
       sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else {
+    } else if (price === "low") {
       sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+      // } else if (price === "txVolume") {
+      //   sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+    } else if (price === "newest") {
+      sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+    } else if (price === "oldest") {
+      sorted = filteredCollection.sort((a, b) => b?.createdAt["seconds"] - a?.createdAt["seconds"]);
+    } else if (price === "descAlphabet") {
+      sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    } else if (price === "ascAlphabet") {
+      sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())).reverse();
     }
     handleSetState({ filteredCollection: sorted });
   };
@@ -134,6 +144,8 @@ const Collections = () => {
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
     if (algoCollectionsArr || auroraCollections) {
+      console.log("FILTERED: ", filtered);
+
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });

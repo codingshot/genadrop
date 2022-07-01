@@ -7,30 +7,42 @@ import arrowUp from "../../../assets/icon-arrow-up-long.svg";
 const PriceDropdown = ({ onPriceFilter }) => {
   const [state, setState] = useState({
     togglePriceFilter: false,
-    priceFilter: "low",
+    filter: "low",
+    recentlyAdded: false,
+    alphabeticalOrder: false,
   });
 
-  const { priceFilter, togglePriceFilter } = state;
+  const { filter, togglePriceFilter } = state;
+
+  const filters = {
+    low: "Low to High",
+    high: "High to Low",
+    // txVolume: "Transaction Volume",
+    newest: "Newest",
+    oldest: "Oldest",
+    descAlphabet: "Z-A",
+    ascAlphabet: "A-Z",
+  };
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
   const priceUpdate = (price) => {
-    handleSetState({ priceFilter: price, togglePriceFilter: false });
-    onPriceFilter(priceFilter);
+    handleSetState({ filter: price, togglePriceFilter: false });
+    onPriceFilter(filter);
   };
   return (
     <div className={classes.priceDropdown}>
       <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.selectedPrice}>
-        Price
+        Filter
         <div className={classes.priceInfo}>
-          {priceFilter === "low" ? <span>Low to High</span> : <span>High to Low</span>}
+          <span>{filters[filter]}</span>
           <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
         </div>
       </div>
       <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-        {priceFilter === "high" && (
+        {filter != "low" && (
           <div onClick={() => priceUpdate("low")}>
             price
             <div className={classes.priceInfo}>
@@ -38,7 +50,7 @@ const PriceDropdown = ({ onPriceFilter }) => {
             </div>
           </div>
         )}
-        {priceFilter === "low" && (
+        {filter != "high" && (
           <div onClick={() => priceUpdate("high")}>
             price
             <div className={classes.priceInfo}>
@@ -47,6 +59,53 @@ const PriceDropdown = ({ onPriceFilter }) => {
             </div>
           </div>
         )}
+
+        {filter != "newest" && (
+          <div onClick={() => priceUpdate("newest")}>
+            Added
+            <div className={classes.priceInfo}>
+              <span>Newest</span>
+              <img src={arrowUp} alt="" />
+            </div>
+          </div>
+        )}
+        {filter != "oldest" && (
+          <div onClick={() => priceUpdate("oldest")}>
+            Added
+            <div className={classes.priceInfo}>
+              <span>Oldest</span>
+              <img src={arrowDown} alt="" />
+            </div>
+          </div>
+        )}
+        {filter != "ascAlphabet" && (
+          <div onClick={() => priceUpdate("ascAlphabet")}>
+            Alphabet
+            <div className={classes.priceInfo}>
+              <span>A-Z </span>
+              <img src={arrowUp} alt="" />
+            </div>
+          </div>
+        )}
+
+        {filter != "descAlphabet" && (
+          <div onClick={() => priceUpdate("descAlphabet")}>
+            Alphabet
+            <div className={classes.priceInfo}>
+              <span>Z-A</span>
+              <img src={arrowDown} alt="" />
+            </div>
+          </div>
+        )}
+
+        {/* {filter != "txVolume" && (
+          <div onClick={() => priceUpdate("txVolume")}>
+            <div className={classes.priceInfo}>
+              <span>Transaction Volume</span>
+              <img src={arrowDown} alt="" />
+            </div>
+          </div>
+        )} */}
       </div>
     </div>
   );
