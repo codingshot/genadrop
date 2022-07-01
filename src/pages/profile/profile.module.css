@@ -84,8 +84,8 @@
   cursor: pointer;
 }
 .uploadIcon img:hover {
-  opacity: .5;
-  transition: .4s ease-in-out;
+  opacity: 0.5;
+  transition: 0.4s ease-in-out;
 }
 
 .profile {
@@ -107,8 +107,8 @@
   height: 18.6em;
 }
 .banner img {
-  width: 121.5%; 
-  margin-left: -4em; 
+  width: 121.5%;
+  margin-left: -4em;
   height: 18.6em;
 }
 
@@ -212,7 +212,6 @@
   background: var(--main-bg);
 }
 
-
 .toggleButton .toggle {
   width: 20px;
   height: 20px;
@@ -237,8 +236,8 @@
     height: 14em;
   }
   .banner img {
-    width: 111.5%; 
-    margin-left: -1.95em; 
+    width: 111.5%;
+    margin-left: -1.95em;
     height: 12em;
   }
 }
