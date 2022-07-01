@@ -210,7 +210,9 @@
   flex-direction: column;
   gap: 1em;
 }
-
+.ipfs_tip {
+  text-align: center;
+}
 .actionContainer h3 {
   margin-top: -20px;
   background: var(--main-bg);

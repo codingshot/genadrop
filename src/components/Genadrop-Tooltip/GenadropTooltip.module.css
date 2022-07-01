@@ -8,10 +8,10 @@
   justify-content: center;
 }
 
-.container img {
+.container svg {
   width: 1em;
   height: 1em;
-  border: 1px solid var(--main-700);
+  /* border: 1px solid var(--main-700); */
   border-radius: 50%;
   cursor: pointer;
 }
@@ -40,6 +40,7 @@
   color: var(--main-bg);
   transform: translateX(0) translateY(-100%);
   visibility: hidden;
+  z-index: 10000;
 }
 
 .container:hover .card {

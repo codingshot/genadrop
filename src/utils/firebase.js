@@ -101,7 +101,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       owner,
       description,
       mainnet,
-      createdAt: new Date()
+      createdAt: new Date(),
     })
     .then(() => {})
     .catch((error) => {

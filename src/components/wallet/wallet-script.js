@@ -212,7 +212,7 @@ export const updateAccount = async (walletProps) => {
   });
   const networkId = await ethereum.networkVersion;
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  const getEnv = mainnet === supportedChains[networkId].isMainnet;
+  const getEnv = mainnet === supportedChains[networkId] && supportedChains[networkId].isMainnet;
   if (!getEnv) {
     WS.disconnectWallet(walletProps);
     dispatch(setSwitchWalletNotification(true));
@@ -229,7 +229,7 @@ export const updateAccount = async (walletProps) => {
       WS.disconnectWallet(walletProps);
       dispatch(
         setNotification({
-          message: "we could not connect this site automatically, please manually connect your site.",
+          message: "Please connect your site manually from your wallet extension.",
           type: "warning",
         })
       );

@@ -70,6 +70,7 @@ function fetchCollection(collection, idx, collections, mainnet) {
         collectionObj.owner = collection.owner;
         collectionObj.description = collection.description;
         collectionObj.url = collection.url;
+        collectionObj.createdAt = collection?.createdAt;
         const urlIPF = collection.url.replace("ipfs://", "https://ipfs.io/ipfs/");
         const { data } = await axios.get(urlIPF);
         collectionObj.nfts = data;
@@ -133,6 +134,7 @@ export const getNftCollections = async ({ collections, mainnet, dispatch }) => {
   const responses = await Promise.allSettled(
     collections.map((collection, idx) => fetchCollection(collection, idx, collections, mainnet))
   );
+
   // removing rejected responses
   const collectionsObj = {};
   responses.forEach((element) => {

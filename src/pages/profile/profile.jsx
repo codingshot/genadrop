@@ -11,6 +11,7 @@ import avatar from "../../assets/avatar.png";
 import bg from "../../assets/bg.png";
 import copyIcon from "../../assets/icon-copy.svg";
 import { getConnectedChain } from "../../components/wallet/wallet-script";
+import uploadIcon from "../../assets/uploadIcon.svg";
 
 const Profile = () => {
   const history = useHistory();
@@ -51,7 +52,7 @@ const Profile = () => {
   };
 
   const inputProps = { handleSetState, handleSetValidation };
-  const saveProps = { account, state, dispatch, handleSetValidation };
+  const saveProps = { account, state, dispatch, handleSetValidation, history };
   const cancelProps = { handleSetState, history };
 
   useEffect(() => {
@@ -67,12 +68,18 @@ const Profile = () => {
       <div className={classes.wrapper}>
         <h1 className={classes.heading}>Profile Settings</h1>
         <div className={classes.images}>
+          <div>
+            {/** IMPORT FUNCTION TO BE IMPLEMENTED WHEN HANDLED FROM FIREBASE */}
+
+            {/* <label htmlFor="inputTag" className={classes.uploadIcon}>
+          <input type="file" id="inputTag" />
+          <img src={uploadIcon} alt="" />
+        </label> */}
+          </div>
           <div className={classes.profile}>
-            <span>Profile Images</span>
             <img src={avatar} alt="" />
           </div>
           <div className={classes.banner}>
-            <span>Profile Banner</span>
             <img src={bg} alt="" />
           </div>
         </div>
