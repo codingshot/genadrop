@@ -142,6 +142,7 @@ const SingleNftCollection = () => {
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
     if (singleAlgoNftsArr || singleAuroraNfts) {
+      console.log("FILTERS: ", filtered);
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
