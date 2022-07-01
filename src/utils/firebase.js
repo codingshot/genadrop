@@ -65,7 +65,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
     txId,
     txDate: new Date(),
   };
-  db.collection("transactions")
+  db.collection("transactionsHistory")
     .doc(`${assetId}`)
     .set(
       {
@@ -84,7 +84,9 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       collection: name,
       price: priceValue,
       chain: "algo",
-      relisted: false,
+      owner,
+      isListed: true,
+      sold: false,
       mainnet,
       createdAt: new Date(),
     };
@@ -105,7 +107,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
     .catch((error) => {
       console.error("Error", error);
     });
-  db.collection("listed")
+  db.collection("nfts")
     .doc(`${owner}`)
     .set(
       {
@@ -135,7 +137,7 @@ async function writeUserProfile(userObj, user) {
 }
 
 async function readNftTransaction(assetId) {
-  const querySnapshot = await db.collection("transactions").doc(`${assetId}`).get();
+  const querySnapshot = await db.collection("transactionsHistory").doc(`${assetId}`).get();
 
   return Object.values(querySnapshot.data());
 }
@@ -148,41 +150,15 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
     sold: !!sold,
     Buyer: buyer,
     chain: "algo",
-    relisted: false,
-    owner,
+    isListed: !sold,
+    owner: buyer,
     price,
     dateSold,
     mainnet,
     createdAt: new Date(),
   };
-  db.collection("listed")
+  db.collection("nfts")
     .doc(`${owner}`)
-    .set(
-      {
-        ...updates,
-      },
-      { merge: true }
-    );
-
-  updates = {
-    id: assetId,
-    collection: collection || null,
-    sold: !!sold,
-    Buyer: buyer,
-    chain: "algo",
-    relisted: false,
-    owner,
-    price,
-    dateSold,
-    mainnet,
-    createdAt: new Date(),
-  };
-
-  await db
-    .collection("nfts")
-    .doc(`${owner}`)
-    .collection(`${assetId}`)
-    .doc("properties")
     .set(
       {
         ...updates,
@@ -212,8 +188,24 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
 // }
 
 async function readSIngleUserNft(userAddress, assetId) {
-  const querySnapshot = await db.collection("listed").doc(userAddress).get();
-  return Object.values(querySnapshot.data()).find((asset) => asset.id === assetId);
+  // const querySnapshot = await db.collection("nfts").doc(userAddress).get();
+  // const res = [];
+  // querySnapshot.forEach((docs) => {
+  //   res.push(...Object.values(docs.data()));
+  // });
+  // return res.find((asset) => asset.id === assetId);
+  const querySnapshot = await db.collection("nfts").get();
+  const res = [];
+  try {
+    querySnapshot.forEach((docs) => {
+      res.push(...Object.values(docs.data()));
+    });
+    const response = res.find((asset) => asset.owner === userAddress && asset.id === assetId);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 async function readUserProfile(userAddress) {
@@ -227,16 +219,13 @@ async function readUserProfile(userAddress) {
 }
 
 async function fetchAlgoSingle(mainnet) {
-  const querySnapshot = await db.collection("listed").get();
+  const querySnapshot = await db.collection("nfts").get();
   const res = [];
   querySnapshot.forEach((docs) => {
-    data = docs.data();
-
     res.push(...Object.values(docs.data()));
   });
-  // console.log("BEFORE FILTER", res)
-  // const response = res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
-  return res;
+  const response = res.filter((asset) => asset.collection === null && asset.mainnet === mainnet);
+  return response;
 }
 
 async function fetchAlgoCollections(mainnet) {
@@ -258,8 +247,8 @@ async function fetchUserCollections(account) {
   return res;
 }
 
-async function fetchUserNfts(account) {
-  const querySnapshot = await db.collection("listed").doc(account).get();
+async function fetchUserCreatedNfts(account) {
+  const querySnapshot = await db.collection("nfts").doc(account).get();
   try {
     const res = Object.values(querySnapshot.data());
     return res;
@@ -269,8 +258,23 @@ async function fetchUserNfts(account) {
   }
 }
 
+async function fetchUserNfts(account) {
+  const querySnapshot = await db.collection("nfts").get();
+  const res = [];
+  try {
+    querySnapshot.forEach((docs) => {
+      res.push(...Object.values(docs.data()));
+    });
+    const response = res.filter((asset) =>  asset.owner === account);
+    return response;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
 async function fetchUserBoughtNfts(account) {
-  const querySnapshot = await db.collection("listed").get();
+  const querySnapshot = await db.collection("nfts").get();
   const res = [];
   querySnapshot.forEach((docs) => {
     res.push(...Object.values(docs.data()));
@@ -285,54 +289,54 @@ async function fetchUserBoughtNfts(account) {
   return filtered;
 }
 
-async function listNft(prevOwner, collection, assetId, price, newOwner, mainnet) {
-  let asset = await readSIngleUserNft(prevOwner, assetId);
-  if (asset.buyer !== newOwner) {
-    return { message: "you do not own this nft" };
-  }
+async function listNft(assetId, price, owner) {
+  console.log("so you wanna list??")
+  // let asset = await readSIngleUserNft(prevOwner, assetId);
+  // if (asset.buyer !== newOwner) {
+  //   return { message: "you do not own this nft" };
+  // }
+  // const nftRef = db.collection("nfts").where(`${assetId}.id`, "==", assetId).get()
+  // const res = [];
+  // (await nftRef).forEach((docs) => {
+  //   res.push(...Object.values(docs.data()));
+  // });
+  // const rep = res.filter((asset) => asset.id === assetId);
+  // console.log("rev fighter", res, rep);
+  // return;
   const updates = {};
-  const prevUpdates = {};
   const batch = db.batch();
-  prevUpdates[assetId] = {
-    relisted: false,
-  };
-  updates[assetId] = {
-    id: assetId,
-    collection: collection || null,
-    chain: "algo",
-    owner: newOwner,
-    price,
-    mainnet,
-    createdAt: new Date(),
-  };
 
   updates[assetId] = {
-    id: assetId,
-    collection,
     price,
-    chain: "algo",
-    mainnet,
-    createdAt: new Date(),
+    updatedAt: new Date(),
+    sold: false,
+    isListed: true,
   };
+
   const transactionRecords = {};
   transactionRecords[nanoid()] = {
-    type: "ReListing",
-    buyer: newOwner,
-    seller: prevOwner,
+    type: "Listing",
+    buyer: owner,
+    id: assetId,
     price,
     txId: "",
     txDate: new Date(),
   };
-
-  const prevNftRef = db.collection("listed").doc(`${prevOwner}`);
-  const newNftRef = db.collection("listed").doc(`${newOwner}`);
-  const recordRef = db.collection("transactions").doc(`${assetId}`);
-  batch.set(prevNftRef, prevUpdates, { merge: true });
-  batch.set(newNftRef, updates, { merge: true });
-  batch.set(recordRef, transactionRecords, { merge: true });
-  await batch.commit();
-  return { message: "Nft has been relisted" };
+  try {
+    const nftRef = await db.collection("nfts").where(`${assetId}.id`, "==", assetId).get();
+    console.log(nftRef);
+    const recordRef = db.collection("transactionsHistory").doc(`${assetId}`);
+    batch.set(nftRef.docs[0].ref, updates, { merge: true });
+    batch.set(recordRef, transactionRecords, { merge: true });
+    await batch.commit();
+    return { message: "Nft has been relisted" };
+  } catch (err) {
+    console.log(err)
+    return { message: "an error occured while listing nft" };
+  }
 }
+
+listNft(94494020, 20, "DHIZRJP5BKTEH7YQEBE3ISQ4DND25W4LJAMMFYHJGINJYAF57N5SCMXCSQ").then((data) => {console.log(data)})
 
 export {
   writeUserData,
@@ -348,4 +352,5 @@ export {
   readUserProfile,
   writeUserProfile,
   listNft,
+  fetchUserCreatedNfts,
 };
