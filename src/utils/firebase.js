@@ -231,6 +231,7 @@ async function fetchAlgoSingle(mainnet) {
   const res = [];
   querySnapshot.forEach((docs) => {
     data = docs.data();
+
     res.push(...Object.values(docs.data()));
   });
   // console.log("BEFORE FILTER", res)
