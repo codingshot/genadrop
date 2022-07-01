@@ -230,7 +230,9 @@ async function fetchAlgoSingle(mainnet) {
   const querySnapshot = await db.collection("listed").get();
   const res = [];
   querySnapshot.forEach((docs) => {
-    const data = docs.data();
+
+    data = docs.data();
+
     res.push(...Object.values(docs.data()));
   });
   // console.log("BEFORE FILTER", res)
