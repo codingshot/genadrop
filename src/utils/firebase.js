@@ -336,8 +336,6 @@ async function listNft(assetId, price, owner) {
   }
 }
 
-listNft(94494020, 20, "DHIZRJP5BKTEH7YQEBE3ISQ4DND25W4LJAMMFYHJGINJYAF57N5SCMXCSQ").then((data) => {console.log(data)})
-
 export {
   writeUserData,
   readSIngleUserNft,
