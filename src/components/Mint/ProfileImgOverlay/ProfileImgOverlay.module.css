@@ -41,7 +41,7 @@
   height: 200px;
   width: 200px;
   margin-bottom: 1rem;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .imgContainer > div:hover {
   background: var(--main-700);
@@ -76,7 +76,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: 0.3s ease;
 }
 .buttonConatiner p {
@@ -102,7 +102,7 @@ div.active {
   color: var(--main-700);
   font-size: 1.25rem;
   font-weight: 500;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .viewALlBtn:hover {
   text-decoration-line: underline;

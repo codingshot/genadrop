@@ -15,7 +15,7 @@
 }
 
 .question {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 1em 0;
   font-weight: 600;
   transition: all 300ms;

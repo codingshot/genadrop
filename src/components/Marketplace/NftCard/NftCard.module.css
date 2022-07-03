@@ -8,7 +8,7 @@
 }
 
 .card:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transform: translateY(-5px);
   box-shadow: var(--shadow-dark);
 }

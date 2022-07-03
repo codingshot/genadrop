@@ -51,7 +51,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .closeIcon img {
@@ -64,7 +64,7 @@
 }
 
 .clearFilter {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   margin-left: 1em;
   transition: all 100ms;
 }

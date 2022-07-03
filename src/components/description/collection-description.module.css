@@ -104,7 +104,7 @@
   background: var(--main-700);
   color: white;
   transition: all 0.3s;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .previewBtn:hover {

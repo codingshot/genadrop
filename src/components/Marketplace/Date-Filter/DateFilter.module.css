@@ -14,7 +14,7 @@
   white-space: nowrap;
   font-size: 0.85rem;
   font-weight: 600;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .container div.active {

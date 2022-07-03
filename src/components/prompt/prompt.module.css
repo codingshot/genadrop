@@ -29,7 +29,7 @@
   outline: none;
   padding: 0.25em 1.5em;
   border-radius: 0.25em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 0.3s;
   border: 1px solid var();
 }

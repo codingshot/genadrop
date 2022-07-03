@@ -40,7 +40,7 @@
   border-radius: 2em;
   background: var(--main-bg);
   color: var(--main-700);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .btn:hover {

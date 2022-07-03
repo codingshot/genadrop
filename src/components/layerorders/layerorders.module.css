@@ -52,7 +52,7 @@
 }
 
 .editBtn {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.1em;
   width: 24px;
   height: 24px;
@@ -148,7 +148,7 @@
   width: 100%;
   background: var(--main-700);
   border: none;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.75em 1em;
   display: flex;
   align-items: center;

@@ -43,7 +43,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   background: none;
   color: var(--main-700);
   font-size: 20px;
@@ -61,7 +61,7 @@
 
 .go-back {
   width: 200px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   height: 60px;
   background-color: var(--main-700);
   color: white;

@@ -12,7 +12,7 @@
 
 .logoContainer {
   position: relative;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   overflow: hidden;
 }
 
@@ -153,7 +153,7 @@
 .iconClose,
 .iconOpen {
   display: none;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .wallet {

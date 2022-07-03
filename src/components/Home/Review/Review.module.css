@@ -39,7 +39,7 @@
   background: var(--main-bg);
   border: 1px solid #e5e8eb;
   box-shadow: var(--shadow-light);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 

@@ -20,7 +20,7 @@
 }
 
 .question:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .question svg {
   width: 1rem;

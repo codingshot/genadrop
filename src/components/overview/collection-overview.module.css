@@ -34,7 +34,7 @@
 .showRuleBtn {
   border-radius: 2em;
   font-size: 1rem;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
   border: 1px solid transparent;
 }
@@ -131,7 +131,7 @@
 }
 .conflictGuide img:last-child {
   margin-left: 8px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .hidden {
   display: none;

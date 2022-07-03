@@ -170,7 +170,7 @@
   align-items: center;
   justify-content: flex-start;
   border-radius: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 2px;
   border: 1px solid transparent;
   transition: all 300ms;
@@ -257,7 +257,7 @@
 
 .copyIcon:hover {
   transform: scale(0.8);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .copyIcon.active {

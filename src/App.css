@@ -94,6 +94,13 @@
   --text-dark-700: #2c3857;
   --text-dark-800: #192648;
   --text-dark-900: #0f1d40;
+
+  --cursor-default: url("./assets/default-cursor.svg"), auto;
+  --cursor-pointer: url("./assets/cursor-pointer.svg"), auto;
+  --cursor-disabled: url("./assets/cursor-disabled.svg"), auto;
+  --cursor-grab: url("./assets/cursor-grab.svg"), auto;
+  --cursor-hover: url("./assets/cursor-hover.svg"), auto;
+  --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
 }
 
 li {
@@ -105,6 +112,7 @@ li {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  cursor: var(--cursor-default);
 }
 
 a {
@@ -166,7 +174,7 @@ a {
 }
 
 button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: none;
   outline: none;
   background: transparent;
