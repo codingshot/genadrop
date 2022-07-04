@@ -1,9 +1,8 @@
 .container {
   width: 100%;
-  display: inline;
   width: max-content;
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }

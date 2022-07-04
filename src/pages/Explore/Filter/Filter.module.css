@@ -192,10 +192,12 @@
 .layer > div {
   border: 1px solid white;
   padding: 0.5em 0.25em;
+  background: var(--text-light-200);
+  border-radius: 0.25em;
 }
 
 .layer > div:hover {
-  background: gray;
+  background: var(--text-light-400);
 }
 
 .value {
@@ -215,7 +217,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.15em;
-  background: rgb(161, 160, 160);
+  background: var(--main-bg);
+  color: var(--text-light-900);
+  border: 1px solid var(--text-light-900);
 }
 
 .sidebar2 {

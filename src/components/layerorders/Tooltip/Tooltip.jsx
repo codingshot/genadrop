@@ -1,17 +1,17 @@
 import classes from "./Tooltip.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
-import { handleAddSampleLayers } from "../layeroders-script";
+import { handleAddSampleLayers } from "../../../utils";
+import { useState } from "react";
 
-const Tooltip = () => {
+const Tooltip = ({ isModal }) => {
   const { dispatch } = useContext(GenContext);
-  const [show, setShow] = useState(window.sessionStorage.isTooltip);
+  const [showTip, setTip] = useState(false);
 
   const handleClose = () => {
     window.sessionStorage.isTooltip = "true";
-    setShow(window.sessionStorage.isTooltip);
+    setTip(false);
   };
 
   const handleSamples = () => {
@@ -20,7 +20,9 @@ const Tooltip = () => {
   };
 
   return (
-    <div className={`${classes.container} ${!window.sessionStorage.isTooltip && classes.active}`}>
+    <div
+      className={`${classes.container} ${showTip && !window.sessionStorage.isTooltip && !isModal && classes.active}`}
+    >
       <CloseIcon onClick={handleClose} className={classes.closeBtn} />
       <div className={classes.card}>
         <div className={classes.title}>Add layers for your arts using this button.</div>

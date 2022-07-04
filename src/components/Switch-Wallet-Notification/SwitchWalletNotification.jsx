@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./SwitchWalletNotification.module.css";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
 
 const SwitchWalletNotification = () => {
@@ -25,7 +25,7 @@ const SwitchWalletNotification = () => {
             {mainnet ? "genadrop-staging.vercel.app" : "genadrop.com"}
           </a>
         </div>
-        <img onClick={handleClose} className={classes.icon} src={closeIcon} alt="" />
+        <CloseIcon className={classes.closeIcon} onClick={handleClose} />
       </div>
     </div>
   );

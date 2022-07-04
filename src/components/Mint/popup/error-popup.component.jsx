@@ -1,6 +1,5 @@
 import errorIcon from "../../../assets/icon-error_2.svg";
-import closeIcon from "../../../assets/icon-close.svg";
-import { useRef, useState } from "react";
+import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import classes from "./popup.module.css";
 
 const ErrorPopup = (props) => {
@@ -18,7 +17,7 @@ const ErrorPopup = (props) => {
 
   return (
     <div className={classes.popupContainer}>
-      <img onClick={handleResetPopup} src={closeIcon} alt="" className={classes.closeBtn} />
+      <CloseIcon onClick={handleResetPopup} className={classes.closeIcon} />
       <div className={classes.imgContainer}>
         <img src={errorIcon} alt="" />
       </div>

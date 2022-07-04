@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import { setCurrentDnaLayers, setNftLayers, setNotification, setLoader } from "../../gen-state/gen.actions";
 import { getDefaultName, handleImage } from "../../utils";
 
 export const createDna = (layers) => {
@@ -110,7 +111,7 @@ removing ${uniqueIndex} duplicates`
 };
 
 export const generateArt = async (props) => {
-  const { layers, canvas, image, dispatch, setLoader } = props;
+  const { layers, canvas, image, dispatch, setLoader, imageQuality } = props;
   const uniqueImages = [];
   for (const [index, { attributes, id }] of layers.entries()) {
     dispatch(setLoader(`generating ${index + 1} of ${layers.length}`));
@@ -119,7 +120,7 @@ export const generateArt = async (props) => {
       images.push(attr.image);
     });
     await handleImage({ images, canvas, image });
-    const imageUrl = canvas.toDataURL("image/webp", 0.5);
+    const imageUrl = canvas.toDataURL("image/webp", imageQuality);
     uniqueImages.push({ id, imageUrl });
   }
   dispatch(setLoader(""));
@@ -136,4 +137,74 @@ export const parseLayers = (props) => {
     }
     return layer;
   });
+};
+
+export const handleGenerate = async (generateProps) => {
+  const { isRule, mintAmount, combinations, layers, collectionName, dispatch, rule, canvasRef, imageQuality } =
+    generateProps;
+  console.log({ mintAmount });
+  const getFirstLayerWithTrait = (layers) => {
+    return layers.find((layer) => layer.traits.length);
+  };
+
+  if (isRule) {
+    return dispatch(
+      setNotification({
+        message: "Finish adding conflict rule and try again",
+        type: "warning",
+      })
+    );
+  }
+  if (!mintAmount) {
+    return dispatch(
+      setNotification({
+        message: "Set the number to generate",
+        type: "warning",
+      })
+    );
+  }
+  if (!combinations) {
+    return dispatch(
+      setNotification({
+        message: "Upload images and try again",
+        type: "warning",
+      })
+    );
+  }
+  if (mintAmount > combinations - rule.length) {
+    return dispatch(
+      setNotification({
+        message: "Cannot generate more than the possible combinations",
+        type: "warning",
+      })
+    );
+  }
+  dispatch(setNftLayers([]));
+  const dnaLayers = createDna(layers);
+  const uniqueLayers = await createUniqueLayer({
+    dispatch,
+    setNotification,
+    setLoader,
+    layers: dnaLayers,
+    mintAmount,
+    rule,
+    collectionName,
+  });
+
+  const arts = await generateArt({
+    dispatch,
+    setLoader,
+    layers: uniqueLayers,
+    canvas: canvasRef.current,
+    image: getFirstLayerWithTrait(layers).traits[0].image,
+    imageQuality,
+  });
+  dispatch(setCurrentDnaLayers(dnaLayers));
+  dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
+  dispatch(
+    setNotification({
+      message: "Done! Click on the preview button to view assets.",
+      type: "success",
+    })
+  );
 };

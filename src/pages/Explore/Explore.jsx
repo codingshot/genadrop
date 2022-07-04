@@ -8,7 +8,7 @@ import Header from "./Header/Header";
 import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-script";
 import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 
@@ -172,9 +172,7 @@ const Explore = () => {
               filter.attributes.map((f, idx) => (
                 <div key={idx} className={classes.filteredItem}>
                   <span>{`${f.trait_type}: ${f.value}`}</span>
-                  <div onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon}>
-                    <img src={closeIcon} alt="" />
-                  </div>
+                  <CloseIcon onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon} />
                 </div>
               ))}
             {filter?.attributes && filter.attributes.length ? (

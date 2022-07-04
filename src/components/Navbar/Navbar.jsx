@@ -4,7 +4,7 @@ import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
 import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
 
 const Navbar = () => {
@@ -74,12 +74,7 @@ const Navbar = () => {
           </div>
         </nav>
         {dropdown ? (
-          <img
-            onClick={() => handleSetState({ dropdown: !dropdown })}
-            className={classes.iconClose}
-            src={closeIcon}
-            alt=""
-          />
+          <CloseIcon onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.closeIcon} />
         ) : (
           <img
             onClick={() => handleSetState({ dropdown: !dropdown })}

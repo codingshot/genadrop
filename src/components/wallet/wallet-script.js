@@ -212,7 +212,8 @@ export const updateAccount = async (walletProps) => {
   });
   const networkId = await ethereum.networkVersion;
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  const getEnv = mainnet === supportedChains[networkId] && supportedChains[networkId].isMainnet;
+  const getEnv = mainnet === supportedChains[networkId].isMainnet;
+
   if (!getEnv) {
     WS.disconnectWallet(walletProps);
     dispatch(setSwitchWalletNotification(true));

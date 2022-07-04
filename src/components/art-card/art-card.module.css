@@ -2,17 +2,18 @@
   width: 14em;
   cursor: pointer;
   position: relative;
-  border-radius: 1em;
+  border-radius: 0.5em;
   overflow: hidden;
   transition: all 100ms;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-light);
-  border: 1px solid transparent;
+  border: 3px solid transparent;
 }
 
 .container.active {
-  border: 3px solid var(--main-700);
+  border: 3px solid var(--warning-500);
+  box-shadow: var(--shadow-dark-2);
 }
 
 .container.inActive {
@@ -28,11 +29,10 @@
 }
 
 .imageContainer {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--card-bg1);
+  background: var(--text-light-400);
 }
 
 .imageContainer:hover .image {
@@ -40,7 +40,9 @@
 }
 
 .image {
+  object-fit: contain;
   width: 100%;
+  height: 12em;
 }
 
 .action {
@@ -135,12 +137,15 @@
   display: block;
 }
 
-.removeIcon {
+.closeIcon {
   transition: all 300ms;
   padding: 0.25em;
   border-radius: 0.25em;
+  fill: var(--bg-dark);
+  width: 1.4em;
+  height: 1.4em;
 }
 
-.removeIcon:hover {
+.closeIcon:hover {
   box-shadow: var(--shadow-dark);
 }

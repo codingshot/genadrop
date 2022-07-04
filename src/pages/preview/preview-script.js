@@ -84,12 +84,12 @@ export const createUniqueLayer = async (props) => {
 };
 
 export const generateArt = async (props) => {
-  const { layer, canvas, image } = props;
+  const { layer, canvas, image, imageQuality } = props;
   const images = [];
   layer.attributes.forEach((attr) => {
     images.push(attr.image);
   });
   await handleImage({ images, canvas, image });
-  const imageUrl = canvas.toDataURL("image/webp", 0.5);
+  const imageUrl = canvas.toDataURL("image/webp", imageQuality);
   return { id: layer.id, imageUrl };
 };

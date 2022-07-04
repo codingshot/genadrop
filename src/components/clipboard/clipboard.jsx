@@ -4,7 +4,7 @@ import { setClipboard } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./clipboard.module.css";
 import linkIcon from "../../assets/icon-link.svg";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 
 const Clipboard = () => {
   const [state, setState] = useState({
@@ -56,7 +56,7 @@ const Clipboard = () => {
       }}
       className={`${classes.container} ${toggleClipboard && classes.active}`}
     >
-      <img className={classes.icon} onClick={handleDiscard} src={closeIcon} alt="" />
+      <CloseIcon className={classes.closeIcon} onClick={handleDiscard} />
       <div className={classes.message}>{clipboardMessage}</div>
       <div className={classes.action}>
         <div className={classes.copy} onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}>
