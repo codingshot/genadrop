@@ -57,6 +57,7 @@ export const INITIAL_STATE = {
   promptLayer: null,
   promptRules: null,
   toggleWalletPopup: false,
+  imageQuality: 0.5, // high:1, medium:0.5, low:0.2
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -95,6 +96,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         layers: updateImage(state.layers, action.payload),
+      };
+    case genActionTypes.CLEAR_LAYERS:
+      return {
+        ...state,
+        layers: [],
       };
     case genActionTypes.SET_PREVIEW:
       return {
@@ -327,6 +333,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         activeCollection: action.payload,
+      };
+    case genActionTypes.SET_IMAGE_QUALITY:
+      return {
+        ...state,
+        imageQuality: action.payload,
       };
     default:
       return state;

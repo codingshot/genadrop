@@ -277,11 +277,7 @@ div.showPreview > span {
 .inputWrapper label div {
   margin-left: 0.5em;
 }
-.inputWrapper label div svg path {
-  margin: auto;
-  padding: 1px;
-  fill: var(--main-700);
-}
+
 .inputWrapper textarea,
 .inputWrapper input,
 .inputWrapper select,
@@ -472,14 +468,13 @@ div.showPreview > span {
 .priceTooltip div {
   margin-left: 0.625em;
 }
+
 .priceTooltip div svg {
   /* border: 2px solid var(--main-700); */
-  height: 1.1em;
-  width: 1.1em;
+  /* height: 1.1em;
+  width: 1.1em; */
 }
-.priceTooltip div svg path {
-  fill: var(--main-700);
-}
+
 .mintForm {
   display: flex;
   flex-direction: column;
@@ -511,9 +506,7 @@ div.showPreview > span {
   background: #f6f4ff;
   border-radius: 0.1875em;
 }
-.selectImg svg path {
-  fill: var(--main-700);
-}
+
 .chinLabel {
   margin-bottom: 1.1em;
   margin-bottom: 1.1em;

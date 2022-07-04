@@ -1,13 +1,19 @@
 .container {
   width: 100%;
+  height: calc(100vh - 8em);
   max-width: 20em;
-  padding: 0 1em;
+  padding: 1em;
   position: sticky;
   top: 5em;
+  border: 1px solid var(--text-light-500);
+  border-radius: 0.5em;
+  z-index: 10;
+  overflow: auto;
+  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.1);
 }
 
-.container * {
-  color: white;
+.container.active {
+  z-index: 18;
 }
 
 .container::-webkit-scrollbar {
@@ -17,11 +23,6 @@
 .container {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.btnWrapper {
-  width: 100%;
-  margin-bottom: 0.5em;
 }
 
 .preview_details {
@@ -34,6 +35,41 @@
   margin-bottom: 1em;
 }
 
+.guide {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 600;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.guide > * {
+  white-space: nowrap;
+  border-radius: 1.5em;
+  border: 1px solid transparent;
+}
+
+.guide > *:nth-child(2) {
+  color: var(--main-700);
+  border: 1px solid var(--text-light-400);
+  box-shadow: var(--shadow-light-3);
+  padding: 0.5em;
+  cursor: pointer;
+}
+
+.guide > *:nth-child(3) {
+  color: var(--main-700);
+  cursor: pointer;
+}
+
+.guide > *:nth-child(2):hover,
+.guide > *:nth-child(3):hover {
+  color: var(--main-900);
+}
+
 .previewWrapper {
   width: auto;
 }
@@ -43,47 +79,125 @@
   flex: 1;
 }
 
-.input {
-  width: 100%;
+.combinations {
+  margin-bottom: 1em;
+  background: var(--text-light-300);
+  padding: 0.5em;
+}
+
+.combinations .title {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 1em;
-  margin-bottom: 1em;
+  justify-content: flex-start;
+  gap: 0.5em;
 }
 
-.action {
-  flex: 50%;
+.combinations .count {
+  width: 100%;
+  background: var(--main-bg);
   text-align: center;
+  margin-top: 0.5em;
+}
+
+.generateContainer {
+  width: 100%;
+}
+
+.generateSettings {
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  color: var(--text-dark-500);
+  margin-bottom: 2em;
+}
+
+.generateSettings .wrapper {
+  background: var(--text-light-400);
   padding: 0.25em;
   border-radius: 0.25em;
-  font-size: 0.85rem;
-  background: var(--main-700);
 }
 
-.action input {
-  width: 100%;
-  background: var(--main-bg);
-  color: var(--text-dark-900);
-  outline: none;
-  padding: 0.15em 0.5em;
-  font-size: 0.85rem;
-  border-radius: 0.25em;
+.generateSettings select {
+  margin-right: 0.5em;
   border: none;
-  margin-top: 1em;
+  outline: none;
+  font-size: 0.75rem;
 }
 
-.action > div {
-  font-size: 0.85rem;
+.btnContainer {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 0.5em;
 }
 
-.combinations {
-  width: 100%;
-  background: var(--main-bg);
-  color: var(--text-dark-900);
+.generateBtn {
+  flex: 1;
+  border-radius: 3em;
+  padding: 0.75em;
+  text-align: center;
+  background: var(--main-700);
+  color: var(--main-bg);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 300ms;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.generateBtn:hover {
+  background: var(--main-900);
+}
+
+.previewBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewBtn:hover:before {
+  content: "Preview your collection";
+  position: absolute;
+  top: -1em;
+  left: 0;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  transform: translateY(-100%);
+  padding: 0.25em;
   border-radius: 0.25em;
-  margin-top: 1em;
-  padding: 0.1em;
+  background: #626277;
+  color: var(--main-bg);
+  opacity: 1;
+}
+
+.previewBtn:hover:after {
+  content: "";
+  position: absolute;
+  top: -0.25em;
+  transform: translateY(-100%);
+  border-top: 0.5em solid #626277;
+  border-right: 0.5em solid transparent;
+  border-left: 0.5em solid transparent;
+  opacity: 1;
+}
+
+.previewIcon {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  background: var(--main-bg);
+  box-shadow: 0 0 15px gainsboro;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: var(--main-700);
+  cursor: pointer;
+  border: 1px solid var(--text-light-500);
 }
 
 .mintInfo {
@@ -98,27 +212,14 @@
   color: var(--text-dark-900);
 }
 
-.previewBtn {
-  padding: 0.25em 1.5em;
-  border-radius: 0.75em;
-  background: var(--main-700);
-  color: white;
-  transition: all 0.3s;
-  cursor: pointer;
-}
-
-.previewBtn:hover {
-  background: var(--main-900);
-}
-
 .mintInfo.isLoading {
   border: 1px solid var(--main-700);
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1000px) {
   .container {
     height: auto;
-    max-width: 54em;
+    max-width: 36em;
     align-self: flex-end;
     margin-top: 2em;
   }

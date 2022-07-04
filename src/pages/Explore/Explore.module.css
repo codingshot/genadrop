@@ -46,21 +46,17 @@
 }
 
 .closeIcon {
-  width: 1.2em;
-  height: 1.2em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.closeIcon img {
   width: 1em;
-  transition: all 100ms;
+  height: 1em;
+  padding: 0.15em;
+  border-radius: 0.15em;
+  cursor: pointer;
+  transition: all 300ms;
+  fill: var(--bg-dark);
 }
 
-.closeIcon:hover img {
-  width: 0.85em;
+.closeIcon:hover {
+  background: rgb(0, 0, 0, 0.1);
 }
 
 .clearFilter {

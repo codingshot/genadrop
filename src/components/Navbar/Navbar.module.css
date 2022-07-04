@@ -150,10 +150,14 @@
   width: 100%;
 }
 
-.iconClose,
+.closeIcon,
 .iconOpen {
   display: none;
   cursor: pointer;
+}
+
+.closeIcon {
+  fill: var(--bg-dark);
 }
 
 .wallet {
@@ -197,7 +201,7 @@
     width: 3em;
   }
 
-  .iconClose,
+  .closeIcon,
   .iconOpen {
     display: block;
   }

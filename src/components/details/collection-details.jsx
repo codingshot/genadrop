@@ -23,15 +23,17 @@ const CollectionDetails = () => {
 
   return (
     <div className={classes.container}>
-      <h4>Description</h4>
+      <h4>Attributes</h4>
 
-      {description.map(({ layerTitle, traitTitle, Rarity }, index) => (
-        <p key={index}>
-          <span>{`[${layerTitle}]`}</span>
-          <span>{traitTitle}</span>
-          <span>Rarity {Rarity}</span>
-        </p>
-      ))}
+      <div className={classes.content}>
+        {description.map(({ layerTitle, traitTitle, Rarity }, index) => (
+          <p key={index}>
+            <span>{`[${layerTitle}]`}</span>
+            <span>{traitTitle}</span>
+            <span>Rarity {Rarity}</span>
+          </p>
+        ))}
+      </div>
     </div>
   );
 };
