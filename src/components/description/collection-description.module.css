@@ -120,6 +120,7 @@
 }
 
 .generateSettings select {
+  cursor: var(--cursor-pointer);
   margin-right: 0.5em;
   border: none;
   outline: none;
