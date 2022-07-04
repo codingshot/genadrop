@@ -97,6 +97,16 @@
   --text-dark-800: #192648;
   --text-dark-900: #0f1d40;
 
+  --cursor-default: url("./assets/default-cursor.svg"), auto;
+  --cursor-pointer: url("./assets/cursor-pointer.svg"), auto;
+  --cursor-disabled: url("./assets/cursor-disabled.svg"), auto;
+  --cursor-grab: url("./assets/cursor-grab.svg"), auto;
+  --cursor-hover: url("./assets/cursor-hover.svg"), auto;
+  --cursor-scopeg: url("./assets/cursor-scope.svg"), auto;
+  --cursor-camera: url("./assets/cursor-camera.svg"), auto;
+  --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
+  --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto;
+
   --card-bg: #626277;
   --card-bg-dark: #515164;
   --card-bg-light: #737387;
@@ -116,10 +126,12 @@ li {
 a {
   text-decoration: none;
   color: unset;
+  cursor: var(--cursor-pointer);
 }
 
 .App {
   width: 100%;
+  cursor: var(--cursor-default);
 }
 
 .App * {
@@ -172,7 +184,7 @@ a {
 }
 
 button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: none;
   outline: none;
   background: transparent;

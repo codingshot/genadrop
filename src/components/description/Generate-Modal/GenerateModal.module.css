@@ -35,7 +35,7 @@
   padding: 0.25em;
   border-radius: 0.25em;
   background: var(--text-light-300);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -141,7 +141,7 @@
 
 .btn_3 {
   position: relative;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .loaderIcon {

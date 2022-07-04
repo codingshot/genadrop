@@ -12,7 +12,7 @@
 
 .logoContainer {
   position: relative;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   overflow: hidden;
 }
 
@@ -84,6 +84,7 @@
 }
 
 .searchContainer:hover {
+  cursor: var(--cursor-hover);
   border: 1px solid var(--main-700);
 }
 
@@ -96,6 +97,7 @@
 }
 
 .searchContainer button:hover {
+  cursor: var(--cursor-pointer);
   background: var(--main-900);
 }
 
@@ -133,6 +135,7 @@
 
 .navItem li {
   padding: 0.5em 1em;
+  cursor: var(--cursor-pointer);
 }
 
 .line {
@@ -153,7 +156,7 @@
 .closeIcon,
 .iconOpen {
   display: none;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .closeIcon {
@@ -252,6 +255,7 @@
   }
 
   .navItem:hover {
+    cursor: var(--cursor-hover);
     background: var(--main-100);
   }
 

@@ -28,7 +28,7 @@
   outline: none;
   padding: 0.25em 1.5em;
   border-radius: 0.25em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid var();
   border: 1px solid transparent;
 }

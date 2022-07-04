@@ -81,9 +81,10 @@
 .uploadIcon img {
   width: 68px !important;
   height: 68px !important;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .uploadIcon img:hover {
+  cursor: var(--cursor-hover);
   opacity: 0.5;
   transition: 0.4s ease-in-out;
 }
@@ -176,6 +177,7 @@
 }
 
 .submit:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
   border: 2px solid var(--main-700);
 }
@@ -185,6 +187,7 @@
 }
 
 .cancel:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-100);
 }
 
@@ -196,7 +199,7 @@
   align-items: center;
   justify-content: flex-start;
   border-radius: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 2px;
   border: 1px solid transparent;
   transition: all 300ms;
@@ -300,7 +303,7 @@
 
 .copyIcon:hover {
   transform: scale(0.8);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .copyIcon.active {

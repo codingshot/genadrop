@@ -53,7 +53,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid var(--text-light-500);
   background: var(--text-light-200);
 }

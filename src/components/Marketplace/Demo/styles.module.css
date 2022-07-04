@@ -59,10 +59,11 @@
   padding: 1em;
   border-radius: 1em;
   transition: all 300ms;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .card:hover {
+  cursor: var(--cursor-hover);
   background: #f8f8f8;
 }
 

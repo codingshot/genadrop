@@ -26,7 +26,7 @@
   max-width: 12em;
   padding: 0.5em 1.5em;
   border-radius: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   color: white;
   background: var(--main-700);
   text-align: center;
@@ -45,7 +45,7 @@
   justify-content: center;
   gap: 0.5em;
   color: var(--main-700);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   position: relative;
   background: var(--main-bg);
   transition: all 150ms;
@@ -63,7 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   font-size: 2rem;
 }
 
@@ -96,7 +96,7 @@
   align-items: center;
   position: relative;
   gap: 0.25em;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .activeNetwork {
@@ -120,7 +120,7 @@
   border-radius: 0.5em;
   padding: 0.5em 1em;
   background: var(--main-bg);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   font-size: 0.85rem;
 }
 

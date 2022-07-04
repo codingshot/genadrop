@@ -12,7 +12,7 @@
   height: 1em;
   /* border: 1px solid var(--main-700); */
   border-radius: 50%;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .container:hover::before {

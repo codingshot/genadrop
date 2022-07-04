@@ -1,6 +1,6 @@
 .container {
   width: 14em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   position: relative;
   border-radius: 0.5em;
   overflow: hidden;
@@ -92,7 +92,7 @@
 }
 
 .container i {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   font-size: 0.7rem;
 }
 
@@ -147,5 +147,6 @@
 }
 
 .closeIcon:hover {
+  cursor: var(--cursor-hover);
   box-shadow: var(--shadow-dark);
 }

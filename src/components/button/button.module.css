@@ -6,7 +6,7 @@
   color: white;
   outline: none;
   font-size: 1rem;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 0.3s;
   border-radius: 0.25em;
   text-transform: capitalize;

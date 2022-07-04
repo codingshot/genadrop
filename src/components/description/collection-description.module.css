@@ -57,12 +57,12 @@
   border: 1px solid var(--text-light-400);
   box-shadow: var(--shadow-light-3);
   padding: 0.5em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .guide > *:nth-child(3) {
   color: var(--main-700);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .guide > *:nth-child(2):hover,
@@ -120,6 +120,7 @@
 }
 
 .generateSettings select {
+  cursor: var(--cursor-pointer);
   margin-right: 0.5em;
   border: none;
   outline: none;
@@ -141,7 +142,7 @@
   background: var(--main-700);
   color: var(--main-bg);
   font-size: 1rem;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
   display: flex;
   align-items: center;
@@ -196,7 +197,7 @@
   justify-content: center;
   font-weight: bold;
   color: var(--main-700);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid var(--text-light-500);
 }
 

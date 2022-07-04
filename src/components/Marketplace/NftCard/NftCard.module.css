@@ -8,7 +8,7 @@
 }
 
 .card:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transform: translateY(-5px);
   box-shadow: var(--shadow-dark);
 }
@@ -107,14 +107,16 @@
 }
 
 .button:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
   outline: 2px solid var(--main-700);
 }
 .buttonSold {
   background-color: #707a83;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 .buttonSold:hover {
+  cursor: var(--cursor-hover);
   background: #707a83;
   outline: none;
 }
