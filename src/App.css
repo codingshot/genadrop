@@ -115,7 +115,6 @@ li {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  cursor: var(--cursor-default);
 }
 
 a {
@@ -125,6 +124,7 @@ a {
 
 .App {
   width: 100%;
+  cursor: var(--cursor-default);
 }
 
 .App * {

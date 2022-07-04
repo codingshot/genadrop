@@ -63,6 +63,7 @@
 }
 
 .card:hover {
+  cursor: var(--cursor-hover);
   background: #f8f8f8;
 }
 

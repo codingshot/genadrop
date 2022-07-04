@@ -84,6 +84,7 @@
 }
 
 .searchContainer:hover {
+  cursor: var(--cursor-hover);
   border: 1px solid var(--main-700);
 }
 
@@ -96,6 +97,7 @@
 }
 
 .searchContainer button:hover {
+  cursor: var(--cursor-pointer);
   background: var(--main-900);
 }
 
@@ -133,6 +135,7 @@
 
 .navItem li {
   padding: 0.5em 1em;
+  cursor: var(--cursor-hover);
 }
 
 .line {
@@ -248,6 +251,7 @@
   }
 
   .navItem:hover {
+    cursor: var(--cursor-hover);
     background: var(--main-100);
   }
 

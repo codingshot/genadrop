@@ -114,6 +114,7 @@ p.fillerPage {
   border-color: var(--main-700);
 }
 p.fillerPage:hover {
+  cursor: var(--cursor-hover);
   border-color: transparent;
 }
 .gotoWrapper {

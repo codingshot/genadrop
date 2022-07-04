@@ -34,6 +34,7 @@
   transition: transform 0.2s ease-in-out;
 }
 .question svg:hover {
+  cursor: var(--cursor-hover);
   opacity: 0.8;
 }
 

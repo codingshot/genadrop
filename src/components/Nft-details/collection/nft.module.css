@@ -80,6 +80,7 @@
   background-color: #4b4b5a;
 }
 .buy:hover {
+  cursor: var(--cursor-hover);
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
 }

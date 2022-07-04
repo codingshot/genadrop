@@ -53,6 +53,7 @@
 }
 
 .link:hover {
+  cursor: var(--cursor-hover);
   color: var(--main-900);
 }
 

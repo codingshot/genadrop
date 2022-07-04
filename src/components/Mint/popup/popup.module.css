@@ -115,10 +115,12 @@
 }
 
 .actionBtn._1:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
 }
 
 .actionBtn._2:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
   color: white;
 }

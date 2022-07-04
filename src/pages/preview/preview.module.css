@@ -96,6 +96,7 @@
   box-shadow: var(--shadow-light);
 }
 .detailGif:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
 }
 .detailGif:hover p {
@@ -470,6 +471,7 @@
   transition: 0.3s ease-in;
 }
 .btnWrapper > button.gifButton:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
   color: white;
   outline: none;

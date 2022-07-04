@@ -55,9 +55,11 @@
 }
 
 .accept:hover {
+  cursor: var(--cursor-hover);
   outline: 2px solid var(--error-700);
 }
 
 .reject:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-bg);
 }

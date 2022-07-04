@@ -59,6 +59,7 @@
 }
 
 .mintSwitch > button:hover {
+  cursor: var(--cursor-hover);
   box-shadow: var(--shadow-dark);
   background: var(--main-bg);
   color: var(--main-700);
@@ -70,6 +71,7 @@
 }
 
 .mintSwitch > button.active:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
   color: var(--main-bg);
   margin: unset;
@@ -96,6 +98,7 @@
 }
 
 .card:hover {
+  cursor: var(--cursor-hover);
   box-shadow: var(--shadow-dark);
 }
 

@@ -120,6 +120,7 @@
 
 .buy:hover,
 .bid:hover {
+  cursor: var(--cursor-hover);
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
 }
@@ -233,5 +234,6 @@
 }
 
 .inputWrapper button:hover {
+  cursor: var(--cursor-hover);
   text-shadow: 2px 2px 2px grey;
 }

@@ -78,6 +78,7 @@
 }
 
 .address:hover {
+  cursor: var(--cursor-hover);
   color: var(--main-700);
 }
 

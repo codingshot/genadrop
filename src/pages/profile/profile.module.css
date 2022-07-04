@@ -84,6 +84,7 @@
   cursor: pointer;
 }
 .uploadIcon img:hover {
+  cursor: var(--cursor-hover);
   opacity: 0.5;
   transition: 0.4s ease-in-out;
 }
@@ -176,6 +177,7 @@
 }
 
 .submit:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
   border: 2px solid var(--main-700);
 }
@@ -185,6 +187,7 @@
 }
 
 .cancel:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-100);
 }
 

@@ -107,6 +107,7 @@
 }
 
 .button:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
   outline: 2px solid var(--main-700);
 }
@@ -115,6 +116,7 @@
   cursor: default;
 }
 .buttonSold:hover {
+  cursor: var(--cursor-hover);
   background: #707a83;
   outline: none;
 }

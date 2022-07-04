@@ -126,6 +126,7 @@
 }
 
 .priceFilter button:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
   outline: 2px solid var(--main-700);
 }
@@ -195,6 +196,7 @@
 }
 
 .layer > div:hover {
+  cursor: var(--cursor-hover);
   background: gray;
 }
 
