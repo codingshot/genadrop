@@ -265,7 +265,7 @@ async function fetchUserNfts(account) {
     querySnapshot.forEach((docs) => {
       res.push(...Object.values(docs.data()));
     });
-    const response = res.filter((asset) =>  asset.owner === account);
+    const response = res.filter((asset) => asset.owner === account);
     return response;
   } catch (error) {
     console.log(error);
@@ -290,7 +290,7 @@ async function fetchUserBoughtNfts(account) {
 }
 
 async function listNft(assetId, price, owner) {
-  console.log("so you wanna list??")
+  console.log("so you wanna list??");
   // let asset = await readSIngleUserNft(prevOwner, assetId);
   // if (asset.buyer !== newOwner) {
   //   return { message: "you do not own this nft" };
@@ -331,7 +331,7 @@ async function listNft(assetId, price, owner) {
     await batch.commit();
     return { message: "Nft has been relisted" };
   } catch (err) {
-    console.log(err)
+    console.log(err);
     return { message: "an error occured while listing nft" };
   }
 }

@@ -26,101 +26,99 @@ const getDelayTime = (index, data, batch) => {
   }
 };
 // Fetch Single NFTs
-function fetchNFT(NFT, idx, singleNfts, mainnet) {
+function fetchNFT(NFT, mainnet) {
+  const fetch = async (resolve, reject) => {
+    try {
+      const nftObj = {};
+      nftObj.Id = NFT.id;
+      nftObj.price = NFT.price;
+      nftObj.buyer = NFT.Buyer;
+      nftObj.owner = NFT.owner;
+      nftObj.sold = NFT.sold;
+      nftObj.dateSold = NFT.dateSold;
+      nftObj.description = NFT.description;
+      nftObj.mainnet = NFT.mainnet;
+      const { params } = await getAlgoData(mainnet, NFT.id);
+      const urlIPF = params.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+      nftObj.url = params.url;
+      const response = await axios.get(urlIPF);
+      nftObj.image_url = response.data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+      nftObj.name = response.data.name;
+      nftObj.description = response.data.description;
+      nftObj.chain = 4160;
+      nftObj.properties = response.data.properties;
+      resolve(nftObj);
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    }
+  };
   return new Promise((resolve, reject) => {
-    const delay = getDelayTime(idx, singleNfts, 20);
-    setTimeout(async () => {
-      try {
-        const nftObj = {};
-        nftObj.Id = NFT.id;
-        nftObj.price = NFT.price;
-        nftObj.buyer = NFT.Buyer;
-        nftObj.owner = NFT.owner;
-        nftObj.sold = NFT.sold;
-        nftObj.dateSold = NFT.dateSold;
-        nftObj.description = NFT.description;
-        nftObj.mainnet = NFT.mainnet;
-        const { params } = await getAlgoData(mainnet, NFT.id);
-        const urlIPF = params.url.replace("ipfs://", "https://ipfs.io/ipfs/");
-        nftObj.url = params.url;
-        const response = await axios.get(urlIPF);
-        nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-        nftObj.name = response.data.name;
-        nftObj.description = response.data.description;
-        nftObj.chain = 4160;
-        nftObj.properties = response.data.properties;
-        resolve(nftObj);
-      } catch (err) {
-        console.log(err);
-        reject(err);
-      }
-    }, delay);
+    fetch(resolve, reject);
   });
 }
 
 // Fetch Collections
-function fetchCollection(collection, idx, collections, mainnet) {
+function fetchCollection(collection, mainnet) {
+  const fetch = async (resolve, reject) => {
+    try {
+      const collectionObj = {};
+      collectionObj.name = collection.name;
+      collectionObj.price = collection.price;
+      collectionObj.owner = collection.owner;
+      collectionObj.description = collection.description;
+      collectionObj.url = collection.url;
+      collectionObj.createdAt = collection?.createdAt;
+      const urlIPF = collection.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+      const { data } = await axios.get(urlIPF);
+      collectionObj.nfts = data;
+
+      const { params } = await getAlgoData(mainnet, data[0]);
+      const response = await axios.get(params.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/"));
+      collectionObj.image_url = response.data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+      collectionObj.chain = 4160;
+      resolve(collectionObj);
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    }
+  };
   return new Promise((resolve, reject) => {
-    const delay = getDelayTime(idx, collections, 30);
-    setTimeout(async () => {
+    fetch(resolve, reject);
+  });
+}
+
+export const getAuroraCollections = async (collections) => {
+  function fetchAuroraCollection(collection) {
+    const fetch = async (resolve, reject) => {
       try {
         const collectionObj = {};
-        collectionObj.name = collection.name;
-        collectionObj.price = collection.price;
-        collectionObj.owner = collection.owner;
-        collectionObj.description = collection.description;
-        collectionObj.url = collection.url;
-        collectionObj.createdAt = collection?.createdAt;
-        const urlIPF = collection.url.replace("ipfs://", "https://ipfs.io/ipfs/");
-        const { data } = await axios.get(urlIPF);
-        collectionObj.nfts = data;
+        const { data } = await axios.get(
+          collection?.nfts[0].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+        );
+        collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
 
-        const { params } = await getAlgoData(mainnet, data[0]);
-        const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
-        collectionObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-        collectionObj.chain = 4160;
+        collectionObj.name = collection?.name;
+        collectionObj.owner = collection?.id;
+        const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
+        collectionObj.chain = chain;
+        collectionObj.price = getPrice * 0.000000000000000001;
+        collectionObj.description = collection?.description;
+        collectionObj.nfts = collection?.nfts;
         resolve(collectionObj);
       } catch (err) {
         console.log(err);
         reject(err);
       }
-    }, delay);
-  });
-}
-
-export const getAuroraCollections = async (collections) => {
-  function fetchAuroraCollection(collection, idx) {
+    };
     return new Promise((resolve, reject) => {
-      const delay = getDelayTime(idx, collections, 20);
-      setTimeout(async () => {
-        try {
-          const collectionObj = {};
-          const { data } = await axios.get(
-            collection?.nfts[0].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
-          );
-          collectionObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
-
-          collectionObj.name = collection?.name;
-          collectionObj.owner = collection?.id;
-          const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
-          const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
-          collectionObj.chain = chain;
-          collectionObj.price = getPrice * 0.000000000000000001;
-          collectionObj.description = collection?.description;
-          collectionObj.nfts = collection?.nfts;
-          resolve(collectionObj);
-        } catch (err) {
-          console.log(err);
-          reject(err);
-        }
-      }, delay);
+      fetch(resolve, reject);
     });
   }
   const collectionsArr = [];
   if (collections) {
-    const responses = await Promise.allSettled(
-      collections.map((collection, idx) => fetchAuroraCollection(collection, idx))
-    );
+    const responses = await Promise.allSettled(collections.map((collection) => fetchAuroraCollection(collection)));
     responses.forEach((element) => {
       if (element?.status === "fulfilled") {
         collectionsArr.push(element.value);
@@ -131,9 +129,7 @@ export const getAuroraCollections = async (collections) => {
 };
 
 export const getNftCollections = async ({ collections, mainnet, dispatch }) => {
-  const responses = await Promise.allSettled(
-    collections.map((collection, idx) => fetchCollection(collection, idx, collections, mainnet))
-  );
+  const responses = await Promise.allSettled(collections.map((collection) => fetchCollection(collection, mainnet)));
 
   // removing rejected responses
   const collectionsObj = {};
@@ -147,9 +143,7 @@ export const getNftCollections = async ({ collections, mainnet, dispatch }) => {
 };
 
 export const getUserNftCollections = async ({ collections, mainnet }) => {
-  const responses = await Promise.allSettled(
-    collections.map((collection, idx) => fetchCollection(collection, idx, collections, mainnet))
-  );
+  const responses = await Promise.allSettled(collections.map((collection) => fetchCollection(collection, mainnet)));
   // removing rejected responses
   const collectionsArr = [];
   responses.forEach((element) => {
@@ -161,7 +155,7 @@ export const getUserNftCollections = async ({ collections, mainnet }) => {
 };
 
 export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
-  const responses = await Promise.allSettled(singleNfts.map((NFT, idx) => fetchNFT(NFT, idx, singleNfts, mainnet)));
+  const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
   const nftsObj = {};
   // removing rejected responses
@@ -176,7 +170,7 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
-  const responses = await Promise.allSettled(singleNfts.map((NFT, idx) => fetchNFT(NFT, idx, singleNfts, mainnet)));
+  const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
   // removing rejected responses
   responses.forEach((element) => {
@@ -188,7 +182,7 @@ export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
 };
 
 export const getNftCollection = async ({ collection, mainnet, handleSetState, dispatch }) => {
-  const urlIPF = collection.url.replace("ipfs://", "https://ipfs.io/ipfs/");
+  const urlIPF = collection.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
   const { data } = await axios.get(urlIPF);
 
   function fetchCollectionNFT(id, idx) {
@@ -203,7 +197,7 @@ export const getNftCollection = async ({ collection, mainnet, handleSetState, di
           nftObj.price = collection.price;
           nftObj.algo_data = params;
           nftObj.Id = id;
-          const url = params.url.replace("ipfs://", "https://ipfs.io/ipfs/");
+          const url = params.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           const response = await axios.get(url);
 
           const assetInfo = await readSIngleUserNft(collection.owner, id);
@@ -211,7 +205,7 @@ export const getNftCollection = async ({ collection, mainnet, handleSetState, di
           nftObj.sold = assetInfo.sold;
           nftObj.ipfs_data = response.data;
           nftObj.name = response.data.name;
-          nftObj.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+          nftObj.image_url = response.data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.chain = 4160;
           resolve(nftObj);
         } catch (err) {
@@ -246,7 +240,9 @@ export const getGraphCollection = async (collection, mainnet) => {
   const nftArr = [];
   if (collection) {
     for (let i = 0; i < collection?.length; i++) {
-      const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      const { data } = await axios.get(
+        collection[i].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+      );
       try {
         const nftObj = {};
         nftObj.collection_name = mainnet.name;
@@ -260,7 +256,7 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.sold = collection[i].isSold;
         nftObj.ipfs_data = data;
         nftObj.name = data.name;
-        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftObj.image_url = data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
         nftArr.push(nftObj);
       } catch (error) {
         console.log(error);
@@ -289,7 +285,9 @@ export const getTransactions = async (transactions) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
-  const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+  const { data } = await axios.get(
+    collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+  );
   const nftObj = [];
   try {
     const nftArr = {};
@@ -299,7 +297,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
     nftArr.price = collection?.price * 0.000000000000000001;
-    nftArr.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.description = data?.description;
     nftArr.Id = collection?.tokenID;
@@ -314,7 +312,7 @@ export const getGraphNft = async (collection, mainnet) => {
 };
 
 export const getUserBoughtNftCollection = async (mainnet, data) => {
-  const responses = await Promise.allSettled(data.map((NFT, idx) => fetchNFT(NFT, idx, data, mainnet)));
+  const responses = await Promise.allSettled(data.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
   // removing rejected responses
   responses.forEach((element) => {
@@ -328,18 +326,20 @@ export const getUserBoughtNftCollection = async (mainnet, data) => {
 export const getSingleGraphNfts = async (nfts) => {
   function fetchGraphNFT(NFT, idx, singleNfts) {
     return new Promise((resolve, reject) => {
-      const delay = getDelayTime(idx, singleNfts, 20);
+      const delay = getDelayTime(idx, singleNfts, 60);
       setTimeout(async () => {
         try {
           const nftObj = {};
-          const { data } = await axios.get(NFT.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+          const { data } = await axios.get(
+            NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+          );
           nftObj.Id = NFT?.id;
           nftObj.price = (NFT ? NFT.price : 0) * 0.000000000000000001;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
-          nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+          nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           resolve(nftObj);
         } catch (err) {
@@ -371,8 +371,8 @@ export const getSingleNftDetails = async (mainnet, nft) => {
     nftDetails.dateSold = nft.dateSold;
     nftDetails.description = nft.description;
     const { params } = await getAlgoData(mainnet, nft.id);
-    const response = await axios.get(params.url.replace("ipfs://", "https://ipfs.io/ipfs/"));
-    nftDetails.image_url = response.data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+    const response = await axios.get(params.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/"));
+    nftDetails.image_url = response.data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftDetails.name = response.data.name;
     nftDetails.description = response.data.description;
     nftDetails.properties = response.data.properties;
@@ -494,7 +494,7 @@ export const handleBlankImage = async (props) => {
 
 export const handleTemplateImage = async (props) => {
   const { img, canvas } = props;
-  let { height, width } = await getImageSize(img);
+  const { height, width } = await getImageSize(img);
   if (height) {
     canvas.setAttribute("width", width);
     canvas.setAttribute("height", height);
@@ -511,9 +511,8 @@ export const handleTemplateImage = async (props) => {
   if (resImage) {
     ctx.drawImage(resImage, 0, 0, width, height);
     return true;
-  } else {
-    return false;
   }
+  return false;
 };
 
 export const reOrderPreview = ({ preview, layers }) => {
