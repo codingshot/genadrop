@@ -17,7 +17,7 @@
 
 .container textarea:hover,
 .container input:hover {
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .container input,

@@ -96,7 +96,7 @@
   align-items: center;
   position: relative;
   gap: 0.25em;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .activeNetwork {

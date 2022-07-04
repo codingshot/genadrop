@@ -106,7 +106,7 @@
 
 .chain.comingSoon {
   background: var(--text-light-500);
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .chain.comingSoon:hover {

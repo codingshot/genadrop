@@ -89,7 +89,7 @@
 }
 
 .chain.inActive {
-  cursor: default;
+  cursor: var(--cursor-default);
   color: var(--text-light-500);
 }
 
