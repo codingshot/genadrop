@@ -65,6 +65,11 @@
   cursor: pointer;
 }
 
+.guide > *:nth-child(2):hover,
+.guide > *:nth-child(3):hover {
+  color: var(--main-900);
+}
+
 .previewWrapper {
   width: auto;
 }
