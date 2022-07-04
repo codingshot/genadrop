@@ -25,8 +25,7 @@ interface IERC1155 is IERC165 {
         address indexed operator,
         address indexed from,
         address indexed to,
-        uint256[] ids,
-        uint256[] values
+        uint256[] ids
     );
 
     /**

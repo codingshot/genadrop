@@ -229,7 +229,7 @@ export const updateAccount = async (walletProps) => {
       WS.disconnectWallet(walletProps);
       dispatch(
         setNotification({
-          message: "we could not connect this site automatically, please manually connect your site.",
+          message: "Please connect your site manually from your wallet extension.",
           type: "warning",
         })
       );
