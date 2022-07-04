@@ -100,7 +100,10 @@
   --cursor-disabled: url("./assets/cursor-disabled.svg"), auto;
   --cursor-grab: url("./assets/cursor-grab.svg"), auto;
   --cursor-hover: url("./assets/cursor-hover.svg"), auto;
+  --cursor-scopeg: url("./assets/cursor-scope.svg"), auto;
+  --cursor-camera: url("./assets/cursor-camera.svg"), auto;
   --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
+  --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto;
 }
 
 li {
