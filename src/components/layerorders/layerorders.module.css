@@ -114,7 +114,7 @@
 .info .closeBtn {
   fill: var(--bg-dark);
   width: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .layerorder {

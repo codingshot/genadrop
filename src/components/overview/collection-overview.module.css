@@ -131,7 +131,7 @@
   fill: var(--bg-dark);
   width: 2em;
   height: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 @media screen and (max-width: 1200px) {

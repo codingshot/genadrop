@@ -81,7 +81,7 @@
 .uploadIcon img {
   width: 68px !important;
   height: 68px !important;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .uploadIcon img:hover {
   cursor: var(--cursor-hover);

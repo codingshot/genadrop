@@ -46,7 +46,7 @@
   position: absolute;
   top: 0.25em;
   right: 0.25em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .closeIcon:hover {
