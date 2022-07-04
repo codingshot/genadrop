@@ -56,11 +56,10 @@
 
 .icon img {
   width: 2rem;
-  cursor: var(--cursor-hover);
 }
 
 .socialIcons .icon:hover {
-  cursor: var(--cursor-hover);
+  cursor: var(--cursor-pointer);
   transform: scale(1.1);
   background: var(--main-900);
 }
@@ -86,7 +85,7 @@
 }
 
 .links a:hover {
-  cursor: var(--cursor-hover);
+  cursor: var(--cursor-pointer);
   text-decoration: underline;
 }
 

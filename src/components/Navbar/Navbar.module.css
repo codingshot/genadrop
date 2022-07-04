@@ -135,7 +135,7 @@
 
 .navItem li {
   padding: 0.5em 1em;
-  cursor: var(--cursor-hover);
+  cursor: var(--cursor-pointer);
 }
 
 .line {
