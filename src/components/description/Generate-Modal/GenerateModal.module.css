@@ -141,7 +141,7 @@
 
 .btn_3 {
   position: relative;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .loaderIcon {
