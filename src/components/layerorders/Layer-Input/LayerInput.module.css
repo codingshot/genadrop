@@ -23,26 +23,26 @@
   gap: 1em;
 }
 
-.buttons button {
-  background: var(--main-bg);
-  color: var(--text-dark-900);
+.add,
+.cancel {
   outline: none;
   padding: 0.25em 1.5em;
   border-radius: 0.25em;
   cursor: var(--cursor-pointer);
-  transition: all 0.3s;
   border: 1px solid var();
+  border: 1px solid transparent;
 }
 
-.buttons button:first-child {
-  background: var(--text-dark-700);
+.add {
+  background: var(--card-bg);
   color: var(--main-bg);
+  transition: all 300ms;
 }
 
-.buttons button:hover {
-  outline: 1px solid var(--main-700);
+.add:hover {
+  background: var(--card-bg-dark);
 }
 
-.buttons button:first-child:hover {
-  background: var(--text-dark-900);
+.cancel {
+  border: 1px solid var(--main-color);
 }

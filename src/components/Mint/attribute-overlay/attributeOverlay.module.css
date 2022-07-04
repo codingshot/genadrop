@@ -28,14 +28,17 @@
   align-items: center;
 }
 
-.closeBtn img {
+.closeIcon {
   padding: 0.25em;
+  width: 1.5em;
+  height: 1.5em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
   background: var(--main-bg);
+  fill: var(--bg-dark);
 }
 
-.closeBtn img:hover {
+.closeIcon:hover {
   box-shadow: var(--shadow-dark);
 }
 
@@ -149,7 +152,7 @@
     height: unset;
   }
 
-  .closeBtn img {
+  .closeIcon {
     box-shadow: var(--shadow-light);
   }
 }

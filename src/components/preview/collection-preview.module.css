@@ -31,3 +31,11 @@
 .container button:hover {
   transform: translateY(1px);
 }
+
+.placeholder {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

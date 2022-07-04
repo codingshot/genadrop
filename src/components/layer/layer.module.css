@@ -7,6 +7,7 @@
   padding: 0.35em 0.5em;
   background: var(--card-bg);
   border-radius: 0.25em;
+  color: var(--main-bg);
 }
 
 ._name {
@@ -31,7 +32,7 @@
   align-items: center;
   justify-content: center;
   transition: all 300ms;
-  background: var(--card-bg2);
+  background: var(--card-bg-dark);
 }
 
 .renameBtn img,
@@ -40,19 +41,10 @@
   width: 1em;
 }
 
-.renameBtn:hover {
-  /* background: var(--main-700); */
-  background: gray;
-}
-
-.editBtn:hover {
-  /* background: var(--main-700); */
-  background: gray;
-}
-
+.renameBtn:hover,
+.editBtn:hover,
 .deleteBtn:hover {
-  /* background: rgb(197, 67, 44); */
-  background: gray;
+  background: var(--card-bg-light);
 }
 
 .renameWrapper {
@@ -79,9 +71,10 @@
   outline: none;
   border: none;
   padding: 0.25em;
-  border: 1px solid var(--sidebar-bg);
-  border: 1px solid white;
+  border: 1px solid var(--text-light-900);
+  color: var(--main-bg);
   border-radius: 0.25em;
+  font-size: 1rem;
 }
 
 .nameHeader {

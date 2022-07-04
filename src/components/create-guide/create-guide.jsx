@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import classes from "./create-guide.module.css";
-import rightCtrl from "../../assets/ctrl-right.svg";
-import leftCtrl from "../../assets/ctrl-left.svg";
+import rightCtrl from "../../assets/icon-angle-right.svg";
+import leftCtrl from "../../assets/icon-angle-left.svg";
 import blankImage from "../../assets/blank.png";
 import { GenContext } from "../../gen-state/gen.context";
 import { setDidMout } from "../../gen-state/gen.actions";
 import { guide } from "./create-guide-script";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 
 const maxCount = Object.keys(guide).length;
 
@@ -123,20 +124,8 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
   return (
     <div className={`${classes.wrapper} ${toggleGuide && classes.active}`}>
       <div className={classes.mainContainer}>
-        <div className={classes.closeBtn}>
-          <button onClick={handleClose}>close</button>
-        </div>
-
-        <div className={classes.heading}>
-          <h3>
-            Genadrop create tool demo
-            <div className={classes.description}>
-              The easy and robust no-code art generating tool that gives you quality and unique art. Let's work you
-              through
-            </div>
-          </h3>
-          <p>{guide[swipeCount].title}</p>
-        </div>
+        <CloseIcon onClick={handleClose} className={classes.closeBtn} />
+        <div className={classes.heading}>{guide[swipeCount].title}</div>
 
         <div className={classes.container}>
           <div className={classes.control}>

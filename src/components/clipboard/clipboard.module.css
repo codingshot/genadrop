@@ -18,7 +18,7 @@
   transform: translateY(10px);
 }
 
-.icon {
+.closeIcon {
   position: absolute;
   top: 0.5em;
   right: 0.5em;
@@ -26,10 +26,10 @@
   margin: 0;
   cursor: var(--cursor-pointer);
   transition: transform 100ms;
-  filter: invert(1);
+  fill: var(--main-bg);
 }
 
-.icon:hover {
+.closeIcon:hover {
   transform: scale(1.1);
 }
 

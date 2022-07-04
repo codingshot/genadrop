@@ -1,13 +1,15 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import axios from "axios";
-import fileDownload from "js-file-download";
+// import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
-import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
+// import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { getAlgoData, PurchaseNft } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
+  addLayer,
+  clearLayers,
   setActiveCollection,
   setAlgoCollections,
   setAlgoSingleNfts,
@@ -15,6 +17,7 @@ import {
   setNotification,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
+import { v4 as uuid } from "uuid";
 
 // setting a delay as not exceed the API limit
 const getDelayTime = (index, data, batch) => {
@@ -529,75 +532,22 @@ export const reOrderPreview = ({ preview, layers }) => {
   return newPreview;
 };
 
-export const getMockValue = async (val) => {
-  const pickerOpts = {
-    types: [
-      {
-        description: "Images",
-        accept: {
-          "image/*": [".png"],
-        },
-      },
-    ],
-    excludeAcceptAllOption: true,
-    multiple: false,
-  };
-
-  async function getTheFile() {
-    const [fileHandle] = await window.showOpenFilePicker(pickerOpts);
-    const fileData = await fileHandle.getFile();
-    return fileData;
-  }
-
-  async function getBase64(file) {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = (error) => {
-        console.log("Error: ", error);
-      };
-    });
-  }
-
-  let value = Array(val).fill({
-    attributes: [
-      {
-        image: await getTheFile(),
-        rarity: "1",
-        trait_type: "a",
-        value: "Red Lips.png",
-      },
-    ],
-    description: " #0001",
-    id: Date.now(),
-    image: await getBase64(await getTheFile()),
-    name: "",
+export const handleAddSampleLayers = ({ dispatch }) => {
+  const sampleLayers = [
+    { layerName: "Goo", dirName: "Goo" },
+    { layerName: "Top Lid", dirName: "TopLid" },
+    { layerName: "Bottom Lid", dirName: "BottomLid" },
+    { layerName: "Eye Color", dirName: "EyeColor" },
+  ];
+  dispatch(clearLayers());
+  sampleLayers.map((sample) => {
+    dispatch(
+      addLayer({
+        id: uuid(),
+        traitsAmount: 0,
+        layerTitle: sample.layerName,
+        traits: [],
+      })
+    );
   });
-
-  value = value.map((v, id) => ({
-    ...v,
-    name: `#${id}`,
-    description: `description ${id + 1}`,
-  }));
-
-  return value;
-};
-
-export const handleDownloadWithWorker = async (props) => {
-  const { name, outputFormat } = props;
-  const mockValue = await getMockValue(500);
-  const instance = worker();
-  const content = await instance.downloadCallback({
-    value: mockValue,
-    name,
-    outputFormat,
-  });
-  fileDownload(
-    content,
-    // eslint-disable-next-line no-constant-condition
-    `${"name" ? `${"name"}${true ? "" : `_${"id"}`}.zip` : "collections.zip"}`
-  );
 };

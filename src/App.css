@@ -7,11 +7,12 @@
   --card-bg2: #212529;
   --card-bg3: #000000;
   --text-light-300: #f2f3ff;
+  --bg-dark: rgb(18, 18, 18);
 
   --shadow-dark: 0 0 15px rgb(0, 0, 0, 0.25);
   --shadow-dark-1: 0px 24px 33px -9px rgba(0, 0, 0, 0.36);
   --shadow-dark-2: 0px 16px 25px -9px rgba(0, 0, 0, 0.32);
-  --shadow-dark-2: 0px 12px 19px -7px rgba(0, 0, 0, 0.28);
+  --shadow-dark-3: 0px 12px 19px -7px rgba(0, 0, 0, 0.28);
 
   --shadow-light: 0 0 15px rgb(0, 0, 0, 0.1);
   --shadow-light-1: 0px 1px 1px rgba(0, 0, 0, 0.08);
@@ -24,6 +25,7 @@
   --shadow-light-8: 0px 12px 24px -5px rgba(0, 0, 0, 0.1);
 
   --main-bg: #ffffff;
+  --main-color: #000000;
 
   --main-100: #f2faf9;
   --main-200: #d9f0ed;
@@ -104,6 +106,10 @@
   --cursor-camera: url("./assets/cursor-camera.svg"), auto;
   --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
   --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto;
+
+  --card-bg: #626277;
+  --card-bg-dark: #515164;
+  --card-bg-light: #737387;
 }
 
 li {
@@ -137,7 +143,7 @@ a {
 }
 
 .topSectionContainer {
-  z-index: 15;
+  z-index: 20;
   position: sticky;
   top: 0;
 }

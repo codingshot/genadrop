@@ -10,10 +10,11 @@
   display: block;
 }
 
-.icon {
+.closeIcon {
   width: 1em;
   height: 1em;
   cursor: var(--cursor-pointer);
+  fill: var(--warning-900);
 }
 
 .switchWalletNotification {
@@ -42,5 +43,10 @@
 @media screen and (max-width: 768px) {
   .container {
     font-size: 0.85rem;
+  }
+
+  .closeIcon {
+    width: 2em;
+    height: 2em;
   }
 }

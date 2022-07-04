@@ -47,6 +47,7 @@ const Preview = () => {
     rule,
     layers,
     promptAsset,
+    imageQuality,
   } = useContext(GenContext);
 
   const [state, setState] = useState({
@@ -107,6 +108,7 @@ const Preview = () => {
         layer: newLayer,
         canvas,
         image: layers[0].traits[0].image,
+        imageQuality,
       });
       const newLayers = nftLayers.map((asset) =>
         asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
