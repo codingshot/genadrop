@@ -85,7 +85,6 @@
 }
 
 .priceDropdown .dropdown > div:hover {
-  cursor: var(--cursor-hover);
   background: var(--text-light-300);
 }
 

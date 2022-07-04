@@ -139,7 +139,12 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
-
+.list > div {
+  cursor: var(--cursor-hover);
+}
+.list > div:active:hover {
+  cursor: var(--cursor-grab);
+}
 .promptWrapper {
   width: 100%;
 }

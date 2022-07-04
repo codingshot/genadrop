@@ -56,7 +56,6 @@
 }
 
 .closeBtn button:hover {
-  cursor: var(--cursor-hover);
   box-shadow: var(--shadow-dark);
 }
 
