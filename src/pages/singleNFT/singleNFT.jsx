@@ -119,14 +119,14 @@ const SingleNFT = () => {
     //   nftDetails = cacheNftDetails;
     // } else {
     nftDetails = singleAlgoNfts[nftId];
-    console.log("DETAILS", nftDetails);
     // }
     if (nftDetails) {
       // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
         tHistory.find((t) => {
-          if (t.type === "Minting") t.price = tHistory[1].price;
+          if (t.type === "Minting" && tHistory.length > 1) t.price = tHistory[1].price;
+          else t.price = nftDetails.price;
         });
         handleSetState({
           nftDetails,
