@@ -119,6 +119,7 @@ const CollectionNFT = () => {
         // filtering to get the unique nft
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
+        console.log(filteredId);
         if (filteredId) {
           const result = await getGraphNft(filteredId[0], collectionName);
           const trHistory = await getTransactions(filteredId[0]?.transactions);
@@ -304,9 +305,9 @@ const CollectionNFT = () => {
               ) : (
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.sold} onClick={() => buyGraphNft(buyProps)}>
-                      {/* <img src={walletIcon} alt="" /> */}
-                      Coming Soon
+                    <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                      <img src={walletIcon} alt="" />
+                      Buy now
                     </button>
                   ) : (
                     <button

@@ -260,6 +260,35 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.name = data.name;
         nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);
+        window.localStorage.activeCollection = JSON.stringify({ ...nftObj });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+  return nftArr;
+};
+
+export const getUserGraphNft = async (collection) => {
+  console.log(collection);
+  const nftArr = [];
+  if (collection) {
+    for (let i = 0; i < collection?.length; i++) {
+      const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      try {
+        const nftObj = {};
+        nftObj.collection_name = data?.name;
+        nftObj.chain = collection[i].chain;
+        nftObj.Id = collection[i].id;
+        const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        nftObj.collectionPrice = getPrice * 0.000000000000000001;
+        nftObj.price = collection[i].price * 0.000000000000000001;
+        nftObj.sold = collection[i].isSold;
+        nftObj.ipfs_data = data;
+        nftObj.name = data.name;
+        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftArr.push(nftObj);
+        window.localStorage.activeCollection = JSON.stringify({ ...nftObj });
       } catch (error) {
         console.log(error);
       }
@@ -299,6 +328,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.price = collection?.price * 0.000000000000000001;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
     nftArr.ipfs_data = data;
+    nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftArr.Id = collection?.tokenID;
     nftArr.marketId = collection?.id;
@@ -388,7 +418,6 @@ export const buyGraphNft = async (buyProps) => {
     nftDetails: { chain },
     chainId,
   } = buyProps;
-  console.log(buyProps);
 
   if (!account) {
     return dispatch(
