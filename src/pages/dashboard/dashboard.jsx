@@ -46,9 +46,8 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } = useContext(
-    GenContext
-  );
+  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } =
+    useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
