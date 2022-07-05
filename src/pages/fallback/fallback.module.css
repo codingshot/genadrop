@@ -63,7 +63,7 @@
   transition: 0.4s;
   font-weight: 600;
   border-radius: 100px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .home:hover {
@@ -73,7 +73,7 @@
 
 .home {
   width: 200px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   height: 60px;
   background-color: var(--main-700);
   color: white;

@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   padding: 2em;
-  background: rgb(0, 0, 0, 0.75);
+  background: rgb(0, 0, 0, 0.7);
 }
 
 .wrapper.active {
@@ -18,7 +18,7 @@
 
 .mainContainer {
   width: 100%;
-  max-width: 48em;
+  max-width: max-content;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,10 +26,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5em;
-  background: var(--main-700);
-  padding: 1em;
+  gap: 1em;
+  padding: 2em;
   border-radius: 1em;
+  position: relative;
+  background: var(--main-700);
 }
 
 .container {
@@ -41,48 +42,21 @@
 }
 
 .closeBtn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-
-.closeBtn button {
-  background: var(--main-bg);
-  padding: 0.5em 2em;
-  border-radius: 1.5em;
-  border: none;
-  transition: all 300ms;
-}
-
-.closeBtn button:hover {
-  box-shadow: var(--shadow-dark);
+  width: 1em;
+  height: 1em;
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  cursor: var(--cursor-pointer);
+  fill: var(--main-bg);
 }
 
 .heading {
-  color: white;
-  width: 100%;
-  max-width: 36em;
-}
-
-.heading h3 {
-  font-weight: 400;
-  margin-bottom: 0.5em;
-  font-size: 1rem;
-}
-
-.heading .description {
-  width: 100%;
-  font-weight: 300;
-  text-align: center;
-  display: none;
-}
-
-.heading p {
   width: 100%;
   font-size: 1rem;
   text-align: center;
-  text-decoration: underline;
+  color: var(--main-bg);
+  font-weight: 600;
 }
 
 .swipeContainer {
@@ -126,26 +100,34 @@
   align-items: center;
   justify-content: space-between;
   position: absolute;
-  padding: 0 1em;
 }
 
 .control .right,
 .control .left {
-  width: 2.5em;
-  height: 2.5em;
+  width: 2em;
+  height: 2em;
   border-radius: 50%;
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: center;
   border: none;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   visibility: hidden;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 0.5em;
+  transition: all 300ms;
 }
 
 .control .right.active,
 .control .left.active {
   visibility: visible;
+}
+
+.control .right:hover,
+.control .left:hover {
+  background: rgba(255, 255, 255, 1);
 }
 
 /* hide scrollbar */
@@ -241,7 +223,6 @@
 
 @media screen and (max-width: 1000px) {
   .mainContainer {
-    max-width: 48em;
     gap: 1em;
   }
 
@@ -255,16 +236,12 @@
   .rightSideCard {
     display: none;
   }
-
-  .closeBtn button {
-    padding: 0.25em 1em;
-    font-size: 0.75rem;
-  }
 }
 
 @media screen and (max-width: 480px) {
   .mainContainer {
     border-radius: 0.5em;
+    padding: 1em;
   }
 
   .heading h3 {

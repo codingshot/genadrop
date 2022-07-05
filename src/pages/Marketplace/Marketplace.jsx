@@ -13,7 +13,7 @@ const Marketplace = () => (
   <div className={classes.container}>
     <Banner />
     <Chains />
-    {/* <NewListing /> */}
+    <NewListing />
     <Collections />
     <SingleNft />
     {/* <Creators /> */}

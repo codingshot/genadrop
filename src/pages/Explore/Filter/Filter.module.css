@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -64,7 +64,7 @@
   align-items: center;
   justify-content: flex-start;
   border-radius: 0.75em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 2px;
   border: 1px solid transparent;
   transition: all 300ms;
@@ -131,7 +131,7 @@
 }
 
 .attributeFilter .title {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .attribute {
@@ -153,7 +153,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 1em;
   border-radius: 0.25em;
   border: 1px solid var(--text-light-500);
@@ -192,14 +192,17 @@
 .layer > div {
   border: 1px solid white;
   padding: 0.5em 0.25em;
+  background: var(--text-light-200);
+  border-radius: 0.25em;
 }
 
 .layer > div:hover {
-  background: gray;
+  background: var(--text-light-400);
+  cursor: var(--cursor-hover);
 }
 
 .value {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   overflow: auto;
   white-space: nowrap;
   display: flex;
@@ -215,7 +218,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.15em;
-  background: rgb(161, 160, 160);
+  background: var(--main-bg);
+  color: var(--text-light-900);
+  border: 1px solid var(--text-light-900);
 }
 
 .sidebar2 {
@@ -226,7 +231,7 @@
   border-right: 1px solid var(--text-light-500);
   position: sticky;
   top: 5em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border-top-left-radius: 0.5em;
   overflow: hidden;
 }

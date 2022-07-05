@@ -58,17 +58,20 @@
   color: red;
 }
 
-.closeBtn {
+.closeIcon {
   position: absolute;
   top: 1em;
   right: 1em;
   transition: all 300ms;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.25em;
+  width: 1.5em;
+  height: 1.5em;
   border-radius: 0.25em;
+  fill: var(--bg-dark);
 }
 
-.closeBtn:hover {
+.closeIcon:hover {
   box-shadow: var(--shadow-dark);
 }
 
@@ -99,7 +102,7 @@
 }
 
 .errorBtn:hover {
-  background: var(--card-bg2);
+  background: var(--card-bg);
 }
 
 .actionBtn._1 {
@@ -115,10 +118,12 @@
 }
 
 .actionBtn._1:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
 }
 
 .actionBtn._2:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
   color: white;
 }

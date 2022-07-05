@@ -60,15 +60,42 @@
 }
 
 .images {
+  position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  min-width: 100%;
   margin-bottom: 3rem;
 }
 
+.uploadIcon {
+  top: 40%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, 0);
+}
+
+.uploadIcon input {
+  display: none;
+}
+
+.uploadIcon img {
+  width: 68px !important;
+  height: 68px !important;
+  cursor: var(--cursor-pointer);
+}
+.uploadIcon img:hover {
+  cursor: var(--cursor-hover);
+  opacity: 0.5;
+  transition: 0.4s ease-in-out;
+}
+
 .profile {
-  width: 200px;
-  height: 200px;
-  margin-right: 5rem;
+  width: 150px;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  height: 150px;
 }
 .profile img {
   border-radius: 50%;
@@ -77,13 +104,13 @@
 }
 
 .banner {
-  width: 400px;
-  height: 200px;
+  width: 100%;
+  height: 18.6em;
 }
 .banner img {
-  border-radius: 10px;
-  width: 400px;
-  height: 200px;
+  width: 121.5%;
+  margin-left: -4em;
+  height: 18.6em;
 }
 
 .option label {
@@ -150,6 +177,7 @@
 }
 
 .submit:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-900);
   border: 2px solid var(--main-700);
 }
@@ -159,6 +187,7 @@
 }
 
 .cancel:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-100);
 }
 
@@ -170,7 +199,7 @@
   align-items: center;
   justify-content: flex-start;
   border-radius: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 2px;
   border: 1px solid transparent;
   transition: all 300ms;
@@ -195,9 +224,24 @@
 }
 
 @media screen and (max-width: 1000px) {
+  .profile {
+    top: 55%;
+  }
+  .profile img {
+    width: 130px;
+    height: 130px;
+  }
   .wrapper {
     padding: 2em;
     max-width: 768px;
+  }
+  .banner {
+    height: 14em;
+  }
+  .banner img {
+    width: 111.5%;
+    margin-left: -1.95em;
+    height: 12em;
   }
 }
 
@@ -219,8 +263,8 @@
   }
 
   .profile {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     margin: auto;
     margin-bottom: 30px;
   }
@@ -231,13 +275,11 @@
   }
 
   .banner {
-    width: 200px;
-    height: 100px;
+    height: 7em;
   }
   .banner img {
-    border-radius: 10px;
-    width: 200px;
-    height: 100px;
+    width: 120%;
+    height: 7em;
   }
 }
 
@@ -249,6 +291,10 @@
     font-size: 0.85rem;
     transition: all 300ms;
   }
+  .banner img {
+    width: 127%;
+    height: 7em;
+  }
 }
 
 .copyIcon {
@@ -257,7 +303,7 @@
 
 .copyIcon:hover {
   transform: scale(0.8);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .copyIcon.active {

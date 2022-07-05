@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import classes from "./attributeOverlay.module.css";
-import closeIcon from "../../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 
 const AttributeOverlay = ({ attribute, handleSetState }) => {
   const { file, name, description, attributes } = attribute;
@@ -9,7 +8,7 @@ const AttributeOverlay = ({ attribute, handleSetState }) => {
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         <div className={classes.closeBtn}>
-          <img onClick={() => handleSetState({ showAttribute: false })} src={closeIcon} alt="" />
+          <CloseIcon className={classes.closeIcon} onClick={() => handleSetState({ showAttribute: false })} />
         </div>
 
         <div>

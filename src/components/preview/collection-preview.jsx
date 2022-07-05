@@ -5,16 +5,17 @@ import { getImageSize } from "../../utils";
 import ButtonClickEffect from "../button-effect/button-effect";
 import { setPreview } from "../../gen-state/gen.actions";
 import { handleImage } from "./collection-preview-script";
+import assetPlaceholder from "../../assets/asset-placeholder.png";
 
 const CollectionPreview = () => {
-  const { dispatch, layers, preview } = useContext(GenContext);
+  const { dispatch, layers, preview, imageQuality } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   const handleDownload = async () => {
     const { width, height } = await getImageSize(layers[0].traits[0].image);
     const canvas = document.createElement("canvas");
     await handleImage({ layers, preview, canvas, height, width });
-    const image = canvas.toDataURL("image/webp", 0.5);
+    const image = canvas.toDataURL("image/webp", imageQuality);
     const link = document.createElement("a");
     link.download = "asset.png";
     link.href = image;
@@ -26,7 +27,7 @@ const CollectionPreview = () => {
   useEffect(() => {
     const imageHandler = async () => {
       const canvas = canvasRef.current;
-      await handleImage({ layers, preview, canvas, height: 250, width: 250 });
+      await handleImage({ layers, preview, canvas, height: 180, width: 180 });
     };
     imageHandler();
   }, [preview]);
@@ -45,12 +46,16 @@ const CollectionPreview = () => {
 
   return (
     <div className={classes.container}>
-      <canvas className={classes.canvas} ref={canvasRef} />
+      <canvas style={!preview.length ? { display: "none" } : {}} className={classes.canvas} ref={canvasRef} />
       {preview.length ? (
         <button type="button" onClick={handleDownload}>
           <ButtonClickEffect>Download</ButtonClickEffect>
         </button>
-      ) : null}
+      ) : (
+        <div className={classes.placeholder}>
+          <img src={assetPlaceholder} alt="" />
+        </div>
+      )}
     </div>
   );
 };

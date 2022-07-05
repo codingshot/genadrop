@@ -1,0 +1,78 @@
+.container {
+  width: max-content;
+  max-width: 18em;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: -1.5em;
+  background: var(--card-bg);
+  transform: translate(30%, -100%);
+  border-radius: 0.25em;
+  padding: 0.5em;
+}
+
+.container.active {
+  display: flex;
+}
+
+.container:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  transform: translate(-6em, 99%);
+  border-top: 1em solid #626277;
+  border-right: 1em solid transparent;
+  border-left: 1em solid transparent;
+}
+
+.card {
+  font-size: 0.85rem;
+  color: var(--main-bg);
+  text-align: left;
+  padding-left: 1em;
+}
+
+.closeBtn {
+  fill: var(--main-bg);
+  align-self: flex-end;
+  cursor: var(--cursor-pointer);
+}
+
+.title {
+  font-weight: 600;
+  color: var(--main-bg);
+  margin-bottom: 0.5em;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.wrapper p {
+  font-size: 0.75rem;
+}
+
+.wrapper button {
+  background: var(--main-bg);
+  color: var(--main-700);
+  font-size: 0.75rem;
+  padding: 0.75em 1em;
+  border-radius: 2em;
+  font-weight: 600;
+  transition: all 300ms;
+}
+
+.wrapper button:hover {
+  background: var(--text-light-100);
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    transform: translate(0%, -100%);
+  }
+}

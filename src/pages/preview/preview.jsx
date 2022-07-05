@@ -31,7 +31,8 @@ import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
 import CaretDown from "../../assets/icon-CaretDown.svg";
 import CaretUP from "../../assets/icon-CaretUp.svg";
-
+import tooltip from "../../assets/tooltip.svg";
+import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 const Preview = () => {
   const {
     nftLayers,
@@ -46,6 +47,7 @@ const Preview = () => {
     rule,
     layers,
     promptAsset,
+    imageQuality,
   } = useContext(GenContext);
 
   const [state, setState] = useState({
@@ -106,6 +108,7 @@ const Preview = () => {
         layer: newLayer,
         canvas,
         image: layers[0].traits[0].image,
+        imageQuality,
       });
       const newLayers = nftLayers.map((asset) =>
         asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
@@ -399,6 +402,10 @@ const Preview = () => {
                   className={`${classes.radioBtn} ${outputFormat === "ipfs" && classes.clicked}`}
                 />
                 <p>IPFS</p>
+                <div className={classes.tooltip}></div>
+                <GenadropToolTip
+                  content={`IPFS is a peer-to-peer (p2p) storage network for storing and sharing data.`}
+                />
               </label>
               <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
                 <input

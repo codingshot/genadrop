@@ -25,7 +25,7 @@
 .backBtn {
   padding: 0.5em 1em;
   border-radius: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,7 +59,7 @@
 .pageControl {
   padding: 0.5em 2em;
   border-radius: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
   border: 2px solid transparent;
 }
@@ -119,7 +119,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 4px solid transparent;
   transition: all 300ms;
   box-shadow: var(--shadow-light);
@@ -172,7 +172,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 4px solid transparent;
   transition: all 300ms;
   display: flex;
@@ -181,7 +181,7 @@
   border: 1px solid #c4c4c4;
   box-shadow: var(--shadow-light);
   border-radius: 20px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .assetWrapperSelect:hover {
   background: var(--main-700);
@@ -211,7 +211,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: 0.3s ease;
 }
 .buttonWrapper p {

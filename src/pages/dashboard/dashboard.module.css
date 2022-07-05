@@ -19,7 +19,7 @@
   gap: 2em;
   padding: 2em;
   background: var(--main-bg);
-   box-shadow: var(--shadow-light-5);
+  box-shadow: var(--shadow-light-5);
   overflow: hidden;
   border-radius: 1em;
   margin-bottom: 2em;
@@ -48,7 +48,7 @@
   padding: 1em;
   border-radius: 0.5em;
   background: rgba(0, 153, 135, 0.1);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   color: var(--main-700);
   transition: all 100ms;
 }

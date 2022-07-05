@@ -66,14 +66,9 @@ const Dashboard = () => {
     // Get User Created NFTs
 
     (async function getUserNFTs() {
-      const singles = [];
-      const singleNfts = await fetchUserNfts(account);
-      singleNfts?.forEach((nft) => {
-        if (!nft.collection) {
-          singles.push(nft);
-        }
-      });
-      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts: singles });
+      const singleNfts = await fetchUserCreatedNfts(account);
+
+      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
       handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
@@ -271,7 +266,7 @@ const Dashboard = () => {
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
+                  <NftCard key={idx} nft={nft} listed={!nft.sold} fromDashboard />
                 ))}
               </div>
             ) : (

@@ -1,5 +1,5 @@
 .container {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0 0.5em;
   font-weight: inherit;
   display: inline-flex;

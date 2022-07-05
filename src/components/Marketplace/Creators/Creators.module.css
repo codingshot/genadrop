@@ -26,7 +26,7 @@
 }
 
 .heading button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   color: var(--main-700);
   transition: background 300ms;
   font-size: 1rem;

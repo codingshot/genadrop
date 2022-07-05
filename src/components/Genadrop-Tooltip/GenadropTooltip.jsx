@@ -1,28 +1,15 @@
-import classes from "./GenadropTooltip.module.css";
-import infoIcon from "../../assets/icon-question-mark.svg";
-import { useRef } from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 
-const GenadropToolTip = ({ content }) => {
+import { ReactComponent as InfoIcon } from "../../assets/tooltip.svg";
+import classes from "./GenadropTooltip.module.css";
+
+const GenadropToolTip = ({ content, fill = "#3d3d3d" }) => {
   const cardRef = useRef(null);
   const [mouseOver, setMouseOver] = useState(false);
-  const [dim, setDim] = useState({
-    width: 0,
-    left: 0,
-    right: 0,
-  });
 
-  useEffect(() => {
-    window.addEventListener("resize", () => {
-      if (!cardRef.current) return;
-      const { left, right, width } = cardRef.current.getBoundingClientRect();
-      setDim({ left, right, width });
-    });
-  }, []);
-
-  useEffect(() => {
-    const { left, width, right } = dim;
+  const adjustTooltip = () => {
+    if (!cardRef.current) return;
+    const { left, right, width } = cardRef.current.getBoundingClientRect();
     setTimeout(() => {
       if (left <= 32) {
         cardRef.current.style.transform = `translateX(${width / 3}px) translateY(-100%)`;
@@ -34,11 +21,18 @@ const GenadropToolTip = ({ content }) => {
         cardRef.current.style.transform = "translateX(0px) translateY(-100%)";
       }
     }, 100);
-  }, [dim, mouseOver]);
+  };
+
+  useEffect(() => {
+    adjustTooltip();
+    window.addEventListener("resize", () => {
+      adjustTooltip();
+    });
+  }, [mouseOver]);
 
   return (
     <div onMouseOut={() => setMouseOver(false)} onMouseOver={() => setMouseOver(true)} className={classes.container}>
-      <img src={infoIcon} alt="" />
+      <InfoIcon style={{ fill: fill }} />
       <div ref={cardRef} className={classes.card}>
         {content}
       </div>

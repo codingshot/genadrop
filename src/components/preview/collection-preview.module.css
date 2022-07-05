@@ -14,7 +14,7 @@
   top: 0.5em;
   right: 0.5em;
   padding: 0.15em 0.75em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   outline: none;
   font-size: 12px;
   border-radius: 0.2em;
@@ -30,4 +30,12 @@
 
 .container button:hover {
   transform: translateY(1px);
+}
+
+.placeholder {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

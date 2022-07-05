@@ -90,6 +90,7 @@ const CollectionNFT = () => {
       const collection = activeCollection.length ? activeCollection : Object.values(cacheCollection);
       (async function getResult() {
         const tHistory = await readNftTransaction(result.Id);
+
         tHistory.find((t) => {
           if (t.type === "Minting") t.price = result.price;
         });
@@ -128,6 +129,7 @@ const CollectionNFT = () => {
           trHistory.find((t) => {
             if (t.type === "Minting") t.price = result[0].price;
           });
+
           handleSetState({
             nftDetails: result[0],
             collection: collectionData,

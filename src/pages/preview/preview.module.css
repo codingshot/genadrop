@@ -60,7 +60,7 @@
   justify-content: center;
   box-shadow: var(--shadow-light);
   background: var(--main-bg);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   margin-bottom: 1em;
   opacity: 0.9;
 }
@@ -91,11 +91,12 @@
 .detailGif {
   border-radius: 30px;
   border-color: var(--main-700);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   margin-right: 1.6875em;
   box-shadow: var(--shadow-light);
 }
 .detailGif:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
 }
 .detailGif:hover p {
@@ -179,7 +180,7 @@
   border-radius: 0.75em;
   padding: 0px 0;
   background: var(--main-bg);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 2px 2px;
   transition: all 300ms;
 }
@@ -210,7 +211,9 @@
   flex-direction: column;
   gap: 1em;
 }
-
+.ipfs_tip {
+  text-align: center;
+}
 .actionContainer h3 {
   margin-top: -20px;
   background: var(--main-bg);
@@ -242,7 +245,7 @@
   border-radius: 0.25em;
   background: var(--main-700);
   color: white;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -272,7 +275,7 @@
   position: absolute;
   top: 1em;
   right: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -352,7 +355,7 @@
   border-radius: 0.25em;
   border: 1px solid;
   color: white;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 150ms;
   outline: 1px solid transparent;
   font-weight: 600;
@@ -398,7 +401,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .radioBtn::before {
@@ -443,7 +446,7 @@
   border-radius: 0.25em;
   background: var(--card-bg);
   color: white;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -468,6 +471,7 @@
   transition: 0.3s ease-in;
 }
 .btnWrapper > button.gifButton:hover {
+  cursor: var(--cursor-hover);
   background: var(--main-700);
   color: white;
   outline: none;
@@ -549,7 +553,7 @@
   /* margin-left: 1em; */
   padding: 0.7em;
   display: flex;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .playTut svg {
   margin: auto;
@@ -595,7 +599,7 @@
 .mintBtn:hover {
   background: var(--main-900);
   border: 2px solid var(--main-700);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .cancelBtn {
@@ -711,7 +715,7 @@
   align-items: center;
 }
 .inputArrows img {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 /* -------------------------------- GIF Model -------------------------------- */
@@ -743,7 +747,7 @@
 .guideContainer > svg {
   margin-left: auto;
   margin-bottom: 0.7em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   width: 25px;
   height: 25px;
 }
@@ -778,7 +782,7 @@
   justify-content: center;
   height: 3em;
   font-size: 0.8em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .gifAllBtn div {
   background: var(--main-700);

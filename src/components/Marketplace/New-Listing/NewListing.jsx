@@ -10,7 +10,11 @@ import ChainDropdown from "../Chain-dropdown/chainDropdown";
 
 const NewListing = () => {
   const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
-  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
+  const algoCollectionsArr = algoCollections
+    ? Object.values(algoCollections).sort(
+        (collection_a, collection_b) => collection_a.createdAt["seconds"] - collection_b.createdAt["seconds"]
+      )
+    : [];
 
   const [state, setState] = useState({
     filteredCollection: [],

@@ -15,25 +15,26 @@ import {
   setCombinations,
 } from "../../gen-state/gen.actions";
 import Layer from "../layer/layer";
-import Prompt from "../prompt/prompt";
 import { getCombinations, getItemStyle, getListStyle } from "./layeroders-script";
 import { fetchAlgoCollections } from "../../utils/firebase";
 import editIcon from "../../assets/icon-edit.svg";
 import markIcon from "../../assets/icon-mark.svg";
-import plusIcon from "../../assets/icon-plus.svg";
-import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import { ReactComponent as AddIcon } from "../../assets/icon-plus.svg";
+import LayerInput from "./Layer-Input/LayerInput";
+import Tooltip from "./Tooltip/Tooltip";
 
-const LayerOrders = () => {
+const LayerOrders = ({ isCreateModal }) => {
   const { layers, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,
     inputValue: "",
     renameAction: false,
     activeInput: false,
-    alert: false,
+    showInfo: true,
   });
 
-  const { prompt, inputValue, renameAction, activeInput, alert } = state;
+  const { prompt, inputValue, renameAction, activeInput, showInfo } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -64,29 +65,6 @@ const LayerOrders = () => {
     dispatch(setPrompt(promptDeleteLayer(layer)));
   };
 
-  const handleAddSampleLayers = () => {
-    const sampleLayers = [
-      { layerName: "Goo", dirName: "Goo" },
-      { layerName: "Top Lid", dirName: "TopLid" },
-      { layerName: "Bottom Lid", dirName: "BottomLid" },
-      { layerName: "Shine", dirName: "Shine" },
-      { layerName: "Iris", dirName: "Iris" },
-      { layerName: "Eye Color", dirName: "EyeColor" },
-      { layerName: "Eye Ball", dirName: "EyeBall" },
-      { layerName: "Background", dirName: "Background" },
-    ];
-    sampleLayers.map((sample) => {
-      dispatch(
-        addLayer({
-          id: uuid(),
-          traitsAmount: 0,
-          layerTitle: sample.layerName,
-          traits: [],
-        })
-      );
-    });
-  };
-
   const getCollectionsNames = async () => {
     const collections = await fetchAlgoCollections();
     const names = [];
@@ -94,6 +72,11 @@ const LayerOrders = () => {
       names.push(col.name);
     });
     return names;
+  };
+
+  const handleAddClick = () => {
+    !isRule && handleSetState({ prompt: true });
+    window.sessionStorage.isTooltip = "true";
   };
 
   const handleRename = async (event) => {
@@ -141,16 +124,6 @@ const LayerOrders = () => {
 
   useEffect(() => {
     dispatch(setCombinations(getCombinations(layers)));
-    layers?.slice(-1)?.map((data) => {
-      if (data?.exists === true) {
-        return dispatch(
-          setNotification({
-            message: `${data.layerTitle} already exists`,
-            type: "warning",
-          })
-        );
-      }
-    });
   }, [layers]);
 
   return (
@@ -165,10 +138,11 @@ const LayerOrders = () => {
                 onChange={(e) => handleSetState({ inputValue: e.target.value })}
                 value={inputValue}
                 autoFocus
+                placeholder="Enter collection name"
               />
             </form>
           ) : (
-            <div className={classes.nameHeader}>{collectionName ? collectionName : "collection name"}</div>
+            <div className={classes.nameHeader}>{collectionName ? collectionName : "Enter collection name"}</div>
           )}
           <div className={classes.editBtn}>
             {renameAction ? (
@@ -182,10 +156,12 @@ const LayerOrders = () => {
 
       <div className={classes.layerorder}>
         <div className={classes.layerHeadWrapper}>
-          <div className={classes.layerorderHeader}>Layer Orders</div>
-          <div className={classes.infoText}>
-            Please, ensure that background layer is at the bottom, you can drag layers down or up to re-order
-          </div>
+          {showInfo ? (
+            <div className={classes.info}>
+              <p>Please, ensure that background layer is at the bottom, you can drag layers down or up to re-order</p>
+              <CloseIcon onClick={() => handleSetState({ showInfo: false })} className={classes.closeBtn} />
+            </div>
+          ) : null}
         </div>
         <div className={classes.listWrapper}>
           <div className={classes.layer_trait}>
@@ -199,7 +175,7 @@ const LayerOrders = () => {
                   {...provided.droppableProps}
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
-                  className={classes.list}
+                  className={`${classes.list} ${showInfo && classes.active}`}
                 >
                   {layers.map((item, index) => (
                     <Draggable key={index} draggableId={`${index}`} index={index}>
@@ -229,29 +205,19 @@ const LayerOrders = () => {
           </DragDropContext>
           {prompt ? (
             <div className={classes.promptWrapper}>
-              <Prompt
+              <LayerInput
                 handleAddLayer={handleAddLayer}
                 setPrompt={(promptAdded) => handleSetState({ prompt: promptAdded })}
               />
             </div>
           ) : (
-            <>
-              <button
-                type="button"
-                className={classes.addBtn}
-                onClick={() => !isRule && handleSetState({ prompt: true })}
-              >
-                Add Layer <img src={plusIcon} alt="plus-icon" />
+            <div className={classes.addBtnContainer}>
+              <Tooltip isModal={isCreateModal} />
+              <button type="button" className={classes.addBtn} onClick={handleAddClick}>
+                <AddIcon className={classes.addIcon} />
+                Add Layer
               </button>
-              <button
-                style={{ marginTop: "10px" }}
-                type="button"
-                className={classes.addBtn}
-                onClick={handleAddSampleLayers}
-              >
-                Try Our Samples!
-              </button>
-            </>
+            </div>
           )}
         </div>
       </div>

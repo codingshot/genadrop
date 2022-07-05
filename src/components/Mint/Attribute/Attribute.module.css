@@ -24,6 +24,6 @@
   color: var(--text-light-500);
 }
 
-.container img {
-  filter: invert(1);
+.closeIcon {
+  fill: var(--main-bg);
 }

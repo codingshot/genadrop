@@ -1,23 +1,32 @@
 .container {
-  flex: 1;
+  width: 100%;
   overflow: auto;
-  border: 1px solid var(--sidebar-bg);
-  margin-bottom: 1em;
+  border: 1px solid var(--text-light-500);
+  background: var(--main-bg);
+  border-radius: 0.5em;
+  margin-bottom: 2em;
+  padding: 1em;
+  box-shadow: 6px 9px 18px rgba(93, 134, 194, 0.1);
 }
 
 .layer {
   position: relative;
 }
 
-.header {
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.title {
   color: var(--text-dark-900);
-  margin-bottom: 0.5em;
   font-weight: 500;
 }
 
 .wrapper {
   width: 100%;
-  min-height: 8em;
   margin-bottom: 0.5em;
   display: flex;
   align-items: center;
@@ -26,7 +35,6 @@
   gap: 1em;
   padding: 0.5em;
   margin-bottom: 1em;
-  border: 1px solid var(--text-light-500);
   border-top-right-radius: 0.25em;
   border-top-left-radius: 0.25em;
 }
@@ -35,42 +43,73 @@
   flex: 0 0 auto;
 }
 
-.uploadBtnContainer {
+.uploadCard {
+  border: 1px solid red;
+  width: 100%;
+  height: 16em;
+  border-radius: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  cursor: var(--cursor-pointer);
+  border: 1px solid var(--text-light-500);
+  background: var(--text-light-200);
+}
+
+.uploadBtn {
+  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
+  padding: 0.5em 1em;
+  border-radius: 2em;
+  color: var(--main-700);
+  border: 1px solid var(--main-700);
 }
 
-.addBlankBtn {
-  width: auto;
-  background: black;
-  border: 1px solid transparent;
-  color: white;
-  padding: 0.75em 1em;
-  font-size: 0.85em;
-  cursor: pointer;
-  transition: all 300ms;
-  border-radius: 0.25em;
+.addIcon,
+.uploadIcon {
+  width: 1.5em;
+  height: 1.5em;
+  fill: var(--main-700);
 }
 
-.uploadBtn {
-  flex: 1;
-  background: var(--main-700);
-  color: white;
-  border: none;
-  padding: 0.75em;
-  font-size: 0.85rem;
-  text-transform: capitalize;
-  cursor: pointer;
-  transition: all 300ms;
-  border-radius: 0.25em;
-}
-
-.addBlankBtn:hover {
-  outline: 1px solid var(--card-bg);
-}
 .uploadBtn:hover {
-  background: var(--main-900);
-  outline: 1px solid var(--main-700);
+  background: var(--main-700);
+  color: var(--main-bg);
+}
+
+.uploadBtn:hover .uploadIcon {
+  fill: var(--main-bg);
+}
+
+.btnContainer {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 1em;
+}
+
+.btnContainer .upload,
+.btnContainer .addBlank {
+  width: 8em;
+  padding: 0.5em 0;
+  border-radius: 0.5em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  border: 1px solid var(--text-light-400);
+  color: var(--main-700);
+  box-shadow: var(--shadow-light);
+}
+
+.btnContainer .upload:hover,
+.btnContainer .addBlank:hover {
+  border: 1px solid var(--main-700);
 }

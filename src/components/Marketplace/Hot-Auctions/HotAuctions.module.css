@@ -37,7 +37,7 @@
   white-space: nowrap;
   font-size: 0.85rem;
   font-weight: 600;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .filter div.active {
@@ -52,7 +52,7 @@
 }
 
 .heading button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.5em 2.5em;
   border-radius: 2em;
   background: var(--main-700);
