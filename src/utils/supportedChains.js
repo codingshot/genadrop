@@ -76,7 +76,7 @@ const supportedChains = {
     isMainnet: false,
     switch: switchChain,
     coinGeckoLabel: "celo",
-    comingSoon: true,
+    comingSoon: false,
   },
   62320: {
     label: "Celo Baklava",
