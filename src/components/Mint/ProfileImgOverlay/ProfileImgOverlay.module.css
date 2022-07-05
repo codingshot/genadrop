@@ -44,7 +44,7 @@
   cursor: pointer;
 }
 .imgContainer > div:hover {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .imgContainer div img {
   height: 100%;
@@ -68,7 +68,7 @@
 .buttonConatiner div,
 .buttonConatiner p {
   border-radius: 2.375rem;
-  border: 3px solid var(--main-700);
+  border: 3px solid var(--main-color);
   font-weight: 500;
   font-size: 1.25rem;
   width: 11.8rem;
@@ -80,26 +80,26 @@
   transition: 0.3s ease;
 }
 .buttonConatiner p {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 .buttonConatiner div {
   color: #fff;
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .buttonConatiner div:hover {
-  background: var(--main-900);
+  background: var(--main-dark);
 }
 .buttonConatiner p:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: #fff;
 }
 div.active {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .viewALlBtn {
   width: fit-content;
   margin: 0.5rem auto auto;
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 1.25rem;
   font-weight: 500;
   cursor: pointer;

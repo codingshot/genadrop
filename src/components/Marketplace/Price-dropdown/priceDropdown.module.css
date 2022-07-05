@@ -1,6 +1,6 @@
 .priceDropdown {
   z-index: 1 !important;
-  /* color: var(--main-700); */
+  /* color: var(--main-color); */
 }
 
 .priceDropdown {
@@ -18,7 +18,7 @@
   cursor: pointer;
   background: var(--main-bg);
   border: 1px solid var();
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   padding: 0.5em;
   z-index: 99;
   border-radius: 2.5em;
@@ -42,7 +42,7 @@
 }
 
 .selectedPrice {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .priceDropdown .dropdown {

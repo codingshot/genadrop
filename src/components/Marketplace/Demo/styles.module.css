@@ -67,7 +67,7 @@
 }
 
 .label {
-  color: var(--main-700);
+  color: var(--main-color);
   align-self: flex-end;
   bottom: 0;
 }

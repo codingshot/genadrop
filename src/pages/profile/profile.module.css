@@ -137,7 +137,7 @@
 
 .option input:focus {
   background: var(--main-bg);
-  outline: 1px solid var(--main-700);
+  outline: 1px solid var(--main-color);
 }
 
 .option.invalid input {
@@ -170,18 +170,18 @@
 }
 
 .submit {
-  background: var(--main-700);
+  background: var(--main-color);
   border: 2px solid transparent;
   color: white;
 }
 
 .submit:hover {
-  background: var(--main-900);
-  border: 2px solid var(--main-700);
+  background: var(--main-dark);
+  border: 2px solid var(--main-color);
 }
 
 .cancel {
-  border: 2px solid var(--main-700);
+  border: 2px solid var(--main-color);
 }
 
 .cancel:hover {
@@ -203,7 +203,7 @@
 }
 
 .toggleButton.active {
-  background: var(--main-700);
+  background: var(--main-color);
   border: 1px solid transparent;
 }
 
@@ -305,7 +305,7 @@
 
 .copyIcon.active {
   transform: scale(0.8);
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 .text {

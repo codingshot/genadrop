@@ -104,12 +104,12 @@
 }
 
 .buy {
-  background-color: var(--main-700);
+  background-color: var(--main-color);
 }
 
 .bid {
-  border: 1px solid var(--main-700);
-  color: var(--main-700);
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
 }
 
 .buy img,

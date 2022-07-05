@@ -86,7 +86,7 @@
 }
 
 .price {
-  color: var(--main-700);
+  color: var(--main-color);
   font-weight: bold;
 }
 
@@ -103,7 +103,7 @@
 
 .nftCount {
   padding: 0.5em 1.5em;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   border-radius: 2em;
   font-size: 0.85rem;

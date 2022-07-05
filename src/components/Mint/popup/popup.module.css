@@ -51,7 +51,7 @@
 /* -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12); */
 
 .container .heading {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .container .heading.error {
@@ -106,23 +106,23 @@
 }
 
 .actionBtn._1 {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   position: relative;
 }
 
 .actionBtn._2 {
   background: var(--main-bg);
-  color: var(--main-700);
-  border-color: var(--main-700);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .actionBtn._1:hover {
-  background: var(--main-900);
+  background: var(--main-dark);
 }
 
 .actionBtn._2:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 

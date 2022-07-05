@@ -1,9 +1,9 @@
 import React from "react";
 import classes from "./Banner.module.css";
 import playIcon from "../../../assets/icon-play.svg";
-import Lottie from "react-lottie";
+// import Lottie from "react-lottie";
 import { Link } from "react-router-dom";
-// import data from "../../../assets/lottie/data.json";
+import appBanner from "../../../assets/app-banner.svg";
 
 const Banner = () => {
   const defaultOptions = {
@@ -47,7 +47,8 @@ const Banner = () => {
           </a>
         </div>
         <div className={classes.illustration}>
-          <Lottie options={defaultOptions} height="100%" width="100%" />
+          {/* <Lottie options={defaultOptions} height="100%" width="100%" /> */}
+          <img src={appBanner} alt="" />
         </div>
         <a href="https://youtu.be/wC0odzMW_9g" target="_blank" rel="noreferrer" className={classes.btn_video_m}>
           <img src={playIcon} alt="" />

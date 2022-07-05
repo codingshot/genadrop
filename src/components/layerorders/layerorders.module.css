@@ -2,7 +2,7 @@
   width: 20em;
   position: sticky;
   top: 5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline-light);
   border-radius: 0.5em;
   padding: 1em 0;
   height: calc(100vh - 8em);
@@ -37,8 +37,7 @@
   align-items: center;
   justify-content: space-between;
   background: transparent;
-  color: white;
-  background: var(--card-bg);
+  background: var(--card-layer);
   padding: 0.5em 1em;
   border-radius: 0.25em;
 }
@@ -72,12 +71,12 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: var(--card-bg);
+  background: rgb(0, 0, 0, 0.1);
   transition: all 300ms;
 }
 
 .editBtn:hover {
-  background: var(--card-bg-light);
+  background: rgb(0, 0, 0, 0.3);
 }
 
 .editBtn img {
@@ -91,6 +90,7 @@
   font-size: 1rem;
   white-space: nowrap;
   overflow: auto;
+  color: var(--main-bg);
 }
 
 .info {
@@ -103,11 +103,10 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  background: rgb(181, 188, 255, 0.28);
+  background: var(--card-info);
 }
 
 .info p {
-  color: #7e7f81;
   font-size: 0.75rem;
 }
 
@@ -139,7 +138,7 @@
   padding: 0.5em 1em;
   padding-right: 2em;
   text-transform: capitalize;
-  background: var(--text-light-300);
+  background: var(--card-trait);
   color: var(--main-color);
   margin-bottom: 1em;
   border-radius: 0.25em;
@@ -152,7 +151,7 @@
 
 .list {
   width: 100%;
-  min-height: 12em;
+  min-height: 19em;
   height: calc(100vh - 23.5em);
   overflow: auto;
   display: flex;
@@ -179,22 +178,22 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
-  color: var(--main-700);
+  color: var(--main-color);
   padding: 0.75em;
   border-radius: 4em;
   font-size: 1rem;
   transition: all 300ms;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 .addIcon {
-  fill: var(--main-700);
+  fill: var(--main-color);
   width: 1.2em;
   height: 1.2em;
 }
 
 .addBtn:hover {
-  background: var(--text-light-200);
+  background: var(--main-lighter);
 }
 
 @media screen and (max-width: 768px) {

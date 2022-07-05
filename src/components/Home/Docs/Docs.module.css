@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 8em;
-  background: var(--text-light-200);
+  background: var(--main-lighter);
   padding: 4em 1em;
 }
 
@@ -32,14 +32,14 @@
 }
 
 .heading {
-  color: var(--text-dark-900-accent-dark);
+  color: var(--text-sub-heading);
 }
 
 .description {
   font-size: 2.5rem;
-  color: var(--text-dark-900-accent-dark);
-  border-top: 2px solid var(--main-700);
-  border-bottom: 2px solid var(--main-700);
+  color: var(--text-heading);
+  border-top: 2px solid var(--main-color);
+  border-bottom: 2px solid var(--main-color);
   margin: 0.25em 0;
 }
 
@@ -47,13 +47,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-dark-900-main-dark);
+  color: var(--main-color);
   gap: 0.5em;
   transition: all 300ms;
 }
 
 .link:hover {
-  color: var(--main-900);
+  color: var(--main-dark);
 }
 
 .link img {

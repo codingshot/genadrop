@@ -28,14 +28,14 @@
   border-radius: 2em;
   cursor: pointer;
   color: white;
-  background: var(--main-700);
+  background: var(--main-color);
   text-align: center;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   transition: background 300ms;
 }
 
 .connect:hover {
-  background: var(--main-900);
+  background: var(--main-dark);
 }
 
 .connected {
@@ -44,7 +44,7 @@
   align-items: stretch;
   justify-content: center;
   gap: 0.5em;
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: pointer;
   position: relative;
   background: var(--main-bg);
@@ -52,11 +52,11 @@
   padding: 0.25em 0.25em;
   border-radius: 2em;
   padding: 0.25em 0.5em;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 .connected:hover {
-  color: var(--main-900);
+  color: var(--main-dark);
 }
 
 .user {
@@ -125,7 +125,7 @@
 }
 
 .networkDrop:hover {
-  background: var(--text-light-200);
+  background: var(--main-lighter);
 }
 
 .network:hover .networkDrop {
@@ -165,7 +165,7 @@
   opacity: 0;
   overflow: hidden;
   font-size: 0.85rem;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 .dropdown.active {

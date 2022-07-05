@@ -39,13 +39,13 @@
   padding: 0.75em 4em;
   border-radius: 2em;
   background: var(--main-bg);
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: pointer;
 }
 
 .btn:hover {
   background: var(--main-100);
-  color: var(--main-900);
+  color: var(--main-dark);
 }
 
 .cardContainer {

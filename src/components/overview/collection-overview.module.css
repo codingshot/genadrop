@@ -14,7 +14,7 @@
   justify-content: flex-start;
   flex-wrap: wrap;
   position: sticky;
-  top: 3.9em;
+  top: 3.7em;
 }
 
 .addRuleBtn,
@@ -23,12 +23,13 @@
   height: 2.5em;
   border-radius: 2em;
   font-size: 0.85rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 300ms;
 }
 
 .addRuleBtn {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -37,17 +38,17 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
-  color: var(--main-700);
+  color: var(--main-color);
   background: var(--main-bg);
-  border: 1px solid var(--main-700);
+  border: 2px solid var(--main-color);
 }
 
 .addRuleBtn:hover {
-  background: var(--main-900);
+  background: var(--main-dark);
 }
 
 .showRuleBtn:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -59,14 +60,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   transition: all 300ms;
 }
 
 .showRuleBtn:hover .ruleCount {
   background: var(--main-bg);
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .ruleCardWrapper {
@@ -89,7 +90,7 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline-light);
   border-radius: 0.5em;
   min-height: calc(100vh - 9em);
 }
@@ -109,16 +110,16 @@
   color: var(--text-dark-300);
 }
 
-.conflictGuide {
+.conflictInfo {
   font-size: 0.75em;
   color: var(--text-dark-900);
-  background: var(--main-100);
+  background: var(--card-info);
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
-  padding: 0.5em 0.75em;
+  padding: 1em 0.75em;
   max-width: 34em;
   margin-left: auto;
 }
@@ -147,7 +148,7 @@
   }
 
   .rules {
-    top: 3.5em;
+    top: 2.9em;
   }
 }
 
@@ -155,7 +156,7 @@
   .rules {
     flex-wrap: wrap-reverse;
   }
-  .conflictGuide {
+  .conflictInfo {
     width: 100%;
   }
 }
@@ -164,17 +165,12 @@
     width: 100%;
     height: auto;
   }
-
-  .rules {
-    top: 3em;
-  }
 }
 
 @media screen and (max-width: 480px) {
   .rules {
     width: 100%;
     margin-left: 0;
-    justify-content: space-between;
   }
 
   .showRuleBtn,

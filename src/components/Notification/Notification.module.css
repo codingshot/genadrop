@@ -56,23 +56,43 @@
 .notification.error {
   background: var(--error-100);
   border: 1px solid var(--error-500);
+}
+
+.notification.error .message {
   color: var(--error-600);
+}
+
+.notification.error .closeIcon {
+  fill: var(--error-600);
 }
 
 .notification.warning {
   background: var(--warning-200);
   border: 1px solid var(--warning-500);
+}
+
+.notification.warning .closeIcon {
+  fill: var(--warning-700);
+}
+
+.notification.warning .message {
   color: var(--warning-700);
 }
 
 .notification.success {
   background: var(--success-500);
   border: 1px solid var(--success-700);
+}
+
+.notification.success .message {
   color: var(--main-bg);
 }
 
 .notification.default {
-  background: var(--text-dark-900);
+  background: var(--card-layer);
+}
+
+.notification.default .message {
   color: var(--main-bg);
 }
 

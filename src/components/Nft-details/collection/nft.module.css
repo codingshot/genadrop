@@ -49,7 +49,7 @@
 }
 
 .price {
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 20px;
   font-weight: bold;
 }
@@ -74,7 +74,7 @@
 }
 
 .buy {
-  background-color: var(--main-700);
+  background-color: var(--main-color);
 }
 .sold {
   background-color: #4b4b5a;

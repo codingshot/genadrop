@@ -66,7 +66,7 @@
 }
 
 .clearFilter:hover {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .searchAndFilter {

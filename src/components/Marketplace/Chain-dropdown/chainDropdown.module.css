@@ -34,11 +34,11 @@
   padding: 0.25em 0.5em;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   border-radius: 2.5em;
   cursor: pointer;
   height: 100%;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .selectedChain:hover {

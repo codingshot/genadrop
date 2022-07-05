@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 4em 1em;
-  background: #dff1f0;
+  background: var(--main-lighter);
 }
 
 .container * {
@@ -22,7 +22,7 @@
 }
 
 .heading span {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .description {

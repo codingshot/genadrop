@@ -72,7 +72,7 @@
 }
 
 .closeIcon:hover {
-  background: var(--text-light-200);
+  background: var(--main-lighter);
 }
 
 .wrapper {
@@ -118,7 +118,7 @@
 }
 
 .chain:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -158,7 +158,7 @@
   border-radius: 1em;
   padding: 0.15em 1em;
   transition: all 300ms;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .viewBtn:hover {

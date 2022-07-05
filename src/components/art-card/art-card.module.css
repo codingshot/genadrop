@@ -21,7 +21,7 @@
 }
 
 .container.active .addRuleBtn {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .container * {
@@ -32,7 +32,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--text-light-400);
+  background: var(--card-trait);
 }
 
 .imageContainer:hover .image {
@@ -97,7 +97,7 @@
 }
 
 .reset {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .reset * {

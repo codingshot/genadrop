@@ -35,7 +35,7 @@
 }
 
 .filterHeading span {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .attributeFilter .title {
@@ -77,7 +77,7 @@
 
 .toggleButton.active .toggle {
   transform: translateX(23px);
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .toggleButton .toggle {
@@ -118,7 +118,7 @@
 }
 
 .priceFilter button {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   padding: 1em;
   border-radius: 0.25em;
@@ -126,8 +126,8 @@
 }
 
 .priceFilter button:hover {
-  background: var(--main-900);
-  outline: 2px solid var(--main-700);
+  background: var(--main-dark);
+  outline: 2px solid var(--main-color);
 }
 
 .attributeFilter .title {
@@ -192,7 +192,7 @@
 .layer > div {
   border: 1px solid white;
   padding: 0.5em 0.25em;
-  background: var(--text-light-200);
+  background: var(--main-lighter);
   border-radius: 0.25em;
 }
 

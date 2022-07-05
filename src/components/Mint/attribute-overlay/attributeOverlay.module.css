@@ -108,7 +108,7 @@
   justify-content: center;
   gap: 0.5em;
   flex-direction: column;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 @media screen and (max-width: 900px) {

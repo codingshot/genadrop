@@ -22,7 +22,7 @@
   width: 0.75em;
   height: 0.75em;
   border-radius: 50%;
-  background: var(--main-900);
+  background: var(--main-dark);
   animation: blink 300ms infinite alternate linear;
 }
 
@@ -43,6 +43,6 @@
     background: var(--main-bg);
   }
   to {
-    background: var(--main-700);
+    background: var(--main-color);
   }
 }

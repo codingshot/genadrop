@@ -29,7 +29,7 @@
 .container input:focus,
 .container textarea:focus {
   border: none;
-  outline: 1px solid var(--main-700) !important;
+  outline: 1px solid var(--main-color) !important;
   cursor: text;
 }
 .wrapper {
@@ -107,14 +107,14 @@
 .asset button {
   padding: 0.5em 2em;
   border-radius: 1.5em;
-  color: var(--main-700);
-  border: 1px solid var(--main-900);
+  color: var(--main-color);
+  border: 1px solid var(--main-dark);
   transition: all 300ms;
 }
 
 .asset button:hover {
-  background: var(--main-900);
-  border: 1px solid var(--main-700);
+  background: var(--main-dark);
+  border: 1px solid var(--main-color);
   cursor: pointer;
   color: white;
 }
@@ -169,7 +169,7 @@
 
 .showPreview {
   font-size: 0.85rem;
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -177,7 +177,7 @@
   gap: 0.5em;
 }
 div.showPreview > span {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .showPreview img {
@@ -215,8 +215,8 @@ div.showPreview > span {
 
 .type div {
   display: inline-block;
-  color: var(--main-700);
-  border-bottom: 2px solid var(--main-700);
+  color: var(--main-color);
+  border-bottom: 2px solid var(--main-color);
   font-family: "Poppins", sans-serif;
   font-weight: 500;
   font-size: 1.6rem;
@@ -287,7 +287,7 @@ div.showPreview > span {
   padding: 0.5em;
   resize: none;
   border-radius: 0.5em;
-  background: var(--text-light-200);
+  background: var(--main-lighter);
   border: 1px solid var(--text-light-700);
   box-shadow: var(--shadow-light-1);
   color: var(--text-dark-300);
@@ -303,7 +303,7 @@ div.showPreview > span {
   margin-right: 1rem;
 }
 .price span {
-  color: var(--main-700);
+  color: var(--main-color);
   font-weight: bold;
   min-width: 20%;
   justify-content: center;
@@ -317,12 +317,12 @@ div.showPreview > span {
 
 .inputWrapper button {
   transition: all 300ms;
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 1rem;
 }
 
 .inputWrapper button:hover {
-  color: var(--main-900);
+  color: var(--main-dark);
 }
 
 .attributes {
@@ -356,7 +356,7 @@ div.showPreview > span {
 }
 
 .mintBtn {
-  background: var(--main-700);
+  background: var(--main-color);
   border: 1px solid transparent;
   color: white;
   font-size: 1rem;
@@ -364,19 +364,19 @@ div.showPreview > span {
 }
 
 .mintBtn:hover {
-  background: var(--main-900);
-  border: 1px solid var(--main-700);
+  background: var(--main-dark);
+  border: 1px solid var(--main-color);
 }
 
 .cancelBtn {
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   transition: all 300ms;
   font-size: 1rem;
 }
 
 .cancelBtn:hover {
   border: 1px solid transparent;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -457,7 +457,7 @@ div.showPreview > span {
   cursor: pointer;
 }
 .dropWrapper > div:hover .selectImg p {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 .dropWrapper div img {
   height: 6rem;
@@ -470,7 +470,7 @@ div.showPreview > span {
 }
 
 .priceTooltip div svg {
-  /* border: 2px solid var(--main-700); */
+  /* border: 2px solid var(--main-color); */
   /* height: 1.1em;
   width: 1.1em; */
 }
