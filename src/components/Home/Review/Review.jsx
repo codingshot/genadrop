@@ -39,6 +39,7 @@ const Review = () => {
   }, [tweetsData]);
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_TWITTER_ACCESS_TOKEN);
     axios
       .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL(reviews)}`, {
         headers: {
