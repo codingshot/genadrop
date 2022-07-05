@@ -124,7 +124,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   });
 
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
-
+  console.log("-----RESULT FILE-----", resultFile);
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
   metadata.properties = [...asset.attributes];
@@ -465,6 +465,7 @@ export async function createNFT(createProps, doAccountCheck) {
       type: "warning",
     })
   );
+  console.log(metadata);
   for (let i = 0; i < metadata.length; i += 1) {
     dispatch(setLoader(`uploading ${i + 1} of ${metadata.length}`));
     const imgName = metadata[i].image;
@@ -544,7 +545,8 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  console.log("---CELoprop", celoProps);
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -581,6 +583,15 @@ export async function mintToCelo(celoProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
     await tx.wait();
+    // await marketContract.createBulkMarketItem(
+    //   contract.address,
+    //   ids,
+    //   String(price * 10 ** 18),
+    //   amounts,
+    //   "General",
+    //   account,
+    //   description
+    // );
   } catch (error) {
     console.log(error);
     dispatch(setLoader(""));
