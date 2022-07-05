@@ -30,7 +30,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   return (
     <Link
       to={
-        fromDashboard
+        fromDashboard && !listed
           ? nft.collection_name
             ? `${match.url}/${Id}`
             : chain

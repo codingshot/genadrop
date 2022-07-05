@@ -7,7 +7,13 @@ import CollectionsCard from "../../components/Marketplace/collectionsCard/collec
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
-import { fetchUserBoughtNfts, fetchUserCollections, fetchUserNfts, readUserProfile } from "../../utils/firebase";
+import {
+  fetchUserBoughtNfts,
+  fetchUserCollections,
+  fetchUserCreatedNfts,
+  fetchUserNfts,
+  readUserProfile,
+} from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
@@ -40,8 +46,9 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } =
-    useContext(GenContext);
+  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } = useContext(
+    GenContext
+  );
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -56,14 +63,9 @@ const Dashboard = () => {
     // Get User Created NFTs
 
     (async function getUserNFTs() {
-      const singles = [];
-      const singleNfts = await fetchUserNfts(account);
-      singleNfts?.forEach((nft) => {
-        if (!nft.collection) {
-          singles.push(nft);
-        }
-      });
-      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts: singles });
+      const singleNfts = await fetchUserCreatedNfts(account);
+
+      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
       handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
@@ -246,7 +248,7 @@ const Dashboard = () => {
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
+                  <NftCard key={idx} nft={nft} listed={!nft.sold} fromDashboard />
                 ))}
               </div>
             ) : (
