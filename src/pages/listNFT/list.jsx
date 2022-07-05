@@ -36,7 +36,7 @@ const List = () => {
     if (!price) return alert("price can't be empty");
 
     console.log("RES: ", await listNft(nftDetails.Id, price, account));
-    // history.push(`${match.url}/listed`);
+    history.push(`${match.url}/listed`);
   };
 
   useEffect(() => {
