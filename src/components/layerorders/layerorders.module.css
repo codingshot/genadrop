@@ -63,7 +63,7 @@
 }
 
 .editBtn {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.1em;
   width: 24px;
   height: 24px;
@@ -113,7 +113,7 @@
 .info .closeBtn {
   fill: var(--bg-dark);
   width: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .layerorder {
@@ -162,7 +162,12 @@
 .list.active {
   height: calc(100vh - 29.5em);
 }
-
+.list > div {
+  cursor: var(--cursor-hover);
+}
+.list > div:active:hover {
+  cursor: var(--cursor-grab);
+}
 .promptWrapper {
   width: 100%;
 }

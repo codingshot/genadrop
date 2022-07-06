@@ -66,7 +66,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
   fill: var(--bg-dark);
 }
@@ -103,13 +103,13 @@
   padding-left: 1em;
   border-radius: 3em;
   background: #f9fafb;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
 .chain.comingSoon {
   background: var(--outline);
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .chain.comingSoon:hover {
@@ -154,7 +154,7 @@
 
 .viewBtn {
   display: inline-block;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border-radius: 1em;
   padding: 0.15em 1em;
   transition: all 300ms;
@@ -191,7 +191,7 @@
   gap: 0.5em;
   border-radius: 1em;
   text-align: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 

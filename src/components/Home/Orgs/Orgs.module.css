@@ -71,6 +71,6 @@
 }
 
 .org:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transform: scale(1.02);
 }

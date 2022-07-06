@@ -8,7 +8,7 @@
 }
 
 .selectedPrice {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   background: var(--default);
   color: #000000;
   border: 1px solid var(--outline);
@@ -36,7 +36,7 @@
   justify-content: space-between;
   border: 1px solid var(--main-color);
   border-radius: 2.5em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   height: 100%;
   color: var(--main-color);
 }
@@ -62,7 +62,7 @@
   transition: all 250ms;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transform: translateY(-0.5em);
   text-transform: capitalize;
 }
@@ -89,7 +89,7 @@
 }
 
 .chain.inActive {
-  cursor: default;
+  cursor: var(--cursor-default);
   color: var(--outline);
 }
 

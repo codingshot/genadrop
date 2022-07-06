@@ -11,7 +11,7 @@
 .card:hover {
   box-shadow: var(--shadow-light);
   transform: translateY(-5px);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .imageContainer {

@@ -41,7 +41,7 @@
   background: var(--default);
   border: 1px solid #e5e8eb;
   box-shadow: var(--shadow-light);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -85,6 +85,7 @@
   background: #c4c4c4;
   width: 100%;
   height: 0.75px;
+  margin-top: auto;
 }
 
 .footer {

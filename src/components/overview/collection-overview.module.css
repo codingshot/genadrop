@@ -23,8 +23,7 @@
   height: 2.5em;
   border-radius: 2em;
   font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -132,7 +131,7 @@
   fill: var(--bg-dark);
   width: 2em;
   height: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 @media screen and (max-width: 1200px) {

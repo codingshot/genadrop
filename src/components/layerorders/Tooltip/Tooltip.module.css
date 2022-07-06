@@ -37,7 +37,7 @@
 .closeBtn {
   fill: var(--default);
   align-self: flex-end;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .title {

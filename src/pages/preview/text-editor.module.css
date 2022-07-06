@@ -21,7 +21,7 @@
 .container button {
   border: none;
   outline: none;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   background: transparent;
 }
 

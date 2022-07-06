@@ -118,7 +118,7 @@
   padding: 3px;
 }
 .icon:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .refresh {
@@ -202,6 +202,7 @@
 
 .list:hover,
 .bid:hover {
+  cursor: var(--cursor-hover);
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
 }
@@ -271,6 +272,7 @@
 }
 
 .btnCollections:hover {
+  cursor: var(--cursor-hover);
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
 }
@@ -366,7 +368,7 @@
   top: -15px;
 }
 .shareicon:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   animation: slidein 0.4s;
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;

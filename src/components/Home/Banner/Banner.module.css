@@ -79,7 +79,7 @@
   padding: 0.75em 3em;
   border-radius: 2em;
   border: 1px solid transparent;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
@@ -109,8 +109,8 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
-  color: var(--main-color);
-  cursor: pointer;
+  color: var(--main-outline);
+  cursor: var(--cursor-pointer);
   transition: color 300ms;
 }
 

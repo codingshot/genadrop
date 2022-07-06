@@ -17,7 +17,7 @@
 
 .container textarea:hover,
 .container input:hover {
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .container input,
@@ -110,11 +110,11 @@
   transition: all 300ms;
 }
 
-.assetContainer button:hover {
+.asset button:hover {
   background: var(--main-hovered);
   border: 1px solid var(--main-color);
-  cursor: pointer;
-  color: var(--default);
+  cursor: var(--cursor-pointer);
+  color: white;
 }
 
 .assetInfo {
@@ -173,7 +173,7 @@
 .showPreview {
   font-size: 0.85rem;
   color: var(--main-color);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -204,7 +204,7 @@ div.showPreview > span {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .showPreview_ img {
@@ -325,6 +325,7 @@ div.showPreview > span {
 }
 
 .inputWrapper button:hover {
+  cursor: var(--cursor-hover);
   color: var(--main-hovered);
 }
 
@@ -355,7 +356,7 @@ div.showPreview > span {
   width: 10em;
   padding: 0.75em 0;
   border-radius: 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .mintBtn {
@@ -460,7 +461,7 @@ div.showPreview > span {
   justify-content: center;
   height: 11.5rem;
   margin-bottom: 3rem;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .dropWrapper > div:hover .selectImg p {

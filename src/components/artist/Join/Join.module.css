@@ -35,7 +35,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   margin: 4.5rem auto 5.5rem;
   transition: 0.3s ease-in-out;
 }

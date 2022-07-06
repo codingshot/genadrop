@@ -57,9 +57,9 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid var(--outline);
-  background: var(--card-upload);
+  background: var(--outline-light);
 }
 
 .uploadBtn {

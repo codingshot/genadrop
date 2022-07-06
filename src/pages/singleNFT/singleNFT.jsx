@@ -125,12 +125,13 @@ const SingleNFT = () => {
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
         tHistory.find((t) => {
-          if (t.type === "Minting") t.price = nftDetails.price;
+          if (t.type === "Minting" && tHistory.length > 1) t.price = tHistory[1].price;
+          else t.price = nftDetails.price;
         });
         handleSetState({
           nftDetails,
           isLoading: false,
-          transactionHistory: tHistory,
+          transactionHistory: tHistory.reverse(),
         });
         dispatch(setLoading(false));
         document.documentElement.scrollTop = 0;

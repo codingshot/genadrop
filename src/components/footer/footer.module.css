@@ -59,6 +59,7 @@
 }
 
 .socialIcons .icon:hover {
+  cursor: var(--cursor-pointer);
   transform: scale(1.1);
   background: var(--main-color);
 }
@@ -88,6 +89,7 @@
 }
 
 .links a:hover {
+  cursor: var(--cursor-pointer);
   text-decoration: underline;
 }
 

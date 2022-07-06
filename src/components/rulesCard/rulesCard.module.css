@@ -49,7 +49,7 @@
 }
 
 .deleteRule {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid red;
   padding: 0.25em 1em;
   border-radius: 1.5em;
@@ -114,7 +114,7 @@
 .closeBtn {
   border-radius: 2em;
   padding: 0.65em 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid transparent;
   text-transform: capitalize;
 }

@@ -27,10 +27,10 @@
 .cancel {
   width: 5em;
   outline: none;
-  padding: 0.25em 0;
-  border-radius: 0.35em;
-  cursor: pointer;
-  border: 1px solid var(--card-layer);
+  padding: 0.25em 1.5em;
+  border-radius: 0.25em;
+  cursor: var(--cursor-pointer);
+  border: 1px solid transparent;
 }
 
 .add {

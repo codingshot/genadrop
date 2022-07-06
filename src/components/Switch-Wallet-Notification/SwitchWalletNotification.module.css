@@ -13,7 +13,7 @@
 .closeIcon {
   width: 1em;
   height: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   fill: var(--warning-900);
 }
 

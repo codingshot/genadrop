@@ -68,7 +68,7 @@ th:first-child {
 
 .explore:hover,
 .copy:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   text-decoration: underline;
 }
 .clickable::before,
@@ -85,7 +85,7 @@ th:first-child {
 }
 
 .txId:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .icon {

@@ -26,8 +26,8 @@
 }
 
 .heading button {
-  cursor: pointer;
-  color: var(--main-color);
+  cursor: var(--cursor-pointer);
+  color: var(--outline);
   transition: background 300ms;
   font-size: 1rem;
 }

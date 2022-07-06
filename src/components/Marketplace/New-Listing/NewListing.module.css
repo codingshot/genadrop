@@ -20,7 +20,7 @@
 }
 
 .heading button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.5em 2.5em;
   border-radius: 2em;
   background: var(--main-color);

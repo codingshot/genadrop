@@ -34,7 +34,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   margin-top: auto;
   margin-bottom: 2.4rem;
   transition: 0.3s ease-in-out;

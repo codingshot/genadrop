@@ -95,7 +95,7 @@
   display: flex;
   align-items: center;
   gap: 1em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .fLink img {

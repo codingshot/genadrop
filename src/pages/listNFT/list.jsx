@@ -4,7 +4,7 @@ import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserBoughtNftCollection } from "../../utils";
 import classes from "./list.module.css";
-import { fetchUserBoughtNfts, writeNft } from "../../utils/firebase";
+import { fetchUserBoughtNfts, listNft, writeNft } from "../../utils/firebase";
 
 const List = () => {
   const { account, mainnet } = useContext(GenContext);
@@ -34,15 +34,9 @@ const List = () => {
   const listNFT = async () => {
     // eslint-disable-next-line no-alert
     if (!price) return alert("price can't be empty");
-    await writeNft(
-      nftDetails.algo_data.creator,
-      nftDetails.collection_name,
-      nftDetails.Id,
-      nftDetails.price,
-      null,
-      null,
-      null
-    );
+
+    console.log("RES: ", await listNft(nftDetails.Id, price, account));
+    history.push(`${match.url}/listed`);
   };
 
   useEffect(() => {
@@ -105,25 +99,13 @@ const List = () => {
             </div>
 
             <div className={classes.btns}>
-              {price ? (
-                <Link to={{ pathname: `${match.url}/listed`, state: { image_url } }}>
-                  <button type="button" className={classes.buy} disabled={nftDetails.sold} onClick={listNFT}>
-                    <div>
-                      <img src="/assets/price-tage.svg" alt="" />
-                      SET PRICE
-                    </div>
-                    <span>Sell the NFT at a fixed price</span>
-                  </button>
-                </Link>
-              ) : (
-                <button type="button" className={classes.buy} onClick={listNFT}>
-                  <div>
-                    <img src="/assets/price-tage.svg" alt="" />
-                    SET PRICE
-                  </div>
-                  <span>Sell the NFT at a fixed price</span>
-                </button>
-              )}
+              <button type="button" className={classes.buy} onClick={listNFT}>
+                <div>
+                  <img src="/assets/price-tage.svg" alt="" />
+                  SET PRICE
+                </div>
+                <span>Sell the NFT at a fixed price</span>
+              </button>
             </div>
           </div>
           {/* PRICE HISTORY */}

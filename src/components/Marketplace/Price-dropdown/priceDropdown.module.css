@@ -15,9 +15,8 @@
 }
 
 .selectedPrice {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   background: var(--default);
-  border: 1px solid var();
   border: 1px solid var(--main-color);
   padding: 0.5em;
   z-index: 99;
@@ -55,7 +54,7 @@
   transition: all 250ms;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transform: translateY(-0.5em);
   text-transform: capitalize;
 }
