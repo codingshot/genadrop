@@ -42,7 +42,7 @@
 }
 
 .selectedChain:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .selectedChain > div {
@@ -105,7 +105,7 @@
 }
 
 .chain:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .chainImg {

@@ -49,6 +49,7 @@
   border: 1px solid #e5e8eb;
   border-radius: 10px;
   margin-top: 1.5rem;
+  background: var(--card-light);
 }
 
 .v_subsection1 {
@@ -251,6 +252,10 @@
 .code {
   max-height: 30em;
   overflow: scroll;
+}
+
+.code * {
+  color: var(--text-placehoder);
 }
 
 .tableContainer {

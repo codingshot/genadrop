@@ -128,7 +128,7 @@
 }
 
 .closeIcon {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   width: 2em;
   height: 2em;
   cursor: var(--cursor-pointer);

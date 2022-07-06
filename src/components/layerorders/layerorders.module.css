@@ -111,7 +111,7 @@
 }
 
 .info .closeBtn {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   width: 2em;
   cursor: var(--cursor-pointer);
 }

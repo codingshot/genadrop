@@ -86,7 +86,7 @@
 .description {
   width: 100%;
   border: 1px solid var(--outline);
-  background: var(--card-bg2);
+  background: var(--card-bg);
   color: white;
   padding: 0.5em;
   border-bottom-right-radius: 0.5em;

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import classes from "./priceDropdown.module.css";
-import dropdownIcon from "../../../assets/down-arrow.svg";
-import arrowDown from "../../../assets/icon-arrow-down-long.svg";
-import arrowUp from "../../../assets/icon-arrow-up-long.svg";
+import dropdownIcon from "../../../assets/icon-caret-down.svg";
 
 const PriceDropdown = ({ onPriceFilter }) => {
   const [state, setState] = useState({
@@ -44,7 +42,7 @@ const PriceDropdown = ({ onPriceFilter }) => {
           <div onClick={() => filterPropertyUpdate("low")}>
             price
             <div className={classes.priceInfo}>
-              <span>Low to High</span> <img src={arrowUp} alt="" />
+              <span>Low to High</span>
             </div>
           </div>
         )}
@@ -53,7 +51,6 @@ const PriceDropdown = ({ onPriceFilter }) => {
             price
             <div className={classes.priceInfo}>
               <span>High to Low</span>
-              <img src={arrowDown} alt="" />
             </div>
           </div>
         )}
@@ -63,7 +60,6 @@ const PriceDropdown = ({ onPriceFilter }) => {
             Added
             <div className={classes.priceInfo}>
               <span>Newest</span>
-              <img src={arrowUp} alt="" />
             </div>
           </div>
         )}
@@ -72,7 +68,6 @@ const PriceDropdown = ({ onPriceFilter }) => {
             Added
             <div className={classes.priceInfo}>
               <span>Oldest</span>
-              <img src={arrowDown} alt="" />
             </div>
           </div>
         )}
@@ -81,7 +76,6 @@ const PriceDropdown = ({ onPriceFilter }) => {
             Alphabet
             <div className={classes.priceInfo}>
               <span>A-Z </span>
-              <img src={arrowUp} alt="" />
             </div>
           </div>
         )}
@@ -91,7 +85,6 @@ const PriceDropdown = ({ onPriceFilter }) => {
             Alphabet
             <div className={classes.priceInfo}>
               <span>Z-A</span>
-              <img src={arrowDown} alt="" />
             </div>
           </div>
         )}
@@ -100,7 +93,6 @@ const PriceDropdown = ({ onPriceFilter }) => {
           <div onClick={() => filterPropertyUpdate("txVolume")}>
             <div className={classes.priceInfo}>
               <span>Transaction Volume</span>
-              <img src={arrowDown} alt="" />
             </div>
           </div>
         )} */}

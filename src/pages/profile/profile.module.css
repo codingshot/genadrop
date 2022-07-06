@@ -188,7 +188,7 @@
 
 .cancel:hover {
   cursor: var(--cursor-hover);
-  background: var(--main-100);
+  background: var(--main-lightest);
 }
 
 .toggleButton {
