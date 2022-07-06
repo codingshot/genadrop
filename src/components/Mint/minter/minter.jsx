@@ -12,7 +12,7 @@ import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
-import MintDropdown from "../../Marketplace/Mint-dropdown/mintDropdown";
+import MintDropdown from "../Mint-dropdown/mintDropdown";
 import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
