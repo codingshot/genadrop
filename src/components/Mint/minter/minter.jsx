@@ -241,7 +241,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
             },
           });
           const Id = url.substring(url.lastIndexOf("/") + 1);
-          history.push(`${current_URL.url}/marketplace/collections/${Id}`);
+          history.push(`/marketplace/collections/${Id}`);
         }
       });
     } else {
@@ -274,7 +274,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           });
 
           const Id = url.substring(url.lastIndexOf("/") + 1);
-          history.push(`${current_URL.url}/marketplace/single-mint/${chainId}/${Id}`);
+          history.push(`/marketplace/single-mint/${chainId}/${Id}`);
         }
       });
     }
