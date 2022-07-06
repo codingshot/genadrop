@@ -1,8 +1,8 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import classes from "./Banner.module.css";
 import playIcon from "../../../assets/icon-play.svg";
 // import Lottie from "react-lottie";
-import { Link } from "react-router-dom";
 import appBanner from "../../../assets/app-banner.svg";
 
 const Banner = () => {
@@ -41,7 +41,12 @@ const Banner = () => {
               Explore
             </Link>
           </div>
-          <a href="https://youtu.be/wC0odzMW_9g" target="_blank" rel="noreferrer" className={classes.btn_video}>
+          <a
+            href="https://www.youtube.com/watch?v=wC0odzMW_9g&list=PLfkTuB2ltX12uhYARs5GbE0stptAFSacC"
+            target="_blank"
+            rel="noreferrer"
+            className={classes.btn_video}
+          >
             <img src={playIcon} alt="" />
             <div>Learn more about Genadrop</div>
           </a>
@@ -50,7 +55,12 @@ const Banner = () => {
           {/* <Lottie options={defaultOptions} height="100%" width="100%" /> */}
           <img src={appBanner} alt="" />
         </div>
-        <a href="https://youtu.be/wC0odzMW_9g" target="_blank" rel="noreferrer" className={classes.btn_video_m}>
+        <a
+          href="https://www.youtube.com/watch?v=wC0odzMW_9g&list=PLfkTuB2ltX12uhYARs5GbE0stptAFSacC"
+          target="_blank"
+          rel="noreferrer"
+          className={classes.btn_video_m}
+        >
           <img src={playIcon} alt="" />
           <div>Learn more about Genadrop</div>
         </a>
