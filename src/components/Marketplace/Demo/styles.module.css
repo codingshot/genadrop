@@ -3,7 +3,7 @@
   margin-bottom: 4em;
   padding: 2em;
   border-radius: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 
@@ -59,15 +59,16 @@
   padding: 1em;
   border-radius: 1em;
   transition: all 300ms;
-  cursor: default;
+  cursor: var(--cursor-default);
 }
 
 .card:hover {
+  cursor: var(--cursor-hover);
   background: #f8f8f8;
 }
 
 .label {
-  color: var(--main-700);
+  color: var(--main-color);
   align-self: flex-end;
   bottom: 0;
 }

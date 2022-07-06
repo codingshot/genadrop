@@ -1,0 +1,44 @@
+.form {
+  width: 100%;
+  background: transparent;
+  margin-bottom: 0.25em;
+}
+
+.form input {
+  width: 100%;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+  padding: 0.25em;
+  color: var(--text-heading);
+  background: var(--default);
+  outline: none;
+  border-radius: 0.25em;
+  border: 1px solid var(--card-layer);
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+.add,
+.cancel {
+  width: 5em;
+  outline: none;
+  padding: 0.25em 1.5em;
+  border-radius: 0.25em;
+  cursor: var(--cursor-pointer);
+  border: 1px solid transparent;
+}
+
+.add {
+  background: var(--card-layer);
+  color: var(--default);
+  transition: all 300ms;
+}
+
+.add:hover {
+  background: var(--card-preview);
+}

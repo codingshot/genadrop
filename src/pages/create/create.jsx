@@ -1,24 +1,28 @@
-import React, { useState, useContext } from "react";
 import LayerOrders from "../../components/layerorders/layerorders";
 import CollectionDescription from "../../components/description/collection-description";
 import CollectionOverview from "../../components/overview/collection-overview";
 import classes from "./create.module.css";
-import { GenContext } from "../../gen-state/gen.context";
-import iconHelp from "../../assets/icon-help.svg";
-import CreateGuide from "../../components/create-guide/create-guide";
+import CreateModal from "./Create-Modal/CreateModal";
+import { useEffect, useState } from "react";
 
 const Create = () => {
-  const { didMount } = useContext(GenContext);
-  const [toggleGuide, setGuide] = useState(!didMount);
+  const [modal, setModal] = useState(false);
+  const closeModal = () => {
+    setModal(false);
+  };
+
+  useEffect(() => {
+    if (!window.sessionStorage.isCreateModal) {
+      setModal(true);
+      window.sessionStorage.isCreateModal = true;
+    }
+  }, []);
 
   return (
     <div className={classes.container}>
-      <div onClick={() => setGuide(true)} className={`${classes.iconContainer} ${!toggleGuide && classes.active}`}>
-        <img className={classes.icon} src={iconHelp} alt="" />
-      </div>
-      <CreateGuide toggleGuide={toggleGuide} setGuide={setGuide} />
+      <CreateModal modal={modal} closeModal={closeModal} />
       <div className={classes.layer_overview}>
-        <LayerOrders />
+        <LayerOrders isCreateModal={modal} />
         <CollectionOverview />
       </div>
       <CollectionDescription />

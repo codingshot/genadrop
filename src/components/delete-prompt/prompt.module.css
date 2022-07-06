@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 2em;
   padding: 2em;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 0.5em;
   z-index: 100;
 }
@@ -55,9 +55,11 @@
 }
 
 .accept:hover {
+  cursor: var(--cursor-hover);
   outline: 2px solid var(--error-700);
 }
 
 .reject:hover {
-  background: var(--main-bg);
+  cursor: var(--cursor-hover);
+  background: var(--default);
 }

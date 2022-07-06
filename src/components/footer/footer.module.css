@@ -7,7 +7,7 @@
   max-width: 1440px;
   margin: 0 auto;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-700);
+  background: var(--main-hovered);
   padding: 2em;
 }
 
@@ -45,7 +45,7 @@
   padding: 0.5em;
   transition: all 300ms;
   border-radius: 0.25em;
-  background: var(--main-600);
+  background: var(--main-light);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,12 +59,12 @@
 }
 
 .socialIcons .icon:hover {
+  cursor: var(--cursor-pointer);
   transform: scale(1.1);
-  background: var(--main-900);
+  background: var(--main-color);
 }
 
 .topRight {
-  color: white;
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -81,17 +81,27 @@
 
 .links .title {
   font-weight: bold;
+  color: var(--default);
+}
+
+.links a {
+  color: var(--default);
 }
 
 .links a:hover {
+  cursor: var(--cursor-pointer);
   text-decoration: underline;
 }
 
 .bottom {
   width: 100%;
-  background: #333333;
+  background: var(--main-hovered);
   padding: 1em;
-  color: white;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.bottom * {
+  color: var(--default) !important;
 }
 
 .termsAndPolicy {
@@ -109,6 +119,12 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+}
+
+.orgs > * {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .build {

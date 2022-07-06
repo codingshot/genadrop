@@ -3,7 +3,7 @@
   align-items: center;
   padding: 0.25em;
   border-radius: 2em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .container div {
@@ -14,7 +14,7 @@
   white-space: nowrap;
   font-size: 0.85rem;
   font-weight: 600;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .container div.active {

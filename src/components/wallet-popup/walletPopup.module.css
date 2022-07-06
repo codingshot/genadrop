@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 28em;
   overflow: auto;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -57,19 +57,22 @@
   justify-content: flex-end;
 }
 
-.iconContainer img {
-  padding: 0.5em;
-  border: 1px solid rgba(75, 75, 90, 1);
+.closeIcon {
+  padding: 0.25em;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid black;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
+  fill: var(--icon-color);
 }
 
-.iconContainer img:hover {
-  background: var(--main-bg);
+.closeIcon:hover {
+  background: var(--main-lightest);
 }
 
 .wrapper {
@@ -100,22 +103,22 @@
   padding-left: 1em;
   border-radius: 3em;
   background: #f9fafb;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
 .chain.comingSoon {
-  background: var(--text-light-500);
-  cursor: default;
+  background: var(--outline);
+  cursor: var(--cursor-default);
 }
 
 .chain.comingSoon:hover {
-  background: var(--text-light-500);
+  background: var(--outline);
   color: inherit;
 }
 
 .chain:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -151,11 +154,11 @@
 
 .viewBtn {
   display: inline-block;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border-radius: 1em;
   padding: 0.15em 1em;
   transition: all 300ms;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .viewBtn:hover {
@@ -169,7 +172,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .connectionMethods.active {
@@ -188,13 +191,13 @@
   gap: 0.5em;
   border-radius: 1em;
   text-align: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
 .connectionMethod:hover {
   box-shadow: var(--shadow-dark);
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .connectionMethod.metamask {

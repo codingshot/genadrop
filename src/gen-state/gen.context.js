@@ -45,6 +45,7 @@ const GenContextProvider = ({ children }) => {
     promptRules,
     toggleWalletPopup,
     activeCollection,
+    imageQuality,
   } = state;
 
   return (
@@ -88,6 +89,7 @@ const GenContextProvider = ({ children }) => {
         singlePolygonNfts,
         toggleWalletPopup,
         activeCollection,
+        imageQuality,
         dispatch,
       }}
     >

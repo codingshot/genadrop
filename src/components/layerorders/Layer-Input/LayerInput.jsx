@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import classes from "./prompt.module.css";
+import classes from "./LayerInput.module.css";
 
-const Prompt = ({ handleAddLayer, setPrompt }) => {
+const LayerInput = ({ handleAddLayer, setPrompt }) => {
   const [value, setValue] = useState("");
 
   const handleChange = (event) => {
@@ -18,8 +18,10 @@ const Prompt = ({ handleAddLayer, setPrompt }) => {
     <form onSubmit={handleSubmit} className={classes.form}>
       <input onChange={handleChange} autoFocus type="text" value={value} />
       <div className={classes.buttons}>
-        <button type="submit">Add</button>
-        <button onClick={() => setPrompt(false)} type="button">
+        <button className={classes.add} type="submit">
+          Add
+        </button>
+        <button className={classes.cancel} onClick={() => setPrompt(false)} type="button">
           Cancel
         </button>
       </div>
@@ -27,4 +29,4 @@ const Prompt = ({ handleAddLayer, setPrompt }) => {
   );
 };
 
-export default Prompt;
+export default LayerInput;

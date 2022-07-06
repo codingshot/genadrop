@@ -3,8 +3,10 @@ import classes from "./collection-menu.module.css";
 import ArtCard from "../art-card/art-card";
 import { GenContext } from "../../gen-state/gen.context";
 import { addImage } from "../../gen-state/gen.actions";
-import ButtonClickEffect from "../button-effect/button-effect";
 import { handleAddBlank, handleFileChange, handleAddAssets } from "./collection-menu-script";
+import { ReactComponent as AddCircularIcon } from "../../assets/icon-add.svg";
+import { ReactComponent as UploadIcon } from "../../assets/icon-upload.svg";
+import { ReactComponent as AddIcon } from "../../assets/icon-plus.svg";
 
 const CollectionMenu = ({ layer }) => {
   const [state, setState] = useState({
@@ -12,7 +14,7 @@ const CollectionMenu = ({ layer }) => {
   });
   const { activeCard } = state;
   const { layerTitle, traits, id } = layer;
-  const { dispatch, layers } = useContext(GenContext);
+  const { dispatch, layers, imageQuality } = useContext(GenContext);
   const fileRef = useRef(null);
   const sampleLayers = [
     { layerName: "Background", dirName: "Background" },
@@ -48,6 +50,7 @@ const CollectionMenu = ({ layer }) => {
       layerTitle,
       canvas,
       img: layers[0].traits[0].image,
+      imageQuality,
     });
     dispatch(addImage(res));
   };
@@ -89,11 +92,6 @@ const CollectionMenu = ({ layer }) => {
     let imgFiles = [];
     // Don't try fixing this, require.context() requires literal string as input not variable, that's why I use swtich case in this situation.
     switch (layerName) {
-      case "Background":
-        images = importAll(
-          require.context(`../../../public/assets/CreateAssets/Background`, false, /\.(png|jpe?g|svg)$/)
-        );
-        break;
       case "BottomLid":
         images = importAll(
           require.context(`../../../public/assets/CreateAssets/BottomLid`, false, /\.(png|jpe?g|svg)$/)
@@ -104,17 +102,8 @@ const CollectionMenu = ({ layer }) => {
           require.context(`../../../public/assets/CreateAssets/EyeColor`, false, /\.(png|jpe?g|svg)$/)
         );
         break;
-      case "EyeBall":
-        images = importAll(require.context(`../../../public/assets/CreateAssets/EyeBall`, false, /\.(png|jpe?g|svg)$/));
-        break;
       case "Goo":
         images = importAll(require.context(`../../../public/assets/CreateAssets/Goo`, false, /\.(png|jpe?g|svg)$/));
-        break;
-      case "Iris":
-        images = importAll(require.context(`../../../public/assets/CreateAssets/Iris`, false, /\.(png|jpe?g|svg)$/));
-        break;
-      case "Shine":
-        images = importAll(require.context(`../../../public/assets/CreateAssets/Shine`, false, /\.(png|jpe?g|svg)$/));
         break;
       case "TopLid":
         images = importAll(require.context(`../../../public/assets/CreateAssets/TopLid`, false, /\.(png|jpe?g|svg)$/));
@@ -145,31 +134,42 @@ const CollectionMenu = ({ layer }) => {
   return (
     <div className={classes.container}>
       <section className={classes.layer}>
-        <h3 className={classes.header}>{layerTitle}</h3>
+        <div className={classes.heading}>
+          <h3 className={classes.title}>{layerTitle}</h3>
+          {traits.length ? (
+            <div className={classes.btnContainer}>
+              <button onClick={() => fileRef.current.click()} className={classes.upload}>
+                <UploadIcon className={classes.uploadIcon} /> Upload
+              </button>
+              <button type="button" onClick={handleBlank} className={classes.addBlank}>
+                <AddIcon className={classes.addIcon} /> Add blank
+              </button>
+            </div>
+          ) : null}
+        </div>
         {/* list of images */}
         <div className={classes.wrapper}>
-          {traits.map((trait, idx) => (
-            <ArtCard
-              key={idx}
-              index={idx}
-              layerTitle={layerTitle}
-              trait={trait}
-              layerId={id}
-              setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
-              activeCard={activeCard}
-            />
-          ))}
-        </div>
-        <div className={classes.uploadBtnContainer}>
-          <button type="button" onClick={() => fileRef.current.click()} className={classes.uploadBtn}>
-            upload
-          </button>
-          {traits[0] && (
-            <ButtonClickEffect>
-              <button type="button" onClick={handleBlank} className={classes.addBlankBtn}>
-                Add blank image
+          {traits.length ? (
+            traits.map((trait, idx) => (
+              <ArtCard
+                key={idx}
+                index={idx}
+                layerTitle={layerTitle}
+                trait={trait}
+                layerId={id}
+                setActiveCard={(activeArtCard) => handleSetState({ activeCard: activeArtCard })}
+                activeCard={activeCard}
+              />
+            ))
+          ) : (
+            <div onClick={() => fileRef.current.click()} className={classes.uploadCard}>
+              <AddCircularIcon />
+              <div>Upload images</div>
+              <div>(Image/png, max file size: 2MB per image)</div>
+              <button className={classes.uploadBtn}>
+                <UploadIcon className={classes.uploadIcon} /> Browse Files
               </button>
-            </ButtonClickEffect>
+            </div>
           )}
         </div>
       </section>

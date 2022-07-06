@@ -3,10 +3,10 @@
   max-width: 48em;
   color: var(--text-dark-900);
   border-radius: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
   padding: 2em;
-  background: var(--main-bg);
+  background: var(--default);
   position: relative;
   overflow: hidden;
 }
@@ -27,7 +27,7 @@
   justify-content: space-between;
   gap: 1em;
   padding: 0.25em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-top-left-radius: 0.5em;
   border-bottom-left-radius: 0.5em;
   border-radius: 0.5em;
@@ -49,7 +49,7 @@
 }
 
 .deleteRule {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid red;
   padding: 0.25em 1em;
   border-radius: 1.5em;
@@ -58,7 +58,7 @@
   position: absolute;
   top: 1em;
   right: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   transition: all 300ms;
 }
 
@@ -78,15 +78,15 @@
 .image {
   display: inline-flex;
   width: 100%;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-top-right-radius: 0.5em;
   border-top-left-radius: 0.5em;
 }
 
 .description {
   width: 100%;
-  border: 1px solid var(--text-light-500);
-  background: var(--card-bg2);
+  border: 1px solid var(--outline);
+  background: var(--card-bg);
   color: white;
   padding: 0.5em;
   border-bottom-right-radius: 0.5em;
@@ -114,7 +114,7 @@
 .closeBtn {
   border-radius: 2em;
   padding: 0.65em 2em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: 1px solid transparent;
   text-transform: capitalize;
 }

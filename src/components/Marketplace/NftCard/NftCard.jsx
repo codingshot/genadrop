@@ -30,7 +30,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   return (
     <Link
       to={
-        fromDashboard
+        fromDashboard && !listed
           ? nft.collection_name
             ? `${match.url}/${Id}`
             : chain
@@ -61,8 +61,8 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           <div className={classes.creator}>
             <img src={avatar} alt="" />
             <div className={classes.creatorAddress}>
-              <div className={classes.createdBy}> Created By</div>
-              <div className={classes.address}>{breakAddress(account)}</div>
+              <div className={classes.createdBy}>Owned By</div>
+              <div className={classes.address}>{breakAddress(nft.owner)}</div>
             </div>
           </div>
           <div className={classes.wrapper}>

@@ -6,14 +6,16 @@ import warningIcon from "../../assets/icon-warning.svg";
 import successIcon from "../../assets/icon-success.svg";
 import errorIcon from "../../assets/icon-error.svg";
 import blankIcon from "../../assets/blank.png";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 
 const Notification = () => {
   const feedbackRef = useRef(null);
   const { notification, loaderMessage, dispatch } = useContext(GenContext);
   const [state, setState] = useState({
     toggleFeedback: false,
+    timerId: null,
   });
-  const { toggleFeedback } = state;
+  const { toggleFeedback, timerId } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -25,12 +27,18 @@ const Notification = () => {
     default: blankIcon,
   };
 
+  const handleStop = () => {
+    handleSetState({ toggleFeedback: false });
+    clearTimeout(timerId);
+  };
+
   useEffect(() => {
     if (!notification.message) return;
     handleSetState({ toggleFeedback: true });
-    setTimeout(() => {
+    let timerId = setTimeout(() => {
       handleSetState({ toggleFeedback: false });
     }, 5000);
+    handleSetState({ timerId });
   }, [notification]);
 
   useEffect(() => {
@@ -56,6 +64,7 @@ const Notification = () => {
         <div className={classes.message}>
           {notification.message.charAt(0).toUpperCase() + notification.message.substring(1)}
         </div>
+        <CloseIcon onClick={handleStop} className={classes.closeIcon} />
       </div>
     </div>
   );

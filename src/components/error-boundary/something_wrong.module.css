@@ -32,7 +32,7 @@
 }
 
 .home:hover {
-  background-color: var(--main-700);
+  background-color: var(--main-color);
   color: white;
 }
 
@@ -43,11 +43,11 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   background: none;
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 20px;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   transition: 0.4s;
   margin-right: 20px;
   font-weight: 600;
@@ -56,14 +56,14 @@
 
 .go-back:hover {
   background: none;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .go-back {
   width: 200px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   height: 60px;
-  background-color: var(--main-700);
+  background-color: var(--main-color);
   color: white;
   font-size: 20px;
   transition: 0.4s;
@@ -71,7 +71,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   font-weight: 600;
   border-radius: 100px;
 }

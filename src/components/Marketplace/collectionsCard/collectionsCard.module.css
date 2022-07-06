@@ -1,9 +1,9 @@
 .card {
   width: 100%;
   border-radius: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   transition: all 250ms;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   overflow: hidden;
   max-width: 32em;
 }
@@ -11,7 +11,7 @@
 .card:hover {
   box-shadow: var(--shadow-light);
   transform: translateY(-5px);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .imageContainer {
@@ -43,7 +43,7 @@
   position: absolute;
   top: 0;
   transform: translateY(-50%);
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 
@@ -86,7 +86,7 @@
 }
 
 .price {
-  color: var(--main-700);
+  color: var(--main-color);
   font-weight: bold;
 }
 
@@ -103,7 +103,7 @@
 
 .nftCount {
   padding: 0.5em 1.5em;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   border-radius: 2em;
   font-size: 0.85rem;

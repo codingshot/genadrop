@@ -1,5 +1,5 @@
 import classes from "./walletPopup.module.css";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import { useContext, useEffect, useState } from "react";
@@ -58,14 +58,13 @@ const WalletPopup = ({ handleSetState }) => {
     <div className={classes.container}>
       <div className={classes.card}>
         <div className={classes.iconContainer}>
-          <img
+          <CloseIcon
             onClick={() => {
               dispatch(setToggleWalletPopup(false));
               setShowMoreOptions(false);
               setConnectionMethods(false);
             }}
-            src={closeIcon}
-            alt=""
+            className={classes.closeIcon}
           />
         </div>
 

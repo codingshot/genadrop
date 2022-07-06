@@ -4,7 +4,7 @@ import { GenContext } from "../../gen-state/gen.context";
 import classes from "./art-card.module.css";
 import checkActiveIcon from "../../assets/icon-check-active.svg";
 import checkIcon from "../../assets/icon-check.svg";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import editIconDark from "../../assets/icon-edit-dark.svg";
 import markIconDark from "../../assets/icon-mark-dark.svg";
 
@@ -85,7 +85,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
         ) : (
           <img src={checkIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
         )}
-        <img onClick={handleRemove} src={closeIcon} className={classes.removeIcon} alt="" />
+        <CloseIcon onClick={handleRemove} className={classes.closeIcon} />
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />

@@ -29,7 +29,7 @@
 }
 
 .layer {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   width: 100%;
   color: white;
   display: flex;
@@ -56,7 +56,7 @@
 
 .attribute {
   background: var(--card-bg);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   width: 100%;
   display: flex;
   align-items: center;

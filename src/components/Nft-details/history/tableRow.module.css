@@ -26,5 +26,5 @@ tr img {
 }
 
 .transaction:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
