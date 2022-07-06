@@ -386,7 +386,7 @@ div.showPreview > span {
 }
 
 .metadata {
-  border: 1px solid var(--text-light-700);
+  border: 1px solid var(--outline-dark);
   box-shadow: var(--shadow-light-1);
   border-radius: 0.375em;
   padding: 0.5em;

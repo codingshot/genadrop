@@ -37,7 +37,7 @@
 }
 
 .selectedPrice:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .selectedPrice {
@@ -84,7 +84,7 @@
 }
 
 .priceDropdown .dropdown > div:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .dropdownIcon {

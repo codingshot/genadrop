@@ -67,7 +67,7 @@
   width: 4em;
   height: 4em;
   border-radius: 1em;
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .name {

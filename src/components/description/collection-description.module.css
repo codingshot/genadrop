@@ -54,7 +54,7 @@
 
 .guide > *:nth-child(2) {
   color: var(--main-color);
-  border: 1px solid var(--text-light-400);
+  border: 1px solid var(--outline);
   box-shadow: var(--shadow-light-3);
   padding: 0.5em;
   cursor: var(--cursor-pointer);
@@ -234,7 +234,7 @@
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: var(--cursor-pointer);
   border: 1px solid var(--outline);
 }

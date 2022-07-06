@@ -47,7 +47,7 @@
   gap: 4em;
   padding: 1em;
   border-radius: 0.5em;
-  background: rgba(0, 153, 135, 0.1);
+  background: var(--card-bg);
   cursor: var(--cursor-pointer);
   color: var(--main-color);
   transition: all 100ms;
