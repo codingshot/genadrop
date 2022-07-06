@@ -12,17 +12,17 @@ const Mint = () => {
   const { url } = useRouteMatch();
   const { dispatch, chainId } = useContext(GenContext);
 
-  useEffect(() => {
-    if (window.localStorage.walletconnect || chainId) return;
-    initConnectWallet({ dispatch });
-  }, []);
+  // useEffect(() => {
+  //   if (window.localStorage.walletconnect || chainId) return;
+  //   initConnectWallet({ dispatch });
+  // }, []);
 
   const handleMint = (target) => {
-    if (window.localStorage.walletconnect || chainId) {
-      history.push(`${url}/${target}`);
-    } else {
-      initConnectWallet({ dispatch });
-    }
+    // if (window.localStorage.walletconnect || chainId) {
+    history.push(`${url}/${target}`);
+    // } else {
+    //   initConnectWallet({ dispatch });
+    // }
   };
 
   return (

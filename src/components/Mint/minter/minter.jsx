@@ -12,7 +12,8 @@ import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
-import supportedChains from "../../../utils/supportedChains";
+import MintDropdown from "../../Marketplace/Mint-dropdown/mintDropdown";
+import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -288,6 +289,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     }
   }, [price, chainId]);
 
+  const walletConnect = () => {
+    // initConnectWallet({ dispatch });
+  };
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -455,12 +459,13 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 </div>
                 <div className={classes.inputWrapper}>
                   <label>Blockchain: {chainId ? "" : "---"} </label>
-                  {chainId && (
+                  {/* {chainId && (
                     <div className={classes.chainLabel}>
                       <img src={supportedChains[chainId]?.icon} alt="" />
                       {chain?.label}
                     </div>
-                  )}
+                  )} */}
+                  <MintDropdown onChainFilter={walletConnect} />
                   <label>
                     List Price ({getUintByChain[chain?.label.toLowerCase()]}){" "}
                     <span className={classes.required}>*</span>
