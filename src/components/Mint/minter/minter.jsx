@@ -13,6 +13,7 @@ import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -137,6 +138,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  const history = useHistory();
+  const current_URL = useRouteMatch();
+
   const getUintByChain = {
     algorand: "Algo",
     celo: "CGLD",
@@ -236,6 +240,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               popup: true,
             },
           });
+          const Id = url.substring(url.lastIndexOf("/") + 1);
+          history.push(`${current_URL}/marketplace/collections/${Id}`);
         }
       });
     } else {
@@ -266,6 +272,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               popup: true,
             },
           });
+
+          const Id = url.substring(url.lastIndexOf("/") + 1);
+          history.push(`${current_URL}/marketplace/single-mint/${Id}`);
         }
       });
     }
