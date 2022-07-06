@@ -493,7 +493,7 @@ export async function createNFT(createProps, doAccountCheck) {
   return assets;
 }
 
-export async function listCeloNft (nftProps) {
+export async function listCeloNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
@@ -526,7 +526,7 @@ export async function listCeloNft (nftProps) {
   }
 }
 
-export async function listAuroraNft (nftProps) {
+export async function listAuroraNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
@@ -557,7 +557,7 @@ export async function listAuroraNft (nftProps) {
   }
 }
 
-export async function listPolygonNft (nftProps) {
+export async function listPolygonNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
