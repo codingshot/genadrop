@@ -67,7 +67,7 @@
   width: 1.5em;
   height: 1.5em;
   border-radius: 0.25em;
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   background: var(--btn-close);
 }
 

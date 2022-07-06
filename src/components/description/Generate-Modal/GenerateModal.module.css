@@ -26,7 +26,7 @@
 }
 
 .closeBtn {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   position: absolute;
   right: 1em;
   top: 1em;

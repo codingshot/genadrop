@@ -38,6 +38,11 @@
   color: var(--main-color);
 }
 
+.leftArrow {
+  width: 1em;
+  height: 1em;
+}
+
 .attributeFilter .title {
   display: flex;
   align-items: center;

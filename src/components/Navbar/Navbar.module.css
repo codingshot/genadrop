@@ -160,7 +160,7 @@
 }
 
 .closeIcon {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
 }
 
 .wallet {
