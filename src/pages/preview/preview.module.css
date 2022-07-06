@@ -477,7 +477,6 @@
   transition: 0.3s ease-in;
 }
 .btnWrapper > button.gifButton:hover {
-  cursor: var(--cursor-hover);
   background: var(--main-color);
   color: white;
   outline: none;

@@ -58,6 +58,7 @@ export const INITIAL_STATE = {
   promptRules: null,
   toggleWalletPopup: false,
   imageQuality: 0.5, // high:1, medium:0.5, low:0.2
+  zip: {},
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -338,6 +339,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         imageQuality: action.payload,
+      };
+    case genActionTypes.SET_ZIP:
+      return {
+        ...state,
+        zip: action.payload,
       };
     default:
       return state;

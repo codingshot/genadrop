@@ -271,3 +271,7 @@ export const setImageQuality = (value) => ({
   type: genActionTypes.SET_IMAGE_QUALITY,
   payload: value,
 });
+export const setZip = (value) => ({
+  type: genActionTypes.SET_ZIP,
+  payload: value,
+});
