@@ -532,7 +532,10 @@ export async function mintToAlgo(algoProps) {
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
       await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
       dispatch(setLoader(""));
-      return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
+      return [
+        mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`,
+        fileName,
+      ];
     } catch (error) {
       console.log(error);
       return {

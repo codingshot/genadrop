@@ -222,7 +222,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         );
       }
       dispatch(setLoading(true));
-      handleMint(mintProps).then((url) => {
+      handleMint(mintProps).then((res) => {
+        const url = res[0];
+        const collectionName = res[1];
         dispatch(setLoading(false));
         if (typeof url === "object") {
           handleSetState({
@@ -240,8 +242,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               popup: true,
             },
           });
-          const Id = url.substring(url.lastIndexOf("/") + 1);
-          history.push(`/marketplace/collections/${Id}`);
+          history.push(`/marketplace/collections/${collectionName}`);
         }
       });
     } else {
