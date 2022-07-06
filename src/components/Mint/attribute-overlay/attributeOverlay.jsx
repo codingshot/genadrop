@@ -24,8 +24,10 @@ const AttributeOverlay = ({ attribute, handleSetState }) => {
             <div className={classes.attributeMenu}>
               {attributes.map(({ rarity, trait_type, value }) => (
                 <div className={classes.attribute}>
-                  <div>{trait_type}</div>
-                  <div>{value}</div>
+                  <div className={classes.traitTitle}>{trait_type}</div>
+                  <div>
+                    Trait: <span className={classes.traitValue}>"{value}"</span>
+                  </div>
                   <div>{rarity}% have this trait</div>
                 </div>
               ))}

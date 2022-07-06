@@ -4,7 +4,7 @@
   z-index: 2000;
   right: 10px;
   top: 4em;
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--text-dark-900);
   visibility: hidden;
   opacity: 0;

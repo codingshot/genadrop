@@ -5,7 +5,7 @@
   padding: 1em;
   position: sticky;
   top: 5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline-light);
   border-radius: 0.5em;
   z-index: 10;
   overflow: auto;
@@ -53,7 +53,7 @@
 }
 
 .guide > *:nth-child(2) {
-  color: var(--main-700);
+  color: var(--main-color);
   border: 1px solid var(--text-light-400);
   box-shadow: var(--shadow-light-3);
   padding: 0.5em;
@@ -61,13 +61,13 @@
 }
 
 .guide > *:nth-child(3) {
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: var(--cursor-pointer);
 }
 
 .guide > *:nth-child(2):hover,
 .guide > *:nth-child(3):hover {
-  color: var(--main-900);
+  color: var(--main-hovered);
 }
 
 .previewWrapper {
@@ -79,24 +79,55 @@
   flex: 1;
 }
 
-.combinations {
-  margin-bottom: 1em;
-  background: var(--text-light-300);
-  padding: 0.5em;
+.sectionHeading {
+  margin-bottom: 0.5em;
 }
 
-.combinations .title {
+.combinations_amount {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: stretch;
+  justify-content: space-between;
   gap: 0.5em;
+}
+
+.combinations,
+.amount {
+  flex: 50%;
+  margin-bottom: 1em;
+  background: var(--card-light);
+  padding: 0.75em;
+  border-radius: 0.25em;
+}
+
+.combinations .title,
+.amount .title {
+  font-size: 0.75rem;
 }
 
 .combinations .count {
   width: 100%;
-  background: var(--main-bg);
+  background: var(--default);
   text-align: center;
   margin-top: 0.5em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  font-size: 0.85rem;
+}
+
+.amount input {
+  width: 100%;
+  background: var(--default);
+  text-align: center;
+  margin-top: 0.5em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  border: 1px solid var(--main-color);
+  outline: none;
+  font-size: 0.85rem;
+}
+
+.amount input::placeholder {
+  font-size: 0.65rem;
 }
 
 .generateContainer {
@@ -114,9 +145,13 @@
 }
 
 .generateSettings .wrapper {
-  background: var(--text-light-400);
-  padding: 0.25em;
+  flex: 1;
+  background: var(--card-light);
+  padding: 0.5em;
   border-radius: 0.25em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .generateSettings select {
@@ -124,7 +159,7 @@
   margin-right: 0.5em;
   border: none;
   outline: none;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
 }
 
 .btnContainer {
@@ -139,8 +174,8 @@
   border-radius: 3em;
   padding: 0.75em;
   text-align: center;
-  background: var(--main-700);
-  color: var(--main-bg);
+  background: var(--main-disable);
+  color: var(--default);
   font-size: 1rem;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
@@ -149,8 +184,12 @@
   justify-content: center;
 }
 
-.generateBtn:hover {
-  background: var(--main-900);
+.generateBtn.active {
+  background: var(--main-color);
+}
+
+.generateBtn.active:hover {
+  background: var(--main-hovered);
 }
 
 .previewBtn {
@@ -168,17 +207,17 @@
   white-space: nowrap;
   font-size: 0.75rem;
   transform: translateY(-100%);
-  padding: 0.25em;
+  padding: 0.5em;
   border-radius: 0.25em;
   background: #626277;
-  color: var(--main-bg);
+  color: var(--default);
   opacity: 1;
 }
 
 .previewBtn:hover:after {
   content: "";
   position: absolute;
-  top: -0.25em;
+  top: -0.35em;
   transform: translateY(-100%);
   border-top: 0.5em solid #626277;
   border-right: 0.5em solid transparent;
@@ -187,18 +226,17 @@
 }
 
 .previewIcon {
-  width: 3em;
-  height: 3em;
+  width: 2.6em;
+  height: 2.6em;
   border-radius: 50%;
-  background: var(--main-bg);
-  box-shadow: 0 0 15px gainsboro;
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   color: var(--main-700);
   cursor: var(--cursor-pointer);
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .mintInfo {
@@ -214,7 +252,7 @@
 }
 
 .mintInfo.isLoading {
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 @media screen and (max-width: 1000px) {
@@ -230,12 +268,8 @@
     align-items: flex-start;
   }
 
-  .wrapper {
+  .generateSettings .wrapper {
     padding: 0;
-  }
-
-  .detailsWrapper {
-    width: 100%;
   }
 }
 
@@ -243,9 +277,5 @@
   .preview_details {
     flex-direction: column;
     align-items: center;
-  }
-
-  .detailsWrapper {
-    width: 100%;
   }
 }

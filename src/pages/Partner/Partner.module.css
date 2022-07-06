@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   padding-bottom: 2em;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   padding-top: 2rem;
 }

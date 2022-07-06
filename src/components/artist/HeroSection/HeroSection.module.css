@@ -23,13 +23,13 @@
   margin-top: 5rem;
 }
 .applyBtn {
-  background: var(--main-700);
-  border: 3px solid var(--main-700);
+  background: var(--main-color);
+  border: 3px solid var(--main-color);
   box-sizing: border-box;
   border-radius: 37.44px;
   width: 16.875rem;
   height: 4rem;
-  color: var(--main-bg);
+  color: var(--default);
   font-size: 1.5rem;
   display: flex;
   justify-content: center;
@@ -40,8 +40,8 @@
   transition: 0.3s ease-in-out;
 }
 .applyBtn:hover {
-  background: var(--main-bg);
-  color: var(--main-700);
+  background: var(--default);
+  color: var(--main-color);
 }
 .imgContainer {
   display: flex;

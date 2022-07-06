@@ -27,13 +27,13 @@
 
 .heading button {
   cursor: var(--cursor-pointer);
-  color: var(--main-700);
+  color: var(--outline);
   transition: background 300ms;
   font-size: 1rem;
 }
 
 .heading button:hover {
-  color: var(--main-900);
+  color: var(--main-hovered);
 }
 
 .innerWrapper {
@@ -52,7 +52,7 @@
   padding: 1.2em;
   border-radius: 1em;
   gap: 4em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .profile {
@@ -74,7 +74,7 @@
   width: max-content;
   max-width: 10em;
   font-size: 1rem;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .profile .text {
@@ -91,7 +91,7 @@
   padding: 2em;
   border-radius: 1em;
   background: #eceffe;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .count {

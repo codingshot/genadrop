@@ -87,7 +87,7 @@
   width: 100%;
   padding: 0.5em;
   padding-top: 1em;
-  border: 2px solid var(--text-light-500);
+  border: 2px solid var(--outline);
   border-radius: 0.25em;
 }
 

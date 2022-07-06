@@ -31,10 +31,12 @@
 
 .title {
   font-size: 2rem;
+  color: var(--text-heading);
+  font-weight: 600;
 }
 
 .features {
-  height: 1.6em;
+  height: 1em;
   overflow: hidden;
   display: inline-flex;
   flex-direction: column;
@@ -46,7 +48,7 @@
 .fWrapper {
   animation: slide 4000ms infinite alternate;
   font-weight: bold;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 @keyframes slide {
@@ -56,11 +58,11 @@
   }
   40%,
   60% {
-    transform: translateY(-1.5em);
+    transform: translateY(-1.2em);
   }
   80%,
   100% {
-    transform: translateY(-3em);
+    transform: translateY(-2.4em);
   }
 }
 
@@ -82,22 +84,22 @@
 }
 
 .btn_create {
-  background: var(--main-700);
-  color: white;
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .btn_explore {
-  background: var(--main-bg);
-  color: var(--main-700);
-  border: 1px solid var(--main-700);
+  background: var(--default);
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
 }
 
 .btn_create:hover {
-  background: var(--main-900);
+  background: var(--main-hovered);
 }
 
 .btn_explore:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -107,14 +109,14 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
-  color: var(--main-700);
+  color: var(--main-outline);
   cursor: var(--cursor-pointer);
   transition: color 300ms;
 }
 
 .btn_video_m:hover,
 .btn_video:hover {
-  color: var(--main-900);
+  color: var(--main-hovered);
 }
 
 .btn_video_m {
@@ -137,6 +139,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.illustration img {
+  width: 100%;
 }
 
 @media screen and (max-width: 1280px) {
@@ -171,6 +177,7 @@
 
   .description {
     text-align: center;
+    color: var(--text-sub-heading);
   }
 
   .btns {

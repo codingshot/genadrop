@@ -1,12 +1,12 @@
 .priceDropdown {
   z-index: 1 !important;
-  /* color: var(--main-700); */
+  /* color: var(--main-color); */
 }
 
 .priceDropdown {
   position: relative;
   width: 12em;
-  background: var(--main-bg);
+  background: var(--default);
   z-index: 10;
 }
 
@@ -16,9 +16,8 @@
 
 .selectedPrice {
   cursor: var(--cursor-pointer);
-  background: var(--main-bg);
-  border: 1px solid var();
-  border: 1px solid var(--main-700);
+  background: var(--default);
+  border: 1px solid var(--main-color);
   padding: 0.5em;
   z-index: 99;
   border-radius: 2.5em;
@@ -42,14 +41,14 @@
 }
 
 .selectedPrice {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .priceDropdown .dropdown {
   width: 100%;
   left: 0;
   position: absolute;
-  background: var(--main-bg);
+  background: var(--default);
   visibility: hidden;
   opacity: 0;
   transition: all 250ms;
@@ -69,7 +68,7 @@
 
 .priceDropdown .dropdown > div {
   padding: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: space-between;

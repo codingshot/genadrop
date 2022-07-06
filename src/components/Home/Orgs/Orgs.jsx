@@ -43,10 +43,6 @@ const Orgs = () => (
         />
       </div>
     </div>
-    <div className={classes.bgIcons}>
-      <img src={ball} alt="bg" />
-      <img src={box} alt="bg" />
-    </div>
   </div>
 );
 

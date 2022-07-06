@@ -404,6 +404,7 @@ const Preview = () => {
                 <p>IPFS</p>
                 <div className={classes.tooltip}></div>
                 <GenadropToolTip
+                  fill="white"
                   content={`IPFS is a peer-to-peer (p2p) storage network for storing and sharing data.`}
                 />
               </label>

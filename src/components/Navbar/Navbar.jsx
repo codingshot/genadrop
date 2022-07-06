@@ -45,7 +45,6 @@ const Navbar = () => {
       <div className={classes.searchAndNavWrapper}>
         <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
           <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
-          <button type="submit">search</button>
         </form>
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />

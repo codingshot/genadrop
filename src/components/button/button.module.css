@@ -13,12 +13,12 @@
 }
 
 .button.invert {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .button.invert:hover {
-  outline: 2px solid var(--main-700);
-  background: var(--main-900);
+  outline: 2px solid var(--main-color);
+  background: var(--main-hovered);
 }
 
 .button:hover {
