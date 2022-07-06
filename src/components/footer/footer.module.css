@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-dark);
+  background: var(--main-hovered);
   padding: 2em;
 }
 
@@ -60,7 +60,7 @@
 
 .socialIcons .icon:hover {
   transform: scale(1.1);
-  background: var(--main-dark);
+  background: var(--main-color);
 }
 
 .topRight {
@@ -80,11 +80,11 @@
 
 .links .title {
   font-weight: bold;
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .links a {
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .links a:hover {
@@ -93,13 +93,13 @@
 
 .bottom {
   width: 100%;
-  background: var(--main-dark);
+  background: var(--main-hovered);
   padding: 1em;
   border-top: 0.5px solid rgba(255, 255, 255, 0.1);
 }
 
 .bottom * {
-  color: var(--main-bg) !important;
+  color: var(--default) !important;
 }
 
 .termsAndPolicy {

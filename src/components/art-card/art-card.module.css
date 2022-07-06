@@ -49,7 +49,7 @@
   width: 100%;
   top: 0;
   left: 0;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -65,7 +65,7 @@
   bottom: 0;
   left: 0;
   color: var(--text-dark-900);
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -119,7 +119,7 @@
   text-align: left;
   padding: 0.25em;
   color: var(--text-dark-900);
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .details input:focus {

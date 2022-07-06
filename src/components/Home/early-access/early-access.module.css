@@ -5,7 +5,7 @@
 }
 
 .wrapper {
-  background: var(--main-lighter);
+  background: var(--main-lightest);
   color: var(--main-color);
   border-radius: 10px;
   display: flex;

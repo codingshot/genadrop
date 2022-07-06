@@ -26,7 +26,7 @@
   margin: 0;
   cursor: pointer;
   transition: transform 100ms;
-  fill: var(--main-bg);
+  fill: var(--default);
 }
 
 .closeIcon:hover {

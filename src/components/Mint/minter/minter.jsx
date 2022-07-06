@@ -304,7 +304,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       ) : (
         <div className={classes.wrapper}>
           <div>
-            <section className={classes.asset}>
+            <section className={classes.assetContainer}>
               <div className={`${classes.imageContainers} ${file.length > 1 && classes._}`}>
                 {file.length > 1 ? (
                   file
@@ -331,7 +331,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                   {chainId === 4160 && (
                     <div className={classes.priceTooltip}>
                       <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file.length * 0.1} ALGO</p>
-                      <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#009987" />
+                      <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#0d99ff" />
                     </div>
                   )}
                   {file.length > 1 ? (
@@ -347,9 +347,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               </div>
             </section>
             <div className={classes.mintForm}>
-              <section className={classes.type}>
-                <div>{file.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
-              </section>
+              <div className={classes.heading}>{file.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
 
               <section className={classes.details}>
                 <div className={classes.category}>Asset Details</div>
@@ -371,7 +369,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     Description <span className={classes.required}>*</span>{" "}
                     <GenadropToolTip
                       content="This description will be visible on your collection page"
-                      fill="#009987"
+                      fill="#0d99ff"
                     />
                   </label>
                   <textarea
@@ -428,7 +426,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     <div className={`${classes.inputWrapper} ${classes.dropInputWrapper}`}>
                       <label>
                         Collection photo
-                        <GenadropToolTip content="This image will be used as collection logo" fill="#009987" />
+                        <GenadropToolTip content="This image will be used as collection logo" fill="#0d99ff" />
                       </label>
                     </div>
                     <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
@@ -458,7 +456,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 <div className={classes.inputWrapper}>
                   <label>Blockchain: {chainId ? "" : "---"} </label>
                   {chainId && (
-                    <div className={classes.chinLabel}>
+                    <div className={classes.chainLabel}>
                       <img src={supportedChains[chainId]?.icon} alt="" />
                       {chain?.label}
                     </div>

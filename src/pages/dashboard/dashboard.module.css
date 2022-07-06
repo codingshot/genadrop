@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  background: var(--main-bg);
+  background: var(--default);
   padding: 2em 1em;
 }
 
@@ -18,7 +18,7 @@
   flex-direction: column;
   gap: 2em;
   padding: 2em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light-5);
   overflow: hidden;
   border-radius: 1em;
@@ -86,7 +86,7 @@
 }
 
 .detail.active span {
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--main-color);
 }
 
@@ -137,7 +137,7 @@
 .main {
   padding: 2em;
   border-radius: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 .username {

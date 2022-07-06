@@ -35,7 +35,7 @@
 }
 
 .connect:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .connected {
@@ -47,7 +47,7 @@
   color: var(--main-color);
   cursor: pointer;
   position: relative;
-  background: var(--main-bg);
+  background: var(--default);
   transition: all 150ms;
   padding: 0.25em 0.25em;
   border-radius: 2em;
@@ -56,7 +56,7 @@
 }
 
 .connected:hover {
-  color: var(--main-dark);
+  color: var(--main-hovered);
 }
 
 .user {
@@ -75,7 +75,7 @@
 .chain {
   height: 24px;
   width: 24px;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 50%;
   display: inline-block;
 }
@@ -116,16 +116,16 @@
   transform: translateY(90%);
   visibility: hidden;
   transition: all 200ms;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
   padding: 0.5em 1em;
-  background: var(--main-bg);
+  background: var(--default);
   cursor: pointer;
   font-size: 0.85rem;
 }
 
 .networkDrop:hover {
-  background: var(--main-lighter);
+  background: var(--main-lightest);
 }
 
 .network:hover .networkDrop {
@@ -155,7 +155,7 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  background: var(--main-bg);
+  background: var(--default);
   position: absolute;
   top: 2.5em;
   color: var(--text-dark-900);

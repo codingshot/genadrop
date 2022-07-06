@@ -15,7 +15,7 @@
 .innerContainer {
   width: 100%;
   max-width: 48em;
-  background: var(--main-bg);
+  background: var(--default);
   padding: 1em;
   border-radius: 1em;
   position: relative;
@@ -34,7 +34,7 @@
   height: 1.5em;
   cursor: pointer;
   transition: all 300ms;
-  background: var(--main-bg);
+  background: var(--default);
   fill: var(--bg-dark);
 }
 
@@ -83,7 +83,7 @@
 
 .attributeMenu {
   height: 16em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: space-evenly;
@@ -100,15 +100,19 @@
   flex: 1 1 auto;
   text-align: center;
   padding: 0.75em;
-  font-size: 0.85rem;
   border-radius: 0.5em;
-  background: #d0ebe9e4;
+  background: var(--main-lighter);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
   flex-direction: column;
   border: 1px solid var(--main-color);
+}
+
+.traitTitle,
+.traitValue {
+  font-weight: 600;
 }
 
 @media screen and (max-width: 900px) {

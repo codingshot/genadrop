@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 8em;
-  background: var(--main-lighter);
+  background: var(--main-lightest);
   padding: 4em 1em;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .link:hover {
-  color: var(--main-dark);
+  color: var(--main-hovered);
 }
 
 .link img {

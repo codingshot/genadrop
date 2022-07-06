@@ -38,7 +38,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   border: 1px solid #e5e8eb;
   box-shadow: var(--shadow-light);
   cursor: pointer;

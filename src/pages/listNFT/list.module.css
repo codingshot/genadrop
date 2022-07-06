@@ -213,7 +213,7 @@
   display: block;
   padding: 0.25em;
   resize: none;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.25em;
   font-size: 1rem;
 }
@@ -230,8 +230,9 @@
 
 .inputWrapper button {
   transition: all 300ms;
+  box-shadow: var(--btn-shadow-open);
 }
 
 .inputWrapper button:hover {
-  text-shadow: 2px 2px 2px grey;
+  box-shadow: var(--btn-shadow-close);
 }

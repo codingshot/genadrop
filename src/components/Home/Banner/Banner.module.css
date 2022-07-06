@@ -85,17 +85,17 @@
 
 .btn_create {
   background: var(--main-color);
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .btn_explore {
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--main-color);
   border: 1px solid var(--main-color);
 }
 
 .btn_create:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .btn_explore:hover {
@@ -116,7 +116,7 @@
 
 .btn_video_m:hover,
 .btn_video:hover {
-  color: var(--main-dark);
+  color: var(--main-hovered);
 }
 
 .btn_video_m {

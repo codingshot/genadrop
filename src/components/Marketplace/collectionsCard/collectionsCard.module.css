@@ -1,9 +1,9 @@
 .card {
   width: 100%;
   border-radius: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   transition: all 250ms;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   overflow: hidden;
   max-width: 32em;
 }
@@ -43,7 +43,7 @@
   position: absolute;
   top: 0;
   transform: translateY(-50%);
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 

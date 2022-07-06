@@ -93,3 +93,224 @@ export const generateArt = async (props) => {
   const imageUrl = canvas.toDataURL("image/webp", imageQuality);
   return { id: layer.id, imageUrl };
 };
+
+export const handleDeleteAndReplace = async (id, index, currentPageD) => {
+  if (!(combinations - rule.length - mintAmount)) {
+    dispatch(setMintInfo("  cannot generate asset from 0 combination"));
+  } else {
+    dispatch(setLoader("generating..."));
+    dispatch(setMintInfo(""));
+    const newLayer = await createUniqueLayer({
+      dispatch,
+      setLoader,
+      collectionName,
+      collectionDescription,
+      index,
+      currentPage: currentPageD,
+      layers: currentDnaLayers,
+      rule,
+      nftLayers,
+      id,
+      mintAmount,
+    });
+    const art = await generateArt({
+      dispatch,
+      setLoader,
+      layer: newLayer,
+      canvas,
+      image: layers[0].traits[0].image,
+      imageQuality,
+    });
+    const newLayers = nftLayers.map((asset) =>
+      asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
+    );
+    dispatch(setLoader(""));
+    dispatch(setNftLayers(newLayers));
+  }
+};
+
+export const handleRename = (input) => {
+  if (!input.value) {
+    dispatch(
+      renameAsset({
+        id: input.id,
+        name: `${collectionName} ${getDefaultName(input.index + 1)}`.trim(),
+      })
+    );
+  } else {
+    dispatch(renameAsset({ id: input.id, name: input.value }));
+  }
+};
+
+export const handleCollectionName = async (value) => {
+  dispatch(setCollectionName(value));
+  const newLayers = nftLayers.map((asset, idx) => ({
+    ...asset,
+    name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+  }));
+  dispatch(setNftLayers(newLayers));
+
+  // The code below needs cross-examination
+
+  // try {
+  //   dispatch(setLoader("saving..."));
+  //   const names = await getCollectionsNames();
+  //   const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
+  //   if (isUnique) {
+  //     dispatch(
+  //       setNotification({
+  //         message: `${value} already exist. try choose another name`,
+  //         type: "warning",
+  //       })
+  //     );
+  //   } else {
+  //     dispatch(setCollectionName(value));
+  //     const newLayers = nftLayers.map((asset, idx) => ({
+  //       ...asset,
+  //       name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+  //     }));
+  //     dispatch(setNftLayers(newLayers));
+  //   }
+  // } catch (error) {
+  //   dispatch(
+  //     setNotification({
+  //       message: "could not save your collection name, please try again.",
+  //       type: "error",
+  //     })
+  //   );
+  // }
+  // dispatch(setLoader(""));
+};
+
+export const handleCollectionDescription = (event) => {
+  if (enableAllDescription) {
+    const newLayers = nftLayers.map((asset) => ({
+      ...asset,
+      description: event.target.value,
+    }));
+    dispatch(setNftLayers(newLayers));
+  }
+  dispatch(setCollectionDescription(event.target.value));
+};
+
+export const handleFormatChange = (val) => {
+  if (val === "ipfs") {
+    ipfsRef.current.checked = true;
+    dispatch(setOutputFormat("ipfs"));
+  } else if (val === "arweave") {
+    arweaveRef.current.checked = true;
+    dispatch(setOutputFormat("arweave"));
+  }
+};
+
+export const addGif = (asset) => {
+  if (gifImages.filter((e) => e.id === asset.id).length > 0) {
+    const newImgs = gifImages.filter((e) => e.id !== asset.id);
+    handleSetState({ gifImages: newImgs });
+  } else {
+    handleSetState({ gifImages: [...gifImages, asset] });
+  }
+};
+
+export const generateGif = () => {
+  if (duration < 0 || !duration) {
+    dispatch(
+      setNotification({
+        message: "please enter a valid duration.",
+        type: "error",
+      })
+    );
+    return;
+  }
+  if (gifImages.length < 2) {
+    dispatch(
+      setNotification({
+        message: "please select the images.",
+        type: "error",
+      })
+    );
+    return;
+  }
+  const urls = gifImages.map((img) => img.image);
+  const attributes = [];
+  gifImages.map((img) => {
+    return img.attributes.map((attribute) => {
+      attributes.push(attribute);
+      return attribute;
+    });
+  });
+  dispatch(setLoader("generating..."));
+
+  axios.post(`https://gif-generator-api.herokuapp.com/`, { urls, duration }).then((res) => {
+    dispatch(setLoader(""));
+    handleSetState({
+      gifs: [
+        ...gifs,
+        {
+          id: uuid(),
+          attributes,
+          description: "",
+          image: res.data.data,
+          name: `${collectionName} ${getDefaultName(gifs.length + 1)}`.trim(),
+        },
+      ],
+    });
+    handleSetState({ gifShow: false, toggleGuide: true, gifImages: [], duration: "" });
+    dispatch(setLoader(""));
+  });
+};
+// GIFs Model
+export const handleCancel = () => handleSetState({ toggleGuide: false });
+
+export const addToCollection = (gif) => {
+  const updatedGifs = gifs.filter((img) => gif.id !== img.id);
+  const newLayers = [gif, ...nftLayers].map((asset, idx) => ({
+    ...asset,
+    name:
+      asset.name === `${collectionName} ${getDefaultName(idx)}`.trim() ||
+      asset.name === `${collectionName} ${getDefaultName(gifs.indexOf(gif) + 1)}`.trim()
+        ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+        : asset.name,
+  }));
+  dispatch(setNftLayers(newLayers));
+  dispatch(
+    setNotification({
+      message: "added to the collection.",
+      type: "success",
+    })
+  );
+  handleSetState({ gifs: updatedGifs });
+};
+
+export const addAllGifs = () => {
+  const newLayers = [...gifs, ...nftLayers].map((asset, idx) => ({
+    ...asset,
+    name:
+      asset.name === `${collectionName} ${getDefaultName(idx + 1 - gifs.length)}`.trim()
+        ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+        : asset.name,
+  }));
+  dispatch(setNftLayers(newLayers));
+  dispatch(
+    setNotification({
+      message: "added to the collection.",
+      type: "success",
+    })
+  );
+  handleSetState({
+    toggleGuide: false,
+    gifs: [],
+  });
+};
+
+export const handleSetState = (payload) => {
+  setState((states) => ({ ...states, ...payload }));
+};
+
+export const handleDelete = (val) => {
+  dispatch(setPrompt(promptDeleteAsset(val)));
+};
+
+export const handleDescription = (input) => {
+  dispatch(addDescription({ id: input.id, description: input.value }));
+};

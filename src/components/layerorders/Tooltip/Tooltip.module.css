@@ -29,20 +29,20 @@
 
 .card {
   font-size: 0.85rem;
-  color: var(--main-bg);
+  color: var(--default);
   text-align: left;
   padding-left: 1em;
 }
 
 .closeBtn {
-  fill: var(--main-bg);
+  fill: var(--default);
   align-self: flex-end;
   cursor: pointer;
 }
 
 .title {
   font-weight: 600;
-  color: var(--main-bg);
+  color: var(--default);
   margin-bottom: 0.5em;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .wrapper button {
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--main-color);
   font-size: 0.75rem;
   padding: 0.75em 1em;

@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
   z-index: 1;
   padding: 0.5em 2em;
@@ -72,7 +72,7 @@
 
 .searchContainer {
   flex: 1;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0.15em;
   border-radius: 2em;
   display: flex;
@@ -91,12 +91,12 @@
   padding: 0.5em 2em;
   background: var(--main-color);
   border-radius: 2em;
-  color: var(--main-bg);
+  color: var(--default);
   transition: all 300ms;
 }
 
 .searchContainer button:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .searchContainer input {
@@ -110,7 +110,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .navList {
@@ -185,7 +185,7 @@
 
 @media screen and (max-width: 1000px) {
   .container {
-    background: var(--main-bg);
+    background: var(--default);
   }
 
   .navList {
@@ -247,7 +247,7 @@
     width: 100%;
     text-align: center;
     font-weight: 700;
-    border: 1px solid var(--text-light-500);
+    border: 1px solid var(--outline);
     border-radius: 2em;
   }
 

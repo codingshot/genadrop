@@ -57,8 +57,8 @@
 .paginate input {
   padding: 0.65em;
   max-width: 6em;
-  border: 1px solid var(--text-light-500);
-  background: var(--main-bg);
+  border: 1px solid var(--outline);
+  background: var(--default);
   border-radius: 2px;
 }
 
@@ -173,7 +173,7 @@ p.fillerPage:hover {
 .attrBtn {
   width: 100%;
   margin-top: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--main-color);
   padding: 0.75em;
   border-radius: 2em;
@@ -216,7 +216,7 @@ p.fillerPage:hover {
   color: white;
 }
 .buttonWrapper div:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 @media screen and (max-width: 768px) {
   .topNav {

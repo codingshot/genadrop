@@ -18,7 +18,7 @@
 
 .button.invert:hover {
   outline: 2px solid var(--main-color);
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .button:hover {

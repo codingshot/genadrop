@@ -7,7 +7,7 @@
 
 .wrapper {
   width: 100%;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,14 +58,14 @@
 
 .detailContentWrapper {
   width: 16em;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1em;
   border-radius: 0.5em;
   gap: 1em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .detailContentWrapper img {

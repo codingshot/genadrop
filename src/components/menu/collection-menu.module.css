@@ -2,7 +2,7 @@
   width: 100%;
   overflow: auto;
   border: 1px solid var(--outline-light);
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 0.5em;
   margin-bottom: 2em;
   padding: 1em;
@@ -58,7 +58,7 @@
   flex-direction: column;
   gap: 1em;
   cursor: pointer;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   background: var(--card-upload);
 }
 
@@ -82,11 +82,11 @@
 
 .uploadBtn:hover {
   background: var(--main-color);
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .uploadBtn:hover .uploadIcon {
-  fill: var(--main-bg);
+  fill: var(--default);
 }
 
 .btnContainer {

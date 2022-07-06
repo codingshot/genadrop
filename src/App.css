@@ -9,14 +9,18 @@
   --text-light-300: #f2f3ff;
   --bg-dark: rgb(18, 18, 18);
 
+  --btn-shadow-open: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  --btn-shadow-close: 0px 0px 2px rgba(0, 0, 0, 0.2);
+
   --shadow-dark: 0 0 15px rgb(0, 0, 0, 0.25);
   --shadow-light: 0 0 15px rgb(0, 0, 0, 0.1);
 
-  --main-bg: #ffffff;
+  --default: #ffffff;
   --main-color: #0d99ff;
-  --main-dark: #0082e0;
+  --main-hovered: #0082e0;
   --main-light: #62bdff;
-  --main-lighter: #f3faff;
+  --main-lighter: #dbf0ff;
+  --main-lightest: #f3faff;
   --main-disable: #ccecff;
 
   --text-heading: #0f1d40;
@@ -33,6 +37,7 @@
   --card-upload: #f6faff;
   --card-trait: #f4f5f6;
   --card-light: #eff3f9;
+  --card-outline: #c4c4c4;
   --btn-close: #eef5f9;
 
   --main-100: #f2faf9;

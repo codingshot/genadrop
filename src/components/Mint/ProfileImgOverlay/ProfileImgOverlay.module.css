@@ -50,14 +50,14 @@
   height: 100%;
   width: 100%;
   object-fit: cover;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 20px;
 }
 
 .line {
   height: 2px;
   width: 100%;
-  background: var(--text-light-500);
+  background: var(--outline);
   margin-top: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -87,7 +87,7 @@
   background: var(--main-color);
 }
 .buttonConatiner div:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 .buttonConatiner p:hover {
   background: var(--main-color);

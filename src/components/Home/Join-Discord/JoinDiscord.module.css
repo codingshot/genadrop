@@ -5,7 +5,7 @@
   justify-content: center;
   padding: 1em;
   margin-bottom: 8em;
-  background: var(--main-lighter);
+  background: var(--main-lightest);
 }
 
 .wrapper {
@@ -45,7 +45,7 @@
 }
 
 .link {
-  color: var(--text-dark-900-main-dark);
+  color: var(--text-dark-900-main-hovered);
   background: var(--main-color);
   border: 1px solid transparent;
   color: white;
@@ -56,7 +56,7 @@
 }
 
 .link:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 @media screen and (max-width: 1200px) {

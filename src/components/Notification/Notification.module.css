@@ -85,7 +85,7 @@
 }
 
 .notification.success .message {
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .notification.default {
@@ -93,7 +93,7 @@
 }
 
 .notification.default .message {
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .container.active {

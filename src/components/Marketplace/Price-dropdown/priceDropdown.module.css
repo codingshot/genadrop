@@ -6,7 +6,7 @@
 .priceDropdown {
   position: relative;
   width: 12em;
-  background: var(--main-bg);
+  background: var(--default);
   z-index: 10;
 }
 
@@ -16,7 +16,7 @@
 
 .selectedPrice {
   cursor: pointer;
-  background: var(--main-bg);
+  background: var(--default);
   border: 1px solid var();
   border: 1px solid var(--main-color);
   padding: 0.5em;
@@ -49,7 +49,7 @@
   width: 100%;
   left: 0;
   position: absolute;
-  background: var(--main-bg);
+  background: var(--default);
   visibility: hidden;
   opacity: 0;
   transition: all 250ms;
@@ -69,7 +69,7 @@
 
 .priceDropdown .dropdown > div {
   padding: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: space-between;

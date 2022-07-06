@@ -4,7 +4,7 @@
   padding-top: 2em;
   padding-bottom: 6em;
   position: relative;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .displayContainer {
@@ -15,7 +15,7 @@
   justify-content: flex-start;
   gap: 1em;
   border-radius: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .filteredItem {
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0.5em;
   display: flex;
   align-items: center;

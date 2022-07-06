@@ -33,7 +33,7 @@
 }
 
 .heading button:hover {
-  color: var(--main-dark);
+  color: var(--main-hovered);
 }
 
 .innerWrapper {
@@ -52,7 +52,7 @@
   padding: 1.2em;
   border-radius: 1em;
   gap: 4em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .profile {

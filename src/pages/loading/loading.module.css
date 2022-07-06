@@ -22,7 +22,7 @@
   width: 0.75em;
   height: 0.75em;
   border-radius: 50%;
-  background: var(--main-dark);
+  background: var(--main-hovered);
   animation: blink 300ms infinite alternate linear;
 }
 
@@ -40,7 +40,7 @@
 
 @keyframes blink {
   from {
-    background: var(--main-bg);
+    background: var(--default);
   }
   to {
     background: var(--main-color);

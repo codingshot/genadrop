@@ -27,7 +27,7 @@
 
 .collectionNameContainer {
   padding: 1em;
-  border-bottom: 1px solid var(--text-light-500);
+  border-bottom: 1px solid var(--outline);
   margin-bottom: 1em;
 }
 
@@ -59,7 +59,7 @@
 }
 
 .collectionName input::placeholder {
-  color: var(--text-light-500);
+  color: var(--outline);
 }
 
 .editBtn {
@@ -90,7 +90,7 @@
   font-size: 1rem;
   white-space: nowrap;
   overflow: auto;
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .info {
@@ -123,7 +123,7 @@
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .layerHeadWrapper {
@@ -173,7 +173,7 @@
 
 .addBtn {
   width: 100%;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -193,7 +193,7 @@
 }
 
 .addBtn:hover {
-  background: var(--main-lighter);
+  background: var(--main-lightest);
 }
 
 @media screen and (max-width: 768px) {

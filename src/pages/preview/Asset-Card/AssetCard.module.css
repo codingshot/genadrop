@@ -1,0 +1,66 @@
+.container {
+  width: 100%;
+  max-width: 20em;
+  /* border: 1px solid red; */
+  border: 1px solid var(--card-outline);
+  border-radius: 0.5em;
+  overflow: hidden;
+}
+
+.container img {
+  width: 100%;
+  object-fit: cover;
+  /* border: 1px solid red; */
+}
+
+.detailsContainer {
+  /* border: 1px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 1em 0.5em;
+}
+
+.inputContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.inputContainer input {
+  width: 100%;
+  padding: 0.5em;
+}
+
+.container textarea {
+  width: 100%;
+  height: 4em;
+}
+
+.btnContainer {
+  width: 100%;
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+.download,
+.generate {
+  flex: 1;
+  /* border: 1px solid red; */
+  border: 1px solid var(--card-outline);
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 0.25em 1em;
+}
+
+.generate {
+  padding: 0.25em 0.5em;
+  white-space: nowrap;
+}

@@ -67,7 +67,7 @@
 
 .guide > *:nth-child(2):hover,
 .guide > *:nth-child(3):hover {
-  color: var(--main-dark);
+  color: var(--main-hovered);
 }
 
 .previewWrapper {
@@ -106,7 +106,7 @@
 
 .combinations .count {
   width: 100%;
-  background: var(--main-bg);
+  background: var(--default);
   text-align: center;
   margin-top: 0.5em;
   padding: 0.25em;
@@ -116,7 +116,7 @@
 
 .amount input {
   width: 100%;
-  background: var(--main-bg);
+  background: var(--default);
   text-align: center;
   margin-top: 0.5em;
   padding: 0.25em;
@@ -175,7 +175,7 @@
   padding: 0.75em;
   text-align: center;
   background: var(--main-disable);
-  color: var(--main-bg);
+  color: var(--default);
   font-size: 1rem;
   cursor: pointer;
   transition: all 300ms;
@@ -189,7 +189,7 @@
 }
 
 .generateBtn.active:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .previewBtn {
@@ -210,7 +210,7 @@
   padding: 0.5em;
   border-radius: 0.25em;
   background: #626277;
-  color: var(--main-bg);
+  color: var(--default);
   opacity: 1;
 }
 
@@ -229,7 +229,7 @@
   width: 2.6em;
   height: 2.6em;
   border-radius: 50%;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: center;

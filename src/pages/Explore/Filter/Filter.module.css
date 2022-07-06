@@ -1,5 +1,5 @@
 .sidebar {
-  border-right: 1px solid var(--text-light-500);
+  border-right: 1px solid var(--outline);
   width: 100%;
   max-width: 20em;
   position: sticky;
@@ -44,8 +44,8 @@
   justify-content: flex-start;
   gap: 1em;
   padding: 1em;
-  border-bottom: 2px solid var(--text-light-500);
-  border-top: 2px solid var(--text-light-500);
+  border-bottom: 2px solid var(--outline);
+  border-top: 2px solid var(--outline);
 }
 
 .statusFilter {
@@ -57,7 +57,7 @@
 }
 
 .toggleButton {
-  background: var(--main-bg);
+  background: var(--default);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -71,8 +71,8 @@
 }
 
 .toggleButton.active {
-  background: var(--main-bg);
-  border: 1px solid var(--text-light-500);
+  background: var(--default);
+  border: 1px solid var(--outline);
 }
 
 .toggleButton.active .toggle {
@@ -85,7 +85,7 @@
   height: 20px;
   border-radius: 50%;
   transition: all 300ms;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .priceFilter {
@@ -105,7 +105,7 @@
 .priceFilter .filterInput input {
   padding: 0.75em;
   border-radius: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .priceFilter > div {
@@ -126,7 +126,7 @@
 }
 
 .priceFilter button:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
   outline: 2px solid var(--main-color);
 }
 
@@ -156,7 +156,7 @@
   cursor: pointer;
   padding: 1em;
   border-radius: 0.25em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .layerIcon {
@@ -179,7 +179,7 @@
   overflow: hidden;
   visibility: hidden;
   border-radius: 0.25em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .layer.active {
@@ -192,7 +192,7 @@
 .layer > div {
   border: 1px solid white;
   padding: 0.5em 0.25em;
-  background: var(--main-lighter);
+  background: var(--main-lightest);
   border-radius: 0.25em;
 }
 
@@ -217,7 +217,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.15em;
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--text-light-900);
   border: 1px solid var(--text-light-900);
 }
@@ -227,7 +227,7 @@
   justify-content: center;
   align-items: flex-start;
   height: calc(100vh - 5.5em);
-  border-right: 1px solid var(--text-light-500);
+  border-right: 1px solid var(--outline);
   position: sticky;
   top: 5em;
   cursor: pointer;

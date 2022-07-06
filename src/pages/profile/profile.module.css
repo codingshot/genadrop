@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   padding: 2em 1em;
-  background: var(--main-bg);
+  background: var(--default);
   animation: fade-in 650ms forwards;
 }
 
@@ -18,7 +18,7 @@
   width: 100%;
   max-width: 900px;
   margin: 0 auto;
-  background: var(--main-bg);
+  background: var(--default);
   padding: 2em 4em;
   border-radius: 0.5em;
   box-shadow: var(--shadow-light);
@@ -129,14 +129,14 @@
   font-size: 1rem;
   padding: 0.5em;
   border-radius: 0.25em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   background: rgb(236, 236, 236);
   transition: all 300ms;
   outline: 2px solid transparent;
 }
 
 .option input:focus {
-  background: var(--main-bg);
+  background: var(--default);
   outline: 1px solid var(--main-color);
 }
 
@@ -176,7 +176,7 @@
 }
 
 .submit:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
   border: 2px solid var(--main-color);
 }
 
@@ -189,7 +189,7 @@
 }
 
 .toggleButton {
-  background: var(--main-bg);
+  background: var(--default);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -209,7 +209,7 @@
 
 .toggleButton.active .toggle {
   transform: translateX(23px);
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .toggleButton .toggle {
@@ -217,7 +217,7 @@
   height: 20px;
   border-radius: 50%;
   transition: all 300ms;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 @media screen and (max-width: 1000px) {
@@ -311,7 +311,7 @@
 .text {
   display: flex;
   flex-direction: row;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 5px;
   background: rgb(236, 236, 236);
 }

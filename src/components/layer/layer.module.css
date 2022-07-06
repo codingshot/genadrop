@@ -7,7 +7,7 @@
   padding: 0.35em 0.5em;
   background: var(--card-layer);
   border-radius: 0.25em;
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 ._name {
@@ -72,7 +72,7 @@
   border: none;
   padding: 0.25em;
   border: 1px solid var(--text-light-900);
-  color: var(--main-bg);
+  color: var(--default);
   border-radius: 0.25em;
   font-size: 1rem;
 }
@@ -83,9 +83,9 @@
   overflow: auto;
   white-space: nowrap;
   padding: 0.25em;
-  color: var(--main-bg);
+  color: var(--default);
 }
 
 .trait {
-  color: var(--main-bg);
+  color: var(--default);
 }

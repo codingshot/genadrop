@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   padding: 4em 1em;
-  background: var(--main-lighter);
+  background: var(--main-lightest);
 }
 
 .container * {

@@ -2,7 +2,7 @@
   width: 100%;
   padding: 0 1em;
   margin-bottom: 4em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .container > input {
@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   padding: 0 1em;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .heading button:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .wrapper {

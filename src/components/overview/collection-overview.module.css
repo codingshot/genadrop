@@ -6,7 +6,7 @@
 .rules {
   width: 100%;
   align-items: center;
-  background: var(--main-bg);
+  background: var(--default);
   padding: 1em 0.5em;
   z-index: 1;
   gap: 1em;
@@ -39,12 +39,12 @@
   justify-content: center;
   gap: 1em;
   color: var(--main-color);
-  background: var(--main-bg);
+  background: var(--default);
   border: 2px solid var(--main-color);
 }
 
 .addRuleBtn:hover {
-  background: var(--main-dark);
+  background: var(--main-hovered);
 }
 
 .showRuleBtn:hover {
@@ -66,7 +66,7 @@
 }
 
 .showRuleBtn:hover .ruleCount {
-  background: var(--main-bg);
+  background: var(--default);
   color: var(--main-color);
 }
 
