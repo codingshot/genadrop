@@ -27,7 +27,7 @@
   flex-direction: column;
   gap: 2em;
   padding: 2em;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 0.5em;
   z-index: 100;
 }
@@ -61,5 +61,5 @@
 
 .reject:hover {
   cursor: var(--cursor-hover);
-  background: var(--main-bg);
+  background: var(--default);
 }

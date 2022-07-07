@@ -1,5 +1,5 @@
 .sidebar {
-  border-right: 1px solid var(--text-light-500);
+  border-right: 1px solid var(--outline);
   width: 100%;
   max-width: 20em;
   position: sticky;
@@ -24,7 +24,7 @@
 }
 
 .filterHeading:hover {
-  background: var(--main-100);
+  background: var(--main-lightest);
 }
 
 .filterHeading > div {
@@ -35,7 +35,12 @@
 }
 
 .filterHeading span {
-  color: var(--main-700);
+  color: var(--main-color);
+}
+
+.leftArrow {
+  width: 1em;
+  height: 1em;
 }
 
 .attributeFilter .title {
@@ -44,8 +49,8 @@
   justify-content: flex-start;
   gap: 1em;
   padding: 1em;
-  border-bottom: 2px solid var(--text-light-500);
-  border-top: 2px solid var(--text-light-500);
+  border-bottom: 2px solid var(--outline);
+  border-top: 2px solid var(--outline);
 }
 
 .statusFilter {
@@ -57,7 +62,7 @@
 }
 
 .toggleButton {
-  background: var(--main-bg);
+  background: var(--default);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -71,13 +76,13 @@
 }
 
 .toggleButton.active {
-  background: var(--main-bg);
-  border: 1px solid var(--text-light-500);
+  background: var(--default);
+  border: 1px solid var(--outline);
 }
 
 .toggleButton.active .toggle {
   transform: translateX(23px);
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .toggleButton .toggle {
@@ -85,7 +90,7 @@
   height: 20px;
   border-radius: 50%;
   transition: all 300ms;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .priceFilter {
@@ -105,7 +110,7 @@
 .priceFilter .filterInput input {
   padding: 0.75em;
   border-radius: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .priceFilter > div {
@@ -118,7 +123,7 @@
 }
 
 .priceFilter button {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   padding: 1em;
   border-radius: 0.25em;
@@ -126,8 +131,8 @@
 }
 
 .priceFilter button:hover {
-  background: var(--main-900);
-  outline: 2px solid var(--main-700);
+  background: var(--main-hovered);
+  outline: 2px solid var(--main-color);
 }
 
 .attributeFilter .title {
@@ -156,7 +161,7 @@
   cursor: var(--cursor-pointer);
   padding: 1em;
   border-radius: 0.25em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .layerIcon {
@@ -179,7 +184,7 @@
   overflow: hidden;
   visibility: hidden;
   border-radius: 0.25em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .layer.active {
@@ -192,12 +197,12 @@
 .layer > div {
   border: 1px solid white;
   padding: 0.5em 0.25em;
-  background: var(--text-light-200);
+  background: var(--main-lightest);
   border-radius: 0.25em;
 }
 
 .layer > div:hover {
-  background: var(--text-light-400);
+  background: var(--outline);
   cursor: var(--cursor-hover);
 }
 
@@ -218,9 +223,9 @@
   align-items: center;
   justify-content: center;
   border-radius: 0.15em;
-  background: var(--main-bg);
-  color: var(--text-light-900);
-  border: 1px solid var(--text-light-900);
+  background: var(--default);
+  color: var(--outline-dark);
+  border: 1px solid var(--outline-dark);
 }
 
 .sidebar2 {
@@ -228,7 +233,7 @@
   justify-content: center;
   align-items: flex-start;
   height: calc(100vh - 5.5em);
-  border-right: 1px solid var(--text-light-500);
+  border-right: 1px solid var(--outline);
   position: sticky;
   top: 5em;
   cursor: var(--cursor-pointer);
@@ -248,7 +253,7 @@
 }
 
 .sidebar2 img:hover {
-  background: var(--main-100);
+  background: var(--main-lightest);
 }
 
 @media screen and (max-width: 768px) {

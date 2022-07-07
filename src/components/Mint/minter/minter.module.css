@@ -1,7 +1,6 @@
 .container {
   width: 100%;
-  background: var(--main-bg);
-  border-radius: 0.5em;
+  background: var(--default);
   padding: 2em 1em;
   animation: show 650ms;
 }
@@ -10,6 +9,7 @@
   from {
     transform: scale(0.99) translateY(1em);
   }
+
   to {
     transform: scale(1) translateY(0);
   }
@@ -22,22 +22,24 @@
 
 .container input,
 .container textarea {
-  background: #f9f9f9;
+  background: var(--card-trait);
   outline: none;
 }
 
 .container input:focus,
 .container textarea:focus {
   border: none;
-  outline: 1px solid var(--main-700) !important;
+  outline: 1px solid var(--main-color) !important;
   cursor: text;
 }
+
 .wrapper {
   max-width: 48em;
   display: flex;
   margin: auto;
   flex-direction: column;
 }
+
 .wrapper > div {
   width: 100%;
   margin: 0 auto;
@@ -48,7 +50,7 @@
   gap: 1em;
 }
 
-.asset {
+.assetContainer {
   width: 100%;
   position: relative;
   display: flex;
@@ -56,10 +58,10 @@
   align-items: center;
   justify-content: center;
   gap: 2em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 1em;
   border: 1px solid #c4c4c4;
-  border-radius: 20px;
+  border-radius: 1em;
   position: relative;
 }
 
@@ -86,14 +88,10 @@
 
 .imageContainer:nth-child(2) {
   transform: translate(1.5em, -1.5em);
-  /* filter: blur(2px);
-  -webkit-filter: blur(2px); */
 }
 
 .imageContainer:nth-child(1) {
   transform: translate(3em, -3em);
-  /* filter: blur(4px);
-  -webkit-filter: blur(4px); */
 }
 
 .singleImage {
@@ -101,20 +99,20 @@
   height: 100%;
   box-shadow: var(--shadow-light);
   border-radius: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
-.asset button {
+.assetContainer button {
   padding: 0.5em 2em;
   border-radius: 1.5em;
-  color: var(--main-700);
-  border: 1px solid var(--main-900);
+  color: var(--main-color);
+  border: 1px solid var(--main-hovered);
   transition: all 300ms;
 }
 
 .asset button:hover {
-  background: var(--main-900);
-  border: 1px solid var(--main-700);
+  background: var(--main-hovered);
+  border: 1px solid var(--main-color);
   cursor: var(--cursor-pointer);
   color: white;
 }
@@ -126,8 +124,8 @@
   justify-content: space-between;
   gap: 1em;
   padding: 1em;
-  border-radius: 1em;
-  background: #d0ebe9e4;
+  border-radius: 0.5em;
+  background: var(--card-info);
   flex-wrap: wrap;
 }
 
@@ -139,49 +137,55 @@
   gap: 0.5em;
   font-size: 1.25rem;
 }
+
 .innerAssetInfo div {
   display: flex;
   align-items: center;
 }
+
 .innerAssetInfo div span {
-  font-weight: 500;
-  color: #6c757d;
+  color: var(--text-sub-heading);
 }
+
 .innerAssetInfo div p {
   font-weight: 600;
-  color: #333333;
+  color: var(--text-heading);
   display: flex;
   align-items: center;
   margin-left: 8px;
   margin-right: 2px;
 }
+
 .innerAssetInfo .assetInfoTitle > span {
+  color: var(--text-heading);
   font-weight: 600;
-  color: #000000;
 }
+
 .assetInfoMintPrice {
   background: rgba(0, 153, 135, 0.17);
   padding: 4px 10px;
 }
+
 .required {
-  color: red;
+  color: var(--error-500);
 }
 
 .showPreview {
   font-size: 0.85rem;
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: var(--cursor-pointer);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
 }
+
 div.showPreview > span {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .showPreview img {
-  width: 0.5em;
+  width: 1em;
   transition: all 300ms;
 }
 
@@ -207,20 +211,14 @@ div.showPreview > span {
   width: 1.5em;
 }
 
-.type {
-  width: 100%;
-  font-size: 1.2rem;
-  margin-top: 1em;
-}
-
-.type div {
+.heading {
   display: inline-block;
-  color: var(--main-700);
-  border-bottom: 2px solid var(--main-700);
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
+  margin-right: auto;
+  color: var(--main-color);
   font-size: 1.6rem;
   margin-bottom: 1em;
+  padding: 0 0.5em;
+  border-bottom: 2px solid var(--main-color);
 }
 
 .details {
@@ -245,7 +243,7 @@ div.showPreview > span {
   justify-content: flex-start;
   gap: 0.1em;
   border-radius: 0.5em;
-  background: #d0ebe9e4;
+  background: var(--card-info);
 }
 
 .info span {
@@ -262,6 +260,7 @@ div.showPreview > span {
   padding: 1em;
   box-shadow: var(--shadow-light-1);
 }
+
 .dropInputWrapper {
   border: none;
   margin-bottom: 0;
@@ -269,11 +268,13 @@ div.showPreview > span {
   margin-left: 1em;
   box-shadow: none;
 }
+
 .inputWrapper label {
   display: flex;
   margin-bottom: 0.75em;
   font-weight: 500;
 }
+
 .inputWrapper label div {
   margin-left: 0.5em;
 }
@@ -287,28 +288,30 @@ div.showPreview > span {
   padding: 0.5em;
   resize: none;
   border-radius: 0.5em;
-  background: var(--text-light-200);
-  border: 1px solid var(--text-light-700);
-  box-shadow: var(--shadow-light-1);
-  color: var(--text-dark-300);
+  border: 1px solid var(--outline);
+  color: var(--text-sub-heading);
   font-size: 1rem;
 }
+
 .price {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 .price input {
   width: 80%;
   margin-right: 1rem;
 }
+
 .price span {
-  color: var(--main-700);
+  color: var(--main-color);
   font-weight: bold;
   min-width: 20%;
   justify-content: center;
   display: flex;
 }
+
 .inputWrapper textarea:focus,
 .inputWrapper input:focus,
 .inputWrapper select:focus {
@@ -317,13 +320,13 @@ div.showPreview > span {
 
 .inputWrapper button {
   transition: all 300ms;
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 1rem;
 }
 
 .inputWrapper button:hover {
   cursor: var(--cursor-hover);
-  color: var(--main-900);
+  color: var(--main-hovered);
 }
 
 .attributes {
@@ -357,32 +360,33 @@ div.showPreview > span {
 }
 
 .mintBtn {
-  background: var(--main-700);
+  background: var(--main-color);
   border: 1px solid transparent;
-  color: white;
+  color: var(--default);
   font-size: 1rem;
   transition: all 300ms;
 }
 
 .mintBtn:hover {
-  background: var(--main-900);
-  border: 1px solid var(--main-700);
+  background: var(--main-hovered);
+  border: 1px solid var(--main-color);
 }
 
 .cancelBtn {
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
   transition: all 300ms;
   font-size: 1rem;
 }
 
 .cancelBtn:hover {
   border: 1px solid transparent;
-  background: var(--main-700);
-  color: white;
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .metadata {
-  border: 1px solid var(--text-light-700);
+  border: 1px solid var(--outline-dark);
   box-shadow: var(--shadow-light-1);
   border-radius: 0.375em;
   padding: 0.5em;
@@ -412,7 +416,7 @@ div.showPreview > span {
 
 .attribute > * {
   flex: 1;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0.25em;
   border-radius: 0.25em;
 }
@@ -433,18 +437,20 @@ div.showPreview > span {
 }
 
 .chain {
-  background: var(--main-bg);
+  background: var(--default);
   padding: 0.5em 1em;
   border-radius: 0.5em;
   margin-left: 1em;
 }
 
 .warn {
-  color: red;
+  color: var(--error-500);
 }
+
 .dropWrapper {
   margin-left: 1rem;
 }
+
 .dropWrapper > div {
   width: 60%;
   background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='8' ry='8' stroke='%23E5E8EBFF' stroke-width='6' stroke-dasharray='10%2c 12' stroke-dashoffset='3' stroke-linecap='round'/%3e%3c/svg%3e");
@@ -457,49 +463,47 @@ div.showPreview > span {
   margin-bottom: 3rem;
   cursor: var(--cursor-pointer);
 }
+
 .dropWrapper > div:hover .selectImg p {
-  color: var(--main-700);
+  color: var(--main-color);
 }
+
 .dropWrapper div img {
   height: 6rem;
 }
+
 .dropWrapperSeleted div img {
   height: 90%;
 }
+
 .priceTooltip div {
   margin-left: 0.625em;
 }
 
-.priceTooltip div svg {
-  /* border: 2px solid var(--main-700); */
-  /* height: 1.1em;
-  width: 1.1em; */
-}
-
 .mintForm {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid #c4c4c4;
-  border-radius: 1.25em;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--outline);
+  border-radius: 1em;
   margin-top: 2em;
-  padding: 3em 1em;
-  width: 100%;
+  padding: 2em 1em;
 }
-.mintForm > div,
-.mintForm > section {
-  max-width: 48rem;
-  margin: auto;
-}
+
 .selectImg {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
+
 .selectImg p {
   color: #adb5bd;
   font-size: 1.25rem;
   margin-top: 0.3em;
 }
+
 .selectImg svg {
   height: 65px;
   width: 76px;
@@ -508,16 +512,18 @@ div.showPreview > span {
   border-radius: 0.1875em;
 }
 
-.chinLabel {
+.chainLabel {
   margin-bottom: 1.1em;
   margin-bottom: 1.1em;
   display: flex;
   align-items: center;
 }
-.chinLabel img {
+
+.chainLabel img {
   height: 1.5em;
   margin-right: 1em;
 }
+
 @media screen and (max-width: 768px) {
   .container {
     padding: 2em 0.5em;
@@ -540,7 +546,7 @@ div.showPreview > span {
     font-size: 0.85rem;
   }
 
-  .asset button {
+  .assetContainer button {
     padding: 0.5em 0.75em;
     font-size: 0.75rem;
   }
@@ -557,19 +563,23 @@ div.showPreview > span {
     height: 12em;
   }
 }
+
 @media screen and (max-width: 550px) {
   .price input {
     width: 50%;
     margin-right: 1rem;
   }
 }
+
 @media screen and (max-width: 480px) {
-  .type div {
+  .heading {
     font-size: 1.2rem;
   }
+
   .category {
     font-size: 1.1rem;
   }
+
   .dropWrapper > div {
     width: 100%;
   }

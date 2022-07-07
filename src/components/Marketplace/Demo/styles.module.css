@@ -3,7 +3,7 @@
   margin-bottom: 4em;
   padding: 2em;
   border-radius: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 
@@ -68,7 +68,7 @@
 }
 
 .label {
-  color: var(--main-700);
+  color: var(--main-color);
   align-self: flex-end;
   bottom: 0;
 }

@@ -28,14 +28,14 @@
   border-radius: 2em;
   cursor: var(--cursor-pointer);
   color: white;
-  background: var(--main-700);
+  background: var(--main-color);
   text-align: center;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   transition: background 300ms;
 }
 
 .connect:hover {
-  background: var(--main-900);
+  background: var(--main-hovered);
 }
 
 .connected {
@@ -44,19 +44,19 @@
   align-items: stretch;
   justify-content: center;
   gap: 0.5em;
-  color: var(--main-700);
+  color: var(--main-color);
   cursor: var(--cursor-pointer);
   position: relative;
-  background: var(--main-bg);
+  background: var(--default);
   transition: all 150ms;
   padding: 0.25em 0.25em;
   border-radius: 2em;
   padding: 0.25em 0.5em;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 .connected:hover {
-  color: var(--main-900);
+  color: var(--main-hovered);
 }
 
 .user {
@@ -75,7 +75,7 @@
 .chain {
   height: 24px;
   width: 24px;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 50%;
   display: inline-block;
 }
@@ -116,16 +116,16 @@
   transform: translateY(90%);
   visibility: hidden;
   transition: all 200ms;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
   padding: 0.5em 1em;
-  background: var(--main-bg);
+  background: var(--default);
   cursor: var(--cursor-pointer);
   font-size: 0.85rem;
 }
 
 .networkDrop:hover {
-  background: var(--text-light-200);
+  background: var(--main-lightest);
 }
 
 .network:hover .networkDrop {
@@ -155,7 +155,7 @@
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  background: var(--main-bg);
+  background: var(--default);
   position: absolute;
   top: 2.5em;
   color: var(--text-dark-900);
@@ -165,7 +165,7 @@
   opacity: 0;
   overflow: hidden;
   font-size: 0.85rem;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }
 
 .dropdown.active {

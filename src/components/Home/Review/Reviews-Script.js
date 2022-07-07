@@ -1,61 +1,40 @@
-import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
-import banner1 from "../../../assets/twitter/banner-1.png";
-import thumbnail1 from "../../../assets/twitter/thumbnail-1.png";
-import banner2 from "../../../assets/twitter/banner-2.png";
-import thumbnail2 from "../../../assets/twitter/thumbnail-2.PNG";
-import banner3 from "../../../assets/twitter/banner-3.png";
-import banner4 from "../../../assets/twitter/banner-4.png";
+const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const reviews = [
-  {
-    id: "1486289656203427845",
-    domain: "Twitter Web App",
-    icon: twitterIcon,
-    date: "11:47 AM · Jan 26, 2022",
-    banner: banner1,
-    content:
-      "A look a GenaDrop’s 💧 (the #crosschain generative NFT launchpad) upcoming #UI. Also, sneak peak of the 👀 Women PFP inspired generative art we will be #airdropping for FREE later this week to inspire the next generation 🦸‍♀️ of #Web3 users #MinorityDrop",
-    thumbnail: thumbnail1,
-    name: "MinorityProgrammers @ NFTNYC",
-    handle: "@minorityprogram",
-    url: "https://twitter.com/minorityprogram/status/1486289656203427845",
-  },
-  {
-    id: "1484447708668649475",
-    domain: "Twitter Web App",
-    icon: twitterIcon,
-    date: "9:48 AM · Jan 21, 2022",
-    banner: banner2,
-    content: "Guys Something is really cooking up here .. be as early as early itself ... leggoooo",
-    thumbnail: thumbnail2,
-    name: "xNFT TECH | iCode",
-    handle: "@JyteTechNft",
-    url: "https://twitter.com/minorityprogram/status/1484447708668649475",
-  },
-  {
-    id: "1473516385691062273",
-    domain: "Twitter Web App",
-    icon: twitterIcon,
-    date: "5:50 AM · Dec 22, 2021",
-    banner: banner3,
-    content:
-      "We are happy to announce our partnership w/ the #NEAR Foundation for Genadrop 💧our no code solution for creating generative art. We will be adding a #NFTMarketplace on @NEARProtocol, Use https://genadrop.com today and read more https://medium.com/minority-programmers/genadrop-no-code-solution-to-minting-generative-art-announces-nft-marketplace-on-near-3fe086153952",
-    thumbnail: thumbnail1,
-    name: "MinorityProgrammers @ NFTNYC",
-    handle: "@minorityprogram",
-    url: "https://twitter.com/minorityprogram/status/1473516385691062273",
-  },
-  {
-    id: "1507735586190381056",
-    domain: "Twitter Web App",
-    icon: twitterIcon,
-    date: "4:05 PM · Mar 26, 2022",
-    banner: banner4,
-    content:
-      "Need help launching your generative NFT project? Want early access to our 🌈#multichain NFT creator tool🎨, minter, marketplace💧@genadrop? Get early access & support at https://forms.gle/L1fgpr6D4t29kUGK6 and test out the creator tool today https://genadrop.com/create",
-    thumbnail: thumbnail1,
-    name: "MinorityProgrammers @ NFTNYC",
-    handle: "@minorityprogram",
-    url: "https://twitter.com/minorityprogram/status/1507735586190381056",
-  },
-];
+function getHours(d) {
+  const hours = d.getHours() == 0 ? "12" : d.getHours() > 12 ? d.getHours() - 12 : d.getHours();
+  const minutes = (d.getMinutes() < 10 ? "0" : "") + d.getMinutes();
+  const ampm = d.getHours() < 12 ? " AM" : " PM";
+  const formattedTime = `${hours}:${minutes} ${ampm}`;
+  return formattedTime;
+}
+export const getFormattedDate = (date, address = true) => {
+  const d = new Date(date);
+  const dayName = days[d.getDay()];
+  const dayMonth = d.getDate();
+  const monthName = month[d.getMonth()];
+  const yaer = d.getFullYear();
+  return address
+    ? `${dayName}, ${monthName} ${dayMonth}, ${yaer}, ${getHours(d)} UTC`
+    : `${dayName}, ${monthName} ${dayMonth}, ${yaer} | ${getHours(d)} UTC`;
+};
+export const getFormattedDateTweets = (date, address = true) => {
+  const d = new Date(date);
+  const dayName = days[d.getDay()];
+  const dayMonth = d.getDate();
+  const monthName = month[d.getMonth()];
+  const yaer = d.getFullYear();
+  return `${getHours(d)}, ${monthName} ${dayMonth}, ${yaer}`;
+};
+
+export const twitterAPIURL = (twitterIDs) => {
+  let ids = "";
+  twitterIDs.forEach((id, idx) => {
+    if (idx < twitterIDs.length - 1) {
+      ids += `${id},`;
+    } else {
+      ids += `${id}`;
+    }
+  });
+  return `https://api.twitter.com/2/tweets?ids=${ids}&tweet.fields=attachments,author_id,created_at,entities&expansions=attachments.media_keys,author_id&media.fields=alt_text,duration_ms,media_key,preview_image_url,type,url,variants&user.fields=name,profile_image_url,username`;
+};

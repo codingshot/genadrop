@@ -37,7 +37,7 @@ th:first-child {
 .subTitle {
   font-weight: 400;
   font-size: 20px;
-  color: var(--main-700);
+  color: var(--main-color);
   background-color: rgba(0, 153, 135, 0.12);
   margin-top: 0.5rem;
 }

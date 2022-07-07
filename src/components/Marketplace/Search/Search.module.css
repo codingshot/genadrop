@@ -25,7 +25,7 @@
   width: 100%;
   border-radius: 2em;
   outline: none;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0 1em;
   font-size: 1.2rem;
   background: #f5f6fa;
@@ -34,6 +34,6 @@
 .wrapper button {
   padding: 1em 3em;
   border-radius: 2em;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }

@@ -4,9 +4,10 @@ import classes from "./collection-single.module.css";
 import collectionIcon from "../../../assets/icon-collection-light.svg";
 import _1of1Icon from "../../../assets/icon-1of1-light.svg";
 import leftArrow from "../../../assets/icon-arrow-left.svg";
-import UploadOverlay from "../upload-overlay/upload-overlay";
+// import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
+import line from "../../../assets/icon-line.svg";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
@@ -73,7 +74,7 @@ const CollectionToSingleMinter = () => {
     };
     dragRef.current.ondragleave = (e) => {
       e.preventDefault();
-      document.querySelector(".drop-area").style.border = "2px solid var(--text-light-500)";
+      document.querySelector(".drop-area").style.border = "2px solid var(--outline)";
     };
     dragRef.current.ondrop = (e) => {
       e.preventDefault();
@@ -112,13 +113,17 @@ const CollectionToSingleMinter = () => {
         <>
           <Link to="/mint" className={classes.goBack}>
             <img src={leftArrow} alt="" />
-            <span>Back</span>
+            <span>Back to Mint</span>
           </Link>
           <header className={classes.headingWrapper}>
             {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
             <p className={classes.description}>
-              Upload a <span>{params.mintId === "1of1" ? "image" : "collection"}</span> to create NFTs on any of our{" "}
-              <br />
+              Upload a{" "}
+              <span>
+                {params.mintId === "1of1" ? "image" : "collection"}
+                <img src={line} alt="" />
+              </span>{" "}
+              to create NFTs on any of our <br />
               supported blockchains super fast!
             </p>
           </header>

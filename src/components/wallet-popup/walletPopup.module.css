@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 28em;
   overflow: auto;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -68,11 +68,11 @@
   border-radius: 50%;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
 }
 
 .closeIcon:hover {
-  background: var(--text-light-200);
+  background: var(--main-lightest);
 }
 
 .wrapper {
@@ -108,17 +108,17 @@
 }
 
 .chain.comingSoon {
-  background: var(--text-light-500);
+  background: var(--outline);
   cursor: var(--cursor-default);
 }
 
 .chain.comingSoon:hover {
-  background: var(--text-light-500);
+  background: var(--outline);
   color: inherit;
 }
 
 .chain:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -158,7 +158,7 @@
   border-radius: 1em;
   padding: 0.15em 1em;
   transition: all 300ms;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .viewBtn:hover {
@@ -172,7 +172,7 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .connectionMethods.active {
@@ -197,7 +197,7 @@
 
 .connectionMethod:hover {
   box-shadow: var(--shadow-dark);
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .connectionMethod.metamask {

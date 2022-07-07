@@ -20,7 +20,7 @@
 .popupContainer {
   width: 100%;
   max-width: 32em;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,19 +43,18 @@
 }
 
 .imgContainer {
-  padding: 1em;
+  padding: 2em;
   border-radius: 2em;
-  box-shadow: var(--shadow-light);
+  box-shadow: -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12);
   margin-bottom: 1em;
 }
-/* -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12); */
 
 .container .heading {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .container .heading.error {
-  color: red;
+  color: var(--error-500);
 }
 
 .closeIcon {
@@ -68,7 +67,8 @@
   width: 1.5em;
   height: 1.5em;
   border-radius: 0.25em;
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
+  background: var(--btn-close);
 }
 
 .closeIcon:hover {
@@ -106,25 +106,25 @@
 }
 
 .actionBtn._1 {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   position: relative;
 }
 
 .actionBtn._2 {
-  background: var(--main-bg);
-  color: var(--main-700);
-  border-color: var(--main-700);
+  background: var(--default);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .actionBtn._1:hover {
   cursor: var(--cursor-hover);
-  background: var(--main-900);
+  background: var(--main-hovered);
 }
 
 .actionBtn._2:hover {
   cursor: var(--cursor-hover);
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 
@@ -160,7 +160,7 @@
 .url {
   flex: 1;
   max-width: 20em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -178,18 +178,19 @@
 
 .tag {
   margin-right: 1em;
+  color: var(--text-sub-heading);
 }
 
 .copyBtn {
   padding: 0.25em 0.5em;
-  background: var(--main-100);
-  color: gray;
+  background: var(--main-lightest);
+  color: var(--text-sub-heading);
   width: 5em;
   text-align: center;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   transition: all 300ms;
 }
 
 .copyBtn:hover {
-  background: var(--main-100-dark);
+  background: var(--main-lighter);
 }

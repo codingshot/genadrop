@@ -63,7 +63,7 @@ const CollectionOverview = () => {
   }, [rule]);
 
   return (
-    <div className={classes.container}>
+    <div className={`${classes.container} ${showRule && classes.active}`}>
       {layers[0]?.traits.length ? (
         <div className={classes.rules}>
           {isRule ? (
@@ -90,7 +90,7 @@ const CollectionOverview = () => {
               )}
             </>
           )}
-          <div className={`${classes.conflictGuide} ${toggleInfo && classes.hidden}`}>
+          <div className={`${classes.conflictInfo} ${toggleInfo && classes.hidden}`}>
             <img src={infoIcon} alt="info" />
             <p>Setting conflict rules for images means that the selected set of images cannot form a generative art</p>
             <CloseIcon className={classes.closeIcon} onClick={() => handleSetState({ toggleInfo: true })} />

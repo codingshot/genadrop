@@ -29,8 +29,8 @@ import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
 import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
-import CaretDown from "../../assets/icon-CaretDown.svg";
-import CaretUP from "../../assets/icon-CaretUp.svg";
+import CaretDown from "../../assets/icon-caret-down.svg";
+import CaretUP from "../../assets/icon-caret-up.svg";
 import tooltip from "../../assets/tooltip.svg";
 import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 const Preview = () => {
@@ -404,6 +404,7 @@ const Preview = () => {
                 <p>IPFS</p>
                 <div className={classes.tooltip}></div>
                 <GenadropToolTip
+                  fill="white"
                   content={`IPFS is a peer-to-peer (p2p) storage network for storing and sharing data.`}
                 />
               </label>
