@@ -7,23 +7,23 @@
 }
 
 .container button {
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0.5em 1em;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 0.25em;
-  background: var(--error-300);
+  background: var(--error-400);
 }
 
 ._0 {
-  background: var(--text-light-500) !important;
+  background: var(--outline) !important;
 }
 
 .container input::placeholder {
-  color: var(--text-light-500);
+  color: var(--outline);
 }
 
 .closeIcon {
-  fill: var(--main-bg);
+  fill: var(--default);
 }

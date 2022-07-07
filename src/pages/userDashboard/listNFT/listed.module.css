@@ -61,7 +61,7 @@
   width: 11rem;
   border-radius: 5px;
   font-weight: bold;
-  background-color: var(--main-700);
+  background-color: var(--main-color);
 }
 .view {
   margin: 1rem auto;
@@ -74,7 +74,7 @@
   width: 14rem;
   border-radius: 5px;
   font-weight: bold;
-  background-color: var(--main-700);
+  background-color: var(--main-color);
 }
 .buy:hover,
 .detailContent img:hover,

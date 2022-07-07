@@ -13,11 +13,11 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1em;
-  border-top: 1px solid var(--text-light-500);
-  border-bottom: 1px solid var(--text-light-500);
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
   position: sticky;
-  top: 3.9em;
-  background: var(--main-bg);
+  top: 3.6em;
+  background: var(--default);
   padding: 2em 0;
   z-index: 10;
 }
@@ -33,6 +33,7 @@
 }
 
 .backBtn img {
+  width: 1.2em;
   transition: all 300ms;
 }
 
@@ -52,7 +53,7 @@
 .paginate input {
   padding: 0.65em;
   max-width: 6em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
 }
 
@@ -65,36 +66,41 @@
 }
 
 .pageControl.next {
-  color: white;
-  background: var(--main-700);
+  color: var(--default);
+  background: var(--main-color);
+  box-shadow: var(--btn-shadow-open);
 }
 
 .pageControl.next:hover {
-  background: var(--main-900);
+  background: var(--main-hovered);
+  box-shadow: var(--btn-shadow-close);
 }
 
 .pageControl.prev {
-  color: gray;
-  background: var(--main-bg);
-  border: 2px solid var(--text-light-500);
+  color: var(--text-sub-heading);
+  background: var(--default);
+  box-shadow: var(--btn-shadow-open);
 }
 
 .pageControl.prev:hover {
-  background: whitesmoke;
+  background: var(--card-light);
+  box-shadow: var(--btn-shadow-close);
 }
 
 .pageControl.goto {
-  background: var(--card-bg);
-  color: white;
+  background: var(--card-preview);
+  color: var(--default);
+  box-shadow: var(--btn-shadow-open);
 }
 
 .pageControl.goto:hover {
-  background: var(--card-bg2);
+  background: var(--card-layer);
+  box-shadow: var(--btn-shadow-close);
 }
 
 .pageCount {
   white-space: nowrap;
-  color: gray;
+  color: var(--text-sub-heading);
 }
 
 .gotoWrapper {
@@ -115,46 +121,57 @@
 
 .assetWrapper {
   width: 100%;
-  max-width: 14em;
+  max-width: 20em;
+  height: 20em;
   position: relative;
   overflow: hidden;
   border-radius: 1em;
   cursor: var(--cursor-pointer);
   border: 4px solid transparent;
   transition: all 300ms;
-  box-shadow: var(--shadow-light);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
 }
 
 .assetWrapper img {
   width: 100%;
+  height: 20em;
+  object-fit: cover;
 }
 
 .assetOverlay {
   position: absolute;
   width: 100%;
-  height: 100%;
-  background: var(--main-700);
+  height: 50%;
+  background: var(--main-color);
   bottom: 0;
   left: 0;
   transform: translateY(100%);
   transition: all 300ms;
   padding: 0.5em;
-  color: white;
+  color: var(--default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.assetName {
+  color: var(--default);
 }
 
 .assetWrapper:hover .assetOverlay {
-  transform: translateY(50%);
+  transform: translateY(0);
 }
 
 .assetWrapper:hover {
-  border: 4px solid var(--main-700);
+  border: 4px solid var(--main-color);
 }
 
 .attrBtn {
   width: 100%;
   margin-top: 1em;
-  background: var(--main-bg);
-  color: var(--main-700);
+  background: var(--default);
+  color: var(--main-color);
   padding: 0.75em;
   border-radius: 2em;
   font-size: 1rem;
@@ -162,7 +179,8 @@
 }
 
 .attrBtn:hover {
-  background: whitesmoke;
+  background: var(--main-lighter);
+  color: var(--main-hovered);
 }
 
 /* Collection Profile Image Select */
@@ -184,7 +202,7 @@
   cursor: var(--cursor-pointer);
 }
 .assetWrapperSelect:hover {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .assetWrapperSelect img {
   border-radius: 20px;
@@ -192,7 +210,7 @@
 }
 
 .assetWrapperActive {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .buttonWrapper {
@@ -204,7 +222,7 @@
 }
 .buttonWrapper p,
 .buttonWrapper div {
-  border: 3px solid var(--main-700);
+  border: 3px solid var(--main-color);
   border-radius: 37px;
   height: 2.8em;
   width: 9.5em;
@@ -216,24 +234,24 @@
 }
 .buttonWrapper p {
   margin-right: 1em;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 .buttonWrapper p:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 .buttonWrapper div {
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
 }
 .buttonWrapper div:hover {
-  background: var(--main-900);
+  background: var(--main-hovered);
 }
 
 @media screen and (max-width: 768px) {
   .topNav {
     flex-direction: column;
-    top: 3em;
+    top: 2.8em;
     gap: 0.5em;
     padding: 0.5em 0;
   }

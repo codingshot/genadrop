@@ -30,7 +30,7 @@
   padding: 2em;
   border-radius: 1em;
   position: relative;
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .container {
@@ -48,14 +48,14 @@
   top: 1em;
   right: 1em;
   cursor: var(--cursor-pointer);
-  fill: var(--main-bg);
+  fill: var(--default);
 }
 
 .heading {
   width: 100%;
   font-size: 1rem;
   text-align: center;
-  color: var(--main-bg);
+  color: var(--default);
   font-weight: 600;
 }
 
@@ -91,7 +91,7 @@
   width: 32em;
   flex: 0 0 auto;
   height: 100%;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .control {
@@ -218,7 +218,7 @@
 }
 
 .indicator.active > div {
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 @media screen and (max-width: 1000px) {

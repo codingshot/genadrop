@@ -28,24 +28,26 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 0.75em;
+  color: var(--default);
 }
 
 .description {
   margin-bottom: 1em;
+  color: var(--default);
 }
 
 .btn {
   display: inline-block;
   padding: 0.75em 4em;
   border-radius: 2em;
-  background: var(--main-bg);
-  color: var(--main-700);
+  background: var(--default);
+  color: var(--main-color);
   cursor: var(--cursor-pointer);
 }
 
 .btn:hover {
-  background: var(--main-100);
-  color: var(--main-900);
+  color: var(--main-hovered);
+  box-shadow: var(--btn-shadow-close);
 }
 
 .cardContainer {
@@ -72,10 +74,11 @@
   width: 3em;
   height: 4px;
   background: gray;
+  border-radius: 4px;
 }
 
 .indicator > div.active {
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .cardLeft,

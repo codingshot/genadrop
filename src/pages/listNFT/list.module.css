@@ -104,12 +104,12 @@
 }
 
 .buy {
-  background-color: var(--main-700);
+  background-color: var(--main-color);
 }
 
 .bid {
-  border: 1px solid var(--main-700);
-  color: var(--main-700);
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
 }
 
 .buy img,
@@ -214,7 +214,7 @@
   display: block;
   padding: 0.25em;
   resize: none;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.25em;
   font-size: 1rem;
 }
@@ -231,6 +231,7 @@
 
 .inputWrapper button {
   transition: all 300ms;
+  box-shadow: var(--btn-shadow-open);
 }
 
 .inputWrapper button:hover {

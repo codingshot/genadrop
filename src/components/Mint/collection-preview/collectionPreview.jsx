@@ -97,7 +97,8 @@ const CollectionPreview = ({
           className={classes.backBtn}
         >
           <img src={arrowIconLeft} alt="" />
-          {previewSelectMode ? "Select an image" : "Back"}
+          {/* {previewSelectMode ? "Select an image" : "Back"} */}
+          Back
         </div>
 
         <div className={classes.paginate}>
@@ -139,7 +140,7 @@ const CollectionPreview = ({
                 />
                 {!previewSelectMode && (
                   <div className={classes.assetOverlay}>
-                    {fileToMetadataMap[f.name].name}
+                    <div className={classes.assetName}>{fileToMetadataMap[f.name].name}</div>
                     <button
                       type="button"
                       onClick={() => handleShowAttribute(fileToMetadataMap[f.name])}

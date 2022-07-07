@@ -11,10 +11,11 @@
   font-weight: 500;
   text-align: center;
   text-transform: capitalize;
+  color: var(--text-heading);
 }
 
 .heading span {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .description {
@@ -24,6 +25,7 @@
   margin-bottom: 3em;
   font-size: 1.2rem;
   text-align: center;
+  color: var(--text-sub-heading);
 }
 
 .card {
@@ -36,7 +38,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   border: 1px solid #e5e8eb;
   box-shadow: var(--shadow-light);
   cursor: var(--cursor-pointer);
