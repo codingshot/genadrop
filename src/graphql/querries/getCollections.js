@@ -108,6 +108,9 @@ export const GET_USER_NFT = gql`
         price
         tokenID
         tokenIPFSPath
+        collection {
+          id
+        }
       }
     }
   }

@@ -56,8 +56,16 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections, dispatch } =
-    useContext(GenContext);
+  const {
+    account,
+    mainnet,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    auroraCollections,
+    polygonCollections,
+    dispatch,
+    chainId,
+  } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -84,11 +92,7 @@ const Dashboard = () => {
 
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
-      const collectedNfts = await fetchUserBoughtNfts(account);
-      if (collectedNfts === []) {
-        const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-        handleSetState({ collectedNfts: algoCollectedNfts });
-      } else {
+      if (chainId === 80001) {
         const address = ethers.utils.hexlify(account);
         const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
         if (error) {
@@ -102,6 +106,10 @@ const Dashboard = () => {
           const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
           handleSetState({ collectedNfts: polygonCollectedNft });
         }
+      } else {
+        const collectedNfts = await fetchUserBoughtNfts(account);
+        const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
+        handleSetState({ collectedNfts: algoCollectedNfts });
       }
     })();
 
