@@ -8,6 +8,8 @@ import celoIcon from "../../../assets/icon-celo.svg";
 import dropdownIcon from "../../../assets/icon-caret-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
 import supportedChains from "../../../utils/supportedChains";
+import { useContext } from "react";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const chainIcon = {
   polygon: polygonIcon,
@@ -22,7 +24,7 @@ const ChainDropdown = ({ onChainFilter }) => {
     chain: "All Chains",
   });
   const location = useLocation();
-
+  const { mainnet } = useContext(GenContext);
   const { toggleChainFilter, chain } = state;
 
   const handleSetState = (payload) => {
@@ -64,16 +66,16 @@ const ChainDropdown = ({ onChainFilter }) => {
             <img src={allChainsIcon} alt="All Chains" /> <span>All Chains</span>
           </div>,
           ...Object.values(supportedChains)
-            .filter((chainE) => chainE.isMainnet)
+            .filter((chainE) => mainnet === chainE.isMainnet)
             .map((chainE) => (
               <div
                 key={chainE.id}
                 onClick={() => {
-                  !chainE.comingSoon ? chainHandler(chainE.label) : {};
+                  !chainE.comingSoon ? chainHandler(chainE.chain) : {};
                 }}
                 className={`${classes.chain} ${chainE.comingSoon && classes.inActive}`}
               >
-                {chainE.icon ? <img src={chainE.icon} alt={chainE.label} /> : <p />} <span>{chainE.label}</span>
+                {chainE.icon ? <img src={chainE.icon} alt={chainE.chain} /> : <p />} <span>{chainE.chain}</span>
               </div>
             )),
         ]}

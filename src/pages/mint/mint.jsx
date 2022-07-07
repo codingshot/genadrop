@@ -4,25 +4,13 @@ import classes from "./mint.module.css";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
-import { initConnectWallet } from "../../components/wallet/wallet-script";
-import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
   const history = useHistory();
   const { url } = useRouteMatch();
-  const { dispatch, chainId } = useContext(GenContext);
-
-  useEffect(() => {
-    if (window.localStorage.walletconnect || chainId) return;
-    initConnectWallet({ dispatch });
-  }, []);
 
   const handleMint = (target) => {
-    if (window.localStorage.walletconnect || chainId) {
-      history.push(`${url}/${target}`);
-    } else {
-      initConnectWallet({ dispatch });
-    }
+    history.push(`${url}/${target}`);
   };
 
   return (
