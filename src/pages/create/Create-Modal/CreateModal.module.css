@@ -26,7 +26,7 @@
 }
 
 .closeBtn {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   position: absolute;
   right: 1em;
   top: 1em;
@@ -34,7 +34,7 @@
   height: 1.4em;
   padding: 0.25em;
   border-radius: 0.25em;
-  background: var(--text-light-300);
+  background: var(--btn-close);
   cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
@@ -69,7 +69,7 @@
 
 .content p {
   font-size: 0.85rem;
-  color: var(--text-light-900);
+  color: var(--outline-dark);
   margin-bottom: 1.5em;
 }
 

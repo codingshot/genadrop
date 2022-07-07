@@ -47,6 +47,7 @@ const GenContextProvider = ({ children }) => {
     activeCollection,
     imageQuality,
     zip,
+    connectFromMint,
   } = state;
 
   return (
@@ -92,6 +93,7 @@ const GenContextProvider = ({ children }) => {
         activeCollection,
         imageQuality,
         zip,
+        connectFromMint,
         dispatch,
       }}
     >

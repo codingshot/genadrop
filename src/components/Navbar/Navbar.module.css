@@ -160,7 +160,7 @@
 }
 
 .closeIcon {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
 }
 
 .wallet {
@@ -218,17 +218,18 @@
     position: absolute;
     justify-content: center;
     flex-direction: column-reverse;
-    gap: 2em;
+    gap: 3em;
     right: 0;
     top: 3.5em;
     padding: 0 2em;
+    padding-top: 2em;
     max-height: 0;
     overflow: hidden;
     transition: max-height 650ms;
   }
 
   .navContainer.active {
-    max-height: 20em;
+    max-height: 22em;
     justify-content: center;
     align-items: center;
     box-shadow: var(--shadow-light-1);
@@ -256,7 +257,7 @@
 
   .navItem:hover {
     cursor: var(--cursor-hover);
-    background: var(--main-100);
+    background: var(--main-lightest);
   }
 
   .line {
@@ -284,7 +285,7 @@
   .navContainer {
     max-width: 100%;
     right: 0;
-    top: 3em;
+    top: 2.9em;
   }
 
   .searchAndNavWrapper {

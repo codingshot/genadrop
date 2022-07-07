@@ -91,7 +91,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
               <img src={filterIcon} alt="" />
               <span>Filter</span>
             </div>
-            <img src={arrowIconLeft} alt="" />
+            <img className={classes.leftArrow} src={arrowIconLeft} alt="" />
           </div>
           <div className={classes.sideOverflowWrapper}>
             <Dropdown title="Status">
@@ -191,7 +191,12 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
         </aside>
       ) : (
         <aside className={classes.sidebar2}>
-          <img onClick={() => handleExploreSetState({ toggleFilter: !toggleFilter })} src={arrowIconRight} alt="" />
+          <img
+            onClick={() => handleExploreSetState({ toggleFilter: !toggleFilter })}
+            className={classes.rightArrow}
+            src={arrowIconRight}
+            alt=""
+          />
         </aside>
       )}
     </>

@@ -18,7 +18,7 @@ const CollectionDescription = () => {
   const canvasRef = useRef(null);
   const [state, setState] = useState({
     selectInputValue: 0.5,
-    amountInputValue: 0,
+    amountInputValue: "",
     toggleGuide: false,
   });
   const { selectInputValue, amountInputValue, toggleGuide } = state;
@@ -63,7 +63,7 @@ const CollectionDescription = () => {
     if (amountInputValue <= "0")
       return dispatch(
         setNotification({
-          message: "Invalid input",
+          message: "Add valid amount to generate input",
           type: "error",
         })
       );

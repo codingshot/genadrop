@@ -63,7 +63,7 @@ const CollectionOverview = () => {
   }, [rule]);
 
   return (
-    <div className={classes.container}>
+    <div className={`${classes.container} ${showRule && classes.active}`}>
       {layers[0]?.traits.length ? (
         <div className={classes.rules}>
           {isRule ? (

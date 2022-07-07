@@ -30,7 +30,7 @@
   padding: 2em;
   border-radius: 1em;
   position: relative;
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .container {

@@ -19,7 +19,7 @@ import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
-import bg from "../../assets/bg.png"; //remove this when done!
+import bg from "../../assets/bg.png"; // remove this when done!
 import twitter from "../../assets/icon-twitter-green.svg";
 import discord from "../../assets/icon-discord-green.svg";
 import instagram from "../../assets/icon-instagram-green.svg";
@@ -63,8 +63,10 @@ const Dashboard = () => {
 
     (async function getUserNFTs() {
       const singleNfts = await fetchUserCreatedNfts(account);
-
-      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      let algoNFTs = [];
+      if (singleNfts) {
+        algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      }
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
       handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
@@ -169,7 +171,7 @@ const Dashboard = () => {
 
             <div className={classes.social}>
               {userDetails?.twitter ? (
-                <a href={"https://twitter.com/" + userDetails.twitter} target="_blank">
+                <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
                   {" "}
                   <img src={twitter} alt="" className={classes.socialIcon} />{" "}
                 </a>
@@ -177,7 +179,7 @@ const Dashboard = () => {
                 ""
               )}
               {userDetails?.youtube ? (
-                <a href={"https://youtube.com/" + userDetails.youtube} target="_blank">
+                <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
                   {" "}
                   <img src={youtube} alt="" className={classes.socialIcon} />{" "}
                 </a>
@@ -185,7 +187,7 @@ const Dashboard = () => {
                 ""
               )}
               {userDetails?.instagram ? (
-                <a href={"https://www.instagram.com/" + userDetails.instagram} target="_blank">
+                <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
                   {" "}
                   <img src={instagram} alt="" className={classes.socialIcon} />{" "}
                 </a>
@@ -194,7 +196,7 @@ const Dashboard = () => {
               )}
               {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
             </div>
-            <div className={classes.social}></div>
+            <div className={classes.social} />
             <Link to={`${url}/profile/settings`}>
               <div className={classes.editProfile}>Edit Profile</div>
             </Link>

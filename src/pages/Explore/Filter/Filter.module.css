@@ -24,7 +24,7 @@
 }
 
 .filterHeading:hover {
-  background: var(--main-100);
+  background: var(--main-lightest);
 }
 
 .filterHeading > div {
@@ -36,6 +36,11 @@
 
 .filterHeading span {
   color: var(--main-color);
+}
+
+.leftArrow {
+  width: 1em;
+  height: 1em;
 }
 
 .attributeFilter .title {
@@ -57,7 +62,7 @@
 }
 
 .toggleButton {
-  background: var(--default);
+  background: var(--text-placeholder);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -71,8 +76,8 @@
 }
 
 .toggleButton.active {
-  background: var(--default);
-  border: 1px solid var(--outline);
+  background: var(--main-lighter);
+  border: 1px solid var(--main-lighter);
 }
 
 .toggleButton.active .toggle {
@@ -197,7 +202,7 @@
 }
 
 .layer > div:hover {
-  background: var(--text-light-400);
+  background: var(--outline);
   cursor: var(--cursor-hover);
 }
 
@@ -219,8 +224,8 @@
   justify-content: center;
   border-radius: 0.15em;
   background: var(--default);
-  color: var(--text-light-900);
-  border: 1px solid var(--text-light-900);
+  color: var(--outline-dark);
+  border: 1px solid var(--outline-dark);
 }
 
 .sidebar2 {
@@ -248,7 +253,7 @@
 }
 
 .sidebar2 img:hover {
-  background: var(--main-100);
+  background: var(--main-lightest);
 }
 
 @media screen and (max-width: 768px) {

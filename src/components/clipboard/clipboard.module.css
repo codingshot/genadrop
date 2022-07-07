@@ -60,12 +60,12 @@
   font-size: 0.85rem;
   padding: 0.2em 1em;
   border-radius: 0.25em;
-  background: var(--card-bg1);
+  background: var(--card-bg);
   color: white;
   outline: 2px solid transparent;
 }
 
 .copy:hover {
-  background: var(--card-bg3);
-  outline: 2px solid var(--card-bg1);
+  background: var(--card-bg);
+  outline: 2px solid var(--card-bg);
 }

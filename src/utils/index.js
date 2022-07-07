@@ -173,14 +173,14 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
-  const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
+  // const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
-  // removing rejected responses
-  responses.forEach((element) => {
-    if (element?.status === "fulfilled") {
-      nftArr.push(element.value);
-    }
-  });
+  // // removing rejected responses
+  // responses.forEach((element) => {
+  //   if (element?.status === "fulfilled") {
+  //     nftArr.push(element.value);
+  //   }
+  // });
   return nftArr;
 };
 

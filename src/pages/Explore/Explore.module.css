@@ -52,7 +52,7 @@
   border-radius: 0.15em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
 }
 
 .closeIcon:hover {
