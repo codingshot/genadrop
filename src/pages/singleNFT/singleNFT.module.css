@@ -192,6 +192,7 @@
 
 .sold {
   background-color: #707a83;
+  cursor: var(--cursor-hover);
 }
 
 .buy img,

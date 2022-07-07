@@ -55,6 +55,7 @@ const genActionTypes = {
   SET_ACTIVE_COLLECTION: "SET_ACTIVE_COLLECTION",
   SET_IMAGE_QUALITY: "SET_IMAGE_QUALITY",
   SET_ZIP: "SET_ZIP",
+  CONNECT_FROM_MINT: "CONNECT_FROM_MINT",
 };
 
 export default genActionTypes;

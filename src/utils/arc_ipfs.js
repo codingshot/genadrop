@@ -422,9 +422,8 @@ export async function mintSingleToAurora(singleMintProps) {
     marketAbi,
     wallet
   );
-  let txn;
   try {
-    txn = await contract.mint(account, id, 1, asset.url, "0x");
+    const txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
     await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -492,6 +491,101 @@ export async function createNFT(createProps, doAccountCheck) {
     })
   );
   return assets;
+}
+
+export async function listCeloNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet
+      ? `https://celo-testnet.org/tx/${txn.hash}`
+      : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
+export async function listAuroraNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet ? `https://aurorascan.dev/tx/${txn.hash}` : `https://testnet.aurorascan.dev/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
+export async function listPolygonNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet ? `https://polygonscan.com/tx/${txn.hash}` : `https://mumbai.polygonscan.com/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
 }
 
 export async function initializeContract(contractProps) {

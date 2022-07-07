@@ -39,10 +39,13 @@
   cursor: var(--cursor-pointer);
   height: 100%;
   color: var(--main-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .selectedChain:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .selectedChain > div {
@@ -105,7 +108,7 @@
 }
 
 .chain:hover {
-  background: var(--text-light-300);
+  background: var(--main-lightest);
 }
 
 .chainImg {

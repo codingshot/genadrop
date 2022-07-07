@@ -151,7 +151,7 @@
   width: 6em;
   height: 6em;
   border-radius: 50%;
-  background: var(--text-light-100);
+  background: var(--card-light);
 }
 
 .title {

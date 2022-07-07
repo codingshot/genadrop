@@ -35,7 +35,7 @@
   cursor: var(--cursor-pointer);
   transition: all 300ms;
   background: var(--default);
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
 }
 
 .closeIcon:hover {
