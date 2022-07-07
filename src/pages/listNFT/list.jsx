@@ -7,7 +7,7 @@ import classes from "./list.module.css";
 import { fetchUserBoughtNfts, listNft, writeNft } from "../../utils/firebase";
 
 const List = () => {
-  const { account, mainnet } = useContext(GenContext);
+  const { account, mainnet, chainId } = useContext(GenContext);
 
   const {
     params: { nftId },

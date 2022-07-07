@@ -13,7 +13,13 @@ import {
   getUserNftCollections,
   getUserSingleNfts,
 } from "../../utils";
-import { fetchUserBoughtNfts, fetchUserCollections, fetchUserNfts, readUserProfile } from "../../utils/firebase";
+import {
+  fetchUserBoughtNfts,
+  fetchUserCollections,
+  fetchUserCreatedNfts,
+  fetchUserNfts,
+  readUserProfile,
+} from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import { ethers } from "ethers";
@@ -91,7 +97,7 @@ const Dashboard = () => {
             })
           );
         } else {
-          const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts);
+          const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
           handleSetState({ collectedNfts: polygonCollectedNft });
         }
       }
