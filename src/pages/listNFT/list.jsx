@@ -49,7 +49,6 @@ const List = () => {
     };
 
     if (chainId === 80001) {
-      console.log(listProps);
       console.log("RES: ", await listPolygonNft(listProps));
       history.push(`${match.url}/listed`);
     } else {
