@@ -42,6 +42,7 @@ const List = () => {
   useEffect(() => {
     (async function getUserCollection() {
       const userNftCollections = await fetchUserBoughtNfts(account);
+
       const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
 
       const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
