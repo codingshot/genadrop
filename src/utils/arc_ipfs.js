@@ -568,6 +568,9 @@ export async function listPolygonNft(nftProps) {
     signer
   );
   try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const approvalTxn = await marketContract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,
