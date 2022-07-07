@@ -94,7 +94,7 @@
 }
 
 .chain {
-  border: 1px solid rgba(196, 196, 196, 1);
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -102,14 +102,21 @@
   padding: 0.5em 0;
   padding-left: 1em;
   border-radius: 3em;
-  background: #f9fafb;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
 .chain.comingSoon {
-  background: var(--outline);
+  background: var(--card-trait);
   cursor: var(--cursor-default);
+}
+
+.chain.comingSoon h4 {
+  color: var(--text-placeholder);
+}
+
+.chain.comingSoon p {
+  color: var(--text-placeholder);
 }
 
 .chain.comingSoon:hover {
@@ -118,8 +125,16 @@
 }
 
 .chain:hover {
-  background: var(--main-color);
-  color: white;
+  background: var(--main-hovered);
+  border-color: transparent;
+}
+
+.chain:hover h4 {
+  color: var(--default);
+}
+
+.chain:hover p {
+  color: var(--default);
 }
 
 .chain img {
@@ -137,7 +152,7 @@
 .chain span {
   font-size: 0.56rem;
   font-weight: 500;
-  color: white;
+  color: var(--default);
   background: #ebba4f;
   padding: 0.25em 0.5em;
 }

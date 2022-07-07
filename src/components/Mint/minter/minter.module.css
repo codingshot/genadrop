@@ -60,7 +60,7 @@
   gap: 2em;
   border: 1px solid var(--outline);
   padding: 1em;
-  border: 1px solid #c4c4c4;
+  border: 1px solid var(--outline);
   border-radius: 1em;
   position: relative;
 }
@@ -217,8 +217,7 @@ div.showPreview > span {
   color: var(--main-color);
   font-size: 1.6rem;
   margin-bottom: 1em;
-  padding: 0 0.5em;
-  border-bottom: 2px solid var(--main-color);
+  font-weight: 600;
 }
 
 .details {
@@ -255,10 +254,10 @@ div.showPreview > span {
 .inputWrapper {
   width: 100%;
   margin-bottom: 2.5em;
-  border: 1px solid #e5e8eb;
+  border: 1px solid var(--card-outline);
   border-radius: 0.5em;
   padding: 1em;
-  box-shadow: var(--shadow-light-1);
+  /* box-shadow: var(--shadow-light); */
 }
 
 .dropInputWrapper {
@@ -387,7 +386,7 @@ div.showPreview > span {
 
 .metadata {
   border: 1px solid var(--outline-dark);
-  box-shadow: var(--shadow-light-1);
+  box-shadow: var(--shadow-light);
   border-radius: 0.375em;
   padding: 0.5em;
 }
@@ -434,13 +433,6 @@ div.showPreview > span {
   justify-content: center;
   gap: 1em;
   font-size: 0.85rem;
-}
-
-.chain {
-  background: var(--default);
-  padding: 0.5em 1em;
-  border-radius: 0.5em;
-  margin-left: 1em;
 }
 
 .warn {
@@ -512,16 +504,67 @@ div.showPreview > span {
   border-radius: 0.1875em;
 }
 
-.chainLabel {
-  margin-bottom: 1.1em;
-  margin-bottom: 1.1em;
+.chainDropdown {
+  width: 100%;
+  border: 2px solid transparent;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  max-height: 0;
+  overflow: hidden;
+  background: var(--default);
+  transition: all 650ms;
 }
 
-.chainLabel img {
-  height: 1.5em;
-  margin-right: 1em;
+.chainDropdown.active {
+  max-height: 12em;
+  overflow: auto;
+  border-color: var(--outline);
+}
+
+.chain {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.5em;
+  cursor: pointer;
+  border-bottom: 1px solid var(--card-outline);
+}
+
+.chain img {
+  width: 2em;
+}
+
+.chain.active {
+  border-radius: 0.5em;
+  border: 2px solid var(--card-outline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chainLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.chain.disable {
+  background: var(--card-trait);
+  position: relative;
+}
+
+.chain.disable:hover::before {
+  position: absolute;
+  content: "coming soon";
+  right: 1em;
+  background: var(--warning-300);
+  color: var(--default);
+  padding: 0 0.15em;
 }
 
 @media screen and (max-width: 768px) {
