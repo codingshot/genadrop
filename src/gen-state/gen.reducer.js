@@ -57,7 +57,11 @@ export const INITIAL_STATE = {
   promptLayer: null,
   promptRules: null,
   toggleWalletPopup: false,
-  imageQuality: 0.5, // high:1, medium:0.5, low:0.2
+  imageQuality: 0.5, // high:1, medium:0.5, low:0.2,
+  connectFromMint: {
+    isComingSoon: null,
+    chainId: null,
+  },
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -338,6 +342,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         imageQuality: action.payload,
+      };
+    case genActionTypes.CONNECT_FROM_MINT:
+      return {
+        ...state,
+        connectFromMint: action.payload,
       };
     default:
       return state;

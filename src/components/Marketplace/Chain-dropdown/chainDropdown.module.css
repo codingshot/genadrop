@@ -39,6 +39,9 @@
   cursor: var(--cursor-pointer);
   height: 100%;
   color: var(--main-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .selectedChain:hover {
@@ -105,7 +108,7 @@
 }
 
 .chain:hover {
-  background: var(--btn-close);
+  background: var(--main-lightest);
 }
 
 .chainImg {
