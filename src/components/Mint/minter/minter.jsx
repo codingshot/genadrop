@@ -20,6 +20,7 @@ import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import dropdownIcon from "../../../assets/icon-dropdown2.svg";
+import { initConnectWallet } from "../../../components/wallet/wallet-script";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -148,6 +149,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
   };
 
   const setMint = () => {
+    if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
+
     if (!chainId) {
       return dispatch(
         setNotification({
