@@ -31,7 +31,7 @@
   padding: 0.5em;
   z-index: 1;
   background: rgb(255, 255, 255, 0.75);
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   width: 3em;
   height: 3em;
   border-radius: 50%;

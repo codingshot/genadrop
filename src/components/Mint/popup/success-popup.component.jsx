@@ -1,7 +1,7 @@
 import successIcon from "../../../assets/icon-success_2.svg";
 import linkIconAccent from "../../../assets/icon-link-accent.svg";
 import linkIconWhite from "../../../assets/icon-link-white.svg";
-import closeIcon from "../../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { useContext, useRef, useState } from "react";
 import classes from "./popup.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -41,7 +41,7 @@ const SuccessPopup = (props) => {
 
   return (
     <div className={classes.popupContainer}>
-      <img onClick={handleResetPopup} src={closeIcon} alt="" className={classes.closeBtn} />
+      <CloseIcon onClick={handleResetPopup} className={classes.closeIcon} />
       <div className={classes.imgContainer}>
         <img src={successIcon} alt="" />
       </div>

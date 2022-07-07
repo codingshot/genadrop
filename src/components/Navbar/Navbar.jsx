@@ -4,7 +4,7 @@ import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
 import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
 
 const Navbar = () => {
@@ -45,7 +45,6 @@ const Navbar = () => {
       <div className={classes.searchAndNavWrapper}>
         <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
           <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
-          <button type="submit">search</button>
         </form>
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />
@@ -74,12 +73,7 @@ const Navbar = () => {
           </div>
         </nav>
         {dropdown ? (
-          <img
-            onClick={() => handleSetState({ dropdown: !dropdown })}
-            className={classes.iconClose}
-            src={closeIcon}
-            alt=""
-          />
+          <CloseIcon onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.closeIcon} />
         ) : (
           <img
             onClick={() => handleSetState({ dropdown: !dropdown })}

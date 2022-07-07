@@ -1,97 +1,86 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import {
-  setCurrentDnaLayers,
-  setNotification,
-  setLoader,
-  setLoading,
-  setMintAmount,
-  setNftLayers,
-} from "../../gen-state/gen.actions";
+import { setImageQuality, setLoading, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
-import Button from "../button/button";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
-import ButtonClickEffect from "../button-effect/button-effect";
-import { createDna, createUniqueLayer, generateArt, parseLayers } from "./collection-description-script";
 import CollectionPreview from "../preview/collection-preview";
+import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
+import { useState } from "react";
+import { handleAddSampleLayers } from "../../utils";
+import CreateGuide from "../create-guide/create-guide";
+import { Link } from "react-router-dom";
+import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
+import { handleGenerate } from "./collection-description-script";
 
 const CollectionDescription = () => {
-  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName } =
+  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName, imageQuality } =
     useContext(GenContext);
   const canvasRef = useRef(null);
+  const [state, setState] = useState({
+    selectInputValue: 0.5,
+    amountInputValue: "",
+    toggleGuide: false,
+  });
+  const { selectInputValue, amountInputValue, toggleGuide } = state;
 
-  const handleChange = (event) => {
-    const { value } = event.target;
-    dispatch(setMintAmount(value ? parseInt(value) : 0));
+  const generateProps = {
+    isRule,
+    rule,
+    mintAmount,
+    combinations,
+    layers,
+    collectionName,
+    dispatch,
+    canvasRef,
+    imageQuality,
   };
 
-  const handleGenerate = async () => {
-    const getFirstLayerWithTrait = (layers) => {
-      return layers.find((layer) => layer.traits.length);
-    };
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
-    if (isRule) {
+  const handleSample = () => {
+    handleAddSampleLayers({ dispatch });
+  };
+
+  const handleSelectChange = (e) => {
+    handleSetState({ selectInputValue: e.target.value });
+    dispatch(setImageQuality(parseInt(e.target.value)));
+  };
+
+  const handleAmountChange = (e) => {
+    handleSetState({ amountInputValue: e.target.value });
+  };
+
+  const handleGenerateClick = () => {
+    if (!combinations)
       return dispatch(
         setNotification({
-          message: "Finish adding conflict rule and try again",
           type: "warning",
+          message: "Upload assets and try again.",
         })
       );
-    }
-    if (!mintAmount) {
+    if (amountInputValue <= "0")
       return dispatch(
         setNotification({
-          message: "Set the number to generate",
-          type: "warning",
+          message: "Add valid amount to generate input",
+          type: "error",
         })
       );
-    }
-    if (!combinations) {
+    if (amountInputValue > combinations)
       return dispatch(
         setNotification({
-          message: "Upload images and try again",
-          type: "warning",
+          message: "Number of arts cannot be greater than the possible combinations",
+          type: "error",
         })
       );
-    }
-    if (mintAmount > combinations - rule.length) {
-      return dispatch(
-        setNotification({
-          message: "Cannot generate more than the possible combinations",
-          type: "warning",
-        })
-      );
-    }
     dispatch(setNftLayers([]));
-    dispatch(setLoading(true));
-    const dnaLayers = createDna(layers);
-    const uniqueLayers = await createUniqueLayer({
-      dispatch,
-      setNotification,
-      setLoader,
-      layers: dnaLayers,
-      mintAmount,
-      rule,
-      collectionName,
-    });
+    dispatch(setMintAmount(parseInt(amountInputValue)));
+    handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
+  };
 
-    const arts = await generateArt({
-      dispatch,
-      setLoader,
-      layers: uniqueLayers,
-      canvas: canvasRef.current,
-      image: getFirstLayerWithTrait(layers).traits[0].image,
-    });
-    dispatch(setCurrentDnaLayers(dnaLayers));
-    dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
-    dispatch(
-      setNotification({
-        message: "Done! Click on the preview button to view assets.",
-        type: "success",
-      })
-    );
-    dispatch(setLoading(false));
+  const handleTutorial = () => {
+    handleSetState({ toggleGuide: true });
   };
 
   useEffect(() => {
@@ -103,42 +92,75 @@ const CollectionDescription = () => {
       dispatch(setMintAmount(combinations - rule.length ? parseInt(combinations - rule.length) : 0));
     }
   }, [combinations]);
+
   return (
-    <div className={classes.container}>
+    <div className={`${classes.container} ${toggleGuide && classes.active}`}>
+      <CreateGuide toggleGuide={toggleGuide} setGuide={(toggleGuide) => handleSetState({ toggleGuide })} />
       <div className={classes.preview_details}>
-        <div className={classes.previewWrapper}>
-          <CollectionPreview />
+        <div className={classes.guide_preview_wrapper}>
+          <div className={classes.guide}>
+            <div>Need help?</div>
+            <div onClick={handleSample}>Try our samples</div>
+            <div onClick={handleTutorial}>Watch tutorial</div>
+          </div>
+          <div className={classes.previewWrapper}>
+            <CollectionPreview />
+          </div>
         </div>
         <div className={classes.detailsWrapper}>
           <CollectionDetails />
         </div>
       </div>
 
-      <div className={classes.input}>
-        <div className={classes.action}>
-          <label htmlFor="generate amout"># to Generate</label>
-          <input onChange={handleChange} type="number" min="0" />
+      <div className={classes.sectionHeading}>Generate</div>
+      <div className={classes.combinations_amount}>
+        <div className={classes.combinations}>
+          <div className={classes.title}>
+            <span>Possible Combinations</span>
+            {/* <GenadropToolTip content={"The maximum number of arts the uploaded assets can generate"} fill="#3d3d3d" /> */}
+          </div>
+          <div className={classes.count}>{combinations - rule.length}</div>
         </div>
-        <div className={classes.action}>
-          <div htmlFor="combinations">Combinations</div>
-          <div className={classes.combinations}>{combinations - rule.length}</div>
+
+        <div className={classes.amount}>
+          <div htmlFor="amount to generate" className={classes.title}>
+            <span>Amount to Generate</span>
+          </div>
+          <input
+            className={classes.amountInput}
+            type="number"
+            min="0"
+            max={combinations}
+            value={amountInputValue}
+            onChange={handleAmountChange}
+            placeholder="Ex: 1000"
+          />
         </div>
       </div>
-      {nftLayers.length ? (
-        <div className={classes.btnWrapper}>
-          <Link to="/preview">
-            <ButtonClickEffect>
-              <Button invert>preview</Button>
-            </ButtonClickEffect>
-          </Link>
-        </div>
-      ) : null}
 
-      <div className={classes.btnWrapper}>
-        <div onClick={handleGenerate}>
-          <ButtonClickEffect>
-            <Button>Generate {mintAmount}</Button>
-          </ButtonClickEffect>
+      <div className={classes.generateContainer}>
+        <div className={classes.generateSettings}>
+          <label htmlFor="">Choose image quality: </label>
+          <div className={classes.wrapper}>
+            <select value={selectInputValue} onChange={handleSelectChange}>
+              <option value={1}>High</option>
+              <option value={0.5}>Medium</option>
+              <option value={0.2}>Low</option>
+            </select>
+            <span className={classes.format}>PNG</span>
+          </div>
+        </div>
+        <div className={classes.btnContainer}>
+          {nftLayers.length ? (
+            <div className={classes.previewBtn}>
+              <Link to={"/preview"}>
+                <PreviewIcon className={classes.previewIcon} />
+              </Link>
+            </div>
+          ) : null}
+          <div onClick={handleGenerateClick} className={`${classes.generateBtn} ${combinations && classes.active}`}>
+            Generate Collection
+          </div>
         </div>
       </div>
       <canvas style={{ display: "none" }} ref={canvasRef} />

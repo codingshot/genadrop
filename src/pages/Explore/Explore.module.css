@@ -4,7 +4,7 @@
   padding-top: 2em;
   padding-bottom: 6em;
   position: relative;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .displayContainer {
@@ -15,7 +15,7 @@
   justify-content: flex-start;
   gap: 1em;
   border-radius: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .filteredItem {
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0.5em;
   display: flex;
   align-items: center;
@@ -46,31 +46,27 @@
 }
 
 .closeIcon {
-  width: 1.2em;
-  height: 1.2em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.closeIcon img {
   width: 1em;
-  transition: all 100ms;
+  height: 1em;
+  padding: 0.15em;
+  border-radius: 0.15em;
+  cursor: var(--cursor-pointer);
+  transition: all 300ms;
+  fill: var(--icon-color);
 }
 
-.closeIcon:hover img {
-  width: 0.85em;
+.closeIcon:hover {
+  background: rgb(0, 0, 0, 0.1);
 }
 
 .clearFilter {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   margin-left: 1em;
   transition: all 100ms;
 }
 
 .clearFilter:hover {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .searchAndFilter {

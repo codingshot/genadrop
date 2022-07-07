@@ -1,14 +1,11 @@
-.container {
-}
-
 .heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.75em 1em;
-  cursor: pointer;
-  border-top: 1px solid var(--text-light-500);
-  border-bottom: 1px solid var(--text-light-500);
+  cursor: var(--cursor-pointer);
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
 }
 
 .textWrapper {

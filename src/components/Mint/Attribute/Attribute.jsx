@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Attribute.module.css";
-import iconClose from "../../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 
 const Attribute = ({ attribute, removeAttribute, id, changeAttribute, index }) => (
   <div className={classes.container}>
@@ -19,7 +19,7 @@ const Attribute = ({ attribute, removeAttribute, id, changeAttribute, index }) =
       placeholder="eg. green"
     />
     <button className={classes[`_${index}`]} type="button" onClick={() => removeAttribute(id)}>
-      <img src={iconClose} alt="" />
+      <CloseIcon className={classes.closeIcon} />
     </button>
   </div>
 );

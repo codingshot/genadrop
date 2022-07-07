@@ -2,7 +2,7 @@
   width: 100%;
   padding: 0 1em;
   margin-bottom: 4em;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .container > input {
@@ -14,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   padding: 0 1em;
 }
 
@@ -31,17 +31,17 @@
 }
 
 .heading button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0.5em 2.5em;
   border-radius: 2em;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   transition: background 300ms;
   font-size: 1rem;
 }
 
 .heading button:hover {
-  background: var(--main-900);
+  background: var(--main-hovered);
 }
 
 .wrapper {

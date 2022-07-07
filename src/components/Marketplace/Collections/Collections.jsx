@@ -35,13 +35,13 @@ const Collections = () => {
       {algoCollectionsArr?.length || auroraCollections?.length || polygonCollections?.length ? (
         <GenadropCarouselScreen cardWidth={16 * 20} gap={16}>
           {[
-            ...algoCollectionsArr
+            ...(algoCollectionsArr || [])
               ?.filter((_, idx) => idx < 3)
               .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx} collection={collection} />),
-            ...auroraCollections
+            ...(auroraCollections || [])
               ?.filter((_, idx) => idx < 3)
               .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 10} collection={collection} />),
-            ...polygonCollections
+            ...(polygonCollections || [])
               ?.filter((_, idx) => idx < 3)
               .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 20} collection={collection} />),
           ]}

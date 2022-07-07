@@ -118,7 +118,7 @@
   padding: 3px;
 }
 .icon:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .refresh {
@@ -182,12 +182,12 @@
 }
 
 .list {
-  background-color: var(--main-700);
+  background-color: var(--main-color);
 }
 
 .bid {
-  border: 1px solid var(--main-700);
-  color: var(--main-700);
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
 }
 
 .sold {
@@ -202,6 +202,7 @@
 
 .list:hover,
 .bid:hover {
+  cursor: var(--cursor-hover);
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
 }
@@ -215,7 +216,7 @@
 .attribute {
   display: flex;
   flex-direction: column;
-  background-color: var(--main-700);
+  background-color: var(--main-color);
   border-radius: 10px;
   padding: 1rem;
   color: white;
@@ -264,13 +265,14 @@
 .btnCollections {
   padding: 0 1rem;
   margin: 1rem 0.5rem 1rem 0;
-  background-color: var(--main-700);
+  background-color: var(--main-color);
   color: white;
   height: 30px;
   border-radius: 5px;
 }
 
 .btnCollections:hover {
+  cursor: var(--cursor-hover);
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
 }
@@ -366,7 +368,7 @@
   top: -15px;
 }
 .shareicon:hover {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   animation: slidein 0.4s;
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
@@ -390,7 +392,7 @@
   width: 100%;
   padding: 0.25em;
   resize: none;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.25em;
   font-size: 1rem;
   overflow: hidden;

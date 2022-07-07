@@ -19,7 +19,6 @@ const SingleNft = () => {
   useEffect(() => {
     window.localStorage.activeAlgoNft = null;
   }, []);
-
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
@@ -34,13 +33,13 @@ const SingleNft = () => {
       {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
         <GenadropCarouselScreen cardWidth={20 * 16} gap={16}>
           {[
-            ...singleAlgoNftsArr
+            ...(singleAlgoNftsArr || [])
               ?.filter((_, idx) => idx < 3)
               .map((nft, idx) => <NftCard useWidth="20em" key={idx} nft={nft} listed />),
-            ...singleAuroraNfts
+            ...(singleAuroraNfts || [])
               ?.filter((_, idx) => idx < 3)
               .map((nft, idx) => <NftCard useWidth="20em" key={idx + 10} nft={nft} listed />),
-            ...singlePolygonNfts
+            ...(singlePolygonNfts || [])
               ?.filter((_, idx) => idx < 3)
               .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} listed />),
           ]}

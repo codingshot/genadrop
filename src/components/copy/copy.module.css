@@ -1,5 +1,5 @@
 .container {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   padding: 0 0.5em;
   font-weight: inherit;
   display: inline-flex;
@@ -14,5 +14,5 @@
 
 .copyIcon.active {
   transform: scale(0.8);
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
 }

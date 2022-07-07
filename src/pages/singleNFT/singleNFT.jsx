@@ -5,6 +5,7 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
+import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
 import { buyNft, getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
@@ -23,7 +24,6 @@ import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
 import { setLoading, setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
-import { createClient } from "urql";
 import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
 import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
@@ -46,6 +46,7 @@ const SingleNFT = () => {
     "Artist Royalities": "10%",
     "Genadrop Royalities": "10%",
   });
+  const shareRef = useRef();
   const [state, setState] = useState({
     dropdown: ["1", "3"],
     nftDetails: null,
@@ -138,12 +139,13 @@ const SingleNFT = () => {
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
         tHistory.find((t) => {
-          if (t.type === "Minting") t.price = nftDetails.price;
+          if (t.type === "Minting" && tHistory.length > 1) t.price = tHistory[1].price;
+          else t.price = nftDetails.price;
         });
         handleSetState({
           nftDetails,
           isLoading: false,
-          transactionHistory: tHistory,
+          transactionHistory: tHistory.reverse(),
         });
 
         dispatch(setLoading(false));
@@ -230,7 +232,7 @@ const SingleNFT = () => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
     if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0].usd;
+        const value = Object.values(res.data)[0].usd;
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
@@ -244,6 +246,15 @@ const SingleNFT = () => {
       });
     }
   }, [nftDetails]);
+  // share model
+  const handleClickOutside = (event) => {
+    if (!shareRef?.current?.contains(event.target)) {
+      handleSetState({ showSocial: false });
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const onCopyText = () => {
     handleSetState({ isCopied: true });
@@ -382,7 +393,7 @@ const SingleNFT = () => {
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
-                  {nftDetails.price} {chainSymbol ? chainSymbol : ""}
+                  {nftDetails.price} {chainSymbol || ""}
                 </p>
                 <span className={classes.usdValue}>
                   ($
@@ -473,7 +484,7 @@ const SingleNFT = () => {
         <DropItem key={4} item={similar} id={4} dropdown={dropdown} handleSetState={handleSetState} />
       </div>
       {showSocial ? (
-        <div>
+        <div ref={shareRef}>
           <div ref={wrapperRef} className={classes.share}>
             <div className={classes.copy}>
               <input type="text" value={window.location.href} readOnly className={classes.textArea} />

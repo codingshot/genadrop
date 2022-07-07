@@ -41,23 +41,23 @@
   height: 200px;
   width: 200px;
   margin-bottom: 1rem;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .imgContainer > div:hover {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .imgContainer div img {
   height: 100%;
   width: 100%;
   object-fit: cover;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 20px;
 }
 
 .line {
   height: 2px;
   width: 100%;
-  background: var(--text-light-500);
+  background: var(--outline);
   margin-top: 1.5rem;
   margin-bottom: 2rem;
 }
@@ -68,7 +68,7 @@
 .buttonConatiner div,
 .buttonConatiner p {
   border-radius: 2.375rem;
-  border: 3px solid var(--main-700);
+  border: 3px solid var(--main-color);
   font-weight: 500;
   font-size: 1.25rem;
   width: 11.8rem;
@@ -76,33 +76,33 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transition: 0.3s ease;
 }
 .buttonConatiner p {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 .buttonConatiner div {
   color: #fff;
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .buttonConatiner div:hover {
-  background: var(--main-900);
+  background: var(--main-hovered);
 }
 .buttonConatiner p:hover {
-  background: var(--main-700);
+  background: var(--main-color);
   color: #fff;
 }
 div.active {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .viewALlBtn {
   width: fit-content;
   margin: 0.5rem auto auto;
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 1.25rem;
   font-weight: 500;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 .viewALlBtn:hover {
   text-decoration-line: underline;

@@ -1,18 +1,19 @@
 .container {
   width: 14em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   position: relative;
-  border-radius: 1em;
+  border-radius: 0.5em;
   overflow: hidden;
   transition: all 100ms;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-light);
-  border: 1px solid transparent;
+  border: 3px solid transparent;
 }
 
 .container.active {
-  border: 3px solid var(--main-700);
+  border: 3px solid var(--warning-500);
+  box-shadow: var(--shadow-dark-2);
 }
 
 .container.inActive {
@@ -20,7 +21,7 @@
 }
 
 .container.active .addRuleBtn {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .container * {
@@ -28,11 +29,10 @@
 }
 
 .imageContainer {
-  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--card-bg1);
+  background: var(--card-trait);
 }
 
 .imageContainer:hover .image {
@@ -40,14 +40,16 @@
 }
 
 .image {
+  object-fit: contain;
   width: 100%;
+  height: 12em;
 }
 
 .action {
   width: 100%;
   top: 0;
   left: 0;
-  background: var(--main-bg);
+  background: var(--default);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -62,8 +64,8 @@
   width: 100%;
   bottom: 0;
   left: 0;
-  color: var(--text-dark-900);
-  background: var(--main-bg);
+  color: var(--text-heading);
+  background: var(--default);
   display: flex;
   flex-direction: column;
   gap: 0.5em;
@@ -90,12 +92,12 @@
 }
 
 .container i {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   font-size: 0.7rem;
 }
 
 .reset {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .reset * {
@@ -116,8 +118,8 @@
   height: 100%;
   text-align: left;
   padding: 0.25em;
-  color: var(--text-dark-900);
-  border: 1px solid var(--text-light-500);
+  color: var(--text-heading);
+  border: 1px solid var(--outline);
 }
 
 .details input:focus {
@@ -135,12 +137,16 @@
   display: block;
 }
 
-.removeIcon {
+.closeIcon {
   transition: all 300ms;
   padding: 0.25em;
   border-radius: 0.25em;
+  fill: var(--icon-color);
+  width: 1.4em;
+  height: 1.4em;
 }
 
-.removeIcon:hover {
+.closeIcon:hover {
+  cursor: var(--cursor-hover);
   box-shadow: var(--shadow-dark);
 }

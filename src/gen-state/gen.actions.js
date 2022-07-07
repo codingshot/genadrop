@@ -25,6 +25,10 @@ export const updateLayer = (layer) => ({
   payload: layer,
 });
 
+export const clearLayers = () => ({
+  type: genActionTypes.CLEAR_LAYERS,
+});
+
 export const addImage = (image) => ({
   type: genActionTypes.ADD_IMAGE,
   payload: image,
@@ -261,4 +265,18 @@ export const setToggleWalletPopup = (state) => ({
 export const setActiveCollection = (collection) => ({
   type: genActionTypes.SET_ACTIVE_COLLECTION,
   payload: collection,
+});
+
+export const setImageQuality = (value) => ({
+  type: genActionTypes.SET_IMAGE_QUALITY,
+  payload: value,
+});
+export const setZip = (value) => ({
+  type: genActionTypes.SET_ZIP,
+  payload: value,
+});
+
+export const setConnectFromMint = (prop) => ({
+  type: genActionTypes.CONNECT_FROM_MINT,
+  payload: prop,
 });

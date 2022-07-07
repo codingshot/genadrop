@@ -317,7 +317,7 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
             _balances[id][to] += amount;
         }
 
-        emit TransferBatch(operator, from, to, ids, amounts);
+        emit TransferBatch(operator, from, to, ids);
 
         _doSafeBatchTransferAcceptanceCheck(operator, from, to, ids, amounts, data);
     }
@@ -331,11 +331,9 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
     function mintBatch(
         address to,
         uint256[] memory ids,
-        uint256[] memory amounts,
-        string[] memory uris,
-        bytes memory data
+        string[] memory uris
     ) public onlyOwner {
-        _mintBatch(to, ids, amounts, uris, data);
+        _mintBatch(to, ids, uris);
         _setApprovalForAll(to, manager, true);
     }
 
@@ -383,9 +381,7 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
     function _mintBatch(
         address to,
         uint256[] memory ids,
-        uint256[] memory amounts,
-        string[] memory uris,
-        bytes memory data
+        string[] memory uris
     ) internal virtual {
         require(to != address(0), "ERC1155: mint to the zero address");
 
@@ -393,7 +389,7 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
             _balances[ids[i]][to] += 1;
             _setTokenURI(ids[i], uris[i]); // this increases gas cost, will implement better alternative
         }
-        emit TransferBatch(_msgSender(), address(0), to, ids, amounts);
+        emit TransferBatch(_msgSender(), address(0), to, ids);
     }
 
     /**
@@ -454,7 +450,7 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
             }
         }
 
-        emit TransferBatch(operator, from, address(0), ids, amounts);
+        emit TransferBatch(operator, from, address(0), ids);
     }
 
     /**

@@ -2,16 +2,16 @@
   position: relative;
   width: 12em;
   z-index: 2;
-  background: var(--main-bg);
+  background: var(--default);
   border-radius: 2.5em;
   z-index: 10;
 }
 
 .selectedPrice {
-  cursor: pointer;
-  background: var(--main-bg);
+  cursor: var(--cursor-pointer);
+  background: var(--default);
   color: #000000;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   padding: 0.5em;
   border-radius: 2.5em;
   transition: all 300ms;
@@ -34,15 +34,18 @@
   padding: 0.25em 0.5em;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   border-radius: 2.5em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   height: 100%;
-  color: var(--main-700);
+  color: var(--main-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .selectedChain:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .selectedChain > div {
@@ -62,7 +65,7 @@
   transition: all 250ms;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   transform: translateY(-0.5em);
   text-transform: capitalize;
 }
@@ -79,18 +82,18 @@
 
 .chain {
   padding: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1em;
-  background: var(--main-bg);
+  background: var(--default);
   position: relative;
 }
 
 .chain.inActive {
-  cursor: default;
-  color: var(--text-light-500);
+  cursor: var(--cursor-default);
+  color: var(--outline);
 }
 
 .chain.inActive:hover::after {
@@ -105,7 +108,7 @@
 }
 
 .chain:hover {
-  background: var(--text-light-300);
+  background: var(--main-lightest);
 }
 
 .chainImg {

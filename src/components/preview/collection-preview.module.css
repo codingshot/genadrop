@@ -1,12 +1,9 @@
 .container {
-  width: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 1px solid rgba(128, 128, 128, 0.233);
+  width: max-content;
   border-radius: 0.5em;
   overflow: hidden;
+  margin: auto;
+  position: relative;
 }
 
 .container button {
@@ -14,13 +11,13 @@
   top: 0.5em;
   right: 0.5em;
   padding: 0.15em 0.75em;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   outline: none;
   font-size: 12px;
   border-radius: 0.2em;
   transition: all 300ms;
   border: none;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
 }
 
@@ -30,4 +27,14 @@
 
 .container button:hover {
   transform: translateY(1px);
+}
+
+.placeholder {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--outline-light);
+  border-radius: 0.5em;
 }

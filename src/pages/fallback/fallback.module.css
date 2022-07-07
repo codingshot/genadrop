@@ -35,9 +35,13 @@
   margin-right: 10px;
   transition: 0.4s;
 }
+.go-back svg path {
+  stroke: var(--main-color);
+  fill: var(--main-color);
+}
 
 .go-back:hover {
-  background-color: var(--main-700);
+  background-color: var(--main-color);
   color: white;
 }
 .go-back:hover svg {
@@ -57,25 +61,28 @@
   align-items: center;
   background: none;
   margin-right: 40px;
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 20px;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   transition: 0.4s;
   font-weight: 600;
   border-radius: 100px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .home:hover {
   background: none;
-  color: var(--main-700);
+  color: var(--main-color);
+}
+.home:hover svg path {
+  fill: var(--main-color);
 }
 
 .home {
   width: 200px;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   height: 60px;
-  background-color: var(--main-700);
+  background-color: var(--main-color);
   color: white;
   font-size: 20px;
   transition: 0.4s;
@@ -83,7 +90,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   font-weight: 600;
   border-radius: 100px;
 }
@@ -96,7 +103,7 @@
   max-width: 100%;
   height: 35vh;
 }
-.home img {
+.home svg {
   width: 20px;
   height: 20px;
   margin-right: 10px;

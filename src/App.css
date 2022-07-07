@@ -2,48 +2,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --card-bg: #3d3d3d;
-  --card-bg1: #27292c;
-  --card-bg2: #212529;
-  --card-bg3: #000000;
-  --text-light-300: #f2f3ff;
+  --icon-color: rgb(18, 18, 18);
 
-  --shadow-dark: 0 0 15px rgb(0, 0, 0, 0.25);
-  --shadow-dark-1: 0px 24px 33px -9px rgba(0, 0, 0, 0.36);
-  --shadow-dark-2: 0px 16px 25px -9px rgba(0, 0, 0, 0.32);
-  --shadow-dark-2: 0px 12px 19px -7px rgba(0, 0, 0, 0.28);
+  --btn-shadow-open: 2px 2px 2px rgba(0, 0, 0, 0.2);
+  --btn-shadow-close: 0px 0px 2px rgba(0, 0, 0, 0.2);
 
-  --shadow-light: 0 0 15px rgb(0, 0, 0, 0.1);
-  --shadow-light-1: 0px 1px 1px rgba(0, 0, 0, 0.08);
-  --shadow-light-2: 0px 2px 3px rgba(0, 0, 0, 0.08);
-  --shadow-light-3: 0px 4px 5px -1px rgba(0, 0, 0, 0.08);
-  --shadow-light-4: 0px 6px 7px -2px rgba(0, 0, 0, 0.08);
-  --shadow-light-5: 0px 8px 11px -3px rgba(0, 0, 0, 0.08);
-  --shadow-light-6: 0px 12px 19px -5px rgba(0, 0, 0, 0.08);
-  --shadow-light-7: 0px 24px 24px -16px rgba(0, 0, 0, 0.1);
-  --shadow-light-8: 0px 12px 24px -5px rgba(0, 0, 0, 0.1);
+  --shadow-dark: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  --shadow-light: 2px 2px 4px rgba(0, 0, 0, 0.2);
 
-  --main-bg: #ffffff;
+  --default: #ffffff;
+  --main-color: #0d99ff;
+  --main-hovered: #0082e0;
+  --main-light: #62bdff;
+  --main-lighter: #dbf0ff;
+  --main-lightest: #f3faff;
+  --main-disable: #ccecff;
 
-  --main-100: #f2faf9;
-  --main-200: #d9f0ed;
-  --main-300: #bfe5e1;
-  --main-400: #a6dbd5;
-  --main-500: #80ccc3;
-  --main-600: #59bdb1;
-  --main-700: #009987;
-  --main-800: #028777;
-  --main-900: #037568;
+  --text-heading: #0f1d40;
+  --text-sub-heading: #525c76;
+  --text-placeholder: #b2b7c2;
 
-  --info-100: #d3e5fe;
-  --info-200: #a7c9fd;
-  --info-300: #7ba8f9;
-  --info-400: #598cf4;
-  --info-500: #2561ed;
-  --info-600: #1b4acb;
-  --info-700: #1236aa;
-  --info-800: #0b2589;
-  --info-900: #071971;
+  --outline: #e5e8eb;
+  --outline-light: #e5e8eb;
+  --card-outline: #c4c4c4;
+  --outline-dark: #a4a9b6;
+
+  --card-bg: #626277;
+  --card-shade: #646a89;
+  --card-icon-color: #515164;
+  --card-bg-light: #737387;
+  --card-preview: #646a89;
+  --card-layer: #585e7d;
+  --card-tooltip: #686f93;
+  --card-info: #e0f2ff;
+  --card-upload: #f6faff;
+  --card-trait: #f4f5f6;
+  --card-light: #eff3f9;
+  --btn-close: #eef5f9;
 
   --success-100: #ebfcd5;
   --success-200: #d4f9ac;
@@ -75,16 +70,6 @@
   --error-800: #930f35;
   --error-900: #7a0933;
 
-  --text-light-100: #fafafb;
-  --text-light-200: #f5f6f7;
-  --text-light-300: #eeeff2;
-  --text-light-400: #e2e4e8;
-  --text-light-500: #cacdd5;
-  --text-light-600: #b2b7c2;
-  --text-light-700: #a4a9b6;
-  --text-light-800: #959cab;
-  --text-light-900: #8c93a3;
-
   --text-dark-100: #747c90;
   --text-dark-200: #656e85;
   --text-dark-300: #5c657d;
@@ -94,6 +79,16 @@
   --text-dark-700: #2c3857;
   --text-dark-800: #192648;
   --text-dark-900: #0f1d40;
+
+  --cursor-default: url("./assets/default-cursor.svg"), auto;
+  --cursor-pointer: url("./assets/cursor-pointer.svg"), auto;
+  --cursor-disabled: url("./assets/cursor-disabled.svg"), auto;
+  --cursor-grab: url("./assets/cursor-grab.svg"), auto;
+  --cursor-hover: url("./assets/cursor-hover.svg"), auto;
+  --cursor-scopeg: url("./assets/cursor-scope.svg"), auto;
+  --cursor-camera: url("./assets/cursor-camera.svg"), auto;
+  --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
+  --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto;
 }
 
 li {
@@ -105,15 +100,19 @@ li {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
+  font-family: sans-serif !important;
+  color: var(--text-heading);
 }
 
 a {
   text-decoration: none;
   color: unset;
+  cursor: var(--cursor-pointer);
 }
 
 .App {
   width: 100%;
+  cursor: var(--cursor-default);
 }
 
 .App * {
@@ -126,7 +125,7 @@ a {
 }
 
 .topSectionContainer {
-  z-index: 15;
+  z-index: 20;
   position: sticky;
   top: 0;
 }
@@ -166,7 +165,7 @@ a {
 }
 
 button {
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   border: none;
   outline: none;
   background: transparent;

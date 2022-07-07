@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .gena,
@@ -17,7 +17,7 @@
   font-size: 6rem;
   font-weight: bold;
   visibility: hidden;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .gena {

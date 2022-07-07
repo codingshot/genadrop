@@ -1,5 +1,5 @@
 import classes from "./walletPopup.module.css";
-import closeIcon from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import { useContext, useEffect, useState } from "react";
@@ -8,7 +8,7 @@ import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.acti
 import supportedChains from "../../utils/supportedChains";
 
 const WalletPopup = ({ handleSetState }) => {
-  const { dispatch, mainnet } = useContext(GenContext);
+  const { dispatch, mainnet, connectFromMint } = useContext(GenContext);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [showConnectionMethods, setConnectionMethods] = useState(false);
   const [activeChain, setActiveChain] = useState(null);
@@ -54,18 +54,23 @@ const WalletPopup = ({ handleSetState }) => {
     setConnectionMethods(false);
   }, []);
 
+  useEffect(() => {
+    if (!connectFromMint.chainId) return;
+    dispatch(setToggleWalletPopup(true));
+    handleChain(connectFromMint.chainId, connectFromMint.isComingSoon);
+  }, [connectFromMint]);
+
   return (
     <div className={classes.container}>
       <div className={classes.card}>
         <div className={classes.iconContainer}>
-          <img
+          <CloseIcon
             onClick={() => {
               dispatch(setToggleWalletPopup(false));
               setShowMoreOptions(false);
               setConnectionMethods(false);
             }}
-            src={closeIcon}
-            alt=""
+            className={classes.closeIcon}
           />
         </div>
 

@@ -1,19 +1,18 @@
 .container {
   width: 100%;
-  display: inline;
   width: max-content;
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
-.container img {
+.container svg {
   width: 1em;
   height: 1em;
-  /* border: 1px solid var(--main-700); */
+  /* border: 1px solid var(--main-color); */
   border-radius: 50%;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
 }
 
 .container:hover::before {
@@ -37,7 +36,7 @@
   top: -1.25em;
   font-size: 0.85rem;
   background: #626277;
-  color: var(--main-bg);
+  color: var(--default);
   transform: translateX(0) translateY(-100%);
   visibility: hidden;
   z-index: 10000;

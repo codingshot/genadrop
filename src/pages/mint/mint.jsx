@@ -1,33 +1,20 @@
 import React, { useContext, useEffect } from "react";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./mint.module.css";
-import mintBg from "../../assets/mint-bg1.svg";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
-import { initConnectWallet } from "../../components/wallet/wallet-script";
-import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
   const history = useHistory();
   const { url } = useRouteMatch();
-  const { dispatch, chainId } = useContext(GenContext);
-
-  useEffect(() => {
-    if (window.localStorage.walletconnect || chainId) return;
-    initConnectWallet({ dispatch });
-  }, []);
 
   const handleMint = (target) => {
-    if (window.localStorage.walletconnect || chainId) {
-      history.push(`${url}/${target}`);
-    } else {
-      initConnectWallet({ dispatch });
-    }
+    history.push(`${url}/${target}`);
   };
 
   return (
-    <div style={{ backgroundImage: `url(${mintBg})` }} className={classes.container}>
+    <div className={classes.container}>
       <header className={classes.headingWrapper}>
         <h1 className={classes.heading}>Mint Your NFTs</h1>
         <p className={classes.description}>
