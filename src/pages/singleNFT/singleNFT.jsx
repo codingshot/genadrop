@@ -39,6 +39,13 @@ const SingleNFT = () => {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
   const wrapperRef = useRef(null);
+  const [nftDetailsContent, setNftDetailsContent] = useState({
+    "Mint Address": "...",
+    Owner: "....",
+    "Transaction Fee": "7%",
+    "Artist Royalities": "10%",
+    "Genadrop Royalities": "10%",
+  });
   const [state, setState] = useState({
     dropdown: ["1", "3"],
     nftDetails: null,
@@ -119,6 +126,12 @@ const SingleNFT = () => {
     //   nftDetails = cacheNftDetails;
     // } else {
     nftDetails = singleAlgoNfts[nftId];
+    console.log("nft Details in first useEffect: ", singleAlgoNfts[nftId]);
+    setNftDetailsContent((prev) => ({
+      ...prev,
+      "Mint Address": singleAlgoNfts[nftId].buyer ? singleAlgoNfts[nftId].buyer : singleAlgoNfts[nftId].owner,
+      Owner: singleAlgoNfts[nftId].owner,
+    }));
     // }
     if (nftDetails) {
       // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
@@ -132,6 +145,7 @@ const SingleNFT = () => {
           isLoading: false,
           transactionHistory: tHistory,
         });
+
         dispatch(setLoading(false));
         document.documentElement.scrollTop = 0;
       })();
@@ -177,6 +191,11 @@ const SingleNFT = () => {
               isLoading: false,
               transactionHistory: trHistory,
             });
+            setNftDetailsContent((prev) => ({
+              ...prev,
+              "Mint Address": polygonResult[0].buyer ? polygonResult[0].buyer : polygonResult[0].owner,
+              Owner: polygonResult[0].owner,
+            }));
           }
         }
         if (data?.nft !== null) {
@@ -186,11 +205,17 @@ const SingleNFT = () => {
             trHistory.find((t) => {
               if (t.type === "Minting") t.price = result[0]?.price;
             });
+            console.log("nft details: ", result[0]);
             handleSetState({
               nftDetails: result[0],
               isLoading: false,
               transactionHistory: trHistory,
             });
+            setNftDetailsContent((prev) => ({
+              ...prev,
+              "Mint Address": result[0].buyer ? result[0].buyer : result[0].owner,
+              Owner: result[0].owner,
+            }));
           }
         }
       } catch (error) {
@@ -255,10 +280,30 @@ const SingleNFT = () => {
     );
   }
 
+  const detailsContent = () => {
+    console.log(nftDetails);
+    return (
+      <div className={classes.container + classes.detailsContainer}>
+        {Object.entries(nftDetailsContent).map((item) => (
+          <div className={classes.details} key={item[0]}>
+            <span>{item[0]}</span>
+            <span>{item[1]}</span>
+          </div>
+        ))}
+      </div>
+    );
+  };
+
   const description = {
     icon: detailsIcon,
     title: "Description",
     content: `${nftDetails.description}`,
+  };
+
+  const details = {
+    icon: detailsIcon,
+    title: "Details",
+    content: detailsContent(),
   };
 
   const graph = {
@@ -384,6 +429,9 @@ const SingleNFT = () => {
           </div> */}
           <div className={classes.feature}>
             <DropItem key={3} item={description} id={3} dropdown={dropdown} handleSetState={handleSetState} />
+          </div>
+          <div className={classes.feature}>
+            <DropItem key={4} item={details} id={4} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
         </div>
       </div>
