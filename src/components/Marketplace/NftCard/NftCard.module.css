@@ -107,7 +107,6 @@
 }
 
 .button:hover {
-  cursor: var(--cursor-hover);
   background: var(--main-hovered);
   outline: 2px solid var(--main-color);
 }
