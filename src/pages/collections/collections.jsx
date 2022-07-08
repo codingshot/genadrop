@@ -11,7 +11,7 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const location = useLocation();
@@ -38,12 +38,13 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollectionsArr && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
+        return !algoCollectionsArr && !polygonCollections && !celoCollections && !nearCollection && !auroraCollections
           ? null
           : [
               ...(algoCollectionsArr || []),
               ...(polygonCollections || []),
-              ...(celoCollection || []),
+              // ...(celoCollection || []),
+              ...(celoCollections || []),
               ...(auroraCollections || []),
               ...(nearCollection || []),
             ];
@@ -52,7 +53,7 @@ const Collections = () => {
       case "polygon":
         return polygonCollections;
       case "celo":
-        return celoCollection;
+        return celoCollections;
       case "near":
         return nearCollection;
       case "aurora":

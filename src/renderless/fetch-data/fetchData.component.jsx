@@ -10,15 +10,22 @@ import {
   setAuroraSingleNfts,
   setPolygonSingleNfts,
   setNotification,
+  setCeloCollections,
 } from "../../gen-state/gen.actions";
-import { getAuroraCollections, getNftCollections, getSingleNfts, getSingleGraphNfts } from "../../utils";
 import {
-  GET_ALL_AURORA_COLLECTIONS,
+  getGraphCollections,
+  getNftCollections,
+  getSingleNfts,
+  getSingleGraphNfts,
+  getCeloGraphCollections,
+} from "../../utils";
+import {
+  GET_GRAPH_COLLECTIONS,
   GET_ALL_POLYGON_COLLECTIONS,
   GET_AURORA_SINGLE_NFTS,
   GET_POLYGON_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
-import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
+import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 
 const FetchData = () => {
@@ -51,7 +58,7 @@ const FetchData = () => {
     (async function getDataFromEndpointA() {
       const { data, error } = await graphQLClient
         .query(
-          GET_ALL_AURORA_COLLECTIONS,
+          GET_GRAPH_COLLECTIONS,
           {},
           {
             clientName: "aurora",
@@ -66,7 +73,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
+      const result = await getGraphCollections(data?.collections);
       if (result?.length) {
         dispatch(setAuroraCollections(result));
       } else {
@@ -122,7 +129,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
+      const result = await getGraphCollections(data?.collections);
 
       if (result?.length) {
         dispatch(setPolygonCollections(result));
@@ -156,6 +163,25 @@ const FetchData = () => {
         dispatch(setPolygonSingleNfts(result));
       } else {
         dispatch(setPolygonSingleNfts(null));
+      }
+      return null;
+    })();
+
+    (async function getCeloCollections() {
+      const { data, error } = await celoClient.query(GET_GRAPH_COLLECTIONS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getCeloGraphCollections(data?.collections);
+      if (result?.length) {
+        dispatch(setCeloCollections(result));
+      } else {
+        dispatch(setCeloCollections(null));
       }
       return null;
     })();

@@ -91,7 +91,7 @@ function fetchCollection(collection, mainnet) {
   });
 }
 
-export const getAuroraCollections = async (collections) => {
+export const getGraphCollections = async (collections) => {
   function fetchAuroraCollection(collection) {
     const fetch = async (resolve, reject) => {
       try {
@@ -107,6 +107,46 @@ export const getAuroraCollections = async (collections) => {
         const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
         collectionObj.chain = chain;
         collectionObj.price = getPrice * 0.000000000000000001;
+        collectionObj.description = collection?.description;
+        collectionObj.nfts = collection?.nfts;
+        resolve(collectionObj);
+      } catch (err) {
+        console.log(err);
+        reject(err);
+      }
+    };
+    return new Promise((resolve, reject) => {
+      fetch(resolve, reject);
+    });
+  }
+  const collectionsArr = [];
+  if (collections) {
+    const responses = await Promise.allSettled(collections.map((collection) => fetchAuroraCollection(collection)));
+    responses.forEach((element) => {
+      if (element?.status === "fulfilled") {
+        collectionsArr.push(element.value);
+      }
+    });
+  }
+  return collectionsArr;
+};
+
+export const getCeloGraphCollections = async (collections) => {
+  function fetchAuroraCollection(collection) {
+    const fetch = async (resolve, reject) => {
+      try {
+        const collectionObj = {};
+        // const { data } = await axios.get(
+        //   collection?.nfts[0].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+        // );
+        // collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+
+        collectionObj.name = collection?.name;
+        collectionObj.owner = collection?.id;
+        const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
+        collectionObj.chain = chain;
+        collectionObj.price = getPrice;
         collectionObj.description = collection?.description;
         collectionObj.nfts = collection?.nfts;
         resolve(collectionObj);

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const GET_ALL_AURORA_COLLECTIONS = gql`
+export const GET_GRAPH_COLLECTIONS = gql`
   query MyQuery {
     collections {
       description

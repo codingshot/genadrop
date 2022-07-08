@@ -182,6 +182,11 @@ export const setAuroraCollections = (collections) => ({
   payload: collections,
 });
 
+export const setCeloCollections = (collections) => ({
+  type: genActionTypes.SET_CELO_COLLECTIONS,
+  payload: collections,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,
