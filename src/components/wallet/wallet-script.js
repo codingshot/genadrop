@@ -49,7 +49,7 @@ export const initializeConnection = (walletProps) => {
   // Subscribe to accounts change
   walletConnectProvider.on("accountsChanged", (accounts) => {
     dispatch(setAccount(accounts[0]));
-    dispatch(setChainId(walletConnectProvider.chainId));
+    // dispatch(setChainId(walletConnectProvider.chainId));
   });
 
   // Subscribe to chainId change
