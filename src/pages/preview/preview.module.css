@@ -468,6 +468,9 @@
 .btnWrapper {
   padding: 0 0.8rem;
   width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 0.5rem;
 }
 .btnWrapper > button.gifButton {
   margin-top: 2em;
