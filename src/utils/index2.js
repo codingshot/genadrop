@@ -134,21 +134,21 @@ ${i + 1} of ${value.length}`
   }
   dispatch(setLoader("zipping...."));
   const content = await zip.generateAsync({ type: "blob" });
-  if (mint)
-    dispatch(
-      setZip({
-        name,
-        file: content,
-      })
-    );
-  fileDownload(content, `${name}.zip`);
 
+  dispatch(
+    setZip({
+      name,
+      file: content,
+    })
+  );
+  if (!mint) fileDownload(content, `${name}.zip`);
   dispatch(setLoader(""));
+  return content;
 };
 
 // eslint-disable-next-line consistent-return
 export const handleDownload = async (input) => {
-  const { value, dispatch, setZip, setNotification, name, mint } = input;
+  const { value, dispatch, setZip, setNotification, name } = input;
   if (!name) {
     return dispatch(
       setNotification({
@@ -165,6 +165,7 @@ export const handleDownload = async (input) => {
       type: "default",
     })
   );
+  const mint = false;
   for (let i = 1; i <= index; i += 1) {
     await downloadCallback({ ...input, id: i, value: paginated[i], setZip, mint });
   }
@@ -174,4 +175,26 @@ export const handleDownload = async (input) => {
       type: "success",
     })
   );
+};
+
+export const handleMintRedirect = async (input) => {
+  const { value, dispatch, setZip, setNotification, name, mint } = input;
+  if (!name) {
+    return dispatch(
+      setNotification({
+        message: "please, name your collection and try again.",
+        type: "warning",
+      })
+    );
+  }
+  const paginated = paginate(value, 1000);
+  const index = Object.keys(paginated).length;
+  for (let i = 1; i <= index; i += 1) {
+    await downloadCallback({ ...input, id: i, value: paginated[i], setZip, mint });
+  }
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("zip file loaded");
+    }, 0);
+  });
 };

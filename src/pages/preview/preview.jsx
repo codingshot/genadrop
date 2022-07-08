@@ -23,7 +23,7 @@ import {
 import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
 import { getDefaultName } from "../../utils";
-import { handleDownload } from "../../utils/index2";
+import { handleDownload, handleMintRedirect } from "../../utils/index2";
 import { fetchAlgoCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
@@ -496,7 +496,6 @@ const Preview = () => {
                     value: nftLayers,
                     name: collectionName,
                     outputFormat,
-                    mint: false,
                   });
                 }}
               >
@@ -505,7 +504,7 @@ const Preview = () => {
               <button
                 type="button"
                 onClick={() => {
-                  handleDownload({
+                  handleMintRedirect({
                     window,
                     dispatch,
                     setLoader,
@@ -515,8 +514,11 @@ const Preview = () => {
                     name: collectionName,
                     outputFormat,
                     mint: true,
-                  });
-                  if (collectionName) history.push("/mint/collection");
+                  })
+                    .then(() => {
+                      if (collectionName) history.push("/mint/collection");
+                    })
+                    .catch((err) => console.log(err));
                 }}
               >
                 Mint
