@@ -12,6 +12,7 @@ import {
   setCollectionName,
   setNotification,
   setLoader,
+  setZip,
   setMintAmount,
   setMintInfo,
   setNftLayers,
@@ -33,6 +34,7 @@ import CaretDown from "../../assets/icon-caret-down.svg";
 import CaretUP from "../../assets/icon-caret-up.svg";
 import tooltip from "../../assets/tooltip.svg";
 import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
+
 const Preview = () => {
   const {
     nftLayers,
@@ -351,6 +353,7 @@ const Preview = () => {
       gifs: [],
     });
   };
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.backBtnWrapper}>
@@ -402,10 +405,10 @@ const Preview = () => {
                   className={`${classes.radioBtn} ${outputFormat === "ipfs" && classes.clicked}`}
                 />
                 <p>IPFS</p>
-                <div className={classes.tooltip}></div>
+                <div className={classes.tooltip} />
                 <GenadropToolTip
                   fill="white"
-                  content={`IPFS is a peer-to-peer (p2p) storage network for storing and sharing data.`}
+                  content="IPFS is a peer-to-peer (p2p) storage network for storing and sharing data."
                 />
               </label>
               <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
@@ -483,17 +486,19 @@ const Preview = () => {
             <div className={classes.btnWrapper}>
               <button
                 type="button"
-                onClick={() =>
+                onClick={() => {
                   handleDownload({
                     window,
                     dispatch,
                     setLoader,
+                    setZip,
                     setNotification,
                     value: nftLayers,
                     name: collectionName,
                     outputFormat,
-                  })
-                }
+                  });
+                  history.push("/mint/collection");
+                }}
               >
                 Download zip
               </button>

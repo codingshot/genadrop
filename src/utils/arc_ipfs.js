@@ -47,6 +47,7 @@ const mintCollectionAbi = [
 
 const mintSingle = [
   "function mint(address to, uint256 id, uint256 amount, string memory uri, bytes memory data) public {}",
+  "function setApprovalForAll(address operator, bool approved) public virtual override {}",
 ];
 
 // const marketAi = ['function getMarketItems() public view {}'];
@@ -568,6 +569,10 @@ export async function listPolygonNft(nftProps) {
     signer
   );
   try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,

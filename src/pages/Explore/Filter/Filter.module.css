@@ -62,7 +62,7 @@
 }
 
 .toggleButton {
-  background: var(--default);
+  background: var(--text-placeholder);
   display: inline-block;
   width: 48px;
   display: flex;
@@ -76,8 +76,8 @@
 }
 
 .toggleButton.active {
-  background: var(--default);
-  border: 1px solid var(--outline);
+  background: var(--main-lighter);
+  border: 1px solid var(--main-lighter);
 }
 
 .toggleButton.active .toggle {
