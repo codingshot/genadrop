@@ -100,7 +100,7 @@ export const paginate = (input, count) => {
 };
 
 const downloadCallback = async (props) => {
-  const { value, name, outputFormat, dispatch, setLoader, setZip, id, mint } = props;
+  const { value, name, outputFormat, dispatch, setLoader, setZip, id } = props;
   const zip = new JSZip();
   if (outputFormat.toLowerCase() === "arweave") {
     const aweave = await getAweaveFormat(value, dispatch, setLoader, id);
@@ -141,7 +141,7 @@ ${i + 1} of ${value.length}`
       file: content,
     })
   );
-  if (!mint) fileDownload(content, `${name}.zip`);
+  fileDownload(content, `${name}.zip`);
   dispatch(setLoader(""));
   return content;
 };
@@ -165,9 +165,8 @@ export const handleDownload = async (input) => {
       type: "default",
     })
   );
-  const mint = false;
   for (let i = 1; i <= index; i += 1) {
-    await downloadCallback({ ...input, id: i, value: paginated[i], setZip, mint });
+    await downloadCallback({ ...input, id: i, value: paginated[i], setZip });
   }
   dispatch(
     setNotification({
@@ -175,23 +174,6 @@ export const handleDownload = async (input) => {
       type: "success",
     })
   );
-};
-
-export const handleMintRedirect = async (input) => {
-  const { value, dispatch, setZip, setNotification, name, mint } = input;
-  if (!name) {
-    return dispatch(
-      setNotification({
-        message: "please, name your collection and try again.",
-        type: "warning",
-      })
-    );
-  }
-  const paginated = paginate(value, 1000);
-  const index = Object.keys(paginated).length;
-  for (let i = 1; i <= index; i += 1) {
-    await downloadCallback({ ...input, id: i, value: paginated[i], setZip, mint });
-  }
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve("zip file loaded");

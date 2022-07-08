@@ -496,15 +496,19 @@ const Preview = () => {
                     value: nftLayers,
                     name: collectionName,
                     outputFormat,
-                  });
+                  })
+                    .then(() => {
+                      if (collectionName) history.push("/mint/collection");
+                    })
+                    .catch((err) => console.log(err));
                 }}
               >
-                Download zip
+                Download and Mint
               </button>
               <button
                 type="button"
                 onClick={() => {
-                  handleMintRedirect({
+                  handleDownload({
                     window,
                     dispatch,
                     setLoader,
@@ -513,15 +517,10 @@ const Preview = () => {
                     value: nftLayers,
                     name: collectionName,
                     outputFormat,
-                    mint: true,
-                  })
-                    .then(() => {
-                      if (collectionName) history.push("/mint/collection");
-                    })
-                    .catch((err) => console.log(err));
+                  });
                 }}
               >
-                Mint
+                Download zip
               </button>
             </div>
           </div>
