@@ -23,7 +23,7 @@ import {
 import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
 import { getDefaultName } from "../../utils";
-import { handleDownload, handleMintRedirect } from "../../utils/index2";
+import { handleDownload } from "../../utils/index2";
 import { fetchAlgoCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";

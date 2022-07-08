@@ -143,7 +143,6 @@ ${i + 1} of ${value.length}`
   );
   fileDownload(content, `${name}.zip`);
   dispatch(setLoader(""));
-  return content;
 };
 
 // eslint-disable-next-line consistent-return
