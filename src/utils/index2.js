@@ -134,6 +134,7 @@ ${i + 1} of ${value.length}`
   }
   dispatch(setLoader("zipping...."));
   const content = await zip.generateAsync({ type: "blob" });
+
   dispatch(
     setZip({
       name,
@@ -141,7 +142,6 @@ ${i + 1} of ${value.length}`
     })
   );
   fileDownload(content, `${name}.zip`);
-
   dispatch(setLoader(""));
 };
 
@@ -173,4 +173,9 @@ export const handleDownload = async (input) => {
       type: "success",
     })
   );
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("zip file loaded");
+    }, 0);
+  });
 };

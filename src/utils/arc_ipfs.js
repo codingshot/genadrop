@@ -505,6 +505,10 @@ export async function listCeloNft(nftProps) {
     signer
   );
   try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,
@@ -538,6 +542,10 @@ export async function listAuroraNft(nftProps) {
     signer
   );
   try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,
@@ -653,7 +661,7 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -669,7 +677,7 @@ export async function mintToCelo(celoProps) {
     dispatch,
     setLoader,
   });
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const wallet = await InitiateCeloProvider(mainnet);
   await connector.getSigner();
   const marketContract = new ethers.Contract(
     mainnet
@@ -690,6 +698,15 @@ export async function mintToCelo(celoProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
     await tx.wait();
+    await marketContract.createBulkMarketItem(
+      contract.address,
+      ids,
+      String(price * 10 ** 18),
+      amounts,
+      "General",
+      account,
+      description
+    );
   } catch (error) {
     console.log(error);
     dispatch(setLoader(""));
