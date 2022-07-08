@@ -4,6 +4,7 @@ import axios from "axios";
 // import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
 // import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
+import { v4 as uuid } from "uuid";
 import { getAlgoData, PurchaseNft } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
@@ -17,7 +18,6 @@ import {
   setNotification,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
-import { v4 as uuid } from "uuid";
 
 // setting a delay as not exceed the API limit
 const getDelayTime = (index, data, batch) => {
@@ -94,6 +94,7 @@ function fetchCollection(collection, mainnet) {
 export const getAuroraCollections = async (collections) => {
   function fetchAuroraCollection(collection) {
     const fetch = async (resolve, reject) => {
+      console.log(collections);
       try {
         const collectionObj = {};
         const { data } = await axios.get(

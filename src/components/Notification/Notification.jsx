@@ -35,7 +35,7 @@ const Notification = () => {
   useEffect(() => {
     if (!notification.message) return;
     handleSetState({ toggleFeedback: true });
-    let timerId = setTimeout(() => {
+    const timerId = setTimeout(() => {
       handleSetState({ toggleFeedback: false });
     }, 5000);
     handleSetState({ timerId });
@@ -62,7 +62,7 @@ const Notification = () => {
       <div ref={feedbackRef} className={`${classes.notification} ${classes[notification.type]}`}>
         <img className={classes.icon} src={notificationIcon[notification.type]} alt="" />
         <div className={classes.message}>
-          {notification.message.charAt(0).toUpperCase() + notification.message.substring(1)}
+          {notification.message?.charAt(0).toUpperCase() + notification.message?.substring(1)}
         </div>
         <CloseIcon onClick={handleStop} className={classes.closeIcon} />
       </div>
