@@ -496,11 +496,30 @@ const Preview = () => {
                     value: nftLayers,
                     name: collectionName,
                     outputFormat,
+                    mint: false,
                   });
-                  history.push("/mint/collection");
                 }}
               >
                 Download zip
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  handleDownload({
+                    window,
+                    dispatch,
+                    setLoader,
+                    setZip,
+                    setNotification,
+                    value: nftLayers,
+                    name: collectionName,
+                    outputFormat,
+                    mint: true,
+                  });
+                  if (collectionName) history.push("/mint/collection");
+                }}
+              >
+                Mint
               </button>
             </div>
           </div>
