@@ -41,7 +41,8 @@ const Explore = () => {
     headerHeight,
     loadedChain,
   } = state;
-  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections } = useContext(GenContext);
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
+    useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -58,9 +59,9 @@ const Explore = () => {
   };
 
   const getAllCollectionChains = () => {
-    return !auroraCollections && !polygonCollections
+    return !auroraCollections && !polygonCollections && !celoCollections
       ? null
-      : [...(auroraCollections || []), ...(polygonCollections || [])];
+      : [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
   };
 
   useEffect(() => {

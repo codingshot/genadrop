@@ -177,7 +177,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getCeloGraphCollections(data?.collections);
+      const result = await getGraphCollections(data?.collections);
       if (result?.length) {
         dispatch(setCeloCollections(result));
       } else {

@@ -136,10 +136,10 @@ export const getCeloGraphCollections = async (collections) => {
     const fetch = async (resolve, reject) => {
       try {
         const collectionObj = {};
-        // const { data } = await axios.get(
-        //   collection?.nfts[0].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
-        // );
-        // collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+        const { data } = await axios.get(
+          collection?.nfts[0].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+        );
+        collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
 
         collectionObj.name = collection?.name;
         collectionObj.owner = collection?.id;

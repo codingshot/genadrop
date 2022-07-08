@@ -25,8 +25,17 @@ import detailsIcon from "../../assets/details.png";
 import supportedChains from "../../utils/supportedChains";
 
 const CollectionNFT = () => {
-  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections, chainId } =
-    useContext(GenContext);
+  const {
+    account,
+    activeCollection,
+    connector,
+    mainnet,
+    dispatch,
+    auroraCollections,
+    polygonCollections,
+    celoCollections,
+    chainId,
+  } = useContext(GenContext);
   const {
     params: { collectionName, nftId },
   } = useRouteMatch();
@@ -106,9 +115,9 @@ const CollectionNFT = () => {
   }, [nftId]);
 
   const getAllCollectionChains = () => {
-    return !auroraCollections && !polygonCollections
+    return !auroraCollections && !polygonCollections && !celoCollections
       ? null
-      : [...(auroraCollections || []), ...(polygonCollections || [])];
+      : [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
   };
 
   useEffect(() => {
