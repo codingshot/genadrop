@@ -12,7 +12,7 @@
   background: var(--main-bg);
   color: #000000;
   border: 1px solid var(--text-light-500);
-  padding: 0.5em;
+  padding: 0.5em 1em;
   border-radius: 2.5em;
   transition: all 300ms;
   display: flex;
@@ -31,7 +31,7 @@
 
 .selectedChain {
   display: flex;
-  padding: 0.25em 0.5em;
+  padding: 0.25em 1em;
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--main-700);
@@ -78,7 +78,7 @@
 }
 
 .chain {
-  padding: 0.5em;
+  padding: 0.5em 1em;
   border: 1px solid var(--text-light-500);
   display: flex;
   align-items: center;
@@ -101,7 +101,7 @@
   font-weight: 500;
   color: white;
   background: #ebba4f;
-  padding: 0.25em 0.5em;
+  padding: 0.25em 1em;
 }
 
 .chain:hover {
