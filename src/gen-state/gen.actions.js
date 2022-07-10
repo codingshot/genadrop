@@ -271,3 +271,12 @@ export const setImageQuality = (value) => ({
   type: genActionTypes.SET_IMAGE_QUALITY,
   payload: value,
 });
+export const setZip = (value) => ({
+  type: genActionTypes.SET_ZIP,
+  payload: value,
+});
+
+export const setConnectFromMint = (prop) => ({
+  type: genActionTypes.CONNECT_FROM_MINT,
+  payload: prop,
+});

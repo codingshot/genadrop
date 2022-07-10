@@ -1,11 +1,12 @@
 .container {
   width: 100%;
   overflow: auto;
-  border: 1px solid var(--text-light-500);
-  background: var(--main-bg);
+  border: 1px solid var(--outline-light);
+  background: var(--default);
   border-radius: 0.5em;
   margin-bottom: 2em;
   padding: 1em;
+  padding-right: 0;
   box-shadow: 6px 9px 18px rgba(93, 134, 194, 0.1);
 }
 
@@ -18,6 +19,7 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1em;
+  padding-right: 1em;
 }
 
 .title {
@@ -35,8 +37,10 @@
   gap: 1em;
   padding: 0.5em;
   margin-bottom: 1em;
-  border-top-right-radius: 0.25em;
+  border-bottom-left-radius: 0.25em;
   border-top-left-radius: 0.25em;
+  border: 2px solid var(--outline);
+  border-right-color: transparent;
 }
 
 .wrapper * {
@@ -54,36 +58,35 @@
   flex-direction: column;
   gap: 1em;
   cursor: var(--cursor-pointer);
-  border: 1px solid var(--text-light-500);
-  background: var(--text-light-200);
+  border: 1px solid var(--outline);
+  background: var(--outline-light);
 }
 
 .uploadBtn {
-  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
   padding: 0.5em 1em;
   border-radius: 2em;
-  color: var(--main-700);
-  border: 1px solid var(--main-700);
+  color: var(--main-color);
+  border: 1px solid var(--main-color);
 }
 
 .addIcon,
 .uploadIcon {
   width: 1.5em;
   height: 1.5em;
-  fill: var(--main-700);
+  fill: var(--main-color);
 }
 
 .uploadBtn:hover {
-  background: var(--main-700);
-  color: var(--main-bg);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .uploadBtn:hover .uploadIcon {
-  fill: var(--main-bg);
+  fill: var(--default);
 }
 
 .btnContainer {
@@ -104,12 +107,15 @@
   justify-content: center;
   align-items: center;
   gap: 0.5em;
-  border: 1px solid var(--text-light-400);
-  color: var(--main-700);
-  box-shadow: var(--shadow-light);
+  color: var(--main-color);
+  background: var(--card-light);
+  box-shadow: 3px 4px 4px rgba(178, 197, 208, 0.44);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  transition: all 300ms;
 }
 
 .btnContainer .upload:hover,
 .btnContainer .addBlank:hover {
-  border: 1px solid var(--main-700);
+  border: 2px solid var(--main-color);
 }

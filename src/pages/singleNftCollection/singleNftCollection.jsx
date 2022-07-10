@@ -142,7 +142,6 @@ const SingleNftCollection = () => {
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
     if (singleAlgoNftsArr || singleAuroraNfts) {
-      console.log("FILTERS: ", filtered);
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
@@ -169,7 +168,7 @@ const SingleNftCollection = () => {
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
             {filteredCollection.map((nft) => (
-              <NftCard key={nft.Id} nft={nft} />
+              <NftCard key={nft.Id} nft={nft} listed />
             ))}
           </div>
         ) : !filteredCollection && filter.searchValue ? (

@@ -71,7 +71,7 @@ const Footer = () => (
             target="_blank"
             rel="noopener noreferrer"
           >
-            Built with ♥️ by the Minority Programmers Association
+            Built with ❤️ by the Minority Programmers Association
           </a>
         </div>
       </div>

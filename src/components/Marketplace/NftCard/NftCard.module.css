@@ -1,7 +1,7 @@
 .card {
   width: 100%;
   border-radius: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   transition: all 300ms;
   max-width: 32em;
   height: 28rem;
@@ -39,7 +39,7 @@
 }
 
 .address {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .imageContainer img {
@@ -85,7 +85,7 @@
 }
 
 .price {
-  color: var(--main-700);
+  color: var(--main-color);
   font-weight: bold;
 }
 .price img {
@@ -101,14 +101,14 @@
   font-size: 1rem;
   padding: 0.25em 1.5em;
   border-radius: 2em;
-  background: var(--main-700);
+  background: var(--main-color);
   color: white;
   transition: all 300ms;
 }
 
 .button:hover {
-  background: var(--main-900);
-  outline: 2px solid var(--main-700);
+  background: var(--main-hovered);
+  outline: 2px solid var(--main-color);
 }
 .buttonSold {
   background-color: #707a83;

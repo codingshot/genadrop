@@ -1,12 +1,14 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useHistory, useRouteMatch, Link } from "react-router-dom";
 import classes from "./collection-single.module.css";
 import collectionIcon from "../../../assets/icon-collection-light.svg";
 import _1of1Icon from "../../../assets/icon-1of1-light.svg";
 import leftArrow from "../../../assets/icon-arrow-left.svg";
-import UploadOverlay from "../upload-overlay/upload-overlay";
+// import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
+import line from "../../../assets/icon-line.svg";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
@@ -16,6 +18,7 @@ const CollectionToSingleMinter = () => {
   const dragRef = useRef(null);
   const dropRef = useRef(null);
 
+  const { zip: zipObg } = useContext(GenContext);
   const [state, setState] = useState({
     mintSwitch: "",
     loading1: false,
@@ -66,6 +69,15 @@ const CollectionToSingleMinter = () => {
     }
   };
 
+  // read zip file directed from the create page
+  const handleZipUpload = () => {
+    handleSetState({ fileName: "", file: null, metadata: null, zip: null });
+    const zipFile = zipObg.file;
+    handleSetState({ zip: zipFile, fileName: zipObg.name });
+
+    handleZipFile({ uploadedFile: zipFile, handleSetState });
+  };
+
   useEffect(() => {
     dragRef.current.ondragover = (e) => {
       e.preventDefault();
@@ -73,7 +85,7 @@ const CollectionToSingleMinter = () => {
     };
     dragRef.current.ondragleave = (e) => {
       e.preventDefault();
-      document.querySelector(".drop-area").style.border = "2px solid var(--text-light-500)";
+      document.querySelector(".drop-area").style.border = "2px solid var(--outline)";
     };
     dragRef.current.ondrop = (e) => {
       e.preventDefault();
@@ -91,6 +103,11 @@ const CollectionToSingleMinter = () => {
     handleSetState({ mintSwitch: params.mintId });
   }, [params.mintId]);
 
+  useEffect(() => {
+    if (Object.keys(zipObg).length !== 0) {
+      handleZipUpload();
+    }
+  }, [zipObg]);
   return (
     <div ref={dragRef} className={classes.container}>
       {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
@@ -112,13 +129,17 @@ const CollectionToSingleMinter = () => {
         <>
           <Link to="/mint" className={classes.goBack}>
             <img src={leftArrow} alt="" />
-            <span>Back</span>
+            <span>Back to Mint</span>
           </Link>
           <header className={classes.headingWrapper}>
             {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
             <p className={classes.description}>
-              Upload a <span>{params.mintId === "1of1" ? "image" : "collection"}</span> to create NFTs on any of our{" "}
-              <br />
+              Upload a{" "}
+              <span>
+                {params.mintId === "1of1" ? "image" : "collection"}
+                <img src={line} alt="" />
+              </span>{" "}
+              to create NFTs on any of our <br />
               supported blockchains super fast!
             </p>
           </header>

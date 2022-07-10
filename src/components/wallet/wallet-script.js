@@ -49,7 +49,7 @@ export const initializeConnection = (walletProps) => {
   // Subscribe to accounts change
   walletConnectProvider.on("accountsChanged", (accounts) => {
     dispatch(setAccount(accounts[0]));
-    dispatch(setChainId(walletConnectProvider.chainId));
+    // dispatch(setChainId(walletConnectProvider.chainId));
   });
 
   // Subscribe to chainId change
@@ -212,7 +212,7 @@ export const updateAccount = async (walletProps) => {
   });
   const networkId = await ethereum.networkVersion;
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  const getEnv = mainnet === supportedChains[networkId].isMainnet;
+  const getEnv = supportedChains[networkId] ? mainnet === supportedChains[networkId].isMainnet : false;
   if (!getEnv) {
     WS.disconnectWallet(walletProps);
     dispatch(setSwitchWalletNotification(true));

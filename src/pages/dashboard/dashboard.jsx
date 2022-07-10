@@ -7,13 +7,19 @@ import CollectionsCard from "../../components/Marketplace/collectionsCard/collec
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
-import { fetchUserBoughtNfts, fetchUserCollections, fetchUserNfts, readUserProfile } from "../../utils/firebase";
+import {
+  fetchUserBoughtNfts,
+  fetchUserCollections,
+  fetchUserCreatedNfts,
+  fetchUserNfts,
+  readUserProfile,
+} from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
-import bg from "../../assets/bg.png"; //remove this when done!
+import bg from "../../assets/bg.png"; // remove this when done!
 import twitter from "../../assets/icon-twitter-green.svg";
 import discord from "../../assets/icon-discord-green.svg";
 import instagram from "../../assets/icon-instagram-green.svg";
@@ -56,14 +62,11 @@ const Dashboard = () => {
     // Get User Created NFTs
 
     (async function getUserNFTs() {
-      const singles = [];
-      const singleNfts = await fetchUserNfts(account);
-      singleNfts?.forEach((nft) => {
-        if (!nft.collection) {
-          singles.push(nft);
-        }
-      });
-      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts: singles });
+      const singleNfts = await fetchUserCreatedNfts(account);
+      let algoNFTs = [];
+      if (singleNfts) {
+        algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      }
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
       handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
@@ -168,7 +171,7 @@ const Dashboard = () => {
 
             <div className={classes.social}>
               {userDetails?.twitter ? (
-                <a href={"https://twitter.com/" + userDetails.twitter} target="_blank">
+                <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
                   {" "}
                   <img src={twitter} alt="" className={classes.socialIcon} />{" "}
                 </a>
@@ -176,7 +179,7 @@ const Dashboard = () => {
                 ""
               )}
               {userDetails?.youtube ? (
-                <a href={"https://youtube.com/" + userDetails.youtube} target="_blank">
+                <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
                   {" "}
                   <img src={youtube} alt="" className={classes.socialIcon} />{" "}
                 </a>
@@ -184,7 +187,7 @@ const Dashboard = () => {
                 ""
               )}
               {userDetails?.instagram ? (
-                <a href={"https://www.instagram.com/" + userDetails.instagram} target="_blank">
+                <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
                   {" "}
                   <img src={instagram} alt="" className={classes.socialIcon} />{" "}
                 </a>
@@ -193,7 +196,7 @@ const Dashboard = () => {
               )}
               {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
             </div>
-            <div className={classes.social}></div>
+            <div className={classes.social} />
             <Link to={`${url}/profile/settings`}>
               <div className={classes.editProfile}>Edit Profile</div>
             </Link>
@@ -246,7 +249,7 @@ const Dashboard = () => {
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
+                  <NftCard key={idx} nft={nft} listed={!nft.sold} fromDashboard />
                 ))}
               </div>
             ) : (

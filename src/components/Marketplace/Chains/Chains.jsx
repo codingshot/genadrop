@@ -44,14 +44,18 @@ const Chains = () => {
           {chains.map((chain, idx) => (
             <div
               onClick={() => handleClick(chain.name, chain.isComingSoon)}
-              style={{ background: chain.bg, borderColor: chain.border, color: chain.color }}
+              style={{ background: chain.bg, borderColor: chain.border }}
               key={idx}
               ref={cardRef}
               className={`${classes.card} ${chain.isComingSoon && classes.inActive}`}
             >
               <img src={chain.icon} alt="" />
-              <div>{chain.name}</div>
-              {chain.isComingSoon ? <div className={classes.soon}>coming soon</div> : null}
+              <div style={{ color: chain.color }}>{chain.name}</div>
+              {chain.isComingSoon ? (
+                <div style={{ color: chain.color }} className={classes.soon}>
+                  coming soon
+                </div>
+              ) : null}
             </div>
           ))}
         </GenadropCarouselCard>

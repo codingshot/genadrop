@@ -46,6 +46,8 @@ const GenContextProvider = ({ children }) => {
     toggleWalletPopup,
     activeCollection,
     imageQuality,
+    zip,
+    connectFromMint,
   } = state;
 
   return (
@@ -90,6 +92,8 @@ const GenContextProvider = ({ children }) => {
         toggleWalletPopup,
         activeCollection,
         imageQuality,
+        zip,
+        connectFromMint,
         dispatch,
       }}
     >

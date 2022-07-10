@@ -20,10 +20,11 @@
   font-size: 2.5rem;
   font-weight: 500;
   margin-bottom: 1em;
+  color: var(--text-heading);
 }
 
 .heading span {
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .description {
@@ -33,6 +34,7 @@
   margin: 0 auto;
   margin-bottom: 3em;
   font-size: 1.2rem;
+  color: var(--text-sub-heading);
 }
 
 .wrapper {
@@ -73,22 +75,22 @@
 }
 
 .fHeading {
-  color: var(--text-dark-900-light);
+  color: var(--text-sub-heading);
 }
 
 .fTitle {
   font-weight: 600;
   font-size: 1.2rem;
-  color: var(--text-dark-900-dark);
+  color: var(--text-heading);
 }
 
 .fDescription {
-  color: var(--text-dark-900-light);
+  color: var(--text-sub-heading);
 }
 
 .fLink {
   width: max-content;
-  color: var(--main-700);
+  color: var(--main-color);
   font-weight: 600;
   display: flex;
   align-items: center;

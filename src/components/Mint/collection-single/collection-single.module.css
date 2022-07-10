@@ -35,7 +35,16 @@
 }
 
 .description > span {
-  color: var(--main-700);
+  color: var(--main-color);
+  position: relative;
+  line-height: 2em;
+}
+
+.description > span img {
+  position: absolute;
+  width: 100%;
+  bottom: -0.25em;
+  left: 0;
 }
 
 .mintSwitch {
@@ -44,36 +53,36 @@
   align-items: center;
   justify-content: center;
   border-radius: 2em;
-  background: var(--text-light-300);
-  padding: 0.35em;
+  background: var(--card-light);
+  padding: 0.25em;
   gap: 0.5em;
 }
 
 .mintSwitch > button {
-  width: 12em;
+  width: 10em;
   border-radius: 2em;
   padding: 0.5em 0;
-  background: var(--text-light-300);
-  color: var(var(--text-dark-800));
+  font-size: 1rem;
+  background: var(--card-light);
+  color: var(--text-heading);
   transition: all 300ms;
 }
 
 .mintSwitch > button:hover {
+  background: var(--default);
+  color: var(--main-color);
   cursor: var(--cursor-hover);
-  box-shadow: var(--shadow-dark);
-  background: var(--main-bg);
-  color: var(--main-700);
 }
 
 .mintSwitch > button.active {
-  background: var(--main-700);
-  color: var(--main-bg);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .mintSwitch > button.active:hover {
+  background: var(--main-color);
+  color: var(--default);
   cursor: var(--cursor-hover);
-  background: var(--main-700);
-  color: var(--main-bg);
   margin: unset;
 }
 
@@ -90,16 +99,16 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  padding: 1em 2em;
+  padding: 2em;
   border-radius: 1em;
-  border: 2px solid transparent;
-  box-shadow: var(--shadow-light);
+  border: 2px dashed var(--main-color);
+  box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
   transition: all 300ms;
 }
 
 .card:hover {
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
   cursor: var(--cursor-hover);
-  box-shadow: var(--shadow-dark);
 }
 
 .card.collection {
@@ -142,11 +151,11 @@
   width: 6em;
   height: 6em;
   border-radius: 50%;
-  background: var(--text-light-100);
+  background: var(--card-light);
 }
 
 .title {
-  color: var(--main-700);
+  color: var(--main-color);
   font-size: 1.2rem;
 }
 
@@ -158,21 +167,22 @@
 .supportedFiles {
   text-align: center;
   font-size: 0.9rem;
-  color: rgba(156, 156, 156, 1);
+  color: var(--text-placeholder);
 }
 
 .btn {
-  width: 14em;
-  padding: 0.75em 0;
+  width: 10em;
+  padding: 0.5em 0;
   border-radius: 2em;
-  border: 1px solid var(--main-700);
+  font-size: 1rem;
+  border: 2px solid var(--main-color);
   transition: all 300ms;
-  color: var(--main-700);
+  color: var(--main-color);
 }
 
 .btn:hover {
-  background: var(--main-700);
-  color: var(--main-bg);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .goBack {
@@ -187,6 +197,7 @@
 
 .goBack > img {
   transition: all 300ms;
+  width: 1.2em;
 }
 
 .goBack:hover img {

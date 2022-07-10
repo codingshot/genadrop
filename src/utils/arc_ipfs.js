@@ -1,5 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-await-in-loop */
+import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import JSZip from "jszip";
 import { ethers } from "ethers";
@@ -46,6 +47,7 @@ const mintCollectionAbi = [
 
 const mintSingle = [
   "function mint(address to, uint256 id, uint256 amount, string memory uri, bytes memory data) public {}",
+  "function setApprovalForAll(address operator, bool approved) public virtual override {}",
 ];
 
 // const marketAi = ['function getMarketItems() public view {}'];
@@ -347,8 +349,18 @@ export async function mintSingleToPoly(singleMintProps) {
   }
 }
 
+async function InitiateCeloProvider(mainnet) {
+  const provider = new CeloProvider(mainnet ? "https://forno.celo.org" : "https://alfajores-forno.celo-testnet.org");
+  await provider.ready;
+  const wallet = new CeloWallet(
+    mainnet ? process.env.REACT_APP_GENADROP_SERVER_KEY : process.env.REACT_APP_GENADROP_SERVER_KEY,
+    provider
+  );
+  return wallet;
+}
+
 export async function mintSingleToCelo(singleMintProps) {
-  const { file, metadata, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name, 4);
@@ -360,10 +372,7 @@ export async function mintSingleToCelo(singleMintProps) {
     mintSingle,
     signer
   );
-  const wallet = new ethers.Wallet(
-    mainnet ? process.env.REACT_APP_GENADROP_SERVER_KEY : process.env.REACT_APP_GENADROP_SERVER_KEY,
-    connector
-  );
+  const wallet = await InitiateCeloProvider(mainnet);
   const marketContract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
@@ -374,6 +383,8 @@ export async function mintSingleToCelo(singleMintProps) {
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, "0x");
+    await txn.wait();
+    await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet
       ? `https://celo-testnet.org/tx/${txn.hash}`
@@ -412,9 +423,8 @@ export async function mintSingleToAurora(singleMintProps) {
     marketAbi,
     wallet
   );
-  let txn;
   try {
-    txn = await contract.mint(account, id, 1, asset.url, "0x");
+    const txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
     await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -484,6 +494,113 @@ export async function createNFT(createProps, doAccountCheck) {
   return assets;
 }
 
+export async function listCeloNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet
+      ? `https://celo-testnet.org/tx/${txn.hash}`
+      : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
+export async function listAuroraNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet ? `https://aurorascan.dev/tx/${txn.hash}` : `https://testnet.aurorascan.dev/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
+export async function listPolygonNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet ? `https://polygonscan.com/tx/${txn.hash}` : `https://mumbai.polygonscan.com/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
 export async function initializeContract(contractProps) {
   const { minterAddress, marketAddress, fileName, connector, account, dispatch, setLoader } = contractProps;
   const name = fileName.split("-")[0];
@@ -544,7 +661,7 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -560,7 +677,7 @@ export async function mintToCelo(celoProps) {
     dispatch,
     setLoader,
   });
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const wallet = await InitiateCeloProvider(mainnet);
   await connector.getSigner();
   const marketContract = new ethers.Contract(
     mainnet
@@ -581,6 +698,15 @@ export async function mintToCelo(celoProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
     await tx.wait();
+    await marketContract.createBulkMarketItem(
+      contract.address,
+      ids,
+      String(price * 10 ** 18),
+      amounts,
+      "General",
+      account,
+      description
+    );
   } catch (error) {
     console.log(error);
     dispatch(setLoader(""));

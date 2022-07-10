@@ -5,23 +5,23 @@ import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
 import CollectionPreview from "../preview/collection-preview";
 import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
-import GenerateModal from "./Generate-Modal/GenerateModal";
 import { useState } from "react";
 import { handleAddSampleLayers } from "../../utils";
 import CreateGuide from "../create-guide/create-guide";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
+import { handleGenerate } from "./collection-description-script";
 
 const CollectionDescription = () => {
   const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName, imageQuality } =
     useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
-    modal: false,
-    inputValue: 0.5,
+    selectInputValue: 0.5,
+    amountInputValue: "",
     toggleGuide: false,
   });
-  const { modal, inputValue, toggleGuide } = state;
+  const { selectInputValue, amountInputValue, toggleGuide } = state;
 
   const generateProps = {
     isRule,
@@ -39,7 +39,20 @@ const CollectionDescription = () => {
     setState((state) => ({ ...state, ...payload }));
   };
 
-  const handleGenerateModal = () => {
+  const handleSample = () => {
+    handleAddSampleLayers({ dispatch });
+  };
+
+  const handleSelectChange = (e) => {
+    handleSetState({ selectInputValue: e.target.value });
+    dispatch(setImageQuality(parseInt(e.target.value)));
+  };
+
+  const handleAmountChange = (e) => {
+    handleSetState({ amountInputValue: e.target.value });
+  };
+
+  const handleGenerateClick = () => {
     if (!combinations)
       return dispatch(
         setNotification({
@@ -47,17 +60,23 @@ const CollectionDescription = () => {
           message: "Upload assets and try again.",
         })
       );
+    if (amountInputValue <= "0")
+      return dispatch(
+        setNotification({
+          message: "Add valid amount to generate input",
+          type: "error",
+        })
+      );
+    if (amountInputValue > combinations)
+      return dispatch(
+        setNotification({
+          message: "Number of arts cannot be greater than the possible combinations",
+          type: "error",
+        })
+      );
     dispatch(setNftLayers([]));
-    handleSetState({ modal: true });
-  };
-
-  const handleSample = () => {
-    handleAddSampleLayers({ dispatch });
-  };
-
-  const handleChange = (e) => {
-    handleSetState({ inputValue: e.target.value });
-    dispatch(setImageQuality(parseInt(e.target.value)));
+    dispatch(setMintAmount(parseInt(amountInputValue)));
+    handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
   };
 
   const handleTutorial = () => {
@@ -75,15 +94,8 @@ const CollectionDescription = () => {
   }, [combinations]);
 
   return (
-    <div className={`${classes.container} ${(toggleGuide || modal) && classes.active}`}>
+    <div className={`${classes.container} ${toggleGuide && classes.active}`}>
       <CreateGuide toggleGuide={toggleGuide} setGuide={(toggleGuide) => handleSetState({ toggleGuide })} />
-      <GenerateModal
-        modal={modal}
-        combinations={combinations}
-        closeModal={(modal) => handleSetState({ modal })}
-        generateProps={generateProps}
-        nftLayers={nftLayers}
-      />
       <div className={classes.preview_details}>
         <div className={classes.guide_preview_wrapper}>
           <div className={classes.guide}>
@@ -100,20 +112,37 @@ const CollectionDescription = () => {
         </div>
       </div>
 
-      <div className={classes.combinations}>
-        <div htmlFor="combinations" className={classes.title}>
-          <span>Possible Combinations</span>
-          {/* <GenadropToolTip content={"The maximum number of arts the uploaded assets can generate"} fill="#3d3d3d" /> */}
+      <div className={classes.sectionHeading}>Generate</div>
+      <div className={classes.combinations_amount}>
+        <div className={classes.combinations}>
+          <div className={classes.title}>
+            <span>Possible Combinations</span>
+            {/* <GenadropToolTip content={"The maximum number of arts the uploaded assets can generate"} fill="#3d3d3d" /> */}
+          </div>
+          <div className={classes.count}>{combinations - rule.length}</div>
         </div>
-        <div className={classes.count}>{combinations - rule.length}</div>
+
+        <div className={classes.amount}>
+          <div htmlFor="amount to generate" className={classes.title}>
+            <span>Amount to Generate</span>
+          </div>
+          <input
+            className={classes.amountInput}
+            type="number"
+            min="0"
+            max={combinations}
+            value={amountInputValue}
+            onChange={handleAmountChange}
+            placeholder="Ex: 1000"
+          />
+        </div>
       </div>
 
       <div className={classes.generateContainer}>
-        <div className={classes.title}>Generate:</div>
         <div className={classes.generateSettings}>
           <label htmlFor="">Choose image quality: </label>
           <div className={classes.wrapper}>
-            <select value={inputValue} onChange={handleChange}>
+            <select value={selectInputValue} onChange={handleSelectChange}>
               <option value={1}>High</option>
               <option value={0.5}>Medium</option>
               <option value={0.2}>Low</option>
@@ -129,7 +158,7 @@ const CollectionDescription = () => {
               </Link>
             </div>
           ) : null}
-          <div onClick={handleGenerateModal} className={`${classes.generateBtn}`}>
+          <div onClick={handleGenerateClick} className={`${classes.generateBtn} ${combinations && classes.active}`}>
             Generate Collection
           </div>
         </div>

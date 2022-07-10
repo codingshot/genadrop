@@ -26,11 +26,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1em;
-  padding: 2em;
+  gap: 2em;
+  padding: 2em 3em;
   border-radius: 1em;
   position: relative;
-  background: var(--main-700);
+  background: var(--main-color);
 }
 
 .container {
@@ -42,21 +42,27 @@
 }
 
 .closeBtn {
-  width: 1em;
-  height: 1em;
+  width: 1.5em;
+  height: 1.5em;
   position: absolute;
   top: 1em;
   right: 1em;
   cursor: var(--cursor-pointer);
-  fill: var(--main-bg);
+  fill: var(--default);
+  padding: 0.35em;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 0.25em;
+}
+
+.closeBtn:hover {
+  box-shadow: var(--shadow-light);
 }
 
 .heading {
   width: 100%;
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-align: center;
-  color: var(--main-bg);
-  font-weight: 600;
+  color: var(--default);
 }
 
 .swipeContainer {
@@ -91,7 +97,7 @@
   width: 32em;
   flex: 0 0 auto;
   height: 100%;
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .control {
@@ -211,14 +217,14 @@
 }
 
 .indicator > div {
-  width: 0.7em;
-  height: 0.7em;
+  width: 0.5em;
+  height: 0.5em;
   border-radius: 50%;
-  background: #adb5bd;
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .indicator.active > div {
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 @media screen and (max-width: 1000px) {
@@ -226,8 +232,8 @@
     gap: 1em;
   }
 
-  .heading h3 {
-    font-size: 0.95rem;
+  .heading {
+    font-size: 1rem;
   }
 }
 
@@ -239,21 +245,21 @@
 }
 
 @media screen and (max-width: 480px) {
+  .wrapper {
+    padding: 0.5em;
+  }
+
   .mainContainer {
     border-radius: 0.5em;
     padding: 1em;
   }
 
-  .heading h3 {
-    font-size: 0.75rem;
+  .heading {
+    font-size: 0.85rem;
   }
 
   .heading span {
     display: none;
-  }
-
-  .heading p {
-    font-size: 0.75rem;
   }
 
   .indicatorContainer {

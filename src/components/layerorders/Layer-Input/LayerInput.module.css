@@ -9,11 +9,11 @@
   margin-bottom: 0.5em;
   font-size: 1rem;
   padding: 0.25em;
-  color: var(--text-dark-900);
-  background: var(--main-bg);
+  color: var(--text-heading);
+  background: var(--default);
   outline: none;
   border-radius: 0.25em;
-  border: 1px solid var(--card-bg);
+  border: 1px solid var(--card-layer);
 }
 
 .buttons {
@@ -25,24 +25,20 @@
 
 .add,
 .cancel {
+  width: 5em;
   outline: none;
   padding: 0.25em 1.5em;
   border-radius: 0.25em;
   cursor: var(--cursor-pointer);
-  border: 1px solid var();
   border: 1px solid transparent;
 }
 
 .add {
-  background: var(--card-bg);
-  color: var(--main-bg);
+  background: var(--card-layer);
+  color: var(--default);
   transition: all 300ms;
 }
 
 .add:hover {
-  background: var(--card-bg-dark);
-}
-
-.cancel {
-  border: 1px solid var(--main-color);
+  background: var(--card-preview);
 }

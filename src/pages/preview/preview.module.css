@@ -28,20 +28,20 @@
 .main {
   flex: 1;
   height: auto;
-  background: var(--main-bg);
+  background: var(--default);
   z-index: 1;
 }
 
 .detailsView {
   width: 100%;
   position: sticky;
-  top: 3.8em;
+  top: 3.7em;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   flex-wrap: wrap;
   padding: 1em 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   z-index: 1;
   margin-bottom: 0.5em;
 }
@@ -59,7 +59,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-light);
-  background: var(--main-bg);
+  background: var(--default);
   cursor: var(--cursor-pointer);
   margin-bottom: 1em;
   opacity: 0.9;
@@ -67,6 +67,7 @@
 
 .backBtn img {
   transition: all 300ms;
+  width: 1.5em;
 }
 
 .backBtn:hover img {
@@ -81,41 +82,41 @@
   padding: 0.65em 1em;
   font-size: 0.95rem;
   border-radius: 0.25em;
-  border: 1px solid var(--card-bg);
-  background: #fff;
-  color: var(--card-bg);
+  border: 1px solid var(--card-layer);
+  background: var(--default);
+  color: var(--card-layer);
 }
 .detailsView :last-child {
   margin-left: 1rem;
 }
 .detailGif {
   border-radius: 30px;
-  border-color: var(--main-700);
+  border-color: var(--main-color);
   cursor: var(--cursor-pointer);
   margin-right: 1.6875em;
   box-shadow: var(--shadow-light);
 }
 .detailGif:hover {
   cursor: var(--cursor-hover);
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .detailGif:hover p {
-  color: white;
+  color: var(--default);
 }
 .detailGif:hover span:last-child {
-  color: var(--main-700);
-  background: var(--main-bg);
+  color: var(--main-color);
+  background: var(--default);
 }
 .detail span:last-child {
-  background: #4b4b5a;
-  border: 1px solid #4b4b5a;
-  color: white;
+  background: var(--card-layer);
+  border: 1px solid var(--card-layer);
+  color: var(--default);
   padding: 0 1em;
 }
 .detailGif p {
   margin: auto;
   font-weight: 500;
-  color: var(--main-700);
+  color: var(--main-color);
   display: flex;
   align-items: center;
 }
@@ -128,8 +129,8 @@
   align-items: center;
   justify-content: center;
   font-size: 1.2em;
-  background: var(--main-700);
-  border: 1px solid var(--main-700);
+  background: var(--main-color);
+  border: 1px solid var(--main-color);
 }
 
 .detail i {
@@ -146,7 +147,7 @@
   padding: 0.5em;
   border-radius: 0.25em;
   margin-bottom: 2em;
-  border: 1px solid #c4c4c4;
+  border: 1px solid var(--card-outline);
   box-shadow: var(--shadow-light);
 }
 
@@ -158,13 +159,13 @@
   resize: none;
   width: 100%;
   border-radius: 0.25em;
-  border: 1px solid #c4c4c4;
+  border: 1px solid var(--card-outline);
   box-shadow: var(--shadow-light);
   padding: 0.6rem 0rem 0.3rem 0.8rem;
 }
 
 .collectionDetail textarea:focus {
-  outline: 1px solid var(--text-light-500);
+  outline: 1px solid var(--outline);
 }
 
 .collectionDetail .tab {
@@ -179,15 +180,15 @@
   width: 36px;
   border-radius: 0.75em;
   padding: 0px 0;
-  background: var(--main-bg);
+  background: var(--default);
   cursor: var(--cursor-pointer);
   padding: 2px 2px;
   transition: all 300ms;
 }
 
 .collectionDetail .toggleContainer.active {
-  background: var(--main-700);
-  border: 1px solid var(--text-light-500);
+  background: var(--main-color);
+  border: 1px solid var(--outline);
 }
 
 .collectionDetail .toggle {
@@ -200,7 +201,7 @@
 
 .collectionDetail .toggle.active {
   transform: translateX(100%);
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .actionContainer {
@@ -216,7 +217,7 @@
 }
 .actionContainer h3 {
   margin-top: -20px;
-  background: var(--main-bg);
+  background: var(--default);
   width: fit-content;
   padding-right: 6px;
   margin-left: -5px;
@@ -232,26 +233,26 @@
   gap: 1em;
   padding: 0.75em;
   border-radius: 0.25em;
-  background: var(--card-bg1);
-  color: white;
+  background: var(--card-layer);
+  color: var(--default);
 }
 
 .actionContainer .btnWrapper > button {
-  border: 1px solid var(--main-700);
+  border: 1px solid var(--main-color);
   width: 100%;
   border: none;
   height: 3rem;
   font-size: 1rem;
   border-radius: 0.25em;
-  background: var(--main-700);
-  color: white;
+  background: var(--main-color);
+  color: var(--default);
   cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
 
 .actionContainer .btnWrapper > button:hover {
-  background: var(--main-900);
-  outline: 2px solid var(--main-700);
+  background: var(--main-hovered);
+  outline: 2px solid var(--main-color);
 }
 
 .preview {
@@ -280,7 +281,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.5em;
-  background: var(--main-bg);
+  background: var(--default);
   box-shadow: var(--shadow-light);
   border-radius: 0.15em;
   transition: all 300ms;
@@ -300,13 +301,13 @@
   width: 100%;
   border-top-right-radius: 0.5em;
   border-top-left-radius: 0.5em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
 }
 
 .cardBody {
-  background: var(--card-bg1);
+  background: var(--card-layer);
   box-shadow: var(--shadow-light);
-  color: white;
+  color: var(--default);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -323,21 +324,21 @@
 }
 
 .cardBody .textWrapper {
-  color: white;
+  color: var(--default);
 }
 
 .cardBody textarea {
   width: 100%;
-  background: var(--card-bg3);
-  border: 1px solid black;
-  color: white;
+  background: var(--card-shade);
+  color: var(--default);
   padding: 0.25em;
   resize: none;
   border-radius: 0.25em;
+  outline: none;
 }
 
-.cardBody textarea:focus {
-  outline: 2px solid var(--card-bg);
+.cardBody textarea::placeholder {
+  color: var(--text-placeholder);
 }
 
 .buttonContainer {
@@ -354,7 +355,7 @@
   white-space: nowrap;
   border-radius: 0.25em;
   border: 1px solid;
-  color: white;
+  color: var(--default);
   cursor: var(--cursor-pointer);
   transition: all 150ms;
   outline: 1px solid transparent;
@@ -363,25 +364,25 @@
 }
 
 .buttonContainer button:last-child {
-  border-color: white;
+  border-color: var(--default);
 }
 
 .buttonContainer button:first-child,
 .nftDonwload {
-  background: var(--main-bg);
-  border-color: white;
-  color: var(--main-700);
+  background: var(--default);
+  border-color: var(--default);
+  color: var(--main-color);
 }
 .buttonContainer button:last-child:hover {
-  background: var(--card-bg3);
-  outline: 2px solid var(--card-bg);
+  background: var(--card-layer);
+  outline: 2px solid var(--card-layer);
   border-color: transparent;
 }
 .buttonContainer button:first-child:hover,
 .nftDonwload {
-  background: var(--main-900);
-  border-color: var(--main-900);
-  color: white;
+  background: var(--main-hovered);
+  border-color: var(--main-hovered);
+  color: var(--default);
 }
 .foramtWrapper {
   display: flex;
@@ -396,6 +397,11 @@
   padding: 0.6rem 0.8rem;
   padding-bottom: 1.3rem;
 }
+
+.foramtWrapper p {
+  color: var(--default);
+}
+
 .radioBtn {
   position: relative;
   display: flex;
@@ -408,15 +414,15 @@
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  background: black;
+  background: var(--card-layer);
   position: absolute;
   content: "";
-  outline: 2px solid white;
+  outline: 2px solid var(--default);
   outline-offset: 2px;
 }
 
 .radioBtn.clicked::before {
-  background: var(--main-bg);
+  background: var(--default);
 }
 
 .paginate {
@@ -429,23 +435,23 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 1em;
-  border-top: 1px solid var(--text-light-500);
-  border-bottom: 1px solid var(--text-light-500);
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
   padding: 0.25em;
 }
 
 .paginate input {
   padding: 0.65em;
   max-width: 6em;
-  border: 1px solid var(--text-light-500);
+  border: 1px solid var(--outline);
   border-radius: 0.25em;
 }
 
 .pageControl {
   padding: 0.5em 1em;
   border-radius: 0.25em;
-  background: var(--card-bg);
-  color: white;
+  background: var(--card-layer);
+  color: var(--default);
   cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
@@ -462,18 +468,20 @@
 .btnWrapper {
   padding: 0 0.8rem;
   width: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  gap: 0.5rem;
 }
 .btnWrapper > button.gifButton {
   margin-top: 2em;
-  background: var(--main-bg);
-  border: 1px solid var(--main-700);
-  color: var(--main-700);
+  background: var(--default);
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
   transition: 0.3s ease-in;
 }
 .btnWrapper > button.gifButton:hover {
-  cursor: var(--cursor-hover);
-  background: var(--main-700);
-  color: white;
+  background: var(--main-color);
+  color: var(--default);
   outline: none;
 }
 
@@ -484,7 +492,7 @@
   padding: 0.75em;
 }
 .cheked {
-  background: var(--main-700);
+  background: var(--main-color);
 }
 .galleryGif {
   background: #f6fdff;
@@ -537,7 +545,7 @@
   background: #e5e8eb;
 }
 .galleryGifInfo {
-  color: #4b4b5a;
+  color: var(--card-layer);
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
@@ -587,9 +595,9 @@
 }
 
 .mintBtn {
-  background: var(--main-700);
-  border: 2px solid var(--main-700);
-  color: white;
+  background: var(--main-color);
+  border: 2px solid var(--main-color);
+  color: var(--default);
   font-size: 1rem;
   transition: all 300ms;
 }
@@ -597,20 +605,20 @@
   margin-right: 8px;
 }
 .mintBtn:hover {
-  background: var(--main-900);
-  border: 2px solid var(--main-700);
+  background: var(--main-hovered);
+  border: 2px solid var(--main-color);
   cursor: var(--cursor-pointer);
 }
 
 .cancelBtn {
-  border: 2px solid var(--main-700);
-  background: var(--main-bg);
+  border: 2px solid var(--main-color);
+  background: var(--default);
   transition: all 300ms;
   font-size: 1rem;
 }
 
 .cancelBtn:hover {
-  border: 2px solid var(--main-900);
+  border: 2px solid var(--main-hovered);
 }
 .durationWrapper {
   padding: 0 0.5rem;
@@ -661,18 +669,18 @@
   padding-left: 1em;
   border-radius: 5px;
   border: 1px solid #adb5bd;
-  background: var(--main-bg);
+  background: var(--default);
   transition: all 300ms;
   font-size: 1rem;
   width: 100%;
 }
 .durationInput input:focus {
-  border: 2px solid var(--main-700);
+  border: 2px solid var(--main-color);
   outline: none;
 }
 .durationInput input::placeholder {
   /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: #adb5bd;
+  color: var(--text-placeholder);
   opacity: 1; /* Firefox */
 }
 /* Chrome, Safari, Edge, Opera */
@@ -752,10 +760,10 @@
   height: 25px;
 }
 .guideContainer > svg > path {
-  fill: #4b4b5a;
+  fill: var(--icon-color);
 }
 .imgContainer {
-  border: 1px solid #adb5bd;
+  border: 1px solid var(--card-outline);
   display: flex;
   padding: 1em 1.5em 1.5em;
   flex-direction: column;
@@ -785,14 +793,14 @@
   cursor: var(--cursor-pointer);
 }
 .gifAllBtn div {
-  background: var(--main-700);
-  color: white;
-  border: 1px solid var(--main-700);
+  background: var(--main-color);
+  color: var(--default);
+  border: 1px solid var(--main-color);
   margin-left: 20px;
 }
 .gifAllBtn div:hover {
-  background: var(--main-900);
-  border: 2px solid var(--main-700);
+  background: var(--main-hovered);
+  border: 2px solid var(--main-color);
 }
 .gifAllBtn p {
   color: #f1423b;
@@ -855,8 +863,8 @@
   }
 
   .detailsView {
-    top: 3em;
-    border: 1px solid var(--text-light-500);
+    top: 2.9em;
+    border: 1px solid var(--outline);
     border-radius: 0.5em;
   }
   .sidebarActive {

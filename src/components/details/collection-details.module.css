@@ -4,10 +4,10 @@
 
 .content {
   width: 100%;
-  min-height: 4em;
+  min-height: 5em;
   height: calc(100vh - 42em);
   overflow: auto;
-  border: 1px solid var(--text-light-500);
+  border: 3px solid var(--outline);
   padding: 0.5em;
   border-radius: 0.25em;
 }

@@ -1,6 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
-import { setClipboard, setLoader, setLoading, setNotification } from "../../../gen-state/gen.actions";
+import {
+  setClipboard,
+  setConnectFromMint,
+  setLoader,
+  setLoading,
+  setNotification,
+} from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
 import { handleMint, handleSingleMint } from "./minter-script";
@@ -13,6 +19,8 @@ import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
+import dropdownIcon from "../../../assets/icon-dropdown2.svg";
+import { initConnectWallet } from "../../../components/wallet/wallet-script";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -27,6 +35,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     dollarPrice: 0,
     collectionProfile: "",
     toggleGuide: false,
+    toggleDropdown: false,
     previewSelectMode: false,
     profileSelected: false,
     popupProps: {
@@ -45,55 +54,11 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     dollarPrice,
     collectionProfile,
     toggleGuide,
+    toggleDropdown,
     previewSelectMode,
     profileSelected,
     popupProps,
   } = state;
-
-  const chains = [
-    {
-      label: "Algorand",
-      networkId: 4160,
-      symbol: "ALGO",
-      chain: "Algorand",
-    },
-    {
-      label: "Celo",
-      networkId: 42220,
-      symbol: "CGLD",
-      chain: "Celo",
-    },
-    {
-      label: "Celo testnet",
-      networkId: 44787,
-      symbol: "CGLD",
-      chain: "Celo",
-    },
-    {
-      label: "Polygon",
-      networkId: 137,
-      symbol: "MATIC",
-      chain: "Polygon",
-    },
-    {
-      label: "Polygon Testnet",
-      networkId: 80001,
-      symbol: "MATIC",
-      chain: "Polygon",
-    },
-    {
-      label: "Aurora",
-      networkId: 1313161554,
-      symbol: "AURORA",
-      chain: "Aurora",
-    },
-    {
-      label: "Aurora testnet",
-      networkId: 1313161555,
-      symbol: "AURORA",
-      chain: "Aurora",
-    },
-  ];
 
   const mintProps = {
     dispatch,
@@ -184,6 +149,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
   };
 
   const setMint = () => {
+    if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
+
     if (!chainId) {
       return dispatch(
         setNotification({
@@ -192,14 +159,6 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
         })
       );
     }
-    const c = chains.find((e) => e.networkId.toString() === chainId.toString());
-    if (!c)
-      return dispatch(
-        setNotification({
-          message: "unsupported chain detected",
-          type: "error",
-        })
-      );
     if (!parseInt(price)) {
       return dispatch(
         setNotification({
@@ -271,10 +230,19 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     }
   };
 
+  const handleConnectFromMint = (props) => {
+    handleSetState({ toggleDropdown: false });
+    dispatch(
+      setConnectFromMint({
+        chainId: props.networkId,
+        isComingSoon: props.comingSoon,
+      })
+    );
+  };
+
   useEffect(() => {
     if (chainId) {
-      const c = chains.find((e) => e.networkId.toString() === chainId.toString());
-      if (!c) return handleSetState({ chain: { label: "unsupported chain" } });
+      const c = supportedChains[chainId];
       handleSetState({ chain: c });
       if (c.symbol === "AURORA") {
         axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
@@ -304,7 +272,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       ) : (
         <div className={classes.wrapper}>
           <div>
-            <section className={classes.asset}>
+            <section className={classes.assetContainer}>
               <div className={`${classes.imageContainers} ${file.length > 1 && classes._}`}>
                 {file.length > 1 ? (
                   file
@@ -331,7 +299,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                   {chainId === 4160 && (
                     <div className={classes.priceTooltip}>
                       <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file.length * 0.1} ALGO</p>
-                      <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#009987" />
+                      <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#0d99ff" />
                     </div>
                   )}
                   {file.length > 1 ? (
@@ -347,9 +315,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               </div>
             </section>
             <div className={classes.mintForm}>
-              <section className={classes.type}>
-                <div>{file.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
-              </section>
+              <div className={classes.heading}>{file.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
 
               <section className={classes.details}>
                 <div className={classes.category}>Asset Details</div>
@@ -371,7 +337,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     Description <span className={classes.required}>*</span>{" "}
                     <GenadropToolTip
                       content="This description will be visible on your collection page"
-                      fill="#009987"
+                      fill="#0d99ff"
                     />
                   </label>
                   <textarea
@@ -428,7 +394,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     <div className={`${classes.inputWrapper} ${classes.dropInputWrapper}`}>
                       <label>
                         Collection photo
-                        <GenadropToolTip content="This image will be used as collection logo" fill="#009987" />
+                        <GenadropToolTip content="This image will be used as collection logo" fill="#0d99ff" />
                       </label>
                     </div>
                     <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
@@ -456,13 +422,38 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                   </div>
                 </div>
                 <div className={classes.inputWrapper}>
-                  <label>Blockchain: {chainId ? "" : "---"} </label>
-                  {chainId && (
-                    <div className={classes.chinLabel}>
-                      <img src={supportedChains[chainId]?.icon} alt="" />
-                      {chain?.label}
-                    </div>
-                  )}
+                  <label>Blockchain</label>
+                  <div
+                    onClick={() => handleSetState({ toggleDropdown: !toggleDropdown })}
+                    className={`${classes.chain} ${classes.active}`}
+                  >
+                    {chainId ? (
+                      <div className={classes.chainLabel}>
+                        <img src={supportedChains[chainId].icon} alt="" />
+                        {chain?.label}
+                      </div>
+                    ) : (
+                      <span>Select Chain</span>
+                    )}
+                    <img className={classes.dropdownIcon} src={dropdownIcon} alt="" />
+                  </div>
+                  <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
+                    {Object.values(supportedChains)
+                      .filter((chainE) => mainnet === chainE.isMainnet)
+                      .map((chainE, idx) => (
+                        <div
+                          onClick={() => (!chainE.comingSoon ? handleConnectFromMint(chainE) : {})}
+                          className={`${classes.chain} ${chainE.comingSoon && classes.disable}`}
+                          key={idx}
+                          value={chainE.label}
+                        >
+                          <img src={chainE.icon} alt="" />
+                          {chainE.label}
+                        </div>
+                      ))}
+                  </div>
+
+                  <br />
                   <label>
                     List Price ({getUintByChain[chain?.label.toLowerCase()]}){" "}
                     <span className={classes.required}>*</span>
@@ -511,3 +502,19 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
 };
 
 export default Minter;
+
+{
+  /* <button
+onClick={() => {
+  console.log('clicked');
+  dispatch(
+    setConnectFromMint({
+      chainId: 1313161555,
+      isComingSoon: false,
+    })
+  );
+}}
+>
+test
+</button> */
+}
