@@ -60,10 +60,14 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           <div className={classes.chainLogo} />
           <div className={classes.creator}>
             <img src={avatar} alt="" />
-            <div className={classes.creatorAddress}>
-              <div className={classes.createdBy}>Owned By</div>
-              <div className={classes.address}>{breakAddress(nft.owner)}</div>
-            </div>
+            {!fromDashboard ? (
+              <div className={classes.creatorAddress}>
+                <div className={classes.createdBy}>Owned By</div>
+                <div className={classes.address}>{breakAddress(nft.owner)}</div>
+              </div>
+            ) : (
+              <div className={classes.createdBy}>Owned by you</div>
+            )}
           </div>
           <div className={classes.wrapper}>
             <div className={classes.listPrice}>

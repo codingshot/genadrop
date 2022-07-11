@@ -22,7 +22,7 @@ const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
     <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
       {NFTCollection
         ? NFTCollection.map((nft, idx) => (
-            <NftCard chinPrice={chinPrice} key={nft.Id} nft={nft} index={idx} loadedChain={loadedChain} />
+            <NftCard chinPrice={chinPrice} key={nft.Id} nft={nft} listed index={idx} loadedChain={loadedChain} />
           ))
         : [...new Array(8)]
             .map((_, idx) => idx)

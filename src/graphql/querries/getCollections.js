@@ -96,6 +96,26 @@ export const GET_GRAPH_COLLECTION = gql`
   }
 `;
 
+export const GET_USER_NFT = gql`
+  query ($id: ID) {
+    user(id: $id) {
+      id
+      nfts {
+        chain
+        createdAtTimestamp
+        id
+        isSold
+        price
+        tokenID
+        tokenIPFSPath
+        collection {
+          id
+        }
+      }
+    }
+  }
+`;
+
 export const GET_GRAPH_NFT = gql`
   query ($id: ID) {
     nft(id: $id) {
