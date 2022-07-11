@@ -46,6 +46,7 @@ impl Contract {
  * The rest of this file holds the inline tests for the code above
  * Learn more about Rust tests: https://doc.rust-lang.org/book/ch11-01-writing-tests.html
  */
+
 #[cfg(test)]
 mod tests {
     use super::*;
