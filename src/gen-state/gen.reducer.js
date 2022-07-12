@@ -67,7 +67,7 @@ export const INITIAL_STATE = {
 
 export const genReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case genActionTypes.ORDER_LAYERS:
+    case genActionTypes.SET_LAYERS:
       return {
         ...state,
         layers: action.payload,

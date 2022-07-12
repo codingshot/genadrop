@@ -5,7 +5,7 @@ import classes from "./layerorders.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   addLayer,
-  orderLayers,
+  setLayers,
   setCollectionName,
   setLoader,
   setNotification,
@@ -45,7 +45,7 @@ const LayerOrders = ({ isCreateModal }) => {
     const newLayers = [...layers];
     const [removed] = newLayers.splice(source.index, 1);
     newLayers.splice(destination.index, 0, removed);
-    dispatch(orderLayers(newLayers));
+    dispatch(setLayers(newLayers));
     handleSetState({ inputValue: "" });
   };
 
