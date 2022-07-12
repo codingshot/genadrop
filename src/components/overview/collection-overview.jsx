@@ -64,39 +64,39 @@ const CollectionOverview = () => {
 
   return (
     <div className={`${classes.container} ${showRule && classes.active}`}>
-      {layers[0]?.traits.length ? (
-        <div className={classes.rules}>
-          {isRule ? (
-            <>
-              <button type="button" onClick={handleAddRule} className={classes.addRuleBtn}>
-                Add Rule
-              </button>
-              <button type="button" onClick={closeRule} className={classes.showRuleBtn}>
-                Cancel
-              </button>
-            </>
-          ) : (
-            <>
-              <button type="button" onClick={openRule} className={classes.addRuleBtn}>
-                Set Conflict
-              </button>
-              <button type="button" onClick={handleRules} className={classes.showRuleBtn}>
-                Rules <div className={classes.ruleCount}>{rule.length}</div>
-              </button>
-              {showRule && (
-                <div className={classes.ruleCardWrapper}>
-                  <RulesCard showRule={(e) => handleSetState({ showRule: e })} />
-                </div>
-              )}
-            </>
-          )}
-          <div className={`${classes.conflictInfo} ${toggleInfo && classes.hidden}`}>
-            <img src={infoIcon} alt="info" />
-            <p>Setting conflict rules for images means that the selected set of images cannot form a generative art</p>
-            <CloseIcon className={classes.closeIcon} onClick={() => handleSetState({ toggleInfo: true })} />
-          </div>
+      {/* {layers[0]?.traits.length ? ( */}
+      <div className={classes.rules}>
+        {isRule ? (
+          <>
+            <button type="button" onClick={handleAddRule} className={classes.addRuleBtn}>
+              Add Rule
+            </button>
+            <button type="button" onClick={closeRule} className={classes.showRuleBtn}>
+              Cancel
+            </button>
+          </>
+        ) : (
+          <>
+            <button type="button" onClick={openRule} className={classes.addRuleBtn}>
+              Set Conflict
+            </button>
+            <button type="button" onClick={handleRules} className={classes.showRuleBtn}>
+              Rules <div className={classes.ruleCount}>{rule.length}</div>
+            </button>
+            {showRule && (
+              <div className={classes.ruleCardWrapper}>
+                <RulesCard showRule={(e) => handleSetState({ showRule: e })} />
+              </div>
+            )}
+          </>
+        )}
+        <div className={`${classes.conflictInfo} ${toggleInfo && classes.hidden}`}>
+          <img src={infoIcon} alt="info" />
+          <p>Setting conflict rules for images means that the selected set of images cannot form a generative art</p>
+          <CloseIcon className={classes.closeIcon} onClick={() => handleSetState({ toggleInfo: true })} />
         </div>
-      ) : null}
+      </div>
+      {/* ) : null} */}
 
       {layers.length ? (
         layers.map((layer) => <CollectionMenu key={layer.id} layer={layer} />)
