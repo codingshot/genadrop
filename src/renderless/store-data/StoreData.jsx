@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { dataURItoBlob } from "../../components/menu/collection-menu-script";
@@ -6,6 +7,7 @@ import { GenContext } from "../../gen-state/gen.context";
 
 const StoreData = () => {
   const { layers, rule, preview, collectionName, dispatch } = useContext(GenContext);
+  const mountRef = useRef(false);
 
   const getFile = ({ imageUrl, fileName, fileType }) => {
     const imageFile = new File([dataURItoBlob(imageUrl)], fileName, { type: `image/${fileType}` });
@@ -26,7 +28,7 @@ const StoreData = () => {
   }
 
   useEffect(() => {
-    if (layers.length) {
+    if (layers.length || mountRef.current) {
       (async function transformLayerToStorageFormat() {
         const newLayers = await Promise.all(
           layers.map(async ({ traits, ...othersLayerProps }) => {
@@ -67,6 +69,7 @@ const StoreData = () => {
           dispatch(setLayers(newLayers));
         })();
       }, 0);
+      mountRef.current = true;
     }
   }, [layers]);
 
