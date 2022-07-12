@@ -6,7 +6,13 @@ import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import { getUserNftCollections, getUserSingleNfts } from "../../utils";
+import {
+  getGraphCollection,
+  getGraphNft,
+  getUserGraphNft,
+  getUserNftCollections,
+  getUserSingleNfts,
+} from "../../utils";
 import {
   fetchUserBoughtNfts,
   fetchUserCollections,
@@ -16,6 +22,7 @@ import {
 } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
+import { ethers } from "ethers";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
@@ -24,6 +31,9 @@ import twitter from "../../assets/icon-twitter-green.svg";
 import discord from "../../assets/icon-discord-green.svg";
 import instagram from "../../assets/icon-instagram-green.svg";
 import youtube from "../../assets/icon-youtube-green.svg";
+import { polygonClient } from "../../utils/graphqlClient";
+import { GET_USER_NFT } from "../../graphql/querries/getCollections";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -46,8 +56,16 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } =
-    useContext(GenContext);
+  const {
+    account,
+    mainnet,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    auroraCollections,
+    polygonCollections,
+    dispatch,
+    chainId,
+  } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -74,10 +92,25 @@ const Dashboard = () => {
 
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
-      const collectedNfts = await fetchUserBoughtNfts(account);
-
-      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-      handleSetState({ collectedNfts: algoCollectedNfts });
+      if (chainId === 80001) {
+        const address = ethers.utils.hexlify(account);
+        const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        } else {
+          const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
+          handleSetState({ collectedNfts: polygonCollectedNft });
+        }
+      } else {
+        const collectedNfts = await fetchUserBoughtNfts(account);
+        const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
+        handleSetState({ collectedNfts: algoCollectedNfts });
+      }
     })();
 
     // Get User created Collections

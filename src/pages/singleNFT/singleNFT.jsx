@@ -7,7 +7,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyNft, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft, getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -366,8 +366,8 @@ const SingleNFT = () => {
               ) : (
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.sold} disabled={nftDetails.chain}>
-                      Coming Soon
+                    <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
+                      Buy now
                     </button>
                   ) : (
                     <button

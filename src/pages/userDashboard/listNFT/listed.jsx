@@ -2,17 +2,21 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails, getUserBoughtNftCollection } from "../../../utils";
+import { getSingleNftDetails, getUserBoughtNftCollection, getUserGraphNft } from "../../../utils";
 import classes from "./listed.module.css";
 import { fetchUserBoughtNfts } from "../../../utils/firebase";
+import { polygonClient } from "../../../utils/graphqlClient";
+import { GET_USER_NFT } from "../../../graphql/querries/getCollections";
+import { setNotification } from "../../../gen-state/gen.actions";
+import { ethers } from "ethers";
 
 const Listed = () => {
-  const { account, mainnet } = useContext(GenContext);
+  const { account, mainnet, dispatch } = useContext(GenContext);
 
   const {
     params: { nftId },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { singleNfts, chainId } = useContext(GenContext);
   const history = useHistory();
   const [state, setState] = useState({
     isLoading: true,
@@ -25,12 +29,35 @@ const Listed = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      const userNftCollections = await fetchUserBoughtNfts(account);
-      const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
+      if (chainId === 80001) {
+        const address = ethers.utils.hexlify(account);
+        const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
+        if (error) {
+          return dispatch(
+            setNotification({
+              message: error.message,
+              type: "warning",
+            })
+          );
+        } else {
+          const polygonBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
+          const nft = polygonBoughtNft.filter((NFT) => NFT.tokenID === nftId)[0];
+          if (!nft) console.log("working not");
+          else {
+            handleSetState({
+              nftDetails: nft,
+              isLoading: false,
+            });
+          }
+        }
+      } else {
+        const userNftCollections = await fetchUserBoughtNfts(account);
+        const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
 
-      const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
-      if (!nft) history.push("/");
-      handleSetState({ nftDetails: nft, isLoading: false });
+        const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
+        if (!nft) history.push("/");
+        handleSetState({ nftDetails: nft, isLoading: false });
+      }
     })();
     document.documentElement.scrollTop = 0;
   }, []);
