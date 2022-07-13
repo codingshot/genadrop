@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import classes from "./GenadropCarouselCard.module.css";
 import iconRight from "../../assets/icon-angle-right.svg";
 import iconLeft from "../../assets/icon-angle-left.svg";
-import { useWheel } from "@use-gesture/react";
+import { useScroll } from "@use-gesture/react";
 
 const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
   const cardContainerRef = useRef(null);
@@ -31,7 +31,7 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
     setSlideActiveCount((sc) => sc + 1);
   };
 
-  const bind = useWheel(({ wheeling, movement: [x] }) => {
+  const bind = useScroll(({ scrolling, movement: [x] }) => {
     if (x > 0 && run.current) {
       handleSlideRight();
       run.current = false;
@@ -40,7 +40,8 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
       run.current = false;
     }
 
-    if (!wheeling) {
+    if (!scrolling) {
+      console.log({ scrolling });
       run.current = true;
     }
   });
