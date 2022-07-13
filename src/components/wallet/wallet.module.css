@@ -192,7 +192,11 @@
 .option img {
   width: 1.2em;
 }
-
+@media screen and (max-width: 1000px) {
+  .connect {
+    max-width: 100%;
+  }
+}
 @media screen and (max-width: 480px) {
   .container {
     justify-content: space-between;

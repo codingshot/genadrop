@@ -12,10 +12,12 @@ const Create = () => {
   };
 
   useEffect(() => {
-    if (!window.sessionStorage.isCreateModal) {
-      setModal(true);
-      window.sessionStorage.isCreateModal = true;
-    }
+    setTimeout(() => {
+      if (!window.sessionStorage.isCreateModal && !window.localStorage.storedCollectionName) {
+        setModal(true);
+        window.sessionStorage.isCreateModal = true;
+      }
+    }, 0);
   }, []);
 
   return (

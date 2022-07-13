@@ -1103,5 +1103,64 @@ export async function purchaseAuroragonNfts(buyProps) {
     );
   }
 }
+export async function purchaseCeloNfts(buyProps) {
+  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  if (!connector) {
+    return dispatch(
+      setNotification({
+        message: "connect wallet",
+        type: "warning",
+      })
+    );
+  }
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const { chainId } = connector._network;
+  const signature = await wallet._signTypedData(
+    // Domain
+    {
+      name: "GenaDrop",
+      version: "1.0.0",
+      chainId,
+      verifyingContract: mainnet
+        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+    },
+    // Types
+    {
+      NFT: [
+        { name: "tokenId", type: "uint256" },
+        { name: "account", type: "address" },
+        { name: "price", type: "uint256" },
+        { name: "seller", type: "address" },
+        { name: "nftContract", type: "address" },
+      ],
+    },
+    // Value
+    { tokenId, account, price, seller, nftContract }
+  );
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    connector.getSigner()
+  );
+  try {
+    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    await tx.wait();
+    return mainnet
+      ? `https://blockscout.celo.org/tx/${tx.hash}`
+      : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
+  } catch (error) {
+    console.log("erooric data", error, error.data);
+    return dispatch(
+      setNotification({
+        message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+        type: "warning",
+      })
+    );
+  }
+}
 
 export { pinata, write };

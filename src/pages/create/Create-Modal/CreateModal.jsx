@@ -19,7 +19,8 @@ const CreateModal = ({ modal, closeModal }) => {
     handleClose();
   };
 
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.preventDefault();
     closeModal();
   };
 
@@ -27,7 +28,7 @@ const CreateModal = ({ modal, closeModal }) => {
     <div className={`${classes.container} ${modal && classes.active}`}>
       <div className={classes.wrapper}>
         <CloseIcon onClick={handleClose} className={classes.closeBtn} />
-        <div className={classes.content}>
+        <form onSubmit={handleClick} className={classes.content}>
           <h3>Let’s get cracking!</h3>
           <h6>Every Collection is Unique</h6>
           <p>
@@ -39,7 +40,7 @@ const CreateModal = ({ modal, closeModal }) => {
             <input value={inputValue} onChange={handleChange} type="text" placeholder="Minority_Drop" />
           </div>
           <button onClick={handleClick}>Continue</button>
-        </div>
+        </form>
       </div>
     </div>
   );
