@@ -97,6 +97,10 @@
   border-radius: 0.25em;
 }
 
+.inputContainer.error input {
+  outline: 2px solid var(--error-500);
+}
+
 .inputContainer input:focus {
   border: 2px solid var(--main-color);
   outline: none;
@@ -115,4 +119,10 @@
 
 .content button:hover {
   background: var(--main-hovered);
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    padding: 2em;
+  }
 }

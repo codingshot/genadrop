@@ -7,20 +7,24 @@ import { setCollectionName } from "../../../gen-state/gen.actions";
 
 const CreateModal = ({ modal, closeModal }) => {
   const [inputValue, setInputValue] = useState("");
+  const [error, setError] = useState(false);
+
   const { dispatch } = useContext(GenContext);
 
   const handleChange = (e) => {
+    setError(false);
     setInputValue(e.target.value);
   };
 
-  const handleClick = () => {
-    if (!inputValue) return;
+  const handleClick = (e) => {
+    e.preventDefault();
+    console.log("clicked");
+    if (!inputValue) return setError(true);
     dispatch(setCollectionName(inputValue));
     handleClose();
   };
 
-  const handleClose = (e) => {
-    e.preventDefault();
+  const handleClose = () => {
     closeModal();
   };
 
@@ -35,7 +39,7 @@ const CreateModal = ({ modal, closeModal }) => {
             Input any awesome collection name you want and click continue <br /> Don’t worry, you can always change it
             later.
           </p>
-          <div className={classes.inputContainer}>
+          <div className={`${classes.inputContainer} ${error && classes.error}`}>
             <label> Collection name </label>
             <input value={inputValue} onChange={handleChange} type="text" placeholder="Minority_Drop" />
           </div>
