@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import classes from "./GenadropCarouselScreen.module.css";
 import iconRight from "../../assets/icon-angle-right.svg";
 import iconLeft from "../../assets/icon-angle-left.svg";
+import { useWheel } from "@use-gesture/react";
 
 const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) => {
   const cardContainerRef = useRef(null);
+  const run = useRef(null);
   const wrapperRef = useRef(null);
 
   const [state, setState] = useState({
@@ -29,6 +31,20 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
     if (slideActiveCount >= slideCount) return;
     setSlideActiveCount((sc) => sc + 1);
   };
+
+  const bind = useWheel(({ wheeling, movement: [x] }) => {
+    if (x > 0 && run.current) {
+      handleSlideRight();
+      run.current = false;
+    } else if (x < 0 && run.current) {
+      handleSlideLeft();
+      run.current = false;
+    }
+
+    if (!wheeling) {
+      run.current = true;
+    }
+  });
 
   useEffect(() => {
     const width = wrapperRef.current && wrapperRef.current.getBoundingClientRect().width;
@@ -72,7 +88,7 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
 
   return (
     <div className={classes.container}>
-      <div ref={wrapperRef} className={classes.wrapper}>
+      <div ref={wrapperRef} className={classes.wrapper} {...bind()}>
         <div style={{ gap }} ref={cardContainerRef} className={classes.cardContainer}>
           {children}
         </div>

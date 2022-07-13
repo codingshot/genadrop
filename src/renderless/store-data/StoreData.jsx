@@ -74,7 +74,7 @@ const StoreData = () => {
   }, [layers]);
 
   useEffect(() => {
-    if (preview.length) {
+    if (preview.length || mountRef.current) {
       (async function transformLayerToStorageFormat() {
         const newPreview = await Promise.all(
           preview.map(async ({ imageFile, ...otherTraits }) => {
@@ -109,7 +109,7 @@ const StoreData = () => {
   }, [preview]);
 
   useEffect(() => {
-    if (rule.length) {
+    if (rule.length || mountRef.current) {
       (async function transformLayerToStorageFormat() {
         const newRule = await Promise.all(
           rule.map(async (r) => {
