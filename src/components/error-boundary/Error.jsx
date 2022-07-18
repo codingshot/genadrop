@@ -1,9 +1,9 @@
 import React, { useLayoutEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import wrongSvg from "../../assets/something_wrong.svg";
-import home from "../../assets/home-svg.svg";
-import homeWhite from "../../assets/home-white.svg";
-import refresh from "../../assets/bx_refresh.svg";
+import { ReactComponent as WrongSvg } from "../../assets/something_wrong.svg";
+import { ReactComponent as Home } from "../../assets/home-svg.svg";
+import { ReactComponent as HomeWhite } from "../../assets/home-white.svg";
+import { ReactComponent as Refresh } from "../../assets/bx_refresh.svg";
 import classes from "./something_wrong.module.css";
 import refresh_green from "../../assets/bx_refresh_green.svg";
 
@@ -26,7 +26,7 @@ const SomethingWentWrong = () => {
   return (
     <div className={classes.container}>
       <div className={classes.notFound}>
-        <img src={wrongSvg} alt="" />
+        <WrongSvg alt="" />
         <h1>Oops something went wrong</h1>
         <div className={classes.text}>
           <span>We are working to fix it, click the refresh button to reload page.</span>

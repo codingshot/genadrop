@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
 import classes from "./create-guide.module.css";
-import rightCtrl from "../../assets/icon-angle-right.svg";
-import leftCtrl from "../../assets/icon-angle-left.svg";
+import { ReactComponent as RightCtrl } from "../../assets/icon-angle-right.svg";
+import { ReactComponent as LeftCtrl } from "../../assets/icon-angle-left.svg";
 import blankImage from "../../assets/blank.png";
 import { GenContext } from "../../gen-state/gen.context";
 import { setDidMout } from "../../gen-state/gen.actions";
@@ -129,14 +129,12 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
 
         <div className={classes.container}>
           <div className={classes.control}>
-            <img
-              src={leftCtrl}
+            <LeftCtrl
               alt=""
               onMouseDown={swipeLeft}
               className={`${classes.left} ${swipeCount > 1 && classes.active}`}
             />
-            <img
-              src={rightCtrl}
+            <RightCtrl
               alt=""
               onMouseDown={swipeRight}
               className={`${classes.right} ${swipeCount < maxCount && classes.active}`}

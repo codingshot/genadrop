@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./footer.module.css";
-import logo from "../../assets/genadrop-logo-light.svg";
+import { ReactComponent as Logo } from "../../assets/genadrop-logo-light.svg";
 import { footerLinks, orgs, socialLinks } from "./footer-script";
 
 const Footer = () => (
@@ -10,7 +10,7 @@ const Footer = () => (
         <div className={classes.wrapper}>
           <div className={classes.topLeft}>
             <a href="/">
-              <img src={logo} alt="" />
+              <Logo alt="" />
             </a>
             <div className={classes.socialIcons}>
               {socialLinks.map((social, idx) => (

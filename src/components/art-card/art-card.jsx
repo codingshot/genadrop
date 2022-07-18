@@ -2,11 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import { addPreview, removeImage, removePreview, updateImage, updatePreview } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./art-card.module.css";
-import checkActiveIcon from "../../assets/icon-check-active.svg";
-import checkIcon from "../../assets/icon-check.svg";
+import { ReactComponent as CheckActiveIcon } from "../../assets/icon-check-active.svg";
+import { ReactComponent as CheckIcon } from "../../assets/icon-check.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import editIconDark from "../../assets/icon-edit-dark.svg";
-import markIconDark from "../../assets/icon-mark-dark.svg";
+import { ReactComponent as EditIconDark } from "../../assets/icon-edit-dark.svg";
+import { ReactComponent as MarkIconDark } from "../../assets/icon-mark-dark.svg";
 
 const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index }) => {
   const [state, setState] = useState({
@@ -81,9 +81,9 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
         {!isRule ? (
           <i />
         ) : activeCard === index ? (
-          <img src={checkActiveIcon} alt="" />
+          <CheckActiveIcon alt="" />
         ) : (
-          <img src={checkIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
+          <CheckIcon alt="" onClick={() => handleAddPreview(traitTitle, image)} />
         )}
         <CloseIcon onClick={handleRemove} className={classes.closeIcon} />
       </div>
@@ -95,14 +95,14 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
           {prompt !== "name" ? (
             <div className={classes.inputText}>
               <div>{traitTitle}</div>
-              <img onClick={() => handlePrompt("name")} src={editIconDark} alt="" />
+              <EditIconDark onClick={() => handlePrompt("name")} alt="" />
             </div>
           ) : (
             <div className={classes.editInput}>
               <form onSubmit={(e) => handleRename(e, image)}>
                 <input autoFocus type="text" name="name" value={inputValue.name} onChange={handleChange} />
               </form>
-              <img onClick={(e) => handleRename(e, image)} src={markIconDark} alt="" />
+              <MarkIconDark onClick={(e) => handleRename(e, image)} alt="" />
             </div>
           )}
         </div>
@@ -111,7 +111,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
           {prompt !== "rarity" ? (
             <div className={classes.inputText}>
               <div>Rarity: {Rarity}</div>
-              <img onClick={() => handlePrompt("rarity")} src={editIconDark} alt="" />
+              <EditIconDark onClick={() => handlePrompt("rarity")} alt="" />
             </div>
           ) : (
             <div className={classes.editInput}>
@@ -126,7 +126,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
                   onChange={handleChange}
                 />
               </form>
-              <img onClick={handleRename} src={markIconDark} alt="" />
+              <MarkIconDark onClick={handleRename} alt="" />
             </div>
           )}
         </div>

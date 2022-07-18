@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import classes from "./GenadropCarouselCard.module.css";
-import iconRight from "../../assets/icon-angle-right.svg";
-import iconLeft from "../../assets/icon-angle-left.svg";
+import { ReactComponent as IconRight } from "../../assets/icon-angle-right.svg";
+import { ReactComponent as IconLeft } from "../../assets/icon-angle-left.svg";
 import { useWheel } from "@use-gesture/react";
 
 const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
@@ -79,13 +79,13 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
               onClick={handleSlideLeft}
               className={`${classes.ctrlBtn_left} ${slideActiveCount && classes.active}`}
             >
-              <img src={iconLeft} alt="" />
+              <IconLeft alt="" />
             </button>
             <button
               onClick={handleSlideRight}
               className={`${classes.ctrlBtn_right} ${slideActiveCount < slideNumberOfCounts && classes.active}`}
             >
-              <img src={iconRight} alt="" />
+              <IconRight alt="" />
             </button>
           </>
         ) : null}

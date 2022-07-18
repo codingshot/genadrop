@@ -3,7 +3,7 @@ import React, { useRef, useContext, useEffect, useState } from "react";
 import { setClipboard } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./clipboard.module.css";
-import linkIcon from "../../assets/icon-link.svg";
+import { ReactComponent as LinkIcon } from "../../assets/icon-link.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 
 const Clipboard = () => {
@@ -63,7 +63,7 @@ const Clipboard = () => {
           {clipboardState}
         </div>
         <a href={clipboardMessage} target="_blank" rel="noreferrer">
-          <img src={linkIcon} alt="icon" />
+          <LinkIcon alt="icon" />
         </a>
       </div>
       <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={clipboardMessage} />
