@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import classes from "./collectionPreview.module.css";
-import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
+import { ReactComponent as ArrowIconLeft } from "../../../assets/icon-arrow-left.svg";
 import AttributeOverlay from "../attribute-overlay/attributeOverlay";
 import { updateZip } from "../collection-single/collection-single-script";
 
@@ -96,7 +96,7 @@ const CollectionPreview = ({
           onClick={() => handleMintSetState({ preview: false, previewSelectMode: false })}
           className={classes.backBtn}
         >
-          <img src={arrowIconLeft} alt="" />
+          <ArrowIconLeft alt="" />
           {/* {previewSelectMode ? "Select an image" : "Back"} */}
           Back
         </div>

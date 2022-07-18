@@ -1,5 +1,5 @@
 import classes from "./Subscribe.module.css";
-import navigationIcon from "../../../assets/icon-navigation.svg";
+import { ReactComponent as NavigationIcon } from "../../../assets/icon-navigation.svg";
 
 const Subscribe = () => {
   return (
@@ -15,7 +15,7 @@ const Subscribe = () => {
         <div className={classes.cruise}>
           <div className={classes.outerCircle}>
             <div className={classes.innerCircle}>
-              <img src={navigationIcon} alt="" />
+              <NavigationIcon alt="" />
             </div>
           </div>
         </div>
