@@ -1,11 +1,11 @@
 import React from "react";
 import classes from "./Orgs.module.css";
-import org1 from "../../../assets/org1.svg";
-import org2 from "../../../assets/org2.svg";
-import org3 from "../../../assets/org3.svg";
-import org4 from "../../../assets/org4.svg";
-import box from "../../../assets/box.svg";
-import ball from "../../../assets/ball.svg";
+import { ReactComponent as Org1 } from "../../../assets/org1.svg";
+import { ReactComponent as Org2 } from "../../../assets/org2.svg";
+import { ReactComponent as Org3 } from "../../../assets/org3.svg";
+import { ReactComponent as Org4 } from "../../../assets/org4.svg";
+import { ReactComponent as Box } from "../../../assets/box.svg";
+import { ReactComponent as Ball } from "../../../assets/ball.svg";
 
 const Orgs = () => (
   <div className={classes.container}>
@@ -17,28 +17,24 @@ const Orgs = () => (
         From the leading blockchains, creative groups, and DAOs, GenaDrop is supported by the industry’s best.
       </div>
       <div className={classes.orgs}>
-        <img
+        <Org4
           className={classes.org}
           onClick={() => window.open("https://celocommunityfund.org/", "_blank")}
-          src={org4}
           alt="org-logo"
         />
-        <img
+        <Org3
           className={classes.org}
           onClick={() => window.open("https://near.foundation/", "_blank")}
-          src={org3}
           alt="org-logo"
         />
-        <img
+        <Org2
           className={classes.org}
           onClick={() => window.open("https://www.algorand.com/", "_blank")}
-          src={org2}
           alt="org-logo"
         />
-        <img
+        <Org1
           className={classes.org}
           onClick={() => window.open("https://www.minorityprogrammers.com/", "_blank")}
-          src={org1}
           alt="org-logo"
         />
       </div>

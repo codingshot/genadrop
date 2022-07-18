@@ -17,8 +17,8 @@ import {
 import Layer from "../layer/layer";
 import { getCombinations, getItemStyle, getListStyle } from "./layeroders-script";
 import { fetchAlgoCollections } from "../../utils/firebase";
-import editIcon from "../../assets/icon-edit.svg";
-import markIcon from "../../assets/icon-mark.svg";
+import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
+import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as AddIcon } from "../../assets/icon-plus.svg";
 import LayerInput from "./Layer-Input/LayerInput";
@@ -146,9 +146,9 @@ const LayerOrders = ({ isCreateModal }) => {
           )}
           <div className={classes.editBtn}>
             {renameAction ? (
-              <img onClick={handleRename} src={markIcon} alt="" />
+              <MarkIcon onClick={handleRename} alt="" />
             ) : (
-              <img onClick={() => handleSetState({ renameAction: true })} src={editIcon} alt="" />
+              <EditIcon onClick={() => handleSetState({ renameAction: true })} alt="" />
             )}
           </div>
         </div>
