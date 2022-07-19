@@ -184,3 +184,21 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
     }
   }
 `;
+
+export const GET_CELO_SINGLE_NFT = gql`
+  query MyQuery {
+    nfts(where: { collection: "0xa5ead6ffa64a98757a2f6f4068f2cb86b515b6ca" }) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;

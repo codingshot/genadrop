@@ -129,7 +129,6 @@ const CollectionNFT = () => {
         // filtering to get the unique nft
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
-        console.log(filteredId);
         if (filteredId) {
           const result = await getGraphNft(filteredId[0], collectionName);
           const trHistory = await getTransactions(filteredId[0]?.transactions);

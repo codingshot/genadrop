@@ -4,7 +4,7 @@ import axios from "axios";
 // import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
 import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
-import { getAlgoData, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
+import { getAlgoData, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
@@ -346,7 +346,7 @@ export const getTransactions = async (transactions) => {
     try {
       const trnObj = {};
       (trnObj.buyer = transactions[i]?.buyer?.id),
-        (trnObj.price = transactions[i]?.price),
+        (trnObj.price = transactions[i]?.price * 0.000000000000000001),
         (trnObj.seller = transactions[i].id),
         (trnObj.txDate = transactions[i]?.txDate),
         (trnObj.txId = transactions[i]?.txId),
@@ -483,28 +483,54 @@ export const buyGraphNft = async (buyProps) => {
     );
   }
   dispatch(setLoading(true));
-  const res = await purchasePolygonNfts(buyProps);
-
-  if (res) {
-    dispatch(setLoading(false));
-    dispatch(
-      setNotification({
-        message: "transaction successful",
-        type: "success",
-      })
-    );
-    setTimeout(() => {
-      history.push(`/me/${account}`);
-      // history.push(`/marketplace`);
-    }, 3000);
+  if (chainId === 44787) {
+    const res = await purchaseCeloNfts(buyProps);
+    console.log("response", res);
+    if (res) {
+      dispatch(setLoading(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/me/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setLoading(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
   } else {
-    dispatch(setLoading(false));
-    dispatch(
-      setNotification({
-        message: "transaction failed",
-        type: "error",
-      })
-    );
+    const res = await purchasePolygonNfts(buyProps);
+
+    if (res) {
+      dispatch(setLoading(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/me/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setLoading(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
   }
 };
 

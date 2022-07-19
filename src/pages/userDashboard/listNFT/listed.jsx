@@ -9,6 +9,7 @@ import { polygonClient } from "../../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../../graphql/querries/getCollections";
 import { setNotification } from "../../../gen-state/gen.actions";
 import { ethers } from "ethers";
+import { getCeloNFTToList, getPolygonNFTToList } from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const Listed = () => {
   const { account, mainnet, dispatch } = useContext(GenContext);
@@ -29,27 +30,23 @@ const Listed = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      if (chainId === 80001) {
-        const address = ethers.utils.hexlify(account);
-        const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
-        if (error) {
-          return dispatch(
-            setNotification({
-              message: error.message,
-              type: "warning",
-            })
-          );
-        } else {
-          const polygonBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
-          const nft = polygonBoughtNft.filter((NFT) => NFT.tokenID === nftId)[0];
-          if (!nft) console.log("working not");
-          else {
-            handleSetState({
-              nftDetails: nft,
-              isLoading: false,
-            });
-          }
+      const address = ethers.utils.hexlify(account);
+      if (chainId === 80001 || chainId === 137) {
+        const nft = await getPolygonNFTToList(address, nftId);
+        if (!nft) history.push("/");
+        else {
+          handleSetState({
+            nftDetails: nft,
+            isLoading: false,
+          });
         }
+      } else if (chainId === 44787 || chainId === 42220) {
+        const nft = await getCeloNFTToList(address, nftId);
+        if (!nft) history.push("/");
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+        });
       } else {
         const userNftCollections = await fetchUserBoughtNfts(account);
         const result = await getUserBoughtNftCollection(mainnet, userNftCollections);

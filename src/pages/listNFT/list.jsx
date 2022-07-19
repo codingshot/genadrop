@@ -8,7 +8,8 @@ import { fetchUserBoughtNfts, listNft, writeNft } from "../../utils/firebase";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { polygonClient } from "../../utils/graphqlClient";
 import { ethers } from "ethers";
-import { listPolygonNft } from "../../utils/arc_ipfs";
+import { listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
+import { getCeloNFTToList, getPolygonNFTToList } from "../../renderless/fetch-data/fetchUserGraphData";
 
 const List = () => {
   const { account, mainnet, chainId, connector, dispatch } = useContext(GenContext);
@@ -47,9 +48,11 @@ const List = () => {
       price,
       id: nftDetails.tokenID,
     };
-
-    if (chainId === 80001) {
+    if (chainId === 80001 || chainId === 137) {
       console.log("RES: ", await listPolygonNft(listProps));
+      history.push(`${match.url}/listed`);
+    } else if (chainId === 44787 || chainId === 42220) {
+      console.log("RES: ", await listCeloNft(listProps));
       history.push(`${match.url}/listed`);
     } else {
       console.log("RES: ", await listNft(nftDetails.Id, price, account));
@@ -59,30 +62,25 @@ const List = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      const userNftCollections = await fetchUserBoughtNfts(account);
-      if (chainId === 80001) {
-        const address = ethers.utils.hexlify(account);
-        const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
-        if (error) {
-          return dispatch(
-            setNotification({
-              message: error.message,
-              type: "warning",
-            })
-          );
-        } else {
-          const polygonBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
-          const nft = polygonBoughtNft.filter((NFT) => NFT.tokenID === nftId)[0];
-          if (!nft) history.goBack();
-          else {
-            handleSetState({
-              nftDetails: nft,
-              isLoading: false,
-              image_url: nft?.ipfs_data?.image,
-            });
-          }
-        }
+      const address = ethers.utils.hexlify(account);
+      if (chainId === 80001 || chainId === 137) {
+        const nft = await getPolygonNFTToList(address, nftId);
+        if (!nft) history.goBack();
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+          image_url: nft?.ipfs_data?.image,
+        });
+      } else if (chainId === 44787 || chainId === 42220) {
+        const nft = await getCeloNFTToList(address, nftId);
+        if (!nft) history.goBack();
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+          image_url: nft?.ipfs_data?.image,
+        });
       } else {
+        const userNftCollections = await fetchUserBoughtNfts(account);
         const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
         const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
         if (!nft) history.goBack();

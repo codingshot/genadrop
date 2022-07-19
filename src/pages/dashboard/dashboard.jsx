@@ -31,7 +31,7 @@ import twitter from "../../assets/icon-twitter-green.svg";
 import discord from "../../assets/icon-discord-green.svg";
 import instagram from "../../assets/icon-instagram-green.svg";
 import youtube from "../../assets/icon-youtube-green.svg";
-import { polygonClient } from "../../utils/graphqlClient";
+import { celoClient, polygonClient } from "../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { setNotification } from "../../gen-state/gen.actions";
 
@@ -63,6 +63,7 @@ const Dashboard = () => {
     singlePolygonNfts,
     auroraCollections,
     polygonCollections,
+    celoCollections,
     dispatch,
     chainId,
   } = useContext(GenContext);
@@ -92,20 +93,16 @@ const Dashboard = () => {
 
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
+      const address = ethers.utils.hexlify(account);
       if (chainId === 80001) {
-        const address = ethers.utils.hexlify(account);
-        const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
-        if (error) {
-          return dispatch(
-            setNotification({
-              message: error.message,
-              type: "warning",
-            })
-          );
-        } else {
-          const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
-          handleSetState({ collectedNfts: polygonCollectedNft });
-        }
+        const { data } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
+
+        const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
+        handleSetState({ collectedNfts: polygonCollectedNft });
+      } else if (chainId === 44787) {
+        const { data } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
+        const celoCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
+        handleSetState({ collectedNfts: celoCollectedNft });
       } else {
         const collectedNfts = await fetchUserBoughtNfts(account);
         const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
@@ -119,8 +116,15 @@ const Dashboard = () => {
       const algoCollections = await getUserNftCollections({ collections, mainnet });
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
       const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const celoCollection = celoCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      console.log(celoCollections);
       handleSetState({
-        myCollections: [...(algoCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
+        myCollections: [
+          ...(algoCollections || []),
+          ...(aurrCollections || []),
+          ...(polyCollections || []),
+          ...(celoCollection || []),
+        ],
       });
     })();
 

@@ -24,6 +24,7 @@ import {
   GET_ALL_POLYGON_COLLECTIONS,
   GET_AURORA_SINGLE_NFTS,
   GET_POLYGON_SINGLE_NFTS,
+  GET_CELO_SINGLE_NFT,
 } from "../../graphql/querries/getCollections";
 import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
@@ -165,6 +166,27 @@ const FetchData = () => {
         dispatch(setPolygonSingleNfts(null));
       }
       return null;
+    })();
+
+    // Get Celo Single NFTs
+    (async function getCeloSingleNft() {
+      const { data, error } = await celoClient.query(GET_CELO_SINGLE_NFT).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
+      // console.log("celo single", result);
+      // if (result?.length) {
+      //   dispatch(setPolygonSingleNfts(result));
+      // } else {
+      //   dispatch(setPolygonSingleNfts(null));
+      // }
+      // return null;
     })();
 
     (async function getCeloCollections() {
