@@ -170,10 +170,10 @@ async function createAsset(asset, account) {
   const assetName = `${asset.name}@arc3`;
   const { url } = asset;
 
-  const managerAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
+  const managerAddr = undefined;
   const reserveAddr = undefined;
   const freezeAddr = undefined;
-  const clawbackAddr = process.env.REACT_APP_GENADROP_MANAGER_ADDRESS;
+  const clawbackAddr = undefined;
   const decimals = 0;
   const total = 1;
   const { metadata } = asset;
@@ -325,19 +325,19 @@ export async function mintSingleToPoly(singleMintProps) {
     mintSingle,
     signer
   );
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const marketContract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
-    await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet ? `https://polygonscan.com/tx/${txn.hash}` : `https://mumbai.polygonscan.com/tx/${txn.hash}`;
   } catch (error) {
@@ -372,19 +372,19 @@ export async function mintSingleToCelo(singleMintProps) {
     mintSingle,
     signer
   );
-  const wallet = await InitiateCeloProvider(mainnet);
-  const marketContract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
+  // const wallet = await InitiateCeloProvider(mainnet);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
   let txn;
   try {
     txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
-    await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet
       ? `https://celo-testnet.org/tx/${txn.hash}`
@@ -412,21 +412,21 @@ export async function mintSingleToAurora(singleMintProps) {
     mintSingle,
     signer
   );
-  const wallet = new ethers.Wallet(
-    mainnet ? process.env.REACT_APP_GENADROP_SERVER_KEY : process.env.REACT_APP_GENADROP_SERVER_KEY,
-    connector
-  );
-  const marketContract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
+  // const wallet = new ethers.Wallet(
+  //   mainnet ? process.env.REACT_APP_GENADROP_SERVER_KEY : process.env.REACT_APP_GENADROP_SERVER_KEY,
+  //   connector
+  // );
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
   try {
     const txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
-    await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet ? `https://aurorascan.dev/tx/${txn.hash}` : `https://testnet.aurorascan.dev/tx/${txn.hash}`;
   } catch (error) {
@@ -677,15 +677,15 @@ export async function mintToCelo(celoProps) {
     dispatch,
     setLoader,
   });
-  const wallet = await InitiateCeloProvider(mainnet);
+  // const wallet = await InitiateCeloProvider(mainnet);
   await connector.getSigner();
-  const marketContract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
     const uintArray = asset.metadata.toLocaleString();
@@ -698,15 +698,15 @@ export async function mintToCelo(celoProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
     await tx.wait();
-    await marketContract.createBulkMarketItem(
-      contract.address,
-      ids,
-      String(price * 10 ** 18),
-      amounts,
-      "General",
-      account,
-      description
-    );
+    // await marketContract.createBulkMarketItem(
+    //   contract.address,
+    //   ids,
+    //   String(price * 10 ** 18),
+    //   amounts,
+    //   "General",
+    //   account,
+    //   description
+    // );
   } catch (error) {
     console.log(error);
     dispatch(setLoader(""));
@@ -741,14 +741,14 @@ export async function mintToPoly(polyProps) {
     dispatch,
     setLoader,
   });
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const marketContract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
@@ -764,15 +764,15 @@ export async function mintToPoly(polyProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
     await tx.wait();
-    await marketContract.createBulkMarketItem(
-      contract.address,
-      ids,
-      String(price * 10 ** 18),
-      amounts,
-      "General",
-      account,
-      description
-    );
+    // await marketContract.createBulkMarketItem(
+    //   contract.address,
+    //   ids,
+    //   String(price * 10 ** 18),
+    //   amounts,
+    //   "General",
+    //   account,
+    //   description
+    // );
   } catch (error) {
     dispatch(setLoader(""));
     dispatch(
@@ -911,14 +911,14 @@ export async function mintToAurora(polyProps) {
     dispatch,
     setLoader,
   });
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const marketContract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
@@ -934,15 +934,15 @@ export async function mintToAurora(polyProps) {
   try {
     tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
     await tx.wait();
-    await marketContract.createBulkMarketItem(
-      contract.address,
-      ids,
-      String(price * 10 ** 18),
-      amounts,
-      "General",
-      account,
-      description
-    );
+    // await marketContract.createBulkMarketItem(
+    //   contract.address,
+    //   ids,
+    //   String(price * 10 ** 18),
+    //   amounts,
+    //   "General",
+    //   account,
+    //   description
+    // );
   } catch (error) {
     dispatch(setLoader(""));
     dispatch(setNotification(`${error.message}`));

@@ -10,12 +10,12 @@ import "./NFT.sol";
 contract NftCollection{
     // store collection addresses
     mapping(address => address[]) private _collectionAddresses;
-    event CollectionCreated(address collectionAddress, address indexed collectionOwner);
+    event CollectionCreated(address collectionAddress, address indexed collectionOwner, string collectionName);
     
     function createCollection(string memory _name, string memory _symbol, address manager) public {
         address collection = address (new NftMinter(_name, _symbol, msg.sender, manager));
         _collectionAddresses[msg.sender].push(collection);
-        emit CollectionCreated(collection, msg.sender);
+        emit CollectionCreated(collection, msg.sender, _name);
     }
     
     function collectionsOf(address user) public view returns (address[] memory) {
