@@ -6,9 +6,9 @@ import { addRule, clearPreview, clearRule, setConflictRule } from "../../gen-sta
 import isUnique from "./collection-overview-script";
 import RulesCard from "../rulesCard/rulesCard.component";
 import { reOrderPreview } from "../../utils";
-import infoIcon from "../../assets/icon-info-regular.svg";
+import { ReactComponent as InfoIcon } from "../../assets/icon-info-regular.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import createIcon from "../../assets/create-icon2.svg";
+import { ReactComponent as CreateIcon } from "../../assets/create-icon2.svg";
 
 const CollectionOverview = () => {
   const { dispatch, isRule, preview, rule, layers, combinations } = useContext(GenContext);
@@ -91,7 +91,7 @@ const CollectionOverview = () => {
             </>
           )}
           <div className={`${classes.conflictInfo} ${toggleInfo && classes.hidden}`}>
-            <img src={infoIcon} alt="info" />
+            <InfoIcon alt="info" />
             <p>Setting conflict rules for images means that the selected set of images cannot form a generative art</p>
             <CloseIcon className={classes.closeIcon} onClick={() => handleSetState({ toggleInfo: true })} />
           </div>
@@ -102,7 +102,7 @@ const CollectionOverview = () => {
         layers.map((layer) => <CollectionMenu key={layer.id} layer={layer} />)
       ) : (
         <div className={classes.fallback}>
-          <img src={createIcon} alt="" />
+          <CreateIcon alt="" />
           <h4>Add Layers to Generate Art</h4>
           <p>Click on “Add Layer” button to add layers for your arts</p>
         </div>

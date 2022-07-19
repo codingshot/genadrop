@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useContext, useState } from "react";
 import { setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Notification.module.css";
-import warningIcon from "../../assets/icon-warning.svg";
-import successIcon from "../../assets/icon-success.svg";
-import errorIcon from "../../assets/icon-error.svg";
+import { ReactComponent as WarningIcon } from "../../assets/icon-warning.svg";
+import { ReactComponent as SuccessIcon } from "../../assets/icon-success.svg";
+import { ReactComponent as ErrorIcon } from "../../assets/icon-error.svg";
 import blankIcon from "../../assets/blank.png";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 

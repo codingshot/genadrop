@@ -1,6 +1,6 @@
-import successIcon from "../../../assets/icon-success_2.svg";
-import linkIconAccent from "../../../assets/icon-link-accent.svg";
-import linkIconWhite from "../../../assets/icon-link-white.svg";
+import { ReactComponent as SuccessIcon } from "../../../assets/icon-success_2.svg";
+import { ReactComponent as LinkIconAccent } from "../../../assets/icon-link-accent.svg";
+import { ReactComponent as LinkIconWhite } from "../../../assets/icon-link-white.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { useContext, useRef, useState } from "react";
 import classes from "./popup.module.css";
@@ -43,7 +43,7 @@ const SuccessPopup = (props) => {
     <div className={classes.popupContainer}>
       <CloseIcon onClick={handleResetPopup} className={classes.closeIcon} />
       <div className={classes.imgContainer}>
-        <img src={successIcon} alt="" />
+        <SuccessIcon alt="" />
       </div>
       <h3 className={`${classes.heading} ${classes.success}`}>Mint Successful</h3>
       <div className={classes.actionBtnContainer}>
@@ -60,8 +60,8 @@ const SuccessPopup = (props) => {
             Block Explorer
           </a>
           <div className={classes.iconContainer}>
-            <img src={linkIconAccent} alt="" />
-            <img src={linkIconWhite} alt="" />
+            <LinkIconAccent alt="" />
+            <LinkIconWhite alt="" />
           </div>
         </button>
       </div>

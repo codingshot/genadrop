@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import classes from "./share.module.css";
-import copiedIcon from "../../assets/copied.svg";
-import copyIcon from "../../assets/copy-solid.svg";
-import twitterIcon from "../../assets/twitter.svg";
-import facebookIcon from "../../assets/facebook.svg";
+import { ReactComponent as CopiedIcon } from "../../assets/copied.svg";
+import { ReactComponent as CopyIcon } from "../../assets/copy-solid.svg";
+import { ReactComponent as TwitterIcon } from "../../assets/twitter.svg";
+import { ReactComponent as FacebookIcon } from "../../assets/facebook.svg";
 // import instagramIcon from '../../assets/instagramIcon';
 
 const Share = ({ url }) => {
@@ -72,9 +72,9 @@ const Share = ({ url }) => {
         <CopyToClipboard text={path} onCopy={onCopyText}>
           <div className={classes.copy_area}>
             {!isCopied ? (
-              <img className={classes.shareicon} src={copyIcon} alt="" />
+              <CopyIcon className={classes.shareicon} alt="" />
             ) : (
-              <img className={classes.shareicon} src={copiedIcon} alt="" />
+              <CopiedIcon className={classes.shareicon} alt="" />
             )}
           </div>
         </CopyToClipboard>

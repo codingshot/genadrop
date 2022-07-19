@@ -12,14 +12,14 @@ import Attribute from "../Attribute/Attribute";
 import { handleMint, handleSingleMint } from "./minter-script";
 import classes from "./minter.module.css";
 import CollectionPreview from "../collection-preview/collectionPreview";
-import rightArrow from "../../../assets/icon-arrow-right.svg";
-import infoIcon from "../../../assets/icon-info.svg";
+import { ReactComponent as RightArrow } from "../../../assets/icon-arrow-right.svg";
+import { ReactComponent as InfoIcon } from "../../../assets/icon-info.svg";
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
-import dropdownIcon from "../../../assets/icon-dropdown2.svg";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
 import { initConnectWallet } from "../../../components/wallet/wallet-script";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
@@ -305,7 +305,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                   {file.length > 1 ? (
                     <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
                       <span>view all assets</span>
-                      <img src={rightArrow} alt="" />
+                      <RightArrow alt="" />
                     </div>
                   ) : null}
                 </div>
@@ -417,7 +417,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 <div className={classes.category}>
                   Set Mint Options{" "}
                   <div className={classes.info}>
-                    <img src={infoIcon} alt="" />
+                    <InfoIcon alt="" />
                     <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
                   </div>
                 </div>
@@ -435,7 +435,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     ) : (
                       <span>Select Chain</span>
                     )}
-                    <img className={classes.dropdownIcon} src={dropdownIcon} alt="" />
+                    <DropdownIcon className={classes.dropdownIcon} alt="" />
                   </div>
                   <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
                     {Object.values(supportedChains)

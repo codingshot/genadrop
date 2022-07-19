@@ -3,8 +3,8 @@ import classes from "./CollectionPreviewSelect.module.css";
 import AttributeOverlay from "../attribute-overlay/attributeOverlay";
 import { updateZip } from "../collection-single/collection-single-script";
 import { ReactComponent as ArrowIconLeft } from "../../../assets/icon-arrow-left.svg";
-import angleLeft from "../../../assets/icon-angle-left.svg";
-import angleRight from "../../../assets/icon-angle-right.svg";
+import {ReactComponent as AngleLeft }  from "../../../assets/icon-angle-left.svg";
+import { ReactComponent as AngleRight } from "../../../assets/icon-angle-right.svg";
 
 const CollectionPreviewSelect = ({
   file,
@@ -153,7 +153,7 @@ const CollectionPreviewSelect = ({
         </div>
         <div className={classes.paginate}>
           <div onClick={handlePrev} className={`${classes.pageControl} ${classes.prev}`}>
-            <img src={angleLeft} alt="" />
+            <AngleLeft alt="" />
           </div>
           <div className={classes.pageCount}>
             {getPagination().map((num) => (
@@ -167,7 +167,7 @@ const CollectionPreviewSelect = ({
             ))}
           </div>
           <div onClick={handleNext} className={`${classes.pageControl} ${classes.next}`}>
-            <img src={angleRight} alt="" />
+            <AangleRight alt="" />
           </div>
           <div className={classes.gotoWrapper}>
             <input
@@ -177,7 +177,7 @@ const CollectionPreviewSelect = ({
             />
             <div onClick={handleGoto} className={`${classes.pageControl} ${classes.goto}`}>
               Go
-              <img src={angleRight} alt="" />
+              <AngleRight alt="" />
             </div>
           </div>
         </div>

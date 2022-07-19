@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
-import logo from "../../assets/genadrop-logo.svg";
-import drop from "../../assets/drop.svg";
+import { ReactComponent as Logo } from "../../assets/genadrop-logo.svg";
+import { ReactComponent as Drop } from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import hamburgerIcon from "../../assets/icon-hamburger.svg";
+import { ReactComponent as HamburgerIcon } from "../../assets/icon-hamburger.svg";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -38,9 +38,9 @@ const Navbar = () => {
   return (
     <div className={classes.container}>
       <div className={classes.logoContainer}>
-        <img className={classes.drop} src={drop} alt="" />
-        <img onClick={() => history.push("/")} className={classes.logoDesktop} src={logo} alt="" />
-        <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
+        <Drop className={classes.drop} alt="" />
+        <Logo onClick={() => history.push("/")} className={classes.logoDesktop} alt="" />
+        <Logo onClick={() => history.push("/")} className={classes.logoMobile} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
         <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
@@ -75,10 +75,9 @@ const Navbar = () => {
         {dropdown ? (
           <CloseIcon onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.closeIcon} />
         ) : (
-          <img
+          <HamburgerIcon
             onClick={() => handleSetState({ dropdown: !dropdown })}
             className={classes.iconOpen}
-            src={hamburgerIcon}
             alt=""
           />
         )}

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from "react";
 import { clearRule, deleteRule, promptDeleteRules, setPrompt } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./rulesCard.module.css";
-import leftArrow from "../../assets/icon-arrow-left-long.svg";
+import { ReactComponent as LeftArrow } from "../../assets/icon-arrow-left-long.svg";
 import { handleImage } from "../preview/collection-preview-script";
 
 const RulesCard = ({ showRule }) => {
@@ -57,7 +57,7 @@ const RulesCard = ({ showRule }) => {
       {true ? (
         <div className={classes.btnContainer}>
           <button type="button" onClick={() => showRule(false)} className={classes.closeBtn}>
-            <img src={leftArrow} alt="" />
+            <LeftArrow alt="" />
             Go back
           </button>
           <button type="button" onClick={handleClearRule} className={classes.deleteBtn}>

@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./wallet.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import userIcon from "../../assets/icon-user.svg";
-import switchIcon from "../../assets/icon-switch.svg";
-import copyIcon from "../../assets/icon-copy.svg";
-import chevronDown from "../../assets/icon-chevron-down.svg";
-import disconnectIcon from "../../assets/icon-disconnect.svg";
+import { ReactComponent as UserIcon } from "../../assets/icon-user.svg";
+import { ReactComponent as SwitchIcon }  from "../../assets/icon-switch.svg";
+import { ReactComponent as CopyIcon } from "../../assets/icon-copy.svg";
+import { ReactComponent as ChevronDown } from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as DisconnectIcon } from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
 import {
@@ -120,23 +120,23 @@ function ConnectWallet() {
       }}
       className={classes.user}
     >
-      <img src={userIcon} alt="" />
+      <UserIcon alt="" />
     </div>
   );
 
   const dropdown = (
     <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
       <div onClick={() => initConnectWallet(walletProps)} className={classes.option}>
-        <img src={switchIcon} alt="" />
+        <SwitchIcon alt="" />
         <div>Switch network</div>
       </div>
       <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
-        <img src={copyIcon} alt="" />
+        <CopyIcon alt="" />
         <div>{clipboardState}</div>
         <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
       </div>
       <div onClick={handleDisconnet} className={classes.option}>
-        <img src={disconnectIcon} alt="" />
+        <DisconnectIcon alt="" />
         <div>Disconnect</div>
       </div>
     </div>
@@ -160,7 +160,7 @@ function ConnectWallet() {
     <div className={classes.network}>
       <div className={classes.dot} />{" "}
       <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-      <img src={chevronDown} alt="" />
+      <ChevronDown alt="" />
       <div onClick={handleNetworkClick} className={classes.networkDrop}>
         {network === "mainnet" ? "Switch to testnet" : "Switch to mainnet"}
       </div>
