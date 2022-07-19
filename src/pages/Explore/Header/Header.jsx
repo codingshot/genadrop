@@ -2,9 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import classes from "./Header.module.css";
-import listIcon from "../../../assets/icon-list.svg";
-import stackIcon from "../../../assets/icon-stack.svg";
-import tradeIcon from "../../../assets/icon-trade.svg";
+import { ReactComponent as ListIcon } from "../../../assets/icon-list.svg";
+import { ReactComponent as StackIcon } from "../../../assets/icon-stack.svg";
+import { ReactComponent as TradeIcon } from "../../../assets/icon-trade.svg";
 import Copy from "../../../components/copy/copy";
 import supportedChains from "../../../utils/supportedChains";
 import { readUserProfile } from "../../../utils/firebase";
@@ -130,7 +130,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
               </span>
             </div>
           </div>
-          <img src={stackIcon} alt="" />
+          <StackIcon alt="" />
         </div>
 
         <div className={classes.detailContentWrapper}>
@@ -138,7 +138,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
             <div className={classes.floor}>TOTAL VOLUME TRADED</div>
             <div className={classes.price}>0</div>
           </div>
-          <img src={tradeIcon} alt="" />
+          <TradeIcon alt="" />
         </div>
 
         <div className={classes.detailContentWrapper}>
@@ -146,7 +146,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
             <div className={classes.floor}>TOTAL LIST COUNT</div>
             <div className={classes.price}>{numberOfNfts}</div>
           </div>
-          <img src={listIcon} alt="" />
+          <ListIcon alt="" />
         </div>
       </div>
     </header>

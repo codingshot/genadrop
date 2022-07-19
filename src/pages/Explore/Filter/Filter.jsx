@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Filter.module.css";
-import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
-import arrowIconRight from "../../../assets/icon-arrow-right.svg";
-import filterIcon from "../../../assets/icon-filter.svg";
-import dropdownIcon from "../../../assets/icon-dropdown.svg";
+import { ReactComponent as ArrowIconLeft } from "../../../assets/icon-arrow-left.svg";
+import { ReactComponent as ArrowIconRight } from "../../../assets/icon-arrow-right.svg";
+import { ReactComponent as FilterIcon } from "../../../assets/icon-filter.svg";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown.svg";
 import Dropdown from "../Dropdown/Dropdown";
 
 const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handleExploreSetState }) => {
@@ -88,10 +88,10 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
         <aside className={classes.sidebar}>
           <div onClick={() => handleExploreSetState({ toggleFilter: !toggleFilter })} className={classes.filterHeading}>
             <div>
-              <img src={filterIcon} alt="" />
+              <FilterIcon alt="" />
               <span>Filter</span>
             </div>
-            <img className={classes.leftArrow} src={arrowIconLeft} alt="" />
+            <ArrowIconLeft className={classes.leftArrow} alt="" />
           </div>
           <div className={classes.sideOverflowWrapper}>
             <Dropdown title="Status">
@@ -145,7 +145,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
                           <div>{capitalize(attr.trait_type)}</div>
                           <div className={`${classes.layerIcon} ${toggleLayer === idx && classes.active}`}>
                             <div>{attr.value.length}</div>
-                            <img src={dropdownIcon} alt="" />
+                            <DropdownIcon alt="" />
                           </div>
                         </div>
                         <div className={`${classes.layer} ${toggleLayer === idx && classes.active}`}>
@@ -191,10 +191,9 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
         </aside>
       ) : (
         <aside className={classes.sidebar2}>
-          <img
+          <ArrowIconRight
             onClick={() => handleExploreSetState({ toggleFilter: !toggleFilter })}
             className={classes.rightArrow}
-            src={arrowIconRight}
             alt=""
           />
         </aside>

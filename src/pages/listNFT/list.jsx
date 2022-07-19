@@ -9,6 +9,7 @@ import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { polygonClient } from "../../utils/graphqlClient";
 import { ethers } from "ethers";
 import { listPolygonNft } from "../../utils/arc_ipfs";
+import { ReactComponent as PriceTage } from "/assets/price-tage.svg"
 
 const List = () => {
   const { account, mainnet, chainId, connector, dispatch } = useContext(GenContext);
@@ -142,7 +143,7 @@ const List = () => {
             <div className={classes.btns}>
               <button type="button" className={classes.buy} onClick={listNFT}>
                 <div>
-                  <img src="/assets/price-tage.svg" alt="" />
+                  <PriceTage src="/assets/price-tage.svg" alt="" />
                   SET PRICE
                 </div>
                 <span>Sell the NFT at a fixed price</span>

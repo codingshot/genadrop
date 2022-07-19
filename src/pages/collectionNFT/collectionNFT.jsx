@@ -14,12 +14,12 @@ import { buyGraphNft, buyNft, getGraphCollection, getGraphNft, getTransactions }
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
-import copiedIcon from "../../assets/copied.svg";
-import copyIcon from "../../assets/copy-solid.svg";
-import walletIcon from "../../assets/wallet-icon.png";
-import twitterIcon from "../../assets/twitter.svg";
-import facebookIcon from "../../assets/facebook.svg";
-import instagramIcon from "../../assets/instagram.svg";
+import { ReactComponent as CopiedIcon } from "../../assets/copied.svg";
+import { ReactComponent as CopyIcon } from "../../assets/copy-solid.svg";
+import { ReactComponent as WalletIcon } from "../../assets/wallet-icon.png";
+import { ReactComponent as TwitterIcon } from "../../assets/twitter.svg";
+import { ReactComponent as FacebookIcon } from "../../assets/facebook.svg";
+import { ReactComponent as InstagramIcon } from "../../assets/instagram.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import supportedChains from "../../utils/supportedChains";
@@ -308,7 +308,7 @@ const CollectionNFT = () => {
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
                     <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
-                      <img src={walletIcon} alt="" />
+                      <WalletIcon alt="" />
                       Buy now
                     </button>
                   ) : (
@@ -318,7 +318,7 @@ const CollectionNFT = () => {
                       disabled={nftDetails.sold}
                       onClick={() => buyNft(buyProps)}
                     >
-                      <img src={walletIcon} alt="" />
+                      <WalletIcon alt="" />
                       Buy now
                     </button>
                   )}
@@ -400,9 +400,9 @@ const CollectionNFT = () => {
               <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                 <div className={classes.copy_area}>
                   {!isCopied ? (
-                    <img className={classes.shareicon} src={copyIcon} alt="" />
+                    <CopyIcon className={classes.shareicon} alt="" />
                   ) : (
-                    <img className={classes.shareicon} src={copiedIcon} alt="" />
+                    <CopiedIcon className={classes.shareicon} alt="" />
                   )}
                 </div>
               </CopyToClipboard>

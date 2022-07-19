@@ -27,10 +27,10 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
 import bg from "../../assets/bg.png"; // remove this when done!
-import twitter from "../../assets/icon-twitter-green.svg";
-import discord from "../../assets/icon-discord-green.svg";
-import instagram from "../../assets/icon-instagram-green.svg";
-import youtube from "../../assets/icon-youtube-green.svg";
+import { ReactComponent as Twitter } from "../../assets/icon-twitter-green.svg";
+import { ReactComponent as Discord } from "../../assets/icon-discord-green.svg";
+import { ReactComponent as Instagram } from "../../assets/icon-instagram-green.svg";
+import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
 import { polygonClient } from "../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { setNotification } from "../../gen-state/gen.actions";
@@ -206,7 +206,7 @@ const Dashboard = () => {
               {userDetails?.twitter ? (
                 <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
                   {" "}
-                  <img src={twitter} alt="" className={classes.socialIcon} />{" "}
+                  <Twitter alt="" className={classes.socialIcon} />{" "}
                 </a>
               ) : (
                 ""
@@ -214,7 +214,7 @@ const Dashboard = () => {
               {userDetails?.youtube ? (
                 <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
                   {" "}
-                  <img src={youtube} alt="" className={classes.socialIcon} />{" "}
+                  <Youtube alt="" className={classes.socialIcon} />{" "}
                 </a>
               ) : (
                 ""
@@ -222,12 +222,12 @@ const Dashboard = () => {
               {userDetails?.instagram ? (
                 <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
                   {" "}
-                  <img src={instagram} alt="" className={classes.socialIcon} />{" "}
+                  <Instagram alt="" className={classes.socialIcon} />{" "}
                 </a>
               ) : (
                 ""
               )}
-              {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
+              {userDetails?.discord ? <Discord alt="" className={classes.socialIcon} /> : ""}
             </div>
             <div className={classes.social} />
             <Link to={`${url}/profile/settings`}>

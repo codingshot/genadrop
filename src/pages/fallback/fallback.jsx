@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./fallback.module.css";
-import notFound from "../../assets/404.svg";
+import { ReactComponent as NotFound } from "../../assets/404.svg";
 import { ReactComponent as GobackArrow } from "../../assets/icon-goback-arrow.svg";
 import { ReactComponent as HomeWhite } from "../../assets/home-white.svg";
 
@@ -18,7 +18,7 @@ const Fallback = () => {
   return (
     <div className={classes.container}>
       <div className={classes["not-found"]}>
-        <img src={notFound} alt="" />
+        <NotFound alt="" />
         <h1>Oh No! Page Not Found.</h1>
         <div className={classes.text}>
           <span>The page you are looking for does not exist. Proceed with one of the actions below.</span>
