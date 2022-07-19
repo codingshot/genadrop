@@ -129,6 +129,7 @@
 
 .amount input::placeholder {
   font-size: 0.65rem;
+  color: var(--text-placeholder-light);
 }
 
 .generateContainer {
