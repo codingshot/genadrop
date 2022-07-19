@@ -602,11 +602,11 @@ export async function listPolygonNft(nftProps) {
 }
 
 export async function initializeContract(contractProps) {
-  const { minterAddress, marketAddress, fileName, connector, account, dispatch, setLoader } = contractProps;
+  const { minterAddress, fileName, connector, account, dispatch, setLoader } = contractProps;
   const name = fileName.split("-")[0];
   const signer = await connector.getSigner();
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
-  const tx = await collectionContract.createCollection(name, name.substring(0, 3).toUpperCase(), marketAddress);
+  const tx = await collectionContract.createCollection(name, name.substring(0, 3).toUpperCase());
   dispatch(setLoader("minting"));
   await tx.wait();
   dispatch(setLoader(""));
@@ -668,9 +668,6 @@ export async function mintToCelo(celoProps) {
     minterAddress: mainnet
       ? process.env.REACT_APP_CELO_MAINNET_MINTER_ADDRESS
       : process.env.REACT_APP_CELO_TESTNET_MINTER_ADDRESS,
-    marketAddress: mainnet
-      ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
     fileName,
     connector,
     account,
@@ -692,11 +689,10 @@ export async function mintToCelo(celoProps) {
     return parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   });
 
-  const amounts = new Array(ids.length).fill(1);
   let tx;
   dispatch(setLoader("finalizing"));
   try {
-    tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
+    tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
@@ -757,12 +753,11 @@ export async function mintToPoly(polyProps) {
     return id;
   });
 
-  const amounts = new Array(ids.length).fill(1);
   let tx;
 
   dispatch(setLoader("finalizing"));
   try {
-    tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
+    tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
@@ -927,12 +922,11 @@ export async function mintToAurora(polyProps) {
     return id;
   });
 
-  const amounts = new Array(ids.length).fill(1);
   let tx;
 
   dispatch(setLoader("finalizing"));
   try {
-    tx = await contract.mintBatch(account, ids, amounts, uris, "0x");
+    tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
