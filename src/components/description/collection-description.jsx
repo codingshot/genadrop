@@ -133,7 +133,7 @@ const CollectionDescription = () => {
             max={combinations}
             value={amountInputValue}
             onChange={handleAmountChange}
-            placeholder="Ex: 1000"
+            placeholder="Eg: 1000"
           />
         </div>
       </div>
