@@ -4,9 +4,12 @@ import { useContext } from "react";
 import { dataURItoBlob } from "../../components/menu/collection-menu-script";
 import { addRule, setCollectionName, setLayers, setPreview } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
+import { doc, setDoc, getFirestore, getDoc, query } from "firebase/firestore";
+
+const firestore = getFirestore();
 
 const StoreData = () => {
-  const { layers, rule, preview, collectionName, dispatch } = useContext(GenContext);
+  const { layers, rule, preview, collectionName, user, dispatch } = useContext(GenContext);
   const mountRef = useRef(false);
 
   const getFile = ({ imageUrl, fileName, fileType }) => {
@@ -26,6 +29,14 @@ const StoreData = () => {
       };
     });
   }
+
+  const saveLayers = (cache) => {
+    if (user) {
+      console.log(layers);
+      const docRef = doc(firestore, `users/${user.uid}/session/sessionId`);
+      setDoc(docRef, { layers: cache });
+    }
+  };
 
   useEffect(() => {
     if (layers.length || mountRef.current) {
@@ -49,6 +60,7 @@ const StoreData = () => {
         );
         const cache = JSON.stringify(newLayers);
         window.localStorage.storedLayers = cache;
+        saveLayers(layers);
       })();
     } else {
       if (!window.localStorage.storedLayers) return [];
@@ -71,7 +83,7 @@ const StoreData = () => {
       }, 0);
       mountRef.current = true;
     }
-  }, [layers]);
+  }, [layers, user]);
 
   useEffect(() => {
     if (preview.length || mountRef.current) {
@@ -106,7 +118,7 @@ const StoreData = () => {
         })();
       }, 0);
     }
-  }, [preview]);
+  }, [preview, user]);
 
   useEffect(() => {
     if (rule.length || mountRef.current) {
@@ -151,7 +163,7 @@ const StoreData = () => {
         })();
       }, 0);
     }
-  }, [rule]);
+  }, [rule, user]);
 
   useEffect(() => {
     if (collectionName) {
@@ -159,7 +171,7 @@ const StoreData = () => {
     } else {
       dispatch(setCollectionName(window.localStorage.storedCollectionName));
     }
-  }, [collectionName]);
+  }, [collectionName, user]);
 
   return null;
 };

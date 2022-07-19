@@ -280,3 +280,8 @@ export const setConnectFromMint = (prop) => ({
   type: genActionTypes.CONNECT_FROM_MINT,
   payload: prop,
 });
+
+export const setCurrentUser = (user) => ({
+  type: genActionTypes.SET_CURRENT_USER,
+  payload: user,
+});

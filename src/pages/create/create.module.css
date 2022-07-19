@@ -4,12 +4,29 @@
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  gap: 2em;
-  padding: 0 1em;
-  padding-top: 2em;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  padding-bottom: 0;
   position: relative;
   margin: 0 auto;
   margin-bottom: 8em;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+  position: relative;
+}
+
+.details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .layer_overview {
@@ -22,6 +39,32 @@
 
 .icon {
   width: 40%;
+}
+
+.guide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: 0.75rem;
+}
+
+.guide > *:nth-child(2) {
+  color: var(--main-color);
+  border: 1px solid var(--outline);
+  box-shadow: var(--shadow-light-3);
+  padding: 0.5em;
+  cursor: var(--cursor-pointer);
+}
+
+.guide > *:nth-child(3) {
+  color: var(--main-color);
+  cursor: var(--cursor-pointer);
+}
+
+.guide > *:nth-child(2):hover,
+.guide > *:nth-child(3):hover {
+  color: var(--main-hovered);
 }
 
 @media screen and (max-width: 1000px) {

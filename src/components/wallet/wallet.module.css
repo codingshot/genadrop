@@ -27,7 +27,7 @@
   padding: 0.5em 1.5em;
   border-radius: 2em;
   cursor: var(--cursor-pointer);
-  color: white;
+  color: var(--default);
   background: var(--main-color);
   text-align: center;
   border: 1px solid var(--main-color);
@@ -44,7 +44,6 @@
   align-items: stretch;
   justify-content: center;
   gap: 0.5em;
-  color: var(--main-color);
   cursor: var(--cursor-pointer);
   position: relative;
   background: var(--default);
@@ -52,7 +51,7 @@
   padding: 0.25em 0.25em;
   border-radius: 2em;
   padding: 0.25em 0.5em;
-  border: 1px solid var(--main-color);
+  background: var(--main-color);
 }
 
 .connected:hover {
@@ -88,6 +87,10 @@
   gap: 0.25em;
   position: relative;
   font-size: 0.8rem;
+}
+
+.address > span {
+  color: var(--default) !important;
 }
 
 .network {

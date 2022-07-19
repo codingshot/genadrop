@@ -6,6 +6,7 @@ import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
+import GoogleAuth from "../google-auth/googleAuth";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -43,9 +44,6 @@ const Navbar = () => {
         <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
-        <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
-          <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
-        </form>
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />
           <ul className={classes.navList}>
@@ -68,10 +66,26 @@ const Navbar = () => {
               </div>
             </Link>
           </ul>
+          <div className={`${classes.walletAuthContainer} ${classes.mobile}`}>
+            <div className={classes.wallet}>
+              <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
+            </div>
+            <div className={classes.auth}>
+              <GoogleAuth />
+            </div>
+          </div>
+        </nav>
+        <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
+          <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
+        </form>
+        <div className={classes.walletAuthContainer}>
           <div className={classes.wallet}>
             <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
           </div>
-        </nav>
+          <div className={classes.auth}>
+            <GoogleAuth />
+          </div>
+        </div>
         {dropdown ? (
           <CloseIcon onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.closeIcon} />
         ) : (

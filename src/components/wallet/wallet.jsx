@@ -135,6 +135,10 @@ function ConnectWallet() {
         <div>{clipboardState}</div>
         <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
       </div>
+      <div className={classes.option}>
+        <img src="" alt="" />
+        <div>View Profile</div>
+      </div>
       <div onClick={handleDisconnet} className={classes.option}>
         <img src={disconnectIcon} alt="" />
         <div>Disconnect</div>
@@ -176,7 +180,7 @@ function ConnectWallet() {
         <div className={classes.container}>
           {connected}
           {changeNetwork}
-          {goToDashboard}
+          {/* {goToDashboard} */}
         </div>
       ) : (
         <div className={classes.connect} onClick={() => initConnectWallet(walletProps)}>

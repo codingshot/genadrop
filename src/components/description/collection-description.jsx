@@ -97,15 +97,8 @@ const CollectionDescription = () => {
     <div className={`${classes.container} ${toggleGuide && classes.active}`}>
       <CreateGuide toggleGuide={toggleGuide} setGuide={(toggleGuide) => handleSetState({ toggleGuide })} />
       <div className={classes.preview_details}>
-        <div className={classes.guide_preview_wrapper}>
-          <div className={classes.guide}>
-            <div>Need help?</div>
-            <div onClick={handleSample}>Try our samples</div>
-            <div onClick={handleTutorial}>Watch tutorial</div>
-          </div>
-          <div className={classes.previewWrapper}>
-            <CollectionPreview />
-          </div>
+        <div className={classes.previewWrapper}>
+          <CollectionPreview />
         </div>
         <div className={classes.detailsWrapper}>
           <CollectionDetails />

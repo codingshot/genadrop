@@ -63,6 +63,7 @@ export const INITIAL_STATE = {
     isComingSoon: null,
     chainId: null,
   },
+  user: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -353,6 +354,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         connectFromMint: action.payload,
+      };
+    case genActionTypes.SET_CURRENT_USER:
+      return {
+        ...state,
+        user: action.payload,
       };
     default:
       return state;

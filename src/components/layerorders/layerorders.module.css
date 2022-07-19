@@ -5,7 +5,7 @@
   border: 1px solid var(--outline-light);
   border-radius: 0.5em;
   padding: 1em 0;
-  height: calc(100vh - 8em);
+  height: calc(100vh - 10em);
   z-index: 15;
   overflow: auto;
   box-shadow: 26px 49px 27px rgba(93, 134, 194, 0.1);
@@ -151,8 +151,8 @@
 
 .list {
   width: 100%;
-  min-height: 19em;
-  height: calc(100vh - 23.5em);
+  min-height: 17em;
+  height: calc(100vh - 25em);
   overflow: auto;
   display: flex;
   flex-direction: column;
@@ -160,8 +160,9 @@
 }
 
 .list.active {
-  height: calc(100vh - 29.5em);
+  height: calc(100vh - 30em);
 }
+
 .list > div {
   cursor: var(--cursor-hover);
 }

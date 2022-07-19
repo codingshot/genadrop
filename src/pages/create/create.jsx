@@ -11,6 +11,10 @@ const Create = () => {
     setModal(false);
   };
 
+  const handleSample = () => {};
+
+  const handleTutorial = () => {};
+
   useEffect(() => {
     setTimeout(() => {
       if (!window.sessionStorage.isCreateModal && !window.localStorage.storedCollectionName) {
@@ -23,11 +27,21 @@ const Create = () => {
   return (
     <div className={classes.container}>
       <CreateModal modal={modal} closeModal={closeModal} />
-      <div className={classes.layer_overview}>
-        <LayerOrders isCreateModal={modal} />
-        <CollectionOverview />
+      <div className={classes.details}>
+        <div>Auto save...</div>
+        <div className={classes.guide}>
+          <div>Need help?</div>
+          <div onClick={handleSample}>Try our samples</div>
+          <div onClick={handleTutorial}>Watch tutorial</div>
+        </div>
       </div>
-      <CollectionDescription />
+      <div className={classes.wrapper}>
+        <div className={classes.layer_overview}>
+          <LayerOrders isCreateModal={modal} />
+          <CollectionOverview />
+        </div>
+        <CollectionDescription />
+      </div>
     </div>
   );
 };

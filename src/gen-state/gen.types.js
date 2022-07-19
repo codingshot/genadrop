@@ -56,6 +56,7 @@ const genActionTypes = {
   SET_IMAGE_QUALITY: "SET_IMAGE_QUALITY",
   SET_ZIP: "SET_ZIP",
   CONNECT_FROM_MINT: "CONNECT_FROM_MINT",
+  SET_CURRENT_USER: "SET_CURRENT_USER",
 };
 
 export default genActionTypes;
