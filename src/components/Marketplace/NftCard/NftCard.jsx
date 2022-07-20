@@ -19,9 +19,9 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   useEffect(() => {
     if (!chinPrice) {
       axios
-        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`)
+        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain]?.id}&vs_currencies=usd`)
         .then((res) => {
-          const value = Object.values(res.data)[0].usd;
+          const value = Object.values(res?.data)[0]?.usd;
           setTotalPrice(value * price);
         });
     }
@@ -73,8 +73,8 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
             <div className={classes.listPrice}>
               <div className={classes.list}>LIST PRICE</div>
               <div className={classes.price}>
-                <img src={supportedChains[chain].icon} alt="" />
-                {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain].sybmol}</span>
+                <img src={supportedChains[chain]?.icon} alt="" />
+                {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>
                 <span className={classes.usdPrice}>
                   ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} USD)
                 </span>

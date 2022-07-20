@@ -11,9 +11,9 @@ const CollectionsCard = ({ collection, useWidth }) => {
   const [totalPrice, setTotalPrice] = useState(0);
   useEffect(() => {
     axios
-      .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`)
+      .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain]?.id}&vs_currencies=usd`)
       .then((res) => {
-        const value = Object.values(res.data)[0].usd;
+        const value = Object.values(res?.data)[0]?.usd;
         setTotalPrice(value * price);
       });
   }, []);
@@ -35,8 +35,8 @@ const CollectionsCard = ({ collection, useWidth }) => {
           <div className={classes.floorPrice}>
             <div className={classes.floor}>FLOORPRICE</div>
             <div className={classes.price}>
-              <img src={supportedChains[chain].icon} alt="" />
-              {price} <span className={classes.chain}>{supportedChains[chain].sybmol}</span>{" "}
+              <img src={supportedChains[chain]?.icon} alt="" />
+              {price} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
               <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
             </div>
           </div>
