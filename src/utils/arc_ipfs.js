@@ -41,7 +41,7 @@ function initAlgoClients(mainnet) {
 }
 
 const mintCollectionAbi = [
-  "function createCollection(string memory _name, string memory _symbol, address manager) public {}",
+  "function createCollection(string memory _name, string memory _symbol) public {}",
   "function collectionsOf(address user) public view returns (address[] memory)",
 ];
 
@@ -52,9 +52,7 @@ const mintSingle = [
 
 // const marketAi = ['function getMarketItems() public view {}'];
 
-const mintAbi = [
-  "function mintBatch( address to, uint256[] memory ids, uint256[] memory amounts, string[] memory uris,bytes memory data) public {}",
-];
+const mintAbi = ["function mintBatch( address to, uint256[] memory ids, string[] memory uris) public {}"];
 
 // const fromHexString = (hexString) =>
 // new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
