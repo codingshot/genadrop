@@ -5,8 +5,8 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
-import dropdownIcon from "../../../assets/icon-caret-down.svg";
-import allChainsIcon from "../../../assets/all-chains.svg";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-caret-down.svg";
+import { ReactComponent as AllChainsIcon } from "../../../assets/all-chains.svg";
 import supportedChains from "../../../utils/supportedChains";
 import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -50,12 +50,11 @@ const ChainDropdown = ({ onChainFilter }) => {
           {chainIcon[chain.toLowerCase()] ? (
             <img className={classes.chainImg} src={chainIcon[chain.toLowerCase()]} alt={chain} />
           ) : (
-            <img className={classes.chainImg} src={allChainsIcon} alt={chain} />
+            <AllChainsIcon className={classes.chainImg} alt={chain} />
           )}
           <span className={classes.chainName}>{chain}</span>
         </div>
-        <img
-          src={dropdownIcon}
+        <DropdownIcon
           alt="dropdown-indicator"
           className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`}
         />
@@ -63,7 +62,7 @@ const ChainDropdown = ({ onChainFilter }) => {
       <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
         {[
           <div onClick={() => chainHandler("All Chains")} className={classes.chain}>
-            <img src={allChainsIcon} alt="All Chains" /> <span>All Chains</span>
+            <AllChainsIcon alt="All Chains" /> <span>All Chains</span>
           </div>,
           ...Object.values(supportedChains)
             .filter((chainE) => mainnet === chainE.isMainnet)

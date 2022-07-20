@@ -1,12 +1,12 @@
 import React from "react";
-import graph from "../../../assets/discord-graph.svg";
+import { ReactComponent as Graph } from "../../../assets/discord-graph.svg";
 import classes from "./JoinDiscord.module.css";
 
 const JoinDiscord = () => {
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
-        <img src={graph} alt="" />
+        <Graph alt="" />
         <div className={classes.content}>
           <div className={classes.heading}>Join the conversation</div>
           <div className={classes.description}>Join our community on Discord</div>

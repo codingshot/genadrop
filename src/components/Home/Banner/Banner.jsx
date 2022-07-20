@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classes from "./Banner.module.css";
-import playIcon from "../../../assets/icon-play.svg";
+import { ReactComponent as PlayIcon } from "../../../assets/icon-play.svg";
 // import Lottie from "react-lottie";
-import appBanner from "../../../assets/app-banner.svg";
+import { ReactComponent as AppBanner } from "../../../assets/app-banner.svg";
 
 const Banner = () => {
   const defaultOptions = {
@@ -47,13 +47,13 @@ const Banner = () => {
             rel="noreferrer"
             className={classes.btn_video}
           >
-            <img src={playIcon} alt="" />
+            <PlayIcon alt="" />
             <div>Learn more about Genadrop</div>
           </a>
         </div>
         <div className={classes.illustration}>
           {/* <Lottie options={defaultOptions} height="100%" width="100%" /> */}
-          <img src={appBanner} alt="" />
+          <AppBanner alt="" />
         </div>
         <a
           href="https://www.youtube.com/watch?v=wC0odzMW_9g&list=PLfkTuB2ltX12uhYARs5GbE0stptAFSacC"
@@ -61,7 +61,7 @@ const Banner = () => {
           rel="noreferrer"
           className={classes.btn_video_m}
         >
-          <img src={playIcon} alt="" />
+          <PlayIcon alt="" />
           <div>Learn more about Genadrop</div>
         </a>
       </div>

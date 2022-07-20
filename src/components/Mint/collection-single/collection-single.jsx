@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useHistory, useRouteMatch, Link } from "react-router-dom";
 import classes from "./collection-single.module.css";
-import collectionIcon from "../../../assets/icon-collection-light.svg";
-import _1of1Icon from "../../../assets/icon-1of1-light.svg";
-import leftArrow from "../../../assets/icon-arrow-left.svg";
+import { ReactComponent as CollectionIcon } from "../../../assets/icon-collection-light.svg";
+import { ReactComponent as _1of1Icon } from "../../../assets/icon-1of1-light.svg";
+import { ReactComponent as LeftArrow } from "../../../assets/icon-arrow-left.svg";
 // import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
-import line from "../../../assets/icon-line.svg";
+import { ReactComponent as Line } from "../../../assets/icon-line.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const CollectionToSingleMinter = () => {
@@ -128,7 +128,7 @@ const CollectionToSingleMinter = () => {
       ) : (
         <>
           <Link to="/mint" className={classes.goBack}>
-            <img src={leftArrow} alt="" />
+            <LeftArrow alt="" />
             <span>Back to Mint</span>
           </Link>
           <header className={classes.headingWrapper}>
@@ -137,7 +137,7 @@ const CollectionToSingleMinter = () => {
               Upload a{" "}
               <span>
                 {params.mintId === "1of1" ? "image" : "collection"}
-                <img src={line} alt="" />
+                <Line alt="" />
               </span>{" "}
               to create NFTs on any of our <br />
               supported blockchains super fast!
@@ -160,9 +160,8 @@ const CollectionToSingleMinter = () => {
           {mintSwitch === "collection" ? (
             <div className={`${classes.card} ${classes[params.mintId]} drop-area`}>
               {!loading1 ? <div className={classes.imagePlaceholder} /> : null}
-              <img
+              <CollectionIcon
                 style={!loading1 ? { display: "none" } : {}}
-                src={collectionIcon}
                 alt=""
                 onLoad={handleImageLoading1}
               />
@@ -179,7 +178,7 @@ const CollectionToSingleMinter = () => {
           ) : mintSwitch === "1of1" ? (
             <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
               {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
-              <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
+              <_1of1Icon style={!loading2 ? { display: "none" } : {}} alt="" onLoad={handleImageLoading2} />
               <h3 className={classes.title}> Mint 1 of 1 </h3>
               <p className={classes.action}>Drag and Drop your image file here</p>
               <p className={classes.supportedFiles}>

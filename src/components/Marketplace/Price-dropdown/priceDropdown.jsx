@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classes from "./priceDropdown.module.css";
-import dropdownIcon from "../../../assets/icon-caret-down.svg";
+import {ReactComponent as DropdownIcon } from "../../../assets/icon-caret-down.svg";
 
 const PriceDropdown = ({ onPriceFilter }) => {
   const [state, setState] = useState({
@@ -34,7 +34,7 @@ const PriceDropdown = ({ onPriceFilter }) => {
         Filter
         <div className={classes.priceInfo}>
           <span>{filters[filter]}</span>
-          <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
+          <DropdownIcon alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
         </div>
       </div>
       <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
