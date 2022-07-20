@@ -13,6 +13,8 @@
 /Pull_Request_Template.md
 
 # misc
+/artifacts
+/cache
 .env
 .DS_Store
 .env.local
