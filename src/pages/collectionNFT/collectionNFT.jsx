@@ -294,49 +294,72 @@ const CollectionNFT = () => {
                 </svg>
               </div>
             </div>
-            <div className={classes.priceSection}>
-              <span className={classes.title}>Current price</span>
-              <span className={classes.price}>
-                <img src={supportedChains[nftDetails.chain].icon} alt="" />
-                <p className={classes.tokenValue}>
-                  {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
-                </p>
-                <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
-              </span>
-            </div>
+            {nftDetails.price === 0 ? (
+              <div></div>
+            ) : (
+              <div className={classes.priceSection}>
+                <span className={classes.title}>Current price</span>
+                <span className={classes.price}>
+                  <img src={supportedChains[nftDetails.chain].icon} alt="" />
+                  <p className={classes.tokenValue}>
+                    {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
+                  </p>
+                  <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
+                </span>
+              </div>
+            )}
 
-            <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    SOLD!
+            {nftDetails.price === 0 ? (
+              nftDetails.owner === account ? (
+                <div className={classes.btns}>
+                  <button
+                    onClick={() => history.push(`/marketplace/single-mint/list/${chainId}/${nftDetails.Id}`)}
+                    className={classes.buy}
+                  >
+                    List
                   </button>
-                </>
+                </div>
               ) : (
-                <>
-                  {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
-                      <img src={walletIcon} alt="" />
-                      Buy now
+                <div className={classes.btns}>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
+                    Not Listed!
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className={classes.btns}>
+                {nftDetails.sold ? (
+                  <>
+                    <button className={classes.sold} disabled={nftDetails.sold}>
+                      SOLD!
                     </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={classes.buy}
-                      disabled={nftDetails.sold}
-                      onClick={() => buyNft(buyProps)}
-                    >
-                      <img src={walletIcon} alt="" />
-                      Buy now
-                    </button>
-                  )}
-                  {/* <button type="button" className={classes.bid}>
-                    <img src={bidIcon} alt="" />
-                    Place Bid
-                  </button> */}
-                </>
-              )}
-            </div>
+                  </>
+                ) : (
+                  <>
+                    {Number(nftDetails.chain) !== 4160 ? (
+                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                        <img src={walletIcon} alt="" />
+                        Buy now
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className={classes.buy}
+                        disabled={nftDetails.sold}
+                        onClick={() => buyNft(buyProps)}
+                      >
+                        <img src={walletIcon} alt="" />
+                        Buy now
+                      </button>
+                    )}
+                    {/* <button type="button" className={classes.bid}>
+                   <img src={bidIcon} alt="" />
+                   Place Bid
+                 </button> */}
+                  </>
+                )}
+              </div>
+            )}
           </div>
           {/* PRICE HISTORY */}
           {/* <div className={classes.feature}>

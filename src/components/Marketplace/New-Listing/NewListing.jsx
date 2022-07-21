@@ -9,7 +9,7 @@ import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarou
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
 
 const NewListing = () => {
-  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
   const algoCollectionsArr = algoCollections
     ? Object.values(algoCollections).sort(
         (collection_a, collection_b) => collection_a.createdAt["seconds"] - collection_b.createdAt["seconds"]
@@ -18,7 +18,6 @@ const NewListing = () => {
 
   const [state, setState] = useState({
     filteredCollection: [],
-    celoCollection: null,
     nearCollection: null,
     allChains: null,
     init: false,
@@ -27,7 +26,7 @@ const NewListing = () => {
     },
   });
 
-  const { celoCollection, nearCollection, filter, filteredCollection, init } = state;
+  const { nearCollection, filter, filteredCollection, init } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -36,12 +35,12 @@ const NewListing = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollectionsArr && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
+        return !algoCollectionsArr && !polygonCollections && !celoCollections && !nearCollection && !auroraCollections
           ? null
           : [
               ...(algoCollectionsArr || []),
               ...(polygonCollections || []),
-              ...(celoCollection || []),
+              ...(celoCollections || []),
               ...(auroraCollections || []),
               ...(nearCollection || []),
             ];
@@ -50,7 +49,7 @@ const NewListing = () => {
       case "polygon":
         return polygonCollections;
       case "celo":
-        return celoCollection;
+        return celoCollections;
       case "near":
         return nearCollection;
       case "aurora":
@@ -79,7 +78,7 @@ const NewListing = () => {
     } else {
       handleSetState({ filteredCollection: null });
     }
-  }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
+  }, [algoCollections, polygonCollections, celoCollections, auroraCollections]);
 
   useEffect(() => {
     window.localStorage.activeCollection = null;

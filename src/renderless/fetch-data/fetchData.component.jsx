@@ -11,6 +11,7 @@ import {
   setPolygonSingleNfts,
   setNotification,
   setCeloCollections,
+  setCeloSingleNft,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -180,13 +181,13 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
-      // console.log("celo single", result);
-      // if (result?.length) {
-      //   dispatch(setPolygonSingleNfts(result));
-      // } else {
-      //   dispatch(setPolygonSingleNfts(null));
-      // }
-      // return null;
+      console.log("celo single", result);
+      if (result?.length) {
+        dispatch(setCeloSingleNft(result));
+      } else {
+        dispatch(setCeloSingleNft(null));
+      }
+      return null;
     })();
 
     (async function getCeloCollections() {

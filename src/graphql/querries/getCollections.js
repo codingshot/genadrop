@@ -108,8 +108,11 @@ export const GET_USER_NFT = gql`
         price
         tokenID
         tokenIPFSPath
-        collection {
+        owner {
           id
+          collections {
+            name
+          }
         }
       }
     }
@@ -125,10 +128,6 @@ export const GET_GRAPH_NFT = gql`
       id
       isSold
       price
-      collection {
-        name
-        id
-      }
       tokenID
       owner {
         id
@@ -187,7 +186,7 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection: "0xa5ead6ffa64a98757a2f6f4068f2cb86b515b6ca" }) {
+    nfts(where: { collection: "0x2b75c2ff193086d425ffca4a1829c560fa4710fa" }) {
       category
       chain
       createdAtTimestamp

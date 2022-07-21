@@ -317,7 +317,7 @@ export const getUserGraphNft = async (collection, address) => {
       const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
       try {
         const nftObj = {};
-        nftObj.collection_name = collection[i].collection.name;
+        nftObj.collection_name = collection[i].owner?.collections[0]?.name;
         nftObj.owner = address;
         nftObj.chain = collection[i].chain;
         nftObj.Id = collection[i].id;
@@ -327,7 +327,7 @@ export const getUserGraphNft = async (collection, address) => {
         nftObj.price = collection[i].price * 0.000000000000000001;
         nftObj.sold = collection[i].isSold;
         nftObj.ipfs_data = data;
-        nftObj.contractAddress = collection[i].collection.id;
+        nftObj.contractAddress = collection[i].owner.id;
         nftObj.name = data.name;
         nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);

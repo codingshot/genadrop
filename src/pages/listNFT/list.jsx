@@ -74,10 +74,11 @@ const List = () => {
       } else if (chainId === 44787 || chainId === 42220) {
         const nft = await getCeloNFTToList(address, nftId);
         if (!nft) history.goBack();
+        console.log(nft);
         handleSetState({
           nftDetails: nft,
-          isLoading: false,
           image_url: nft?.ipfs_data?.image,
+          isLoading: false,
         });
       } else {
         const userNftCollections = await fetchUserBoughtNfts(account);

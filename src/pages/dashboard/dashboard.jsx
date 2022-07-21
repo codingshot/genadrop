@@ -61,6 +61,7 @@ const Dashboard = () => {
     mainnet,
     singleAuroraNfts,
     singlePolygonNfts,
+    singleCeloNfts,
     auroraCollections,
     polygonCollections,
     celoCollections,
@@ -88,7 +89,10 @@ const Dashboard = () => {
       }
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
-      handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
+      const celoNfts = singleCeloNfts?.filter((nft) => nft.owner === account);
+      handleSetState({
+        createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
+      });
     })();
 
     (async function getUserCollectedNfts() {
@@ -117,7 +121,6 @@ const Dashboard = () => {
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
       const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
       const celoCollection = celoCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      console.log(celoCollections);
       handleSetState({
         myCollections: [
           ...(algoCollections || []),

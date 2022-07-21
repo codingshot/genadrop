@@ -333,32 +333,40 @@ const SingleNFT = () => {
                 </span>
               </span>
             </div>
-            <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    SOLD!
-                  </button>
-                </>
-              ) : (
-                <>
-                  {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
-                      Buy now
+            {nftDetails?.price === 0 ? (
+              <div className={classes.btns}>
+                <button className={classes.sold} disabled={nftDetails.sold}>
+                  Not Listed!
+                </button>
+              </div>
+            ) : (
+              <div className={classes.btns}>
+                {nftDetails.sold ? (
+                  <>
+                    <button className={classes.sold} disabled={nftDetails.sold}>
+                      SOLD!
                     </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={classes.buy}
-                      disabled={nftDetails.sold}
-                      onClick={() => buyNft(buyProps)}
-                    >
-                      Buy now
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
+                  </>
+                ) : (
+                  <>
+                    {Number(nftDetails.chain) !== 4160 ? (
+                      <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
+                        Buy now
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className={classes.buy}
+                        disabled={nftDetails.sold}
+                        onClick={() => buyNft(buyProps)}
+                      >
+                        Buy now
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
           {/* PRICE HISTORY */}
           {/* <div className={classes.feature}>

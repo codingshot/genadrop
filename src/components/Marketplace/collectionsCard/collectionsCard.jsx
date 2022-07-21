@@ -32,14 +32,23 @@ const CollectionsCard = ({ collection, useWidth }) => {
         <div className={classes.name}>{name}</div>
         <div className={classes.description}>{description}</div>
         <div className={classes.wrapper}>
-          <div className={classes.floorPrice}>
-            <div className={classes.floor}>FLOORPRICE</div>
-            <div className={classes.price}>
+          {price === 0 ? (
+            <div className={classes.notListedWrap}>
               <img src={supportedChains[chain]?.icon} alt="" />
-              {price} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
-              <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
+              <div className={classes.notListed}>
+                <span>Not Listed</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className={classes.floorPrice}>
+              <div className={classes.floor}>FLOORPRICE</div>
+              <div className={classes.price}>
+                <img src={supportedChains[chain]?.icon} alt="" />
+                {price} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
+                <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
+              </div>
+            </div>
+          )}
           <div className={classes.nftCount}>{nfts?.length} NFTs</div>
         </div>
       </div>
