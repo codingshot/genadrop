@@ -49,6 +49,9 @@ const GenContextProvider = ({ children }) => {
     zip,
     connectFromMint,
     user,
+    imageAction,
+    layerAction,
+    sessionId,
   } = state;
 
   return (
@@ -96,6 +99,9 @@ const GenContextProvider = ({ children }) => {
         zip,
         connectFromMint,
         user,
+        imageAction,
+        layerAction,
+        sessionId,
         dispatch,
       }}
     >

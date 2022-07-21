@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { setPrompt } from "../../gen-state/gen.actions";
+import { setImageAction, setLayerAction, setPrompt } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./prompt.module.css";
 
@@ -9,6 +9,17 @@ const DeletePrompt = () => {
   const handleAccept = () => {
     dispatch(prompt);
     dispatch(setPrompt(null));
+    dispatch(
+      setImageAction({
+        type: "deleteAll",
+        value: prompt.payload.id,
+      })
+    );
+    dispatch(
+      setLayerAction({
+        type: "delete",
+      })
+    );
   };
 
   const handleReject = () => {

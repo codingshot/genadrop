@@ -64,6 +64,14 @@ export const INITIAL_STATE = {
     chainId: null,
   },
   user: null,
+  imageAction: {
+    type: "", // upload, rename, delete, deleteAll
+    value: {},
+  },
+  layerAction: {
+    type: "", // add, delete, order, rename,
+  },
+  sessionId: "",
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -359,6 +367,21 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         user: action.payload,
+      };
+    case genActionTypes.SET_IMAGE_ACTION:
+      return {
+        ...state,
+        imageAction: action.payload,
+      };
+    case genActionTypes.SET_LAYER_ACTION:
+      return {
+        ...state,
+        layerAction: action.payload,
+      };
+    case genActionTypes.CREATE_SESSION:
+      return {
+        ...state,
+        sessionId: action.payload,
       };
     default:
       return state;

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { updateLayer } from "../../gen-state/gen.actions";
+import { setLayerAction, updateLayer } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./layer.module.css";
 import deleteIcon from "../../assets/icon-delete.svg";
@@ -23,6 +23,7 @@ const Layer = ({ name, trait, click, id, activeInput, setActiveInput }) => {
     setActiveInput("");
     if (!inputValue) return;
     dispatch(updateLayer({ layerTitle: inputValue, id }));
+    dispatch(setLayerAction({ type: "rename" }));
   };
 
   const handleEdit = (nameActive) => {

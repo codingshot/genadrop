@@ -17,9 +17,8 @@ const Create = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (!window.sessionStorage.isCreateModal && !window.localStorage.storedCollectionName) {
+      if (!window.localStorage.storedCollectionName) {
         setModal(true);
-        window.sessionStorage.isCreateModal = true;
       }
     }, 0);
   }, []);

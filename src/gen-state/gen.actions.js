@@ -285,3 +285,18 @@ export const setCurrentUser = (user) => ({
   type: genActionTypes.SET_CURRENT_USER,
   payload: user,
 });
+
+export const setImageAction = (action) => ({
+  type: genActionTypes.SET_IMAGE_ACTION,
+  payload: action,
+});
+
+export const setLayerAction = (action) => ({
+  type: genActionTypes.SET_LAYER_ACTION,
+  payload: action,
+});
+
+export const createSession = (session) => ({
+  type: genActionTypes.CREATE_SESSION,
+  payload: session,
+});

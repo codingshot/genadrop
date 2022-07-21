@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, getAuth, signInWithPopup, onAuthStateChanged } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
 import { setCurrentUser, setNotification } from "../../gen-state/gen.actions";
 
 const provider = new GoogleAuthProvider();
@@ -47,4 +47,14 @@ export const getCurrentUser = ({ dispatch }) => {
       // ...
     }
   });
+};
+
+export const logOut = () => {
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+    });
 };

@@ -106,18 +106,28 @@
   outline: none;
 }
 
+.inputContainer input::placeholder {
+  color: var(--text-placeholder-light);
+}
+
 .content button {
   align-self: center;
   width: 100%;
   padding: 0.75em 2em;
   border-radius: 2em;
-  background: var(--main-color);
+  background: var(--main-disable);
   color: var(--default);
   font-size: 1rem;
   transition: all 300ms;
+  cursor: default;
 }
 
-.content button:hover {
+.content button.active {
+  background: var(--main-color);
+  cursor: pointer;
+}
+
+.content button.active:hover {
   background: var(--main-hovered);
 }
 

@@ -1,5 +1,12 @@
 import React, { useContext, useState, useEffect } from "react";
-import { addPreview, removeImage, removePreview, updateImage, updatePreview } from "../../gen-state/gen.actions";
+import {
+  addPreview,
+  removeImage,
+  removePreview,
+  setImageAction,
+  updateImage,
+  updatePreview,
+} from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./art-card.module.css";
 import checkActiveIcon from "../../assets/icon-check-active.svg";
@@ -33,6 +40,15 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
   const handleRemove = () => {
     dispatch(removePreview({ layerId, layerTitle, imageName: traitTitle }));
     dispatch(removeImage({ layerId, layerTitle, traitTitle }));
+    dispatch(
+      setImageAction({
+        type: "delete",
+        value: {
+          id: layerId,
+          traitTitle,
+        },
+      })
+    );
   };
 
   const handleChange = (event) => {
@@ -57,6 +73,19 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
         Rarity: Number(inputValue.rarity) > 100 ? "100" : Number(inputValue.rarity) < 1 ? "1" : inputValue.rarity,
       })
     );
+    if (prompt === "name" && previousValue !== inputValue.name) {
+      dispatch(
+        setImageAction({
+          type: "rename",
+          value: {
+            id: layerId,
+            oldName: previousValue,
+            newName: inputValue.name,
+            image,
+          },
+        })
+      );
+    }
   };
 
   const handlePrompt = (value) => {
