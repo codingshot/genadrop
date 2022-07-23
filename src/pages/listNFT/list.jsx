@@ -53,6 +53,7 @@ const List = () => {
       console.log("RES: ", await listPolygonNft(listProps));
       history.push(`${match.url}/listed`);
     } else if (chainId === 44787 || chainId === 42220) {
+      // history.push(`${match.url}/listed`);
       const listNft = await listCeloNft(listProps);
       if (listNft.error) {
         setNotification({
@@ -147,11 +148,11 @@ const List = () => {
 
             <div className={classes.btns}>
               <button type="button" className={classes.buy} onClick={listNFT}>
-                <div>
+                <div className={classes.btnText}>
                   <img src="/assets/price-tage.svg" alt="" />
                   SET PRICE
                 </div>
-                <span>Sell the NFT at a fixed price</span>
+                <span className={classes.btnText}>Sell the NFT at a fixed price</span>
               </button>
             </div>
           </div>

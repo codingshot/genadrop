@@ -1105,7 +1105,7 @@ export async function purchaseCeloNfts(buyProps) {
       })
     );
   }
-  const wallet = InitiateCeloProvider(mainnet);
+  const wallet = await InitiateCeloProvider(mainnet);
   const { chainId } = connector._network;
   const signature = await wallet._signTypedData(
     // Domain

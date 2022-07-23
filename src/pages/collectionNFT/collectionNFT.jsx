@@ -130,6 +130,7 @@ const CollectionNFT = () => {
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
         if (filteredId) {
+          console.log("filtered collection", filteredId);
           const result = await getGraphNft(filteredId[0], collectionName);
           const trHistory = await getTransactions(filteredId[0]?.transactions);
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
@@ -147,7 +148,7 @@ const CollectionNFT = () => {
         }
       }
     })();
-  }, [auroraCollections, polygonCollections, nftId]);
+  }, [auroraCollections, polygonCollections, celoCollections, nftId]);
 
   useEffect(() => {
     if (nftDetails?.chain) {

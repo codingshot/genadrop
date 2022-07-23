@@ -26,6 +26,7 @@ import {
   GET_AURORA_SINGLE_NFTS,
   GET_POLYGON_SINGLE_NFTS,
   GET_CELO_SINGLE_NFT,
+  GET_CELO_GRAPH_COLLECITONS,
 } from "../../graphql/querries/getCollections";
 import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
@@ -190,7 +191,7 @@ const FetchData = () => {
     })();
 
     (async function getCeloCollections() {
-      const { data, error } = await celoClient.query(GET_GRAPH_COLLECTIONS).toPromise();
+      const { data, error } = await celoClient.query(GET_CELO_GRAPH_COLLECITONS).toPromise();
       if (error) {
         return dispatch(
           setNotification({
