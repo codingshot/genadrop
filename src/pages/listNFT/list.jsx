@@ -10,6 +10,7 @@ import { polygonClient } from "../../utils/graphqlClient";
 import { ethers } from "ethers";
 import { listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
 import { getCeloNFTToList, getPolygonNFTToList } from "../../renderless/fetch-data/fetchUserGraphData";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const List = () => {
   const { account, mainnet, chainId, connector, dispatch } = useContext(GenContext);
@@ -52,8 +53,15 @@ const List = () => {
       console.log("RES: ", await listPolygonNft(listProps));
       history.push(`${match.url}/listed`);
     } else if (chainId === 44787 || chainId === 42220) {
-      console.log("RES: ", await listCeloNft(listProps));
-      history.push(`${match.url}/listed`);
+      const listNft = await listCeloNft(listProps);
+      if (listNft.error) {
+        setNotification({
+          message: "Transaction not completed",
+          type: "warning",
+        });
+      } else {
+        return history.push(`${match.url}/listed`);
+      }
     } else {
       console.log("RES: ", await listNft(nftDetails.Id, price, account));
       history.push(`${match.url}/listed`);
@@ -74,7 +82,6 @@ const List = () => {
       } else if (chainId === 44787 || chainId === 42220) {
         const nft = await getCeloNFTToList(address, nftId);
         if (!nft) history.goBack();
-        console.log(nft);
         handleSetState({
           nftDetails: nft,
           image_url: nft?.ipfs_data?.image,

@@ -181,7 +181,6 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
-      console.log("celo single", result);
       if (result?.length) {
         dispatch(setCeloSingleNft(result));
       } else {

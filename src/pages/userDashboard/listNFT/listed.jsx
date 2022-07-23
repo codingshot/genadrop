@@ -10,12 +10,13 @@ import { GET_USER_NFT } from "../../../graphql/querries/getCollections";
 import { setNotification } from "../../../gen-state/gen.actions";
 import { ethers } from "ethers";
 import { getCeloNFTToList, getPolygonNFTToList } from "../../../renderless/fetch-data/fetchUserGraphData";
+import { socialLinks } from "../../../components/footer/footer-script";
 
 const Listed = () => {
   const { account, mainnet, dispatch } = useContext(GenContext);
 
   const {
-    params: { nftId },
+    params: { nftId, url },
   } = useRouteMatch();
   const { singleNfts, chainId } = useContext(GenContext);
   const history = useHistory();
@@ -31,6 +32,7 @@ const Listed = () => {
   useEffect(() => {
     (async function getUserCollection() {
       const address = ethers.utils.hexlify(account);
+      console.log(account);
       if (chainId === 80001 || chainId === 137) {
         const nft = await getPolygonNFTToList(address, nftId);
         if (!nft) history.push("/");
@@ -118,16 +120,21 @@ const Listed = () => {
         </div>
 
         <div className={classes.detailContent}>
-          <img src="/assets/twitter-clear.svg" alt="" />
-          <img src="/assets/facebook-clear.svg" alt="" />
-          <img src="/assets/telegram.svg" alt="" />
-          <img src="/assets/link.svg" alt="" />
+          {/* <img src="/assets/twitter.svg" alt="" />
+          <img src="/assets/facebook.svg" alt="" />
+          <img src="/assets/icon-discord-accent.svg" alt="" />
+          <img src="/assets/link.svg" alt="" /> */}
+          {socialLinks.map((social, idx) => (
+            <a key={idx} className={classes.icon} href={social.link} target="_blank" rel="noopener noreferrer">
+              <img src={social.icon} alt={`Minority Programmers ${social.name}`} />
+            </a>
+          ))}
         </div>
       </div>
       <Link
         to={
           nftDetails.collection_name
-            ? `${match.url}/${Id}`
+            ? `${url}/${nftDetails.Id}`
             : nftDetails.chain
             ? `/marketplace/single-mint/${nftDetails.chain}/${nftDetails.Id}`
             : `/marketplace/single-mint/${nftDetails.Id}`

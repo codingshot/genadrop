@@ -23,17 +23,11 @@ import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
 import { setLoading, setNotification } from "../../gen-state/gen.actions";
-import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
-import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
 import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
 import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
 
 const SingleNFT = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-  const client = createClient({
-    url: APIURL,
-  });
   const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
   const history = useHistory();
   const {
@@ -197,6 +191,7 @@ const SingleNFT = () => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
     }
+    console.log(nftDetails);
   }, [nftDetails]);
   // share model
   const handleClickOutside = (event) => {
@@ -327,17 +322,28 @@ const SingleNFT = () => {
                 <p className={classes.tokenValue}>
                   {nftDetails.price} {chainSymbol || ""}
                 </p>
-                <span className={classes.usdValue}>
-                  ($
-                  {(nftDetails.price * algoPrice).toFixed(2)})
-                </span>
+                {nftDetails?.price !== 0 && (
+                  <span className={classes.usdValue}>
+                    ($
+                    {(nftDetails.price * algoPrice).toFixed(2)})
+                  </span>
+                )}
               </span>
             </div>
             {nftDetails?.price === 0 ? (
               <div className={classes.btns}>
-                <button className={classes.sold} disabled={nftDetails.sold}>
-                  Not Listed!
-                </button>
+                {account === nftDetails.owner ? (
+                  <button
+                    onClick={() => history.push(`/marketplace/single-mint/list/${nftDetails.chain}/${nftDetails.Id}`)}
+                    className={classes.buy}
+                  >
+                    List
+                  </button>
+                ) : (
+                  <button className={classes.sold} disabled={nftDetails.sold}>
+                    Not Listed!
+                  </button>
+                )}
               </div>
             ) : (
               <div className={classes.btns}>

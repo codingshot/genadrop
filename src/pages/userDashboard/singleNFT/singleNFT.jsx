@@ -225,7 +225,7 @@ const ListSingleNFT = (nft) => {
   const description = {
     icon: detailsIcon,
     title: "Description",
-    content: `${nftDetails.description}`,
+    content: `${nftDetails?.description}`,
   };
 
   const graph = {
@@ -236,11 +236,11 @@ const ListSingleNFT = (nft) => {
 
   const attributeContent = () => (
     <div className={classes.attributesContainer}>
-      {nftDetails.properties.map((attribute, idx) => {
-        return attribute.trait_type && attribute.value ? (
+      {nftDetails?.properties?.map((attribute, idx) => {
+        return attribute?.trait_type && attribute?.value ? (
           <div key={idx} className={classes.attribute}>
-            <span className={classes.title}>{attribute.trait_type}</span>
-            <span className={classes.description}>{attribute.value}</span>
+            <span className={classes.title}>{attribute?.trait_type}</span>
+            <span className={classes.description}>{attribute?.value}</span>
           </div>
         ) : nftDetails.properties.length === 1 ? (
           <span key={idx}> No Attributes Available</span>

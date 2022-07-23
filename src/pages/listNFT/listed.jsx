@@ -4,6 +4,10 @@ import Skeleton from "react-loading-skeleton";
 import { GenContext } from "../../../gen-state/gen.context";
 import { getSingleNftDetails } from "../../../utils";
 import classes from "./listed.module.css";
+import telegram from "../../assets/telegram.svg";
+import twitterIcon from "../../assets/icon-twitter.svg";
+import facebookIcon from "../../assets/facebook.svg";
+import linktree from "../../assets/linktree.svg";
 
 const Listed = () => {
   // const { account, connector } = useContext(GenContext);
@@ -92,10 +96,10 @@ const Listed = () => {
         </div>
 
         <div className={classes.detailContent}>
-          <img src="/assets/twitter-clear.svg" alt="" />
-          <img src="/assets/facebook-clear.svg" alt="" />
-          <img src="/assets/telegram.svg" alt="" />
-          <img src="/assets/link.svg" alt="" />
+          <img src={twitterIcon} alt="" />
+          <img src={facebookIcon} alt="" />
+          <img src={telegram} alt="" />
+          <img src={linktree} alt="" />
         </div>
       </div>
       <button type="button" className={classes.view}>

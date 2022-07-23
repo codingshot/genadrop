@@ -312,12 +312,13 @@ export const getGraphCollection = async (collection, mainnet) => {
 
 export const getUserGraphNft = async (collection, address) => {
   const nftArr = [];
+  console.log(collection);
   if (collection) {
     for (let i = 0; i < collection?.length; i++) {
       const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
       try {
         const nftObj = {};
-        nftObj.collection_name = collection[i].owner?.collections[0]?.name;
+        // nftObj.collection_name = collection[i]?.owner.collections[0]?.name;
         nftObj.owner = address;
         nftObj.chain = collection[i].chain;
         nftObj.Id = collection[i].id;
@@ -327,7 +328,7 @@ export const getUserGraphNft = async (collection, address) => {
         nftObj.price = collection[i].price * 0.000000000000000001;
         nftObj.sold = collection[i].isSold;
         nftObj.ipfs_data = data;
-        nftObj.contractAddress = collection[i].owner.id;
+        nftObj.contractAddress = collection[i]?.id?.split(collection[i].tokenID)[0];
         nftObj.name = data.name;
         nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);
@@ -484,6 +485,8 @@ export const buyGraphNft = async (buyProps) => {
   }
   dispatch(setLoading(true));
   if (chainId === 44787) {
+    console.log(buyProps);
+    console.log(chainId);
     const res = await purchaseCeloNfts(buyProps);
     console.log("response", res);
     if (res) {

@@ -28,9 +28,9 @@ export const GET_GRAPH_COLLECTIONS = gql`
           txId
           type
           price
-          buyer {
-            id
-          }
+          # buyer {
+          #   id
+          # }
         }
       }
     }
@@ -66,9 +66,9 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
           txId
           type
           price
-          buyer {
-            id
-          }
+          # buyer {
+          #   id
+          # }
         }
       }
     }
@@ -132,7 +132,6 @@ export const GET_GRAPH_NFT = gql`
       owner {
         id
       }
-
       tokenIPFSPath
       transactions {
         id
@@ -140,9 +139,6 @@ export const GET_GRAPH_NFT = gql`
         txId
         type
         price
-        buyer {
-          id
-        }
       }
     }
   }
