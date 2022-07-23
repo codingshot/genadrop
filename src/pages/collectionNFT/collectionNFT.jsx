@@ -16,7 +16,7 @@ import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
 import { ReactComponent as CopiedIcon } from "../../assets/copied.svg";
 import { ReactComponent as CopyIcon } from "../../assets/copy-solid.svg";
-import { ReactComponent as WalletIcon } from "../../assets/wallet-icon.png";
+import walletIcon from "../../assets/wallet-icon.png";
 import { ReactComponent as TwitterIcon } from "../../assets/twitter.svg";
 import { ReactComponent as FacebookIcon } from "../../assets/facebook.svg";
 import { ReactComponent as InstagramIcon } from "../../assets/instagram.svg";
@@ -308,7 +308,7 @@ const CollectionNFT = () => {
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
                     <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
-                      <WalletIcon alt="" />
+                      <img src={walletIcon} alt="" />
                       Buy now
                     </button>
                   ) : (
@@ -318,7 +318,7 @@ const CollectionNFT = () => {
                       disabled={nftDetails.sold}
                       onClick={() => buyNft(buyProps)}
                     >
-                      <WalletIcon alt="" />
+                      <img src={walletIcon} alt="" />
                       Buy now
                     </button>
                   )}

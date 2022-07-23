@@ -167,7 +167,7 @@ const CollectionPreviewSelect = ({
             ))}
           </div>
           <div onClick={handleNext} className={`${classes.pageControl} ${classes.next}`}>
-            <AangleRight alt="" />
+            <AngleRight alt="" />
           </div>
           <div className={classes.gotoWrapper}>
             <input

@@ -4,17 +4,17 @@ import Skeleton from "react-loading-skeleton";
 import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
+import { FacebookIcon, FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { GenContext } from "../../../gen-state/gen.context";
 import { getGraphNft, getTransactions } from "../../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../../components/Nft-details/graph/graph";
 import DropItem from "../../../components/Nft-details/dropItem/dropItem";
-import copiedIcon from "../../../assets/copied.svg";
-import copyIcon from "../../../assets/copy-solid.svg";
-import twitterIcon from "../../../assets/twitter.svg";
-import facebookIcon from "../../../assets/facebook.svg";
-import whatsappIcon from "../../../assets/whatsapp.svg";
+import { ReactComponent as CopiedIcon } from "../../../assets/copied.svg";
+import { ReactComponent as CopyIcon } from "../../../assets/copy-solid.svg";
+import { ReactComponent as TwitterIcon } from "../../../assets/twitter.svg";
+import { ReactComponent as Facebook } from "../../../assets/facebook.svg";
+import { ReactComponent as WhatsappIcon } from "../../../assets/whatsapp.svg";
 import descriptionIcon from "../../../assets/description-icon.png";
 import detailsIcon from "../../../assets/details.png";
 import Search from "../../../components/Nft-details/history/search";
@@ -386,22 +386,22 @@ const ListSingleNFT = (nft) => {
               <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                 <div className={classes.copy_area}>
                   {!isCopied ? (
-                    <img className={classes.shareicon} src={copyIcon} alt="" />
+                    <CopyIcon className={classes.shareicon} alt="" />
                   ) : (
-                    <img className={classes.shareicon} src={copiedIcon} alt="" />
+                    <CopiedIcon className={classes.shareicon} alt="" />
                   )}
                 </div>
               </CopyToClipboard>
             </div>
             <div className={classes.shareContent}>
               <FacebookShareButton url={window.location.href}>
-                <img className={classes.shareIcon} src={facebookIcon} alt="facebook" />
+                <Facebook className={classes.shareIcon} alt="facebook" />
               </FacebookShareButton>
               <TwitterShareButton url={window.location.href}>
-                <img className={classes.shareIcon} src={twitterIcon} alt="twitter" />
+                <TwitterIcon className={classes.shareIcon} alt="twitter" />
               </TwitterShareButton>
               <WhatsappShareButton url={window.location.href}>
-                <img className={classes.shareIcon} src={whatsappIcon} alt="twitter" />
+                <WhatsappIcon className={classes.shareIcon} alt="twitter" />
               </WhatsappShareButton>
             </div>
           </div>

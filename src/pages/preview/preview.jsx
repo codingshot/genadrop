@@ -25,14 +25,14 @@ import TextEditor from "./text-editor";
 import { getDefaultName } from "../../utils";
 import { handleDownload } from "../../utils/index2";
 import { fetchAlgoCollections } from "../../utils/firebase";
-import arrowIconLeft from "../../assets/icon-arrow-left.svg";
+import { ReactComponent as ArrowIconLeft } from "../../assets/icon-arrow-left.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
 import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
-import warnIcon from "../../assets/icon-warn.svg";
-import CaretDown from "../../assets/icon-caret-down.svg";
-import CaretUP from "../../assets/icon-caret-up.svg";
-import tooltip from "../../assets/tooltip.svg";
+import { ReactComponent as WarnIcon } from "../../assets/icon-warn.svg";
+import { ReactComponent as CaretDown }  from "../../assets/icon-caret-down.svg";
+import { ReactComponent as CaretUP }  from "../../assets/icon-caret-up.svg";
+import { ReactComponent as Tooltip } from "../../assets/tooltip.svg";
 import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 
 const Preview = () => {
@@ -358,7 +358,7 @@ const Preview = () => {
     <div className={classes.wrapper}>
       <div className={classes.backBtnWrapper}>
         <div onClick={() => history.goBack()} className={classes.backBtn}>
-          <img src={arrowIconLeft} alt="" />
+          <ArrowIconLeft alt="" />
         </div>
       </div>
       <div className={classes.container}>
@@ -451,22 +451,20 @@ const Preview = () => {
                       <p style={{ opacity: isNaN(duration) || duration === "" ? 0 : 1 }}>Sec</p>
                       <div className={classes.verticalLine} />
                       <div className={classes.inputArrows}>
-                        <img
+                        <CaretUP
                           onClick={() =>
                             handleSetState({
                               duration: duration ? duration + 1 : 1,
                             })
                           }
-                          src={CaretUP}
                           alt="count-up"
                         />
-                        <img
+                        <CaretDown
                           onClick={() =>
                             handleSetState({
                               duration: duration ? (duration - 1 <= 0 ? 0 : duration - 1) : 0,
                             })
                           }
-                          src={CaretDown}
                           alt="count-down"
                         />
                       </div>
@@ -542,7 +540,7 @@ const Preview = () => {
               <span>{nftLayers.length}</span>
             </div>
             <div className={classes.detail}>
-              {mintInfo ? <img src={warnIcon} alt="" /> : null}
+              {mintInfo ? <WarnIcon alt="" /> : null}
               <span>Unused Combinations</span>
               <span>{combinations - mintAmount - rule.length}</span>
             </div>

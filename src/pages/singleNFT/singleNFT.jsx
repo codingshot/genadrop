@@ -11,12 +11,12 @@ import { buyGraphNft, buyNft, getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
-import copiedIcon from "../../assets/copied.svg";
-import copyIcon from "../../assets/copy-solid.svg";
+import { ReactComponent as CopiedIcon } from "../../assets/copied.svg";
+import { ReactComponent as CopyIcon } from "../../assets/copy-solid.svg";
 import walletIcon from "../../assets/wallet-icon.png";
-import twitterIcon from "../../assets/twitter.svg";
-import facebookIcon from "../../assets/facebook.svg";
-import whatsappIcon from "../../assets/whatsapp.svg";
+import { ReactComponent as TwitterIcon } from "../../assets/twitter.svg";
+import { ReactComponent as FacebookIcon } from "../../assets/facebook.svg";
+import { ReactComponent as WhatsappIcon } from "../../assets/whatsapp.svg";
 import descriptionIcon from "../../assets/description-icon.png";
 import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
@@ -443,22 +443,22 @@ const SingleNFT = () => {
               <CopyToClipboard text={window.location.href} onCopy={onCopyText}>
                 <div className={classes.copy_area}>
                   {!isCopied ? (
-                    <img className={classes.shareicon} src={copyIcon} alt="" />
+                    <CopyIcon className={classes.shareicon} alt="" />
                   ) : (
-                    <img className={classes.shareicon} src={copiedIcon} alt="" />
+                    <CopiedIcon className={classes.shareicon} alt="" />
                   )}
                 </div>
               </CopyToClipboard>
             </div>
             <div className={classes.shareContent}>
               <FacebookShareButton url={window.location.href}>
-                <img className={classes.shareIcon} src={facebookIcon} alt="facebook" />
+                <FacebookIcon className={classes.shareIcon} alt="facebook" />
               </FacebookShareButton>
               <TwitterShareButton url={window.location.href}>
-                <img className={classes.shareIcon} src={twitterIcon} alt="twitter" />
+                <TwitterIcon className={classes.shareIcon} alt="twitter" />
               </TwitterShareButton>
               <WhatsappShareButton url={window.location.href}>
-                <img className={classes.shareIcon} src={whatsappIcon} alt="twitter" />
+                <WhatsappIcon className={classes.shareIcon} alt="twitter" />
               </WhatsappShareButton>
             </div>
           </div>

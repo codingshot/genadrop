@@ -1,7 +1,7 @@
 import classes from "./walletPopup.module.css";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import metamaskIcon from "../../assets/icon-metamask.svg";
-import { ReactComponent as WalletConnectIcon}  from "../../assets/icon-wallet-connect.svg";
+import { ReactComponent as MetamaskIcon } from "../../assets/icon-metamask.svg";
+import { ReactComponent as WalletConnectIcon }  from "../../assets/icon-wallet-connect.svg";
 import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.actions";
@@ -114,7 +114,7 @@ const WalletPopup = ({ handleSetState }) => {
               onClick={handleMetamask}
               className={`${classes.connectionMethod} ${classes.metamask} ${showMetamask && classes.active}`}
             >
-              <img src={metamaskIcon} alt="" />
+              <MetamaskIcon alt="" />
               <h3>MetaMask</h3>
               <p>Connect to you MetaMask Wallet</p>
             </div>

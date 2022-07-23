@@ -2,16 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./profile.module.css";
-import twitterIcon from "../../assets/icon-twitter-accent.svg";
-import instagramIcon from "../../assets/icon-instagram.svg";
-import discordIcon from "../../assets/icon-discord-accent.svg";
+import { ReactComponent as TwitterIcon } from "../../assets/icon-twitter-accent.svg";
+import { ReactComponent as InstagramIcon } from "../../assets/icon-instagram.svg";
+import { ReactComponent as DiscordIcon } from "../../assets/icon-discord-accent.svg";
 import { readUserProfile } from "../../utils/firebase";
 import { handleCancel, handleInputChange, handleSave } from "./profile-script";
 import avatar from "../../assets/avatar.png";
 import bg from "../../assets/bg.png";
-import copyIcon from "../../assets/icon-copy.svg";
+import { ReactComponent as CopyIcon }  from "../../assets/icon-copy.svg";
 import { getConnectedChain } from "../../components/wallet/wallet-script";
-import uploadIcon from "../../assets/uploadIcon.svg";
+import { ReactComponent as UploadIcon } from "../../assets/uploadIcon.svg";
 
 const Profile = () => {
   const history = useHistory();
@@ -93,7 +93,7 @@ const Profile = () => {
           >
             <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
             <input className={account && classes.wallet} type="text" value={account} disabled />
-            <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />
+            <CopyIcon alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />
           </div>
 
           <p>To update your address just change your account in your wallet.</p>
@@ -139,7 +139,7 @@ const Profile = () => {
 
           <div className={`${classes.option} ${!isTwitter && classes.invalid}`}>
             <label>
-              <img src={twitterIcon} alt="" />
+              <TwitterIcon alt="" />
               <div>Twitter</div>
             </label>
             <input
@@ -152,7 +152,7 @@ const Profile = () => {
 
           <div className={`${classes.option} ${!isInstagram && classes.invalid}`}>
             <label>
-              <img src={instagramIcon} alt="" />
+              <InstagramIcon alt="" />
               <div>Instagram</div>
             </label>
             <input
@@ -165,7 +165,7 @@ const Profile = () => {
 
           <div className={`${classes.option} ${!isDiscord && classes.invalid}`}>
             <label>
-              <img src={discordIcon} alt="" />
+              <DiscordIcon alt="" />
               <div>Discord</div>
             </label>
             <input

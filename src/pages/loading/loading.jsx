@@ -1,10 +1,10 @@
 import React from "react";
 import classes from "./loading.module.css";
-import drop from "../../assets/drop.svg";
+import { ReactComponent as Drop } from "../../assets/drop.svg";
 
 const Loading = () => (
   <div className={classes.wrapper}>
-    <img src={drop} alt="" />
+    <Drop alt="" />
     <div className={classes.loader}>
       <div className={classes.dotOne} />
       <div className={classes.dotTwo} />

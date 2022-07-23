@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import searchIcon from "../../../assets/search.svg";
+import { ReactComponent as SearchIcon  } from "../../../assets/search.svg";
 import classes from "./searchBar.module.css";
 
 const SearchBar = ({ onSearch }) => {
@@ -28,7 +28,7 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <div className={classes.searchInput}>
-      <img src={searchIcon} alt="" />
+      <SearchIcon alt="" />
       <input type="search" onChange={seachHandler} value={searchValue} placeholder="Search Items" />
     </div>
   );

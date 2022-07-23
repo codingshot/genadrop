@@ -1,4 +1,4 @@
-import { ReactComponent as errorIcon } from "../../../assets/icon-error_2.svg";
+import { ReactComponent as ErrorIcon } from "../../../assets/icon-error_2.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import classes from "./popup.module.css";
 
