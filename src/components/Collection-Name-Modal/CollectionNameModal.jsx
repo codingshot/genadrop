@@ -1,16 +1,15 @@
-import classes from "./CreateModal.module.css";
-import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useState } from "react";
+import classes from "./CollectionNameModal.module.css";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import { useEffect, useState } from "react";
 import { useContext } from "react";
-import { GenContext } from "../../../gen-state/gen.context";
-import { createSession, setCollectionName } from "../../../gen-state/gen.actions";
-import { v4 as uuid } from "uuid";
+import { GenContext } from "../../gen-state/gen.context";
+import { setCollectionName, setToggleCollectionNameModal } from "../../gen-state/gen.actions";
 
-const CreateModal = ({ modal, closeModal }) => {
+const CollectionNameModal = () => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(false);
 
-  const { dispatch } = useContext(GenContext);
+  const { dispatch, toggleCollectionNameModal } = useContext(GenContext);
 
   const handleChange = (e) => {
     setError(false);
@@ -20,19 +19,15 @@ const CreateModal = ({ modal, closeModal }) => {
   const handleClick = (e) => {
     e.preventDefault();
     if (!inputValue) return setError(true);
-    dispatch(createSession(uuid()));
     dispatch(setCollectionName(inputValue));
-    handleClose();
-  };
-
-  const handleClose = () => {
-    closeModal();
+    setInputValue("");
+    dispatch(setToggleCollectionNameModal(false));
   };
 
   return (
-    <div className={`${classes.container} ${modal && classes.active}`}>
+    <div className={`${classes.container} ${toggleCollectionNameModal && classes.active}`}>
       <div className={classes.wrapper}>
-        {/* <CloseIcon onClick={handleClose} className={classes.closeBtn} /> */}
+        <CloseIcon onClick={handleClick} className={classes.closeBtn} />
         <form onSubmit={handleClick} className={classes.content}>
           <h3>Let’s get cracking!</h3>
           <h6>Every Collection is Unique</h6>
@@ -44,6 +39,7 @@ const CreateModal = ({ modal, closeModal }) => {
             <label> Collection name </label>
             <input value={inputValue} onChange={handleChange} type="text" placeholder="Minority_Drop" />
           </div>
+          <div className={`${classes.errorMessage} ${error && classes.error}`}>Enter collection name</div>
           <button className={`${inputValue && classes.active}`} onClick={handleClick}>
             Continue
           </button>
@@ -53,4 +49,4 @@ const CreateModal = ({ modal, closeModal }) => {
   );
 };
 
-export default CreateModal;
+export default CollectionNameModal;

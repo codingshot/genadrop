@@ -1,0 +1,17 @@
+.container {
+  border: 1px solid red;
+  width: 20em;
+  height: 20em;
+  border-radius: 0.5em;
+  background: var(--default);
+  position: fixed;
+  right: 1em;
+  bottom: 1em;
+  transition: all 650ms;
+  transform: translateY(calc(100% + 1em));
+  z-index: 20;
+}
+
+.container.active {
+  transform: translateY(0);
+}

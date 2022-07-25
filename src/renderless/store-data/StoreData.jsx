@@ -1,14 +1,8 @@
-import { useRef } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import {
-  constructLayers,
   deleteAllTraits,
   deleteTrait,
-  fetchCollectionName,
-  fetchLayers,
-  fetchTraits,
   renameTrait,
   saveCollectionName,
   saveLayers,
@@ -16,16 +10,14 @@ import {
 } from "./StoreData.script";
 
 const StoreData = () => {
-  const { layers, rule, collectionName, sessionId, user, imageAction, layerAction, dispatch } = useContext(GenContext);
-
-  const mountRef = useRef(false);
-
-  useEffect(() => {
-    saveCollectionName({ user, sessionId, collectionName });
-  }, [user, sessionId, collectionName]);
+  const { layers, rule, collectionName, sessionId, currentUser, imageAction, layerAction, dispatch } =
+    useContext(GenContext);
 
   useEffect(() => {
-    if (!mountRef.current) return;
+    saveCollectionName({ currentUser, sessionId, collectionName });
+  }, [currentUser, sessionId, collectionName]);
+
+  useEffect(() => {
     const { type } = layerAction;
     const newLayers = layers.map(({ traits, ...otherLayerProps }) => {
       const newTraits = traits.map(({ image, ...otherTraitProps }) => {
@@ -35,65 +27,33 @@ const StoreData = () => {
     });
 
     if (type !== "order") {
-      saveLayers({ user, sessionId, layers: newLayers });
+      saveLayers({ currentUser, sessionId, layers: newLayers });
     } else if (type === "order" && false) {
-      // saveLayers({ user, sessionId, layers: newLayers });
+      // saveLayers({ currentUser, sessionId, layers: newLayers });
     }
-  }, [layerAction, layers, user, sessionId]);
+  }, [layerAction, layers, currentUser, sessionId]);
 
   useEffect(() => {
-    if (!mountRef.current) return;
     const { type, value } = imageAction;
     switch (type) {
       case "upload":
-        saveTraits({ user, sessionId, ...value });
+        saveTraits({ currentUser, sessionId, ...value });
         break;
       case "rename":
-        renameTrait({ user, sessionId, ...value });
+        renameTrait({ currentUser, sessionId, ...value });
         break;
       case "delete":
-        deleteTrait({ user, sessionId, ...value });
+        deleteTrait({ currentUser, sessionId, ...value });
         break;
       case "deleteAll":
-        deleteAllTraits({ user, sessionId, id: value });
+        deleteAllTraits({ currentUser, sessionId, id: value });
         break;
       default:
         break;
     }
-  }, [imageAction, user, sessionId]);
+  }, [imageAction, currentUser, sessionId]);
 
-  const runFetch = async () => {
-    console.log("fetching starts...");
-
-    try {
-      const result = await Promise.all([
-        fetchCollectionName({ user, sessionId }),
-        fetchLayers({ user, sessionId }),
-        fetchTraits({ user, sessionId }),
-      ]);
-      const [storedCollectionName, storedLayers, storedTraits] = result;
-      constructLayers({ dispatch, storedCollectionName, storedLayers, storedTraits });
-    } catch (error) {
-      console.log(error);
-    }
-
-    console.log("fetching ends...");
-
-    mountRef.current = true;
-  };
-
-  useEffect(() => {
-    runFetch();
-  }, [user, sessionId]);
-
-  return (
-    <button
-      onClick={() => runFetch()}
-      style={{ background: "red", position: "fixed", top: "8em", left: "4em", zIndex: "9000" }}
-    >
-      fetch data
-    </button>
-  );
+  return null;
 };
 
 export default StoreData;

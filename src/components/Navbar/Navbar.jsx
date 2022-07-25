@@ -44,6 +44,9 @@ const Navbar = () => {
         <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
+        <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
+          <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
+        </form>
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />
           <ul className={classes.navList}>
@@ -67,22 +70,19 @@ const Navbar = () => {
             </Link>
           </ul>
           <div className={`${classes.walletAuthContainer} ${classes.mobile}`}>
-            <div className={classes.wallet}>
+            <div className={`${classes.wallet} ${!pathname.includes("/create") && classes.active}`}>
               <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
             </div>
-            <div className={classes.auth}>
+            <div className={`${classes.auth} ${pathname.includes("/create") && classes.active}`}>
               <GoogleAuth />
             </div>
           </div>
         </nav>
-        <form onSubmit={(e) => handleSubmit(e, value)} className={classes.searchContainer}>
-          <input onChange={handleChange} value={value} type="text" placeholder="Search collections, and 1 of 1s" />
-        </form>
         <div className={classes.walletAuthContainer}>
-          <div className={classes.wallet}>
+          <div className={`${classes.wallet} ${!pathname.includes("/create") && classes.active}`}>
             <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
           </div>
-          <div className={classes.auth}>
+          <div className={`${classes.auth} ${pathname.includes("/create") && classes.active}`}>
             <GoogleAuth />
           </div>
         </div>

@@ -131,6 +131,19 @@
   background: var(--main-hovered);
 }
 
+.errorMessage {
+  margin-top: -3em;
+  margin-bottom: 1em;
+  font-size: 0.75rem;
+  display: none;
+  transition: all 300;
+}
+
+.errorMessage.error {
+  display: inline-flex;
+  color: var(--error-500);
+}
+
 @media screen and (max-width: 768px) {
   .content {
     padding: 2em;

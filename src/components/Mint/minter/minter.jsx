@@ -4,7 +4,7 @@ import {
   setClipboard,
   setConnectFromMint,
   setLoader,
-  setLoading,
+  setOverlay,
   setNotification,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -176,9 +176,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           })
         );
       }
-      dispatch(setLoading(true));
+      dispatch(setOverlay(true));
       handleMint(mintProps).then((url) => {
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         if (typeof url === "object") {
           handleSetState({
             popupProps: {
@@ -206,9 +206,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           })
         );
       }
-      dispatch(setLoading(true));
+      dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         if (typeof url === "object") {
           handleSetState({
             popupProps: {

@@ -48,10 +48,15 @@ const GenContextProvider = ({ children }) => {
     imageQuality,
     zip,
     connectFromMint,
-    user,
+    currentUser,
     imageAction,
     layerAction,
     sessionId,
+    sessions,
+    toggleSessionModal,
+    toggleCollectionNameModal,
+    isUser,
+    currentPlan,
   } = state;
 
   return (
@@ -98,10 +103,15 @@ const GenContextProvider = ({ children }) => {
         imageQuality,
         zip,
         connectFromMint,
-        user,
+        currentUser,
         imageAction,
         layerAction,
         sessionId,
+        sessions,
+        toggleSessionModal,
+        toggleCollectionNameModal,
+        isUser,
+        currentPlan,
         dispatch,
       }}
     >

@@ -1,31 +1,38 @@
 import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL, getMetadata } from "firebase/storage";
-import { doc, setDoc, getFirestore, getDoc, query } from "firebase/firestore";
+import { doc, collection, setDoc, getFirestore, getDoc, getDocs, query } from "firebase/firestore";
 
 import { app } from "../../utils/firebase";
-import { dataURItoBlob } from "../../utils";
 
 const storage = getStorage(app);
 const firestore = getFirestore();
 
-export const saveCollectionName = async ({ user, sessionId, collectionName }) => {
-  if (user && sessionId) {
-    const docRef = doc(firestore, `users/${user.uid}/${sessionId}/collectionName`);
+export const saveSession = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const docRef = doc(firestore, `users/${currentUser.uid}/sessions/${sessionId}`);
+    setDoc(docRef, { sessionId });
+    return sessionId;
+  }
+};
+
+export const saveCollectionName = async ({ currentUser, sessionId, collectionName }) => {
+  if (currentUser && sessionId) {
+    const docRef = doc(firestore, `users/${currentUser.uid}/${sessionId}/collectionName`);
     setDoc(docRef, { collectionName });
   }
 };
 
-export const saveLayers = ({ user, sessionId, layers }) => {
-  if (user && sessionId) {
-    const docRef = doc(firestore, `users/${user.uid}/${sessionId}/layers`);
+export const saveLayers = ({ currentUser, sessionId, layers }) => {
+  if (currentUser && sessionId) {
+    const docRef = doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`);
     setDoc(docRef, { layers });
   }
 };
 
-export const saveTraits = async ({ user, sessionId, id, traits }) => {
+export const saveTraits = async ({ currentUser, sessionId, id, traits }) => {
   if (!traits.length) return;
-  if (user && sessionId) {
+  if (currentUser && sessionId) {
     traits.forEach(async ({ traitTitle, image }) => {
-      const traitRef = ref(storage, `${user.uid}/${sessionId}/${id}/${traitTitle}`);
+      const traitRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${traitTitle}`);
       try {
         await uploadBytes(traitRef, image);
       } catch (error) {
@@ -35,9 +42,9 @@ export const saveTraits = async ({ user, sessionId, id, traits }) => {
   }
 };
 
-export const renameTrait = async ({ user, sessionId, id, oldName, newName, image }) => {
-  if (user && sessionId) {
-    const traitRef = ref(storage, `${user.uid}/${sessionId}/${id}/${newName}`);
+export const renameTrait = async ({ currentUser, sessionId, id, oldName, newName, image }) => {
+  if (currentUser && sessionId) {
+    const traitRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${newName}`);
     // upload the new file
     try {
       await uploadBytes(traitRef, image);
@@ -45,7 +52,7 @@ export const renameTrait = async ({ user, sessionId, id, oldName, newName, image
       console.log(`error ${error}`);
     }
 
-    const deleteRef = ref(storage, `${user.uid}/${sessionId}/${id}/${oldName}`);
+    const deleteRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${oldName}`);
     // Delete the old file
     try {
       await deleteObject(deleteRef);
@@ -55,9 +62,9 @@ export const renameTrait = async ({ user, sessionId, id, oldName, newName, image
   }
 };
 
-export const deleteTrait = async ({ user, sessionId, id, traitTitle }) => {
-  if (user && sessionId) {
-    const deleteRef = ref(storage, `${user.uid}/${sessionId}/${id}/${traitTitle}`);
+export const deleteTrait = async ({ currentUser, sessionId, id, traitTitle }) => {
+  if (currentUser && sessionId) {
+    const deleteRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${traitTitle}`);
     try {
       await deleteObject(deleteRef);
     } catch (error) {
@@ -66,9 +73,9 @@ export const deleteTrait = async ({ user, sessionId, id, traitTitle }) => {
   }
 };
 
-export const deleteAllTraits = async ({ user, sessionId, id }) => {
-  if (user && sessionId) {
-    const listRef = ref(storage, `${user.uid}/${sessionId}/${id}`);
+export const deleteAllTraits = async ({ currentUser, sessionId, id }) => {
+  if (currentUser && sessionId) {
+    const listRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}`);
 
     const res = await listAll(listRef);
     const folder = await Promise.all(
@@ -88,9 +95,45 @@ export const deleteAllTraits = async ({ user, sessionId, id }) => {
   }
 };
 
-export const fetchTraits = async ({ user, sessionId }) => {
-  if (user && sessionId) {
-    const listRef = ref(storage, `${user.uid}/${sessionId}/`);
+export const fetchSession = async ({ currentUser }) => {
+  if (currentUser) {
+    const q = query(collection(firestore, `users/${currentUser.uid}/sessions`));
+    const querySnapshot = await getDocs(q);
+    const sessions = [];
+    querySnapshot.forEach((doc) => {
+      sessions.push(doc.id);
+    });
+    return sessions;
+  }
+};
+
+export const fetchCollectionName = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/collectionName`));
+    const docSnapshot = await getDoc(querySnapshot);
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      console.log("document does not exist");
+    }
+  }
+};
+
+export const fetchLayers = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`));
+    const docSnapshot = await getDoc(querySnapshot);
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      console.log("document does not exist");
+    }
+  }
+};
+
+export const fetchTraits = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const listRef = ref(storage, `${currentUser.uid}/${sessionId}/`);
     const traitRef = await listAll(listRef);
 
     // Find all the prefixes and items.
@@ -106,7 +149,7 @@ export const fetchTraits = async ({ user, sessionId }) => {
             file.url = url;
             const metadata = await getMetadata(itemRef);
             file.metadata = metadata;
-            key = metadata.fullPath.split("/")[1];
+            key = metadata.fullPath.split("/")[2];
             return file;
           } catch (error) {
             console.log(error);
@@ -129,52 +172,27 @@ export const fetchTraits = async ({ user, sessionId }) => {
   }
 };
 
-export const fetchLayers = async ({ user, sessionId }) => {
-  if (user && sessionId) {
-    const querySnapshot = query(doc(firestore, `users/${user.uid}/${sessionId}/layers`));
-    const docSnapshot = await getDoc(querySnapshot);
-    if (docSnapshot.exists()) {
-      return docSnapshot.data();
-    } else {
-      console.log("document does not exist");
-    }
-  }
-};
-
-export const fetchCollectionName = async ({ user, sessionId }) => {
-  if (user && sessionId) {
-    const querySnapshot = query(doc(firestore, `users/${user.uid}/${sessionId}/collectionName`));
-    const docSnapshot = await getDoc(querySnapshot);
-    if (docSnapshot.exists()) {
-      return docSnapshot.data();
-    } else {
-      console.log("document does not exist");
-    }
-  }
-};
-
 export const constructLayers = async ({ dispatch, storedCollectionName, storedLayers, storedTraits }) => {
   console.log("storedCollectionName: ", storedCollectionName);
-  console.log("storedLayers: ", storedLayers);
   console.log("storedTraits: ", storedTraits);
+  console.log("storedLayers: ", storedLayers);
+  return;
   const transformedTraits = await transfromTraits(storedTraits);
-  console.log({ transformedTraits });
 
-  // const newLayers = storedLayers.map(({ traits, id, ...otherLayerProps }) => {
-  // const arr = transformedTraits[id];
-  // console.log({id});
-  // const newTraits = traits.map(({ image, traitTitle, ...otherTraitProps }) => {
-  //   let file = null;
-  //   for (let a of arr) {
-  //     if (a.name === traitTitle) {
-  //       file = a;
-  //       break;
-  //     }
-  //   }
-  //   return { image: file, ...otherTraitProps };
-  // });
-  // return { traits: newTraits, ...otherLayerProps };
-  // });
+  const newLayers = storedLayers.layers.map(({ traits, id, ...otherLayerProps }) => {
+    const obj = transformedTraits[id];
+    const newTraits = traits.map(({ image, traitTitle, ...otherTraitProps }) => {
+      let file = null;
+      for (let o of obj) {
+        if (o.name === traitTitle) {
+          file = o;
+          break;
+        }
+      }
+      return { image: file, traitTitle, ...otherTraitProps };
+    });
+    return { traits: newTraits, id, ...otherLayerProps };
+  });
 
   console.log({ newLayers });
 };
@@ -186,10 +204,10 @@ const getFile = async (url, name, type) => {
   return file;
 };
 
-const transfromTraits = async (traits) => {
+const transfromTraits = async (value) => {
   const newTraits = {};
   await Promise.all(
-    traits.map(async (traitObj) => {
+    value.map(async (traitObj) => {
       let newTrait = null;
       await Promise.all(
         Object.values(traitObj).map(async (trait) => {
@@ -204,4 +222,21 @@ const transfromTraits = async (traits) => {
     })
   );
   return newTraits;
+};
+
+export const fetchUserSession = async ({ dispatch, currentUser, sessionId }) => {
+  console.log("fetching starts...");
+  try {
+    const result = await Promise.all([
+      fetchCollectionName({ currentUser, sessionId }),
+      fetchLayers({ currentUser, sessionId }),
+      fetchTraits({ currentUser, sessionId }),
+    ]);
+    const [storedCollectionName, storedLayers, storedTraits] = result;
+    constructLayers({ dispatch, storedCollectionName, storedLayers, storedTraits });
+  } catch (error) {
+    console.log(error);
+  }
+
+  console.log("fetching ends...");
 };

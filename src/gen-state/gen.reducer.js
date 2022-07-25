@@ -63,7 +63,7 @@ export const INITIAL_STATE = {
     isComingSoon: null,
     chainId: null,
   },
-  user: null,
+  currentUser: null,
   imageAction: {
     type: "", // upload, rename, delete, deleteAll
     value: {},
@@ -72,6 +72,11 @@ export const INITIAL_STATE = {
     type: "", // add, delete, order, rename,
   },
   sessionId: "",
+  sessions: [],
+  toggleSessionModal: false,
+  toggleCollectionNameModal: false,
+  isUser: "", // true false null,
+  currentPlan: "free",
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -167,7 +172,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         // combinations: Math.ceil((100 / 100) * Number(action.payload)),
         combinations: action.payload,
       };
-    case genActionTypes.SET_LOADING:
+    case genActionTypes.SET_OVERLAY:
       return {
         ...state,
         isLoading: action.payload,
@@ -366,7 +371,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
     case genActionTypes.SET_CURRENT_USER:
       return {
         ...state,
-        user: action.payload,
+        currentUser: action.payload,
       };
     case genActionTypes.SET_IMAGE_ACTION:
       return {
@@ -378,10 +383,35 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layerAction: action.payload,
       };
-    case genActionTypes.CREATE_SESSION:
+    case genActionTypes.SET_CURRENT_SESSION:
       return {
         ...state,
         sessionId: action.payload,
+      };
+    case genActionTypes.SET_SESSION:
+      return {
+        ...state,
+        sessions: action.payload,
+      };
+    case genActionTypes.TOGGLE_SESSION_MODAL:
+      return {
+        ...state,
+        toggleSessionModal: action.payload,
+      };
+    case genActionTypes.TOGGLE_COLLECTION_NAME_MODAL:
+      return {
+        ...state,
+        toggleCollectionNameModal: action.payload,
+      };
+    case genActionTypes.SET_IS_USER:
+      return {
+        ...state,
+        isUser: action.payload,
+      };
+    case genActionTypes.SET_CURRENT_PLAN:
+      return {
+        ...state,
+        currentPlan: action.payload,
       };
     default:
       return state;

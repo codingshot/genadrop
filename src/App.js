@@ -1,5 +1,5 @@
-import React, { lazy, useState } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";
@@ -33,6 +33,8 @@ import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
 import StoreData from "./renderless/store-data/StoreData";
+import SessionModal from "./components/Session-Modal/SessionModal";
+import Pricing from "./pages/Pricing/Pricing";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -70,6 +72,7 @@ function App() {
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
+            <Route exact path="/create/pricing" component={Pricing} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
@@ -82,6 +85,7 @@ function App() {
       <Loader />
       <Prompt />
       <FetchData />
+      <SessionModal />
       <StoreData />
     </div>
   );

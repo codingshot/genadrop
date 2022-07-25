@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { setImageQuality, setLoading, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
+import { setImageQuality, setOverlay, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
@@ -84,7 +84,7 @@ const CollectionDescription = () => {
   };
 
   useEffect(() => {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
   }, [dispatch]);
 
   useEffect(() => {

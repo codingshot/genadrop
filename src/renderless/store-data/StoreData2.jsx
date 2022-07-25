@@ -9,7 +9,7 @@ import { dataURItoBlob } from "../../utils";
 const firestore = getFirestore();
 
 const StoreData = () => {
-  const { layers, rule, preview, collectionName, user, dispatch } = useContext(GenContext);
+  const { layers, rule, preview, collectionName, currentUser, dispatch } = useContext(GenContext);
   const mountRef = useRef(false);
 
   const getFile = ({ imageUrl, fileName, fileType }) => {
@@ -31,9 +31,9 @@ const StoreData = () => {
   }
 
   const saveLayers = (cache) => {
-    if (user) {
+    if (currentUser) {
       console.log(layers);
-      const docRef = doc(firestore, `users/${user.uid}/session/sessionId`);
+      const docRef = doc(firestore, `users/${currentUser.uid}/session/sessionId`);
       setDoc(docRef, { layers: cache });
     }
   };
@@ -83,7 +83,7 @@ const StoreData = () => {
       }, 0);
       mountRef.current = true;
     }
-  }, [layers, user]);
+  }, [layers, currentUser]);
 
   useEffect(() => {
     if (preview.length || mountRef.current) {
@@ -118,7 +118,7 @@ const StoreData = () => {
         })();
       }, 0);
     }
-  }, [preview, user]);
+  }, [preview, currentUser]);
 
   useEffect(() => {
     if (rule.length || mountRef.current) {
@@ -163,7 +163,7 @@ const StoreData = () => {
         })();
       }, 0);
     }
-  }, [rule, user]);
+  }, [rule, currentUser]);
 
   useEffect(() => {
     if (collectionName) {
@@ -171,7 +171,7 @@ const StoreData = () => {
     } else {
       dispatch(setCollectionName(window.localStorage.storedCollectionName));
     }
-  }, [collectionName, user]);
+  }, [collectionName, currentUser]);
 
   return null;
 };

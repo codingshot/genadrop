@@ -37,9 +37,10 @@
   align-items: center;
   justify-content: space-between;
   background: transparent;
-  background: var(--card-layer);
+  background: var(--card-light);
   padding: 0.5em 1em;
   border-radius: 0.25em;
+  border: 2px solid var(--outline-dark);
 }
 
 .collectionName form {
@@ -52,14 +53,19 @@
   background: transparent;
   width: 100%;
   outline: none;
-  font-size: 0.9rem;
   border: 1px solid transparent;
   margin-right: 0.5em;
-  color: white;
+  font-size: 1rem;
+}
+
+.collectionName input.active {
+  background: rgba(0, 0, 0, 0.05);
+  padding: 0 0.25em;
+  border-radius: 0.15em;
 }
 
 .collectionName input::placeholder {
-  color: var(--outline);
+  color: var(--text-placeholder-light);
 }
 
 .editBtn {
@@ -70,27 +76,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  background: rgb(0, 0, 0, 0.1);
-  transition: all 300ms;
-}
-
-.editBtn:hover {
-  background: rgb(0, 0, 0, 0.3);
 }
 
 .editBtn img {
   width: 100%;
 }
 
-.nameHeader {
-  width: 90%;
-  word-wrap: break-word;
-  text-align: left;
-  font-size: 1rem;
-  white-space: nowrap;
-  overflow: auto;
-  color: var(--default);
+.editIcon {
+  fill: black;
 }
 
 .info {

@@ -3,10 +3,12 @@ import { useContext, useEffect } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./googleAuth.module.css";
 import { getCurrentUser, signInWithGoogle } from "./googleAuth.script";
+import ProfileDropdown from "./profile-dropdown/profileDropdown";
 
 const GoogleAuth = () => {
-  const { dispatch, user } = useContext(GenContext);
-  const [currentUser, setUser] = useState(null);
+  const { dispatch, currentUser } = useContext(GenContext);
+  const [user, setUser] = useState(null);
+  const [dropdown, setDropdown] = useState(false);
 
   const handleSignIn = () => {
     signInWithGoogle({ dispatch });
@@ -18,8 +20,8 @@ const GoogleAuth = () => {
   };
 
   useEffect(() => {
-    setUser(user);
-  }, [user]);
+    setUser(currentUser);
+  }, [currentUser]);
 
   useEffect(() => {
     getCurrentUser({ dispatch });
@@ -27,11 +29,18 @@ const GoogleAuth = () => {
 
   return (
     <div className={classes.container}>
-      {currentUser ? (
-        <div className={classes.name}>{getInitial(user.displayName)}</div>
+      {user ? (
+        <div
+          onMouseOver={() => setDropdown(true)}
+          onMouseOut={() => setDropdown(false)}
+          className={classes.profileContainer}
+        >
+          <div className={classes.profileIcon}>{getInitial(user.displayName)}</div>
+          <ProfileDropdown dropdown={dropdown} setDropdown={setDropdown} userName={user.displayName} />
+        </div>
       ) : (
         <div className={classes.signIn} onClick={handleSignIn}>
-          sign in
+          sign in / sign up
         </div>
       )}
     </div>

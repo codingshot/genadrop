@@ -13,7 +13,7 @@ import {
   setActiveCollection,
   setAlgoCollections,
   setAlgoSingleNfts,
-  setLoading,
+  setOverlay,
   setNotification,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
@@ -442,11 +442,11 @@ export const buyGraphNft = async (buyProps) => {
       })
     );
   }
-  dispatch(setLoading(true));
+  dispatch(setOverlay(true));
   const res = await purchasePolygonNfts(buyProps);
 
   if (res) {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction successful",
@@ -458,7 +458,7 @@ export const buyGraphNft = async (buyProps) => {
       // history.push(`/marketplace`);
     }, 3000);
   } else {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction failed",
@@ -495,11 +495,11 @@ export const buyNft = async (buyProps) => {
     );
   }
 
-  dispatch(setLoading(true));
+  dispatch(setOverlay(true));
   const res = await PurchaseNft(buyProps);
 
   if (res) {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction successful",
@@ -511,7 +511,7 @@ export const buyNft = async (buyProps) => {
       // history.push(`/marketplace`);
     }, 3000);
   } else {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction failed",
