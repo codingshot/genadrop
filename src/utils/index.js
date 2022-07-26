@@ -393,6 +393,7 @@ export const getCeloGraphNft = async (collection) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
+  console.log(collection);
   const { data } = await axios.get(
     collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
   );
@@ -542,8 +543,8 @@ export const buyGraphNft = async (buyProps) => {
       );
     }
   } else {
+    console.log(buyProps);
     const res = await purchasePolygonNfts(buyProps);
-
     if (res) {
       dispatch(setLoading(false));
       dispatch(
