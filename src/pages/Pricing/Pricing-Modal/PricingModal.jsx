@@ -10,7 +10,9 @@ import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-import { useEffect } from "react";
+
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
+import PaypalButton from "../../paypal/paypalButton";
 
 let stripePromise;
 
@@ -38,6 +40,12 @@ const PricingModal = ({ modal, closeModal }) => {
 
   const [stripeError, setStripeError] = useState(null);
 
+  const initialOptionsPaypal = {
+    "client-id": "test",
+    currency: "USD",
+    intent: "capture",
+  };
+
   const item = [
     {
       price: "price_1LPcwyBNj5DiViWraDJpzpeh",
@@ -52,6 +60,27 @@ const PricingModal = ({ modal, closeModal }) => {
       quantity: 1,
     },
   ];
+
+  const createOrderHandler = (data, actions) => {
+    // Set up the transaction
+    return actions.order.create({
+      purchase_units: [
+        {
+          amount: {
+            value: "15",
+          },
+        },
+      ],
+    });
+  };
+
+  const onApproveHandler = (data, actions) => {
+    // This function captures the funds from the transaction.
+    return actions.order.capture().then(function (details) {
+      // This function shows a transaction success message to your buyer.
+      alert("Transaction completed by " + details.payer.name.given_name);
+    });
+  };
 
   const checkoutOptions = {
     lineItems: [item[modal - 1]],
@@ -103,6 +132,9 @@ const PricingModal = ({ modal, closeModal }) => {
         <div className={classes.content}>
           <h1>Choose a payment method</h1>
           <div className={classes.methodContainer}>
+            <PayPalScriptProvider options={initialOptions}>
+              <PayPalButtons createOrder={createOrderHandler} onApprove={onApproveHandler} />
+            </PayPalScriptProvider>
             <div
               onClick={() => setActive("paypal")}
               className={`${activeMode === "paypal" && classes.active} ${classes.paymentMethod}`}
