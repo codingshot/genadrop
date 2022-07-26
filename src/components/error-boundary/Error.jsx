@@ -24,32 +24,30 @@ const SomethingWentWrong = () => {
   }, []);
 
   return (
-    <div className={classes["container"]}>
-      <div className={classes["not-found"]}>
+    <div className={classes.container}>
+      <div className={classes.notFound}>
         <img src={wrongSvg} alt="" />
         <h1>Oops something went wrong</h1>
-        <div className={classes["text"]}>
+        <div className={classes.text}>
           <span>We are working to fix it, click the refresh button to reload page.</span>
         </div>
       </div>
-      <div className={classes["button-container"]}>
+      <div className={classes.buttonContainer}>
         <div
           onMouseOver={(e) => setChangeImage((e.currentTarget.src = homeWhite))}
           onMouseOut={(e) => setChangeImage((e.currentTarget.src = home))}
           onClick={goHome}
-          className={classes["home"]}
+          className={classes.home}
         >
-          <img src={changeImage} alt="" />
           Take Me Home
         </div>
         <div
           onMouseOut={(e) => setRefreshColor((e.currentTarget.src = refresh))}
           onMouseOver={(e) => setRefreshColor((e.currentTarget.src = refresh_green))}
           onClick={() => window.location.reload()}
-          className={classes["go-back"]}
+          className={classes.goBack}
         >
-          <img src={refreshColor} alt="" />
-          Refresh
+          Refresh Page
         </div>
       </div>
     </div>

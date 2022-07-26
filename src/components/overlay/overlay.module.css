@@ -7,7 +7,6 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  color: white;
   top: 0;
   left: 0;
   z-index: 5000;
@@ -16,9 +15,23 @@
 }
 
 .overlay.isLoading {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(75, 75, 90, 0.74);
   width: 100vw;
   height: 100vh;
+}
+
+.overlay img {
+  width: 4em;
+  animation: bounce 450ms infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(1em);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .loader {
@@ -32,11 +45,11 @@
 .dotOne,
 .dotTwo,
 .dotThree {
-  width: 0.75em;
-  height: 0.75em;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
-  background: var(--main-hovered);
-  animation: blink 300ms infinite alternate linear;
+  background: var(--default);
+  animation: blink 450ms infinite alternate linear;
 }
 
 .dotOne {
@@ -44,16 +57,16 @@
 }
 
 .dotTwo {
-  animation-delay: 150ms;
+  animation-delay: 300ms;
 }
 
 .dotThree {
-  animation-delay: 300ms;
+  animation-delay: 600ms;
 }
 
 @keyframes blink {
   from {
-    background: transparent;
+    background: var(--default);
   }
   to {
     background: var(--main-color);

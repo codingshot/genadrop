@@ -11,7 +11,7 @@ import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import createIcon from "../../assets/create-icon2.svg";
 
 const CollectionOverview = () => {
-  const { dispatch, isRule, preview, rule, layers } = useContext(GenContext);
+  const { dispatch, isRule, preview, rule, layers, combinations } = useContext(GenContext);
   const [state, setState] = useState({
     toggleInfo: false,
     showRule: false,
@@ -64,7 +64,7 @@ const CollectionOverview = () => {
 
   return (
     <div className={`${classes.container} ${showRule && classes.active}`}>
-      {layers[0]?.traits.length ? (
+      {combinations ? (
         <div className={classes.rules}>
           {isRule ? (
             <>

@@ -46,7 +46,17 @@ const GenContextProvider = ({ children }) => {
     toggleWalletPopup,
     activeCollection,
     imageQuality,
+    zip,
     connectFromMint,
+    currentUser,
+    imageAction,
+    layerAction,
+    sessionId,
+    sessions,
+    toggleSessionModal,
+    toggleCollectionNameModal,
+    isUser,
+    currentPlan,
   } = state;
 
   return (
@@ -91,7 +101,17 @@ const GenContextProvider = ({ children }) => {
         toggleWalletPopup,
         activeCollection,
         imageQuality,
+        zip,
         connectFromMint,
+        currentUser,
+        imageAction,
+        layerAction,
+        sessionId,
+        sessions,
+        toggleSessionModal,
+        toggleCollectionNameModal,
+        isUser,
+        currentPlan,
         dispatch,
       }}
     >

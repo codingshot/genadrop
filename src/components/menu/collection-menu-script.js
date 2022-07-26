@@ -1,16 +1,18 @@
-import { handleBlankImage, handleTemplateImage } from "../../utils";
+import { setImageAction } from "../../gen-state/gen.actions";
+import { dataURItoBlob, handleBlankImage, handleTemplateImage } from "../../utils";
 
 export const handleFileChange = (props) => {
-  const { layerId, event, traits, layerTitle } = props;
+  const { layerId, event, traits, layerTitle, dispatch } = props;
 
   const { files } = event.target;
   const imageFiles = Object.values(files);
-  const uniqueImageFile = [...traits];
+  const currentImageFiles = [...traits];
   const filterArr = traits.map(({ image }) => image.name);
 
+  let newImageFiles = [];
   imageFiles.forEach((imageFile) => {
     if (!filterArr.includes(imageFile.name)) {
-      uniqueImageFile.push({
+      newImageFiles.push({
         traitTitle: imageFile.name.split(".")[0],
         Rarity: "1",
         image: imageFile,
@@ -18,7 +20,17 @@ export const handleFileChange = (props) => {
       filterArr.push(imageFile.name);
     }
   });
-  return { layerId, layerTitle, traits: uniqueImageFile };
+
+  dispatch(
+    setImageAction({
+      type: "upload",
+      value: {
+        id: layerId,
+        traits: newImageFiles,
+      },
+    })
+  );
+  return { layerId, layerTitle, traits: currentImageFiles.concat(newImageFiles) };
 };
 
 export const handleAddAssets = (props) => {
@@ -38,18 +50,6 @@ export const handleAddAssets = (props) => {
     }
   });
   return { layerId, layerTitle, traits: uniqueImageFile };
-};
-
-export const dataURItoBlob = (dataURI) => {
-  const byteString = atob(dataURI.split(",")[1]);
-  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
-  const ab = new ArrayBuffer(byteString.length);
-  const ia = new Uint8Array(ab);
-  for (let i = 0; i < byteString.length; i += 1) {
-    ia[i] = byteString.charCodeAt(i);
-  }
-  const blob = new Blob([ab], { type: mimeString });
-  return blob;
 };
 
 export const handleAddBlank = async (props) => {

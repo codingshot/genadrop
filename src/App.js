@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/footer/footer";
@@ -32,24 +32,12 @@ import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
 import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
-
-// const Home = lazy(() => import("./pages/home/home"));
-// const Create = lazy(() => import("./pages/create/create"));
-// const Mint = lazy(() => import("./pages/mint/mint"));
-// const CollectionToSingleMinter = lazy(() => import("./components/Mint/collection-single/collection-single"));
-// const Marketplace = lazy(() => import("./pages/Marketplace/Marketplace"));
-// const Preview = lazy(() => import("./pages/preview/preview"));
-// const Explore = lazy(() => import("./pages/Explore/Explore"));
-// const Fallback = lazy(() => import("./pages/fallback/fallback"));
-// const CollectionNFT = lazy(() => import("./pages/collectionNFT/collectionNFT"));
-// const Collections = lazy(() => import("./pages/collections/collections"));
-// const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
-// const docsEmbed = lazy(() => import("./pages/docs/docsEmbed"));
-// const List = lazy(() => import("./pages/listNFT/list"));
-// const Profile = lazy(() => import("./pages/profile/profile"));
-// const SingleNftCollection = lazy(() => import("./pages/singleNftCollection/singleNftCollection"));
-// const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
-// const Artist = lazy(() => import("./pages/artist/artist"));
+import StoreData from "./renderless/store-data/StoreData";
+import SessionModal from "./components/Session-Modal/SessionModal";
+import Pricing from "./pages/Pricing/Pricing";
+import Success from "./pages/Pricing/Success";
+import Cancel from "./pages/Pricing/Cancel";
+import "@stripe/stripe-js";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -87,6 +75,9 @@ function App() {
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
+            <Route exact path="/create/pricing" component={Pricing} />
+            <Route exact path="/success" component={Success} />
+            <Route exact path="/cancel" component={Cancel} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
@@ -99,6 +90,8 @@ function App() {
       <Loader />
       <Prompt />
       <FetchData />
+      <SessionModal />
+      <StoreData />
     </div>
   );
 }

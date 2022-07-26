@@ -49,9 +49,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
+let initApp = null;
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  initApp = firebase.initializeApp(firebaseConfig);
 }
+
+export const app = initApp;
 
 const db = firebase.firestore();
 
@@ -75,7 +78,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
     );
 }
 
-async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId) {
+async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId, list) {
   const name = fileName.split("-")[0];
   const updates = {};
   for (let i = 0; i < collection_id.length; ++i) {
@@ -85,7 +88,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
       price: priceValue,
       chain: "algo",
       owner,
-      isListed: true,
+      isListed: !!list,
       sold: false,
       mainnet,
       createdAt: new Date(),

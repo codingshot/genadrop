@@ -7,7 +7,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyNft, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft, getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -22,7 +22,7 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setLoading, setNotification } from "../../gen-state/gen.actions";
+import { setOverlay, setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
 import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
@@ -112,7 +112,7 @@ const SingleNFT = () => {
   }
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setOverlay(true));
     if (Number(nftChainId) !== 4160) return;
     let nftDetails = null;
     // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
@@ -134,14 +134,14 @@ const SingleNFT = () => {
           isLoading: false,
           transactionHistory: tHistory.reverse(),
         });
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         document.documentElement.scrollTop = 0;
       })();
     }
   }, [singleAlgoNfts, nftId]);
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setOverlay(true));
 
     if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
@@ -198,7 +198,7 @@ const SingleNFT = () => {
       } catch (error) {
         console.log({ error });
       }
-      dispatch(setLoading(false));
+      dispatch(setOverlay(false));
     })();
     document.documentElement.scrollTop = 0;
   }, [nftId]);
@@ -366,8 +366,8 @@ const SingleNFT = () => {
               ) : (
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.sold} disabled={nftDetails.chain}>
-                      Coming Soon
+                    <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
+                      Buy now
                     </button>
                   ) : (
                     <button

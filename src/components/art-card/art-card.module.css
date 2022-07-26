@@ -91,6 +91,10 @@
   text-align: center;
 }
 
+.editIcon {
+  fill: black;
+}
+
 .container i {
   cursor: var(--cursor-pointer);
   font-size: 0.7rem;
