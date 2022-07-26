@@ -231,7 +231,7 @@
 
 .inputWrapper button {
   transition: all 300ms;
-  box-shadow: var(--btn-shadow-open);
+  box-shadow: var(--btn-open);
 }
 
 .inputWrapper button:hover {

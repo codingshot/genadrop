@@ -49,9 +49,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 
+let initApp = null;
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  initApp = firebase.initializeApp(firebaseConfig);
 }
+
+export const app = initApp;
 
 const db = firebase.firestore();
 

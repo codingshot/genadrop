@@ -4,8 +4,8 @@
 :root {
   --icon-color: rgb(18, 18, 18);
 
-  --btn-shadow-open: 2px 2px 2px rgba(0, 0, 0, 0.2);
-  --btn-shadow-close: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  --btn-open: 0px 3.03px 3.03px rgba(0, 0, 0, 0.2);
+  --btn-close: 0px 0px 3.03px rgba(0, 0, 0, 0.2);
 
   --shadow-dark: 3px 3px 6px rgba(0, 0, 0, 0.2);
   --shadow-light: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -29,9 +29,9 @@
   --outline-dark: #a4a9b6;
 
   --card-bg: #626277;
-  --card-shade: #646a89;
-  --card-icon-color: #515164;
   --card-bg-light: #737387;
+  --card-icon-color: #515164;
+  --card-shade: #646a89;
   --card-preview: #646a89;
   --card-layer: #585e7d;
   --card-tooltip: #686f93;

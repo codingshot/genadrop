@@ -83,9 +83,9 @@ export const setCombinations = (val) => ({
   payload: val,
 });
 
-export const setLoading = (val) => ({
-  type: genActionTypes.SET_LOADING,
-  payload: val,
+export const setOverlay = (state) => ({
+  type: genActionTypes.SET_OVERLAY,
+  payload: state,
 });
 
 export const setMintInfo = (val) => ({
@@ -279,4 +279,49 @@ export const setZip = (value) => ({
 export const setConnectFromMint = (prop) => ({
   type: genActionTypes.CONNECT_FROM_MINT,
   payload: prop,
+});
+
+export const setCurrentUser = (currentUser) => ({
+  type: genActionTypes.SET_CURRENT_USER,
+  payload: currentUser,
+});
+
+export const setImageAction = (action) => ({
+  type: genActionTypes.SET_IMAGE_ACTION,
+  payload: action,
+});
+
+export const setLayerAction = (action) => ({
+  type: genActionTypes.SET_LAYER_ACTION,
+  payload: action,
+});
+
+export const setCurrentSession = (id) => ({
+  type: genActionTypes.SET_CURRENT_SESSION,
+  payload: id,
+});
+
+export const setSession = (session) => ({
+  type: genActionTypes.SET_SESSION,
+  payload: session,
+});
+
+export const setToggleSessionModal = (state) => ({
+  type: genActionTypes.TOGGLE_SESSION_MODAL,
+  payload: state,
+});
+
+export const setToggleCollectionNameModal = (state) => ({
+  type: genActionTypes.TOGGLE_COLLECTION_NAME_MODAL,
+  payload: state,
+});
+
+export const setIsUser = (state) => ({
+  type: genActionTypes.SET_IS_USER,
+  payload: state,
+});
+
+export const setCurrentPlan = (plan) => ({
+  type: genActionTypes.SET_CURRENT_PLAN,
+  payload: plan,
 });

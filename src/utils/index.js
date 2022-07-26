@@ -13,7 +13,7 @@ import {
   setActiveCollection,
   setAlgoCollections,
   setAlgoSingleNfts,
-  setLoading,
+  setOverlay,
   setNotification,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
@@ -442,11 +442,11 @@ export const buyGraphNft = async (buyProps) => {
       })
     );
   }
-  dispatch(setLoading(true));
+  dispatch(setOverlay(true));
   const res = await purchasePolygonNfts(buyProps);
 
   if (res) {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction successful",
@@ -458,7 +458,7 @@ export const buyGraphNft = async (buyProps) => {
       // history.push(`/marketplace`);
     }, 3000);
   } else {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction failed",
@@ -495,11 +495,11 @@ export const buyNft = async (buyProps) => {
     );
   }
 
-  dispatch(setLoading(true));
+  dispatch(setOverlay(true));
   const res = await PurchaseNft(buyProps);
 
   if (res) {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction successful",
@@ -511,7 +511,7 @@ export const buyNft = async (buyProps) => {
       // history.push(`/marketplace`);
     }, 3000);
   } else {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction failed",
@@ -542,6 +542,18 @@ export const getDefaultName = (nameId) => {
     return `#${"0".repeat(repeatBy)}${id}`;
   }
   return `#${id}`;
+};
+
+export const dataURItoBlob = (dataURI) => {
+  const byteString = atob(dataURI.split(",")[1]);
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i += 1) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ab], { type: mimeString });
+  return blob;
 };
 
 export const handleImage = async (props) => {

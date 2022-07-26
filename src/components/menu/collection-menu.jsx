@@ -175,7 +175,7 @@ const CollectionMenu = ({ layer }) => {
       </section>
 
       <input
-        onChange={(event) => dispatch(addImage(handleFileChange({ layerId: id, event, traits, layerTitle })))}
+        onChange={(event) => dispatch(addImage(handleFileChange({ layerId: id, event, traits, layerTitle, dispatch })))}
         ref={fileRef}
         style={{ display: "none" }}
         type="file"

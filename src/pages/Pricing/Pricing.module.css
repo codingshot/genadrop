@@ -1,0 +1,142 @@
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 6em 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.heading {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 3em;
+}
+
+.heading h1 {
+  margin-bottom: 0.5em;
+}
+
+.cardMenu {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+  justify-items: center;
+}
+
+.wrapper {
+  background: var(--main-color);
+  border-radius: 1.5em;
+}
+
+.card {
+  width: auto;
+  max-width: 19em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  background: var(--default);
+  padding: 2em;
+  border-radius: 1em;
+  border: 1px solid #e5e8eb;
+  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.1);
+}
+
+.type {
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.description {
+  font-weight: 600;
+  text-align: center;
+}
+
+.price {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.price span {
+  display: inline-block;
+  font-size: 1rem;
+  margin-top: 1em;
+}
+
+.services {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  margin-bottom: 1em;
+}
+
+.service {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  font-size: 0.85rem;
+}
+
+.closeIcon {
+  fill: black;
+}
+
+.markIcon {
+  fill: var(--main-color);
+}
+
+.subscribeBtn {
+  width: 10em;
+  text-align: center;
+  padding: 0.5em 1em;
+  border-radius: 2em;
+  color: var(--main-color);
+  background: var(--default);
+  border: 1px solid var(--main-color);
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.subscribeBtn:hover {
+  background: var(--main-color);
+  color: var(--default);
+}
+
+.subscribeBtn.active {
+  background: var(--main-color);
+  color: var(--default);
+}
+
+.subscribeBtn.active:hover {
+  background: var(--main-hovered);
+  color: var(--default);
+}
+
+.subscribeBtn.disabled {
+  color: var(--text-placeholder);
+  border: 1px solid var(--card-outline);
+}
+
+.subscribeBtn.disabled:hover {
+  color: var(--default);
+  background: var(--card-bg);
+  border-color: transparent;
+}
+
+.mark {
+  text-align: center;
+  color: var(--default);
+  padding: 0.5em;
+}
