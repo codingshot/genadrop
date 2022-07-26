@@ -12,6 +12,7 @@ import { setCurrentPlan } from "../../gen-state/gen.actions";
 const Pricing = () => {
   const history = useHistory();
   const [plan, setPlan] = useState(0);
+  const [price, setPrice] = useState(1000);
   const { dispatch, currentPlan } = useContext(GenContext);
 
   const handlePlan = (plan, price) => {
@@ -19,6 +20,7 @@ const Pricing = () => {
 
     if (price) {
       setPlan(plan);
+      setPrice(price);
     } else {
       history.push("/create");
     }
@@ -34,7 +36,7 @@ const Pricing = () => {
 
   return (
     <div className={classes.container}>
-      <PricingModal modal={plan} closeModal={closeModal} />
+      {plan != 0 ? <PricingModal modal={plan} price={price} closeModal={closeModal} /> : ""}
       <div className={classes.heading}>
         <h1>Pricing $ plans</h1>
         <p>Simple pricing.. No hidden fees. Advanced features for your NFT collections</p>

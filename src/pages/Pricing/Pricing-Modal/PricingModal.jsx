@@ -1,6 +1,5 @@
 import classes from "./PricingModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import paypalIcon from "../../../assets/icon-paypal.svg";
 import stripeIcon from "../../../assets/icon-stripe.svg";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
@@ -11,8 +10,9 @@ import { GenContext } from "../../../gen-state/gen.context";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
-import PaypalButton from "../../paypal/paypalButton";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import PaypalButton from "./PaypalButton";
+import { useEffect } from "react";
 
 let stripePromise;
 
@@ -24,9 +24,10 @@ const getStripe = () => {
   return stripePromise;
 };
 
-const PricingModal = ({ modal, closeModal }) => {
+const PricingModal = ({ modal, price, closeModal }) => {
   const history = useHistory();
   const [activeMode, setActive] = useState("paypal");
+  const [loading, setLoading] = useState(false);
   const { currentUser, dispatch } = useContext(GenContext);
 
   /**
@@ -67,7 +68,7 @@ const PricingModal = ({ modal, closeModal }) => {
       purchase_units: [
         {
           amount: {
-            value: "15",
+            value: price,
           },
         },
       ],
@@ -132,16 +133,10 @@ const PricingModal = ({ modal, closeModal }) => {
         <div className={classes.content}>
           <h1>Choose a payment method</h1>
           <div className={classes.methodContainer}>
-            <PayPalScriptProvider options={initialOptions}>
-              <PayPalButtons createOrder={createOrderHandler} onApprove={onApproveHandler} />
+            <PayPalScriptProvider options={initialOptionsPaypal}>
+              <PaypalButton createOrder={createOrderHandler} onApprove={onApproveHandler} />
             </PayPalScriptProvider>
-            <div
-              onClick={() => setActive("paypal")}
-              className={`${activeMode === "paypal" && classes.active} ${classes.paymentMethod}`}
-            >
-              <img src={paypalIcon} alt="" />
-              <div>Paypal</div>
-            </div>
+
             <div
               onClick={redirectToCheckout}
               className={`${activeMode === "stripe" && classes.active} ${classes.paymentMethod}`}
