@@ -16,7 +16,7 @@
 }
 
 .overlay.isLoading {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(75, 75, 90, 0.74);
   width: 100vw;
   height: 100vh;
 }
