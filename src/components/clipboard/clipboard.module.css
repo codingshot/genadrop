@@ -41,6 +41,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 0.25em;
+  color: var(--default);
 }
 
 .action {

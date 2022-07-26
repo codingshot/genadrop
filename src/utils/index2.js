@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import fileDownload from "js-file-download";
 import JSZip from "jszip";
+import { setCollectionName, setLayers } from "../gen-state/gen.actions";
 
 export const getAweaveFormat = async (nftLayers, dispatch, setLoader) => {
   const clone = [];
@@ -167,6 +168,8 @@ export const handleDownload = async (input) => {
   for (let i = 1; i <= index; i += 1) {
     await downloadCallback({ ...input, id: i, value: paginated[i], setZip });
   }
+  dispatch(setCollectionName(""));
+  dispatch(setLayers([]));
   dispatch(
     setNotification({
       message: "downloaded successfully",

@@ -24,7 +24,7 @@ import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
 import { getDefaultName } from "../../utils";
 import { handleDownload } from "../../utils/index2";
-import { fetchAlgoCollections } from "../../utils/firebase";
+// import { fetchAlgoCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
@@ -32,7 +32,7 @@ import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
 import CaretDown from "../../assets/icon-caret-down.svg";
 import CaretUP from "../../assets/icon-caret-up.svg";
-import tooltip from "../../assets/tooltip.svg";
+// import tooltip from "../../assets/tooltip.svg";
 import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 
 const Preview = () => {
