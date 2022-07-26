@@ -7,7 +7,6 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  color: white;
   top: 0;
   left: 0;
   z-index: 5000;
@@ -16,7 +15,7 @@
 }
 
 .overlay.isLoading {
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(75, 75, 90, 0.74);
   width: 100vw;
   height: 100vh;
 }
