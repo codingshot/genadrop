@@ -5,7 +5,6 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
-import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
 import { buyGraphNft, buyNft } from "../../utils";
 import classes from "./singleNFT.module.css";
@@ -22,7 +21,7 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setLoading, setNotification } from "../../gen-state/gen.actions";
+import { setOverlay, setNotification } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
 import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
@@ -107,7 +106,7 @@ const SingleNFT = () => {
   }
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setOverlay(true));
     if (Number(nftChainId) !== 4160) return;
     let nftDetails = null;
     // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
@@ -129,14 +128,14 @@ const SingleNFT = () => {
           isLoading: false,
           transactionHistory: tHistory.reverse(),
         });
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         document.documentElement.scrollTop = 0;
       })();
     }
   }, [singleAlgoNfts, nftId]);
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setOverlay(true));
 
     if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
@@ -169,7 +168,7 @@ const SingleNFT = () => {
       } catch (error) {
         console.log({ error });
       }
-      dispatch(setLoading(false));
+      dispatch(setOverlay(false));
     })();
     document.documentElement.scrollTop = 0;
   }, [nftId]);

@@ -47,7 +47,7 @@
 
 .btn:hover {
   color: var(--main-hovered);
-  box-shadow: var(--btn-shadow-close);
+  box-shadow: var(--btn-close);
 }
 
 .cardContainer {

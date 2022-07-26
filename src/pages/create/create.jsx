@@ -2,32 +2,50 @@ import LayerOrders from "../../components/layerorders/layerorders";
 import CollectionDescription from "../../components/description/collection-description";
 import CollectionOverview from "../../components/overview/collection-overview";
 import classes from "./create.module.css";
-import CreateModal from "./Create-Modal/CreateModal";
 import { useEffect, useState } from "react";
+import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
+import { handleAddSampleLayers } from "../../utils";
+import { useContext } from "react";
+import { GenContext } from "../../gen-state/gen.context";
+import CreateGuide from "../../components/create-guide/create-guide";
 
 const Create = () => {
-  const [modal, setModal] = useState(false);
-  const closeModal = () => {
-    setModal(false);
+  const { dispatch } = useContext(GenContext);
+  const [toggleGuide, setGuide] = useState(false);
+
+  const handleSample = () => {
+    handleAddSampleLayers({ dispatch });
+  };
+
+  const handleTutorial = () => {
+    setGuide(true);
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!window.sessionStorage.isCreateModal && !window.localStorage.storedCollectionName) {
-        setModal(true);
-        window.sessionStorage.isCreateModal = true;
-      }
-    }, 0);
+    document.documentElement.scrollTop = 0;
   }, []);
 
   return (
     <div className={classes.container}>
-      <CreateModal modal={modal} closeModal={closeModal} />
-      <div className={classes.layer_overview}>
-        <LayerOrders isCreateModal={modal} />
-        <CollectionOverview />
+      <CollectionNameModal />
+      <CreateGuide toggleGuide={toggleGuide} setGuide={setGuide} />
+      <div className={classes.details}>
+        <div className={classes.autoSave}>
+          <div></div>
+        </div>
+        <div className={classes.guide}>
+          <div>Need help?</div>
+          <div onClick={handleSample}>Try our samples</div>
+          <div onClick={handleTutorial}>Watch tutorial</div>
+        </div>
       </div>
-      <CollectionDescription />
+      <div className={classes.wrapper}>
+        <div className={classes.layer_overview}>
+          <LayerOrders />
+          <CollectionOverview />
+        </div>
+        <CollectionDescription />
+      </div>
     </div>
   );
 };

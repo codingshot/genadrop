@@ -162,7 +162,7 @@
 }
 
 .assetInfoMintPrice {
-  background: rgba(0, 153, 135, 0.17);
+  background: var(--main-lightest);
   padding: 4px 10px;
 }
 

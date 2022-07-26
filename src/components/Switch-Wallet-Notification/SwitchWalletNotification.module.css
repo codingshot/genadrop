@@ -36,13 +36,25 @@
 
 @media screen and (max-width: 1000px) {
   .container {
-    top: 3.5em;
+    top: 3.4em;
   }
 }
 
 @media screen and (max-width: 768px) {
   .container {
     font-size: 0.85rem;
+    top: 4em;
+  }
+
+  .closeIcon {
+    width: 1.5em;
+    height: 1.5em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    top: 4em;
   }
 
   .closeIcon {

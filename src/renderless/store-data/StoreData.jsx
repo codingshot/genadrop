@@ -1,9 +1,9 @@
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
-import { dataURItoBlob } from "../../components/menu/collection-menu-script";
 import { addRule, setCollectionName, setLayers, setPreview } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
+import { dataURItoBlob } from "../../utils";
 
 const StoreData = () => {
   const { layers, rule, preview, collectionName, dispatch } = useContext(GenContext);

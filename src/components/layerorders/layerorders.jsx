@@ -7,22 +7,20 @@ import {
   addLayer,
   setLayers,
   setCollectionName,
-  setLoader,
-  setNotification,
   removeLayer,
   setPrompt,
   promptDeleteLayer,
   setCombinations,
+  setLayerAction,
 } from "../../gen-state/gen.actions";
 import Layer from "../layer/layer";
 import { getCombinations, getItemStyle, getListStyle } from "./layeroders-script";
-import { fetchAlgoCollections } from "../../utils/firebase";
-import editIcon from "../../assets/icon-edit.svg";
-import markIcon from "../../assets/icon-mark.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as AddIcon } from "../../assets/icon-plus.svg";
 import LayerInput from "./Layer-Input/LayerInput";
-import Tooltip from "./Tooltip/Tooltip";
+// import Tooltip from "./Tooltip/Tooltip";
+import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
+import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 
 const LayerOrders = ({ isCreateModal }) => {
   const { layers, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
@@ -47,6 +45,11 @@ const LayerOrders = ({ isCreateModal }) => {
     newLayers.splice(destination.index, 0, removed);
     dispatch(setLayers(newLayers));
     handleSetState({ inputValue: "" });
+    dispatch(
+      setLayerAction({
+        type: "order",
+      })
+    );
   };
 
   const handleAddLayer = (value) => {
@@ -59,19 +62,15 @@ const LayerOrders = ({ isCreateModal }) => {
         traits: [],
       })
     );
+    dispatch(
+      setLayerAction({
+        type: "add",
+      })
+    );
   };
 
   const handleRemoveLayer = (layer) => {
     dispatch(setPrompt(promptDeleteLayer(layer)));
-  };
-
-  const getCollectionsNames = async () => {
-    const collections = await fetchAlgoCollections();
-    const names = [];
-    collections.forEach((col) => {
-      names.push(col.name);
-    });
-    return names;
   };
 
   const handleAddClick = () => {
@@ -84,35 +83,6 @@ const LayerOrders = ({ isCreateModal }) => {
     if (!inputValue) return;
     handleSetState({ renameAction: false });
     dispatch(setCollectionName(inputValue));
-
-    // This code below needs cross-examination;
-
-    // event.preventDefault();
-    // if (!inputValue) return;
-    // try {
-    //   dispatch(setLoader("saving..."));
-    //   const names = await getCollectionsNames();
-    //   const isUnique = names.find((name) => name.toLowerCase() === inputValue.toLowerCase());
-    //   if (isUnique) {
-    //     dispatch(
-    //       setNotification({
-    //         message: `${inputValue} already exist. try another name`,
-    //         type: "warning",
-    //       })
-    //     );
-    //   } else {
-    //     handleSetState({ renameAction: false });
-    //     dispatch(setCollectionName(inputValue));
-    //   }
-    // } catch (error) {
-    //   dispatch(
-    //     setNotification({
-    //       message: "could not save your collection name, please try again.",
-    //       type: "error",
-    //     })
-    //   );
-    // }
-    // dispatch(setLoader(""));
   };
 
   useEffect(() => {
@@ -126,6 +96,10 @@ const LayerOrders = ({ isCreateModal }) => {
     dispatch(setCombinations(getCombinations(layers)));
   }, [layers]);
 
+  useEffect(() => {
+    handleSetState({ inputValue: collectionName });
+  }, [collectionName]);
+
   return (
     <div className={classes.container}>
       <div className={classes.collectionNameContainer}>
@@ -133,22 +107,23 @@ const LayerOrders = ({ isCreateModal }) => {
           {renameAction ? (
             <form onSubmit={handleRename}>
               <input
-                className={`${classes.renameInput} ${classes.active}`}
+                className={renameAction}
                 type="text"
                 onChange={(e) => handleSetState({ inputValue: e.target.value })}
                 value={inputValue}
-                autoFocus
                 placeholder="Enter collection name"
+                autoFocus
               />
             </form>
           ) : (
-            <div className={classes.nameHeader}>{collectionName ? collectionName : "Enter collection name"}</div>
+            <div className={renameAction}>{collectionName}</div>
           )}
+
           <div className={classes.editBtn}>
             {renameAction ? (
-              <img onClick={handleRename} src={markIcon} alt="" />
+              <MarkIcon onClick={handleRename} className={classes.editIcon} />
             ) : (
-              <img onClick={() => handleSetState({ renameAction: true })} src={editIcon} alt="" />
+              <EditIcon onClick={() => handleSetState({ renameAction: true })} className={classes.editIcon} />
             )}
           </div>
         </div>
@@ -212,7 +187,7 @@ const LayerOrders = ({ isCreateModal }) => {
             </div>
           ) : (
             <div className={classes.addBtnContainer}>
-              <Tooltip isModal={isCreateModal} />
+              {/* <Tooltip isModal={isCreateModal} /> */}
               <button type="button" className={classes.addBtn} onClick={handleAddClick}>
                 <AddIcon className={classes.addIcon} />
                 Add Layer

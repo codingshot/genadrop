@@ -68,34 +68,34 @@
 .pageControl.next {
   color: var(--default);
   background: var(--main-color);
-  box-shadow: var(--btn-shadow-open);
+  box-shadow: var(--btn-open);
 }
 
 .pageControl.next:hover {
   background: var(--main-hovered);
-  box-shadow: var(--btn-shadow-close);
+  box-shadow: var(--btn-close);
 }
 
 .pageControl.prev {
   color: var(--text-sub-heading);
   background: var(--default);
-  box-shadow: var(--btn-shadow-open);
+  box-shadow: var(--btn-open);
 }
 
 .pageControl.prev:hover {
   background: var(--card-light);
-  box-shadow: var(--btn-shadow-close);
+  box-shadow: var(--btn-close);
 }
 
 .pageControl.goto {
   background: var(--card-preview);
   color: var(--default);
-  box-shadow: var(--btn-shadow-open);
+  box-shadow: var(--btn-open);
 }
 
 .pageControl.goto:hover {
   background: var(--card-layer);
-  box-shadow: var(--btn-shadow-close);
+  box-shadow: var(--btn-close);
 }
 
 .pageCount {
