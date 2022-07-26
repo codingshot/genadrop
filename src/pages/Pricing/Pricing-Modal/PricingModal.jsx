@@ -9,6 +9,18 @@ import { setCollectionName, setCurrentSession, setToggleCollectionNameModal } fr
 import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { useHistory } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import { useEffect } from "react";
+
+let stripePromise;
+
+const getStripe = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+  }
+
+  return stripePromise;
+};
 
 const PricingModal = ({ modal, closeModal }) => {
   const history = useHistory();
@@ -23,6 +35,44 @@ const PricingModal = ({ modal, closeModal }) => {
    * if creating session was successful, prompt the user to choose a collection name
    * setCurrentSession(sessionId)
    */
+
+  const [stripeError, setStripeError] = useState(null);
+
+  const item = [
+    {
+      price: "price_1LPcwyBNj5DiViWraDJpzpeh",
+      quantity: 1,
+    },
+    {
+      price: "price_1LPcxsBNj5DiViWrY6LBUNHp",
+      quantity: 1,
+    },
+    {
+      price: "price_1LPcyWBNj5DiViWrS47kiQgt",
+      quantity: 1,
+    },
+  ];
+
+  const checkoutOptions = {
+    lineItems: [item[modal - 1]],
+    mode: "payment",
+    successUrl: `${window.location.origin}/success`, // you decide where to redirect. This is just for test
+    cancelUrl: `${window.location.origin}/cancel`,
+  };
+
+  const redirectToCheckout = async () => {
+    setLoading(true);
+    console.log("redirectToCheckout");
+
+    const stripe = await getStripe();
+    const { error } = await stripe.redirectToCheckout(checkoutOptions);
+    console.log("Stripe checkout error", error);
+
+    if (error) setStripeError(error.message);
+    setLoading(false);
+  };
+
+  if (stripeError) alert(stripeError);
 
   const handleClick = async () => {
     let ID = uuid();
@@ -61,7 +111,7 @@ const PricingModal = ({ modal, closeModal }) => {
               <div>Paypal</div>
             </div>
             <div
-              onClick={() => setActive("stripe")}
+              onClick={redirectToCheckout}
               className={`${activeMode === "stripe" && classes.active} ${classes.paymentMethod}`}
             >
               <img src={stripeIcon} alt="" />

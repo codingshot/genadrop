@@ -15,10 +15,10 @@ const Pricing = () => {
   const { dispatch, currentPlan } = useContext(GenContext);
 
   const handlePlan = (plan, price) => {
-    console.log(plan, price);
     dispatch(setCurrentPlan(plan));
+
     if (price) {
-      setPlan(price);
+      setPlan(plan);
     } else {
       history.push("/create");
     }
@@ -41,7 +41,7 @@ const Pricing = () => {
       </div>
 
       <div className={classes.cardMenu}>
-        {plans.map((plan) => (
+        {plans.map((plan, index) => (
           <div className={classes.wrapper}>
             {plan.mostPopular && <div className={classes.mark}>Most Popular</div>}
             <div className={classes.card}>
@@ -66,7 +66,7 @@ const Pricing = () => {
                 </div>
               ) : (
                 <div
-                  onClick={() => handlePlan(plan.type, Number(plan.price))}
+                  onClick={() => handlePlan(index, Number(plan.price))}
                   className={`${classes.subscribeBtn} ${plan.mostPopular && classes.active}`}
                 >
                   {plan.subscription}

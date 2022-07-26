@@ -35,6 +35,9 @@ import SwitchWalletNotification from "./components/Switch-Wallet-Notification/Sw
 import StoreData from "./renderless/store-data/StoreData";
 import SessionModal from "./components/Session-Modal/SessionModal";
 import Pricing from "./pages/Pricing/Pricing";
+import Success from "./pages/Pricing/Success";
+import Cancel from "./pages/Pricing/Cancel";
+import "@stripe/stripe-js";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -73,6 +76,8 @@ function App() {
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
             <Route exact path="/create/pricing" component={Pricing} />
+            <Route exact path="/success" component={Success} />
+            <Route exact path="/cancel" component={Cancel} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
