@@ -161,23 +161,6 @@ const List = () => {
           <img className={classes.nft} src={nftDetails?.image_url} alt="" />
         </div>
         <div className={classes.v_subsection2}>
-          <div className={classes.feature}>
-            <div className={classes.mainDetails}>
-              <div className={classes.collectionHeader}>
-                <div className={classes.nftId}>Sell Method</div>
-              </div>
-            </div>
-
-            <div className={classes.btns}>
-              <button type="button" className={classes.buy} onClick={listNFT}>
-                <div className={classes.btnText}>
-                  <img src="/assets/price-tage.svg" alt="" />
-                  SET PRICE
-                </div>
-                <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
-              </button>
-            </div>
-          </div>
           {/* PRICE HISTORY */}
           <div className={classes.feature}>
             <div className={classes.mainDetails}>
@@ -206,9 +189,26 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
-                <span>{amount.toFixed(2)}</span>
+                <span className={classes.amount}>{amount.toFixed(2)}</span>
               </div>
             </section>
+          </div>
+          <div className={classes.feature}>
+            <div className={classes.mainDetails}>
+              <div className={classes.collectionHeader}>
+                <div className={classes.nftId}>Sell Method</div>
+              </div>
+            </div>
+
+            <div className={classes.btns}>
+              <button type="button" className={classes.buy} onClick={listNFT}>
+                <div className={classes.btnText}>
+                  <img src="/assets/price-tage.svg" alt="" />
+                  SET PRICE
+                </div>
+                <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -84,9 +84,9 @@ const Dashboard = () => {
     (async function getUserNFTs() {
       const singleNfts = await fetchUserCreatedNfts(account);
       const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
-      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
+      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);
       const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account);
-      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
+      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account);
       handleSetState({
         createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
       });

@@ -43,7 +43,6 @@ const Listed = () => {
         }
       } else if (chainId === 44787 || chainId === 42220) {
         const [nft] = await celoUserData(nftId);
-        console.log(nft);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

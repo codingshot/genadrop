@@ -51,7 +51,6 @@ export const getCeloNFTToList = async (address, nftId) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (celoError) return;
   const celoBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
-  console.log(data);
   const nft = celoBoughtNft.filter((NFT) => NFT.tokenID === nftId)[0];
   return nft;
 };
@@ -99,7 +98,6 @@ export const celoUserData = async (address) => {
   let celoResult = [];
   if (celoData?.nft !== null) {
     celoResult = await getCeloGraphNft(celoData?.nft);
-    console.log(celoResult);
     trHistory = await getTransactions(celoData?.nft?.transactions);
     trHistory.find((t) => {
       if (t.type === "Minting") t.price = celoResult[0].price;

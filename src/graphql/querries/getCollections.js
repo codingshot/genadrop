@@ -105,9 +105,6 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
           txId
           type
           price
-          to {
-            id
-          }
         }
       }
     }
@@ -314,7 +311,7 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection: "0x70ab2a901d91c43df8dd9629d427ccc6d6232885" }) {
+    nfts(where: { collection: "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178" }) {
       category
       chain
       createdAtTimestamp

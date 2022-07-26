@@ -199,6 +199,11 @@
   }
 }
 
+.amount {
+  color: var(--main-color);
+  font-weight: 550;
+}
+
 .chain {
   display: flex;
   flex-direction: row;

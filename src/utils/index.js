@@ -345,12 +345,12 @@ export const getUserGraphNft = async (collection, address) => {
 
 export const getTransactions = async (transactions) => {
   const trnArr = [];
-
+  console.log(transactions);
   for (let i = 0; i < transactions.length; i++) {
     try {
       const trnObj = {};
-      (trnObj.buyer = transactions[i]?.buyer?.id),
-        (trnObj.price = transactions[i]?.price * 0.000000000000000001),
+      (trnObj.buyer = transactions[i]?.to?.id),
+        (trnObj.price = Number(transactions[i]?.price) * 0.000000000000000001),
         (trnObj.seller = transactions[i].id),
         (trnObj.txDate = transactions[i]?.txDate),
         (trnObj.txId = transactions[i]?.txId),
@@ -518,7 +518,7 @@ export const buyGraphNft = async (buyProps) => {
     );
   }
   if (chainId === 44787 || chainId === 42220) {
-    // dispatch(setLoading(true));
+    dispatch(setLoading(true));
     const res = await purchaseCeloNfts(buyProps);
     if (res) {
       dispatch(setLoading(false));

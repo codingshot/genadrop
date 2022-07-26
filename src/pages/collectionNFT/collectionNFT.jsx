@@ -125,7 +125,6 @@ const CollectionNFT = () => {
       const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
       const filteredCollection = allCollections?.filter((col) => col?.Id === collectionName);
-      console.log(filteredCollection);
       if (filteredCollection) {
         // filtering to get the unique nft
 
@@ -142,7 +141,7 @@ const CollectionNFT = () => {
 
           console.log("filtered collection", result[0]);
           trHistory.find((t) => {
-            if (t.type === "Minting") t.price = result[0].price;
+            if (t.type === "Minting") t.price = result[0].price * 0.000000000000000001;
           });
 
           handleSetState({

@@ -201,7 +201,7 @@ const FetchData = () => {
         );
       }
       const result = await getGraphCollections(data?.collections);
-      const res = result.filter((data) => data.Id !== "0x70ab2a901d91c43df8dd9629d427ccc6d6232885");
+      const res = result.filter((data) => data.Id !== "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178");
       if (res?.length) {
         dispatch(setCeloCollections(res));
       } else {
