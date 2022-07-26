@@ -48,6 +48,9 @@
 .fWrapper {
   animation: slide 4000ms infinite alternate;
   font-weight: bold;
+}
+
+.fWrapper > div {
   color: var(--main-color);
 }
 

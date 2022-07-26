@@ -12,7 +12,7 @@
   background: var(--default);
   color: #000000;
   border: 1px solid var(--outline);
-  padding: 0.5em;
+  padding: 0.5em 1em;
   border-radius: 2.5em;
   transition: all 300ms;
   display: flex;
@@ -31,7 +31,7 @@
 
 .selectedChain {
   display: flex;
-  padding: 0.25em 0.5em;
+  padding: 0.25em 1em;
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--main-color);
@@ -39,10 +39,13 @@
   cursor: var(--cursor-pointer);
   height: 100%;
   color: var(--main-color);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .selectedChain:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .selectedChain > div {
@@ -78,7 +81,7 @@
 }
 
 .chain {
-  padding: 0.5em;
+  padding: 0.5em 1em;
   border: 1px solid var(--outline);
   display: flex;
   align-items: center;
@@ -101,11 +104,11 @@
   font-weight: 500;
   color: white;
   background: #ebba4f;
-  padding: 0.25em 0.5em;
+  padding: 0.25em 1em;
 }
 
 .chain:hover {
-  background: var(--text-light-300);
+  background: var(--main-lightest);
 }
 
 .chainImg {

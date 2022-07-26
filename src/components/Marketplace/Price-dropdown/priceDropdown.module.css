@@ -18,7 +18,7 @@
   cursor: var(--cursor-pointer);
   background: var(--default);
   border: 1px solid var(--main-color);
-  padding: 0.5em;
+  padding: 0.5em 1em;
   z-index: 99;
   border-radius: 2.5em;
   transition: all 300ms;
@@ -37,7 +37,7 @@
 }
 
 .selectedPrice:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .selectedPrice {
@@ -67,7 +67,7 @@
 }
 
 .priceDropdown .dropdown > div {
-  padding: 0.5em;
+  padding: 0.5em 1em;
   border: 1px solid var(--outline);
   display: flex;
   align-items: center;
@@ -79,12 +79,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2em;
+  gap: 1em;
   font-size: 0.55rem;
 }
 
 .priceDropdown .dropdown > div:hover {
-  background: var(--text-light-300);
+  background: var(--btn-close);
 }
 
 .dropdownIcon {

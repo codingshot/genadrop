@@ -86,8 +86,8 @@
 .description {
   width: 100%;
   border: 1px solid var(--outline);
-  background: var(--card-bg2);
-  color: white;
+  background: var(--card-bg);
+  color: var(--default);
   padding: 0.5em;
   border-bottom-right-radius: 0.5em;
   border-bottom-left-radius: 0.5em;
@@ -99,6 +99,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: 0.85rem;
+  color: var(--default);
 }
 
 .btnContainer {
@@ -157,7 +158,7 @@
 
 .container > p {
   font-style: italic;
-  color: gray;
+  color: var(--card-bg);
   font-size: 0.85rem;
   margin-left: 0.5em;
   display: inline-block;

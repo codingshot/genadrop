@@ -3,6 +3,10 @@
   z-index: 14;
 }
 
+.container.active {
+  z-index: 20;
+}
+
 .rules {
   width: 100%;
   align-items: center;
@@ -80,7 +84,7 @@
   align-items: center;
   justify-content: center;
   padding: 2em;
-  z-index: 10;
+  z-index: 200000 !important;
 }
 
 .fallback {
@@ -128,7 +132,7 @@
 }
 
 .closeIcon {
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   width: 2em;
   height: 2em;
   cursor: var(--cursor-pointer);

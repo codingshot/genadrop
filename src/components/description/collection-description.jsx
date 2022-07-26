@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { setImageQuality, setLoading, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
+import { setImageQuality, setOverlay, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
 import CollectionPreview from "../preview/collection-preview";
-import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
+// import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
 import { useState } from "react";
-import { handleAddSampleLayers } from "../../utils";
-import CreateGuide from "../create-guide/create-guide";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
 import { handleGenerate } from "./collection-description-script";
@@ -18,10 +16,9 @@ const CollectionDescription = () => {
   const canvasRef = useRef(null);
   const [state, setState] = useState({
     selectInputValue: 0.5,
-    amountInputValue: 0,
-    toggleGuide: false,
+    amountInputValue: "",
   });
-  const { selectInputValue, amountInputValue, toggleGuide } = state;
+  const { selectInputValue, amountInputValue } = state;
 
   const generateProps = {
     isRule,
@@ -37,10 +34,6 @@ const CollectionDescription = () => {
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
-  };
-
-  const handleSample = () => {
-    handleAddSampleLayers({ dispatch });
   };
 
   const handleSelectChange = (e) => {
@@ -63,7 +56,7 @@ const CollectionDescription = () => {
     if (amountInputValue <= "0")
       return dispatch(
         setNotification({
-          message: "Invalid input",
+          message: "Add valid amount to generate input",
           type: "error",
         })
       );
@@ -79,12 +72,8 @@ const CollectionDescription = () => {
     handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
   };
 
-  const handleTutorial = () => {
-    handleSetState({ toggleGuide: true });
-  };
-
   useEffect(() => {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -93,19 +82,13 @@ const CollectionDescription = () => {
     }
   }, [combinations]);
 
+  const ripple = window.sessionStorage.ripple;
+
   return (
-    <div className={`${classes.container} ${toggleGuide && classes.active}`}>
-      <CreateGuide toggleGuide={toggleGuide} setGuide={(toggleGuide) => handleSetState({ toggleGuide })} />
+    <div className={classes.container}>
       <div className={classes.preview_details}>
-        <div className={classes.guide_preview_wrapper}>
-          <div className={classes.guide}>
-            <div>Need help?</div>
-            <div onClick={handleSample}>Try our samples</div>
-            <div onClick={handleTutorial}>Watch tutorial</div>
-          </div>
-          <div className={classes.previewWrapper}>
-            <CollectionPreview />
-          </div>
+        <div className={classes.previewWrapper}>
+          <CollectionPreview />
         </div>
         <div className={classes.detailsWrapper}>
           <CollectionDetails />
@@ -133,7 +116,7 @@ const CollectionDescription = () => {
             max={combinations}
             value={amountInputValue}
             onChange={handleAmountChange}
-            placeholder="Ex: 1000"
+            placeholder="Eg: 1000"
           />
         </div>
       </div>
@@ -152,7 +135,10 @@ const CollectionDescription = () => {
         </div>
         <div className={classes.btnContainer}>
           {nftLayers.length ? (
-            <div className={classes.previewBtn}>
+            <div
+              onClick={() => (window.sessionStorage.ripple = true)}
+              className={`${classes.previewBtn} ${!ripple && classes.active}`}
+            >
               <Link to={"/preview"}>
                 <PreviewIcon className={classes.previewIcon} />
               </Link>

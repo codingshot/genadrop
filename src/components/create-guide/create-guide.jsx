@@ -98,8 +98,6 @@ const CreateGuide = ({ toggleGuide, setGuide }) => {
     }
   }, [swipeHeight]);
 
-  useEffect(() => {}, [toggleGuide]);
-
   useEffect(() => {
     const width = swipeContainer.current?.getBoundingClientRect().width;
     setSwipeWidth(width);

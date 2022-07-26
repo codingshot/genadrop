@@ -10,6 +10,7 @@ const supportedChains = {
   4160: {
     id: "algorand",
     label: "Algorand",
+    chain: "Algorand",
     icon: algoIcon,
     symbol: "ALGO",
     networkId: 4160,
@@ -20,6 +21,7 @@ const supportedChains = {
   1313161554: {
     id: "aurora-near",
     label: "Aurora",
+    chain: "Aurora",
     icon: auroraIcon,
     symbol: "AURORA",
     explorer: "https://aurorascan.dev/",
@@ -32,6 +34,7 @@ const supportedChains = {
   137: {
     id: "matic-network",
     label: "Polygon",
+    chain: "Polygon",
     explorer: "https://polygonscan.com/address",
     icon: polygonIcon,
     symbol: "MATIC",
@@ -45,6 +48,7 @@ const supportedChains = {
   42220: {
     id: "celo",
     label: "Celo",
+    chain: "Celo",
     icon: celoIcon,
     symbol: "CGLD",
     networkId: 42220,
@@ -57,6 +61,7 @@ const supportedChains = {
   80001: {
     id: "matic-network",
     label: "Polygon Testnet",
+    chain: "Polygon",
     icon: polygonIcon,
     symbol: "MATIC",
     explorer: "https://mumbai.polygonscan.com/address",
@@ -68,7 +73,8 @@ const supportedChains = {
     coinGeckoLabel: "matic-network",
   },
   44787: {
-    label: "Celo Alfajores",
+    label: "Celo Testnet (Alfajores)",
+    chain: "Celo",
     icon: celoIcon,
     symbol: "CGLD",
     networkId: 44787,
@@ -79,7 +85,8 @@ const supportedChains = {
     comingSoon: false,
   },
   62320: {
-    label: "Celo Baklava",
+    label: "Celo Testent (Baklava)",
+    chain: "Celo",
     icon: celoIcon,
     symbol: "CGLD",
     networkId: 62320,
@@ -92,6 +99,7 @@ const supportedChains = {
   1313161555: {
     id: "ethereum",
     label: "Aurora Testnet",
+    chain: "Aurora",
     icon: auroraIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "ETH",
@@ -105,6 +113,7 @@ const supportedChains = {
   "add-near-id": {
     id: "near",
     label: "Near",
+    chain: "Near",
     icon: nearIcon,
     livePrice: "",
     symbol: "",
@@ -119,6 +128,7 @@ const supportedChains = {
   "add-near-t-id": {
     id: "near",
     label: "Near Testnet",
+    chain: "Near",
     icon: nearIcon,
     livePrice: "",
     symbol: "",
@@ -133,6 +143,7 @@ const supportedChains = {
   "add-solana-id": {
     id: "solana",
     label: "Solana",
+    chain: "Solana",
     icon: solanaIcon,
     livePrice: "",
     symbol: "",
@@ -147,6 +158,7 @@ const supportedChains = {
   "add-solana-t-id": {
     id: "solana",
     label: "Solana Testnet",
+    chain: "Solana",
     icon: solanaIcon,
     livePrice: "",
     symbol: "",

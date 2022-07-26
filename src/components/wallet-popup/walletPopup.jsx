@@ -8,7 +8,7 @@ import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.acti
 import supportedChains from "../../utils/supportedChains";
 
 const WalletPopup = ({ handleSetState }) => {
-  const { dispatch, mainnet } = useContext(GenContext);
+  const { dispatch, mainnet, connectFromMint } = useContext(GenContext);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [showConnectionMethods, setConnectionMethods] = useState(false);
   const [activeChain, setActiveChain] = useState(null);
@@ -53,6 +53,12 @@ const WalletPopup = ({ handleSetState }) => {
     setShowMoreOptions(false);
     setConnectionMethods(false);
   }, []);
+
+  useEffect(() => {
+    if (!connectFromMint.chainId) return;
+    dispatch(setToggleWalletPopup(true));
+    handleChain(connectFromMint.chainId, connectFromMint.isComingSoon);
+  }, [connectFromMint]);
 
   return (
     <div className={classes.container}>

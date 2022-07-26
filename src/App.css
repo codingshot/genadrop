@@ -2,18 +2,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --card-bg: #3d3d3d;
-  --card-bg1: #27292c;
-  --card-bg2: #212529;
-  --card-bg3: #000000;
-  --text-light-300: #f2f3ff;
-  --bg-dark: rgb(18, 18, 18);
+  --icon-color: rgb(18, 18, 18);
 
-  --btn-shadow-open: 2px 2px 2px rgba(0, 0, 0, 0.2);
-  --btn-shadow-close: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  --btn-open: 0px 3.03px 3.03px rgba(0, 0, 0, 0.2);
+  --btn-close: 0px 0px 3.03px rgba(0, 0, 0, 0.2);
 
-  --shadow-dark: 0 0 15px rgb(0, 0, 0, 0.25);
-  --shadow-light: 0 0 15px rgb(0, 0, 0, 0.1);
+  --shadow-dark: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  --shadow-light: 2px 2px 4px rgba(0, 0, 0, 0.2);
 
   --default: #ffffff;
   --main-color: #0d99ff;
@@ -26,10 +21,17 @@
   --text-heading: #0f1d40;
   --text-sub-heading: #525c76;
   --text-placeholder: #b2b7c2;
+  --text-placeholder-light: #d3d6de;
 
   --outline: #e5e8eb;
   --outline-light: #e5e8eb;
+  --card-outline: #c4c4c4;
+  --outline-dark: #a4a9b6;
 
+  --card-bg: #626277;
+  --card-bg-light: #737387;
+  --card-icon-color: #515164;
+  --card-shade: #646a89;
   --card-preview: #646a89;
   --card-layer: #585e7d;
   --card-tooltip: #686f93;
@@ -37,28 +39,7 @@
   --card-upload: #f6faff;
   --card-trait: #f4f5f6;
   --card-light: #eff3f9;
-  --card-outline: #c4c4c4;
   --btn-close: #eef5f9;
-
-  --main-100: #f2faf9;
-  --main-200: #d9f0ed;
-  --main-300: #bfe5e1;
-  --main-400: #a6dbd5;
-  --main-500: #80ccc3;
-  --main-600: #59bdb1;
-  --main-700: #009987;
-  --main-800: #028777;
-  --main-900: #037568;
-
-  --info-100: #d3e5fe;
-  --info-200: #a7c9fd;
-  --info-300: #7ba8f9;
-  --info-400: #598cf4;
-  --info-500: #2561ed;
-  --info-600: #1b4acb;
-  --info-700: #1236aa;
-  --info-800: #0b2589;
-  --info-900: #071971;
 
   --success-100: #ebfcd5;
   --success-200: #d4f9ac;
@@ -90,16 +71,6 @@
   --error-800: #930f35;
   --error-900: #7a0933;
 
-  --text-light-100: #fafafb;
-  --text-light-200: #f5f6f7;
-  --text-light-300: #eeeff2;
-  --text-light-400: #e2e4e8;
-  --text-light-500: #cacdd5;
-  --text-light-600: #b2b7c2;
-  --text-light-700: #a4a9b6;
-  --text-light-800: #959cab;
-  --text-light-900: #8c93a3;
-
   --text-dark-100: #747c90;
   --text-dark-200: #656e85;
   --text-dark-300: #5c657d;
@@ -119,10 +90,6 @@
   --cursor-camera: url("./assets/cursor-camera.svg"), auto;
   --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
   --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto;
-
-  --card-bg: #626277;
-  --card-bg-dark: #515164;
-  --card-bg-light: #737387;
 }
 
 li {

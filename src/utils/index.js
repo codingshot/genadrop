@@ -3,8 +3,8 @@
 import axios from "axios";
 // import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
-// import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
-import { getAlgoData, PurchaseNft } from "./arc_ipfs";
+import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
+import { getAlgoData, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
@@ -13,7 +13,7 @@ import {
   setActiveCollection,
   setAlgoCollections,
   setAlgoSingleNfts,
-  setLoading,
+  setOverlay,
   setNotification,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
@@ -173,14 +173,14 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
-  const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
+  // const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
-  // removing rejected responses
-  responses.forEach((element) => {
-    if (element?.status === "fulfilled") {
-      nftArr.push(element.value);
-    }
-  });
+  // // removing rejected responses
+  // responses.forEach((element) => {
+  //   if (element?.status === "fulfilled") {
+  //     nftArr.push(element.value);
+  //   }
+  // });
   return nftArr;
 };
 
@@ -261,6 +261,36 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.name = data.name;
         nftObj.image_url = data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
         nftArr.push(nftObj);
+        window.localStorage.activeCollection = JSON.stringify({ ...nftObj });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+  return nftArr;
+};
+
+export const getUserGraphNft = async (collection, address) => {
+  const nftArr = [];
+  if (collection) {
+    for (let i = 0; i < collection?.length; i++) {
+      const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      try {
+        const nftObj = {};
+        nftObj.collection_name = collection[i].collection.name;
+        nftObj.owner = address;
+        nftObj.chain = collection[i].chain;
+        nftObj.Id = collection[i].id;
+        nftObj.tokenID = collection[i].tokenID;
+        const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        nftObj.collectionPrice = getPrice * 0.000000000000000001;
+        nftObj.price = collection[i].price * 0.000000000000000001;
+        nftObj.sold = collection[i].isSold;
+        nftObj.ipfs_data = data;
+        nftObj.contractAddress = collection[i].collection.id;
+        nftObj.name = data.name;
+        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftArr.push(nftObj);
       } catch (error) {
         console.log(error);
       }
@@ -302,6 +332,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.price = collection?.price * 0.000000000000000001;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
+    nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftArr.Id = collection?.tokenID;
     nftArr.marketId = collection?.id;
@@ -385,6 +416,58 @@ export const getSingleNftDetails = async (mainnet, nft) => {
   return nftDetails;
 };
 
+export const buyGraphNft = async (buyProps) => {
+  const {
+    dispatch,
+    history,
+    account,
+    nftDetails: { chain },
+    chainId,
+  } = buyProps;
+
+  if (!account) {
+    return dispatch(
+      setNotification({
+        message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,
+        type: "error",
+      })
+    );
+  }
+
+  if (chainId != chain) {
+    return dispatch(
+      setNotification({
+        message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,
+        type: "warning",
+      })
+    );
+  }
+  dispatch(setOverlay(true));
+  const res = await purchasePolygonNfts(buyProps);
+
+  if (res) {
+    dispatch(setOverlay(false));
+    dispatch(
+      setNotification({
+        message: "transaction successful",
+        type: "success",
+      })
+    );
+    setTimeout(() => {
+      history.push(`/me/${account}`);
+      // history.push(`/marketplace`);
+    }, 3000);
+  } else {
+    dispatch(setOverlay(false));
+    dispatch(
+      setNotification({
+        message: "transaction failed",
+        type: "error",
+      })
+    );
+  }
+};
+
 export const buyNft = async (buyProps) => {
   const {
     dispatch,
@@ -412,11 +495,11 @@ export const buyNft = async (buyProps) => {
     );
   }
 
-  dispatch(setLoading(true));
+  dispatch(setOverlay(true));
   const res = await PurchaseNft(buyProps);
 
   if (res) {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction successful",
@@ -428,7 +511,7 @@ export const buyNft = async (buyProps) => {
       // history.push(`/marketplace`);
     }, 3000);
   } else {
-    dispatch(setLoading(false));
+    dispatch(setOverlay(false));
     dispatch(
       setNotification({
         message: "transaction failed",
@@ -459,6 +542,18 @@ export const getDefaultName = (nameId) => {
     return `#${"0".repeat(repeatBy)}${id}`;
   }
   return `#${id}`;
+};
+
+export const dataURItoBlob = (dataURI) => {
+  const byteString = atob(dataURI.split(",")[1]);
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i += 1) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  const blob = new Blob([ab], { type: mimeString });
+  return blob;
 };
 
 export const handleImage = async (props) => {

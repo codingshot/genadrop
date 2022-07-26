@@ -68,7 +68,7 @@
 }
 
 .wrapper button:hover {
-  background: var(--text-light-100);
+  background: var(--card-light);
 }
 
 @media screen and (max-width: 480px) {

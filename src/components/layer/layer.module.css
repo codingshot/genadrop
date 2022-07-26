@@ -47,6 +47,11 @@
   background: rgb(0, 0, 0, 0.3);
 }
 
+.closeIcon,
+.editIcon {
+  fill: white;
+}
+
 .renameWrapper {
   width: 100%;
   display: flex;
@@ -71,7 +76,7 @@
   outline: none;
   border: none;
   padding: 0.25em;
-  border: 1px solid var(--text-light-900);
+  border: 1px solid var(--outline-dark);
   color: var(--default);
   border-radius: 0.25em;
   font-size: 1rem;

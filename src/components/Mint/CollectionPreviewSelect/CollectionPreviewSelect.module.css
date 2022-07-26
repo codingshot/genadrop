@@ -183,7 +183,7 @@ p.fillerPage:hover {
 }
 
 .attrBtn:hover {
-  background: var(--text-light-100);
+  background: var(--card-light);
 }
 
 .buttonWrapper {

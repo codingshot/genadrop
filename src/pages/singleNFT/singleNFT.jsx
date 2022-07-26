@@ -5,8 +5,9 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
+import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyNft, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft, getGraphNft, getTransactions } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -21,9 +22,8 @@ import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
-import { setLoading, setNotification } from "../../gen-state/gen.actions";
+import { setOverlay, setNotification } from "../../gen-state/gen.actions";
 import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
-import { createClient } from "urql";
 import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
 import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
@@ -39,6 +39,7 @@ const SingleNFT = () => {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
   const wrapperRef = useRef(null);
+  const shareRef = useRef();
   const [state, setState] = useState({
     dropdown: ["1", "3"],
     nftDetails: null,
@@ -111,7 +112,7 @@ const SingleNFT = () => {
   }
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setOverlay(true));
     if (Number(nftChainId) !== 4160) return;
     let nftDetails = null;
     // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
@@ -133,14 +134,14 @@ const SingleNFT = () => {
           isLoading: false,
           transactionHistory: tHistory.reverse(),
         });
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         document.documentElement.scrollTop = 0;
       })();
     }
   }, [singleAlgoNfts, nftId]);
 
   useEffect(() => {
-    dispatch(setLoading(true));
+    dispatch(setOverlay(true));
 
     if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
@@ -197,7 +198,7 @@ const SingleNFT = () => {
       } catch (error) {
         console.log({ error });
       }
-      dispatch(setLoading(false));
+      dispatch(setOverlay(false));
     })();
     document.documentElement.scrollTop = 0;
   }, [nftId]);
@@ -206,7 +207,7 @@ const SingleNFT = () => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
     if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0].usd;
+        const value = Object.values(res.data)[0].usd;
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
@@ -220,6 +221,15 @@ const SingleNFT = () => {
       });
     }
   }, [nftDetails]);
+  // share model
+  const handleClickOutside = (event) => {
+    if (!shareRef?.current?.contains(event.target)) {
+      handleSetState({ showSocial: false });
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const onCopyText = () => {
     handleSetState({ isCopied: true });
@@ -338,7 +348,7 @@ const SingleNFT = () => {
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
-                  {nftDetails.price} {chainSymbol ? chainSymbol : ""}
+                  {nftDetails.price} {chainSymbol || ""}
                 </p>
                 <span className={classes.usdValue}>
                   ($
@@ -356,8 +366,8 @@ const SingleNFT = () => {
               ) : (
                 <>
                   {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.sold} disabled={nftDetails.chain}>
-                      Coming Soon
+                    <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
+                      Buy now
                     </button>
                   ) : (
                     <button
@@ -426,7 +436,7 @@ const SingleNFT = () => {
         <DropItem key={4} item={similar} id={4} dropdown={dropdown} handleSetState={handleSetState} />
       </div>
       {showSocial ? (
-        <div>
+        <div ref={shareRef}>
           <div ref={wrapperRef} className={classes.share}>
             <div className={classes.copy}>
               <input type="text" value={window.location.href} readOnly className={classes.textArea} />

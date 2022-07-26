@@ -67,7 +67,7 @@
   width: 1.5em;
   height: 1.5em;
   border-radius: 0.25em;
-  fill: var(--bg-dark);
+  fill: var(--icon-color);
   background: var(--btn-close);
 }
 
@@ -171,6 +171,8 @@
 .errorMsg {
   width: 100%;
   max-width: 32em;
+  max-height: 8em;
+  overflow: auto;
   padding: 0.25em 1em;
   font-size: 0.85rem;
   border: 1px solid transparent;
