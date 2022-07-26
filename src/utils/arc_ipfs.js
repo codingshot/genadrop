@@ -41,7 +41,7 @@ function initAlgoClients(mainnet) {
 }
 
 const mintCollectionAbi = [
-  "function createCollection(string memory _name, string memory _symbol) public {}",
+  "function createCollection(string memory _name, string memory _symbol, string memory _description) public {}",
   "function collectionsOf(address user) public view returns (address[] memory)",
 ];
 
@@ -600,11 +600,11 @@ export async function listPolygonNft(nftProps) {
 }
 
 export async function initializeContract(contractProps) {
-  const { minterAddress, fileName, connector, account, dispatch, setLoader } = contractProps;
+  const { minterAddress, fileName, connector, account, dispatch, setLoader, description } = contractProps;
   const name = fileName.split("-")[0];
   const signer = await connector.getSigner();
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
-  const tx = await collectionContract.createCollection(name, name.substring(0, 3).toUpperCase());
+  const tx = await collectionContract.createCollection(name, name.substring(0, 3).toUpperCase(), description);
   dispatch(setLoader("minting"));
   await tx.wait();
   dispatch(setLoader(""));
@@ -671,6 +671,7 @@ export async function mintToCelo(celoProps) {
     account,
     dispatch,
     setLoader,
+    description,
   });
   // const wallet = await InitiateCeloProvider(mainnet);
   await connector.getSigner();
