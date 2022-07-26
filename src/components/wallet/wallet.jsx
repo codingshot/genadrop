@@ -111,6 +111,10 @@ function ConnectWallet() {
   const dropdown = (
     <div className={classes.dropdownContainer}>
       <div className={classes.dropdown}>
+        <div onClick={handleDashboard} className={classes.option}>
+          <img src={userIcon} alt="" />
+          <div>View Profile</div>
+        </div>
         <div onClick={() => initConnectWallet(walletProps)} className={classes.option}>
           <img src={switchIcon} alt="" />
           <div>Switch network</div>
@@ -119,10 +123,6 @@ function ConnectWallet() {
           <img src={copyIcon} alt="" />
           <div>{clipboardState}</div>
           <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
-        </div>
-        <div onClick={handleDashboard} className={classes.option}>
-          <img src="" alt="" />
-          <div>View Profile</div>
         </div>
         <div onClick={handleDisconnet} className={classes.option}>
           <img src={disconnectIcon} alt="" />

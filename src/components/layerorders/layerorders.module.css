@@ -58,12 +58,6 @@
   font-size: 1rem;
 }
 
-.collectionName input.active {
-  background: rgba(0, 0, 0, 0.05);
-  padding: 0 0.25em;
-  border-radius: 0.15em;
-}
-
 .collectionName input::placeholder {
   color: var(--text-placeholder-light);
 }

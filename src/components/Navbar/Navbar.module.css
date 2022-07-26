@@ -69,7 +69,7 @@
   display: flex;
   align-items: stretch;
   justify-content: flex-end;
-  gap: 4em;
+  gap: 6em;
 }
 
 .searchContainer {
@@ -198,13 +198,13 @@
 
 @media screen and (max-width: 1440px) {
   .container {
-    gap: 2em;
+    gap: 4em;
   }
 }
 
 @media screen and (max-width: 1200px) {
   .searchAndNavWrapper {
-    gap: 2em;
+    gap: 4em;
   }
 }
 

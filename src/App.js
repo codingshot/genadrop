@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import React, { useState } from "react";
+import { Switch, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/footer/footer";
 import Navbar from "./components/Navbar/Navbar";

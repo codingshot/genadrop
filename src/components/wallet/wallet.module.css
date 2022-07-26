@@ -129,6 +129,7 @@
   width: max-content;
   position: absolute;
   top: 0.75em;
+  right: 0;
   visibility: hidden;
   cursor: pointer;
 }

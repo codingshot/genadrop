@@ -104,16 +104,21 @@ const LayerOrders = ({ isCreateModal }) => {
     <div className={classes.container}>
       <div className={classes.collectionNameContainer}>
         <div className={classes.collectionName}>
-          <form onSubmit={handleRename}>
-            <input
-              className={`${renameAction && classes.active}`}
-              type="text"
-              onChange={(e) => handleSetState({ inputValue: e.target.value })}
-              value={inputValue}
-              placeholder="Enter collection name"
-              disabled={!renameAction}
-            />
-          </form>
+          {renameAction ? (
+            <form onSubmit={handleRename}>
+              <input
+                className={renameAction}
+                type="text"
+                onChange={(e) => handleSetState({ inputValue: e.target.value })}
+                value={inputValue}
+                placeholder="Enter collection name"
+                autoFocus
+              />
+            </form>
+          ) : (
+            <div className={renameAction}>{collectionName}</div>
+          )}
+
           <div className={classes.editBtn}>
             {renameAction ? (
               <MarkIcon onClick={handleRename} className={classes.editIcon} />

@@ -24,10 +24,24 @@ const CollectionNameModal = () => {
     dispatch(setToggleCollectionNameModal(false));
   };
 
+  const handleClose = () => {
+    setInputValue("");
+    dispatch(setToggleCollectionNameModal(false));
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!window.localStorage.storedCollectionName) {
+        dispatch(setToggleCollectionNameModal(true));
+        window.sessionStorage.isCreateModal = true;
+      }
+    }, 0);
+  }, []);
+
   return (
     <div className={`${classes.container} ${toggleCollectionNameModal && classes.active}`}>
       <div className={classes.wrapper}>
-        <CloseIcon onClick={handleClick} className={classes.closeBtn} />
+        <CloseIcon onClick={handleClose} className={classes.closeBtn} />
         <form onSubmit={handleClick} className={classes.content}>
           <h3>Let’s get cracking!</h3>
           <h6>Every Collection is Unique</h6>
