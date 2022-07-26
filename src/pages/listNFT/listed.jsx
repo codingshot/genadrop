@@ -4,10 +4,10 @@ import Skeleton from "react-loading-skeleton";
 import { GenContext } from "../../../gen-state/gen.context";
 import { getSingleNftDetails } from "../../../utils";
 import classes from "./listed.module.css";
-import telegram from "../../assets/telegram.svg";
-import twitterIcon from "../../assets/icon-twitter.svg";
-import facebookIcon from "../../assets/facebook.svg";
-import linktree from "../../assets/linktree.svg";
+import telegram from "../../assets/blue-telegram.svg";
+import twitterIcon from "../../assets/blue-twitter.svg";
+import facebookIcon from "../../assets/blue-facebook.svg";
+import linktree from "../../assets/linked-tree.svg";
 
 const Listed = () => {
   // const { account, connector } = useContext(GenContext);

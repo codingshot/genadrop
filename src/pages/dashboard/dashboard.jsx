@@ -6,13 +6,7 @@ import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import {
-  getGraphCollection,
-  getGraphNft,
-  getUserGraphNft,
-  getUserNftCollections,
-  getUserSingleNfts,
-} from "../../utils";
+import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import {
   fetchUserBoughtNfts,
   fetchUserCollections,
@@ -34,6 +28,12 @@ import youtube from "../../assets/icon-youtube-green.svg";
 import { celoClient, polygonClient } from "../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { setNotification } from "../../gen-state/gen.actions";
+import {
+  getCeloCollectedNFTs,
+  getCeloUserCollections,
+  getPolygonCollectedNFTs,
+  getPolygonUserCollections,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -83,13 +83,10 @@ const Dashboard = () => {
 
     (async function getUserNFTs() {
       const singleNfts = await fetchUserCreatedNfts(account);
-      let algoNFTs = [];
-      if (singleNfts) {
-        algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
-      }
+      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
+      const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
-      const celoNfts = singleCeloNfts?.filter((nft) => nft.owner === account);
       handleSetState({
         createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
       });
@@ -98,29 +95,23 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       const address = ethers.utils.hexlify(account);
-      if (chainId === 80001) {
-        const { data } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
 
-        const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
-        handleSetState({ collectedNfts: polygonCollectedNft });
-      } else if (chainId === 44787) {
-        const { data } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
-        const celoCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
-        handleSetState({ collectedNfts: celoCollectedNft });
-      } else {
-        const collectedNfts = await fetchUserBoughtNfts(account);
-        const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-        handleSetState({ collectedNfts: algoCollectedNfts });
-      }
+      const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
+      const celoCollectedNfts = await getCeloCollectedNFTs(address);
+      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
+      handleSetState({
+        collectedNfts: [...(algoCollectedNfts || []), ...(celoCollectedNfts || []), ...(polygonCollectedNfts || [])],
+      });
     })();
 
     // Get User created Collections
     (async function getCreatedCollections() {
+      const hexAddress = ethers.utils.hexlify(account);
       const collections = await fetchUserCollections(account);
       const algoCollections = await getUserNftCollections({ collections, mainnet });
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      const celoCollection = celoCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const polyCollections = await getPolygonUserCollections(hexAddress);
+      const celoCollection = await getCeloUserCollections(hexAddress);
       handleSetState({
         myCollections: [
           ...(algoCollections || []),
@@ -277,7 +268,7 @@ const Dashboard = () => {
             activeDetail === "collections" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} />
+                  <CollectionsCard key={idx} collection={collection} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (

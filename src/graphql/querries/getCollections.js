@@ -28,9 +28,6 @@ export const GET_GRAPH_COLLECTIONS = gql`
           txId
           type
           price
-          buyer {
-            id
-          }
         }
       }
     }
@@ -43,12 +40,16 @@ export const GET_CELO_GRAPH_COLLECITONS = gql`
       description
       id
       name
+      creator {
+        id
+      }
       nfts {
         chain
         category
         createdAtTimestamp
         id
         isSold
+        isListed
         marketId
         price
         collection {
@@ -66,7 +67,7 @@ export const GET_CELO_GRAPH_COLLECITONS = gql`
           txId
           type
           price
-          buyer {
+          to {
             id
           }
         }
@@ -104,7 +105,7 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
           txId
           type
           price
-          buyer {
+          to {
             id
           }
         }
@@ -152,6 +153,73 @@ export const GET_USER_NFT = gql`
             name
           }
         }
+      }
+    }
+  }
+`;
+
+export const GET_USER_COLLECTIONS = gql`
+  query ($id: ID) {
+    user(id: $id) {
+      id
+      collections {
+        description
+        id
+        name
+        nfts {
+          chain
+          category
+          createdAtTimestamp
+          id
+          isSold
+          price
+          collection {
+            name
+            id
+          }
+          tokenID
+          owner {
+            id
+          }
+          tokenIPFSPath
+          transactions {
+            id
+            txDate
+            txId
+            type
+            price
+            to {
+              id
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_CELO_NFT = gql`
+  query ($id: ID) {
+    nft(id: $id) {
+      chain
+      category
+      createdAtTimestamp
+      id
+      isSold
+      price
+      isListed
+      marketId
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+      transactions {
+        id
+        txDate
+        txId
+        type
+        price
       }
     }
   }
@@ -246,7 +314,7 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection: "0x2b75c2ff193086d425ffca4a1829c560fa4710fa" }) {
+    nfts(where: { collection: "0x70ab2a901d91c43df8dd9629d427ccc6d6232885" }) {
       category
       chain
       createdAtTimestamp

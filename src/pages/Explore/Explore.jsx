@@ -78,10 +78,11 @@ const Explore = () => {
   useEffect(() => {
     (async function getGraphResult() {
       const allCollection = getAllCollectionChains();
-      const filteredCollection = allCollection?.filter((col) => col?.owner === collectionName);
+      const filteredCollection = allCollection?.filter((col) => col?.Id === collectionName);
+      console.log(filteredCollection);
       if (filteredCollection?.length) {
         const result = await getGraphCollection(filteredCollection[0]?.nfts, filteredCollection[0]);
-
+        console.log("result", filteredCollection);
         handleSetState({
           collection: {
             ...filteredCollection[0],
@@ -93,7 +94,7 @@ const Explore = () => {
         });
       }
     })();
-  }, [auroraCollections, polygonCollections]);
+  }, [auroraCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
     if (!NFTCollection) return;

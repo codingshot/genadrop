@@ -5,12 +5,12 @@ import { GenContext } from "../../../gen-state/gen.context";
 import { getSingleNftDetails, getUserBoughtNftCollection, getUserGraphNft } from "../../../utils";
 import classes from "./listed.module.css";
 import { fetchUserBoughtNfts } from "../../../utils/firebase";
-import { polygonClient } from "../../../utils/graphqlClient";
-import { GET_USER_NFT } from "../../../graphql/querries/getCollections";
-import { setNotification } from "../../../gen-state/gen.actions";
 import { ethers } from "ethers";
-import { getCeloNFTToList, getPolygonNFTToList } from "../../../renderless/fetch-data/fetchUserGraphData";
-import { socialLinks } from "../../../components/footer/footer-script";
+import telegram from "../../../assets/blue-telegram.svg";
+import twitterIcon from "../../../assets/blue-twitter.svg";
+import facebookIcon from "../../../assets/blue-facebook.svg";
+import linktree from "../../../assets/linked-tree.svg";
+import { celoUserData, getCeloNFTToList, getPolygonNFTToList } from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const Listed = () => {
   const { account, mainnet, dispatch } = useContext(GenContext);
@@ -32,7 +32,6 @@ const Listed = () => {
   useEffect(() => {
     (async function getUserCollection() {
       const address = ethers.utils.hexlify(account);
-      console.log(account);
       if (chainId === 80001 || chainId === 137) {
         const nft = await getPolygonNFTToList(address, nftId);
         if (!nft) history.push("/");
@@ -43,7 +42,8 @@ const Listed = () => {
           });
         }
       } else if (chainId === 44787 || chainId === 42220) {
-        const nft = await getCeloNFTToList(address, nftId);
+        const [nft] = await celoUserData(nftId);
+        console.log(nft);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,
@@ -92,43 +92,15 @@ const Listed = () => {
   return (
     <div className={classes.container}>
       <span>Your item is now listed for sale</span>
-      <img className={classes.nft} src={nftDetails.image_url} alt="" />
+      <img className={classes.nft} src={nftDetails?.image_url} alt="" />
 
-      <div className={classes.feature}>
-        <div className={classes.mainDetails}>
-          <div className={classes.collectionHeader}>
-            <div className={classes.nftId}>Enable Email Notification</div>
-          </div>
-        </div>
-
+      <div className={classes.nftId}>
+        Share
         <div className={classes.detailContent}>
-          <div className={classes.priceDescription}>
-            Enter your email address in your account settings so we can let you know, when your listing sells or
-            receives offers
-          </div>
-          <button type="button" className={classes.buy}>
-            Profile Settings
-          </button>
-        </div>
-      </div>
-
-      <div className={classes.feature}>
-        <div className={classes.mainDetails}>
-          <div className={classes.collectionHeader}>
-            <div className={classes.nftId}>Share your listing</div>
-          </div>
-        </div>
-
-        <div className={classes.detailContent}>
-          {/* <img src="/assets/twitter.svg" alt="" />
-          <img src="/assets/facebook.svg" alt="" />
-          <img src="/assets/icon-discord-accent.svg" alt="" />
-          <img src="/assets/link.svg" alt="" /> */}
-          {socialLinks.map((social, idx) => (
-            <a key={idx} className={classes.icon} href={social.link} target="_blank" rel="noopener noreferrer">
-              <img src={social.icon} alt={`Minority Programmers ${social.name}`} />
-            </a>
-          ))}
+          <img src={twitterIcon} alt="" />
+          <img src={facebookIcon} alt="" />
+          <img src={telegram} alt="" />
+          <img src={linktree} alt="" />
         </div>
       </div>
       <Link

@@ -4,8 +4,8 @@ import axios from "axios";
 import classes from "./collectionsCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 
-const CollectionsCard = ({ collection, useWidth }) => {
-  const { name, price, description, image_url, chain, owner, nfts } = collection;
+const CollectionsCard = ({ collection, useWidth, fromDashboard }) => {
+  const { name, price, description, image_url, chain, Id, nfts } = collection;
   const history = useHistory();
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -20,7 +20,7 @@ const CollectionsCard = ({ collection, useWidth }) => {
   return (
     <div
       style={useWidth ? { width: useWidth } : {}}
-      onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? owner : name}`)}
+      onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? Id : name}`)}
       className={classes.card}
     >
       <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
@@ -32,7 +32,7 @@ const CollectionsCard = ({ collection, useWidth }) => {
         <div className={classes.name}>{name}</div>
         <div className={classes.description}>{description}</div>
         <div className={classes.wrapper}>
-          {price === 0 ? (
+          {price === "0" && !fromDashboard ? (
             <div className={classes.notListedWrap}>
               <img src={supportedChains[chain]?.icon} alt="" />
               <div className={classes.notListed}>
@@ -45,7 +45,9 @@ const CollectionsCard = ({ collection, useWidth }) => {
               <div className={classes.price}>
                 <img src={supportedChains[chain]?.icon} alt="" />
                 {price} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
-                <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
+                <div>
+                  <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
+                </div>
               </div>
             </div>
           )}

@@ -64,8 +64,12 @@ th:first-child {
   margin-right: 5px;
   padding-right: 5px;
   border-right: 2px solid #fff;
+  color: #fff;
 }
 
+.explore{
+  color: #fff;
+}
 .explore:hover,
 .copy:hover {
   cursor: var(--cursor-pointer);
@@ -80,6 +84,7 @@ th:first-child {
   background: #000;
   width: 20px;
   height: 20px;
+  color: #fff;
   /* The points are: (left top: x y, right top: x y, center bottom: x y) */
   clip-path: polygon(0% 87%, 50% 0%, 50% 0%, 100% 87%);
 }

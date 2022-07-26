@@ -102,13 +102,16 @@ export const getGraphCollections = async (collections) => {
         collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
 
         collectionObj.name = collection?.name;
-        collectionObj.owner = collection?.id;
+        collectionObj.owner = collection?.creator?.id;
+        collectionObj.Id = collection?.id;
         const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
         collectionObj.chain = chain;
-        collectionObj.price = getPrice * 0.000000000000000001;
+        collectionObj.price = (getPrice * 0.000000000000000001).toString();
         collectionObj.description = collection?.description;
+        collectionObj.isListed = collection?.isListed ? collection?.isListed : false;
         collectionObj.nfts = collection?.nfts;
+        collectionObj.createdAt = Number(collection?.nfts?.[0].createdAtTimestamp);
         resolve(collectionObj);
       } catch (err) {
         console.log(err);
@@ -291,7 +294,7 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.collection_name = mainnet.name;
         nftObj.description = mainnet.description;
         nftObj.chain = collection[i].chain;
-        nftObj.owner = mainnet.id;
+        nftObj.owner = mainnet?.creator?.id;
         nftObj.Id = collection[i].id;
         const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
@@ -311,8 +314,8 @@ export const getGraphCollection = async (collection, mainnet) => {
 };
 
 export const getUserGraphNft = async (collection, address) => {
-  const nftArr = [];
   console.log(collection);
+  const nftArr = [];
   if (collection) {
     for (let i = 0; i < collection?.length; i++) {
       const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
@@ -320,17 +323,17 @@ export const getUserGraphNft = async (collection, address) => {
         const nftObj = {};
         // nftObj.collection_name = collection[i]?.owner.collections[0]?.name;
         nftObj.owner = address;
-        nftObj.chain = collection[i].chain;
-        nftObj.Id = collection[i].id;
-        nftObj.tokenID = collection[i].tokenID;
-        const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        nftObj.chain = collection[i]?.chain;
+        nftObj.Id = collection[i]?.id;
+        nftObj.tokenID = collection[i]?.tokenID;
+        const getPrice = collection.map((col) => col?.price).reduce((a, b) => (a < b ? a : b));
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
-        nftObj.price = collection[i].price * 0.000000000000000001;
-        nftObj.sold = collection[i].isSold;
+        nftObj.price = collection[i]?.price * 0.000000000000000001;
+        nftObj.sold = collection[i]?.isSold;
         nftObj.ipfs_data = data;
-        nftObj.contractAddress = collection[i]?.id?.split(collection[i].tokenID)[0];
-        nftObj.name = data.name;
-        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftObj.contractAddress = collection[i]?.id?.split(collection[i]?.tokenID)[0];
+        nftObj.name = data?.name;
+        nftObj.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);
       } catch (error) {
         console.log(error);
@@ -358,6 +361,37 @@ export const getTransactions = async (transactions) => {
   }
 };
 
+export const getCeloGraphNft = async (collection) => {
+  const { data } = await axios.get(
+    collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+  );
+  const nftObj = [];
+  try {
+    const nftArr = {};
+    nftArr.collection_name = collection?.collection?.name;
+    nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
+    nftArr.name = data?.name;
+    nftArr.chain = collection?.chain;
+    nftArr.owner = collection?.owner?.id;
+    nftArr.price = collection?.price;
+    nftArr.isListed = collection?.isListed;
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+    nftArr.ipfs_data = data;
+    nftArr.sold = collection?.isSold;
+    nftArr.description = data?.description;
+    nftObj.contractAddress = collection?.id?.split(collection?.tokenID)[0];
+    nftArr.Id = collection?.id;
+    nftArr.tokenID = collection?.tokenID;
+    nftArr.marketId = collection?.marketId;
+    nftArr.properties = data?.properties;
+    nftObj.push(nftArr);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return nftObj;
+};
+
 export const getGraphNft = async (collection, mainnet) => {
   const { data } = await axios.get(
     collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
@@ -376,7 +410,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftArr.Id = collection?.tokenID;
-    nftArr.marketId = collection?.id;
+    nftArr.marketId = collection?.marketId;
     nftArr.properties = data?.properties;
     nftObj.push(nftArr);
   } catch (error) {
@@ -409,7 +443,7 @@ export const getSingleGraphNfts = async (nfts) => {
             NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
           );
           nftObj.Id = NFT?.id;
-          nftObj.price = (NFT ? NFT.price : 0) * 0.000000000000000001;
+          nftObj.price = NFT?.price * 0.000000000000000001;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
@@ -483,12 +517,9 @@ export const buyGraphNft = async (buyProps) => {
       })
     );
   }
-  dispatch(setLoading(true));
-  if (chainId === 44787) {
-    console.log(buyProps);
-    console.log(chainId);
+  if (chainId === 44787 || chainId === 42220) {
+    // dispatch(setLoading(true));
     const res = await purchaseCeloNfts(buyProps);
-    console.log("response", res);
     if (res) {
       dispatch(setLoading(false));
       dispatch(

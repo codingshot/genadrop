@@ -7,7 +7,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyGraphNft, buyNft, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -191,7 +191,6 @@ const SingleNFT = () => {
         handleSetState({ algoPrice: res.data.data.amount });
       });
     }
-    console.log(nftDetails);
   }, [nftDetails]);
   // share model
   const handleClickOutside = (event) => {
@@ -320,17 +319,33 @@ const SingleNFT = () => {
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
-                  {nftDetails.price} {chainSymbol || ""}
+                  {chainId === 44787 || chainId === 42220 ? (
+                    <>
+                      {nftDetails.price * 0.000000000000000001} {chainSymbol || ""}
+                    </>
+                  ) : (
+                    <>
+                      {nftDetails.price} {chainSymbol || ""}
+                    </>
+                  )}
                 </p>
-                {nftDetails?.price !== 0 && (
-                  <span className={classes.usdValue}>
-                    ($
-                    {(nftDetails.price * algoPrice).toFixed(2)})
-                  </span>
-                )}
+                {nftDetails?.price === 0 ||
+                  (nftDetails?.price === null ? (
+                    <></>
+                  ) : chainId === 44787 || chainId === 42220 ? (
+                    <span className={classes.usdValue}>
+                      ($
+                      {(nftDetails.price * algoPrice * 0.000000000000000001).toFixed(2)})
+                    </span>
+                  ) : (
+                    <span className={classes.usdValue}>
+                      ($
+                      {(nftDetails.price * algoPrice).toFixed(2)})
+                    </span>
+                  ))}
               </span>
             </div>
-            {nftDetails?.price === 0 ? (
+            {nftDetails?.price === 0 || nftDetails.price === null ? (
               <div className={classes.btns}>
                 {account === nftDetails.owner ? (
                   <button

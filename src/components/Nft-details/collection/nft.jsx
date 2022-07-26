@@ -20,7 +20,7 @@ const NFT = (data) => {
           <span className={classes.itemName}>{nft.name}</span>
           <div className={classes.pricing}>
             <img src={nft?.chain ? supportedChains[nft?.chain].icon : algoIcon} alt="" />
-            {nft.price !== 0 ? (
+            {nft.price === 0 ? (
               <div className={classes.itemPrice}>
                 <button type="button" className={classes.sold}>
                   Not Listed!

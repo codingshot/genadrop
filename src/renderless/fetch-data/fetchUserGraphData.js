@@ -1,5 +1,18 @@
-import { GET_GRAPH_NFT, GET_USER_NFT } from "../../graphql/querries/getCollections";
-import { getGraphNft, getTransactions, getUserGraphNft } from "../../utils";
+import {
+  GET_CELO_GRAPH_COLLECITONS,
+  GET_CELO_NFT,
+  GET_GRAPH_NFT,
+  GET_USER_COLLECTIONS,
+  GET_USER_NFT,
+} from "../../graphql/querries/getCollections";
+import {
+  getCeloGraphNft,
+  getGraphCollection,
+  getGraphCollections,
+  getGraphNft,
+  getTransactions,
+  getUserGraphNft,
+} from "../../utils";
 import { auroraClient, celoClient, polygonClient } from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
@@ -27,12 +40,41 @@ export const getPolygonNFTToList = async (address, nftId) => {
   return nft;
 };
 
-export const getCeloNFTToList = async (address, nftId) => {
-  const { data, error: polygonError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
+export const getPolygonCollectedNFTs = async (address) => {
+  const { data, error: polygonError } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (polygonError) return;
   const polygonBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
-  const nft = polygonBoughtNft.filter((NFT) => NFT.tokenID === nftId)[0];
+  return polygonBoughtNft;
+};
+
+export const getCeloNFTToList = async (address, nftId) => {
+  const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (celoError) return;
+  const celoBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
+  console.log(data);
+  const nft = celoBoughtNft.filter((NFT) => NFT.tokenID === nftId)[0];
   return nft;
+};
+
+export const getCeloCollectedNFTs = async (address) => {
+  const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (celoError) return;
+  const celoCollectedNfts = await getUserGraphNft(data?.user?.nfts, address);
+  return celoCollectedNfts;
+};
+
+export const getCeloUserCollections = async (account) => {
+  const { data, error: celoError } = await celoClient.query(GET_USER_COLLECTIONS, { id: account }).toPromise();
+  if (celoError) return;
+  const result = await getGraphCollections(data?.user?.collections);
+  return result;
+};
+
+export const getPolygonUserCollections = async (account) => {
+  const { data, error: polygonError } = await polygonClient.query(GET_USER_COLLECTIONS, { id: account }).toPromise();
+  if (polygonError) return;
+  const result = await getGraphCollections(data?.user?.collections);
+  return result;
 };
 
 export const auroraUserData = async (address) => {
@@ -51,13 +93,13 @@ export const auroraUserData = async (address) => {
 };
 
 export const celoUserData = async (address) => {
-  const { data: celoData, error: celoError } = await celoClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
-  console.log(celoData);
+  const { data: celoData, error: celoError } = await celoClient.query(GET_CELO_NFT, { id: address }).toPromise();
   if (celoError) return;
   let trHistory;
   let celoResult = [];
   if (celoData?.nft !== null) {
-    celoResult = await getGraphNft(celoData?.nft);
+    celoResult = await getCeloGraphNft(celoData?.nft);
+    console.log(celoResult);
     trHistory = await getTransactions(celoData?.nft?.transactions);
     trHistory.find((t) => {
       if (t.type === "Minting") t.price = celoResult[0].price;

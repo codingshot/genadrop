@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyGraphNft, buyNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft, getCeloGraphNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
@@ -124,17 +124,23 @@ const CollectionNFT = () => {
     (async function getGraphResult() {
       const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
-      const filteredCollection = allCollections?.filter((col) => col?.owner === collectionName);
+      const filteredCollection = allCollections?.filter((col) => col?.Id === collectionName);
+      console.log(filteredCollection);
       if (filteredCollection) {
         // filtering to get the unique nft
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
         if (filteredId) {
-          console.log("filtered collection", filteredId);
-          const result = await getGraphNft(filteredId[0], collectionName);
+          let result = [];
+          if (chainId === 44787 || chainId === 42220) {
+            result = await getCeloGraphNft(filteredId[0], collectionName);
+          } else {
+            result = await getGraphNft(filteredId[0], collectionName);
+          }
           const trHistory = await getTransactions(filteredId[0]?.transactions);
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
 
+          console.log("filtered collection", result[0]);
           trHistory.find((t) => {
             if (t.type === "Minting") t.price = result[0].price;
           });
@@ -295,22 +301,33 @@ const CollectionNFT = () => {
                 </svg>
               </div>
             </div>
-            {nftDetails.price === 0 ? (
+            {nftDetails.price === "0" || nftDetails.price === null ? (
               <div></div>
             ) : (
               <div className={classes.priceSection}>
                 <span className={classes.title}>Current price</span>
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
-                  <p className={classes.tokenValue}>
-                    {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
-                  </p>
-                  <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
+                  {chainId === 44787 || chainId === 42220 ? (
+                    <>
+                      <p className={classes.tokenValue}>
+                        {nftDetails.price * 0.000000000000000001} {supportedChains[nftDetails.chain].sybmol}
+                      </p>
+                      <span className={classes.usdValue}>(${(totalPrice * 0.000000000000000001).toFixed(2)})</span>
+                    </>
+                  ) : (
+                    <>
+                      <p className={classes.tokenValue}>
+                        {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
+                      </p>
+                      <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
+                    </>
+                  )}
                 </span>
               </div>
             )}
 
-            {nftDetails.price === 0 ? (
+            {nftDetails.price === "0" || nftDetails.price === null ? (
               nftDetails.owner === account ? (
                 <div className={classes.btns}>
                   <button
@@ -330,11 +347,19 @@ const CollectionNFT = () => {
             ) : (
               <div className={classes.btns}>
                 {nftDetails.sold ? (
-                  <>
-                    <button className={classes.sold} disabled={nftDetails.sold}>
-                      SOLD!
-                    </button>
-                  </>
+                  nftDetails?.isListed ? (
+                    <>
+                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                        Buy
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button className={classes.sold} disabled={nftDetails.sold}>
+                        SOLD!
+                      </button>
+                    </>
+                  )
                 ) : (
                   <>
                     {Number(nftDetails.chain) !== 4160 ? (

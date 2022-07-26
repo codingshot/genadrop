@@ -8,9 +8,12 @@ import { fetchUserBoughtNfts, listNft, writeNft } from "../../utils/firebase";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { polygonClient } from "../../utils/graphqlClient";
 import { ethers } from "ethers";
+import algoIcon from "../../assets/icon-algo.svg";
 import { listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
-import { getCeloNFTToList, getPolygonNFTToList } from "../../renderless/fetch-data/fetchUserGraphData";
+import { celoUserData, getCeloNFTToList, getPolygonNFTToList } from "../../renderless/fetch-data/fetchUserGraphData";
 import { setNotification } from "../../gen-state/gen.actions";
+import supportedChains from "../../utils/supportedChains";
+import axios from "axios";
 
 const List = () => {
   const { account, mainnet, chainId, connector, dispatch } = useContext(GenContext);
@@ -23,12 +26,13 @@ const List = () => {
 
   const [state, setState] = useState({
     nftDetails: null,
+    amount: 0,
     isLoading: true,
     chain: "Algo",
     price: "",
     image_url: "",
   });
-  const { nftDetails, isLoading, price, chain, image_url } = state;
+  const { nftDetails, isLoading, price, chain, image_url, amount } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -44,7 +48,7 @@ const List = () => {
       dispatch,
       account,
       connector,
-      nftContract: nftDetails.contractAddress,
+      nftContract: nftDetails.collection_contract,
       mainnet,
       price,
       id: nftDetails.tokenID,
@@ -53,7 +57,6 @@ const List = () => {
       console.log("RES: ", await listPolygonNft(listProps));
       history.push(`${match.url}/listed`);
     } else if (chainId === 44787 || chainId === 42220) {
-      // history.push(`${match.url}/listed`);
       const listNft = await listCeloNft(listProps);
       if (listNft.error) {
         setNotification({
@@ -61,13 +64,28 @@ const List = () => {
           type: "warning",
         });
       } else {
-        return history.push(`${match.url}/listed`);
+        return history.push(`${nftId}/listed`);
       }
     } else {
       console.log("RES: ", await listNft(nftDetails.Id, price, account));
       history.push(`${match.url}/listed`);
     }
   };
+
+  useEffect(() => {
+    (async function getAmount() {
+      axios
+        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId].id}&vs_currencies=usd`)
+        .then((res) => {
+          const value = Object.values(res.data)[0].usd;
+          handleSetState({
+            // chainIcon: supportedChains[nftDetails.chain].icon,
+            amount: price * value,
+            // chainSymbol: supportedChains[nftDetails.chain].symbol,
+          });
+        });
+    })();
+  }, [price]);
 
   useEffect(() => {
     (async function getUserCollection() {
@@ -81,7 +99,8 @@ const List = () => {
           image_url: nft?.ipfs_data?.image,
         });
       } else if (chainId === 44787 || chainId === 42220) {
-        const nft = await getCeloNFTToList(address, nftId);
+        const [nft] = await celoUserData(nftId);
+
         if (!nft) history.goBack();
         handleSetState({
           nftDetails: nft,
@@ -134,9 +153,12 @@ const List = () => {
 
   return (
     <div className={classes.container}>
+      <div className={classes.listHeader}>
+        <h1>List Item for Sale</h1>
+      </div>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
-          <img className={classes.nft} src={nftDetails.image_url} alt="" />
+          <img className={classes.nft} src={nftDetails?.image_url} alt="" />
         </div>
         <div className={classes.v_subsection2}>
           <div className={classes.feature}>
@@ -152,7 +174,7 @@ const List = () => {
                   <img src="/assets/price-tage.svg" alt="" />
                   SET PRICE
                 </div>
-                <span className={classes.btnText}>Sell the NFT at a fixed price</span>
+                <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
               </button>
             </div>
           </div>
@@ -167,21 +189,24 @@ const List = () => {
               <div className={classes.priceDescription}>
                 Check the
                 <a href="#" target="_blank">
+                  {" "}
                   Collection Floor price
-                </a>
+                </a>{" "}
                 to give you an idea of the average price of the NFT at the moment
               </div>
               <div className={classes.chain}>
-                <div className={classes.inputWrapper}>
+                {/* <div className={classes.inputWrapper}>
                   <select value={chain} onChange={(event) => handleSetState({ chain: event.target.value })}>
                     <option value="Algo">Algo</option>
                     <option value="Celo">Celo</option>
                     <option value="Polygon">Polygon</option>
                   </select>
-                </div>
+                </div> */}
+                <img src={supportedChains[nftDetails.chain].icon} alt="" />
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
+                <span>{amount.toFixed(2)}</span>
               </div>
             </section>
           </div>
