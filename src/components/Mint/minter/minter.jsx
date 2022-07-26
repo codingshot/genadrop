@@ -414,13 +414,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               </section>
 
               <section className={classes.mintOptions}>
-                <div className={classes.category}>
-                  Set Mint Options{" "}
-                  <div className={classes.info}>
-                    <img src={infoIcon} alt="" />
-                    <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
-                  </div>
-                </div>
+                <div className={classes.category}>Set Mint Options</div>
                 <div className={classes.inputWrapper}>
                   <label>Blockchain</label>
                   <div
