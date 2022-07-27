@@ -47,11 +47,13 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
       .then((stream) => {
         const video = videoRef.current;
         video.srcObject = stream;
+        video.onloadedmetadata = function (e) {
+          video.play();
+        };
         handleSetState({ currentStream: stream });
         handleSetState({
           toggle: true,
         });
-        video.play();
       })
       .catch((err) => {
         console.error(err);
