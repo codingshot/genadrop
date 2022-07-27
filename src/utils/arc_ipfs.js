@@ -728,14 +728,12 @@ export async function mintToPoly(polyProps) {
     minterAddress: mainnet
       ? process.env.REACT_APP_POLY_MAINNET_MINTER_ADDRESS
       : process.env.REACT_APP_POLY_TESTNET_MINTER_ADDRESS,
-    marketAddress: mainnet
-      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
     fileName,
     connector,
     account,
     dispatch,
     setLoader,
+    description,
   });
   // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   // const marketContract = new ethers.Contract(
@@ -903,6 +901,7 @@ export async function mintToAurora(polyProps) {
     account,
     dispatch,
     setLoader,
+    description,
   });
   // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   // const marketContract = new ethers.Contract(
@@ -981,7 +980,7 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
 
 export async function purchasePolygonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1040,7 +1039,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  const { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
