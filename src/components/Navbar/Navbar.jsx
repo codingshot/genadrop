@@ -70,19 +70,19 @@ const Navbar = () => {
             </Link>
           </ul>
           <div className={`${classes.walletAuthContainer} ${classes.mobile}`}>
-            <div className={`${classes.wallet} ${true && classes.active}`}>
+            <div className={`${classes.wallet} ${!pathname.includes("/create") && classes.active}`}>
               <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
             </div>
-            <div className={`${classes.auth} ${false && classes.active}`}>
+            <div className={`${classes.auth} ${pathname.includes("/create") && classes.active}`}>
               <GoogleAuth />
             </div>
           </div>
         </nav>
         <div className={classes.walletAuthContainer}>
-          <div className={`${classes.wallet} ${true && classes.active}`}>
+          <div className={`${classes.wallet} ${!pathname.includes("/create") && classes.active}`}>
             <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
           </div>
-          <div className={`${classes.auth} ${false && classes.active}`}>
+          <div className={`${classes.auth} ${pathname.includes("/create") && classes.active}`}>
             <GoogleAuth />
           </div>
         </div>
@@ -100,6 +100,5 @@ const Navbar = () => {
     </div>
   );
 };
-// !pathname.includes("/create")
 
 export default Navbar;
