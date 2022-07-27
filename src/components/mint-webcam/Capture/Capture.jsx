@@ -150,7 +150,9 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} className={img && classes.none}>
         <div className={classes.videoWrapper}>
           <video className={img && classes.inActive} ref={videoRef} />
-          <div className={() => videoRef.current?.play()}>Click ME to record</div>
+          <div className={classes.testrecod} onClick={() => videoRef.current?.play()}>
+            Click ME to record
+          </div>
           <div className={classes.enableContainer}> </div>
         </div>
         <div className={toggle ? classes.btnWrapper : classes.inactiveBtnWrapper}>
