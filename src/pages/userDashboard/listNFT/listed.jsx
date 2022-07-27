@@ -107,13 +107,13 @@ const Listed = () => {
           nftDetails.collection_name
             ? `${url}/${nftDetails.Id}`
             : nftDetails.chain
-            ? `/marketplace/single-mint/${nftDetails.chain}/${nftDetails.Id}`
+            ? `/marketplace`
             : `/marketplace/single-mint/${nftDetails.Id}`
         }
         className={classes.view}
       >
         <button type="button" className={classes.viewtext}>
-          View Item
+          Go to Marketplace
         </button>
       </Link>
     </div>

@@ -97,7 +97,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
                   List
                 </button>
               ) : (
-                <button type="button" className={`${classes.button} ${classes.buttonSold}`}>
+                <button type="button" className={`${classes.notListed} ${classes.buttonSold}`}>
                   Not Listed!
                 </button>
               )
