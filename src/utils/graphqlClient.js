@@ -79,3 +79,11 @@ export const graphQLClientPolygon = createClient({
 export const polygonClient = createClient({
   url: "https://api.thegraph.com/subgraphs/name/prometheo/playdrop",
 });
+
+export const celoClient = createClient({
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/celo-dev-subgraph",
+});
+
+export const auroraClient = createClient({
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
+});

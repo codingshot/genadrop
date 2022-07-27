@@ -11,7 +11,7 @@ import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDrop
 import { GenContext } from "../../gen-state/gen.context";
 
 const SingleNftCollection = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, chainId } = useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const location = useLocation();
@@ -39,12 +39,12 @@ const SingleNftCollection = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !singleAlgoNftsArr && !singlePolygonNfts && !celoCollection && !singleAuroraNfts
+        return !singleAlgoNftsArr && !singlePolygonNfts && !singleCeloNfts && !singleAuroraNfts
           ? null
           : [
               ...(singleAlgoNftsArr || []),
               ...(singlePolygonNfts || []),
-              ...(celoCollection || []),
+              ...(singleCeloNfts || []),
               ...(singleAuroraNfts || []),
             ];
       case "algorand":
@@ -52,7 +52,7 @@ const SingleNftCollection = () => {
       case "polygon":
         return singlePolygonNfts;
       case "celo":
-        return celoCollection;
+        return singleCeloNfts;
       case "aurora":
         return singleAuroraNfts;
       default:
@@ -117,9 +117,17 @@ const SingleNftCollection = () => {
       // } else if (filterProp === "txVolume") {
       //   sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
     } else if (filterProp === "newest") {
-      sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+      if (chainId === 4160) {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+      } else {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+      }
     } else if (filterProp === "oldest") {
-      sorted = filteredCollection.sort((a, b) => b?.createdAt["seconds"] - a?.createdAt["seconds"]);
+      if (chainId === 4160) {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+      } else {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+      }
     } else if (filterProp === "descAlphabet") {
       sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
     } else if (filterProp === "ascAlphabet") {

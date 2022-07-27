@@ -85,21 +85,24 @@
 }
 
 .nftId {
-  font-size: 1.5rem;
-  font-weight: bold;
+  font-size: 1.3rem;
+  font-weight: 550;
 }
 
 .btns {
   padding-left: 1rem;
+  border-radius: 1rem;
 }
 
 .buy,
 .bid {
+  width: 18rem;
+  height: 7.8rem;
   flex-direction: row;
   margin: 1rem 0.5rem 1rem 0;
   color: white;
   padding: 0.3rem 1rem;
-  border-radius: 5px;
+  border-radius: 1rem;
   font-weight: bold;
 }
 
@@ -107,15 +110,27 @@
   background-color: var(--main-color);
 }
 
+.btnText {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+.btnSpan {
+  color: white;
+  font-size: 0.8rem;
+}
+
+
 .bid {
   border: 1px solid var(--main-color);
-  color: var(--main-color);
+  color: white;
 }
 
 .buy img,
 .bid img {
-  width: 14px;
-  margin-right: 3px;
+  width: 28px;
+  margin-right: 10px;
 }
 
 .buy:hover,
@@ -184,12 +199,24 @@
   }
 }
 
+.amount {
+  color: var(--main-color);
+  font-weight: 550;
+}
+
 .chain {
   display: flex;
+  flex-direction: row;
+  margin-bottom: 1.5em;
+  align-items: center;
 }
 .row {
-  border-bottom: 1px solid #707a83;
   margin-bottom: 1rem;
+  color: var(--text-sub-heading);
+}
+
+.row span {
+  color: var(--text-sub-heading);
 }
 
 .row span {
@@ -202,31 +229,49 @@
 }
 
 .priceDescription {
-  margin-bottom: 1rem;
+  margin-bottom: 1.7rem;
+  color: var(--text-sub-heading);
 }
 
 .inputWrapper {
-  margin-bottom: 1.5em;
+  /* margin-bottom: 1.5em; */
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+}
+
+.listHeader h1 {
+  margin-bottom: 50px;
+  font-size: 30px;
 }
 
 .inputWrapper input,
 .inputWrapper select {
   display: block;
-  padding: 0.25em;
+  padding: 0.45em;
   resize: none;
+  margin-right: 10px;
   border: 1px solid var(--outline);
-  border-radius: 0.25em;
+  border-radius: 0.35em;
+  transition: all 300ms;
   font-size: 1rem;
 }
 
-.inputWrapper input {
+.inputWrapper > input {
   margin-left: 1rem;
   width: 100%;
+  outline: 1px solid transparent;
 }
 
-.inputWrapper input:focus,
-.inputWrapper select:focus {
+
+.inputWrapper > input:focus-within {
   outline: 1px solid gray;
+}
+
+.inputWrapper > input:focus,
+.inputWrapper select:focus {
+  outline: 1px solid var(--outline-dark);
 }
 
 .inputWrapper button {

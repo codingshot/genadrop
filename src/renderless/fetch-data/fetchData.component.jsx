@@ -10,15 +10,25 @@ import {
   setAuroraSingleNfts,
   setPolygonSingleNfts,
   setNotification,
+  setCeloCollections,
+  setCeloSingleNft,
 } from "../../gen-state/gen.actions";
-import { getAuroraCollections, getNftCollections, getSingleNfts, getSingleGraphNfts } from "../../utils";
 import {
-  GET_ALL_AURORA_COLLECTIONS,
+  getGraphCollections,
+  getNftCollections,
+  getSingleNfts,
+  getSingleGraphNfts,
+  getCeloGraphCollections,
+} from "../../utils";
+import {
+  GET_GRAPH_COLLECTIONS,
   GET_ALL_POLYGON_COLLECTIONS,
   GET_AURORA_SINGLE_NFTS,
   GET_POLYGON_SINGLE_NFTS,
+  GET_CELO_SINGLE_NFT,
+  GET_CELO_GRAPH_COLLECITONS,
 } from "../../graphql/querries/getCollections";
-import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
+import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 
 const FetchData = () => {
@@ -51,7 +61,7 @@ const FetchData = () => {
     (async function getDataFromEndpointA() {
       const { data, error } = await graphQLClient
         .query(
-          GET_ALL_AURORA_COLLECTIONS,
+          GET_GRAPH_COLLECTIONS,
           {},
           {
             clientName: "aurora",
@@ -66,7 +76,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
+      const result = await getGraphCollections(data?.collections);
       if (result?.length) {
         dispatch(setAuroraCollections(result));
       } else {
@@ -122,7 +132,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
+      const result = await getGraphCollections(data?.collections);
 
       if (result?.length) {
         dispatch(setPolygonCollections(result));
@@ -156,6 +166,46 @@ const FetchData = () => {
         dispatch(setPolygonSingleNfts(result));
       } else {
         dispatch(setPolygonSingleNfts(null));
+      }
+      return null;
+    })();
+
+    // Get Celo Single NFTs
+    (async function getCeloSingleNft() {
+      const { data, error } = await celoClient.query(GET_CELO_SINGLE_NFT).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
+      if (result?.length) {
+        dispatch(setCeloSingleNft(result));
+      } else {
+        dispatch(setCeloSingleNft(null));
+      }
+      return null;
+    })();
+
+    (async function getCeloCollections() {
+      const { data, error } = await celoClient.query(GET_CELO_GRAPH_COLLECITONS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getGraphCollections(data?.collections);
+      const res = result.filter((data) => data.Id !== "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178");
+      if (res?.length) {
+        dispatch(setCeloCollections(res));
+      } else {
+        dispatch(setCeloCollections(null));
       }
       return null;
     })();

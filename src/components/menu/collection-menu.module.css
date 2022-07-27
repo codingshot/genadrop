@@ -56,12 +56,10 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  text-align: center;
   gap: 1em;
   cursor: var(--cursor-pointer);
   border: 1px solid var(--outline);
   background: var(--outline-light);
-  padding: 0 1em;
 }
 
 .uploadBtn {

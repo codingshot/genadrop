@@ -20,23 +20,31 @@ const NFT = (data) => {
           <span className={classes.itemName}>{nft.name}</span>
           <div className={classes.pricing}>
             <img src={nft?.chain ? supportedChains[nft?.chain].icon : algoIcon} alt="" />
-            <div className={classes.itemPrice}>
-              <div className={classes.section}>
-                <div className={classes.heading}>LIST PRICE</div>
-                <div className={classes.price}>
-                  {nft.price} <span>{chainName}</span>
-                </div>
-              </div>
-              {nft.sold ? (
+            {nft.price === 0 ? (
+              <div className={classes.itemPrice}>
                 <button type="button" className={classes.sold}>
-                  Sold
+                  Not Listed!
                 </button>
-              ) : (
-                <button type="button" className={classes.buy}>
-                  Buy
-                </button>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div className={classes.itemPrice}>
+                <div className={classes.section}>
+                  <div className={classes.heading}>LIST PRICE</div>
+                  <div className={classes.price}>
+                    {nft.price} <span>{chainName}</span>
+                  </div>
+                </div>
+                {nft.sold ? (
+                  <button type="button" className={classes.sold}>
+                    Sold
+                  </button>
+                ) : (
+                  <button type="button" className={classes.buy}>
+                    Buy
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </Link>
