@@ -10,7 +10,7 @@ import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarou
 import DateFilter from "../Date-Filter/DateFilter";
 
 const SingleNft = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts } = useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const { url } = useRouteMatch();
@@ -30,7 +30,7 @@ const SingleNft = () => {
           view all
         </button>
       </div>
-      {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length ? (
+      {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length || singleCeloNfts?.length ? (
         <GenadropCarouselScreen cardWidth={20 * 16} gap={16}>
           {[
             ...(singleAlgoNftsArr || [])
@@ -42,9 +42,12 @@ const SingleNft = () => {
             ...(singlePolygonNfts || [])
               ?.filter((_, idx) => idx < 3)
               .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} listed />),
+            ...(singleCeloNfts || [])
+              ?.filter((_, idx) => idx < 3)
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} listed />),
           ]}
         </GenadropCarouselScreen>
-      ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts ? (
+      ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts && !singleCeloNfts ? (
         <NotFound />
       ) : (
         <div className={classes.wrapper}>

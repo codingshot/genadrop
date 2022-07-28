@@ -246,6 +246,10 @@
   overflow: scroll;
 }
 
+.code * {
+  color: var(--text-placehoder);
+}
+
 .tableContainer {
   max-height: 20em;
   overflow: scroll;

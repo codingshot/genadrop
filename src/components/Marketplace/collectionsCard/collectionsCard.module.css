@@ -79,6 +79,25 @@
   justify-content: space-between;
 }
 
+.notListedWrap {
+  display: flex;
+  flex-direction: row;
+  margin-top: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.notListed {
+  margin-left: 10px;
+  background-color: var(--outline);
+  padding: 5px 15px;
+  border-radius: 16px;
+}
+.notListed  span {
+  font-size: 14px;
+  color: black;
+}
+
 .floor {
   font-size: 0.65em;
   font-weight: bold;
