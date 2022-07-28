@@ -81,6 +81,9 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
     collections {
       description
       id
+      creator {
+        id
+      }
       name
       nfts {
         chain
@@ -88,6 +91,8 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
         createdAtTimestamp
         id
         isSold
+        isListed
+        marketId
         price
         collection {
           name
@@ -105,6 +110,9 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
           txId
           type
           price
+          to {
+            id
+          }
         }
       }
     }

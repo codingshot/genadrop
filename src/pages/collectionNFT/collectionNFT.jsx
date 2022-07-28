@@ -130,16 +130,11 @@ const CollectionNFT = () => {
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
         if (filteredId) {
-          let result = [];
-          if (chainId === 44787 || chainId === 42220) {
-            result = await getCeloGraphNft(filteredId[0], collectionName);
-          } else {
-            result = await getGraphNft(filteredId[0], collectionName);
-          }
+          const result = await getCeloGraphNft(filteredId[0], collectionName);
+
           const trHistory = await getTransactions(filteredId[0]?.transactions);
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
 
-          console.log("filtered collection", result[0]);
           trHistory.find((t) => {
             if (t.type === "Minting") t.price = result[0].price * 0.000000000000000001;
           });
@@ -300,7 +295,7 @@ const CollectionNFT = () => {
                 </svg>
               </div>
             </div>
-            {nftDetails.price === "0" || nftDetails.price === null ? (
+            {nftDetails.price == 0 || nftDetails.price === null ? (
               <div></div>
             ) : (
               <div className={classes.priceSection}>
@@ -326,7 +321,7 @@ const CollectionNFT = () => {
               </div>
             )}
 
-            {nftDetails.price === "0" || nftDetails.price === null ? (
+            {nftDetails.price === 0 || nftDetails.price === null ? (
               nftDetails.owner === account ? (
                 <div className={classes.btns}>
                   <button
