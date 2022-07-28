@@ -43,7 +43,7 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
 
   const getVideo = () => {
     navigator.mediaDevices
-      .getUserMedia({ video: true })
+      .getUserMedia({ video: true, audio: false })
       .then((stream) => {
         const video = videoRef.current;
         video.srcObject = stream;
@@ -149,7 +149,7 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} className={img && classes.none}>
         <div className={classes.videoWrapper}>
-          <video className={img && classes.inActive} ref={videoRef} autoPlay muted playsinline />
+          <video className={img && classes.inActive} ref={videoRef} autoPlay playsinline />
           {/* <div className={classes.testrecod} onClick={() => videoRef.current?.play()}>
             Click ME to record
           </div> */}
