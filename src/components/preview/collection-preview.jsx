@@ -5,7 +5,7 @@ import { getImageSize } from "../../utils";
 import ButtonClickEffect from "../button-effect/button-effect";
 import { setPreview } from "../../gen-state/gen.actions";
 import { handleImage } from "./collection-preview-script";
-import assetPlaceholder from "../../assets/asset-placeholder.png";
+import { ReactComponent as AssetPlaceholder } from "../../assets/asset-placeholder.svg";
 
 const CollectionPreview = () => {
   const { dispatch, layers, preview, imageQuality } = useContext(GenContext);
@@ -53,7 +53,7 @@ const CollectionPreview = () => {
         </button>
       ) : (
         <div className={classes.placeholder}>
-          <img src={assetPlaceholder} alt="" />
+          <AssetPlaceholder alt="" />
         </div>
       )}
     </div>

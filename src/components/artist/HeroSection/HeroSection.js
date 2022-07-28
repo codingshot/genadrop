@@ -1,12 +1,12 @@
 import React from "react";
-import heroImg from "../../../assets/artistHero.png";
+import { ReactComponent as HeroImg } from "../../../assets/artistHero.svg";
 import classes from "./HeroSection.module.css";
 
 const HeroSection = () => {
   return (
     <div className={classes.container}>
       <div className={classes.imgContainer}>
-        <img src={heroImg} alt="artist" />
+        <HeroImg alt="artist" />
       </div>
       <div className={classes.content}>
         <div>

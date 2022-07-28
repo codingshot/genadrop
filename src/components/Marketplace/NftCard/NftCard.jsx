@@ -5,7 +5,7 @@ import classes from "./NftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import Copy from "../../copy/copy";
 import { GenContext } from "../../../gen-state/gen.context";
-import avatar from "../../../assets/avatar.png";
+import { ReactComponent as Avatar } from "../../../assets/avatar.svg";
 
 const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
@@ -59,7 +59,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           <div className={classes.name}>{name}</div>
           <div className={classes.chainLogo} />
           <div className={classes.creator}>
-            <img src={avatar} alt="" />
+            <Avatar alt="" />
             {!fromDashboard ? (
               <div className={classes.creatorAddress}>
                 <div className={classes.createdBy}>Owned By</div>

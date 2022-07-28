@@ -7,7 +7,7 @@ import { ReactComponent as InstagramIcon } from "../../assets/icon-instagram.svg
 import { ReactComponent as DiscordIcon } from "../../assets/icon-discord-accent.svg";
 import { readUserProfile } from "../../utils/firebase";
 import { handleCancel, handleInputChange, handleSave } from "./profile-script";
-import avatar from "../../assets/avatar.png";
+import  { ReactComponent as Avatar } from "../../assets/avatar.svg";
 import bg from "../../assets/bg.png";
 import { ReactComponent as CopyIcon }  from "../../assets/icon-copy.svg";
 import { getConnectedChain } from "../../components/wallet/wallet-script";
@@ -77,7 +77,7 @@ const Profile = () => {
         </label> */}
           </div>
           <div className={classes.profile}>
-            <img src={avatar} alt="" />
+            <Avatar alt="" />
           </div>
           <div className={classes.banner}>
             <img src={bg} alt="" />
