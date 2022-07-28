@@ -4,7 +4,7 @@ import axios from "axios";
 // import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
 // import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
-import { getAlgoData, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
+import { getAlgoData, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
@@ -95,7 +95,50 @@ function fetchCollection(collection, mainnet) {
   });
 }
 
-export const getAuroraCollections = async (collections) => {
+export const getGraphCollections = async (collections) => {
+  function fetchAuroraCollection(collection) {
+    const fetch = async (resolve, reject) => {
+      try {
+        const collectionObj = {};
+        const { data } = await axios.get(
+          collection?.nfts[0].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+        );
+        collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+
+        collectionObj.name = collection?.name;
+        collectionObj.owner = collection?.creator?.id;
+        collectionObj.Id = collection?.id;
+        const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
+        collectionObj.chain = chain;
+        collectionObj.price = (getPrice * 0.000000000000000001).toString();
+        collectionObj.description = collection?.description;
+        collectionObj.isListed = collection?.isListed ? collection?.isListed : false;
+        collectionObj.nfts = collection?.nfts;
+        collectionObj.createdAt = Number(collection?.nfts?.[0].createdAtTimestamp);
+        resolve(collectionObj);
+      } catch (err) {
+        console.log(err);
+        reject(err);
+      }
+    };
+    return new Promise((resolve, reject) => {
+      fetch(resolve, reject);
+    });
+  }
+  const collectionsArr = [];
+  if (collections) {
+    const responses = await Promise.allSettled(collections.map((collection) => fetchAuroraCollection(collection)));
+    responses.forEach((element) => {
+      if (element?.status === "fulfilled") {
+        collectionsArr.push(element.value);
+      }
+    });
+  }
+  return collectionsArr;
+};
+
+export const getCeloGraphCollections = async (collections) => {
   function fetchAuroraCollection(collection) {
     const fetch = async (resolve, reject) => {
       try {
@@ -110,7 +153,7 @@ export const getAuroraCollections = async (collections) => {
         const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
         collectionObj.chain = chain;
-        collectionObj.price = getPrice * 0.000000000000000001;
+        collectionObj.price = getPrice;
         collectionObj.description = collection?.description;
         collectionObj.nfts = collection?.nfts;
         resolve(collectionObj);
@@ -255,7 +298,7 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.collection_name = mainnet.name;
         nftObj.description = mainnet.description;
         nftObj.chain = collection[i].chain;
-        nftObj.owner = mainnet.id;
+        nftObj.owner = mainnet?.creator?.id;
         nftObj.Id = collection[i].id;
         const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
@@ -275,25 +318,26 @@ export const getGraphCollection = async (collection, mainnet) => {
 };
 
 export const getUserGraphNft = async (collection, address) => {
+  console.log(collection);
   const nftArr = [];
   if (collection) {
     for (let i = 0; i < collection?.length; i++) {
       const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
       try {
         const nftObj = {};
-        nftObj.collection_name = collection[i].collection.name;
+        // nftObj.collection_name = collection[i]?.owner.collections[0]?.name;
         nftObj.owner = address;
-        nftObj.chain = collection[i].chain;
-        nftObj.Id = collection[i].id;
-        nftObj.tokenID = collection[i].tokenID;
-        const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        nftObj.chain = collection[i]?.chain;
+        nftObj.Id = collection[i]?.id;
+        nftObj.tokenID = collection[i]?.tokenID;
+        const getPrice = collection.map((col) => col?.price).reduce((a, b) => (a < b ? a : b));
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
-        nftObj.price = collection[i].price * 0.000000000000000001;
-        nftObj.sold = collection[i].isSold;
+        nftObj.price = collection[i]?.price * 0.000000000000000001;
+        nftObj.sold = collection[i]?.isSold;
         nftObj.ipfs_data = data;
-        nftObj.contractAddress = collection[i].collection.id;
-        nftObj.name = data.name;
-        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftObj.contractAddress = collection[i]?.id?.split(collection[i]?.tokenID)[0];
+        nftObj.name = data?.name;
+        nftObj.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);
       } catch (error) {
         console.log(error);
@@ -305,12 +349,12 @@ export const getUserGraphNft = async (collection, address) => {
 
 export const getTransactions = async (transactions) => {
   const trnArr = [];
-
+  console.log(transactions);
   for (let i = 0; i < transactions.length; i++) {
     try {
       const trnObj = {};
-      (trnObj.buyer = transactions[i]?.buyer?.id),
-        (trnObj.price = transactions[i]?.price),
+      (trnObj.buyer = transactions[i]?.to?.id),
+        (trnObj.price = Number(transactions[i]?.price) * 0.000000000000000001),
         (trnObj.seller = transactions[i].id),
         (trnObj.txDate = transactions[i]?.txDate),
         (trnObj.txId = transactions[i]?.txId),
@@ -321,7 +365,39 @@ export const getTransactions = async (transactions) => {
   }
 };
 
+export const getCeloGraphNft = async (collection) => {
+  const { data } = await axios.get(
+    collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+  );
+  const nftObj = [];
+  try {
+    const nftArr = {};
+    nftArr.collection_name = collection?.collection?.name;
+    nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
+    nftArr.name = data?.name;
+    nftArr.chain = collection?.chain;
+    nftArr.owner = collection?.owner?.id;
+    nftArr.price = collection?.price;
+    nftArr.isListed = collection?.isListed;
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+    nftArr.ipfs_data = data;
+    nftArr.sold = collection?.isSold;
+    nftArr.description = data?.description;
+    nftObj.contractAddress = collection?.id?.split(collection?.tokenID)[0];
+    nftArr.Id = collection?.id;
+    nftArr.tokenID = collection?.tokenID;
+    nftArr.marketId = collection?.marketId;
+    nftArr.properties = data?.properties;
+    nftObj.push(nftArr);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return nftObj;
+};
+
 export const getGraphNft = async (collection, mainnet) => {
+  console.log(collection);
   const { data } = await axios.get(
     collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
   );
@@ -339,7 +415,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftArr.Id = collection?.tokenID;
-    nftArr.marketId = collection?.id;
+    nftArr.marketId = collection?.marketId;
     nftArr.properties = data?.properties;
     nftObj.push(nftArr);
   } catch (error) {
@@ -372,7 +448,7 @@ export const getSingleGraphNfts = async (nfts) => {
             NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
           );
           nftObj.Id = NFT?.id;
-          nftObj.price = (NFT ? NFT.price : 0) * 0.000000000000000001;
+          nftObj.price = NFT?.price * 0.000000000000000001;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
@@ -446,29 +522,53 @@ export const buyGraphNft = async (buyProps) => {
       })
     );
   }
-  dispatch(setOverlay(true));
-  const res = await purchasePolygonNfts(buyProps);
-
-  if (res) {
-    dispatch(setOverlay(false));
-    dispatch(
-      setNotification({
-        message: "transaction successful",
-        type: "success",
-      })
-    );
-    setTimeout(() => {
-      history.push(`/me/${account}`);
-      // history.push(`/marketplace`);
-    }, 3000);
+  if (chainId === 44787 || chainId === 42220) {
+    dispatch(setOverlay(true));
+    const res = await purchaseCeloNfts(buyProps);
+    if (res) {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/me/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
   } else {
-    dispatch(setOverlay(false));
-    dispatch(
-      setNotification({
-        message: "transaction failed",
-        type: "error",
-      })
-    );
+    const res = await purchasePolygonNfts(buyProps);
+    if (res) {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/me/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
   }
 };
 
