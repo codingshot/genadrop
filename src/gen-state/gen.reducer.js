@@ -44,7 +44,7 @@ export const INITIAL_STATE = {
   activeCollection: [],
   notification: {
     message: "",
-    type: "", // warning, error, success, default
+    type: "", // warning|error|success|default
   },
   switchWalletNotification: false,
   clipboardMessage: "",
@@ -57,7 +57,7 @@ export const INITIAL_STATE = {
   promptLayer: null,
   promptRules: null,
   toggleWalletPopup: false,
-  imageQuality: 0.5, // high:1, medium:0.5, low:0.2,
+  imageQuality: 0.5, // high:1|medium:0.5|low:0.2,
   zip: {},
   connectFromMint: {
     isComingSoon: null,
@@ -65,18 +65,19 @@ export const INITIAL_STATE = {
   },
   currentUser: null,
   imageAction: {
-    type: "", // upload, rename, delete, deleteAll
+    type: "", // upload|rename|delete|deleteAll
     value: {},
   },
   layerAction: {
-    type: "", // add, delete, order, rename,
+    type: "", // add| delete|order|rename,
   },
   sessionId: "",
   sessions: [],
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
-  isUser: "", // true false null,
-  currentPlan: "free",
+  isUser: "", // true|false|null,
+  currentPlan: "free", // free|noobs|geeks|ogs
+  upgradePlan: false,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -412,6 +413,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentPlan: action.payload,
+      };
+    case genActionTypes.SET_UPGRADE_PLAN:
+      return {
+        ...state,
+        upgradePlan: action.payload,
       };
     default:
       return state;

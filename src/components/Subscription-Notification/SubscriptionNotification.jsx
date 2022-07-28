@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useContext } from "react";
 import { useHistory } from "react-router-dom";
+import { setUpgradePlan } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./SubscriptionNotification.module.css";
 
 const SubscriptionNotification = () => {
   const history = useHistory();
   const [toggle, setToggle] = useState(false);
-  const { currentUser, currentPlan, collectionName } = useContext(GenContext);
+  const { dispatch, currentUser, currentPlan, collectionName } = useContext(GenContext);
 
   const counter = () => {
     if (currentPlan !== "free") return;
@@ -18,6 +19,7 @@ const SubscriptionNotification = () => {
   };
 
   const handleUpgrade = () => {
+    dispatch(setUpgradePlan(true));
     history.push("/create/pricing");
     handleClose();
   };
@@ -31,7 +33,7 @@ const SubscriptionNotification = () => {
     if (currentUser && collectionName) {
       counter();
     }
-  }, [currentUser]);
+  }, [currentUser, collectionName]);
 
   return (
     <div className={`${classes.container} ${toggle && classes.active}`}>

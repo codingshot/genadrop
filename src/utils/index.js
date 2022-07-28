@@ -3,7 +3,7 @@
 import axios from "axios";
 // import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
-import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
+// import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { getAlgoData, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
@@ -15,6 +15,10 @@ import {
   setAlgoSingleNfts,
   setOverlay,
   setNotification,
+  setCollectionName,
+  clearRule,
+  clearPreview,
+  setCurrentSession,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
 import { v4 as uuid } from "uuid";
@@ -645,4 +649,12 @@ export const handleAddSampleLayers = ({ dispatch }) => {
       })
     );
   });
+};
+
+export const handleResetCreate = ({ dispatch }) => {
+  dispatch(setCollectionName(""));
+  dispatch(clearLayers());
+  dispatch(clearPreview());
+  dispatch(clearRule());
+  dispatch(setCurrentSession(null));
 };

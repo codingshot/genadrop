@@ -91,7 +91,7 @@ const Preview = () => {
     } else {
       dispatch(setLoader("generating..."));
       dispatch(setMintInfo(""));
-      const newLayer = await createUniqueLayer({
+      const uniqueLayer = await createUniqueLayer({
         dispatch,
         setLoader,
         collectionName,
@@ -107,14 +107,19 @@ const Preview = () => {
       const art = await generateArt({
         dispatch,
         setLoader,
-        layer: newLayer,
+        layer: uniqueLayer,
         canvas,
         image: layers[0].traits[0].image,
         imageQuality,
       });
-      const newLayers = nftLayers.map((asset) =>
-        asset.id === newLayer.id ? { ...newLayer, image: art.imageUrl } : asset
-      );
+      const newLayers = nftLayers.map((asset) => {
+        if (asset.id === uniqueLayer.id) {
+          let attributes = uniqueLayer.attributes;
+          attributes = attributes.map(({ image, ...otherAttrProps }) => ({ ...otherAttrProps }));
+          return { ...uniqueLayer, attributes, image: art.imageUrl };
+        }
+        return asset;
+      });
       dispatch(setLoader(""));
       dispatch(setNftLayers(newLayers));
     }
@@ -141,15 +146,6 @@ const Preview = () => {
     dispatch(addDescription({ id: input.id, description: input.value }));
   };
 
-  // const getCollectionsNames = async () => {
-  //   const collections = await fetchAlgoCollections();
-  //   const names = [];
-  //   collections.forEach((col) => {
-  //     names.push(col.name);
-  //   });
-  //   return names;
-  // };
-
   const handleCollectionName = async (value) => {
     dispatch(setCollectionName(value));
     const newLayers = nftLayers.map((asset, idx) => ({
@@ -157,37 +153,6 @@ const Preview = () => {
       name: `${value} ${getDefaultName(idx + 1)}`.trim(),
     }));
     dispatch(setNftLayers(newLayers));
-
-    // The code below needs cross-examination
-
-    // try {
-    //   dispatch(setLoader("saving..."));
-    //   const names = await getCollectionsNames();
-    //   const isUnique = names.find((name) => name.toLowerCase() === value.toLowerCase());
-    //   if (isUnique) {
-    //     dispatch(
-    //       setNotification({
-    //         message: `${value} already exist. try choose another name`,
-    //         type: "warning",
-    //       })
-    //     );
-    //   } else {
-    //     dispatch(setCollectionName(value));
-    //     const newLayers = nftLayers.map((asset, idx) => ({
-    //       ...asset,
-    //       name: `${value} ${getDefaultName(idx + 1)}`.trim(),
-    //     }));
-    //     dispatch(setNftLayers(newLayers));
-    //   }
-    // } catch (error) {
-    //   dispatch(
-    //     setNotification({
-    //       message: "could not save your collection name, please try again.",
-    //       type: "error",
-    //     })
-    //   );
-    // }
-    // dispatch(setLoader(""));
   };
 
   const handleCollectionDescription = (event) => {

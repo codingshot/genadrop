@@ -1,18 +1,17 @@
 import classes from "./PricingModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import stripeIcon from "../../../assets/icon-stripe.svg";
+import paypalIcon from "../../../assets/icon-paypal.svg";
 import { useState } from "react";
 import { v4 as uuid } from "uuid";
-import { saveSession } from "../../../renderless/store-data/StoreData.script";
-import { setCollectionName, setCurrentSession, setToggleCollectionNameModal } from "../../../gen-state/gen.actions";
+import { setCurrentSession } from "../../../gen-state/gen.actions";
 import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalButton from "./PaypalButton";
-import { useEffect } from "react";
+import { handleResetCreate } from "../../../utils";
 
 let stripePromise;
 
@@ -28,7 +27,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
   const history = useHistory();
   const [activeMode, setActive] = useState("paypal");
   const [loading, setLoading] = useState(false);
-  const { currentUser, dispatch } = useContext(GenContext);
+  const { dispatch, upgradePlan, currentPlan, sessionId } = useContext(GenContext);
 
   /**
    * Before payment, create a paymentID which will also be a sessionID
@@ -104,22 +103,18 @@ const PricingModal = ({ modal, price, closeModal }) => {
 
   if (stripeError) alert(stripeError);
 
-  const handleClick = async () => {
+  const handleClick = () => {
     let ID = uuid();
-    try {
-      // process payment using this ID
-      // If payment was successful, create a session for the user using the same ID
-      const sessionId = await saveSession({ currentUser, sessionId: ID });
-      if (!sessionId) return; // showNotification
-      console.log({ sessionId });
-      dispatch(setCurrentSession(sessionId));
-      dispatch(setCollectionName(""));
-      dispatch(setToggleCollectionNameModal(true));
-      history.push("/create");
-      handleClose();
-    } catch (error) {
-      console.log(error);
+    // process payment using this ID
+    // If payment was successful, create a session for the user using the same ID
+    if (!upgradePlan) {
+      handleResetCreate({ dispatch });
+      dispatch(setCurrentSession(ID));
+    } else if (!sessionId) {
+      dispatch(setCurrentSession(ID));
     }
+    history.push("/create");
+    handleClose();
   };
 
   const handleClose = () => {
@@ -133,12 +128,19 @@ const PricingModal = ({ modal, price, closeModal }) => {
         <div className={classes.content}>
           <h1>Choose a payment method</h1>
           <div className={classes.methodContainer}>
-            <PayPalScriptProvider options={initialOptionsPaypal}>
+            {/* <PayPalScriptProvider options={initialOptionsPaypal}>
               <PaypalButton createOrder={createOrderHandler} onApprove={onApproveHandler} />
-            </PayPalScriptProvider>
-
+            </PayPalScriptProvider> */}
             <div
-              onClick={redirectToCheckout}
+              onClick={() => setActive("paypal")}
+              className={`${activeMode === "paypal" && classes.active} ${classes.paymentMethod}`}
+            >
+              <img src={paypalIcon} alt="" />
+              <div>paypal</div>
+            </div>
+            <div
+              // onClick={redirectToCheckout}
+              onClick={() => setActive("stripe")}
               className={`${activeMode === "stripe" && classes.active} ${classes.paymentMethod}`}
             >
               <img src={stripeIcon} alt="" />

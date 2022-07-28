@@ -325,3 +325,8 @@ export const setCurrentPlan = (plan) => ({
   type: genActionTypes.SET_CURRENT_PLAN,
   payload: plan,
 });
+
+export const setUpgradePlan = (state) => ({
+  type: genActionTypes.SET_UPGRADE_PLAN,
+  payload: state,
+});

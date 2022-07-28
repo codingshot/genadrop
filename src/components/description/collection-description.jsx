@@ -46,28 +46,6 @@ const CollectionDescription = () => {
   };
 
   const handleGenerateClick = () => {
-    if (!combinations)
-      return dispatch(
-        setNotification({
-          type: "warning",
-          message: "Upload assets and try again.",
-        })
-      );
-    if (amountInputValue <= "0")
-      return dispatch(
-        setNotification({
-          message: "Add valid amount to generate input",
-          type: "error",
-        })
-      );
-    if (amountInputValue > combinations)
-      return dispatch(
-        setNotification({
-          message: "Number of arts cannot be greater than the possible combinations",
-          type: "error",
-        })
-      );
-    dispatch(setNftLayers([]));
     dispatch(setMintAmount(parseInt(amountInputValue)));
     handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
   };

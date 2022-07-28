@@ -129,20 +129,20 @@ export const generateArt = async (props) => {
 
 export const parseLayers = (props) => {
   const { uniqueLayers, arts } = props;
-  return uniqueLayers.map((layer) => {
+  return uniqueLayers.map(({ attributes, id, ...otherLayerProps }) => {
+    const newAttributes = attributes.map(({ image, ...otherAttrProps }) => ({ ...otherAttrProps }));
     for (const art of arts) {
-      if (art.id === layer.id) {
-        return { ...layer, image: art.imageUrl };
+      if (art.id === id) {
+        return { ...otherLayerProps, id, attributes: newAttributes, image: art.imageUrl };
       }
     }
-    return layer;
+    return { attributes: newAttributes, id, ...otherLayerProps };
   });
 };
 
 export const handleGenerate = async (generateProps) => {
   const { isRule, mintAmount, combinations, layers, collectionName, dispatch, rule, canvasRef, imageQuality } =
     generateProps;
-  console.log({ mintAmount });
   const getFirstLayerWithTrait = (layers) => {
     return layers.find((layer) => layer.traits.length);
   };
@@ -155,7 +155,7 @@ export const handleGenerate = async (generateProps) => {
       })
     );
   }
-  if (!mintAmount) {
+  if (mintAmount <= 0 || !mintAmount) {
     return dispatch(
       setNotification({
         message: "Set the number to generate",

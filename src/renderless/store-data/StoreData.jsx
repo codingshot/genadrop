@@ -6,11 +6,12 @@ import {
   renameTrait,
   saveCollectionName,
   saveLayers,
+  saveNftLayers,
   saveTraits,
 } from "./StoreData.script";
 
 const StoreData = () => {
-  const { layers, rule, collectionName, sessionId, currentUser, imageAction, layerAction, dispatch } =
+  const { layers, nftLayers, rule, collectionName, sessionId, currentUser, imageAction, layerAction, dispatch } =
     useContext(GenContext);
 
   useEffect(() => {
@@ -32,6 +33,15 @@ const StoreData = () => {
       // saveLayers({ currentUser, sessionId, layers: newLayers });
     }
   }, [layerAction, layers, currentUser, sessionId]);
+
+  useEffect(() => {
+    const nftTraits = [];
+    const newNftLayers = nftLayers.map(({ image, id, attributes, ...otherLayerProps }) => {
+      nftTraits.push({ image, id });
+      return { image: "", id, attributes, ...otherLayerProps };
+    });
+    saveNftLayers({ currentUser, sessionId, nftLayers: newNftLayers, nftTraits });
+  }, [nftLayers, currentUser, sessionId]);
 
   useEffect(() => {
     const { type, value } = imageAction;

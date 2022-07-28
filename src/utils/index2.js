@@ -22,11 +22,7 @@ ${i + 1} of ${nftLayers.length}`
           name: nftLayers[i].name,
           image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
-            trait_type,
-            value,
-            rarity,
-          })),
+          attributes: nftLayers[i].attributes,
           symbol: "",
           seller_fee_basis_points: "",
           external_url: "",
@@ -71,11 +67,7 @@ ${i + 1} of ${nftLayers.length}`
           name: nftLayers[i].name,
           image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
-            trait_type,
-            value,
-            rarity,
-          })),
+          attributes: nftLayers[i].attributes,
         });
         resolve();
       }, 0);

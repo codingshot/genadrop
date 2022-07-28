@@ -1,5 +1,6 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
-import { setCurrentUser, setIsUser, setNotification } from "../../gen-state/gen.actions";
+import { setCurrentSession, setCurrentUser, setIsUser, setNotification } from "../../gen-state/gen.actions";
+import { handleResetCreate } from "../../utils";
 
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
@@ -37,6 +38,8 @@ export const logOut = ({ history, dispatch }) => {
   signOut(auth)
     .then(() => {
       dispatch(setCurrentUser(null));
+      handleResetCreate({ dispatch });
+      // dispatch(setIsUser(null));
       history.push("/");
     })
     .catch((error) => {

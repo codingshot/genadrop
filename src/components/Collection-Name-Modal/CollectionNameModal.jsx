@@ -1,5 +1,4 @@
 import classes from "./CollectionNameModal.module.css";
-import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
@@ -9,7 +8,8 @@ const CollectionNameModal = () => {
   const [inputValue, setInputValue] = useState("");
   const [error, setError] = useState(false);
 
-  const { dispatch, toggleCollectionNameModal } = useContext(GenContext);
+  const { dispatch, collectionName, toggleCollectionNameModal, currentUser, toggleSessionModal, isLoading } =
+    useContext(GenContext);
 
   const handleChange = (e) => {
     setError(false);
@@ -20,8 +20,7 @@ const CollectionNameModal = () => {
     e.preventDefault();
     if (!inputValue) return setError(true);
     dispatch(setCollectionName(inputValue));
-    setInputValue("");
-    dispatch(setToggleCollectionNameModal(false));
+    handleClose();
   };
 
   const handleClose = () => {
@@ -30,18 +29,18 @@ const CollectionNameModal = () => {
   };
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!window.localStorage.storedCollectionName) {
-        dispatch(setToggleCollectionNameModal(true));
-        window.sessionStorage.isCreateModal = true;
-      }
-    }, 0);
-  }, []);
+    if (toggleSessionModal || isLoading || !currentUser) {
+      dispatch(setToggleCollectionNameModal(false));
+    } else if (!collectionName && currentUser) {
+      console.log({ collectionName });
+      dispatch(setToggleCollectionNameModal(true));
+    }
+  }, [collectionName, currentUser, toggleSessionModal, isLoading]);
 
   return (
     <div className={`${classes.container} ${toggleCollectionNameModal && classes.active}`}>
       <div className={classes.wrapper}>
-        <CloseIcon onClick={handleClose} className={classes.closeBtn} />
+        {/* <CloseIcon onClick={handleClose} className={classes.closeBtn} /> */}
         <form onSubmit={handleClick} className={classes.content}>
           <h3>Let’s get cracking!</h3>
           <h6>Every Collection is Unique</h6>

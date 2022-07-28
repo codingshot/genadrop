@@ -14,17 +14,19 @@ import {
   setSession,
   setToggleCollectionNameModal,
   setToggleSessionModal,
+  setUpgradePlan,
 } from "../../gen-state/gen.actions";
 import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
-import { fetchSession } from "../../renderless/store-data/StoreData.script";
+import { fetchSession, saveSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
 import { handleAddSampleLayers } from "../../utils";
+import CreateGuide from "../../components/create-guide/create-guide";
 
 const Create = () => {
   const history = useHistory();
   const [sessionDropdown, toggleSessionDropdown] = useState(false);
   const [toggleGuide, setGuide] = useState(false);
-  const { isUser, dispatch, currentUser, currentPlan } = useContext(GenContext);
+  const { isUser, dispatch, currentUser, currentPlan, sessionId, collectionName } = useContext(GenContext);
 
   const handleSample = () => {
     handleAddSampleLayers({ dispatch });
@@ -34,22 +36,45 @@ const Create = () => {
     setGuide(true);
   };
 
+  const handleUpgrade = () => {
+    dispatch(setUpgradePlan(true));
+    history.push("/create/pricing");
+  };
+
   useEffect(() => {
     if (!currentUser || isUser === "true") return;
     dispatch(setOverlay(true));
     const fetch = async () => {
-      const sessions = await fetchSession({ currentUser });
-      dispatch(setOverlay(false));
-      console.log({ sessions });
-      if (sessions.length) {
-        dispatch(setSession(sessions));
-        dispatch(setToggleSessionModal(true));
-      } else {
-        dispatch(setToggleCollectionNameModal(true));
+      try {
+        const sessions = await fetchSession({ currentUser });
+        dispatch(setOverlay(false));
+        console.log({ sessions });
+        if (sessions.length) {
+          dispatch(setSession(sessions));
+          dispatch(setToggleSessionModal(true));
+        } else if (!collectionName) {
+          dispatch(setToggleCollectionNameModal(true));
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
     fetch();
   }, [currentUser]);
+
+  useEffect(() => {
+    const save = async () => {
+      console.log("called");
+      if (collectionName && sessionId && currentPlan && currentUser) {
+        console.log("saving...", { currentUser, sessionId, collectionName, currentPlan });
+        const res = await saveSession({ currentUser, sessionId, collectionName, currentPlan });
+        if (!res) return; // showNotification
+        console.log({ res });
+        dispatch(setUpgradePlan(false));
+      }
+    };
+    save();
+  }, [collectionName, sessionId, currentPlan]);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -63,7 +88,7 @@ const Create = () => {
       <CreateGuide toggleGuide={toggleGuide} setGuide={setGuide} />
       <div className={classes.details}>
         {currentPlan === "free" ? (
-          <div onClick={() => history.push("/create/pricing")} className={classes.autoSave}>
+          <div onClick={handleUpgrade} className={classes.autoSave}>
             <Diskicon />
             <div>Auto-save</div>
           </div>

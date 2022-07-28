@@ -11,17 +11,27 @@
   left: 0;
   z-index: 5000;
   overflow: hidden;
-  font-style: italic;
 }
 
 .overlay.isLoading {
-  background: rgba(75, 75, 90, 0.74);
+  background: rgba(0, 0, 0, 0.7);
   width: 100vw;
   height: 100vh;
 }
 
-.overlay img {
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1.5em 2em;
+  border-radius: 1em;
+  background: var(--default);
+}
+
+.wrapper img {
   width: 4em;
+  margin-bottom: 1em;
   animation: bounce 450ms infinite alternate;
 }
 
@@ -66,7 +76,7 @@
 
 @keyframes blink {
   from {
-    background: var(--default);
+    background: var(--main-light);
   }
   to {
     background: var(--main-color);

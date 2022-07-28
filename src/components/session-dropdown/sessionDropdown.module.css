@@ -14,6 +14,7 @@
   from {
     transform: translateY(-0.5em);
   }
+
   to {
     transform: translateY(0);
   }
@@ -46,6 +47,9 @@
 
 .session.active {
   border-bottom: 1px solid var(--outline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .session.create {

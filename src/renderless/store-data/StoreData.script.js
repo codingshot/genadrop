@@ -1,15 +1,30 @@
-import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL, getMetadata } from "firebase/storage";
-import { doc, collection, setDoc, getFirestore, getDoc, getDocs, query } from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  deleteObject,
+  listAll,
+  getDownloadURL,
+  getMetadata,
+  uploadString,
+} from "firebase/storage";
+import { doc, collection, setDoc, getFirestore, getDoc, getDocs, query, deleteDoc } from "firebase/firestore";
 
 import { app } from "../../utils/firebase";
 
 const storage = getStorage(app);
 const firestore = getFirestore();
 
-export const saveSession = async ({ currentUser, sessionId }) => {
-  if (currentUser && sessionId) {
+export const saveSession = async ({ currentUser, sessionId, collectionName, currentPlan }) => {
+  if (currentUser && sessionId && collectionName) {
     const docRef = doc(firestore, `users/${currentUser.uid}/sessions/${sessionId}`);
-    setDoc(docRef, { sessionId });
+    setDoc(docRef, {
+      session: {
+        collectionName,
+        sessionId,
+        currentPlan,
+      },
+    });
     return sessionId;
   }
 };
@@ -28,6 +43,24 @@ export const saveLayers = ({ currentUser, sessionId, layers }) => {
   }
 };
 
+export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) => {
+  if (currentUser && sessionId && nftLayers.length) {
+    console.log({ currentUser, sessionId, nftLayers, nftTraits });
+    const docRef = doc(firestore, `users/${currentUser.uid}/${sessionId}/nftLayers`);
+    setDoc(docRef, { nftLayers });
+
+    nftTraits.forEach(async ({ id, image }, idx) => {
+      const nftTraitRef = ref(storage, `${currentUser.uid}/${sessionId}/nftLayers/${id}`);
+      try {
+        await uploadString(nftTraitRef, image, "data_url");
+        console.log({ idx });
+      } catch (error) {
+        console.log(`error ${error}`);
+      }
+    });
+  }
+};
+
 export const saveTraits = async ({ currentUser, sessionId, id, traits }) => {
   if (!traits.length) return;
   if (currentUser && sessionId) {
@@ -35,6 +68,7 @@ export const saveTraits = async ({ currentUser, sessionId, id, traits }) => {
       const traitRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${traitTitle}`);
       try {
         await uploadBytes(traitRef, image);
+        console.log({ traitTitle });
       } catch (error) {
         console.log(`error ${error}`);
       }
@@ -60,6 +94,26 @@ export const renameTrait = async ({ currentUser, sessionId, id, oldName, newName
       console.log(`error ${error}`);
     }
   }
+};
+
+export const deleteAllLayers = async ({ currentUser, sessionId }) => {
+  const res = await fetchNftLayers({ currentUser, sessionId });
+  res &&
+    res.nftLayers.forEach(async (layer) => {
+      await deleteAllNftTraits({ currentUser, sessionId, id: layer.id });
+    });
+  const { layers } = await fetchLayers({ currentUser, sessionId });
+  layers.forEach(async (layer) => {
+    await deleteAllTraits({ currentUser, sessionId, id: layer.id });
+  });
+  await deleteSession({ currentUser, sessionId });
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/${sessionId}/collectionName`));
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`));
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/${sessionId}/nftLayers`));
+};
+
+export const deleteSession = async ({ currentUser, sessionId }) => {
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/sessions/${sessionId}`));
 };
 
 export const deleteTrait = async ({ currentUser, sessionId, id, traitTitle }) => {
@@ -95,13 +149,34 @@ export const deleteAllTraits = async ({ currentUser, sessionId, id }) => {
   }
 };
 
+export const deleteAllNftTraits = async ({ currentUser, sessionId, id }) => {
+  if (currentUser && sessionId) {
+    const listRef = ref(storage, `${currentUser.uid}/${sessionId}/nftLayers/${id}`);
+    const res = await listAll(listRef);
+    const folder = await Promise.all(
+      res.items.map(async (folderRef) => {
+        // All the folder under listRef.
+        return folderRef;
+      })
+    );
+
+    folder.forEach(async (ref) => {
+      try {
+        await deleteObject(ref);
+      } catch (error) {
+        console.log(`error ${error}`);
+      }
+    });
+  }
+};
+
 export const fetchSession = async ({ currentUser }) => {
   if (currentUser) {
     const q = query(collection(firestore, `users/${currentUser.uid}/sessions`));
     const querySnapshot = await getDocs(q);
     const sessions = [];
     querySnapshot.forEach((doc) => {
-      sessions.push(doc.id);
+      sessions.push(doc.data());
     });
     return sessions;
   }
@@ -122,6 +197,18 @@ export const fetchCollectionName = async ({ currentUser, sessionId }) => {
 export const fetchLayers = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
     const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`));
+    const docSnapshot = await getDoc(querySnapshot);
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      console.log("document does not exist");
+    }
+  }
+};
+
+export const fetchNftLayers = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/nftLayers`));
     const docSnapshot = await getDoc(querySnapshot);
     if (docSnapshot.exists()) {
       return docSnapshot.data();
@@ -156,6 +243,7 @@ export const fetchTraits = async ({ currentUser, sessionId }) => {
           }
         })
       );
+      console.log({ key });
       return { [key]: files };
     };
 
@@ -172,36 +260,15 @@ export const fetchTraits = async ({ currentUser, sessionId }) => {
   }
 };
 
-export const constructLayers = async ({ dispatch, storedCollectionName, storedLayers, storedTraits }) => {
-  console.log("storedCollectionName: ", storedCollectionName);
-  console.log("storedTraits: ", storedTraits);
-  console.log("storedLayers: ", storedLayers);
-  return;
-  const transformedTraits = await transfromTraits(storedTraits);
-
-  const newLayers = storedLayers.layers.map(({ traits, id, ...otherLayerProps }) => {
-    const obj = transformedTraits[id];
-    const newTraits = traits.map(({ image, traitTitle, ...otherTraitProps }) => {
-      let file = null;
-      for (let o of obj) {
-        if (o.name === traitTitle) {
-          file = o;
-          break;
-        }
-      }
-      return { image: file, traitTitle, ...otherTraitProps };
-    });
-    return { traits: newTraits, id, ...otherLayerProps };
-  });
-
-  console.log({ newLayers });
-};
-
 const getFile = async (url, name, type) => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  const file = new File([blob], name, { type });
-  return file;
+  try {
+    const response = await fetch(url);
+    const blob = await response.blob();
+    const file = new File([blob], name, { type });
+    return file;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const transfromTraits = async (value) => {
@@ -224,8 +291,7 @@ const transfromTraits = async (value) => {
   return newTraits;
 };
 
-export const fetchUserSession = async ({ dispatch, currentUser, sessionId }) => {
-  console.log("fetching starts...");
+export const fetchUserSession = async ({ currentUser, sessionId }) => {
   try {
     const result = await Promise.all([
       fetchCollectionName({ currentUser, sessionId }),
@@ -233,10 +299,31 @@ export const fetchUserSession = async ({ dispatch, currentUser, sessionId }) => 
       fetchTraits({ currentUser, sessionId }),
     ]);
     const [storedCollectionName, storedLayers, storedTraits] = result;
-    constructLayers({ dispatch, storedCollectionName, storedLayers, storedTraits });
+
+    console.log({ storedTraits, storedLayers });
+    const transformedTraits = await transfromTraits(storedTraits);
+    return null;
+    const newLayers = storedLayers.layers.map(({ traits, id, ...otherLayerProps }) => {
+      const obj = transformedTraits[id];
+      const newTraits = traits.map(({ image, traitTitle, ...otherTraitProps }) => {
+        let file = null;
+        for (let o of obj) {
+          if (o.name === traitTitle) {
+            file = o;
+            break;
+          }
+        }
+        return { image: file, traitTitle, ...otherTraitProps };
+      });
+      return { traits: newTraits, id, ...otherLayerProps };
+    });
+
+    return {
+      layers: newLayers,
+      collectionName: storedCollectionName.collectionName,
+    };
   } catch (error) {
     console.log(error);
+    return null;
   }
-
-  console.log("fetching ends...");
 };

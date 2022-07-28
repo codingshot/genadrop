@@ -7,23 +7,39 @@ import PricingModal from "./Pricing-Modal/PricingModal";
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
-import { setCurrentPlan } from "../../gen-state/gen.actions";
+import { setCollectionName, setCurrentPlan, setCurrentSession } from "../../gen-state/gen.actions";
+import { handleResetCreate } from "../../utils";
 
 const Pricing = () => {
   const history = useHistory();
   const [plan, setPlan] = useState(0);
   const [price, setPrice] = useState(1000);
-  const { dispatch, currentPlan } = useContext(GenContext);
+  const { dispatch, currentPlan, upgradePlan } = useContext(GenContext);
 
   const handlePlan = (plan, price) => {
     dispatch(setCurrentPlan(plan));
-
     if (price) {
       setPlan(plan);
       setPrice(price);
     } else {
+      handleResetCreate({ dispatch });
+      dispatch(setCollectionName(""));
+      dispatch(setCurrentSession(null));
       history.push("/create");
     }
+  };
+
+  const mapCurrentPlanToLevel = (currentPlan, level) => {
+    let levels = {
+      free: 0,
+      noobs: 1,
+      geeks: 2,
+      ogs: 3,
+    };
+
+    let currentLevel = levels[currentPlan];
+    if (currentLevel > levels[level]) return true;
+    return false;
   };
 
   const closeModal = () => {
@@ -43,8 +59,8 @@ const Pricing = () => {
       </div>
 
       <div className={classes.cardMenu}>
-        {plans.map((plan, index) => (
-          <div className={classes.wrapper}>
+        {plans.map((plan, idx) => (
+          <div key={idx} className={classes.wrapper}>
             {plan.mostPopular && <div className={classes.mark}>Most Popular</div>}
             <div className={classes.card}>
               <div className={classes.type}>{plan.type}</div>
@@ -62,13 +78,15 @@ const Pricing = () => {
                   </div>
                 ))}
               </div>
-              {currentPlan === plan.type ? (
+              {upgradePlan && currentPlan === plan.type ? (
                 <div onClick={() => history.push("/create")} className={`${classes.subscribeBtn} ${classes.disabled}`}>
                   Current Plan
                 </div>
+              ) : upgradePlan && currentPlan !== "free" && mapCurrentPlanToLevel(currentPlan, plan.type) ? (
+                <div className={`${classes.subscribeBtn} ${classes.disabled}`}>disabled</div>
               ) : (
                 <div
-                  onClick={() => handlePlan(index, Number(plan.price))}
+                  onClick={() => handlePlan(plan.type, Number(plan.price))}
                   className={`${classes.subscribeBtn} ${plan.mostPopular && classes.active}`}
                 >
                   {plan.subscription}
