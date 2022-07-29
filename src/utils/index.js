@@ -294,7 +294,7 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.collection_name = mainnet.name;
         nftObj.description = mainnet.description;
         nftObj.chain = collection[i].chain;
-        nftObj.owner = mainnet?.creator?.id;
+        nftObj.owner = collection[i]?.owner?.id;
         nftObj.Id = collection[i].id;
         const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
@@ -352,7 +352,7 @@ export const getTransactions = async (transactions) => {
       const trnObj = {};
       (trnObj.buyer = transactions[i]?.to?.id),
         (trnObj.price = Number(transactions[i]?.price) * 0.000000000000000001),
-        (trnObj.seller = transactions[i].id),
+        // (trnObj.seller = transactions[i].from?.id),
         (trnObj.txDate = transactions[i]?.txDate),
         (trnObj.txId = transactions[i]?.txId),
         (trnObj.type = transactions[i]?.type);
@@ -545,6 +545,7 @@ export const buyGraphNft = async (buyProps) => {
     }
   } else {
     console.log(buyProps);
+    dispatch(setOverlay(true));
     const res = await purchasePolygonNfts(buyProps);
     if (res) {
       dispatch(setOverlay(false));

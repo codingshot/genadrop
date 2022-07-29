@@ -1097,7 +1097,6 @@ export async function purchaseAuroragonNfts(buyProps) {
 export async function purchaseCeloNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
   const { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
-  console.log(buyProps);
   if (!connector) {
     return dispatch(
       setNotification({

@@ -302,7 +302,7 @@ const CollectionNFT = () => {
                 <span className={classes.title}>Current price</span>
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
-                  {chainId === 44787 || chainId === 42220 ? (
+                  {nftDetails?.chain !== 4160 ? (
                     <>
                       <p className={classes.tokenValue}>
                         {nftDetails.price * 0.000000000000000001} {supportedChains[nftDetails.chain].sybmol}
