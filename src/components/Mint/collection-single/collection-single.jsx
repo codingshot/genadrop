@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useParams, useHistory, useRouteMatch, Link } from "react-router-dom";
 import classes from "./collection-single.module.css";
+import { ReactComponent as CameraIcon } from "../../../assets/icon-camera.svg";
 import collectionIcon from "../../../assets/icon-collection-light.svg";
 import _1of1Icon from "../../../assets/icon-1of1-light.svg";
 import leftArrow from "../../../assets/icon-arrow-left.svg";
 // import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
+import Capture from "../../mint-webcam/Capture/Capture";
 import line from "../../../assets/icon-line.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 
@@ -21,6 +23,7 @@ const CollectionToSingleMinter = () => {
   const { zip: zipObg } = useContext(GenContext);
   const [state, setState] = useState({
     mintSwitch: "",
+    cameraSwitch: false,
     loading1: false,
     loading2: false,
     acceptedFileType: "",
@@ -30,7 +33,7 @@ const CollectionToSingleMinter = () => {
     zip: null,
   });
 
-  const { mintSwitch, loading1, loading2, acceptedFileType, file, fileName, metadata, zip } = state;
+  const { mintSwitch, loading1, loading2, acceptedFileType, file, fileName, metadata, zip, cameraSwitch } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -125,6 +128,8 @@ const CollectionToSingleMinter = () => {
             })
           }
         />
+      ) : cameraSwitch ? (
+        <Capture handleSetState={handleSetState} />
       ) : (
         <>
           <Link to="/mint" className={classes.goBack}>
@@ -185,10 +190,16 @@ const CollectionToSingleMinter = () => {
               <p className={classes.supportedFiles}>
                 We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
               </p>
-              <div>or</div>
               <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
                 Browse files
               </button>
+              <div>or</div>
+              <div className={classes.takePic}>
+                <div>
+                  <CameraIcon />
+                </div>
+                <p onClick={() => handleSetState({ cameraSwitch: true })}>Take Photo</p>
+              </div>
             </div>
           ) : (
             <div className={classes.cardPlaceholder} />

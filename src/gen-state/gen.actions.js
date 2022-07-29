@@ -182,6 +182,16 @@ export const setAuroraCollections = (collections) => ({
   payload: collections,
 });
 
+export const setCeloCollections = (collections) => ({
+  type: genActionTypes.SET_CELO_COLLECTIONS,
+  payload: collections,
+});
+
+export const setCeloSingleNft = (nfts) => ({
+  type: genActionTypes.SET_CELO_SINGLE_NFT,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,

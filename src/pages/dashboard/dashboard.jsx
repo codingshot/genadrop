@@ -6,13 +6,7 @@ import Copy from "../../components/copy/copy";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import {
-  getGraphCollection,
-  getGraphNft,
-  getUserGraphNft,
-  getUserNftCollections,
-  getUserSingleNfts,
-} from "../../utils";
+import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import {
   fetchUserBoughtNfts,
   fetchUserCollections,
@@ -31,9 +25,15 @@ import twitter from "../../assets/icon-twitter-green.svg";
 import discord from "../../assets/icon-discord-green.svg";
 import instagram from "../../assets/icon-instagram-green.svg";
 import youtube from "../../assets/icon-youtube-green.svg";
-import { polygonClient } from "../../utils/graphqlClient";
+import { celoClient, polygonClient } from "../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { setNotification } from "../../gen-state/gen.actions";
+import {
+  getCeloCollectedNFTs,
+  getCeloUserCollections,
+  getPolygonCollectedNFTs,
+  getPolygonUserCollections,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -61,8 +61,10 @@ const Dashboard = () => {
     mainnet,
     singleAuroraNfts,
     singlePolygonNfts,
+    singleCeloNfts,
     auroraCollections,
     polygonCollections,
+    celoCollections,
     dispatch,
     chainId,
   } = useContext(GenContext);
@@ -81,46 +83,42 @@ const Dashboard = () => {
 
     (async function getUserNFTs() {
       const singleNfts = await fetchUserCreatedNfts(account);
-      let algoNFTs = [];
-      if (singleNfts) {
-        algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
-      }
-      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
-      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
-      handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
+      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);
+      const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account);
+      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account);
+      handleSetState({
+        createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
+      });
     })();
 
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
-      if (chainId === 80001) {
-        const address = ethers.utils.hexlify(account);
-        const { data, error } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
-        if (error) {
-          return dispatch(
-            setNotification({
-              message: error.message,
-              type: "warning",
-            })
-          );
-        } else {
-          const polygonCollectedNft = await getUserGraphNft(data?.user?.nfts, address);
-          handleSetState({ collectedNfts: polygonCollectedNft });
-        }
-      } else {
-        const collectedNfts = await fetchUserBoughtNfts(account);
-        const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-        handleSetState({ collectedNfts: algoCollectedNfts });
-      }
+      const address = ethers.utils.hexlify(account);
+
+      const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
+      const celoCollectedNfts = await getCeloCollectedNFTs(address);
+      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
+      handleSetState({
+        collectedNfts: [...(algoCollectedNfts || []), ...(celoCollectedNfts || []), ...(polygonCollectedNfts || [])],
+      });
     })();
 
     // Get User created Collections
     (async function getCreatedCollections() {
+      const hexAddress = ethers.utils.hexlify(account);
       const collections = await fetchUserCollections(account);
       const algoCollections = await getUserNftCollections({ collections, mainnet });
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const polyCollections = await getPolygonUserCollections(hexAddress);
+      const celoCollection = await getCeloUserCollections(hexAddress);
       handleSetState({
-        myCollections: [...(algoCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
+        myCollections: [
+          ...(algoCollections || []),
+          ...(aurrCollections || []),
+          ...(polyCollections || []),
+          ...(celoCollection || []),
+        ],
       });
     })();
 
@@ -270,7 +268,7 @@ const Dashboard = () => {
             activeDetail === "collections" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} />
+                  <CollectionsCard key={idx} collection={collection} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (

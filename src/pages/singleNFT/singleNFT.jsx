@@ -5,9 +5,8 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
-import { createClient } from "urql";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyGraphNft, buyNft, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft } from "../../utils";
 import classes from "./singleNFT.module.css";
 import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
@@ -23,16 +22,11 @@ import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
 import algoLogo from "../../assets/icon-algo.svg";
 import { setOverlay, setNotification } from "../../gen-state/gen.actions";
-import { GET_GRAPH_NFT } from "../../graphql/querries/getCollections";
-import { polygonClient } from "../../utils/graphqlClient";
 import supportedChains from "../../utils/supportedChains";
 import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
+import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
 
 const SingleNFT = () => {
-  const APIURL = "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet";
-  const client = createClient({
-    url: APIURL,
-  });
   const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
   const history = useHistory();
   const {
@@ -147,53 +141,29 @@ const SingleNFT = () => {
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
-        const { data, error } = await client.query(GET_GRAPH_NFT, { id: nftId }).toPromise();
-        if (error) {
-          return dispatch(
-            setNotification({
-              message: error.message,
-              type: "warning",
-            })
-          );
-        }
-        const { data: polygonData, error: polygonError } = await polygonClient
-          .query(GET_GRAPH_NFT, { id: nftId })
-          .toPromise();
-        if (polygonError) {
-          return dispatch(
-            setNotification({
-              message: polygonError.message,
-              type: "warning",
-            })
-          );
-        }
-        if (polygonData?.nft !== null) {
-          const polygonResult = await getGraphNft(polygonData?.nft);
-          if (polygonResult[0]?.chain === nftChainId) {
-            const trHistory = await getTransactions(polygonData?.nft?.transactions);
-            trHistory.find((t) => {
-              if (t.type === "Minting") t.price = polygonResult[0].price;
-            });
-            handleSetState({
-              nftDetails: polygonResult[0],
-              isLoading: false,
-              transactionHistory: trHistory,
-            });
-          }
-        }
-        if (data?.nft !== null) {
-          const result = await getGraphNft(data?.nft);
-          if (result[0]?.chain === nftChainId) {
-            const trHistory = await getTransactions(data?.nft?.transactions);
-            trHistory.find((t) => {
-              if (t.type === "Minting") t.price = result[0]?.price;
-            });
-            handleSetState({
-              nftDetails: result[0],
-              isLoading: false,
-              transactionHistory: trHistory,
-            });
-          }
+        if (Number(chainId) === 44787 || Number(chainId) === 42220) {
+          const [celoData, trHistory] = await celoUserData(nftId);
+          handleSetState({
+            nftDetails: celoData,
+            isLoading: false,
+            transactionHistory: trHistory,
+          });
+        } else if (Number(chainId) === 1313161555) {
+          const [auroraData, trHistory] = await auroraUserData(nftId);
+          if (!auroraData) return;
+          handleSetState({
+            nftDetails: auroraData,
+            isLoading: false,
+            transactionHistory: trHistory,
+          });
+        } else if (Number(nftChainId) === 80001 || Number(nftChainId) === 137) {
+          const [polygonData, trHistory] = await polygonUserData(nftId);
+          if (!polygonData) return history.goBack();
+          handleSetState({
+            nftDetails: polygonData,
+            isLoading: false,
+            transactionHistory: trHistory,
+          });
         }
       } catch (error) {
         console.log({ error });
@@ -350,38 +320,62 @@ const SingleNFT = () => {
                 <p className={classes.tokenValue}>
                   {nftDetails.price} {chainSymbol || ""}
                 </p>
-                <span className={classes.usdValue}>
-                  ($
-                  {(nftDetails.price * algoPrice).toFixed(2)})
-                </span>
+                {nftDetails?.price === 0 ||
+                  (nftDetails?.price === null ? (
+                    <></>
+                  ) : (
+                    <>
+                      <span className={classes.usdValue}>
+                        ($
+                        {(nftDetails.price * algoPrice).toFixed(2)})
+                      </span>
+                    </>
+                  ))}
               </span>
             </div>
-            <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    SOLD!
+            {nftDetails?.price === 0 || nftDetails.price === null ? (
+              <div className={classes.btns}>
+                {account === nftDetails.owner ? (
+                  <button
+                    onClick={() => history.push(`/marketplace/single-mint/list/${nftDetails.chain}/${nftDetails.Id}`)}
+                    className={classes.buy}
+                  >
+                    List
                   </button>
-                </>
-              ) : (
-                <>
-                  {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
-                      Buy now
+                ) : (
+                  <button className={classes.sold} disabled={nftDetails.sold}>
+                    Not Listed!
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className={classes.btns}>
+                {nftDetails.sold ? (
+                  <>
+                    <button className={classes.sold} disabled={nftDetails.sold}>
+                      SOLD!
                     </button>
-                  ) : (
-                    <button
-                      type="button"
-                      className={classes.buy}
-                      disabled={nftDetails.sold}
-                      onClick={() => buyNft(buyProps)}
-                    >
-                      Buy now
-                    </button>
-                  )}
-                </>
-              )}
-            </div>
+                  </>
+                ) : (
+                  <>
+                    {Number(nftDetails.chain) !== 4160 ? (
+                      <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
+                        Buy now
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className={classes.buy}
+                        disabled={nftDetails.sold}
+                        onClick={() => buyNft(buyProps)}
+                      >
+                        Buy now
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
           {/* PRICE HISTORY */}
           {/* <div className={classes.feature}>

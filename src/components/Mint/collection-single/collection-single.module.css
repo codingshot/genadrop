@@ -203,3 +203,29 @@
 .goBack:hover img {
   transform: translateX(-50%);
 }
+.takePic {
+  display: flex;
+  align-items: center;
+  cursor: var(--cursor-pointer);
+}
+.takePic:hover p {
+  color: var(--main-color);
+}
+.takePic p {
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+.takePic div {
+  background: #c3e5ff;
+  backdrop-filter: blur(24px);
+  border-radius: 0.75em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3em;
+  height: 3em;
+  margin-right: 0.5em;
+}
+.takePic div svg {
+  box-shadow: 2px 3px 8px rgb(45 142 173 / 50%);
+}

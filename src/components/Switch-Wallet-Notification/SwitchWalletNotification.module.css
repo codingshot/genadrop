@@ -2,8 +2,8 @@
   width: 100%;
   display: none;
   position: fixed;
-  top: 3.7em;
-  z-index: 15;
+  top: 4em;
+  z-index: 10;
 }
 
 .container.active {

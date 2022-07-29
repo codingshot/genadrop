@@ -17,7 +17,6 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
 
   const { wrapperWidth, slideCount, scrollLength } = state;
   const [slideActiveCount, setSlideActiveCount] = useState(0);
-  const [remainder, setRemainder] = useState(0);
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -50,15 +49,7 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
   useEffect(() => {
     const width = wrapperRef.current && wrapperRef.current.getBoundingClientRect().width;
     const cardsInView = Math.floor(width / (cardWidth + gap / 2));
-    let scrollLength = null;
-    if (slideCount - slideActiveCount <= 0 && remainder) {
-      scrollLength = slideActiveCount * remainder * cardWidth + slideActiveCount * remainder * gap;
-      if (remainder === 1) {
-        scrollLength += cardWidth + gap;
-      }
-    } else {
-      scrollLength = slideActiveCount * cardsInView * cardWidth + slideActiveCount * cardsInView * gap;
-    }
+    const scrollLength = slideActiveCount * cardsInView * cardWidth + slideActiveCount * cardsInView * gap;
     handleSetState({ scrollLength });
     cardContainerRef.current.style.transform = `translateX(-${scrollLength}px)`;
   }, [slideActiveCount]);
@@ -82,7 +73,6 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
     const cardTotalLength = children.length;
     const cardsInView = Math.floor(width / (cardWidth + gap / 2));
     const slideCount = getCount(cardTotalLength, cardsInView);
-    setRemainder(cardTotalLength % cardsInView);
     handleSetState({ slideCount });
     if (!slideCount) {
       setSlideActiveCount(0);
