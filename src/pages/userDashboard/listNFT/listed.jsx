@@ -10,7 +10,12 @@ import telegram from "../../../assets/blue-telegram.svg";
 import twitterIcon from "../../../assets/blue-twitter.svg";
 import facebookIcon from "../../../assets/blue-facebook.svg";
 import linktree from "../../../assets/linked-tree.svg";
-import { celoUserData, getCeloNFTToList, getPolygonNFTToList } from "../../../renderless/fetch-data/fetchUserGraphData";
+import {
+  celoUserData,
+  getCeloNFTToList,
+  getPolygonNFTToList,
+  polygonUserData,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const Listed = () => {
   const { account, mainnet, dispatch } = useContext(GenContext);
@@ -31,9 +36,8 @@ const Listed = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      const address = ethers.utils.hexlify(account);
       if (chainId === 80001 || chainId === 137) {
-        const nft = await getPolygonNFTToList(address, nftId);
+        const [nft] = await polygonUserData(nftId);
         if (!nft) history.push("/");
         else {
           handleSetState({

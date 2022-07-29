@@ -133,9 +133,9 @@ const FetchData = () => {
         );
       }
       const result = await getGraphCollections(data?.collections);
-
-      if (result?.length) {
-        dispatch(setPolygonCollections(result));
+      const res = result?.filter((data) => data?.Id !== "0xd6b01b63dd514cf771d8d21b776197fdf9648d54");
+      if (res?.length) {
+        dispatch(setPolygonCollections(res));
       } else {
         dispatch(setPolygonCollections(null));
       }
@@ -162,6 +162,7 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
+      console.log("polygon single", result);
       if (result?.length) {
         dispatch(setPolygonSingleNfts(result));
       } else {

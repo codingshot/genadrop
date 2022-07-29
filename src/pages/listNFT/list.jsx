@@ -10,7 +10,12 @@ import { polygonClient } from "../../utils/graphqlClient";
 import { ethers } from "ethers";
 import algoIcon from "../../assets/icon-algo.svg";
 import { listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
-import { celoUserData, getCeloNFTToList, getPolygonNFTToList } from "../../renderless/fetch-data/fetchUserGraphData";
+import {
+  celoUserData,
+  getCeloNFTToList,
+  getPolygonNFTToList,
+  polygonUserData,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 import { setNotification } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 import axios from "axios";
@@ -54,8 +59,16 @@ const List = () => {
       id: nftDetails.tokenID,
     };
     if (chainId === 80001 || chainId === 137) {
-      console.log("RES: ", await listPolygonNft(listProps));
-      history.push(`${match.url}/listed`);
+      console.log(listProps);
+      const listNft = await listPolygonNft(listProps);
+      if (listNft.error) {
+        setNotification({
+          message: "Transaction not completed",
+          type: "warning",
+        });
+      } else {
+        return history.push(`${nftId}/listed`);
+      }
     } else if (chainId === 44787 || chainId === 42220) {
       const listNft = await listCeloNft(listProps);
       if (listNft.error) {
@@ -91,7 +104,8 @@ const List = () => {
     (async function getUserCollection() {
       const address = ethers.utils.hexlify(account);
       if (chainId === 80001 || chainId === 137) {
-        const nft = await getPolygonNFTToList(address, nftId);
+        const [nft] = await polygonUserData(nftId);
+        console.log(nft);
         if (!nft) history.goBack();
         handleSetState({
           nftDetails: nft,
@@ -100,7 +114,6 @@ const List = () => {
         });
       } else if (chainId === 44787 || chainId === 42220) {
         const [nft] = await celoUserData(nftId);
-
         if (!nft) history.goBack();
         handleSetState({
           nftDetails: nft,
@@ -185,7 +198,7 @@ const List = () => {
                     <option value="Polygon">Polygon</option>
                   </select>
                 </div> */}
-                <img src={supportedChains[nftDetails.chain].icon} alt="" />
+                <img src={supportedChains[nftDetails?.chain].icon} alt="" />
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
