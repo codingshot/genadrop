@@ -1,9 +1,16 @@
 import React, { useRef, useState } from "react";
+import Webcam from "react-webcam";
 import classes from "./Capture.module.css";
 import WebcamEnable from "../webcam-enable/webcamEnable";
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
 import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
+
+const videoConstraints = {
+  width: 1280,
+  height: 720,
+  facingMode: "environment",
+};
 
 const Capture = ({ handleSetState: handleMintSetState }) => {
   const videoRef = useRef(null);
@@ -42,22 +49,25 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
   };
 
   const getVideo = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        const video = videoRef.current;
-        video.srcObject = stream;
-        video.onloadedmetadata = function (e) {
-          video.play();
-        };
-        handleSetState({ currentStream: stream });
-        handleSetState({
-          toggle: true,
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    // navigator.mediaDevices
+    //   .getUserMedia({ video: true, audio: false })
+    //   .then((stream) => {
+    //     const video = videoRef.current;
+    //     video.srcObject = stream;
+    //     video.onloadedmetadata = function (e) {
+    //       video.play();
+    //     };
+    //     handleSetState({ currentStream: stream });
+    //     handleSetState({
+    //       toggle: true,
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.error(err);
+    //   });
+    handleSetState({
+      toggle: true,
+    });
   };
 
   const takePicture = () => {
@@ -149,10 +159,16 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} className={img && classes.none}>
         <div className={classes.videoWrapper}>
-          <video className={img && classes.inActive} ref={videoRef} autoPlay playsinline />
-          {/* <div className={classes.testrecod} onClick={() => videoRef.current?.play()}>
-            Click ME to record
-          </div> */}
+          {/* <video className={img && classes.inActive} ref={videoRef} autoPlay playsinline /> */}
+          {toggle && (
+            <Webcam
+              audio={false}
+              height={720}
+              screenshotFormat="image/png"
+              width={1280}
+              videoConstraints={videoConstraints}
+            />
+          )}
           <div className={classes.enableContainer}> </div>
         </div>
         <div className={toggle ? classes.btnWrapper : classes.inactiveBtnWrapper}>

@@ -38,7 +38,7 @@ module.exports = {
 
     "jsx-a11y/no-static-element-interactions": "off",
 
-    "linebreak-style": ["error", `${process.platform === "win32" ? "windows" : "unix"}`],
+    "linebreak-style": 0,
 
     "react/jsx-no-useless-fragment": "off",
 
@@ -61,5 +61,11 @@ module.exports = {
     "prefer-regex-literals": "off",
 
     "react/destructuring-assignment": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
   },
 };
