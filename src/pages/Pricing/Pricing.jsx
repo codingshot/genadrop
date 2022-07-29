@@ -7,7 +7,7 @@ import PricingModal from "./Pricing-Modal/PricingModal";
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
-import { setCollectionName, setCurrentPlan, setCurrentSession } from "../../gen-state/gen.actions";
+import { setCurrentPlan } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
 
 const Pricing = () => {
@@ -23,8 +23,6 @@ const Pricing = () => {
       setPrice(price);
     } else {
       handleResetCreate({ dispatch });
-      dispatch(setCollectionName(""));
-      dispatch(setCurrentSession(null));
       history.push("/create");
     }
   };

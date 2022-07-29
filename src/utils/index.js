@@ -19,6 +19,8 @@ import {
   clearRule,
   clearPreview,
   setCurrentSession,
+  setLayerAction,
+  setImageAction,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
 import { v4 as uuid } from "uuid";
@@ -757,4 +759,15 @@ export const handleResetCreate = ({ dispatch }) => {
   dispatch(clearPreview());
   dispatch(clearRule());
   dispatch(setCurrentSession(null));
+  dispatch(
+    setLayerAction({
+      type: "",
+    })
+  );
+  dispatch(
+    setImageAction({
+      type: "",
+      value: {},
+    })
+  );
 };

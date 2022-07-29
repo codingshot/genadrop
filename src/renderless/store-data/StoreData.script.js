@@ -31,29 +31,27 @@ export const saveSession = async ({ currentUser, sessionId, collectionName, curr
 
 export const saveCollectionName = async ({ currentUser, sessionId, collectionName }) => {
   if (currentUser && sessionId) {
-    const docRef = doc(firestore, `users/${currentUser.uid}/${sessionId}/collectionName`);
+    const docRef = doc(firestore, `users/${currentUser.uid}/collectionName/${sessionId}`);
     setDoc(docRef, { collectionName });
   }
 };
 
 export const saveLayers = ({ currentUser, sessionId, layers }) => {
   if (currentUser && sessionId) {
-    const docRef = doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`);
+    const docRef = doc(firestore, `users/${currentUser.uid}/layers/${sessionId}`);
     setDoc(docRef, { layers });
   }
 };
 
 export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) => {
   if (currentUser && sessionId && nftLayers.length) {
-    console.log({ currentUser, sessionId, nftLayers, nftTraits });
-    const docRef = doc(firestore, `users/${currentUser.uid}/${sessionId}/nftLayers`);
+    const docRef = doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`);
     setDoc(docRef, { nftLayers });
-
+    // save the layer trait to storage
     nftTraits.forEach(async ({ id, image }, idx) => {
-      const nftTraitRef = ref(storage, `${currentUser.uid}/${sessionId}/nftLayers/${id}`);
+      const nftTraitRef = ref(storage, `${currentUser.uid}/nftLayers/${sessionId}/${id}`);
       try {
         await uploadString(nftTraitRef, image, "data_url");
-        console.log({ idx });
       } catch (error) {
         console.log(`error ${error}`);
       }
@@ -85,7 +83,6 @@ export const renameTrait = async ({ currentUser, sessionId, id, oldName, newName
     } catch (error) {
       console.log(`error ${error}`);
     }
-
     const deleteRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${oldName}`);
     // Delete the old file
     try {
@@ -106,14 +103,10 @@ export const deleteAllLayers = async ({ currentUser, sessionId }) => {
   layers.forEach(async (layer) => {
     await deleteAllTraits({ currentUser, sessionId, id: layer.id });
   });
-  await deleteSession({ currentUser, sessionId });
-  await deleteDoc(doc(firestore, `users/${currentUser.uid}/${sessionId}/collectionName`));
-  await deleteDoc(doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`));
-  await deleteDoc(doc(firestore, `users/${currentUser.uid}/${sessionId}/nftLayers`));
-};
-
-export const deleteSession = async ({ currentUser, sessionId }) => {
   await deleteDoc(doc(firestore, `users/${currentUser.uid}/sessions/${sessionId}`));
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/collectionName/${sessionId}`));
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/layers/${sessionId}`));
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`));
 };
 
 export const deleteTrait = async ({ currentUser, sessionId, id, traitTitle }) => {
@@ -130,7 +123,6 @@ export const deleteTrait = async ({ currentUser, sessionId, id, traitTitle }) =>
 export const deleteAllTraits = async ({ currentUser, sessionId, id }) => {
   if (currentUser && sessionId) {
     const listRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}`);
-
     const res = await listAll(listRef);
     const folder = await Promise.all(
       res.items.map(async (folderRef) => {
@@ -138,7 +130,6 @@ export const deleteAllTraits = async ({ currentUser, sessionId, id }) => {
         return folderRef;
       })
     );
-
     folder.forEach(async (ref) => {
       try {
         await deleteObject(ref);
@@ -151,20 +142,18 @@ export const deleteAllTraits = async ({ currentUser, sessionId, id }) => {
 
 export const deleteAllNftTraits = async ({ currentUser, sessionId, id }) => {
   if (currentUser && sessionId) {
-    const listRef = ref(storage, `${currentUser.uid}/${sessionId}/nftLayers/${id}`);
+    const listRef = ref(storage, `${currentUser.uid}/nftLayers/${sessionId}/${id}`);
     const res = await listAll(listRef);
     const folder = await Promise.all(
       res.items.map(async (folderRef) => {
-        // All the folder under listRef.
         return folderRef;
       })
     );
-
     folder.forEach(async (ref) => {
       try {
         await deleteObject(ref);
       } catch (error) {
-        console.log(`error ${error}`);
+        console.log(`nftLayers error ${error}`);
       }
     });
   }
@@ -184,36 +173,36 @@ export const fetchSession = async ({ currentUser }) => {
 
 export const fetchCollectionName = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
-    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/collectionName`));
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/collectionName/${sessionId}`));
     const docSnapshot = await getDoc(querySnapshot);
     if (docSnapshot.exists()) {
       return docSnapshot.data();
     } else {
-      console.log("document does not exist");
+      console.log("collectionName does not exist");
     }
   }
 };
 
 export const fetchLayers = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
-    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/layers`));
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/layers/${sessionId}`));
     const docSnapshot = await getDoc(querySnapshot);
     if (docSnapshot.exists()) {
       return docSnapshot.data();
     } else {
-      console.log("document does not exist");
+      console.log("layers does not exist");
     }
   }
 };
 
 export const fetchNftLayers = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
-    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/${sessionId}/nftLayers`));
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`));
     const docSnapshot = await getDoc(querySnapshot);
     if (docSnapshot.exists()) {
       return docSnapshot.data();
     } else {
-      console.log("document does not exist");
+      console.log("nftLayers does not exist");
     }
   }
 };
@@ -222,7 +211,6 @@ export const fetchTraits = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
     const listRef = ref(storage, `${currentUser.uid}/${sessionId}/`);
     const traitRef = await listAll(listRef);
-
     // Find all the prefixes and items.
     const getFiles = async (fileRef) => {
       const res = await listAll(fileRef);
@@ -243,24 +231,46 @@ export const fetchTraits = async ({ currentUser, sessionId }) => {
           }
         })
       );
-      console.log({ key });
       return { [key]: files };
     };
-
     const folders = await Promise.all(
       traitRef.prefixes.map(async (folderRef) => {
         // All the folders under listRef.
         return folderRef;
       })
     );
-
-    const traits = await Promise.all(folders.map(async (ref) => await getFiles(ref)));
-
-    return traits;
+    return await Promise.all(folders.map(async (ref) => await getFiles(ref)));
   }
 };
 
-const getFile = async (url, name, type) => {
+export const fetchNftTraits = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const listRef = ref(storage, `${currentUser.uid}/nftLayers/${sessionId}/`);
+    // Find all the prefixes and items.
+    const res = await listAll(listRef);
+    const nftTraits = {};
+    await Promise.all(
+      res.items.map(async (itemRef) => {
+        // All the items under listRef.
+        let file = {};
+        try {
+          const url = await getDownloadURL(ref(storage, itemRef));
+          file.url = url;
+          const metadata = await getMetadata(itemRef);
+          file.metadata = metadata;
+          const key = metadata.fullPath.split("/")[3];
+          nftTraits[key] = file;
+          return null;
+        } catch (error) {
+          console.log(error);
+        }
+      })
+    );
+    return nftTraits;
+  }
+};
+
+export const getFile = async (url, name, type) => {
   try {
     const response = await fetch(url);
     const blob = await response.blob();
@@ -269,6 +279,19 @@ const getFile = async (url, name, type) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const getBase64FromUrl = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+  });
 };
 
 const transfromTraits = async (value) => {
@@ -291,34 +314,38 @@ const transfromTraits = async (value) => {
   return newTraits;
 };
 
+const transfromNftTraits = async (value) => {
+  let newTrait = {};
+  await Promise.all(
+    Object.keys(value).map(async (key) => {
+      const { url } = value[key];
+      const file = await getBase64FromUrl(url);
+      newTrait[key] = file;
+      return null;
+    })
+  );
+  return newTrait;
+};
+
 export const fetchUserSession = async ({ currentUser, sessionId }) => {
   try {
     const result = await Promise.all([
       fetchCollectionName({ currentUser, sessionId }),
       fetchLayers({ currentUser, sessionId }),
       fetchTraits({ currentUser, sessionId }),
+      fetchNftLayers({ currentUser, sessionId }),
+      fetchNftTraits({ currentUser, sessionId }),
     ]);
-    const [storedCollectionName, storedLayers, storedTraits] = result;
-
-    console.log({ storedTraits, storedLayers });
+    const [storedCollectionName, storedLayers, storedTraits, storedNftLayers, storedNftTraits] = result;
     const transformedTraits = await transfromTraits(storedTraits);
-    return null;
-    const newLayers = storedLayers.layers.map(({ traits, id, ...otherLayerProps }) => {
-      const obj = transformedTraits[id];
-      const newTraits = traits.map(({ image, traitTitle, ...otherTraitProps }) => {
-        let file = null;
-        for (let o of obj) {
-          if (o.name === traitTitle) {
-            file = o;
-            break;
-          }
-        }
-        return { image: file, traitTitle, ...otherTraitProps };
-      });
-      return { traits: newTraits, id, ...otherLayerProps };
-    });
-
+    const newLayers = constructLayers({ storedLayers, transformedTraits });
+    let newNftLayers = [];
+    if (storedNftLayers) {
+      const transformedNftTraits = await transfromNftTraits(storedNftTraits);
+      newNftLayers = constructNftLayers({ storedNftLayers, transformedNftTraits });
+    }
     return {
+      nftLayers: newNftLayers,
       layers: newLayers,
       collectionName: storedCollectionName.collectionName,
     };
@@ -326,4 +353,28 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
     console.log(error);
     return null;
   }
+};
+
+export const constructLayers = ({ storedLayers, transformedTraits }) => {
+  return storedLayers.layers.map(({ traits, id, ...otherLayerProps }) => {
+    const obj = transformedTraits[id];
+    const newTraits = traits.map(({ image, traitTitle, ...otherTraitProps }) => {
+      let file = null;
+      for (let o of obj) {
+        if (o.name === traitTitle) {
+          file = o;
+          break;
+        }
+      }
+      return { image: file, traitTitle, ...otherTraitProps };
+    });
+    return { traits: newTraits, id, ...otherLayerProps };
+  });
+};
+
+export const constructNftLayers = ({ storedNftLayers, transformedNftTraits }) => {
+  return storedNftLayers.nftLayers.map(({ id, image, ...otherLayerProps }) => {
+    const file = transformedNftTraits[id];
+    return { id, image: file, ...otherLayerProps };
+  });
 };

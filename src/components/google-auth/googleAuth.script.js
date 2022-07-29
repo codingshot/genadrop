@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
-import { setCurrentSession, setCurrentUser, setIsUser, setNotification } from "../../gen-state/gen.actions";
+import { setCurrentUser, setIsUser, setNotification } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
 
 const provider = new GoogleAuthProvider();

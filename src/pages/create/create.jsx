@@ -43,12 +43,11 @@ const Create = () => {
 
   useEffect(() => {
     if (!currentUser || isUser === "true") return;
-    dispatch(setOverlay(true));
     const fetch = async () => {
       try {
+        dispatch(setOverlay(true));
         const sessions = await fetchSession({ currentUser });
         dispatch(setOverlay(false));
-        console.log({ sessions });
         if (sessions.length) {
           dispatch(setSession(sessions));
           dispatch(setToggleSessionModal(true));
@@ -63,13 +62,27 @@ const Create = () => {
   }, [currentUser]);
 
   useEffect(() => {
+    if (!sessionId) return;
+    const fetch = async () => {
+      try {
+        dispatch(setOverlay(true));
+        const sessions = await fetchSession({ currentUser });
+        dispatch(setOverlay(false));
+        if (sessions.length) {
+          dispatch(setSession(sessions));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetch();
+  }, [currentUser, sessionId]);
+
+  useEffect(() => {
     const save = async () => {
-      console.log("called");
       if (collectionName && sessionId && currentPlan && currentUser) {
-        console.log("saving...", { currentUser, sessionId, collectionName, currentPlan });
         const res = await saveSession({ currentUser, sessionId, collectionName, currentPlan });
         if (!res) return; // showNotification
-        console.log({ res });
         dispatch(setUpgradePlan(false));
       }
     };

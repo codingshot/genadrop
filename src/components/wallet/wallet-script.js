@@ -207,7 +207,7 @@ export const disconnectWalletConnectProvider = async (walletConnectProvider) => 
 export const updateAccount = async (walletProps) => {
   const { dispatch, walletConnectProvider, mainnet } = walletProps;
   const { ethereum } = window;
-  const [accounts] = await ethereum.request({
+  let [accounts] = await ethereum.request({
     method: "eth_accounts", //eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
   });
   const networkId = await ethereum.networkVersion;
@@ -226,13 +226,18 @@ export const updateAccount = async (walletProps) => {
   } else {
     dispatch(setToggleWalletPopup(false));
     if (!accounts) {
-      WS.disconnectWallet(walletProps);
-      dispatch(
-        setNotification({
-          message: "Please connect your site manually from your wallet extension.",
-          type: "warning",
-        })
-      );
+      [accounts] = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      if (!accounts) {
+        WS.disconnectWallet(walletProps);
+        dispatch(
+          setNotification({
+            message: "Please connect your site manually from your wallet extension.",
+            type: "warning",
+          })
+        );
+      }
     } else {
       dispatch(setChainId(Number(networkId)));
       dispatch(setAccount(accounts));

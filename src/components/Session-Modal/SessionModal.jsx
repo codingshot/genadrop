@@ -7,6 +7,7 @@ import {
   setCurrentPlan,
   setCurrentSession,
   setLayers,
+  setNftLayers,
   setSession,
   setToggleSessionModal,
 } from "../../gen-state/gen.actions";
@@ -26,6 +27,7 @@ const SessionModal = () => {
     if (res) {
       dispatch(setCurrentPlan(currentPlan));
       dispatch(setLayers(res.layers));
+      dispatch(setNftLayers(res.nftLayers));
       dispatch(setCollectionName(res.collectionName));
       dispatch(setCurrentSession(sessionId));
       dispatch(setToggleSessionModal(false));

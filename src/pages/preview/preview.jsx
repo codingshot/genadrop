@@ -86,6 +86,13 @@ const Preview = () => {
   };
 
   const handleDeleteAndReplace = async (id, index, currentPageD) => {
+    if (!currentDnaLayers)
+      return dispatch(
+        setNotification({
+          type: "error",
+          message: "Sorry! you need to generate a new collection to use this feature",
+        })
+      );
     if (!(combinations - rule.length - mintAmount)) {
       dispatch(setMintInfo("  cannot generate asset from 0 combination"));
     } else {

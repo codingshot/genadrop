@@ -11,7 +11,7 @@ import {
 } from "./StoreData.script";
 
 const StoreData = () => {
-  const { layers, nftLayers, rule, collectionName, sessionId, currentUser, imageAction, layerAction, dispatch } =
+  const { layers, nftLayers, rule, collectionName, sessionId, currentUser, imageAction, layerAction, upgradePlan } =
     useContext(GenContext);
 
   useEffect(() => {
@@ -62,6 +62,24 @@ const StoreData = () => {
         break;
     }
   }, [imageAction, currentUser, sessionId]);
+
+  useEffect(() => {
+    if (currentUser && sessionId && upgradePlan) {
+      const newLayers = layers.map(({ traits, ...otherLayerProps }) => {
+        const newTraits = traits.map(({ image, ...otherTraitProps }) => {
+          return { image: "", ...otherTraitProps };
+        });
+        return { traits: newTraits, ...otherLayerProps };
+      });
+      layers.forEach(({ id, traits }, i) => {
+        traits.forEach(async (trait, j) => {
+          await saveTraits({ currentUser, sessionId, id, traits: [trait] });
+          console.log(i, " => ", j);
+        });
+      });
+      saveLayers({ currentUser, sessionId, layers: newLayers });
+    }
+  }, [currentUser, sessionId, upgradePlan]);
 
   return null;
 };

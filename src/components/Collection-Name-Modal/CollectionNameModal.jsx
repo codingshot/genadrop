@@ -32,7 +32,6 @@ const CollectionNameModal = () => {
     if (toggleSessionModal || isLoading || !currentUser) {
       dispatch(setToggleCollectionNameModal(false));
     } else if (!collectionName && currentUser) {
-      console.log({ collectionName });
       dispatch(setToggleCollectionNameModal(true));
     }
   }, [collectionName, currentUser, toggleSessionModal, isLoading]);
