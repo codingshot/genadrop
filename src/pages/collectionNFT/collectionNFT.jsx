@@ -302,21 +302,10 @@ const CollectionNFT = () => {
                 <span className={classes.title}>Current price</span>
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
-                  {nftDetails?.chain !== 4160 ? (
-                    <>
-                      <p className={classes.tokenValue}>
-                        {nftDetails.price * 0.000000000000000001} {supportedChains[nftDetails.chain].sybmol}
-                      </p>
-                      <span className={classes.usdValue}>(${(totalPrice * 0.000000000000000001).toFixed(2)})</span>
-                    </>
-                  ) : (
-                    <>
-                      <p className={classes.tokenValue}>
-                        {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
-                      </p>
-                      <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
-                    </>
-                  )}
+                  <p className={classes.tokenValue}>
+                    {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
+                  </p>
+                  <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
                 </span>
               </div>
             )}

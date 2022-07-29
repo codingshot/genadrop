@@ -374,7 +374,7 @@ export const getCeloGraphNft = async (collection) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
-    nftArr.price = collection?.price;
+    nftArr.price = collection?.price * 0.000000000000000001;
     nftArr.isListed = collection?.isListed;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;

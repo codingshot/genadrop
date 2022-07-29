@@ -145,7 +145,7 @@ async function readNftTransaction(assetId) {
   return Object.values(querySnapshot.data());
 }
 
-async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet, txId) {
+async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold, mainnet, txId, list) {
   const updates = {};
   updates[assetId] = {
     id: assetId,
@@ -153,7 +153,7 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
     sold: !!sold,
     Buyer: buyer,
     chain: "algo",
-    isListed: !sold,
+    isListed: !!list,
     owner: buyer || owner,
     price,
     dateSold,

@@ -248,6 +248,7 @@ export const GET_GRAPH_NFT = gql`
       isSold
       price
       tokenID
+      marketId
       owner {
         id
       }
