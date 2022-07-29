@@ -318,29 +318,18 @@ const SingleNFT = () => {
               <span className={classes.price}>
                 <img src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
-                  {chainId === 44787 || chainId === 42220 ? (
-                    <>
-                      {nftDetails.price * 0.000000000000000001} {chainSymbol || ""}
-                    </>
-                  ) : (
-                    <>
-                      {nftDetails.price} {chainSymbol || ""}
-                    </>
-                  )}
+                  {nftDetails.price} {chainSymbol || ""}
                 </p>
                 {nftDetails?.price === 0 ||
                   (nftDetails?.price === null ? (
                     <></>
-                  ) : chainId === 44787 || chainId === 42220 ? (
-                    <span className={classes.usdValue}>
-                      ($
-                      {(nftDetails.price * algoPrice * 0.000000000000000001).toFixed(2)})
-                    </span>
                   ) : (
-                    <span className={classes.usdValue}>
-                      ($
-                      {(nftDetails.price * algoPrice).toFixed(2)})
-                    </span>
+                    <>
+                      <span className={classes.usdValue}>
+                        ($
+                        {(nftDetails.price * algoPrice).toFixed(2)})
+                      </span>
+                    </>
                   ))}
               </span>
             </div>
