@@ -1039,7 +1039,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  const { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1050,6 +1050,7 @@ export async function purchaseAuroragonNfts(buyProps) {
   }
   const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
     {
@@ -1096,7 +1097,7 @@ export async function purchaseAuroragonNfts(buyProps) {
 }
 export async function purchaseCeloNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  const { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   console.log(buyProps);
   if (!connector) {
     return dispatch(
@@ -1108,6 +1109,7 @@ export async function purchaseCeloNfts(buyProps) {
   }
   const wallet = await InitiateCeloProvider(mainnet);
   const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
     {
