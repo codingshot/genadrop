@@ -18,6 +18,9 @@
   width: 100%;
   height: calc(100vh - 5rem);
 }
+.videoWrapper video {
+  object-fit: cover;
+}
 .enableContainer {
   position: absolute;
   left: 50%;

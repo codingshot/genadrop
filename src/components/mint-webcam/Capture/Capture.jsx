@@ -72,6 +72,7 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
       file: [result],
       fileName: "Image.png",
     });
+    handleMintSetState({ cameraSwitch: false });
   };
   return (
     <div className={`${classes.container}`}>
