@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import classes from "./tableRow.module.css";
-import saleIcon from "../../../assets/sale-icon.png";
-import transferIcon from "../../../assets/transfer-icon.png";
-import mintIcon from "../../../assets/mint-icon.png";
+import saleIcon from "../../../assets/sale-icon.svg";
+import transferIcon from "../../../assets/transfer-icon.svg";
+import mintIcon from "../../../assets/mint-icon.svg";
 import Transaction from "../../transactionDetails/TransactionDetails";
 import { readUserProfile } from "../../../utils/firebase";
 

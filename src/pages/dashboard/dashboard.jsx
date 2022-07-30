@@ -26,7 +26,7 @@ import { ethers } from "ethers";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
-import bg from "../../assets/bg.png"; // remove this when done!
+import { ReactComponent as Bg } from "../../assets/bg.svg"; // remove this when done!
 import { ReactComponent as Twitter } from "../../assets/icon-twitter-green.svg";
 import { ReactComponent as Discord } from "../../assets/icon-discord-green.svg";
 import { ReactComponent as Instagram } from "../../assets/icon-instagram-green.svg";
@@ -190,7 +190,7 @@ const Dashboard = () => {
       <div className={classes.wrapper}>
         <section className={classes.header}>
           {/* change background to dynamic */}
-          <img src={bg} alt="" className={classes.banner} />
+          <Bg alt="" className={classes.banner} />
 
           <div className={classes.imageContainer}>
             <img src={avatar} alt="" />

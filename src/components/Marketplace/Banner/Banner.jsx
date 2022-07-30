@@ -1,10 +1,10 @@
 import React from "react";
 import { useRef, useEffect, useState } from "react";
 import classes from "./Banner.module.css";
-import img1 from "../../../assets/banner-1.png";
-import img2 from "../../../assets/banner-2.png";
-import img3 from "../../../assets/banner-3.png";
-import bannerImg from "../../../assets/banner.png";
+import img1 from "../../../assets/banner-1.svg";
+import img2 from "../../../assets/banner-2.svg";
+import img3 from "../../../assets/banner-3.svg";
+import bannerImg from "../../../assets/banner.svg";
 
 const Banner = () => {
   const [image, setImage] = useState([img1, img2, img3]);

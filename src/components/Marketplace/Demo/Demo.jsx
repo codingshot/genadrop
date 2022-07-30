@@ -1,8 +1,8 @@
 import React from "react";
 import classes from "./styles.module.css";
 import createIcon from "../../../assets/create-icon.png";
-import mintIcon from "../../../assets/mint-icon.png";
-import walletIcon from "../../../assets/wallet-icon.png";
+import { ReactComponent as MintIcon } from "../../../assets/mint-icon.svg";
+import { ReactComponent as walletIcon } from "../../../assets/wallet-icon.svg";
 import listIcon from "../../../assets/list-icon.png";
 
 const Demo = () => (
@@ -23,7 +23,7 @@ const Demo = () => (
         </div>
         <div className={classes.card}>
           <div className={classes.operation}>
-            <img src={walletIcon} alt="wallet" />
+            <WlletIcon alt="wallet" />
             <span>Set Up your Wallet</span>
           </div>
           <div className={classes.description}>Connect your wallet then mint your NFTs</div>
@@ -31,7 +31,7 @@ const Demo = () => (
         </div>
         <div className={classes.card}>
           <div className={classes.operation}>
-            <img src={mintIcon} alt="mint" />
+            <MintIcon alt="mint" />
             <span>Mint your NFTs</span>
           </div>
           <div className={classes.description}>
