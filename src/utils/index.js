@@ -300,7 +300,7 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.collection_name = mainnet.name;
         nftObj.description = mainnet.description;
         nftObj.chain = collection[i].chain;
-        nftObj.owner = mainnet?.creator?.id;
+        nftObj.owner = collection[i]?.owner?.id;
         nftObj.Id = collection[i].id;
         const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         nftObj.collectionPrice = getPrice * 0.000000000000000001;
@@ -338,6 +338,7 @@ export const getUserGraphNft = async (collection, address) => {
         nftObj.sold = collection[i]?.isSold;
         nftObj.ipfs_data = data;
         nftObj.contractAddress = collection[i]?.id?.split(collection[i]?.tokenID)[0];
+        nftObj.collection_contract = collection[i]?.id?.split(collection[i]?.tokenID)[0];
         nftObj.name = data?.name;
         nftObj.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);
@@ -357,7 +358,7 @@ export const getTransactions = async (transactions) => {
       const trnObj = {};
       (trnObj.buyer = transactions[i]?.to?.id),
         (trnObj.price = Number(transactions[i]?.price) * 0.000000000000000001),
-        (trnObj.seller = transactions[i].id),
+        // (trnObj.seller = transactions[i].from?.id),
         (trnObj.txDate = transactions[i]?.txDate),
         (trnObj.txId = transactions[i]?.txId),
         (trnObj.type = transactions[i]?.type);
@@ -379,7 +380,7 @@ export const getCeloGraphNft = async (collection) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
-    nftArr.price = collection?.price;
+    nftArr.price = collection?.price * 0.000000000000000001;
     nftArr.isListed = collection?.isListed;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
@@ -399,7 +400,6 @@ export const getCeloGraphNft = async (collection) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
-  console.log(collection);
   const { data } = await axios.get(
     collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
   );
@@ -407,7 +407,7 @@ export const getGraphNft = async (collection, mainnet) => {
   try {
     const nftArr = {};
     nftArr.collection_name = collection?.collection?.name;
-    nftArr.collection_contract = collection?.collection?.id;
+    nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
@@ -416,7 +416,8 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.ipfs_data = data;
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
-    nftArr.Id = collection?.tokenID;
+    nftArr.Id = collection?.id;
+    nftArr.tokenID = collection?.tokenID;
     nftArr.marketId = collection?.marketId;
     nftArr.properties = data?.properties;
     nftObj.push(nftArr);
@@ -549,6 +550,8 @@ export const buyGraphNft = async (buyProps) => {
       );
     }
   } else {
+    console.log(buyProps);
+    dispatch(setOverlay(true));
     const res = await purchasePolygonNfts(buyProps);
     if (res) {
       dispatch(setOverlay(false));

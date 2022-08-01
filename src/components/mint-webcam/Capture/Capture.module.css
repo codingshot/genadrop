@@ -5,7 +5,7 @@
   width: 100%;
   position: relative;
 }
-.container video {
+.videoOFF {
   width: 100%;
   height: 100%;
   background: rgba(75, 75, 90, 0.74);
@@ -18,6 +18,9 @@
   width: 100%;
   height: calc(100vh - 5rem);
 }
+.videoWrapper video {
+  object-fit: cover;
+}
 .enableContainer {
   position: absolute;
   left: 50%;
@@ -28,7 +31,7 @@
 
 .cameraShot {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 5rem);
   background: #323232;
   object-fit: contain;
   border: 4px solid #ffffff;
@@ -169,7 +172,12 @@
   background: var(--main-color);
   color: var(--default);
 }
-
+.testrecod {
+  position: absolute;
+  font-size: 2rem;
+  top: 10%;
+  background: white;
+}
 @media screen and (max-width: 768px) {
   .uploadBtn {
     display: flex;

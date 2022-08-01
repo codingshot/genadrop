@@ -65,6 +65,9 @@ export const GET_CELO_GRAPH_COLLECITONS = gql`
           id
           txDate
           txId
+          from {
+            id
+          }
           type
           price
           to {
@@ -81,6 +84,9 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
     collections {
       description
       id
+      creator {
+        id
+      }
       name
       nfts {
         chain
@@ -88,6 +94,8 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
         createdAtTimestamp
         id
         isSold
+        isListed
+        marketId
         price
         collection {
           name
@@ -104,7 +112,6 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
           txDate
           txId
           type
-          price
         }
       }
     }
@@ -183,6 +190,9 @@ export const GET_USER_COLLECTIONS = gql`
             id
             txDate
             txId
+            from {
+              id
+            }
             type
             price
             to {
@@ -215,6 +225,12 @@ export const GET_CELO_NFT = gql`
         id
         txDate
         txId
+        from {
+          id
+        }
+        to {
+          id
+        }
         type
         price
       }
@@ -232,6 +248,7 @@ export const GET_GRAPH_NFT = gql`
       isSold
       price
       tokenID
+      marketId
       owner {
         id
       }
@@ -293,7 +310,7 @@ export const GET_AURORA_SINGLE_NFTS = gql`
 
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection: "0x6639b2310b94196cb8b7f2e361c8c58c683add2c" }) {
+    nfts(where: { collection: "0xd6b01b63dd514cf771d8d21b776197fdf9648d54" }) {
       category
       chain
       createdAtTimestamp
