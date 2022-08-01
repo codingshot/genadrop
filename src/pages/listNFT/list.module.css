@@ -121,7 +121,6 @@
   font-size: 0.8rem;
 }
 
-
 .bid {
   border: 1px solid var(--main-color);
   color: white;
@@ -263,7 +262,6 @@
   width: 100%;
   outline: 1px solid transparent;
 }
-
 
 .inputWrapper > input:focus-within {
   outline: 1px solid gray;
