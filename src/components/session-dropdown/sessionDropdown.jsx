@@ -10,7 +10,7 @@ const SessionDropdown = ({ dropdown }) => {
 
   const handleUpgrade = () => {
     dispatch(setUpgradePlan(true));
-    history.push("/create/pricing");
+    history.push("/create/session/pricing");
   };
 
   return (
@@ -26,7 +26,7 @@ const SessionDropdown = ({ dropdown }) => {
               session {session.collectionName}
             </div>
           ))}
-        <div onClick={() => history.push("/create/pricing")} className={`${classes.session} ${classes.create}`}>
+        <div onClick={() => history.push("/create/session/pricing")} className={`${classes.session} ${classes.create}`}>
           create new session
         </div>
       </div>

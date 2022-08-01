@@ -2,8 +2,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --icon-color: rgb(18, 18, 18);
-
   --btn-open: 0px 3.03px 3.03px rgba(0, 0, 0, 0.2);
   --btn-close: 0px 0px 3.03px rgba(0, 0, 0, 0.2);
 
@@ -20,6 +18,7 @@
 
   --text-heading: #0f1d40;
   --text-sub-heading: #525c76;
+  --text-light: #6c757d;
   --text-placeholder: #b2b7c2;
   --text-placeholder-light: #d3d6de;
 
@@ -27,6 +26,8 @@
   --outline-light: #e5e8eb;
   --card-outline: #c4c4c4;
   --outline-dark: #a4a9b6;
+
+  --icon-color: #4b4b5a;
 
   --card-bg: #626277;
   --card-bg-light: #737387;
@@ -39,6 +40,7 @@
   --card-upload: #f6faff;
   --card-trait: #f4f5f6;
   --card-light: #eff3f9;
+  --card-lighter: #fcfdff;
   --btn-close: #eef5f9;
 
   --success-100: #ebfcd5;

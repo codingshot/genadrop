@@ -328,6 +328,7 @@ const transfromNftTraits = async (value) => {
 };
 
 export const fetchUserSession = async ({ currentUser, sessionId }) => {
+  console.log("fetching");
   try {
     const result = await Promise.all([
       fetchCollectionName({ currentUser, sessionId }),
@@ -344,6 +345,16 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
       const transformedNftTraits = await transfromNftTraits(storedNftTraits);
       newNftLayers = constructNftLayers({ storedNftLayers, transformedNftTraits });
     }
+    console.log({
+      storedCollectionName,
+      storedLayers,
+      storedTraits,
+      storedNftLayers,
+      storedNftTraits,
+      newNftLayers,
+      newLayers,
+    });
+
     return {
       nftLayers: newNftLayers,
       layers: newLayers,

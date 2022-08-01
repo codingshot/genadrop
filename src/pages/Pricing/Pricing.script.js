@@ -1,5 +1,5 @@
-export const plans = [
-  {
+export const plans = {
+  free: {
     type: "free",
     description: "Up to 2,000 unique art generation",
     coveredCost: "Cost per collection",
@@ -8,35 +8,35 @@ export const plans = [
     services: [
       {
         name: "Up to 2000 unique art generartion",
-        availble: true,
+        available: true,
       },
       {
         name: "Unlimited preview",
-        availble: true,
+        available: true,
       },
       {
         name: "Set conflict rule and art rarity",
-        availble: true,
+        available: true,
       },
       {
         name: "Auto-save session progress",
-        availble: false,
+        available: false,
       },
       {
         name: "Download collection with metadata",
-        availble: false,
+        available: false,
       },
       {
         name: "Generate GIf",
-        availble: false,
+        available: false,
       },
       {
         name: "Technical support",
-        availble: false,
+        available: false,
       },
     ],
   },
-  {
+  noobs: {
     type: "noobs",
     description: "Up to 2,000 unique art generation",
     coveredCost: "Cost per collection",
@@ -45,35 +45,35 @@ export const plans = [
     services: [
       {
         name: "Up to 2000 unique art generartion",
-        availble: true,
+        available: true,
       },
       {
         name: "Unlimited preview",
-        availble: true,
+        available: true,
       },
       {
         name: "Set conflict rule and art rarity",
-        availble: true,
+        available: true,
       },
       {
         name: "Auto-save session progress",
-        availble: true,
+        available: true,
       },
       {
         name: "Download collection with metadata",
-        availble: true,
+        available: true,
       },
       {
         name: "Generate GIf",
-        availble: false,
+        available: false,
       },
       {
         name: "Technical support",
-        availble: true,
+        available: true,
       },
     ],
   },
-  {
+  geeks: {
     type: "geeks",
     description: "Up to 5,000 unique art generation",
     coveredCost: "Cost per collection",
@@ -83,35 +83,35 @@ export const plans = [
     services: [
       {
         name: "Up to 2000 unique art generartion",
-        availble: true,
+        available: true,
       },
       {
         name: "Unlimited preview",
-        availble: true,
+        available: true,
       },
       {
         name: "Set conflict rule and art rarity",
-        availble: true,
+        available: true,
       },
       {
         name: "Auto-save session progress",
-        availble: true,
+        available: true,
       },
       {
         name: "Download collection with metadata",
-        availble: true,
+        available: true,
       },
       {
         name: "Generate GIf",
-        availble: true,
+        available: true,
       },
       {
         name: "Technical support",
-        availble: true,
+        available: true,
       },
     ],
   },
-  {
+  ogs: {
     type: "ogs",
     description: "Up to ,10000 unique art generation",
     coveredCost: "Cost per collection",
@@ -120,32 +120,32 @@ export const plans = [
     services: [
       {
         name: "Up to 2000 unique art generartion",
-        availble: true,
+        available: true,
       },
       {
         name: "Unlimited preview",
-        availble: true,
+        available: true,
       },
       {
         name: "Set conflict rule and art rarity",
-        availble: true,
+        available: true,
       },
       {
         name: "Auto-save session progress",
-        availble: true,
+        available: true,
       },
       {
         name: "Download collection with metadata",
-        availble: true,
+        available: true,
       },
       {
         name: "Generate GIf",
-        availble: true,
+        available: true,
       },
       {
         name: "Technical support",
-        availble: true,
+        available: true,
       },
     ],
   },
-];
+};

@@ -57,7 +57,7 @@ const Pricing = () => {
       </div>
 
       <div className={classes.cardMenu}>
-        {plans.map((plan, idx) => (
+        {Object.values(plans).map((plan, idx) => (
           <div key={idx} className={classes.wrapper}>
             {plan.mostPopular && <div className={classes.mark}>Most Popular</div>}
             <div className={classes.card}>
@@ -69,9 +69,13 @@ const Pricing = () => {
                 <span>.{plan.price.split(".")[1]}</span>
               </div>
               <div className={classes.services}>
-                {plan.services.map(({ name, availble }, idx) => (
+                {plan.services.map(({ name, available }, idx) => (
                   <div key={idx} className={classes.service}>
-                    {availble ? <MarkIcon className={classes.markIcon} /> : <CloseIcon className={classes.closeIcon} />}
+                    {available ? (
+                      <MarkIcon className={classes.markIcon} />
+                    ) : (
+                      <CloseIcon className={classes.closeIcon} />
+                    )}
                     <div className={classes.serviceName}>{name}</div>
                   </div>
                 ))}

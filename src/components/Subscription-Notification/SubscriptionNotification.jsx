@@ -5,28 +5,30 @@ import { useHistory } from "react-router-dom";
 import { setUpgradePlan } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./SubscriptionNotification.module.css";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 
 const SubscriptionNotification = () => {
   const history = useHistory();
   const [toggle, setToggle] = useState(false);
   const { dispatch, currentUser, currentPlan, collectionName } = useContext(GenContext);
+  const _5mins = 1000 * 60 * 5;
 
   const counter = () => {
     if (currentPlan !== "free") return;
     setTimeout(() => {
       setToggle(true);
-    }, 10000);
+    }, _5mins);
   };
 
   const handleUpgrade = () => {
     dispatch(setUpgradePlan(true));
-    history.push("/create/pricing");
+    history.push("/create/session/pricing");
     handleClose();
   };
 
   const handleClose = () => {
     setToggle(false);
-    // counter();
+    counter();
   };
 
   useEffect(() => {
@@ -37,8 +39,26 @@ const SubscriptionNotification = () => {
 
   return (
     <div className={`${classes.container} ${toggle && classes.active}`}>
-      <button onClick={handleClose}>close</button>
-      <div onClick={handleUpgrade}>upgrade</div>
+      <CloseIcon className={classes.closeIcon} onClick={handleClose} />
+      <div className={classes.title}>Upgrade Plan!</div>
+      <div className={classes.description}>
+        You’re using a free plan. Upgrade to auto-save session, download collection, and more..
+      </div>
+      <div className={classes.list}>
+        <CloseIcon className={classes.listIcon} />
+        <div>Auto-save progress</div>
+      </div>
+      <div className={classes.list}>
+        <CloseIcon className={classes.listIcon} />
+        <div>Download collection</div>
+      </div>
+      <div className={classes.list}>
+        <CloseIcon className={classes.listIcon} />
+        <div>More than 2000 art generation</div>
+      </div>
+      <div className={classes.upgradeBtn} onClick={handleUpgrade}>
+        upgrade plan
+      </div>
     </div>
   );
 };

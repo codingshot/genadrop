@@ -50,7 +50,7 @@ const SessionModal = () => {
   };
 
   const handleCreate = () => {
-    history.push("/create/pricing");
+    history.push("/create/session/pricing");
     handleClose();
   };
 

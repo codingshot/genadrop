@@ -175,21 +175,9 @@
 
 .wallet {
   text-align: right;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: flex-end;
-}
-
-.wallet.active {
-  display: flex;
-}
-
-.auth {
-  display: none;
-}
-
-.auth.active {
-  display: block;
 }
 
 .walletAuthContainer.mobile {

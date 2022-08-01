@@ -119,9 +119,10 @@
   font-size: 0.75rem;
 }
 
-.network img {
-  filter: invert(1);
-  width: 0.5em;
+.chevronIcon {
+  width: 0.75em;
+  height: 0.75em;
+  fill: var(--main-color);
   transition: all 300ms;
 }
 
@@ -158,7 +159,7 @@
   transform: translateY(100%);
 }
 
-.networkContainer:hover img {
+.networkContainer:hover .chevronIcon {
   transform: rotate(180deg);
 }
 
@@ -167,10 +168,6 @@
   height: 8px;
   border-radius: 50%;
   background: #f1b56e;
-}
-
-.network img {
-  width: 0.65em;
 }
 
 .dropdownContainer {

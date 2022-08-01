@@ -1,8 +1,6 @@
 .container {
-  border: 1px solid red;
-  width: 20em;
-  height: 20em;
-  border-radius: 0.5em;
+  max-width: 24em;
+  border-radius: 2em;
   background: var(--default);
   position: fixed;
   right: 1em;
@@ -10,8 +8,75 @@
   transition: all 650ms;
   transform: translateY(calc(100% + 1em));
   z-index: 20;
+  padding: 2.5em;
+  padding-bottom: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 1em;
+  border: 1px solid var(--outline-light);
+  box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
 }
 
 .container.active {
   transform: translateY(0);
+}
+
+.closeIcon {
+  fill: var(--icon-color);
+  position: absolute;
+  right: 1.5em;
+  top: 1.5em;
+  width: 1.4em;
+  height: 1.4em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  background: var(--btn-close);
+  cursor: var(--cursor-pointer);
+  transition: all 300ms;
+}
+
+.closeIcon:hover {
+  box-shadow: var(--shadow-dark);
+}
+
+.title {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.description {
+  text-align: center;
+  color: var(--text-light);
+  margin-bottom: 0.5em;
+}
+
+.list {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.listIcon {
+  fill: var(--error-300);
+}
+
+.upgradeBtn {
+  width: auto;
+  background: var(--main-color);
+  padding: 0.75em 2em;
+  border-radius: 2em;
+  box-shadow: var(--btn-open);
+  transition: all 300ms;
+  align-self: center;
+  color: var(--default);
+  cursor: pointer;
+}
+
+.upgradeBtn:hover {
+  box-shadow: var(--btn-close);
 }

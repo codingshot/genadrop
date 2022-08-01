@@ -2,9 +2,7 @@ import LayerOrders from "../../components/layerorders/layerorders";
 import CollectionDescription from "../../components/description/collection-description";
 import CollectionOverview from "../../components/overview/collection-overview";
 import classes from "./create.module.css";
-import { ReactComponent as Diskicon } from "../../assets/icon-disk.svg";
 import { useEffect, useState } from "react";
-import SessionDropdown from "../../components/session-dropdown/sessionDropdown";
 import LoginModal from "../../components/Login-Modal/LoginModal";
 import SubscriptionNotification from "../../components/Subscription-Notification/SubscriptionNotification";
 import { useContext } from "react";
@@ -21,10 +19,13 @@ import { fetchSession, saveSession } from "../../renderless/store-data/StoreData
 import { useHistory } from "react-router-dom";
 import { handleAddSampleLayers } from "../../utils";
 import CreateGuide from "../../components/create-guide/create-guide";
+import GoogleAuth from "../../components/google-auth/googleAuth";
+import ProfileDropdown from "../../components/profile-dropdown/profileDropdown";
+import { ReactComponent as Diskicon } from "../../assets/icon-disk.svg";
 
 const Create = () => {
   const history = useHistory();
-  const [sessionDropdown, toggleSessionDropdown] = useState(false);
+  const [profileDropdown, toggleProfileDropdown] = useState(false);
   const [toggleGuide, setGuide] = useState(false);
   const { isUser, dispatch, currentUser, currentPlan, sessionId, collectionName } = useContext(GenContext);
 
@@ -38,7 +39,7 @@ const Create = () => {
 
   const handleUpgrade = () => {
     dispatch(setUpgradePlan(true));
-    history.push("/create/pricing");
+    history.push("/create/session/pricing");
   };
 
   useEffect(() => {
@@ -100,24 +101,30 @@ const Create = () => {
       <CollectionNameModal />
       <CreateGuide toggleGuide={toggleGuide} setGuide={setGuide} />
       <div className={classes.details}>
-        {currentPlan === "free" ? (
-          <div onClick={handleUpgrade} className={classes.autoSave}>
-            <Diskicon />
-            <div>Auto-save</div>
-          </div>
-        ) : (
+        <div className={classes.profileContainer}>
           <div
-            onMouseOver={() => toggleSessionDropdown(true)}
-            onMouseOut={() => toggleSessionDropdown(false)}
-            className={classes.sessionContainer}
+            onMouseOver={() => toggleProfileDropdown(true)}
+            onMouseOut={() => toggleProfileDropdown(false)}
+            className={classes.profile}
           >
-            <div className={classes.session}>
-              <Diskicon />
-              <div>Your sessions</div>
-            </div>
-            <SessionDropdown dropdown={sessionDropdown} />
+            <GoogleAuth />
+            <div>session name</div>
+            <ProfileDropdown
+              dropdown={profileDropdown}
+              setDropdown={toggleProfileDropdown}
+              userName={currentUser?.displayName}
+            />
           </div>
-        )}
+          {currentPlan === "free" ? (
+            <div onClick={handleUpgrade} className={classes.autoSave}>
+              <Diskicon />
+              <div>Auto-save</div>
+            </div>
+          ) : (
+            <div>saving...</div>
+          )}
+        </div>
+
         <div className={classes.guide}>
           <div>Need help?</div>
           <div onClick={handleSample}>Try our samples</div>

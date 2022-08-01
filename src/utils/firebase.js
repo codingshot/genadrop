@@ -53,9 +53,9 @@ let initApp = null;
 if (!firebase.apps.length) {
   initApp = firebase.initializeApp(firebaseConfig);
 }
+firebase.firestore().settings({ experimentalForceLongPolling: true });
 
 export const app = initApp;
-
 const db = firebase.firestore();
 
 async function recordTransaction(assetId, type, buyer, seller, price, txId) {

@@ -1,7 +1,9 @@
 .container {
   width: max-content;
   position: absolute;
-  right: 0;
+  left: 0;
+  top: 2em;
+  z-index: 10;
   visibility: hidden;
 }
 
@@ -49,6 +51,10 @@
   gap: 1em;
   padding: 1em;
   cursor: pointer;
+}
+
+.option * {
+  color: var(--text-sub-heading);
 }
 
 .option:hover {

@@ -44,6 +44,8 @@ export const initializeConnection = (walletProps) => {
     dispatch(setProposedChain(storedProvider.chainId));
     dispatch(setConnector(walletConnectProvider));
     handleSetState({ overrideWalletConnect: true });
+  } else {
+    handleSetState({ walletConnectProvider });
   }
 
   // Subscribe to accounts change
@@ -83,7 +85,7 @@ export const initializeConnection = (walletProps) => {
       WS.updateAccount(walletProps);
     });
     handleSetState({ isMetamask: true });
-    handleSetState({ walletConnectProvider });
+    // handleSetState({ walletConnectProvider });
   } else {
     handleSetState({ isMetamask: false });
   }
@@ -156,26 +158,26 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
-  if (window?.ethereum !== undefined) {
-    dispatch(setToggleWalletPopup(true));
-  } else {
-    dispatch(setToggleWalletPopup(false));
-    dispatch(
-      setNotification({
-        message: "You need to install metamask to continue",
-        type: "error",
-      })
-    );
-    dispatch(setClipboard("https://metamask.io/"));
-  }
+  dispatch(setToggleWalletPopup(true));
 };
 
 export const connectWallet = async (walletProps) => {
   const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
   if (connectionMethod === "metamask") {
-    await WS.connectWithMetamask(walletProps);
-    const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-    dispatch(setConnector(ethereumProvider));
+    if (window?.ethereum !== undefined) {
+      await WS.connectWithMetamask(walletProps);
+      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+      dispatch(setConnector(ethereumProvider));
+    } else {
+      dispatch(setToggleWalletPopup(false));
+      dispatch(
+        setNotification({
+          message: "You need to install metamask to continue",
+          type: "error",
+        })
+      );
+      dispatch(setClipboard("https://metamask.io/"));
+    }
   } else if (connectionMethod === "walletConnect") {
     walletProviderRef.current = 2;
     if (proposedChain === 4160) {
