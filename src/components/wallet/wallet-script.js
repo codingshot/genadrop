@@ -28,22 +28,60 @@ export const getConnectedChain = (chainId) => {
 
 export const getNetworkID = () => {
   return new Promise(async (resolve) => {
-    const networkId = await window.ethereum.networkVersion;
+    const networkId = await window.ethereum.request({ method: "net_version" });
     resolve(Number(networkId));
   });
 };
 
 export const initializeConnection = (walletProps) => {
-  const { dispatch, handleSetState, rpc } = walletProps;
-  const walletConnectProvider = new WalletConnectProvider({
-    rpc,
-  });
+  const { dispatch, handleSetState, rpc, mainnet } = walletProps;
+  let walletConnectProvider = null;
 
   if (window.localStorage.walletconnect) {
+    let newRpc = null;
     let storedProvider = JSON.parse(window.localStorage.walletconnect);
+    if (storedProvider.chainId === 4160) {
+      newRpc = {
+        4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
+      };
+    } else {
+      newRpc = {
+        [storedProvider.chainId]: chainIdToParams[storedProvider.chainId].rpcUrls[0],
+      };
+    }
+    walletConnectProvider = new WalletConnectProvider({
+      rpc: newRpc,
+    });
     dispatch(setProposedChain(storedProvider.chainId));
     dispatch(setConnector(walletConnectProvider));
     handleSetState({ overrideWalletConnect: true });
+    handleSetState({ walletConnectProvider });
+  } else if (rpc) {
+    walletConnectProvider = new WalletConnectProvider({
+      rpc,
+    });
+    handleSetState({ walletConnectProvider });
+  } else if (window.ethereum !== undefined) {
+    WS.updateAccount(walletProps);
+    const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+    dispatch(setConnector(ethereumProvider));
+    const { ethereum } = window;
+    // Subscribe to accounts change
+    ethereum.on("accountsChanged", function (accounts) {
+      WS.updateAccount(walletProps);
+    });
+
+    // Subscribe to chainId change
+    ethereum.on("chainChanged", (chainId) => {
+      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+      dispatch(setConnector(ethereumProvider));
+      WS.updateAccount(walletProps);
+    });
+    handleSetState({ isMetamask: true });
+    return;
+  } else {
+    handleSetState({ isMetamask: false });
+    return;
   }
 
   // Subscribe to accounts change
@@ -61,32 +99,6 @@ export const initializeConnection = (walletProps) => {
   walletConnectProvider.on("disconnect", (code, reason) => {
     WS.disconnectWallet(walletProps);
   });
-
-  if (window.ethereum !== undefined) {
-    const { ethereum } = window;
-
-    if (!window.localStorage.walletconnect) {
-      WS.updateAccount(walletProps);
-      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-      dispatch(setConnector(ethereumProvider));
-    }
-
-    // Subscribe to accounts change
-    ethereum.on("accountsChanged", function (accounts) {
-      WS.updateAccount(walletProps);
-    });
-
-    // Subscribe to chainId change
-    ethereum.on("chainChanged", (chainId) => {
-      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-      dispatch(setConnector(ethereumProvider));
-      WS.updateAccount(walletProps);
-    });
-    handleSetState({ isMetamask: true });
-    handleSetState({ walletConnectProvider });
-  } else {
-    handleSetState({ isMetamask: false });
-  }
 };
 
 export const setNetworkType = ({ dispatch, handleSetState }) => {
@@ -94,8 +106,8 @@ export const setNetworkType = ({ dispatch, handleSetState }) => {
   handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
 };
 
-export const connectWithQRCode = async ({ walletConnectProvider, dispatch, rpc, supportedChains }) => {
-  let proposedChain = Object.keys(rpc)[0];
+export const connectWithQRCode = async ({ walletConnectProvider, dispatch, supportedChains }) => {
+  let proposedChain = Object.keys(walletConnectProvider.rpc)[0];
   try {
     await walletConnectProvider.enable();
     if (proposedChain !== String(walletConnectProvider.chainId)) {
@@ -156,26 +168,26 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
-  if (window?.ethereum !== undefined) {
-    dispatch(setToggleWalletPopup(true));
-  } else {
-    dispatch(setToggleWalletPopup(false));
-    dispatch(
-      setNotification({
-        message: "You need to install metamask to continue",
-        type: "error",
-      })
-    );
-    dispatch(setClipboard("https://metamask.io/"));
-  }
+  dispatch(setToggleWalletPopup(true));
 };
 
 export const connectWallet = async (walletProps) => {
   const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
   if (connectionMethod === "metamask") {
-    await WS.connectWithMetamask(walletProps);
-    const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-    dispatch(setConnector(ethereumProvider));
+    if (window?.ethereum !== undefined) {
+      await WS.connectWithMetamask(walletProps);
+      const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+      dispatch(setConnector(ethereumProvider));
+    } else {
+      dispatch(setToggleWalletPopup(false));
+      dispatch(
+        setNotification({
+          message: "You need to install metamask to continue",
+          type: "error",
+        })
+      );
+      dispatch(setClipboard("https://metamask.io/"));
+    }
   } else if (connectionMethod === "walletConnect") {
     walletProviderRef.current = 2;
     if (proposedChain === 4160) {
@@ -207,10 +219,10 @@ export const disconnectWalletConnectProvider = async (walletConnectProvider) => 
 export const updateAccount = async (walletProps) => {
   const { dispatch, walletConnectProvider, mainnet } = walletProps;
   const { ethereum } = window;
-  const [accounts] = await ethereum.request({
+  let [accounts] = await ethereum.request({
     method: "eth_accounts", //eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
   });
-  const networkId = await ethereum.networkVersion;
+  let networkId = await ethereum.request({ method: "net_version" });
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
   const getEnv = supportedChains[networkId] ? mainnet === supportedChains[networkId].isMainnet : false;
   if (!getEnv) {
@@ -226,13 +238,18 @@ export const updateAccount = async (walletProps) => {
   } else {
     dispatch(setToggleWalletPopup(false));
     if (!accounts) {
-      WS.disconnectWallet(walletProps);
-      dispatch(
-        setNotification({
-          message: "Please connect your site manually from your wallet extension.",
-          type: "warning",
-        })
-      );
+      [accounts] = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
+      if (!accounts) {
+        WS.disconnectWallet(walletProps);
+        dispatch(
+          setNotification({
+            message: "Please connect your site manually from your wallet extension.",
+            type: "warning",
+          })
+        );
+      }
     } else {
       dispatch(setChainId(Number(networkId)));
       dispatch(setAccount(accounts));
