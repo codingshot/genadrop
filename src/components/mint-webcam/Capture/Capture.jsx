@@ -105,10 +105,7 @@ const Capture = () => {
         </div>
       </div>
 
-      <div
-        style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "100%" }}
-        className={img && classes.none}
-      >
+      <div className={!img ? classes.videoContainer : classes.none}>
         <div className={classes.videoWrapper}>
           {toggle ? (
             <Webcam
