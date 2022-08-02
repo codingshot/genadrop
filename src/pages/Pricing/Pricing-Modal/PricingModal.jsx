@@ -95,10 +95,10 @@ const PricingModal = ({ modal, price, closeModal }) => {
     console.log("redirectToCheckout");
 
     const stripe = await getStripe();
-    const { error } = await stripe.redirectToCheckout(checkoutOptions);
-    console.log("Stripe checkout error", error);
+    // const response = ;
+    console.log("Stripe checkout error", await stripe.redirectToCheckout(checkoutOptions));
 
-    if (error) setStripeError(error.message);
+    // if (response.error) setStripeError(response.error.message);
     setLoading(false);
   };
 

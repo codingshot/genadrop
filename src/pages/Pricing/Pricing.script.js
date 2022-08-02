@@ -37,7 +37,7 @@ export const plans = [
     ],
   },
   {
-    type: "noobs",
+    type: "Hobby",
     description: "Up to 2,000 unique art generation",
     coveredCost: "Cost per collection",
     price: "99.99",
@@ -74,7 +74,7 @@ export const plans = [
     ],
   },
   {
-    type: "geeks",
+    type: "Pro",
     description: "Up to 5,000 unique art generation",
     coveredCost: "Cost per collection",
     price: "199.99",
@@ -112,7 +112,7 @@ export const plans = [
     ],
   },
   {
-    type: "ogs",
+    type: "Agency",
     description: "Up to ,10000 unique art generation",
     coveredCost: "Cost per collection",
     price: "299.99",
