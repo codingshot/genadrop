@@ -1,12 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import Webcam from "react-webcam";
 import classes from "./Capture.module.css";
 import WebcamEnable from "../webcam-enable/webcamEnable";
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
 import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
+import { GenContext } from "../../../gen-state/gen.context";
+import { setZip } from "../../../gen-state/gen.actions";
 
-const Capture = ({ handleSetState: handleMintSetState }) => {
+const Capture = () => {
+  const history = useHistory();
   const webcamRef = useRef(null);
   const [state, setState] = useState({
     toggle: false,
@@ -19,6 +23,7 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
+  const { zip: zipObg, dispatch } = useContext(GenContext);
 
   const videoConstraints = {
     facingMode: webcam,
@@ -42,7 +47,7 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
   };
 
   const cancel = () => {
-    handleMintSetState({ cameraSwitch: false });
+    history.push("/mint/1of1");
   };
 
   const downloadImg = () => {
@@ -68,15 +73,18 @@ const Capture = ({ handleSetState: handleMintSetState }) => {
 
   const continueToMint = () => {
     const result = getFileFromBase64(img, "Image.png");
-    handleMintSetState({
-      file: [result],
-      fileName: "Image.png",
-    });
-    handleMintSetState({ cameraSwitch: false });
+    dispatch(
+      setZip({
+        name: "Image",
+        file: result,
+      })
+    );
+
+    history.push("/mint/1of1");
   };
   return (
     <div className={`${classes.container}`}>
-      <WebcamEnable handleMintSetState={handleMintSetState} toggle={toggle} getVideo={getVideo} />
+      <WebcamEnable toggle={toggle} getVideo={getVideo} />
 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }} className={!img && classes.none}>
         <div

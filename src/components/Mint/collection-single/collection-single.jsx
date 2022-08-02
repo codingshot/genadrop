@@ -1,26 +1,25 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
-import { useParams, useHistory, useRouteMatch, Link } from "react-router-dom";
+import { useParams, useHistory, useRouteMatch, useLocation, Link } from "react-router-dom";
 import classes from "./collection-single.module.css";
 import { ReactComponent as CameraIcon } from "../../../assets/icon-camera.svg";
 import collectionIcon from "../../../assets/icon-collection-light.svg";
 import _1of1Icon from "../../../assets/icon-1of1-light.svg";
 import leftArrow from "../../../assets/icon-arrow-left.svg";
-// import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
-import Capture from "../../mint-webcam/Capture/Capture";
 import line from "../../../assets/icon-line.svg";
 import { GenContext } from "../../../gen-state/gen.context";
+import { setZip } from "../../../gen-state/gen.actions";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
   const history = useHistory();
   const { url } = useRouteMatch();
+  const location = useLocation();
   const fileRef = useRef(null);
   const dragRef = useRef(null);
-  const dropRef = useRef(null);
 
-  const { zip: zipObg } = useContext(GenContext);
+  const { zip: zipObg, dispatch } = useContext(GenContext);
   const [state, setState] = useState({
     mintSwitch: "",
     cameraSwitch: false,
@@ -33,7 +32,7 @@ const CollectionToSingleMinter = () => {
     zip: null,
   });
 
-  const { mintSwitch, loading1, loading2, acceptedFileType, file, fileName, metadata, zip, cameraSwitch } = state;
+  const { mintSwitch, loading1, loading2, acceptedFileType, file, fileName, metadata, zip } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -72,13 +71,15 @@ const CollectionToSingleMinter = () => {
     }
   };
 
-  // read zip file directed from the create page
+  // read zip or camera picture file
   const handleZipUpload = () => {
-    handleSetState({ fileName: "", file: null, metadata: null, zip: null });
-    const zipFile = zipObg.file;
-    handleSetState({ zip: zipFile, fileName: zipObg.name });
-
-    handleZipFile({ uploadedFile: zipFile, handleSetState });
+    if (location.pathname === "/mint/1of1" && zipObg.file.type === "image/png") {
+      handleSetState({ fileName: zipObg.name, file: [zipObg.file], metadata: null, zip: null });
+    } else if (location.pathname === "/mint/collection" && zipObg.file.type === "application/zip") {
+      handleSetState({ fileName: zipObg.name, zip: zipObg.file, file: null, metadata: null });
+      handleZipFile({ uploadedFile: zipObg.file, handleSetState });
+    }
+    dispatch(setZip({}));
   };
 
   useEffect(() => {
@@ -128,8 +129,6 @@ const CollectionToSingleMinter = () => {
             })
           }
         />
-      ) : cameraSwitch ? (
-        <Capture handleSetState={handleSetState} />
       ) : (
         <>
           <Link to="/mint" className={classes.goBack}>
@@ -190,16 +189,17 @@ const CollectionToSingleMinter = () => {
               <p className={classes.supportedFiles}>
                 We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
               </p>
-              <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
-                Browse files
-              </button>
-              <div>or</div>
-              <div className={classes.takePic}>
+              <Link className={classes.takePic} to="/mint/camera">
                 <div>
                   <CameraIcon />
                 </div>
-                <p onClick={() => handleSetState({ cameraSwitch: true })}>Take Photo</p>
-              </div>
+                <p>Take Photo</p>
+              </Link>
+
+              <div>or</div>
+              <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
+                Browse files
+              </button>
             </div>
           ) : (
             <div className={classes.cardPlaceholder} />
