@@ -68,6 +68,7 @@ const genActionTypes = {
   SET_IS_USER: "SET_IS_USER",
   SET_CURRENT_PLAN: "SET_CURRENT_PLAN",
   SET_UPGRADE_PLAN: "SET_UPGRADE_PLAN",
+  SET_ACTION_PROGRESS: "SET_ACTION_PROGRESS",
 };
 
 export default genActionTypes;

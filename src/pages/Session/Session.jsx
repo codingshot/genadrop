@@ -20,6 +20,7 @@ import { plans } from "../Pricing/Pricing.script";
 import { getCurrentUser } from "../../components/google-auth/googleAuth.script";
 import NotResult from "./No-Result/NoResult";
 import Skeleton from "react-loading-skeleton";
+import { handleResetCreate } from "../../utils";
 
 const Session = () => {
   const history = useHistory();
@@ -31,6 +32,7 @@ const Session = () => {
 
   const handleLoad = async (sessionId, currentPlan) => {
     console.log("fetch starts");
+    handleResetCreate({ dispatch });
     setLoading(true);
     const res = await fetchUserSession({ currentUser, sessionId });
     if (res) {
@@ -52,7 +54,9 @@ const Session = () => {
     const sessions = await fetchSession({ currentUser });
     dispatch(setSession(sessions));
     if (!sessions.length) {
-      toggleNotResult(true);
+      toggleNotResult("true");
+      handleResetCreate({ dispatch });
+      dispatch(setCurrentPlan("free"));
     }
     setLoading(false);
     console.log("delete ends");

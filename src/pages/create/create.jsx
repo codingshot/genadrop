@@ -22,6 +22,7 @@ import CreateGuide from "../../components/create-guide/create-guide";
 import GoogleAuth from "../../components/google-auth/googleAuth";
 import ProfileDropdown from "../../components/profile-dropdown/profileDropdown";
 import { ReactComponent as Diskicon } from "../../assets/icon-disk.svg";
+import ProgressBar from "./Progress-Bar/ProgressBar";
 
 const Create = () => {
   const history = useHistory();
@@ -63,23 +64,6 @@ const Create = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    if (!sessionId) return;
-    const fetch = async () => {
-      try {
-        dispatch(setOverlay(true));
-        const sessions = await fetchSession({ currentUser });
-        dispatch(setOverlay(false));
-        if (sessions.length) {
-          dispatch(setSession(sessions));
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetch();
-  }, [currentUser, sessionId]);
-
-  useEffect(() => {
     const save = async () => {
       if (collectionName && sessionId && currentPlan && currentUser) {
         const res = await saveSession({ currentUser, sessionId, collectionName, currentPlan });
@@ -108,7 +92,11 @@ const Create = () => {
             className={`${classes.profile} ${currentUser && classes.active}`}
           >
             <GoogleAuth />
-            <div className={`${classes.collectionName} ${currentUser && classes.active}`}>session name</div>
+            <div className={classes.collectionNameContainer}>
+              <div className={`${classes.collectionName} ${currentUser && classes.active}`}>
+                session name afadfadfad
+              </div>
+            </div>
             <ProfileDropdown
               dropdown={profileDropdown}
               setDropdown={toggleProfileDropdown}
@@ -121,7 +109,7 @@ const Create = () => {
               <div>Auto-save</div>
             </div>
           ) : (
-            <div>saving...</div>
+            <ProgressBar />
           )}
         </div>
 

@@ -11,8 +11,18 @@ import {
 } from "./StoreData.script";
 
 const StoreData = () => {
-  const { layers, nftLayers, rule, collectionName, sessionId, currentUser, imageAction, layerAction, upgradePlan } =
-    useContext(GenContext);
+  const {
+    dispatch,
+    layers,
+    nftLayers,
+    rule,
+    collectionName,
+    sessionId,
+    currentUser,
+    imageAction,
+    layerAction,
+    upgradePlan,
+  } = useContext(GenContext);
 
   useEffect(() => {
     saveCollectionName({ currentUser, sessionId, collectionName });
@@ -29,8 +39,8 @@ const StoreData = () => {
 
     if (type !== "order") {
       saveLayers({ currentUser, sessionId, layers: newLayers });
-    } else if (type === "order" && false) {
-      // saveLayers({ currentUser, sessionId, layers: newLayers });
+    } else if (type === "order") {
+      saveLayers({ currentUser, sessionId, layers: newLayers });
     }
   }, [layerAction, layers, currentUser, sessionId]);
 
@@ -47,16 +57,16 @@ const StoreData = () => {
     const { type, value } = imageAction;
     switch (type) {
       case "upload":
-        saveTraits({ currentUser, sessionId, ...value });
+        saveTraits({ dispatch, currentUser, sessionId, ...value });
         break;
       case "rename":
-        renameTrait({ currentUser, sessionId, ...value });
+        renameTrait({ dispatch, currentUser, sessionId, ...value });
         break;
       case "delete":
-        deleteTrait({ currentUser, sessionId, ...value });
+        deleteTrait({ dispatch, currentUser, sessionId, ...value });
         break;
       case "deleteAll":
-        deleteAllTraits({ currentUser, sessionId, id: value });
+        deleteAllTraits({ dispatch, currentUser, sessionId, id: value });
         break;
       default:
         break;

@@ -54,7 +54,12 @@
 }
 
 .profile.active {
-  border: 1px solid var(--outline-dark);
+  border: 1px solid var(--main-color);
+}
+
+.collectionNameContainer {
+  /* border: 1px solid red; */
+  overflow: hidden;
 }
 
 .collectionName {
@@ -63,6 +68,10 @@
 
 .collectionName.active {
   display: inline-flex;
+  color: var(--main-color);
+  width: 8em;
+  white-space: nowrap;
+  overflow: auto;
 }
 
 .autoSave {

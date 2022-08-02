@@ -60,6 +60,7 @@ const GenContextProvider = ({ children }) => {
     isUser,
     currentPlan,
     upgradePlan,
+    actionProgress,
   } = state;
 
   return (
@@ -118,6 +119,7 @@ const GenContextProvider = ({ children }) => {
         isUser,
         currentPlan,
         upgradePlan,
+        actionProgress,
         dispatch,
       }}
     >

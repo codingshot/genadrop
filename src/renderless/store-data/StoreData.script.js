@@ -11,6 +11,7 @@ import {
 import { doc, collection, setDoc, getFirestore, getDoc, getDocs, query, deleteDoc } from "firebase/firestore";
 
 import { app } from "../../utils/firebase";
+import { setActionProgress } from "../../gen-state/gen.actions";
 
 const storage = getStorage(app);
 const firestore = getFirestore();
@@ -59,18 +60,23 @@ export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) 
   }
 };
 
-export const saveTraits = async ({ currentUser, sessionId, id, traits }) => {
+export const saveTraits = async ({ dispatch, currentUser, sessionId, id, traits }) => {
   if (!traits.length) return;
   if (currentUser && sessionId) {
-    traits.forEach(async ({ traitTitle, image }) => {
-      const traitRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${traitTitle}`);
-      try {
-        await uploadBytes(traitRef, image);
-        console.log({ traitTitle });
-      } catch (error) {
-        console.log(`error ${error}`);
-      }
-    });
+    await Promise.all(
+      traits.map(async ({ traitTitle, image }, idx) => {
+        const traitRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${traitTitle}`);
+        try {
+          await uploadBytes(traitRef, image);
+          console.log({ traitTitle });
+          dispatch(setActionProgress({ totalCount: traits.length }));
+        } catch (error) {
+          console.log(`error ${error}`);
+        }
+      })
+    );
+    dispatch(setActionProgress({ resetCount: true }));
+    console.log("uploaded successfully");
   }
 };
 
@@ -345,15 +351,6 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
       const transformedNftTraits = await transfromNftTraits(storedNftTraits);
       newNftLayers = constructNftLayers({ storedNftLayers, transformedNftTraits });
     }
-    console.log({
-      storedCollectionName,
-      storedLayers,
-      storedTraits,
-      storedNftLayers,
-      storedNftTraits,
-      newNftLayers,
-      newLayers,
-    });
 
     return {
       nftLayers: newNftLayers,

@@ -80,6 +80,10 @@ export const INITIAL_STATE = {
   isUser: "", // true|false|null,
   currentPlan: "free", // free|noobs|geeks|ogs
   upgradePlan: false,
+  actionProgress: {
+    totalCount: 0,
+    resetCount: true,
+  },
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -430,6 +434,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         upgradePlan: action.payload,
+      };
+    case genActionTypes.SET_ACTION_PROGRESS:
+      return {
+        ...state,
+        actionProgress: action.payload,
       };
     default:
       return state;

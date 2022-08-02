@@ -340,3 +340,8 @@ export const setUpgradePlan = (state) => ({
   type: genActionTypes.SET_UPGRADE_PLAN,
   payload: state,
 });
+
+export const setActionProgress = (state) => ({
+  type: genActionTypes.SET_ACTION_PROGRESS,
+  payload: state,
+});
