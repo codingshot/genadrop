@@ -9,7 +9,7 @@
   border-radius: 0.5em;
   z-index: 10;
   overflow: auto;
-  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.1);
+  box-shadow: -9px 13px 18px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
 }
 
 /* .container.active {

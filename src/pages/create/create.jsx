@@ -105,10 +105,10 @@ const Create = () => {
           <div
             onMouseOver={() => toggleProfileDropdown(true)}
             onMouseOut={() => toggleProfileDropdown(false)}
-            className={classes.profile}
+            className={`${classes.profile} ${currentUser && classes.active}`}
           >
             <GoogleAuth />
-            <div>session name</div>
+            <div className={`${classes.collectionName} ${currentUser && classes.active}`}>session name</div>
             <ProfileDropdown
               dropdown={profileDropdown}
               setDropdown={toggleProfileDropdown}

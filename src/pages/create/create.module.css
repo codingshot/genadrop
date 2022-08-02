@@ -51,7 +51,18 @@
   transition: all 300ms;
   cursor: pointer;
   position: relative;
+}
+
+.profile.active {
   border: 1px solid var(--outline-dark);
+}
+
+.collectionName {
+  display: none;
+}
+
+.collectionName.active {
+  display: inline-flex;
 }
 
 .autoSave {

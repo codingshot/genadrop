@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: space-between;
   border: 1px solid var(--card-outline);
-  padding: 0.5em 1em;
+  padding: 1em 1em;
   border-radius: 0.5em;
 }
 
@@ -178,7 +178,7 @@
   gap: 1em;
   padding: 0.5em 1em;
   border-radius: 0.25em;
-  /* box-shadow: 0 0 4px whitesmoke; */
+  background: var(--card-light);
 }
 
 .dots div {
@@ -191,7 +191,7 @@
   width: 0.5em;
   height: 0.5em;
   border-radius: 50%;
-  background: var(--default);
+  background: var(--card-light);
   animation: blink 450ms infinite alternate linear;
 }
 

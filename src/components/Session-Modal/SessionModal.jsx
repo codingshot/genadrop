@@ -8,10 +8,9 @@ import {
   setCurrentSession,
   setLayers,
   setNftLayers,
-  setSession,
   setToggleSessionModal,
 } from "../../gen-state/gen.actions";
-import { deleteAllLayers, fetchSession, fetchUserSession } from "../../renderless/store-data/StoreData.script";
+import { fetchUserSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
 
 const SessionModal = () => {
@@ -34,19 +33,6 @@ const SessionModal = () => {
     }
     setLoading(false);
     console.log("fetch ends");
-  };
-
-  const handleDelete = async (sessionId) => {
-    console.log("delete starts");
-    setLoading(true);
-    await deleteAllLayers({ currentUser, sessionId });
-    const sessions = await fetchSession({ currentUser });
-    dispatch(setSession(sessions));
-    if (!sessions.length) {
-      dispatch(setToggleSessionModal(false));
-    }
-    setLoading(false);
-    console.log("delete ends");
   };
 
   const handleCreate = () => {
@@ -83,9 +69,6 @@ const SessionModal = () => {
                   <div className={classes.action}>
                     <div onClick={() => handleLoad(session.sessionId, session.currentPlan)} className={classes.loadBtn}>
                       Load
-                    </div>
-                    <div onClick={() => handleDelete(session.sessionId)} className={classes.deleteBtn}>
-                      Delete
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,6 @@
 .signIn {
   cursor: pointer;
-  color: var(--main-color);
+  color: var(--main-color) !important;
 }
 
 .profileContainer {
@@ -16,7 +16,7 @@
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--default);
-  background: var(--card-bg);
+  color: var(--default) !important;
+  background: var(--main-light);
   cursor: pointer;
 }
