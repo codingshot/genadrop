@@ -4,17 +4,17 @@ import CollectionOverview from "../../components/overview/collection-overview";
 import classes from "./create.module.css";
 import { useEffect, useState } from "react";
 import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
-import { handleAddSampleLayers } from "../../utils";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import CreateGuide from "../../components/create-guide/create-guide";
+import { handleSampleLayers } from "../../components/menu/collection-menu-script";
 
 const Create = () => {
   const { dispatch } = useContext(GenContext);
   const [toggleGuide, setGuide] = useState(false);
 
   const handleSample = () => {
-    handleAddSampleLayers({ dispatch });
+    handleSampleLayers({ dispatch });
   };
 
   const handleTutorial = () => {

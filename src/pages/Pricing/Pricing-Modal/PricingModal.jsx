@@ -18,9 +18,8 @@ let stripePromise;
 
 const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+    stripePromise = loadStripe(process.env.STRIPE_LIVE_PUBLIC_KEY);
   }
-
   return stripePromise;
 };
 
@@ -42,22 +41,22 @@ const PricingModal = ({ modal, price, closeModal }) => {
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
-    "client-id": "test",
+    "client-id": process.env.PAYPAL_LIVE_CLIENT_ID,
     currency: "USD",
     intent: "capture",
   };
 
   const item = [
     {
-      price: "price_1LPcwyBNj5DiViWraDJpzpeh",
+      price: "price_1LQrfZFiDLqRMLIXoXqtKhas",
       quantity: 1,
     },
     {
-      price: "price_1LPcxsBNj5DiViWrY6LBUNHp",
+      price: "price_1LQriKFiDLqRMLIX1HBQwggL",
       quantity: 1,
     },
     {
-      price: "price_1LPcyWBNj5DiViWrS47kiQgt",
+      price: "price_1LQroRFiDLqRMLIXBVqu6fbY",
       quantity: 1,
     },
   ];
@@ -79,12 +78,12 @@ const PricingModal = ({ modal, price, closeModal }) => {
     // This function captures the funds from the transaction.
     return actions.order.capture().then(function (details) {
       // This function shows a transaction success message to your buyer.
-      alert("Transaction completed by " + details.payer.name.given_name);
+      handleClick();
     });
   };
 
   const checkoutOptions = {
-    lineItems: [item[modal - 1]],
+    lineItems: [item[0]],
     mode: "payment",
     successUrl: `${window.location.origin}/success`, // you decide where to redirect. This is just for test
     cancelUrl: `${window.location.origin}/cancel`,
@@ -95,10 +94,12 @@ const PricingModal = ({ modal, price, closeModal }) => {
     console.log("redirectToCheckout");
 
     const stripe = await getStripe();
-    const { error } = await stripe.redirectToCheckout(checkoutOptions);
-    console.log("Stripe checkout error", error);
+    console.log("Got stripe");
+    const res = await stripe.redirectToCheckout(checkoutOptions);
+    console.log("Stripe checkout error", res);
 
-    if (error) setStripeError(error.message);
+    if (res.error) setStripeError(res.error.message);
+    // else handleClick();
     setLoading(false);
   };
 
@@ -111,7 +112,6 @@ const PricingModal = ({ modal, price, closeModal }) => {
       // If payment was successful, create a session for the user using the same ID
       const sessionId = await saveSession({ currentUser, sessionId: ID });
       if (!sessionId) return; // showNotification
-      console.log({ sessionId });
       dispatch(setCurrentSession(sessionId));
       dispatch(setCollectionName(""));
       dispatch(setToggleCollectionNameModal(true));
@@ -142,7 +142,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
               className={`${activeMode === "stripe" && classes.active} ${classes.paymentMethod}`}
             >
               <img src={stripeIcon} alt="" />
-              <div>Stripe</div>
+              {/* <div>Stripe</div> */}
             </div>
           </div>
           <button onClick={handleClick}>Continue</button>

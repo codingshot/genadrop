@@ -81,7 +81,10 @@ export const polygonClient = createClient({
 });
 
 export const celoClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/celo-dev-subgraph",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/celo-dev-subgraph"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/celo-mainnet",
 });
 
 export const auroraClient = createClient({
