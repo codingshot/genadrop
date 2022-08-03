@@ -659,6 +659,13 @@ export const dataURItoBlob = (dataURI) => {
   return blob;
 };
 
+export const getFile = async (url, name, type) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  const file = new File([blob], name, { type });
+  return file;
+};
+
 export const handleImage = async (props) => {
   const { canvas, images, image } = props;
   const { height, width } = await getImageSize(image);
