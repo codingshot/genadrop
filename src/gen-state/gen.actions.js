@@ -335,3 +335,8 @@ export const setCurrentPlan = (plan) => ({
   type: genActionTypes.SET_CURRENT_PLAN,
   payload: plan,
 });
+
+export const setMinter = (minter) => ({
+  type: genActionTypes.SET_MINTER,
+  payload: minter,
+});
