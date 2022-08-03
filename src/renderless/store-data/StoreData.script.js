@@ -9,9 +9,9 @@ import {
   uploadString,
 } from "firebase/storage";
 import { doc, collection, setDoc, getFirestore, getDoc, getDocs, query, deleteDoc } from "firebase/firestore";
-
 import { app } from "../../utils/firebase";
 import { setActionProgress } from "../../gen-state/gen.actions";
+import { getFile, getBase64FromUrl } from "../../utils";
 
 const storage = getStorage(app);
 const firestore = getFirestore();
@@ -274,30 +274,6 @@ export const fetchNftTraits = async ({ currentUser, sessionId }) => {
     );
     return nftTraits;
   }
-};
-
-export const getFile = async (url, name, type) => {
-  try {
-    const response = await fetch(url);
-    const blob = await response.blob();
-    const file = new File([blob], name, { type });
-    return file;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-export const getBase64FromUrl = async (url) => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(blob);
-    reader.onloadend = () => {
-      const base64data = reader.result;
-      resolve(base64data);
-    };
-  });
 };
 
 const transfromTraits = async (value) => {

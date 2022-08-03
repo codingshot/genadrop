@@ -1,7 +1,7 @@
 import { setImageAction, setLayers, setOverlay } from "../../gen-state/gen.actions";
 import { dataURItoBlob, handleBlankImage, handleTemplateImage } from "../../utils";
 import { v4 as uuid } from "uuid";
-import { getFile } from "../../renderless/store-data/StoreData.script";
+import { getFile } from "../../utils";
 
 export const handleFileChange = (props) => {
   const { layerId, event, traits, layerTitle, dispatch } = props;
@@ -68,28 +68,8 @@ export const handleAddBlank = async (props) => {
   return { layerId, layerTitle, traits: uniqueImageFile };
 };
 
-export const handleAddTemplates = async (props) => {
-  const { canvas, img, traits, layerTitle, layerId, imgName } = props;
-  let drawed = false;
-  drawed = await handleTemplateImage({ img, canvas });
-  if (drawed) {
-    const imageUrl = canvas.toDataURL("image/webp", 1);
-    const imageFile = new File([dataURItoBlob(imageUrl)], imgName, { type: "image/jpeg" });
-    const uniqueImageFile = [...traits];
-    const filterArr = traits.map(({ image }) => image.name);
-    if (!filterArr.includes(imageFile.name)) {
-      uniqueImageFile.push({
-        traitTitle: "sampleImage" + img,
-        Rarity: "1",
-        image: imageFile,
-      });
-    }
-    return { layerId, layerTitle, traits: uniqueImageFile };
-  }
-};
-
 export const handleSampleLayers = async ({ dispatch }) => {
-  // dispatch(setOverlay(true));
+  dispatch(setOverlay(true));
   const url = {
     Green10: "/assets/CreateAssets/Goo/Green10.png",
     High30: "/assets/CreateAssets/TopLid/High30.png",
@@ -145,5 +125,5 @@ export const handleSampleLayers = async ({ dispatch }) => {
   ];
 
   dispatch(setLayers(layers));
-  // dispatch(setOverlay(false));
+  dispatch(setOverlay(false));
 };

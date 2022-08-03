@@ -83,7 +83,10 @@ const Dashboard = () => {
 
     (async function getUserNFTs() {
       const singleNfts = await fetchUserCreatedNfts(account);
-      const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      let algoNFTs = [];
+      if (chainId == 4160) {
+        algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      }
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);
       const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account);
       const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account);
@@ -94,10 +97,14 @@ const Dashboard = () => {
 
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
-      const address = ethers.utils.hexlify(account);
+      let address = "";
+      if (chainId != 4160) {
+        address = ethers.utils.hexlify(account);
+      }
 
       const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
       const celoCollectedNfts = await getCeloCollectedNFTs(address);
+      const collectedNfts = await fetchUserBoughtNfts(account);
       const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
       handleSetState({
         collectedNfts: [...(algoCollectedNfts || []), ...(celoCollectedNfts || []), ...(polygonCollectedNfts || [])],
@@ -106,7 +113,10 @@ const Dashboard = () => {
 
     // Get User created Collections
     (async function getCreatedCollections() {
-      const hexAddress = ethers.utils.hexlify(account);
+      let hexAddress;
+      if (chainId != 4160) {
+        hexAddress = ethers.utils.hexlify(account);
+      }
       const collections = await fetchUserCollections(account);
       const algoCollections = await getUserNftCollections({ collections, mainnet });
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);

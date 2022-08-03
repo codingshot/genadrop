@@ -222,14 +222,14 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
-  // const responses = await Promise.allSettled(singleNfts.map((NFT) => fetchNFT(NFT, mainnet)));
+  const responses = await Promise.allSettled(singleNfts?.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
   // // removing rejected responses
-  // responses.forEach((element) => {
-  //   if (element?.status === "fulfilled") {
-  //     nftArr.push(element.value);
-  //   }
-  // });
+  responses.forEach((element) => {
+    if (element?.status === "fulfilled") {
+      nftArr.push(element.value);
+    }
+  });
   return nftArr;
 };
 
@@ -663,6 +663,26 @@ export const dataURItoBlob = (dataURI) => {
   }
   const blob = new Blob([ab], { type: mimeString });
   return blob;
+};
+
+export const getFile = async (url, name, type) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  const file = new File([blob], name, { type });
+  return file;
+};
+
+export const getBase64FromUrl = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+  });
 };
 
 export const handleImage = async (props) => {

@@ -5,6 +5,7 @@ import classes from "./create.module.css";
 import { useEffect, useState } from "react";
 import LoginModal from "../../components/Login-Modal/LoginModal";
 import SubscriptionNotification from "../../components/Subscription-Notification/SubscriptionNotification";
+import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import {
@@ -14,7 +15,6 @@ import {
   setToggleSessionModal,
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
-import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
 import { fetchSession, saveSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
 import CreateGuide from "../../components/create-guide/create-guide";

@@ -56,7 +56,6 @@ const supportedChains = {
     isMainnet: true,
     switch: switchChain,
     coinGeckoLabel: "celo",
-    comingSoon: true,
   },
   80001: {
     id: "matic-network",
