@@ -82,9 +82,9 @@ const Dashboard = () => {
     // Get User Created NFTs
 
     (async function getUserNFTs() {
-      const singleNfts = await fetchUserCreatedNfts(account);
       let algoNFTs = [];
       if (chainId == 4160) {
+        const singleNfts = await fetchUserCreatedNfts(account);
         algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       }
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);

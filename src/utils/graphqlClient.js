@@ -58,7 +58,10 @@ export const graphQLClientPolygon = createClient({
           case "polygon": {
             const context = {
               ...operation.context,
-              url: "https://api.thegraph.com/subgraphs/name/prometheo/playdrop",
+              url:
+                process.env.REACT_APP_ENV_STAGING === "true"
+                  ? "https://api.thegraph.com/subgraphs/name/prometheo/playdrop"
+                  : "https://api.thegraph.com/subgraphs/name/prometheo/polygon-mainnet",
               fetchOptions: {
                 ...options,
               },
@@ -77,7 +80,10 @@ export const graphQLClientPolygon = createClient({
 });
 
 export const polygonClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/playdrop",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/playdrop"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/polygon-mainnet",
 });
 
 export const celoClient = createClient({
