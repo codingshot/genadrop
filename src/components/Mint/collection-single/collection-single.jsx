@@ -73,11 +73,11 @@ const CollectionToSingleMinter = () => {
 
   // read zip or camera picture file
   const handleZipUpload = () => {
-    if (location.pathname === "/mint/1of1" && zipObg.file.type === "image/png") {
-      handleSetState({ fileName: zipObg.name, file: [zipObg.file], metadata: null, zip: null });
-    } else if (location.pathname === "/mint/collection" && zipObg.file.type === "application/zip") {
+    if (location.pathname === "/mint/collection" && zipObg.file.type === "application/zip") {
       handleSetState({ fileName: zipObg.name, zip: zipObg.file, file: null, metadata: null });
       handleZipFile({ uploadedFile: zipObg.file, handleSetState });
+    } else {
+      handleSetState({ fileName: zipObg.name, file: [zipObg.file], metadata: null, zip: null });
     }
     dispatch(setZip({}));
   };
@@ -185,21 +185,25 @@ const CollectionToSingleMinter = () => {
               {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
               <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
               <h3 className={classes.title}> Mint 1 of 1 </h3>
-              <p className={classes.action}>Drag and Drop your image file here</p>
-              <p className={classes.supportedFiles}>
-                We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
-              </p>
               <Link className={classes.takePic} to="/mint/camera">
                 <div>
                   <CameraIcon />
                 </div>
-                <p>Take Photo</p>
+                <p>Open Camera</p>
               </Link>
-
+              <div className={classes.explanatoryText}>
+                <div>Take photo / video & mint straight away</div>
+                <p>Record video and turn it into a GIF</p>
+              </div>
               <div>or</div>
               <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
                 Browse files
               </button>
+              <div className={classes.explanatoryText}>
+                <div>Drag and Drop your image file here</div>
+                <p>We support JPG, PNG, webp files and deploy to Celo, Algorand, Near, and Polygon </p>
+                <p>Max file size: 20mb </p>
+              </div>
             </div>
           ) : (
             <div className={classes.cardPlaceholder} />

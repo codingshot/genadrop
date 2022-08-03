@@ -4,6 +4,7 @@
   align-items: center;
   width: 100%;
   position: relative;
+  max-width: 1280px;
 }
 .videoOFF {
   width: 100%;
@@ -11,15 +12,29 @@
   background: rgba(75, 75, 90, 0.74);
   object-fit: cover;
 }
+.videoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 .videoWrapper {
   display: flex;
   flex-direction: column;
   position: relative;
+  width: fit-content;
   width: 100%;
   height: calc(100vh - 5rem);
 }
+.cameraWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: fit-content;
+  height: calc(100vh - 5rem);
+}
 .videoWrapper video {
-  object-fit: cover;
+  /* object-fit: cover; */
 }
 .enableContainer {
   position: absolute;
@@ -31,12 +46,12 @@
 
 .cameraShot {
   width: 100%;
-  height: calc(100vh - 5rem);
-  background: #323232;
+  height: 100%;
+  background: #ffffff;
   object-fit: contain;
   border: 4px solid #ffffff;
   box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
-  margin-top: 1.25em;
+  /* margin-top: 1.25em; */
 }
 .inActive {
   height: 0 !important;
@@ -49,15 +64,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--text-heading);
+  background: rgb(15 29 64 / 60%);
   padding: 1rem 2rem;
-  height: 5rem;
+  height: 6rem;
   width: 20em;
   border-radius: 16px;
-  opacity: 0.9;
 }
-.btnWrapper div {
-  cursor: pointer;
+.btnWrapper > div {
+  cursor: var(--cursor-pointer);
   transition: all 0.2s ease-in-out;
   height: 100%;
 }
@@ -65,15 +79,40 @@
 .inactiveBtnWrapper div {
   cursor: not-allowed;
 }
-.cancelBtn {
-  color: var(--default);
-  font-size: 1.125rem;
+.btnWrapper .holdBtn,
+.inactiveBtnWrapper .holdBtn {
   position: absolute;
-  left: 2rem;
   top: 50%;
+  left: 2rem;
   transform: translateY(-50%);
   display: flex;
+  height: fit-content;
+}
+.btnWrapper .cancelBtn,
+.inactiveBtnWrapper .cancelBtn {
+  display: flex;
   align-items: center;
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  /* padding: 8px; */
+  transition: all 300ms;
+  position: relative;
+}
+.cancelBtn:hover {
+  outline: 1px solid #ff3236;
+}
+.cancelBtn .recordBtn {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ff3236;
+  border-radius: 50%;
 }
 .captureBtn svg {
   height: 100%;
@@ -92,6 +131,9 @@
   top: 50%;
   transform: translateY(-50%);
 }
+.btnWrapper .uploadBtn svg {
+  width: 50px;
+}
 .btnWrapper .uploadBtn:hover svg path {
   fill: #d9d9d9;
 }
@@ -101,7 +143,6 @@
 .coninue {
   color: var(--default);
 }
-
 .btn {
   padding: 1.2em 1em;
   border-radius: 50px;
@@ -118,32 +159,89 @@
   display: flex;
   align-items: center;
   margin-right: auto;
-  cursor: pointer;
+  cursor: var(--cursor-pointer);
   font-weight: 500;
   font-size: 1.25rem;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1;
+  background: rgb(101 110 133 / 75%);
+  padding: 8px;
+  border-radius: 50%;
 }
 .retake svg {
-  margin-right: 1rem;
   transition: all 0.2s ease;
 }
+.retake svg path {
+  fill: white;
+}
 .retake:hover svg {
-  transform: translateX(-8px);
+  transform: translateX(-6px);
 }
 .none {
   display: none !important;
 }
 .imgBtn {
+  display: flex;
+  position: absolute;
+  bottom: 1.5rem;
   width: 100%;
-  position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3rem;
-  margin-top: 2rem;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 2rem;
 }
-.imgBtn a,
-.imgBtn div {
+.typeSelcet {
+  display: grid;
+  max-width: 15rem;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+.typeSelcet p {
+  color: var(--main-color);
+  font-weight: 500;
+}
+.typeSelcet > div {
+  display: flex;
+  justify-content: space-evenly;
+  background: rgb(15 29 64 / 60%);
+  padding: 10px 0;
+  border-radius: 10px;
+  cursor: var(--cursor-pointer);
+}
+.typeSelcet > div.active {
+  background: var(--default);
+}
+.typeSelcet > div:hover .rdaioBtn > div {
+  display: block;
+}
+.rdaioBtn {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--default);
+  border-radius: 50%;
+  padding: 2px;
+}
+div.active .rdaioBtn {
+  border: 2px solid var(--main-color);
+}
+.rdaioBtn > div {
+  display: none;
+  background: var(--main-color);
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+div.active .rdaioBtn > div {
+  display: block;
+}
+.mintBtn {
+  background: var(--main-color);
+  color: #ffffff;
   border-radius: 39px;
   font-size: 1em;
+  max-width: 15rem;
   width: 100%;
   padding: 0.675rem;
   display: flex;
@@ -152,25 +250,17 @@
   letter-spacing: -0.799296px;
   cursor: var(--cursor-pointer);
   transition: background 0.2s ease-in-out;
-  border: 1px solid;
+  border: 1px solid var(--main-color);
 }
-.imgBtn div {
-  background: var(--main-color);
-  color: #ffffff;
-  border-color: var(--main-color);
+.mintBtn.disabled {
+  background: var(--outline-dark);
+  color: white !important;
+  pointer-events: none;
+  border-color: var(--outline-dark);
 }
-.imgBtn a {
+.imgBtn .mintBtn:hover {
   background: var(--default);
   color: var(--main-color);
-  border-color: var(--main-color);
-}
-.imgBtn div:hover {
-  background: var(--default);
-  color: var(--main-color);
-}
-.imgBtn a:hover {
-  background: var(--main-color);
-  color: var(--default);
 }
 .testrecod {
   position: absolute;
@@ -178,11 +268,25 @@
   top: 10%;
   background: white;
 }
-.videoContainer {
+.closeBtn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: rgb(15 29 64 / 60%);
+  width: 2rem;
+  height: 2rem;
+  padding: 2px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 50%;
+  cursor: var(--cursor-pointer);
+  padding: 8px;
+}
+.closeBtn svg {
   width: 100%;
+  height: 100%;
+}
+.closeBtn svg path {
+  fill: var(--default);
 }
 @media screen and (max-width: 768px) {
   .uploadBtn {
@@ -195,6 +299,7 @@
     bottom: 0rem;
     width: 100%;
     height: 7rem;
+    border-radius: 0;
   }
   .videoContainer {
     display: flex;
@@ -205,9 +310,21 @@
     height: 100vh;
     top: 0;
     z-index: 1000;
+    background: white;
+  }
+  .cameraWrapper {
+    background: white;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    z-index: 1000;
   }
   .videoWrapper {
-    height: 100%;
+    height: 100vh;
     background: white;
+  }
+  .videoWrapper video {
+    height: 100%;
   }
 }

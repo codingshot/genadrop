@@ -20,7 +20,7 @@ import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import dropdownIcon from "../../../assets/icon-dropdown2.svg";
-import { initConnectWallet } from "../../../components/wallet/wallet-script";
+import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = ({ data, changeFile, handleSetFileState }) => {
   const { file, fileName: fName, metadata, zip } = data;
@@ -283,6 +283,8 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                         className={classes.imageContainer}
                       />
                     ))
+                ) : file[0].type === "video/mp4" ? (
+                  <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
                 ) : (
                   <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                 )}
