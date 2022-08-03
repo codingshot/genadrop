@@ -71,7 +71,7 @@ export const handleAddBlank = async (props) => {
 };
 
 export const handleSampleLayers = async ({ dispatch }) => {
-  // dispatch(setOverlay(true));
+  dispatch(setOverlay(true));
   const url = {
     Green10: "/assets/CreateAssets/Goo/Green10.png",
     High30: "/assets/CreateAssets/TopLid/High30.png",
@@ -127,5 +127,5 @@ export const handleSampleLayers = async ({ dispatch }) => {
   ];
 
   dispatch(setLayers(layers));
-  // dispatch(setOverlay(false));
+  dispatch(setOverlay(false));
 };
