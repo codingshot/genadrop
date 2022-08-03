@@ -5,7 +5,6 @@ import { ReactComponent as CloudIcon } from "../../../assets/icon-cloud.svg";
 
 const ProgressBar = () => {
   const [counter, setCounter] = useState({ count: 1, percentageCount: 100 });
-
   const { actionProgress } = useContext(GenContext);
 
   useEffect(() => {

@@ -83,8 +83,7 @@ const StoreData = () => {
       });
       layers.forEach(({ id, traits }, i) => {
         traits.forEach(async (trait, j) => {
-          await saveTraits({ currentUser, sessionId, id, traits: [trait] });
-          console.log(i, " => ", j);
+          await saveTraits({ dispatch, currentUser, sessionId, id, traits: [trait] });
         });
       });
       saveLayers({ currentUser, sessionId, layers: newLayers });

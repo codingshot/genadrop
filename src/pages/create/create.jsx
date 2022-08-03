@@ -17,21 +17,25 @@ import {
 import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
 import { fetchSession, saveSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
-import { handleAddSampleLayers } from "../../utils";
 import CreateGuide from "../../components/create-guide/create-guide";
 import GoogleAuth from "../../components/google-auth/googleAuth";
 import ProfileDropdown from "../../components/profile-dropdown/profileDropdown";
 import { ReactComponent as Diskicon } from "../../assets/icon-disk.svg";
 import ProgressBar from "./Progress-Bar/ProgressBar";
+import { useRef } from "react";
+import { handleSampleLayers } from "../../components/menu/collection-menu-script";
 
 const Create = () => {
+  const collectionNameRef = useRef();
   const history = useHistory();
   const [profileDropdown, toggleProfileDropdown] = useState(false);
   const [toggleGuide, setGuide] = useState(false);
+  const [nameWidth, setNameWidth] = useState(0);
+
   const { isUser, dispatch, currentUser, currentPlan, sessionId, collectionName } = useContext(GenContext);
 
   const handleSample = () => {
-    handleAddSampleLayers({ dispatch });
+    handleSampleLayers({ dispatch });
   };
 
   const handleTutorial = () => {
@@ -75,6 +79,11 @@ const Create = () => {
   }, [collectionName, sessionId, currentPlan]);
 
   useEffect(() => {
+    let width = collectionNameRef.current.offsetWidth;
+    setNameWidth(width / 16);
+  }, [collectionName]);
+
+  useEffect(() => {
     document.documentElement.scrollTop = 0;
   }, []);
 
@@ -93,8 +102,13 @@ const Create = () => {
           >
             <GoogleAuth />
             <div className={classes.collectionNameContainer}>
-              <div className={`${classes.collectionName} ${currentUser && classes.active}`}>
-                session name afadfadfad
+              <div
+                ref={collectionNameRef}
+                className={`${classes.collectionName} ${currentUser && classes.active} ${
+                  nameWidth > 6 && classes.move
+                }`}
+              >
+                {collectionName}
               </div>
             </div>
             <ProfileDropdown

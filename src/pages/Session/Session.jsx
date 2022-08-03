@@ -78,7 +78,6 @@ const Session = () => {
         const sessions = await fetchSession({ currentUser });
         dispatch(setOverlay(false));
         if (sessions.length) {
-          console.log({ sessions });
           toggleNotResult("false");
           dispatch(setSession(sessions));
         } else {

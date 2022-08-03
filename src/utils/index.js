@@ -736,26 +736,6 @@ export const reOrderPreview = ({ preview, layers }) => {
   return newPreview;
 };
 
-export const handleAddSampleLayers = ({ dispatch }) => {
-  const sampleLayers = [
-    { layerName: "Goo", dirName: "Goo" },
-    { layerName: "Top Lid", dirName: "TopLid" },
-    { layerName: "Bottom Lid", dirName: "BottomLid" },
-    { layerName: "Eye Color", dirName: "EyeColor" },
-  ];
-  dispatch(clearLayers());
-  sampleLayers.map((sample) => {
-    dispatch(
-      addLayer({
-        id: uuid(),
-        traitsAmount: 0,
-        layerTitle: sample.layerName,
-        traits: [],
-      })
-    );
-  });
-};
-
 export const handleResetCreate = ({ dispatch }) => {
   dispatch(setCollectionName(""));
   dispatch(clearLayers());

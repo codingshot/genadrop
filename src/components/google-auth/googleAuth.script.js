@@ -25,7 +25,6 @@ export const signInWithGoogle = ({ dispatch }) => {
 export const getCurrentUser = ({ dispatch }) => {
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      console.log({ user });
       const { displayName, email, uid, photoURL } = user;
       dispatch(setCurrentUser({ displayName, email, uid, photoURL }));
       dispatch(setIsUser("true"));
