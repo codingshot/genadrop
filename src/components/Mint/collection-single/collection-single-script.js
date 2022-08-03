@@ -51,6 +51,7 @@ export const handleZipFile = async (arg) => {
     console.error(`failed with ${error}`);
   }
 };
+
 export const updateZip = async (zip, name, handleSetState) => {
   const new_zip = new JSZip();
   const unzipped = await new_zip.loadAsync(zip);

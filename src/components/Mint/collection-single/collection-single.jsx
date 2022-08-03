@@ -4,13 +4,14 @@ import classes from "./collection-single.module.css";
 import { ReactComponent as CameraIcon } from "../../../assets/icon-camera.svg";
 import collectionIcon from "../../../assets/icon-collection-light.svg";
 import _1of1Icon from "../../../assets/icon-1of1-light.svg";
-import leftArrow from "../../../assets/icon-arrow-left.svg";
+import { ReactComponent as BackIcon } from "../../../assets/icon-arrow-left.svg";
 // import UploadOverlay from "../upload-overlay/upload-overlay";
 import { handleZipFile } from "./collection-single-script";
 import Minter from "../minter/minter";
 import Capture from "../../mint-webcam/Capture/Capture";
 import line from "../../../assets/icon-line.svg";
 import { GenContext } from "../../../gen-state/gen.context";
+import { setMinter } from "../../../gen-state/gen.actions";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
@@ -20,9 +21,9 @@ const CollectionToSingleMinter = () => {
   const dragRef = useRef(null);
   const dropRef = useRef(null);
 
-  const { zip: zipObg } = useContext(GenContext);
+  const { zip: zipObg, dispatch } = useContext(GenContext);
   const [state, setState] = useState({
-    mintSwitch: "",
+    mintType: "",
     cameraSwitch: false,
     loading1: false,
     loading2: false,
@@ -33,7 +34,7 @@ const CollectionToSingleMinter = () => {
     zip: null,
   });
 
-  const { mintSwitch, loading1, loading2, acceptedFileType, file, fileName, metadata, zip, cameraSwitch } = state;
+  const { mintType, loading1, loading2, acceptedFileType, file, fileName, metadata, zip, cameraSwitch } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -101,9 +102,9 @@ const CollectionToSingleMinter = () => {
     if (params.mintId === "collection") {
       handleSetState({ acceptedFileType: ".zip" });
     } else {
-      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp" });
+      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .mp4, .gif" });
     }
-    handleSetState({ mintSwitch: params.mintId });
+    handleSetState({ mintType: params.mintId });
   }, [params.mintId]);
 
   useEffect(() => {
@@ -111,29 +112,24 @@ const CollectionToSingleMinter = () => {
       handleZipUpload();
     }
   }, [zipObg]);
+
+  useEffect(() => {
+    if (!file) return;
+    console.log("changed", { file });
+    dispatch(setMinter({ file, fileName, metadata, zip, mintType }));
+    history.push(`${url}/minter`);
+  }, [file]);
+
   return (
     <div ref={dragRef} className={classes.container}>
       {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
 
-      {file ? (
-        <Minter
-          data={{ file, fileName, metadata, zip }}
-          handleSetFileState={handleSetState}
-          changeFile={() =>
-            handleSetState({
-              fileName: "",
-              file: null,
-              metadata: null,
-              zip: null,
-            })
-          }
-        />
-      ) : cameraSwitch ? (
+      {cameraSwitch ? (
         <Capture handleSetState={handleSetState} />
       ) : (
         <>
           <Link to="/mint" className={classes.goBack}>
-            <img src={leftArrow} alt="" />
+            <BackIcon className={classes.backIcon} />
             <span>Back to Mint</span>
           </Link>
           <header className={classes.headingWrapper}>
@@ -162,7 +158,7 @@ const CollectionToSingleMinter = () => {
             </button>
           </div>
 
-          {mintSwitch === "collection" ? (
+          {mintType === "collection" ? (
             <div className={`${classes.card} ${classes[params.mintId]} drop-area`}>
               {!loading1 ? <div className={classes.imagePlaceholder} /> : null}
               <img
@@ -181,7 +177,7 @@ const CollectionToSingleMinter = () => {
                 Browse files
               </button>
             </div>
-          ) : mintSwitch === "1of1" ? (
+          ) : mintType === "1of1" ? (
             <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
               {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
               <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
