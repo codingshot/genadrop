@@ -98,7 +98,7 @@
 }
 
 .banner {
-  min-width: 100%;
+  max-width: 100%;
   height: 20rem;
   top: 0;
   position: absolute;
