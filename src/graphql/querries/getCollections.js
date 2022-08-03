@@ -326,9 +326,14 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
   }
 `;
 
+const devArea =
+  process.env.REACT_APP_ENV_STAGING === "true"
+    ? "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178"
+    : "0x0d2e152fc5cfc53f3baf7e1ae0f6b967953706ed";
+
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection: "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178" }) {
+    nfts(where: { collection: "${devArea}" }) {
       category
       chain
       createdAtTimestamp
