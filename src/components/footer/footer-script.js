@@ -26,7 +26,7 @@ export const orgs = [
   {
     name: "Celo",
     icon: celoIcon,
-    link: "https://celocommunityfund.org/",
+    link: "https://celo.org/",
   },
   {
     name: "Polygon",
@@ -41,7 +41,7 @@ export const orgs = [
   {
     name: "Near",
     icon: nearIcon,
-    link: "https://near.foundation/",
+    link: "https://near.org/",
   },
   {
     name: "Aurora",

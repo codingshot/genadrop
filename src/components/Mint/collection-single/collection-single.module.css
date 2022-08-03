@@ -189,17 +189,17 @@
   justify-content: flex-start;
   gap: 1em;
   margin-bottom: 2em;
-  margin-left: 5em;
 }
 
-.goBack > img {
+.backIcon {
   transition: all 300ms;
   width: 1.2em;
 }
 
-.goBack:hover img {
+.backIcon:hover {
   transform: translateX(-50%);
 }
+
 .takePic {
   display: flex;
   align-items: center;
@@ -237,4 +237,10 @@
   font-size: 0.8125rem;
   color: var(--text-sub-heading);
   line-height: 1.5rem;
+}
+
+@media screen and (max-width: 480px) {
+  .backIcon {
+    width: 0.85em;
+  }
 }

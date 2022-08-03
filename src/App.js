@@ -39,6 +39,7 @@ import Pricing from "./pages/Pricing/Pricing";
 import Success from "./pages/Pricing/Success";
 import Cancel from "./pages/Pricing/Cancel";
 import "@stripe/stripe-js";
+import Minter from "./components/Mint/minter/minter";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -61,6 +62,7 @@ function App() {
             <Route exact path="/mint" component={Mint} />
             <Route exact path="/mint/camera" component={Camera} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
+            <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
             {/* <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} /> */}

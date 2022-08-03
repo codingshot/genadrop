@@ -37,7 +37,7 @@ export const chains = [
     color: "#000000",
     border: "transparent",
     bg: "#FFEA94",
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     name: "Aurora",

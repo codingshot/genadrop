@@ -10,7 +10,7 @@ import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarou
 import DateFilter from "../Date-Filter/DateFilter";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const history = useHistory();
@@ -32,7 +32,10 @@ const Collections = () => {
         </button>
       </div>
 
-      {algoCollectionsArr?.length || auroraCollections?.length || polygonCollections?.length ? (
+      {algoCollectionsArr?.length ||
+      auroraCollections?.length ||
+      polygonCollections?.length ||
+      celoCollections?.length ? (
         <GenadropCarouselScreen cardWidth={16 * 20} gap={16}>
           {[
             ...(algoCollectionsArr || [])
@@ -42,6 +45,9 @@ const Collections = () => {
               ?.filter((_, idx) => idx < 3)
               .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 10} collection={collection} />),
             ...(polygonCollections || [])
+              ?.filter((_, idx) => idx < 3)
+              .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 20} collection={collection} />),
+            ...(celoCollections || [])
               ?.filter((_, idx) => idx < 3)
               .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 20} collection={collection} />),
           ]}

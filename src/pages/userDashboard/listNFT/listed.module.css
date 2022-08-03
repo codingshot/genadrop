@@ -51,6 +51,10 @@
 .nftId {
   font-size: 1.5rem;
   font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 .buy {
   flex-direction: row;
@@ -65,23 +69,35 @@
 }
 .view {
   margin: 1rem auto;
+  border-radius: 2.5rem;
 }
 
 .viewtext {
-  color: white;
+  color: var(--main-color);
   padding: 0 0.5rem;
   height: 4rem;
   width: 14rem;
-  border-radius: 5px;
+  border-radius: 2.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  background-color: var(--main-color);
+  border: 3px solid var(--main-color);
 }
 .buy:hover,
-.detailContent img:hover,
-.view:hover {
+.detailContent img:hover {
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
   cursor: var(--cursor-pointer);
+}
+
+.view:hover {
+  background-color: var(--main-color);
+  transition: all 0.4s ease-in-out;
+  cursor: var(--cursor-pointer);
+}
+
+.viewtext:hover {
+  border-radius: 2.5rem;
+  color: white;
 }
 
 @media screen and (max-width: 1440px) {
@@ -106,6 +122,7 @@
   .container {
     max-width: 540px;
     padding: 0 2em;
+    margin-top: 2em;
   }
 
   .section1 {
@@ -123,12 +140,28 @@
   .container {
     padding: 0 0.5em;
   }
+  .container span {
+    font-size: 1.2rem;
+  }
   .section1 {
     flex-direction: column;
   }
 
   .buy {
     width: 95%;
+  }
+  .nftId {
+    font-size: 1rem;
+  }
+
+  .detailContent img {
+    width: 35px !important;
+    margin-right: 10px !important;
+  }
+  .viewtext {
+    font-size: 1rem;
+    height: 3rem;
+    width: 12rem;
   }
 
   .nftName {
@@ -141,4 +174,5 @@
 }
 .detailContent img {
   width: 50px;
+  margin-right: 24px;
 }

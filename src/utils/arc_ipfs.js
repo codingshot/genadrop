@@ -312,6 +312,43 @@ export async function mintSingleToAlgo(algoMintProps) {
 
 export async function mintSingleToPoly(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, file.name, dispatch);
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    dispatch(setLoader("minting 1 of 1"));
+    const contract = new ethers.Contract(
+      mainnet ? process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS,
+      mintSingle,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS
+        : process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet ? `https://polygonscan.com/tx/${result.hash}` : `https://mumbai.polygonscan.com/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name, dispatch);
@@ -342,7 +379,7 @@ export async function mintSingleToPoly(singleMintProps) {
     dispatch(setLoader(""));
     return {
       error,
-      message: "something went wrong! check your connected network and try again.",
+      message: error.message ? error.message : "something went wrong! check your connected network and try again.",
     };
   }
 }
@@ -359,6 +396,45 @@ async function InitiateCeloProvider(mainnet) {
 
 export async function mintSingleToCelo(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, file.name, dispatch);
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    dispatch(setLoader("minting 1 of 1"));
+    const contract = new ethers.Contract(
+      mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+      mintSingle,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS
+        : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name, 4);
@@ -602,6 +678,32 @@ export async function listPolygonNft(nftProps) {
 export async function initializeContract(contractProps) {
   const { minterAddress, fileName, connector, account, dispatch, setLoader, description } = contractProps;
   const name = fileName.split("-")[0];
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: minterAddress,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: collectionContract.interface.encodeFunctionData("createCollection", [
+        name,
+        name.substring(0, 3).toUpperCase(),
+        description,
+      ]),
+      nonce: ethNonce,
+    };
+    const result = await signer.sendTransaction(tx);
+    await result.wait();
+    dispatch(setLoader("minting"));
+    dispatch(setLoader(""));
+    const getCollectionAddresses = await collectionContract.collectionsOf(account);
+    const collectionAddresses = [...getCollectionAddresses];
+    const contract = new ethers.Contract(collectionAddresses.pop(), mintAbi, signer);
+    return contract;
+  }
   const signer = await connector.getSigner();
   const collectionContract = new ethers.Contract(minterAddress, mintCollectionAbi, signer);
   const tx = await collectionContract.createCollection(name, name.substring(0, 3).toUpperCase(), description);
@@ -691,6 +793,39 @@ export async function mintToCelo(celoProps) {
   // const amounts = new Array(ids.length).fill(1);
   let tx;
   dispatch(setLoader("finalizing"));
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const ethNonce = await signer.getTransactionCount();
+    tx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully.",
+          type: "success",
+        })
+      );
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   try {
     tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
@@ -728,14 +863,12 @@ export async function mintToPoly(polyProps) {
     minterAddress: mainnet
       ? process.env.REACT_APP_POLY_MAINNET_MINTER_ADDRESS
       : process.env.REACT_APP_POLY_TESTNET_MINTER_ADDRESS,
-    marketAddress: mainnet
-      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
     fileName,
     connector,
     account,
     dispatch,
     setLoader,
+    description,
   });
   // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   // const marketContract = new ethers.Contract(
@@ -757,6 +890,37 @@ export async function mintToPoly(polyProps) {
   let tx;
 
   dispatch(setLoader("finalizing"));
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const ethNonce = await signer.getTransactionCount();
+    tx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully.",
+          type: "success",
+        })
+      );
+      return mainnet ? `https://polygonscan.com/tx/${result.hash}` : `https://mumbai.polygonscan.com/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   try {
     tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
@@ -903,6 +1067,7 @@ export async function mintToAurora(polyProps) {
     account,
     dispatch,
     setLoader,
+    description,
   });
   // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   // const marketContract = new ethers.Contract(
@@ -981,7 +1146,7 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
 
 export async function purchasePolygonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1040,7 +1205,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroragonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1051,6 +1216,7 @@ export async function purchaseAuroragonNfts(buyProps) {
   }
   const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
   const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
     {
@@ -1097,7 +1263,8 @@ export async function purchaseAuroragonNfts(buyProps) {
 }
 export async function purchaseCeloNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  const { Id: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  console.log(buyProps);
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1106,8 +1273,9 @@ export async function purchaseCeloNfts(buyProps) {
       })
     );
   }
-  const wallet = InitiateCeloProvider(mainnet);
+  const wallet = await InitiateCeloProvider(mainnet);
   const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
     {

@@ -35,9 +35,10 @@ function ConnectWallet() {
     connectionMethod: null,
     isMetamask: true,
     overrideWalletConnect: false,
-    rpc: {
-      4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
-    },
+    rpc: null,
+    // rpc: {
+    //   4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
+    // },
   });
 
   const { clipboardState, network, walletConnectProvider, overrideWalletConnect, connectionMethod, rpc, isMetamask } =

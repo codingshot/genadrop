@@ -17,11 +17,12 @@ const List = () => {
   const [state, setState] = useState({
     nftDetails: null,
     isLoading: true,
+    algoPrice: 0,
     chain: "Algo",
     price: "",
   });
 
-  const { nftDetails, isLoading, price, chain } = state;
+  const { nftDetails, isLoading, price, chain, algoPrice } = state;
 
   const buyProps = {
     dispatch,
@@ -146,6 +147,8 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <input type="text" value={price} onChange={handlePrice} placeholder="E.g. 10" />
                 </div>
+                <div></div>
+                <span>0</span>
               </div>
             </section>
           </div>

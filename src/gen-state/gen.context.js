@@ -27,8 +27,10 @@ const GenContextProvider = ({ children }) => {
     algoCollections,
     auroraCollections,
     polygonCollections,
+    celoCollections,
     singleAuroraNfts,
     singleAlgoNfts,
+    singleCeloNfts,
     singlePolygonNfts,
     graphCollections,
     singleNfts,
@@ -57,6 +59,7 @@ const GenContextProvider = ({ children }) => {
     toggleCollectionNameModal,
     isUser,
     currentPlan,
+    minter,
   } = state;
 
   return (
@@ -79,6 +82,7 @@ const GenContextProvider = ({ children }) => {
         graphCollections,
         rule,
         isRule,
+        singleCeloNfts,
         collections,
         notification,
         switchWalletNotification,
@@ -95,6 +99,7 @@ const GenContextProvider = ({ children }) => {
         algoCollections,
         auroraCollections,
         polygonCollections,
+        celoCollections,
         singleAuroraNfts,
         singleAlgoNfts,
         singlePolygonNfts,
@@ -112,6 +117,7 @@ const GenContextProvider = ({ children }) => {
         toggleCollectionNameModal,
         isUser,
         currentPlan,
+        minter,
         dispatch,
       }}
     >

@@ -33,7 +33,6 @@ const SimilarNFTs = (data) => {
       handleSetState({ nfts: singleAuroraNfts });
       similarity(singleAuroraNfts);
     } else {
-      console.log("CHAIN: ", chain);
       similarity(singleAlgoNftsArr);
     }
 
@@ -48,7 +47,6 @@ const SimilarNFTs = (data) => {
       current_traits.push(trait.trait_type);
     });
 
-    console.log("NFTS1: ", x);
     let nftsx = x;
 
     nftsx?.forEach((e) => {
@@ -82,7 +80,6 @@ const SimilarNFTs = (data) => {
     nftsx.sort(compare);
     nftsx.reverse();
     nftsx.shift();
-    console.log("NFTS2: ", nftsx);
     handleSetState({ nfts: nftsx });
   };
 

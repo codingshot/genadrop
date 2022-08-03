@@ -2,6 +2,7 @@ import { getStorage, ref, uploadBytes, deleteObject, listAll, getDownloadURL, ge
 import { doc, collection, setDoc, getFirestore, getDoc, getDocs, query } from "firebase/firestore";
 
 import { app } from "../../utils/firebase";
+import { getFile } from "../../utils";
 
 const storage = getStorage(app);
 const firestore = getFirestore();
@@ -195,13 +196,6 @@ export const constructLayers = async ({ dispatch, storedCollectionName, storedLa
   });
 
   console.log({ newLayers });
-};
-
-const getFile = async (url, name, type) => {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  const file = new File([blob], name, { type });
-  return file;
 };
 
 const transfromTraits = async (value) => {
