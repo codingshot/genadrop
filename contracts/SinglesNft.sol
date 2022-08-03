@@ -26,6 +26,8 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
     string private _symbol;
     address private _owner;
 
+    event CollectionInit(address collectionAddress, address indexed collectionOwner, string collectionName);
+
     // Mapping from token ID to account balances
     mapping(uint256 => mapping(address => uint256)) private _balances;
 
@@ -50,6 +52,8 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
         _owner = deployer;
         _name = name_;
         _symbol = symbol_;
+        emit CollectionInit(address(this), deployer, _name);
+
     }
     
     /**
@@ -320,7 +324,7 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
         _doSafeBatchTransferAcceptanceCheck(operator, from, to, ids, amounts, data);
     }
 
-    function mint(address to, uint256 id, uint256 amount, string memory uri_, bytes memory data) public onlyOwner {
+    function mint(address to, uint256 id, uint256 amount, string memory uri_, bytes memory data) public {
         _mint(to, id, amount, uri_, data);
         
     }

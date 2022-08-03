@@ -308,9 +308,14 @@ export const GET_AURORA_SINGLE_NFTS = gql`
   }
 `;
 
+const polygonAddress =
+  process.env.REACT_APP_ENV_STAGING === "true"
+    ? "0xd6b01b63dd514cf771d8d21b776197fdf9648d54"
+    : "0x3243cd574e9d51ad012c7fa4957e8037beb8792f";
+
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection: "0xd6b01b63dd514cf771d8d21b776197fdf9648d54" }) {
+    nfts(where: { collection: "${polygonAddress}" }) {
       category
       chain
       createdAtTimestamp
@@ -326,14 +331,14 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
   }
 `;
 
-const devArea =
+const celoAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
     ? "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178"
     : "0x0d2e152fc5cfc53f3baf7e1ae0f6b967953706ed";
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection: "${devArea}" }) {
+    nfts(where: { collection: "${celoAddress}" }) {
       category
       chain
       createdAtTimestamp
