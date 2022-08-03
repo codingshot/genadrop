@@ -37,6 +37,8 @@ function ConnectWallet() {
     overrideWalletConnect: false,
     rpc: {
       4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
+      137: "https://polygon-mainnet.g.alchemy.com/v2/DBIzFmV2PWp5688EODsv26Gm7MYqUhBE",
+      80001: "https://polygon-mumbai.g.alchemy.com/v2/sjbvWTjbyKXxvfJ1HkHIdEDHc2u8wNym",
     },
   });
 

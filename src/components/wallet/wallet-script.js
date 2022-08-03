@@ -98,15 +98,16 @@ export const connectWithQRCode = async ({ walletConnectProvider, dispatch, rpc, 
   let proposedChain = Object.keys(rpc)[0];
   try {
     await walletConnectProvider.enable();
-    if (proposedChain !== String(walletConnectProvider.chainId)) {
-      walletConnectProvider.disconnect();
-      setTimeout(() => {
-        alert(
-          `Invalid connection! Please ensure that ${supportedChains[proposedChain].label} network is selected on your scanning wallet`
-        );
-        window.location.reload();
-      }, 100);
-    }
+    console.log("opopoo", proposedChain);
+    // if (proposedChain !== String(walletConnectProvider.chainId)) {
+    //   walletConnectProvider.disconnect();
+    //   setTimeout(() => {
+    //     alert(
+    //       `Invalid connection! Please ensure that ${supportedChains[proposedChain].label} network is selected on your scanning wallet`
+    //     );
+    //     window.location.reload();
+    //   }, 100);
+    // }
     dispatch(setConnector(walletConnectProvider));
   } catch (error) {
     console.log("error: ", error);
