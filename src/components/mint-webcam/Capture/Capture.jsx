@@ -55,7 +55,7 @@ const Capture = () => {
     facingMode: webcam,
     width,
     height,
-    ...(aspectRatio && { aspectRatio }),
+    // ...(aspectRatio && { aspectRatio }),
   };
   const updateVideoSize = () => {
     const newWidth = webcamWrapper.current?.clientWidth;
