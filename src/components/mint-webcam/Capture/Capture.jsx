@@ -87,7 +87,7 @@ const Capture = () => {
     facingMode: webcam,
     width,
     height,
-    ...(ratio && { ratio }),
+    // ...(ratio && { ratio }),
   };
   console.log(videoConstraints);
   const updateVideoSize = () => {
@@ -352,14 +352,13 @@ const Capture = () => {
                 ref={webcamRef}
                 audio={false}
                 screenshotFormat="image/png"
-                style={{
-                  textAlign: "center",
-                  objectFit: "cover",
-                }}
-                width={width}
-                height={height}
+                // style={{
+                //   textAlign: "center",
+                //   objectFit: "cover",
+                // }}
+                width={videoConstraints.width}
+                height={videoConstraints.height}
                 videoConstraints={videoConstraints}
-                forceScreenshotSourceSize
               />
             ) : (
               <div className={classes.videoOFF} />
