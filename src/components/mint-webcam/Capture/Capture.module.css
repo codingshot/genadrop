@@ -57,8 +57,7 @@
   height: 0 !important;
   border: none;
 }
-.btnWrapper,
-.inactiveBtnWrapper {
+.btnWrapper {
   position: absolute;
   bottom: 1rem;
   display: flex;
@@ -72,15 +71,10 @@
 }
 .btnWrapper > div {
   cursor: var(--cursor-pointer);
-  transition: all 0.2s ease-in-out;
-  height: 100%;
+  transition: background 0.2s ease-in-out;
 }
 
-.inactiveBtnWrapper div {
-  cursor: not-allowed;
-}
-.btnWrapper .holdBtn,
-.inactiveBtnWrapper .holdBtn {
+.holdBtn {
   position: absolute;
   top: 50%;
   left: 2rem;
@@ -88,8 +82,15 @@
   display: flex;
   height: fit-content;
 }
-.btnWrapper .cancelBtn,
-.inactiveBtnWrapper .cancelBtn {
+.holdBtn > svg {
+  height: 50px;
+  width: 50px;
+}
+.holdBtn.active {
+  position: relative;
+  left: auto;
+}
+.RecordBtnWrapper {
   display: flex;
   align-items: center;
   width: 50px;
@@ -98,13 +99,17 @@
   border-radius: 50%;
   display: flex;
   /* padding: 8px; */
-  transition: all 300ms;
+  transition: outline 300ms;
   position: relative;
 }
-.cancelBtn:hover {
+.holdBtn.active .RecordBtnWrapper {
+  width: 64px;
+  height: 64px;
+}
+.RecordBtnWrapper:hover {
   outline: 1px solid #ff3236;
 }
-.cancelBtn .recordBtn {
+.recordBtn {
   width: 30px;
   height: 30px;
   position: absolute;
@@ -114,13 +119,20 @@
   background: #ff3236;
   border-radius: 50%;
 }
+.holdBtn.active .recordBtn {
+  width: 40px;
+  height: 40px;
+}
+.captureBtn {
+  height: 100%;
+}
 .captureBtn svg {
   height: 100%;
 }
 .captureBtn svg circle {
   transition: all 0.2s ease-in-out;
 }
-.btnWrapper .captureBtn:hover svg circle {
+.captureBtn:hover svg circle {
   fill: var(--main-color);
 }
 .uploadBtn {
@@ -137,7 +149,7 @@
 .btnWrapper .uploadBtn:hover svg path {
   fill: #d9d9d9;
 }
-.btnWrapper .cancelBtn:hover {
+.btnWrapper .RecordBtnWrapper:hover {
   color: #d9d9d9;
 }
 .coninue {
@@ -199,8 +211,11 @@
   gap: 2rem;
 }
 .typeSelcet p {
-  color: var(--main-color);
+  color: var(--default);
   font-weight: 500;
+}
+.typeSelcet > div.active p {
+  color: var(--main-color);
 }
 .typeSelcet > div {
   display: flex;
@@ -294,8 +309,7 @@ div.active .rdaioBtn > div {
   }
 }
 @media screen and (max-width: 480px) {
-  .btnWrapper,
-  .inactiveBtnWrapper {
+  .btnWrapper {
     bottom: 0rem;
     width: 100%;
     height: 7rem;

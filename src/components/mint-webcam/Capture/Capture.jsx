@@ -16,6 +16,35 @@ import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setZip, setLoader, setNotification } from "../../../gen-state/gen.actions";
 
+// record button
+const RecordBtn = ({ seconds }) => (
+  <div className={classes.RecordBtnWrapper}>
+    <CircularProgressbar
+      value={seconds / 796}
+      maxValue={1}
+      strokeWidth={12}
+      styles={buildStyles({
+        // Rotation of path and trail, in number of turns (0-1)
+        rotation: 0.25,
+
+        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
+        strokeLinecap: "round",
+
+        // Text size
+        textSize: "16px",
+
+        // How long animation takes to go from one percentage to another, in seconds
+        pathTransitionDuration: 0.5,
+
+        // Colors
+        pathColor: "#FF3236",
+        trailColor: "#ffffff",
+      })}
+    />
+    <div className={classes.recordBtn} />
+  </div>
+);
+
 const Capture = () => {
   const history = useHistory();
 
@@ -37,12 +66,14 @@ const Capture = () => {
     height: "100%",
     // genrate GIF loading status
     gifGenrating: false,
+    webcamCurrentType: "picture",
   });
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
   const [capturing, setCapturing] = useState(false);
 
-  const { toggle, img, webcam, width, height, gif, video, currenFile, activeFile, gifGenrating } = state;
+  const { toggle, img, webcam, width, height, gif, video, currenFile, activeFile, gifGenrating, webcamCurrentType } =
+    state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -139,7 +170,7 @@ const Capture = () => {
 
   // Genrate GIF
   function getBase64(file) {
-    dispatch(setLoader("Genrating GIF"));
+    dispatch(setLoader("Generating GIF"));
     handleSetState({
       gifGenrating: true,
     });
@@ -217,6 +248,18 @@ const Capture = () => {
     cancelOnMovement: false,
     detect: "both",
   });
+
+  const updpateMainBtn = () => {
+    if (webcamCurrentType === "picture") {
+      handleSetState({
+        webcamCurrentType: "record",
+      });
+    } else {
+      handleSetState({
+        webcamCurrentType: "picture",
+      });
+    }
+  };
 
   const continueToMint = () => {
     let name;
@@ -326,44 +369,31 @@ const Capture = () => {
           <div className={classes.closeBtn} onClick={cancel}>
             <CloseIcon />
           </div>
-          <div className={toggle ? classes.btnWrapper : classes.inactiveBtnWrapper}>
-            <div {...bind()} className={classes.holdBtn}>
-              <div className={classes.cancelBtn}>
-                <CircularProgressbar
-                  value={seconds / 796}
-                  maxValue={1}
-                  strokeWidth={12}
-                  styles={buildStyles({
-                    // Rotation of path and trail, in number of turns (0-1)
-                    rotation: 0.25,
-
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                    strokeLinecap: "round",
-
-                    // Text size
-                    textSize: "16px",
-
-                    // How long animation takes to go from one percentage to another, in seconds
-                    pathTransitionDuration: 0.5,
-
-                    // Colors
-                    pathColor: "#FF3236",
-                    trailColor: "#ffffff",
-                  })}
-                />
-                <div className={classes.recordBtn} />
+          <div className={classes.btnWrapper}>
+            {webcamCurrentType !== "picture" ? (
+              <div onClick={updpateMainBtn} className={classes.holdBtn}>
+                <IconCapture />
               </div>
-            </div>
+            ) : (
+              <div onClick={updpateMainBtn} className={classes.holdBtn}>
+                <RecordBtn seconds={seconds} />
+              </div>
+            )}
             {/* <div onClick={handleStopCaptureClick} className={classes.cancelBtn} style={{ left: "70%" }}>
             stop
           </div> */}
             {/* <div onClick={handleDownload} className={classes.cancelBtn} style={{ left: "90%" }}>
               donwload
             </div> */}
-            <div onClick={takePicture} className={classes.captureBtn}>
-              <IconCapture />
-            </div>
-
+            {webcamCurrentType === "picture" ? (
+              <div onClick={takePicture} className={`${classes.captureBtn} ${classes.active}`}>
+                <IconCapture />
+              </div>
+            ) : (
+              <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
+                <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
+              </div>
+            )}
             <div className={classes.uploadBtn}>
               <CameraSwitch onClick={() => switchCameraToRear()} />
             </div>
