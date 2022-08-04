@@ -93,6 +93,7 @@ export const auroraUserData = async (address) => {
 
 export const celoUserData = async (address) => {
   const { data: celoData, error: celoError } = await celoClient.query(GET_CELO_NFT, { id: address }).toPromise();
+  console.log("xxxx", celoData);
   if (celoError) return;
   let trHistory;
   let celoResult = [];

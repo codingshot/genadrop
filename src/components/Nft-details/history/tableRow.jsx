@@ -27,8 +27,16 @@ const TableRow = (data) => {
     let date = new Date(data.date.seconds * 1000);
     let graphDate = new Date(data.date * 1000);
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    let formatedGraphDate = `${months[graphDate.getMonth()]} ${graphDate.getDate()}, ${graphDate.getFullYear()}`;
-    let formattedDate = `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+    let formatedGraphDate = `${
+      months[graphDate.getMonth()]
+    } ${graphDate.getDate()}, ${graphDate.getFullYear()} - ${graphDate.getHours()}:${graphDate.getMinutes()}:${graphDate.getSeconds()} ${
+      graphDate.getHours() >= 12 ? "PM" : "AM"
+    }`;
+    let formattedDate = `${
+      months[date.getMonth()]
+    } ${date.getDate()}, ${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${
+      graphDate.getHours() >= 12 ? "PM" : "AM"
+    } `;
     return date.getDate() ? formattedDate : formatedGraphDate;
   };
   const icon = () => {
@@ -42,6 +50,9 @@ const TableRow = (data) => {
         break;
       case "Minting":
         icon = icons[2];
+        break;
+      case "Listing":
+        icon = icons[1];
         break;
       default:
         break;
