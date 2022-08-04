@@ -85,8 +85,8 @@ const Capture = () => {
   const ratio = isLandscape ? width / height : height / width;
   const videoConstraints = {
     facingMode: webcam,
-    width,
-    height,
+    width: "360",
+    height: "640",
     // ...(ratio && { ratio }),
   };
   console.log(videoConstraints);
