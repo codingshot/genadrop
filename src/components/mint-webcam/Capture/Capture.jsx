@@ -50,7 +50,7 @@ const Capture = () => {
   const { dispatch } = useContext(GenContext);
 
   // update the video to fit different screen
-  const aspectRatio = height >= width ? width / height : width / height;
+  const aspectRatio = height >= width ? width / height : height / width;
   const videoConstraints = {
     facingMode: webcam,
     width,
