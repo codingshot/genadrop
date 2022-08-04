@@ -53,6 +53,8 @@ const Capture = () => {
   const aspectRatio = height >= width ? width / height : width / height;
   const videoConstraints = {
     facingMode: webcam,
+    width,
+    height,
     ...(aspectRatio && { aspectRatio }),
   };
   const updateVideoSize = () => {
