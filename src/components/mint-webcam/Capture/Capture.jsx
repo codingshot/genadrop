@@ -50,13 +50,15 @@ const Capture = () => {
   const { dispatch } = useContext(GenContext);
 
   // update the video to fit different screen
-  const aspectRatio = height >= width ? width / height : height / width;
+  const isLandscape = height <= width;
+  const ratio = isLandscape ? width / height : height / width;
   const videoConstraints = {
     facingMode: webcam,
     width,
     height,
-    // ...(aspectRatio && { aspectRatio }),
+    ...(ratio && { ratio }),
   };
+  console.log(videoConstraints);
   const updateVideoSize = () => {
     const newWidth = webcamWrapper.current?.clientWidth;
     const newHeight = webcamWrapper.current?.clientHeight;
@@ -87,6 +89,8 @@ const Capture = () => {
 
   // Picture Handler
   const takePicture = () => {
+    console.log(width);
+    console.log(height);
     const imageSrc = webcamRef.current.getScreenshot();
     handleSetState({ img: imageSrc });
   };
@@ -304,15 +308,13 @@ const Capture = () => {
               <Webcam
                 ref={webcamRef}
                 audio={false}
-                height="100%"
                 screenshotFormat="image/png"
                 style={{
                   textAlign: "center",
-                  height: "100%",
-                  width: "100%",
-                  objectFit: "fill",
+                  objectFit: "cover",
                 }}
-                width="100%"
+                width={width}
+                height={height}
                 videoConstraints={videoConstraints}
                 forceScreenshotSourceSize
               />
