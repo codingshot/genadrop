@@ -6,6 +6,7 @@ import {
   setLoader,
   setOverlay,
   setNotification,
+  setMinter,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
@@ -13,18 +14,25 @@ import { handleMint, handleSingleMint } from "./minter-script";
 import classes from "./minter.module.css";
 import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
-import infoIcon from "../../../assets/icon-info.svg";
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
-import dropdownIcon from "../../../assets/icon-dropdown2.svg";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
 import { initConnectWallet } from "../../../components/wallet/wallet-script";
+import { useHistory } from "react-router-dom";
 
-const Minter = ({ data, changeFile, handleSetFileState }) => {
-  const { file, fileName: fName, metadata, zip } = data;
-  const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
+const Minter = () => {
+  const history = useHistory();
+  const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
+
+  if (!minter) {
+    history.push("/mint");
+    return null;
+  }
+
+  const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
     attributes: { [Date.now()]: { trait_type: "", value: "" } },
     fileName: fName,
@@ -144,8 +152,21 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     });
   };
 
+  const handleCancel = () => {
+    dispatch(setMinter(null));
+    history.push("/mint");
+  };
+
   const handlePrice = (event) => {
     handleSetState({ price: event.target.value > 0 ? event.target.value : "" });
+  };
+
+  const handleSetFileState = () => {
+    console.log("handleSetFileState");
+  };
+
+  const changeFile = () => {
+    history.push(`/mint/${minter.mintType}`);
   };
 
   const setMint = () => {
@@ -277,8 +298,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 {file.length > 1 ? (
                   file
                     .filter((_, idx) => idx < 3)
-                    .map((f) => (
+                    .map((f, idx) => (
                       <div
+                        key={idx}
                         style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
                         className={classes.imageContainer}
                       />
@@ -355,7 +377,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                       <div className={classes.attributes}>
                         {Object.keys(attributes).map((key, index) => (
                           <Attribute
-                            key={key}
+                            key={index}
                             attribute={attributes[key]}
                             id={key}
                             index={index}
@@ -429,7 +451,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     ) : (
                       <span>Select Chain</span>
                     )}
-                    <img className={classes.dropdownIcon} src={dropdownIcon} alt="" />
+                    <DropdownIcon className={classes.dropdownIcon} />
                   </div>
                   <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
                     {Object.values(supportedChains)
@@ -467,14 +489,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 <button type="button" onClick={setMint} className={classes.mintBtn}>
                   Mint
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    window.location.reload();
-                    changeFile;
-                  }}
-                  className={classes.cancelBtn}
-                >
+                <button type="button" onClick={handleCancel} className={classes.cancelBtn}>
                   Cancel
                 </button>
               </section>
