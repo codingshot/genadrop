@@ -102,7 +102,6 @@ const List = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      const address = ethers.utils.hexlify(account);
       if (chainId === 80001 || chainId === 137) {
         const [nft] = await polygonUserData(nftId);
         console.log(nft);
@@ -123,7 +122,7 @@ const List = () => {
       } else {
         const userNftCollections = await fetchUserBoughtNfts(account);
         const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
-        const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
+        const nft = result.filter((NFT) => String(NFT?.Id) === nftId)[0];
         if (!nft) history.goBack();
         else {
           handleSetState({
