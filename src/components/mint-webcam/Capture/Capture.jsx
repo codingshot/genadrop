@@ -140,7 +140,7 @@ const Capture = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
-      axios.post("https://gif-generator-api.herokuapp.com/video", { url: reader.result }).then((res) => {
+      axios.post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result }).then((res) => {
         const gifFile = getFileFromBase64(res.data.data, "Image.gif", "image/gif");
         console.log(file);
         handleSetState({ gif: gifFile });
