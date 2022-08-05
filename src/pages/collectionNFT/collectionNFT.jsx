@@ -136,9 +136,8 @@ const CollectionNFT = () => {
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
 
           trHistory.find((t) => {
-            if (t.type === "Minting") t.price = result[0].price * 0.000000000000000001;
+            if (t.type === "Minting") t.price = result[0].price;
           });
-
           handleSetState({
             nftDetails: result[0],
             collection: collectionData,

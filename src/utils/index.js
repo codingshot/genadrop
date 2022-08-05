@@ -314,6 +314,23 @@ export const getGraphCollection = async (collection, mainnet) => {
   return nftArr;
 };
 
+export const getTransactions = async (transactions) => {
+  const trnArr = [];
+  for (let i = 0; i < transactions?.length; i++) {
+    try {
+      const trnObj = {};
+      (trnObj.buyer = transactions[i]?.to?.id),
+        (trnObj.price = transactions[i]?.price * 0.000000000000000001),
+        (trnObj.seller = transactions[i].from?.id),
+        (trnObj.txDate = transactions[i]?.txDate),
+        (trnObj.txId = transactions[i]?.txId),
+        (trnObj.type = transactions[i]?.type);
+      trnArr.push(trnObj);
+    } catch (error) {}
+  }
+  return trnArr;
+};
+
 export const getUserGraphNft = async (collection, address) => {
   console.log(collection);
   const nftArr = [];
@@ -343,24 +360,6 @@ export const getUserGraphNft = async (collection, address) => {
     }
   }
   return nftArr;
-};
-
-export const getTransactions = async (transactions) => {
-  const trnArr = [];
-  console.log(transactions);
-  for (let i = 0; i < transactions.length; i++) {
-    try {
-      const trnObj = {};
-      (trnObj.buyer = transactions[i]?.to?.id),
-        (trnObj.price = Number(transactions[i]?.price) * 0.000000000000000001),
-        // (trnObj.seller = transactions[i].from?.id),
-        (trnObj.txDate = transactions[i]?.txDate),
-        (trnObj.txId = transactions[i]?.txId),
-        (trnObj.type = transactions[i]?.type);
-      trnArr.push(trnObj);
-    } catch (error) {}
-    return trnArr;
-  }
 };
 
 export const getCeloGraphNft = async (collection) => {
