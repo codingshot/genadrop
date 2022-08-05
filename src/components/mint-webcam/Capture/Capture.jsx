@@ -352,10 +352,11 @@ const Capture = () => {
                 ref={webcamRef}
                 audio={false}
                 screenshotFormat="image/png"
-                // style={{
-                //   textAlign: "center",
-                //   objectFit: "cover",
-                // }}
+                style={{
+                  objectFit: "cover",
+                }}
+                minScreenshotHeight={videoConstraints.width}
+                minScreenshotWidth={videoConstraints.height}
                 width={videoConstraints.width}
                 height={videoConstraints.height}
                 videoConstraints={videoConstraints}
