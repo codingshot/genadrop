@@ -105,14 +105,14 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 };
 
 const uploadToIpfs = async (nftFile, nftFileName, asset) => {
-  const fileCat = "image";
+  const fileCat = nftFile.type.split("/")[0];
 
   const nftFileNameSplit = nftFileName.split(".");
   const fileExt = nftFileNameSplit[1];
 
   const kvProperties = {
     url: nftFileNameSplit[0],
-    mimetype: `image/${fileExt}`,
+    mimetype: `${fileCat}/${fileExt}`,
   };
   const pinataMetadata = JSON.stringify({
     name: asset.name,
