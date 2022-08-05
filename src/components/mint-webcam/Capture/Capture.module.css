@@ -26,6 +26,10 @@
   width: 100%;
   height: calc(100vh - 5rem);
 }
+.videoWrapper div:first-child {
+  width: 100%;
+  height: 100%;
+}
 .cameraWrapper {
   display: flex;
   flex-direction: column;

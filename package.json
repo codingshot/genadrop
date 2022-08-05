@@ -50,6 +50,7 @@
     "react": "^17.0.2",
     "react-app-rewired": "^2.2.1",
     "react-beautiful-dnd": "^13.1.0",
+    "react-camera-pro": "^1.1.1",
     "react-chartjs-2": "^4.1.0",
     "react-charts": "^2.0.0-beta.7",
     "react-circular-progressbar": "^2.1.0",

@@ -5,6 +5,7 @@ import Webcam from "react-webcam";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import axios from "axios";
+import { Camera } from "./Camera";
 import classes from "./Capture.module.css";
 import useTimer from "./useTimer";
 import WebcamEnable from "../webcam-enable/webcamEnable";
@@ -71,7 +72,7 @@ const Capture = () => {
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
   const [capturing, setCapturing] = useState(false);
-
+  const [numberOfCameras, setNumberOfCameras] = useState(0);
   const { toggle, img, webcam, width, height, gif, video, currenFile, activeFile, gifGenrating, webcamCurrentType } =
     state;
 
@@ -122,9 +123,10 @@ const Capture = () => {
   const takePicture = () => {
     console.log(width);
     console.log(height);
-    const imageSrc = webcamRef.current.getScreenshot();
+    const imageSrc = webcamRef.current.takePhoto();
     handleSetState({ img: imageSrc });
   };
+  console.log(webcamRef.current);
   const downloadImg = () => {
     const ImageBase64 = img.split("data:image/png;base64,")[1];
     const a = document.createElement("a"); // Create <a>
@@ -160,7 +162,7 @@ const Capture = () => {
 
   const handleStartCaptureClick = React.useCallback(() => {
     setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.stream, {
+    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
       mimeType: "video/webm",
     });
     mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
@@ -348,20 +350,33 @@ const Capture = () => {
         <div className={classes.videoContainer}>
           <div className={classes.videoWrapper} ref={webcamWrapper}>
             {toggle ? (
-              <Webcam
+              <Camera
                 ref={webcamRef}
-                audio={false}
-                screenshotFormat="image/png"
-                style={{
-                  objectFit: "cover",
+                aspectRatio="cover"
+                numberOfCamerasCallback={setNumberOfCameras}
+                errorMessages={{
+                  noCameraAccessible:
+                    "No camera device accessible. Please connect your camera or try a different browser.",
+                  permissionDenied: "Permission denied. Please refresh and give camera permission.",
+                  switchCamera:
+                    "It is not possible to switch camera to different one because there is only one video device accessible.",
+                  canvas: "Canvas is not supported.",
                 }}
-                minScreenshotHeight={videoConstraints.width}
-                minScreenshotWidth={videoConstraints.height}
-                width={videoConstraints.width}
-                height={videoConstraints.height}
-                videoConstraints={videoConstraints}
               />
             ) : (
+              // <Webcam
+              //   ref={webcamRef}
+              //   audio={false}
+              //   screenshotFormat="image/png"
+              //   style={{
+              //     objectFit: "cover",
+              //   }}
+              //   minScreenshotHeight={videoConstraints.width}
+              //   minScreenshotWidth={videoConstraints.height}
+              //   width={videoConstraints.width}
+              //   height={videoConstraints.height}
+              //   videoConstraints={videoConstraints}
+              // />
               <div className={classes.videoOFF} />
             )}
             <div className={classes.enableContainer}> </div>
