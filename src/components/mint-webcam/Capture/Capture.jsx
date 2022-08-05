@@ -107,6 +107,7 @@ const Capture = () => {
   const switchCameraToRear = () => {
     const webcamStatus = webcam === "user" ? "environment" : "user";
     handleSetState({ webcam: webcamStatus });
+    webcamRef.current.switchCamera();
   };
 
   // enable webcam
