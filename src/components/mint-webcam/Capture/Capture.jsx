@@ -1,10 +1,10 @@
 import React, { useRef, useState, useContext, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useLongPress } from "use-long-press";
-import Webcam from "react-webcam";
+import axios from "axios";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import axios from "axios";
+// import Webcam from "react-webcam";
 import { Camera } from "./Camera";
 import classes from "./Capture.module.css";
 import useTimer from "./useTimer";
@@ -90,7 +90,6 @@ const Capture = () => {
     height,
     // ...(ratio && { ratio }),
   };
-  console.log(videoConstraints);
   const updateVideoSize = () => {
     const newWidth = webcamWrapper.current?.clientWidth;
     const newHeight = webcamWrapper.current?.clientHeight;
@@ -122,12 +121,9 @@ const Capture = () => {
 
   // Picture Handler
   const takePicture = () => {
-    console.log(width);
-    console.log(height);
     const imageSrc = webcamRef.current.takePhoto();
     handleSetState({ img: imageSrc });
   };
-  console.log(webcamRef.current);
   const downloadImg = () => {
     const ImageBase64 = img.split("data:image/png;base64,")[1];
     const a = document.createElement("a"); // Create <a>
@@ -136,9 +132,7 @@ const Capture = () => {
     a.click(); // Downloaded file
   };
   function getFileFromBase64(string64, fileName, type) {
-    console.log(string64);
     const trimmedString = string64.split(",")[1];
-    console.log(trimmedString);
     const imageContent = atob(trimmedString);
     const buffer = new ArrayBuffer(imageContent.length);
     const view = new Uint8Array(buffer);
@@ -161,15 +155,19 @@ const Capture = () => {
     [setRecordedChunks]
   );
 
-  const handleStartCaptureClick = React.useCallback(() => {
-    setCapturing(true);
-    mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
-      mimeType: "video/webm",
-    });
-    mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
-    mediaRecorderRef.current.start();
-    start();
-  }, [webcamRef, setCapturing, mediaRecorderRef]);
+  const handleStartCaptureClick = React.useCallback(
+    (event) => {
+      event.returnValue = false;
+      setCapturing(true);
+      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
+        mimeType: "video/webm",
+      });
+      mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
+      mediaRecorderRef.current.start();
+      start();
+    },
+    [webcamRef, setCapturing, mediaRecorderRef]
+  );
 
   // Genrate GIF
   function getBase64(file) {
@@ -182,7 +180,6 @@ const Capture = () => {
     reader.onload = function () {
       axios.post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result }).then((res) => {
         const gifFile = getFileFromBase64(res.data.data, "Image.gif", "image/gif");
-        console.log(file);
         handleSetState({ gif: gifFile });
 
         dispatch(setLoader(""));
@@ -208,7 +205,7 @@ const Capture = () => {
       if (gif) {
         handleSetState({ currenFile: gif });
       } else {
-        const gifBase64 = getBase64(currenFile);
+        getBase64(currenFile);
       }
     } else if (activeFile === "mp4") {
       handleSetState({
@@ -223,8 +220,6 @@ const Capture = () => {
         type,
       });
       const file = new File([blob], "video.mp4", { lastModified: new Date().getTime(), type });
-
-      const url = URL.createObjectURL(blob);
       handleSetState({ video: file, currenFile: file });
       setRecordedChunks([]);
     }
@@ -246,7 +241,7 @@ const Capture = () => {
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
     onCancel: handleStopCaptureClick,
-    threshold: 8000,
+    threshold: 7000,
     captureEvent: true,
     cancelOnMovement: false,
     detect: "both",
@@ -395,12 +390,6 @@ const Capture = () => {
                 <RecordBtn seconds={seconds} />
               </div>
             )}
-            {/* <div onClick={handleStopCaptureClick} className={classes.cancelBtn} style={{ left: "70%" }}>
-            stop
-          </div> */}
-            {/* <div onClick={handleDownload} className={classes.cancelBtn} style={{ left: "90%" }}>
-              donwload
-            </div> */}
             {webcamCurrentType === "picture" ? (
               <div onClick={takePicture} className={`${classes.captureBtn} ${classes.active}`}>
                 <IconCapture />
