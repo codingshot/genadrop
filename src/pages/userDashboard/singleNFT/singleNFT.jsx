@@ -107,15 +107,9 @@ const ListSingleNFT = (nft) => {
 
   useEffect(() => {
     if (Number(nftChainId) !== 4160) return;
-    let nftDetails = null;
-    const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
-    if (cacheNftDetails) {
-      nftDetails = cacheNftDetails;
-    } else {
-      nftDetails = singleAlgoNfts[nftId];
-    }
+    let nftDetails = singleAlgoNfts[nftId];
     if (nftDetails) {
-      window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
+      // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
         tHistory.find((t) => {
