@@ -21,7 +21,7 @@ import { setZip, setLoader, setNotification } from "../../../gen-state/gen.actio
 const RecordBtn = ({ seconds }) => (
   <div className={classes.RecordBtnWrapper}>
     <CircularProgressbar
-      value={seconds / 796}
+      value={seconds / 600}
       maxValue={1}
       strokeWidth={12}
       styles={buildStyles({
@@ -59,7 +59,7 @@ const Capture = () => {
     gif: "",
     video: "",
     currenFile: "",
-    activeFile: "mp4",
+    activeFile: "gif",
     // User/Selfie/forward camera
     webcam: "environment",
     // video size
@@ -200,19 +200,19 @@ const Capture = () => {
     };
   }
   // file type switch
-  useEffect(() => {
-    if (activeFile === "gif") {
-      if (gif) {
-        handleSetState({ currenFile: gif });
-      } else {
-        getBase64(currenFile);
-      }
-    } else if (activeFile === "mp4") {
-      handleSetState({
-        currenFile: video,
-      });
-    }
-  }, [activeFile]);
+  // useEffect(() => {
+  //   if (activeFile === "gif") {
+  //     if (gif) {
+  //       handleSetState({ currenFile: gif });
+  //     } else {
+  //       getBase64(currenFile);s
+  //     }
+  //   } else if (activeFile === "mp4") {
+  //     handleSetState({
+  //       currenFile: video,
+  //     });
+  //   }
+  // }, [activeFile]);
   const handleDownload = React.useCallback(() => {
     if (recordedChunks.length) {
       const type = "video/mp4";
@@ -220,7 +220,8 @@ const Capture = () => {
         type,
       });
       const file = new File([blob], "video.mp4", { lastModified: new Date().getTime(), type });
-      handleSetState({ video: file, currenFile: file });
+      getBase64(file);
+      // handleSetState({ video: file, currenFile: file });
       setRecordedChunks([]);
     }
   }, [recordedChunks]);
@@ -314,7 +315,7 @@ const Capture = () => {
             <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
           )}
           <div className={classes.imgBtn}>
-            {!img && (
+            {/* {!img && (
               <div className={classes.typeSelcet}>
                 <div
                   onClick={() => handleSetState({ activeFile: "gif" })}
@@ -335,7 +336,7 @@ const Capture = () => {
                   <p>MP4</p>
                 </div>
               </div>
-            )}
+            )} */}
             {/* <a onClick={downloadImg}>Download photo</a> */}
             <div className={`${classes.mintBtn} ${gifGenrating && classes.disabled}`} onClick={continueToMint}>
               Continue

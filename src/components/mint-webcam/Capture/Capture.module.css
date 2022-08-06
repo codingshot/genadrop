@@ -6,6 +6,11 @@
   position: relative;
   max-width: 1280px;
 }
+.container * {
+  user-select: none;
+  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
+  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
+}
 .videoOFF {
   width: 100%;
   height: 100%;
@@ -94,13 +99,6 @@
   position: relative;
   left: auto;
   user-select: none;
-  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
-  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
-}
-.holdBtn.active * {
-  user-select: none;
-  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
-  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
 }
 .RecordBtnWrapper {
   display: flex;
