@@ -345,3 +345,13 @@ export const setActionProgress = (state) => ({
   type: genActionTypes.SET_ACTION_PROGRESS,
   payload: state,
 });
+
+export const setMinter = (minter) => ({
+  type: genActionTypes.SET_MINTER,
+  payload: minter,
+});
+
+export const setToggleUpgradeModal = (state) => ({
+  type: genActionTypes.TOGGLE_UPGRADE_MODAL,
+  payload: state,
+});

@@ -22,7 +22,7 @@ const ProgressBar = () => {
 
   return (
     <div className={classes.container}>
-      <CloudIcon /> {counter.count > 1 ? `${counter.percentageCount}%` : null}
+      <CloudIcon /> {counter.count > 1 ? `${counter.percentageCount}%` : "saved"}
     </div>
   );
 };

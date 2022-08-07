@@ -2,16 +2,12 @@ import classes from "./PricingModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import stripeIcon from "../../../assets/icon-stripe.svg";
 import paypalIcon from "../../../assets/icon-paypal.svg";
-import { useState } from "react";
-import { v4 as uuid } from "uuid";
-import { setCurrentSession } from "../../../gen-state/gen.actions";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalButton from "./PaypalButton";
-import { handleResetCreate } from "../../../utils";
 
 let stripePromise;
 
@@ -84,8 +80,8 @@ const PricingModal = ({ modal, price, closeModal }) => {
   const checkoutOptions = {
     lineItems: [item[0]],
     mode: "payment",
-    successUrl: `${window.location.origin}/success`, // you decide where to redirect. This is just for test
-    cancelUrl: `${window.location.origin}/cancel`,
+    successUrl: `/create/session/create`, // you decide where to redirect. This is just for test
+    cancelUrl: `/create/session/pricing/failed`,
   };
 
   const redirectToCheckout = async () => {
@@ -105,16 +101,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
   if (stripeError) alert(stripeError);
 
   const handleClick = () => {
-    let ID = uuid();
-    // process payment using this ID
-    // If payment was successful, create a session for the user using the same ID
-    if (!upgradePlan) {
-      handleResetCreate({ dispatch });
-      dispatch(setCurrentSession(ID));
-    } else if (!sessionId) {
-      dispatch(setCurrentSession(ID));
-    }
-    history.push("/create");
+    history.push("/create/session/pricing/failed");
     handleClose();
   };
 

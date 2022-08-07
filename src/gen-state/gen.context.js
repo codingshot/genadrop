@@ -61,6 +61,8 @@ const GenContextProvider = ({ children }) => {
     currentPlan,
     upgradePlan,
     actionProgress,
+    minter,
+    toggleUpgradeModal,
   } = state;
 
   return (
@@ -120,6 +122,8 @@ const GenContextProvider = ({ children }) => {
         currentPlan,
         upgradePlan,
         actionProgress,
+        minter,
+        toggleUpgradeModal,
         dispatch,
       }}
     >

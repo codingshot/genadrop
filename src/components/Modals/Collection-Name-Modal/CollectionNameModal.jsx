@@ -1,8 +1,8 @@
 import classes from "./CollectionNameModal.module.css";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
-import { GenContext } from "../../gen-state/gen.context";
-import { setCollectionName, setToggleCollectionNameModal } from "../../gen-state/gen.actions";
+import { GenContext } from "../../../gen-state/gen.context";
+import { setCollectionName, setToggleCollectionNameModal } from "../../../gen-state/gen.actions";
 
 const CollectionNameModal = () => {
   const [inputValue, setInputValue] = useState("");

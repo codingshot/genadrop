@@ -13,6 +13,7 @@ import {
   setNftLayers,
   setOverlay,
   setSession,
+  setUpgradePlan,
 } from "../../gen-state/gen.actions";
 import { deleteAllLayers, fetchSession, fetchUserSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
@@ -28,15 +29,15 @@ const Session = () => {
   const [dropdownId, setDropdown] = useState(-1);
   const [noResult, toggleNotResult] = useState(null);
 
-  const { dispatch, currentUser, sessions, isUser } = useContext(GenContext);
+  const { dispatch, currentUser, sessions, isUser, currentPlan } = useContext(GenContext);
 
-  const handleLoad = async (sessionId, currentPlan) => {
+  const handleLoad = async (sessionId, plan) => {
     console.log("fetch starts");
     handleResetCreate({ dispatch });
     setLoading(true);
     const res = await fetchUserSession({ currentUser, sessionId });
     if (res) {
-      dispatch(setCurrentPlan(currentPlan));
+      dispatch(setCurrentPlan(plan));
       dispatch(setLayers(res.layers));
       dispatch(setNftLayers(res.nftLayers));
       dispatch(setCollectionName(res.collectionName));
@@ -55,14 +56,23 @@ const Session = () => {
     dispatch(setSession(sessions));
     if (!sessions.length) {
       toggleNotResult("true");
-      handleResetCreate({ dispatch });
       dispatch(setCurrentPlan("free"));
+      if (currentPlan !== "free") {
+        console.log("reset");
+        handleResetCreate({ dispatch });
+      }
     }
     setLoading(false);
     console.log("delete ends");
   };
 
   const handleCreate = () => {
+    dispatch(setUpgradePlan(false));
+    history.push("/create/session/pricing");
+  };
+
+  const handleUpgrade = () => {
+    dispatch(setUpgradePlan(true));
     history.push("/create/session/pricing");
   };
 
@@ -164,8 +174,8 @@ const Session = () => {
                             </div>
                           ))}
                         </div>
-                        <div className={classes.ugradeBtnContainer}>
-                          <button>Upgrade plan</button>
+                        <div className={classes.upgradeBtnContainer}>
+                          <button onClick={handleUpgrade}>Upgrade plan</button>
                         </div>
                       </div>
                     </div>

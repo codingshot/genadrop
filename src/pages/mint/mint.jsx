@@ -1,13 +1,20 @@
-import React, { useContext, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./mint.module.css";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
+import { useContext } from "react";
+import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
   const history = useHistory();
   const { url } = useRouteMatch();
+  const { minter } = useContext(GenContext);
+
+  if (minter) {
+    history.push(`/mint/${minter.mintType}/minter`);
+    return null;
+  }
 
   const handleMint = (target) => {
     history.push(`${url}/${target}`);

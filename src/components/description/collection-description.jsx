@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { setImageQuality, setOverlay, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
+import {
+  setImageQuality,
+  setOverlay,
+  setMintAmount,
+  setNftLayers,
+  setNotification,
+  setToggleUpgradeModal,
+} from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
@@ -9,10 +16,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
 import { handleGenerate } from "./collection-description-script";
+import { plans } from "../../pages/Pricing/Pricing.script";
 
 const CollectionDescription = () => {
-  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName, imageQuality } =
-    useContext(GenContext);
+  const {
+    layers,
+    nftLayers,
+    mintAmount,
+    dispatch,
+    combinations,
+    rule,
+    isRule,
+    collectionName,
+    imageQuality,
+    currentPlan,
+  } = useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
     selectInputValue: 0.5,
@@ -46,6 +64,10 @@ const CollectionDescription = () => {
   };
 
   const handleGenerateClick = () => {
+    if (parseInt(amountInputValue) > Number(plans[currentPlan].amount)) {
+      dispatch(setToggleUpgradeModal(true));
+      return;
+    }
     dispatch(setMintAmount(parseInt(amountInputValue)));
     handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
   };

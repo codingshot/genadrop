@@ -6,6 +6,7 @@ import userIcon from "../../assets/icon-user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
 import { ReactComponent as ChevronIcon } from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
@@ -136,6 +137,9 @@ function ConnectWallet() {
         <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
         <div className={classes.address}>
           <span>{breakAddress(account)}</span>
+        </div>
+        <div className={classes.dropdownIconContainer}>
+          <DropdownIcon className={classes.dropdownIcon} />
         </div>
       </div>
       {dropdown}

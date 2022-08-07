@@ -5,7 +5,7 @@
   padding: 1em;
   position: sticky;
   top: 5em;
-  border: 1px solid var(--outline-light);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
   z-index: 10;
   overflow: auto;

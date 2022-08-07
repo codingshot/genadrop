@@ -6,7 +6,6 @@ import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
-import GoogleAuth from "../google-auth/googleAuth";
 
 const Navbar = () => {
   const [state, setState] = useState({

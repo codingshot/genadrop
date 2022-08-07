@@ -3,7 +3,7 @@ import { plans } from "./Pricing.script";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 import { useEffect, useState } from "react";
-import PricingModal from "./Pricing-Modal/PricingModal";
+import PricingModal from "../../components/Modals/Pricing-Modal/PricingModal";
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";

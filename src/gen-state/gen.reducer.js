@@ -84,6 +84,10 @@ export const INITIAL_STATE = {
     totalCount: 0,
     resetCount: true,
   },
+  isUser: "", // true false null,
+  currentPlan: "free",
+  minter: "",
+  toggleUpgradeModal: "",
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -439,6 +443,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         actionProgress: action.payload,
+      };
+    case genActionTypes.SET_MINTER:
+      return {
+        ...state,
+        minter: action.payload,
+      };
+    case genActionTypes.TOGGLE_UPGRADE_MODAL:
+      return {
+        ...state,
+        toggleUpgradeModal: action.payload,
       };
     default:
       return state;

@@ -293,13 +293,13 @@
   fill: var(--main-color);
 }
 
-.ugradeBtnContainer {
+.upgradeBtnContainer {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.ugradeBtnContainer button {
+.upgradeBtnContainer button {
   align-self: center;
   padding: 0.5em 2em;
   border-radius: 2em;
@@ -309,6 +309,11 @@
   font-size: 1rem;
   transition: all 300ms;
   cursor: pointer;
+}
+
+.upgradeBtnContainer button:hover {
+  color: var(--main-hovered);
+  border-color: var(--main-hovered);
 }
 
 .loader {
@@ -433,7 +438,7 @@
     font-size: 1rem;
   }
 
-  .ugradeBtnContainer button,
+  .upgradeBtnContainer button,
   .subHeading button {
     font-size: 0.85rem;
   }

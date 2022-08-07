@@ -5,7 +5,7 @@ import classes from "./create.module.css";
 import { useEffect, useState } from "react";
 import LoginModal from "../../components/Login-Modal/LoginModal";
 import SubscriptionNotification from "../../components/Subscription-Notification/SubscriptionNotification";
-import CollectionNameModal from "../../components/Collection-Name-Modal/CollectionNameModal";
+import CollectionNameModal from "../../components/Modals/Collection-Name-Modal/CollectionNameModal";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import {
@@ -21,6 +21,7 @@ import CreateGuide from "../../components/create-guide/create-guide";
 import GoogleAuth from "../../components/google-auth/googleAuth";
 import ProfileDropdown from "../../components/profile-dropdown/profileDropdown";
 import { ReactComponent as Diskicon } from "../../assets/icon-disk.svg";
+import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import ProgressBar from "./Progress-Bar/ProgressBar";
 import { useRef } from "react";
 import { handleSampleLayers } from "../../components/menu/collection-menu-script";
@@ -116,10 +117,13 @@ const Create = () => {
               setDropdown={toggleProfileDropdown}
               userName={currentUser?.displayName}
             />
+            <div className={classes.dropdownIconContainer}>
+              <DropdownIcon className={classes.dropdownIcon} />
+            </div>
           </div>
           {currentPlan === "free" ? (
             <div onClick={handleUpgrade} className={classes.autoSave}>
-              <Diskicon />
+              <Diskicon className={classes.diskIcon} />
               <div>Auto-save</div>
             </div>
           ) : (

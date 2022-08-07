@@ -2,6 +2,7 @@
   width: 100%;
   background: var(--default);
   padding: 2em 1em;
+  margin-bottom: 6em;
   animation: show 650ms;
 }
 
@@ -110,9 +111,8 @@
   transition: all 300ms;
 }
 
-.asset button:hover {
+.assetContainer button:hover {
   background: var(--main-hovered);
-  border: 1px solid var(--main-color);
   cursor: var(--cursor-pointer);
   color: white;
 }
@@ -570,6 +570,7 @@ div.showPreview > span {
 @media screen and (max-width: 768px) {
   .container {
     padding: 2em 0.5em;
+    margin-bottom: 4em;
   }
 
   .imageContainers {

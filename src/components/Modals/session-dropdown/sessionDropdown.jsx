@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { GenContext } from "../../gen-state/gen.context";
+import { GenContext } from "../../../gen-state/gen.context";
 import classes from "./sessionDropdown.module.css";
 import { useHistory } from "react-router-dom";
-import { setUpgradePlan } from "../../gen-state/gen.actions";
+import { setUpgradePlan } from "../../../gen-state/gen.actions";
 
 const SessionDropdown = ({ dropdown }) => {
   const history = useHistory();

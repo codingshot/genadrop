@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+  gap: 0.5em;
   border-radius: 2em;
   padding: 0.25em 0.25em;
   padding-right: 0.75em;
@@ -53,8 +53,22 @@
   position: relative;
 }
 
+.diskIcon {
+  width: 1.2em;
+  height: 1.2em;
+}
+
 .profile.active {
   border: 1px solid var(--main-color);
+}
+
+.dropdownIconContainer {
+  border-left: 1px solid var(--outline);
+  padding: 0 0.25em;
+}
+
+.dropdownIcon {
+  fill: var(--main-color);
 }
 
 .collectionNameContainer {
@@ -94,9 +108,9 @@
 .autoSave {
   background: var(--main-color);
   box-shadow: var(--btn-open);
-  gap: 0.5em;
   font-size: 0.85rem;
   border: 1px solid transparent;
+  padding: 0.5em;
 }
 
 .autoSave:hover {

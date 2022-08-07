@@ -15,7 +15,7 @@
   justify-content: flex-start;
   flex-direction: column;
   gap: 1em;
-  border: 1px solid var(--outline-light);
+  border: 1px solid var(--outline);
   box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
 }
 

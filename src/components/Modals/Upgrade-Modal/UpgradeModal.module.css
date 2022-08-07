@@ -1,0 +1,165 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.container.active {
+  display: flex;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 48em;
+  border-radius: 0.5em;
+  background: var(--default);
+  padding: 4em 1em;
+  position: relative;
+  animation: show 650ms alternate;
+}
+
+@keyframes show {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.closeBtn {
+  fill: var(--icon-color);
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  width: 1.4em;
+  height: 1.4em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  background: var(--btn-close);
+  cursor: var(--cursor-pointer);
+  transition: all 300ms;
+}
+
+.closeBtn:hover {
+  box-shadow: var(--shadow-dark);
+}
+
+.content {
+  width: 100%;
+  max-width: 36em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1.5em;
+  padding: 0 4em;
+  border-radius: 0.5em;
+}
+
+.heading {
+  font-weight: 600;
+  text-align: center;
+}
+
+.heading .accent {
+  text-transform: uppercase;
+  color: var(--main-color);
+}
+
+.features {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.plans {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card-light);
+  padding: 0 1.5em;
+  flex-wrap: wrap;
+}
+
+.plan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-right: 1px solid var(--outline);
+  padding: 0.75em 1em;
+}
+
+.plan:first-child {
+  border-left: none;
+}
+
+.plan:last-child {
+  border-right: none;
+}
+
+.content button {
+  align-self: center;
+  width: 80%;
+  padding: 0.75em 2em;
+  border-radius: 2em;
+  background: var(--main-color);
+  color: var(--default);
+  font-size: 1rem;
+  transition: all 300ms;
+  cursor: pointer;
+  margin-top: 1em;
+}
+
+.content button:hover {
+  background: var(--main-hovered);
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    padding: 0 2em;
+  }
+
+  .upgradeIcon {
+    width: 6em;
+    height: 6em;
+  }
+
+  .plans {
+    padding: 0.5em;
+    gap: 0.5em;
+  }
+
+  .plan:first-child {
+    border-left: 1px solid var(--outline);
+  }
+
+  .plan:last-child {
+    border-right: 1px solid var(--outline);
+  }
+
+  .plan {
+    border: 1px solid var(--outline);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .upgradeIcon {
+    width: 4em;
+    height: 4em;
+  }
+
+  .plan {
+    font-size: 0.85rem;
+    padding: 0.25em 0.5em;
+  }
+}

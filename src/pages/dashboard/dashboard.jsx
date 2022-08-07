@@ -21,9 +21,9 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
 import bg from "../../assets/bg.png"; // remove this when done!
-import twitter from "../../assets/icon-twitter-green.svg";
-import discord from "../../assets/icon-discord-green.svg";
-import instagram from "../../assets/icon-instagram-green.svg";
+import twitter from "../../assets/icon-twitter-blue.svg";
+import discord from "../../assets/icon-discord-blue.svg";
+import instagram from "../../assets/icon-instagram-blue.svg";
 import youtube from "../../assets/icon-youtube-green.svg";
 import { celoClient, polygonClient } from "../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
@@ -82,9 +82,9 @@ const Dashboard = () => {
     // Get User Created NFTs
 
     (async function getUserNFTs() {
-      const singleNfts = await fetchUserCreatedNfts(account);
       let algoNFTs = [];
       if (chainId == 4160) {
+        const singleNfts = await fetchUserCreatedNfts(account);
         algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       }
       const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);
@@ -195,75 +195,73 @@ const Dashboard = () => {
 
   return (
     <div className={classes.container}>
+      {/* change background to dynamic */}
+      <div className={classes.bannerContainer}>
+        <img src={bg} alt="" className={classes.banner} />
+        <img className={classes.imageContainer} src={avatar} alt="" />
+      </div>
+
       <div className={classes.wrapper}>
         <section className={classes.header}>
-          {/* change background to dynamic */}
-          <img src={bg} alt="" className={classes.banner} />
+          {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
 
-          <div className={classes.imageContainer}>
-            <img src={avatar} alt="" />
+          <div className={classes.address}>
+            <Copy message={account} placeholder={breakAddress(account)} />
           </div>
 
-          <div className={classes.lower}>
-            {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
-            <div className={classes.address}>
-              <Copy message={account} placeholder={breakAddress(account)} />
-            </div>
+          <div className={classes.social}>
+            {userDetails?.twitter ? (
+              <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
+                {" "}
+                <img src={twitter} alt="" className={classes.socialIcon} />{" "}
+              </a>
+            ) : (
+              ""
+            )}
+            {userDetails?.youtube ? (
+              <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
+                {" "}
+                <img src={youtube} alt="" className={classes.socialIcon} />{" "}
+              </a>
+            ) : (
+              ""
+            )}
+            {userDetails?.instagram ? (
+              <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
+                {" "}
+                <img src={instagram} alt="" className={classes.socialIcon} />{" "}
+              </a>
+            ) : (
+              ""
+            )}
+            {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
+          </div>
 
-            <div className={classes.social}>
-              {userDetails?.twitter ? (
-                <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
-                  {" "}
-                  <img src={twitter} alt="" className={classes.socialIcon} />{" "}
-                </a>
-              ) : (
-                ""
-              )}
-              {userDetails?.youtube ? (
-                <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
-                  {" "}
-                  <img src={youtube} alt="" className={classes.socialIcon} />{" "}
-                </a>
-              ) : (
-                ""
-              )}
-              {userDetails?.instagram ? (
-                <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
-                  {" "}
-                  <img src={instagram} alt="" className={classes.socialIcon} />{" "}
-                </a>
-              ) : (
-                ""
-              )}
-              {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
-            </div>
-            <div className={classes.social} />
-            <Link to={`${url}/profile/settings`}>
-              <div className={classes.editProfile}>Edit Profile</div>
-            </Link>
+          <Link to={`${url}/profile/settings`}>
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
 
-            <div className={classes.details}>
-              <div
-                onClick={() => handleSetState({ activeDetail: "created" })}
-                className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
-              >
-                <p>Created NFT</p>
-                <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
-              </div>
-              <div
-                onClick={() => handleSetState({ activeDetail: "collected" })}
-                className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
-              >
-                <p>Collected NFTs</p>
-                <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
-              </div>
-              <div
-                onClick={() => handleSetState({ activeDetail: "collections" })}
-                className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
-              >
-                <p>My Collections</p>
-                <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
-              </div>
+          <div className={classes.details}>
+            <div
+              onClick={() => handleSetState({ activeDetail: "created" })}
+              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
+            >
+              <p>Created NFT</p>
+              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => handleSetState({ activeDetail: "collected" })}
+              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
+            >
+              <p>Collected NFTs</p>
+              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => handleSetState({ activeDetail: "collections" })}
+              className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
+            >
+              <p>My Collections</p>
+              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
             </div>
           </div>
         </section>

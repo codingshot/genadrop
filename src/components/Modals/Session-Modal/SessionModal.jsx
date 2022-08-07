@@ -1,7 +1,7 @@
 import classes from "./SessionModal.module.css";
-import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { useContext, useState } from "react";
-import { GenContext } from "../../gen-state/gen.context";
+import { GenContext } from "../../../gen-state/gen.context";
 import {
   setCollectionName,
   setCurrentPlan,
@@ -9,8 +9,8 @@ import {
   setLayers,
   setNftLayers,
   setToggleSessionModal,
-} from "../../gen-state/gen.actions";
-import { fetchUserSession } from "../../renderless/store-data/StoreData.script";
+} from "../../../gen-state/gen.actions";
+import { fetchUserSession } from "../../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
 
 const SessionModal = () => {
