@@ -167,7 +167,7 @@
 .supportedFiles {
   text-align: center;
   font-size: 0.9rem;
-  color: var(--text-placeholder);
+  color: var(--text-sub-heading);
 }
 
 .btn {
