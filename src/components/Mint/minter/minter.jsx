@@ -34,7 +34,7 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: "", value: "" } },
+    attributes: { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     price: "",
@@ -276,7 +276,6 @@ const Minter = () => {
       }
     }
   }, [price, chainId]);
-
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />

@@ -21,7 +21,7 @@ import { setZip, setLoader, setNotification } from "../../../gen-state/gen.actio
 const RecordBtn = ({ seconds }) => (
   <div className={classes.RecordBtnWrapper}>
     <CircularProgressbar
-      value={seconds / 600}
+      value={seconds / 700}
       maxValue={1}
       strokeWidth={12}
       styles={buildStyles({
@@ -55,12 +55,14 @@ const Capture = () => {
 
   const [state, setState] = useState({
     toggle: false,
+    // each type file
     img: "",
     gif: "",
     video: "",
+    // current file to mint
     currenFile: "",
     activeFile: "gif",
-    // User/Selfie/forward camera
+    // User or Environment camera
     webcam: "environment",
     // video size
     width: "100%",
@@ -68,13 +70,26 @@ const Capture = () => {
     // genrate GIF loading status
     gifGenrating: false,
     webcamCurrentType: "picture",
+    trackRecord: false,
   });
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
   const [capturing, setCapturing] = useState(false);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
-  const { toggle, img, webcam, width, height, gif, video, currenFile, activeFile, gifGenrating, webcamCurrentType } =
-    state;
+  const {
+    toggle,
+    img,
+    webcam,
+    width,
+    height,
+    gif,
+    video,
+    currenFile,
+    activeFile,
+    gifGenrating,
+    webcamCurrentType,
+    trackRecord,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -145,6 +160,7 @@ const Capture = () => {
   }
   // stopwatch, set to 8 sec
   const { seconds, start, stop } = useTimer();
+
   // Record Handles
   const handleDataAvailable = React.useCallback(
     ({ data }) => {
@@ -157,7 +173,7 @@ const Capture = () => {
 
   const handleStartCaptureClick = React.useCallback(
     (event) => {
-      event.returnValue = false;
+      // event.returnValue = false;
       setCapturing(true);
       mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
         mimeType: "video/webm",
@@ -199,6 +215,7 @@ const Capture = () => {
       console.log("Error: ", error);
     };
   }
+
   // file type switch
   // useEffect(() => {
   //   if (activeFile === "gif") {
@@ -213,6 +230,7 @@ const Capture = () => {
   //     });
   //   }
   // }, [activeFile]);
+
   const handleDownload = React.useCallback(() => {
     if (recordedChunks.length) {
       const type = "video/mp4";
@@ -225,6 +243,7 @@ const Capture = () => {
       setRecordedChunks([]);
     }
   }, [recordedChunks]);
+
   useEffect(() => {
     if (recordedChunks.length) {
       handleDownload();
@@ -239,6 +258,27 @@ const Capture = () => {
   const callback = useCallback(() => {
     handleStopCaptureClick();
   }, []);
+
+  const startRecord = () => {
+    if (!trackRecord) {
+      handleStartCaptureClick();
+      handleSetState({
+        trackRecord: !trackRecord,
+      });
+    } else {
+      handleStopCaptureClick();
+      handleSetState({
+        trackRecord: !trackRecord,
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (seconds === 700 && trackRecord) {
+      startRecord();
+    }
+  }, [seconds]);
+  console.log(seconds);
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
     onCancel: handleStopCaptureClick,
@@ -396,7 +436,13 @@ const Capture = () => {
                 <IconCapture />
               </div>
             ) : (
-              <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
+              // <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
+              //   <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
+              // </div>
+              <div
+                onClick={startRecord}
+                className={`${classes.holdBtn} ${classes.active} ${trackRecord ? classes.recording : ""}`}
+              >
                 <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
               </div>
             )}
