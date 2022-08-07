@@ -95,7 +95,6 @@ const Capture = () => {
     setState((state) => ({ ...state, ...payload }));
   };
   const { dispatch } = useContext(GenContext);
-
   // update the video to fit different screen
   const isLandscape = height <= width;
   const ratio = isLandscape ? width / height : height / width;
@@ -147,13 +146,13 @@ const Capture = () => {
     a.click(); // Downloaded file
   };
   function getFileFromBase64(string64, fileName, type) {
-    const trimmedString = string64.split(",")[1];
-    const imageContent = atob(trimmedString);
-    const buffer = new ArrayBuffer(imageContent.length);
+    // const trimmedString = string64.split(",")[1];
+    // const imageContent = atob(trimmedString);
+    const buffer = new ArrayBuffer(string64.length);
     const view = new Uint8Array(buffer);
 
-    for (let n = 0; n < imageContent.length; n++) {
-      view[n] = imageContent.charCodeAt(n);
+    for (let n = 0; n < string64.length; n++) {
+      view[n] = string64.charCodeAt(n);
     }
     const blob = new Blob([buffer], { type });
     return new File([blob], fileName, { lastModified: new Date().getTime(), type });
@@ -443,7 +442,7 @@ const Capture = () => {
                 onClick={startRecord}
                 className={`${classes.holdBtn} ${classes.active} ${trackRecord ? classes.recording : ""}`}
               >
-                <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
+                <RecordBtn seconds={seconds} />
               </div>
             )}
             <div className={classes.uploadBtn}>
