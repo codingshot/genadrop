@@ -176,11 +176,24 @@ const Capture = () => {
       event.returnValue = false;
       start();
       setCapturing(true);
+      const stream = webcamRef.current.getStream();
+      try {
+        mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "video/webm" });
+      } catch (err1) {
+        try {
+          // Fallback for iOS
+          mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "video/mp4;codecs:h264" });
+        } catch (err2) {
+          // If fallback doesn't work either. Log / process errors.
+          console.error({ err1 });
+          console.error({ err2 });
+        }
+      }
       // mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
       //   mimeType: "video/webm",
       // });
-      // mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
-      // mediaRecorderRef.current.start();
+      mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
+      mediaRecorderRef.current.start();
     },
     [webcamRef, setCapturing, mediaRecorderRef]
   );
@@ -251,8 +264,8 @@ const Capture = () => {
   }, [recordedChunks]);
   const handleStopCaptureClick = React.useCallback(() => {
     stop();
-    // mediaRecorderRef.current.stop();
-    // setCapturing(false);
+    mediaRecorderRef.current.stop();
+    setCapturing(false);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
   const callback = useCallback(() => {
