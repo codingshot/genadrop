@@ -21,7 +21,7 @@ import { setZip, setLoader, setNotification } from "../../../gen-state/gen.actio
 const RecordBtn = ({ seconds }) => (
   <div className={classes.RecordBtnWrapper}>
     <CircularProgressbar
-      value={seconds / 700}
+      value={seconds / 500}
       maxValue={1}
       strokeWidth={12}
       styles={buildStyles({
@@ -273,7 +273,7 @@ const Capture = () => {
   };
 
   useEffect(() => {
-    if (seconds === 700 && trackRecord) {
+    if (seconds === 500 && trackRecord) {
       startRecord();
     }
   }, [seconds]);
@@ -281,7 +281,7 @@ const Capture = () => {
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
     onCancel: handleStopCaptureClick,
-    threshold: 7000,
+    threshold: 5000,
     captureEvent: true,
     cancelOnMovement: false,
     detect: "both",
@@ -308,7 +308,7 @@ const Capture = () => {
       file = result;
     } else if (activeFile === "gif") {
       file = currenFile;
-      name = "GIF.gif";
+      name = "Short.gif";
     } else {
       file = currenFile;
       name = "video.mp4";

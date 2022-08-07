@@ -73,8 +73,8 @@
   justify-content: center;
   align-items: center;
   background: rgb(15 29 64 / 60%);
-  padding: 1rem 2rem;
-  height: 6rem;
+  padding: 0rem 2rem;
+  /* height: 6rem; */
   width: 20em;
   border-radius: 16px;
 }
@@ -99,6 +99,10 @@
   position: relative;
   left: auto;
   user-select: none;
+  padding: 1.5rem;
+  top: 0;
+  transform: inherit;
+  z-index: 1;
 }
 .RecordBtnWrapper {
   display: flex;
