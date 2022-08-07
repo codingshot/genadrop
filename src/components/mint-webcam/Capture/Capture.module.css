@@ -96,13 +96,9 @@
   width: 50px;
 }
 .holdBtn.active {
-  position: relative;
-  left: auto;
-  user-select: none;
+  position: initial;
   padding: 1.5rem;
-  top: 0;
   transform: inherit;
-  z-index: 1;
 }
 .RecordBtnWrapper {
   display: flex;
@@ -144,6 +140,7 @@
 }
 .captureBtn {
   height: 100%;
+  padding: 1.5rem 0;
 }
 .captureBtn svg {
   height: 100%;
