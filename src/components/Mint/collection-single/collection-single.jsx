@@ -102,7 +102,7 @@ const CollectionToSingleMinter = () => {
     if (params.mintId === "collection") {
       handleSetState({ acceptedFileType: ".zip" });
     } else {
-      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .mp4, .gif" });
+      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .gif" });
     }
     handleSetState({ mintType: params.mintId });
   }, [params.mintId]);
@@ -184,8 +184,9 @@ const CollectionToSingleMinter = () => {
               <h3 className={classes.title}> Mint 1 of 1 </h3>
               <p className={classes.action}>Drag and Drop your image file here</p>
               <p className={classes.supportedFiles}>
-                We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
+                We support jpg, png, gif, jpeg, webp files and deploy to Celo, Algorand, Near, and Polygon
               </p>
+              <p> Max file size: 20mb</p>
               <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
                 Browse files
               </button>
