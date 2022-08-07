@@ -20,7 +20,7 @@ import { setZip, setLoader, setNotification } from "../../../gen-state/gen.actio
 // record button
 const RecordBtn = ({ seconds }) => (
   <div className={classes.RecordBtnWrapper}>
-    <CircularProgressbar
+    {/* <CircularProgressbar
       value={seconds / 500}
       maxValue={1}
       strokeWidth={12}
@@ -41,7 +41,7 @@ const RecordBtn = ({ seconds }) => (
         pathColor: "#FF3236",
         trailColor: "#ffffff",
       })}
-    />
+    /> */}
     <div className={classes.recordBtn} />
   </div>
 );
