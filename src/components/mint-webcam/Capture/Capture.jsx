@@ -173,14 +173,14 @@ const Capture = () => {
 
   const handleStartCaptureClick = React.useCallback(
     (event) => {
-      // event.returnValue = false;
-      setCapturing(true);
-      mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
-        mimeType: "video/webm",
-      });
-      mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
-      mediaRecorderRef.current.start();
+      event.returnValue = false;
       start();
+      setCapturing(true);
+      // mediaRecorderRef.current = new MediaRecorder(webcamRef.current.getStream(), {
+      //   mimeType: "video/webm",
+      // });
+      // mediaRecorderRef.current.addEventListener("dataavailable", handleDataAvailable);
+      // mediaRecorderRef.current.start();
     },
     [webcamRef, setCapturing, mediaRecorderRef]
   );
@@ -250,35 +250,34 @@ const Capture = () => {
     }
   }, [recordedChunks]);
   const handleStopCaptureClick = React.useCallback(() => {
-    mediaRecorderRef.current.stop();
-    setCapturing(false);
     stop();
+    // mediaRecorderRef.current.stop();
+    // setCapturing(false);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
   const callback = useCallback(() => {
     handleStopCaptureClick();
   }, []);
 
-  const startRecord = () => {
-    if (!trackRecord) {
-      handleStartCaptureClick();
-      handleSetState({
-        trackRecord: !trackRecord,
-      });
-    } else {
-      handleStopCaptureClick();
-      handleSetState({
-        trackRecord: !trackRecord,
-      });
-    }
-  };
+  // const startRecord = () => {
+  //   if (!trackRecord) {
+  //     handleStartCaptureClick();
+  //     handleSetState({
+  //       trackRecord: !trackRecord,
+  //     });
+  //   } else {
+  //     handleStopCaptureClick();
+  //     handleSetState({
+  //       trackRecord: !trackRecord,
+  //     });
+  //   }
+  // };
 
-  useEffect(() => {
-    if (seconds === 500 && trackRecord) {
-      startRecord();
-    }
-  }, [seconds]);
-  console.log(seconds);
+  // useEffect(() => {
+  //   if (seconds === 500 && trackRecord) {
+  //     startRecord();
+  //   }
+  // }, [seconds]);
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
     onCancel: handleStopCaptureClick,
@@ -436,15 +435,15 @@ const Capture = () => {
                 <IconCapture />
               </div>
             ) : (
-              // <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
-              //   <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
-              // </div>
-              <div
-                onClick={takePicture}
-                className={`${classes.holdBtn} ${classes.active} ${trackRecord ? classes.recording : ""}`}
-              >
-                <RecordBtn seconds={seconds} />
+              <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
+                <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
               </div>
+              // <div
+              //   onClick={takePicture}
+              //   className={`${classes.holdBtn} ${classes.active} ${trackRecord ? classes.recording : ""}`}
+              // >
+              //   <RecordBtn seconds={seconds} />
+              // </div>
             )}
             <div className={classes.uploadBtn}>
               <CameraSwitch onClick={() => switchCameraToRear()} />
