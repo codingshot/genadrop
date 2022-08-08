@@ -101,7 +101,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
   if (stripeError) alert(stripeError);
 
   const handleClick = () => {
-    history.push("/create/session/pricing/failed");
+    history.push("/create/session/create");
     handleClose();
   };
 

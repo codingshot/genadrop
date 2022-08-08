@@ -201,6 +201,11 @@
     background: var(--default);
   }
 
+  .navContainer.active {
+    border: 1px solid var(--outline);
+    box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
+  }
+
   .navList {
     margin-right: 0;
   }
@@ -245,7 +250,6 @@
     max-height: 22em;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow-light-1);
   }
 
   .navList {

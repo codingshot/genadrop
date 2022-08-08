@@ -6,6 +6,7 @@ import { ReactComponent as ArrowBackIcon } from "../../assets/icon-arrow-left.sv
 import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import {
+  addRule,
   setCollectionName,
   setCurrentPlan,
   setCurrentSession,
@@ -25,7 +26,6 @@ import { handleResetCreate } from "../../utils";
 
 const Session = () => {
   const history = useHistory();
-  const [loading, setLoading] = useState(false);
   const [dropdownId, setDropdown] = useState(-1);
   const [noResult, toggleNotResult] = useState(null);
 
@@ -34,23 +34,24 @@ const Session = () => {
   const handleLoad = async (sessionId, plan) => {
     console.log("fetch starts");
     handleResetCreate({ dispatch });
-    setLoading(true);
+    dispatch(setOverlay(true));
     const res = await fetchUserSession({ currentUser, sessionId });
     if (res) {
       dispatch(setCurrentPlan(plan));
       dispatch(setLayers(res.layers));
       dispatch(setNftLayers(res.nftLayers));
       dispatch(setCollectionName(res.collectionName));
+      dispatch(addRule(res.rules));
       dispatch(setCurrentSession(sessionId));
       history.push("/create");
     }
-    setLoading(false);
+    dispatch(setOverlay(false));
     console.log("fetch ends");
   };
 
   const handleDelete = async (sessionId) => {
     console.log("delete starts");
-    setLoading(true);
+    dispatch(setOverlay(true));
     await deleteAllLayers({ currentUser, sessionId });
     const sessions = await fetchSession({ currentUser });
     dispatch(setSession(sessions));
@@ -62,7 +63,7 @@ const Session = () => {
         handleResetCreate({ dispatch });
       }
     }
-    setLoading(false);
+    dispatch(setOverlay(false));
     console.log("delete ends");
   };
 
@@ -113,14 +114,6 @@ const Session = () => {
       </div>
       {noResult !== "true" ? (
         <div className={classes.wrapper}>
-          <div className={` ${classes.loader} ${loading && classes.active}`}>
-            <div className={classes.dots}>
-              <div>Loading</div>
-              <div className={classes.dotOne} />
-              <div className={classes.dotTwo} />
-              <div className={classes.dotThree} />
-            </div>
-          </div>
           <div className={classes.content}>
             <h1>Session</h1>
             <div className={classes.subHeading}>

@@ -44,6 +44,13 @@ export const saveLayers = ({ currentUser, sessionId, layers }) => {
   }
 };
 
+export const saveRules = ({ currentUser, sessionId, rules }) => {
+  if (currentUser && sessionId) {
+    const docRef = doc(firestore, `users/${currentUser.uid}/rules/${sessionId}`);
+    setDoc(docRef, { rules });
+  }
+};
+
 export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) => {
   if (currentUser && sessionId && nftLayers.length) {
     const docRef = doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`);
@@ -112,6 +119,7 @@ export const deleteAllLayers = async ({ currentUser, sessionId }) => {
   await deleteDoc(doc(firestore, `users/${currentUser.uid}/sessions/${sessionId}`));
   await deleteDoc(doc(firestore, `users/${currentUser.uid}/collectionName/${sessionId}`));
   await deleteDoc(doc(firestore, `users/${currentUser.uid}/layers/${sessionId}`));
+  await deleteDoc(doc(firestore, `users/${currentUser.uid}/rules/${sessionId}`));
   await deleteDoc(doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`));
 };
 
@@ -197,6 +205,18 @@ export const fetchLayers = async ({ currentUser, sessionId }) => {
       return docSnapshot.data();
     } else {
       console.log("layers does not exist");
+    }
+  }
+};
+
+export const fetchRules = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/rules/${sessionId}`));
+    const docSnapshot = await getDoc(querySnapshot);
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      console.log("rules does not exist");
     }
   }
 };
@@ -315,11 +335,12 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
     const result = await Promise.all([
       fetchCollectionName({ currentUser, sessionId }),
       fetchLayers({ currentUser, sessionId }),
+      fetchRules({ currentUser, sessionId }),
       fetchTraits({ currentUser, sessionId }),
       fetchNftLayers({ currentUser, sessionId }),
       fetchNftTraits({ currentUser, sessionId }),
     ]);
-    const [storedCollectionName, storedLayers, storedTraits, storedNftLayers, storedNftTraits] = result;
+    const [storedCollectionName, storedLayers, storedRules, storedTraits, storedNftLayers, storedNftTraits] = result;
     const transformedTraits = await transfromTraits(storedTraits);
     const newLayers = constructLayers({ storedLayers, transformedTraits });
     let newNftLayers = [];
@@ -327,10 +348,19 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
       const transformedNftTraits = await transfromNftTraits(storedNftTraits);
       newNftLayers = constructNftLayers({ storedNftLayers, transformedNftTraits });
     }
-
+    let newRules = [];
+    if (storedRules) {
+      try {
+        let parseRules = JSON.parse(storedRules.rules);
+        newRules = constructRules({ newLayers, parseRules });
+      } catch (error) {
+        console.log({ error });
+      }
+    }
     return {
-      nftLayers: newNftLayers,
+      rules: newRules,
       layers: newLayers,
+      nftLayers: newNftLayers,
       collectionName: storedCollectionName.collectionName,
     };
   } catch (error) {
@@ -361,4 +391,28 @@ export const constructNftLayers = ({ storedNftLayers, transformedNftTraits }) =>
     const file = transformedNftTraits[id];
     return { id, image: file, ...otherLayerProps };
   });
+};
+
+export const constructRules = ({ newLayers, parseRules }) => {
+  const mapLayersToObj = () => {
+    const mapedLayers = {};
+    newLayers.forEach((layer) => (mapedLayers[layer.id] = layer));
+    return mapedLayers;
+  };
+  const layers = mapLayersToObj();
+  const transformedRules = parseRules.map((r) => {
+    let iRule = r.map(({ layerId, layerTitle, imageName }) => {
+      let { traits } = layers[layerId];
+      let imageFile = null;
+      for (let { traitTitle, image } of traits) {
+        if (traitTitle === imageName) {
+          imageFile = image;
+          break;
+        }
+      }
+      return { imageFile, layerId, layerTitle, imageName };
+    });
+    return iRule;
+  });
+  return transformedRules;
 };

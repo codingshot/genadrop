@@ -23,6 +23,16 @@
   background: var(--default);
   padding: 4em 1em;
   position: relative;
+  animation: show 300ms alternate;
+}
+
+@keyframes show {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 .closeBtn {

@@ -130,10 +130,9 @@ const Create = () => {
             <ProgressBar />
           )}
         </div>
-
         <div className={classes.guide}>
           <div>Need help?</div>
-          <div onClick={handleSample}>Try our samples</div>
+          {currentPlan === "free" ? <div onClick={handleSample}>Try our samples</div> : null}
           <div onClick={handleTutorial}>Watch tutorial</div>
         </div>
       </div>

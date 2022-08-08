@@ -3,6 +3,7 @@ import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { useContext, useState } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import {
+  addRule,
   setCollectionName,
   setCurrentPlan,
   setCurrentSession,
@@ -23,12 +24,14 @@ const SessionModal = () => {
     console.log("fetch starts");
     setLoading(true);
     const res = await fetchUserSession({ currentUser, sessionId });
+    console.log({ res: res.rules });
     if (res) {
       dispatch(setCurrentPlan(currentPlan));
       dispatch(setLayers(res.layers));
       dispatch(setNftLayers(res.nftLayers));
       dispatch(setCollectionName(res.collectionName));
       dispatch(setCurrentSession(sessionId));
+      dispatch(addRule(res.rules));
       dispatch(setToggleSessionModal(false));
     }
     setLoading(false);

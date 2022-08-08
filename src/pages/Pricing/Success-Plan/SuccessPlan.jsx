@@ -9,8 +9,8 @@ import { useHistory } from "react-router-dom";
 
 const SuccessPlan = () => {
   const history = useHistory();
-  const [inputValue, setInputValue] = useState("");
-  const { dispatch, upgradePlan, sessionId, currentPlan } = useContext(GenContext);
+  const { dispatch, upgradePlan, sessionId, currentPlan, collectionName } = useContext(GenContext);
+  const [inputValue, setInputValue] = useState();
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -40,6 +40,10 @@ const SuccessPlan = () => {
     }
     document.documentElement.scrollTop = 0;
   }, []);
+
+  useEffect(() => {
+    setInputValue(collectionName);
+  }, [collectionName]);
 
   return (
     <div className={classes.container}>

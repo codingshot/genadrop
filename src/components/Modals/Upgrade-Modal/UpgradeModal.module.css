@@ -23,7 +23,7 @@
   background: var(--default);
   padding: 4em 1em;
   position: relative;
-  animation: show 650ms alternate;
+  animation: show 300ms alternate;
 }
 
 @keyframes show {

@@ -47,6 +47,7 @@ const CollectionOverview = () => {
   };
 
   useEffect(() => {
+    console.log("called", rule);
     const ruleCopy = [...rule];
     let orderedRule = [];
     dispatch(clearRule());

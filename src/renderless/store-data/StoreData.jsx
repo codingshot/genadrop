@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { clearRule } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   deleteAllTraits,
@@ -7,6 +8,7 @@ import {
   saveCollectionName,
   saveLayers,
   saveNftLayers,
+  saveRules,
   saveTraits,
 } from "./StoreData.script";
 
@@ -89,6 +91,18 @@ const StoreData = () => {
       saveLayers({ currentUser, sessionId, layers: newLayers });
     }
   }, [currentUser, sessionId, upgradePlan]);
+
+  useEffect(() => {
+    let newRules = rule.map((r) => {
+      let iRule = r.map(({ imageFile, ...ir }) => {
+        return { imageFile: "", ...ir };
+      });
+      return iRule;
+    });
+
+    let strRules = JSON.stringify(newRules);
+    saveRules({ currentUser, sessionId, rules: strRules });
+  }, [currentUser, sessionId, rule]);
 
   return null;
 };

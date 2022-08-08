@@ -179,4 +179,8 @@
   .layer_overview {
     flex-direction: column;
   }
+
+  .guide {
+    display: none;
+  }
 }
