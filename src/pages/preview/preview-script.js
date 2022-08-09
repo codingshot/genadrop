@@ -1,4 +1,16 @@
+import axios from "axios";
+import {
+  renameAsset,
+  setCollectionDescription,
+  setCollectionName,
+  setLoader,
+  setMintInfo,
+  setNftLayers,
+  setNotification,
+  setOutputFormat,
+} from "../../gen-state/gen.actions";
 import { getDefaultName, handleImage } from "../../utils";
+import { v4 as uuid } from "uuid";
 
 export const isUnique = (attributes, attr, rule) => {
   const parseAttrToRule = attr.map((p) => ({
@@ -92,4 +104,221 @@ export const generateArt = async (props) => {
   await handleImage({ images, canvas, image });
   const imageUrl = canvas.toDataURL("image/webp", imageQuality);
   return { id: layer.id, imageUrl };
+};
+
+export const handleDeleteAndReplace = async (deleteAndReplaceProps) => {
+  const {
+    id,
+    index,
+    currentPage,
+    currentDnaLayers,
+    dispatch,
+    combinations,
+    rule,
+    mintAmount,
+    collectionName,
+    collectionDescription,
+    imageQuality,
+    layers,
+    nftLayers,
+    canvas,
+  } = deleteAndReplaceProps;
+
+  if (!currentDnaLayers)
+    return dispatch(
+      setNotification({
+        type: "error",
+        message: "Sorry! you need to generate a new collection to use this feature",
+      })
+    );
+  if (!(combinations - rule.length - mintAmount)) {
+    dispatch(setMintInfo("  cannot generate asset from 0 combination"));
+  } else {
+    dispatch(setLoader("generating..."));
+    dispatch(setMintInfo(""));
+    const uniqueLayer = await createUniqueLayer({
+      dispatch,
+      setLoader,
+      collectionName,
+      collectionDescription,
+      index,
+      currentPage,
+      layers: currentDnaLayers,
+      rule,
+      nftLayers,
+      id,
+      mintAmount,
+    });
+    const art = await generateArt({
+      dispatch,
+      setLoader,
+      layer: uniqueLayer,
+      canvas,
+      image: layers[0].traits[0].image,
+      imageQuality,
+    });
+    const newLayers = nftLayers.map((asset) => {
+      if (asset.id === uniqueLayer.id) {
+        let attributes = uniqueLayer.attributes;
+        attributes = attributes.map(({ image, ...otherAttrProps }) => ({ ...otherAttrProps }));
+        return { ...uniqueLayer, attributes, image: art.imageUrl };
+      }
+      return asset;
+    });
+    dispatch(setLoader(""));
+    dispatch(setNftLayers(newLayers));
+  }
+};
+
+export const generateGif = (generateGifProps) => {
+  const { duration, gifImages, gifs, collectionName, handleSetState, dispatch } = generateGifProps;
+
+  if (duration < 0 || !duration) {
+    dispatch(
+      setNotification({
+        message: "please enter a valid duration.",
+        type: "error",
+      })
+    );
+    return;
+  }
+  if (gifImages.length < 2) {
+    dispatch(
+      setNotification({
+        message: "please select the images.",
+        type: "error",
+      })
+    );
+    return;
+  }
+  const urls = gifImages.map((img) => img.image);
+  const attributes = [];
+  gifImages.map((img) => {
+    return img.attributes.map((attribute) => {
+      attributes.push(attribute);
+      return attribute;
+    });
+  });
+  dispatch(setLoader("generating..."));
+
+  axios.post(`https://gif-generator-api.herokuapp.com/`, { urls, duration }).then((res) => {
+    dispatch(setLoader(""));
+    handleSetState({
+      gifs: [
+        ...gifs,
+        {
+          id: uuid(),
+          attributes,
+          description: "",
+          image: res.data.data,
+          name: `${collectionName} ${getDefaultName(gifs.length + 1)}`.trim(),
+        },
+      ],
+    });
+    handleSetState({ gifShow: false, toggleGuide: true, gifImages: [], duration: "" });
+    dispatch(setLoader(""));
+  });
+};
+
+export const addToCollection = (addToCollectionProps) => {
+  const { gif, gifs, nftLayers, collectionName, handleSetState, dispatch } = addToCollectionProps;
+  console.log({ gifs, nftLayers });
+  const updatedGifs = gifs.filter((img) => gif.id !== img.id);
+  const newLayers = [gif, ...nftLayers].map((asset, idx) => ({
+    ...asset,
+    name:
+      asset.name === `${collectionName} ${getDefaultName(idx)}`.trim() ||
+      asset.name === `${collectionName} ${getDefaultName(gifs.indexOf(gif) + 1)}`.trim()
+        ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+        : asset.name,
+  }));
+  dispatch(setNftLayers(newLayers));
+  dispatch(
+    setNotification({
+      message: "added to the collection.",
+      type: "success",
+    })
+  );
+  handleSetState({ gifs: updatedGifs });
+};
+
+export const addGif = (addGifProps) => {
+  const { asset, gifImages, handleSetState } = addGifProps;
+  if (gifImages.filter((e) => e.id === asset.id).length > 0) {
+    const newImgs = gifImages.filter((e) => e.id !== asset.id);
+    handleSetState({ gifImages: newImgs });
+  } else {
+    handleSetState({ gifImages: [...gifImages, asset] });
+  }
+};
+
+export const addAllGifs = (addGifProps) => {
+  const { gifs, nftLayers, collectionName, handleSetState, dispatch } = addGifProps;
+
+  const newLayers = [...gifs, ...nftLayers].map((asset, idx) => ({
+    ...asset,
+    name:
+      asset.name === `${collectionName} ${getDefaultName(idx + 1 - gifs.length)}`.trim()
+        ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+        : asset.name,
+  }));
+  dispatch(setNftLayers(newLayers));
+  dispatch(
+    setNotification({
+      message: "added to the collection.",
+      type: "success",
+    })
+  );
+  handleSetState({
+    toggleGuide: false,
+    gifs: [],
+  });
+};
+
+export const handleFormatChange = (formatProps) => {
+  const { val, dispatch, ipfsRef, arweaveRef } = formatProps;
+  if (val === "ipfs") {
+    ipfsRef.current.checked = true;
+    dispatch(setOutputFormat("ipfs"));
+  } else if (val === "arweave") {
+    arweaveRef.current.checked = true;
+    dispatch(setOutputFormat("arweave"));
+  }
+};
+
+export const handleCollectionDescription = (descriptionProps) => {
+  const { event, enableAllDescription, nftLayers, dispatch } = descriptionProps;
+  if (enableAllDescription) {
+    const newLayers = nftLayers.map((asset) => ({
+      ...asset,
+      description: event.target.value,
+    }));
+    dispatch(setNftLayers(newLayers));
+  }
+  dispatch(setCollectionDescription(event.target.value));
+};
+
+export const handleRename = (renameProps) => {
+  const { input, dispatch } = renameProps;
+
+  if (!input.value) {
+    dispatch(
+      renameAsset({
+        id: input.id,
+        name: `${collectionName} ${getDefaultName(input.index + 1)}`.trim(),
+      })
+    );
+  } else {
+    dispatch(renameAsset({ id: input.id, name: input.value }));
+  }
+};
+
+export const handleCollectionName = async (collectionNameProps) => {
+  const { value, nftLayers, dispatch } = collectionNameProps;
+  dispatch(setCollectionName(value));
+  const newLayers = nftLayers.map((asset, idx) => ({
+    ...asset,
+    name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+  }));
+  dispatch(setNftLayers(newLayers));
 };

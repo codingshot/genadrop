@@ -1,29 +1,30 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { v4 as uuid } from "uuid";
 import classes from "./preview.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   addDescription,
   deleteAsset,
+  renameAsset,
+  setCollectionDescription,
+  setCollectionName,
   setNotification,
   setLoader,
   setZip,
   setMintAmount,
   setMintInfo,
+  setNftLayers,
+  setOutputFormat,
   setPrompt,
   promptDeleteAsset,
 } from "../../gen-state/gen.actions";
-import {
-  addGif,
-  addToCollection,
-  generateGif,
-  handleCollectionDescription,
-  handleCollectionName,
-  handleDeleteAndReplace,
-  handleFormatChange,
-} from "./preview-script";
+import { createUniqueLayer, generateArt } from "./preview-script";
 import TextEditor from "./text-editor";
+import { getDefaultName } from "../../utils";
 import { handleDownload } from "../../utils/index2";
+// import { fetchAlgoCollections } from "../../utils/firebase";
 import arrowIconLeft from "../../assets/icon-arrow-left.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as CheckIcon } from "../../assets/check-solid.svg";
@@ -31,6 +32,7 @@ import { ReactComponent as PlayIcon } from "../../assets/icon-play.svg";
 import warnIcon from "../../assets/icon-warn.svg";
 import CaretDown from "../../assets/icon-caret-down.svg";
 import CaretUP from "../../assets/icon-caret-up.svg";
+// import tooltip from "../../assets/tooltip.svg";
 import GenadropToolTip from "../../components/Genadrop-Tooltip/GenadropTooltip";
 
 const Preview = () => {
@@ -104,18 +106,104 @@ const Preview = () => {
     gifImages,
     duration,
     toggleGuide,
-    canvas,
-    ipfsRef,
-    arweaveRef,
-    handleSetState,
+  };
+
+  const handleDeleteAndReplace = async (id, index, currentPageD) => {
+    if (!currentDnaLayers)
+      return dispatch(
+        setNotification({
+          type: "error",
+          message: "Sorry! you need to agenerate a new collection to use this feature",
+        })
+      );
+    if (!(combinations - rule.length - mintAmount)) {
+      dispatch(setMintInfo("  cannot generate asset from 0 combination"));
+    } else {
+      dispatch(setLoader("generating..."));
+      dispatch(setMintInfo(""));
+      const uniqueLayer = await createUniqueLayer({
+        dispatch,
+        setLoader,
+        collectionName,
+        collectionDescription,
+        index,
+        currentPage: currentPageD,
+        layers: currentDnaLayers,
+        rule,
+        nftLayers,
+        id,
+        mintAmount,
+      });
+      const art = await generateArt({
+        dispatch,
+        setLoader,
+        layer: uniqueLayer,
+        canvas,
+        image: layers[0].traits[0].image,
+        imageQuality,
+      });
+      const newLayers = nftLayers.map((asset) => {
+        if (asset.id === uniqueLayer.id) {
+          let attributes = uniqueLayer.attributes;
+          attributes = attributes.map(({ image, ...otherAttrProps }) => ({ ...otherAttrProps }));
+          return { ...uniqueLayer, attributes, image: art.imageUrl };
+        }
+        return asset;
+      });
+      dispatch(setLoader(""));
+      dispatch(setNftLayers(newLayers));
+    }
   };
 
   const handleDelete = (val) => {
     dispatch(setPrompt(promptDeleteAsset(val)));
   };
 
+  const handleRename = (input) => {
+    if (!input.value) {
+      dispatch(
+        renameAsset({
+          id: input.id,
+          name: `${collectionName} ${getDefaultName(input.index + 1)}`.trim(),
+        })
+      );
+    } else {
+      dispatch(renameAsset({ id: input.id, name: input.value }));
+    }
+  };
+
   const handleDescription = (input) => {
     dispatch(addDescription({ id: input.id, description: input.value }));
+  };
+
+  const handleCollectionName = async (value) => {
+    dispatch(setCollectionName(value));
+    const newLayers = nftLayers.map((asset, idx) => ({
+      ...asset,
+      name: `${value} ${getDefaultName(idx + 1)}`.trim(),
+    }));
+    dispatch(setNftLayers(newLayers));
+  };
+
+  const handleCollectionDescription = (event) => {
+    if (enableAllDescription) {
+      const newLayers = nftLayers.map((asset) => ({
+        ...asset,
+        description: event.target.value,
+      }));
+      dispatch(setNftLayers(newLayers));
+    }
+    dispatch(setCollectionDescription(event.target.value));
+  };
+
+  const handleFormatChange = (val) => {
+    if (val === "ipfs") {
+      ipfsRef.current.checked = true;
+      dispatch(setOutputFormat("ipfs"));
+    } else if (val === "arweave") {
+      arweaveRef.current.checked = true;
+      dispatch(setOutputFormat("arweave"));
+    }
   };
 
   const handlePrev = () => {
@@ -162,6 +250,107 @@ const Preview = () => {
     }
   }, [promptAsset]);
 
+  // Genrate GIF
+  const addGif = (asset) => {
+    if (gifImages.filter((e) => e.id === asset.id).length > 0) {
+      const newImgs = gifImages.filter((e) => e.id !== asset.id);
+      handleSetState({ gifImages: newImgs });
+    } else {
+      handleSetState({ gifImages: [...gifImages, asset] });
+    }
+  };
+
+  const generateGif = () => {
+    if (duration < 0 || !duration) {
+      dispatch(
+        setNotification({
+          message: "please enter a valid duration.",
+          type: "error",
+        })
+      );
+      return;
+    }
+    if (gifImages.length < 2) {
+      dispatch(
+        setNotification({
+          message: "please select the images.",
+          type: "error",
+        })
+      );
+      return;
+    }
+    const urls = gifImages.map((img) => img.image);
+    const attributes = [];
+    gifImages.map((img) => {
+      return img.attributes.map((attribute) => {
+        attributes.push(attribute);
+        return attribute;
+      });
+    });
+    dispatch(setLoader("generating..."));
+
+    axios.post(`https://gif-generator-api.herokuapp.com/`, { urls, duration }).then((res) => {
+      dispatch(setLoader(""));
+      handleSetState({
+        gifs: [
+          ...gifs,
+          {
+            id: uuid(),
+            attributes,
+            description: "",
+            image: res.data.data,
+            name: `${collectionName} ${getDefaultName(gifs.length + 1)}`.trim(),
+          },
+        ],
+      });
+      handleSetState({ gifShow: false, toggleGuide: true, gifImages: [], duration: "" });
+      dispatch(setLoader(""));
+    });
+  };
+  // GIFs Model
+  const handleCancel = () => handleSetState({ toggleGuide: false });
+
+  const addToCollection = (gif) => {
+    const updatedGifs = gifs.filter((img) => gif.id !== img.id);
+    const newLayers = [gif, ...nftLayers].map((asset, idx) => ({
+      ...asset,
+      name:
+        asset.name === `${collectionName} ${getDefaultName(idx)}`.trim() ||
+        asset.name === `${collectionName} ${getDefaultName(gifs.indexOf(gif) + 1)}`.trim()
+          ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+          : asset.name,
+    }));
+    dispatch(setNftLayers(newLayers));
+    dispatch(
+      setNotification({
+        message: "added to the collection.",
+        type: "success",
+      })
+    );
+    handleSetState({ gifs: updatedGifs });
+  };
+
+  const addAllGifs = () => {
+    const newLayers = [...gifs, ...nftLayers].map((asset, idx) => ({
+      ...asset,
+      name:
+        asset.name === `${collectionName} ${getDefaultName(idx + 1 - gifs.length)}`.trim()
+          ? `${collectionName} ${getDefaultName(idx + 1)}`.trim()
+          : asset.name,
+    }));
+    dispatch(setNftLayers(newLayers));
+    dispatch(
+      setNotification({
+        message: "added to the collection.",
+        type: "success",
+      })
+    );
+    handleSetState({
+      toggleGuide: false,
+      gifs: [],
+    });
+  };
+
   return (
     <div className={classes.wrapper}>
       <div className={classes.backBtnWrapper}>
@@ -176,11 +365,7 @@ const Preview = () => {
               <h3>Collection Name </h3>
             </div>
             <div className={classes.wrapper}>
-              <TextEditor
-                placeholder={collectionName || ""}
-                submitHandler={(value) => handleCollectionName({ ...previewProps, value })}
-                invert
-              />
+              <TextEditor placeholder={collectionName || ""} submitHandler={handleCollectionName} invert />
             </div>
 
             <div className={classes.tab}>
@@ -201,13 +386,13 @@ const Preview = () => {
               value={collectionDescription}
               rows="4"
               placeholder="description"
-              onChange={(event) => handleCollectionDescription({ ...previewProps, event })}
+              onChange={handleCollectionDescription}
             />
           </div>
           <div className={classes.actionContainer}>
             <div className={classes.foramtWrapper}>
               <h3>Use Format</h3>
-              <label htmlFor="ipfs" onClick={() => handleFormatChange({ ...previewProps, val: "ipfs" })}>
+              <label htmlFor="ipfs" onClick={() => handleFormatChange("ipfs")}>
                 <input
                   ref={ipfsRef}
                   type="radio"
@@ -223,7 +408,7 @@ const Preview = () => {
                   content="IPFS is a peer-to-peer (p2p) storage network for storing and sharing data."
                 />
               </label>
-              <label htmlFor="arweave" onClick={() => handleFormatChange({ ...previewProps, val: "arweave" })}>
+              <label htmlFor="arweave" onClick={() => handleFormatChange("arweave")}>
                 <input
                   ref={arweaveRef}
                   type="radio"
@@ -289,7 +474,7 @@ const Preview = () => {
                   <button type="button" onClick={() => handleSetState({ gifShow: null })} className={classes.cancelBtn}>
                     Cancel
                   </button>
-                  <button type="button" onClick={() => generateGif({ ...previewProps })} className={classes.mintBtn}>
+                  <button type="button" onClick={generateGif} className={classes.mintBtn}>
                     <CheckIcon /> Done
                   </button>
                 </div>
@@ -355,7 +540,7 @@ const Preview = () => {
                         <div className={classes.textWrapper}>
                           <TextEditor
                             placeholder={name}
-                            submitHandler={(value) => handleRename({ ...previewProps, value, id, index })}
+                            submitHandler={(value) => handleRename({ value, id, index })}
                           />
                         </div>
                         <textarea
@@ -393,10 +578,7 @@ const Preview = () => {
                             Download
                           </button>
                           {image.split(",")[0] !== "data:image/gif;base64" && (
-                            <button
-                              type="button"
-                              onClick={() => handleDeleteAndReplace({ ...previewProps, id, index, currentPage })}
-                            >
+                            <button type="button" onClick={() => handleDeleteAndReplace(id, index, currentPage)}>
                               Generate New
                             </button>
                           )}
@@ -409,7 +591,7 @@ const Preview = () => {
                       )}
                       {gifShow && (
                         <div
-                          onClick={() => addGif({ ...previewProps, asset })}
+                          onClick={() => addGif(asset)}
                           className={`${classes.iconClose} ${
                             gifImages.filter((e) => e.id === id).length > 0 ? classes.cheked : ""
                           }`}
@@ -432,7 +614,7 @@ const Preview = () => {
                 {gifImages.map((img) => (
                   <div>
                     {gifShow && (
-                      <div onClick={() => addGif({ ...previewProps, asset: img })} className={classes.iconClose}>
+                      <div onClick={() => addGif(img)} className={classes.iconClose}>
                         <CloseIcon className={classes.closeIcon} />
                       </div>
                     )}
@@ -464,12 +646,10 @@ const Preview = () => {
         />
       </div>
 
-      <div
-        onClick={() => handleSetState({ toggleGuide: false })}
-        className={`${classes.modelContainer} ${toggleGuide && classes.modelActive}`}
-      >
+      {/* GIFs Model */}
+      <div onClick={handleCancel} className={`${classes.modelContainer} ${toggleGuide && classes.modelActive}`}>
         <div className={classes.guideContainer}>
-          <CloseIcon className={classes.closeIcon} onClick={() => handleSetState({ toggleGuide: false })} />
+          <CloseIcon className={classes.closeIcon} onClick={handleCancel} />
           <div className={`${classes.imgContainer}`}>
             <div className={`${classes.preview} ${classes.modelPreview}`}>
               {gifs.length > 0
@@ -482,7 +662,7 @@ const Preview = () => {
                           <div className={classes.textWrapper}>
                             <TextEditor
                               placeholder={name}
-                              submitHandler={(value) => handleRename({ ...previewProps, value, id, index })}
+                              submitHandler={(value) => handleRename({ value, id, index })}
                             />
                           </div>
                           <textarea
@@ -518,7 +698,7 @@ const Preview = () => {
                             >
                               Download
                             </button>
-                            <button type="button" onClick={() => addToCollection({ ...previewProps, gif: asset })}>
+                            <button type="button" onClick={() => addToCollection(asset)}>
                               Add to {collectionName || "collection"}
                             </button>
                           </div>
@@ -549,17 +729,14 @@ const Preview = () => {
               >
                 Delete all
               </p>
-              <div
-                onClick={() =>
-                  gifs.length > 1 ? addAllGifs({ ...previewProps }) : addToCollection({ ...previewProps, gif: gifs[0] })
-                }
-              >
+              <div onClick={() => (gifs.length > 1 ? addAllGifs() : addToCollection(gifs[0]))}>
                 Add all to {collectionName || "collection"}
               </div>
             </div>
           </div>
         </div>
       </div>
+      {/*  */}
     </div>
   );
 };
