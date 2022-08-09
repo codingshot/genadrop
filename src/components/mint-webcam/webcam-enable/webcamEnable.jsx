@@ -1,8 +1,11 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 import style from "./webcamEnable.module.css";
 import { ReactComponent as CameraIcon } from "../../../assets/icon-camera-solid.svg";
 
-const WebcamEnable = ({ handleMintSetState, toggle, getVideo }) => {
+const WebcamEnable = ({ toggle, getVideo }) => {
+  const history = useHistory();
+
   return (
     <div className={`${style.container}  ${toggle && style.deactive}`}>
       <div className={style.popupWrapper}>
@@ -14,7 +17,7 @@ const WebcamEnable = ({ handleMintSetState, toggle, getVideo }) => {
           </div>
 
           <div className={style.wrapper}>
-            <a onClick={() => handleMintSetState({ cameraSwitch: false })}>Don’t allow</a>
+            <a onClick={() => history.push("/mint/1of1")}>Don’t allow</a>
             <div type="button" onClick={() => getVideo()}>
               Allow access
             </div>
