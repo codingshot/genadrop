@@ -43,7 +43,7 @@ const supportedChains = {
     add: addChain,
     isMainnet: true,
     switch: switchChain,
-    coinGeckoLabel: "matic",
+    coinGeckoLabel: "matic-network",
   },
   42220: {
     id: "celo",
