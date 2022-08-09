@@ -87,7 +87,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
                 </div>
               )}
             </div>
-            {price == 0 ? (
+            {price === 0 ? (
               fromDashboard ? (
                 <button
                   type="button"

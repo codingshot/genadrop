@@ -63,7 +63,7 @@ const List = () => {
       if (listNft.error) {
         dispatch(
           setNotification({
-            message: "Transaction not completed",
+            message: "Transaction failed",
             type: "warning",
           })
         );
@@ -75,7 +75,7 @@ const List = () => {
       if (listNft.error) {
         dispatch(
           setNotification({
-            message: "Transaction not completed",
+            message: "Transaction failed",
             type: "warning",
           })
         );
@@ -107,7 +107,7 @@ const List = () => {
     (async function getUserCollection() {
       if (chainId === 80001 || chainId === 137) {
         const [nft] = await polygonUserData(nftId);
-        if (nft == null) {
+        if (nft === null) {
           return (
             dispatch(
               setNotification({
@@ -125,7 +125,7 @@ const List = () => {
         });
       } else if (chainId === 44787 || chainId === 42220) {
         const [nft] = await celoUserData(nftId);
-        if (nft == null) {
+        if (nft === null) {
           return (
             dispatch(
               setNotification({

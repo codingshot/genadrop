@@ -138,7 +138,7 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === 1313161555) {
+        } else if (Number(nftChainId) === supportedChains[nftChainId].networkId) {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return history.goBack();
           handleSetState({
