@@ -146,7 +146,7 @@ const Capture = () => {
     a.download = "Image.png"; // File name Here
     a.click(); // Downloaded file
   };
-  function getFileFromBase64(string64, fileName, type) {
+  function getFileFromBytes(string64, fileName, type) {
     // const trimmedString = string64.split(",")[1];
     // const imageContent = atob(trimmedString);
     const buffer = new ArrayBuffer(string64.length);
@@ -154,6 +154,17 @@ const Capture = () => {
 
     for (let n = 0; n < string64.length; n++) {
       view[n] = string64.charCodeAt(n);
+    }
+    const blob = new Blob([buffer], { type });
+    return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+  }
+  function getFileFromBase64(string64, fileName, type) {
+    const trimmedString = string64.split(",")[1];
+    const imageContent = atob(trimmedString);
+    const buffer = new ArrayBuffer(imageContent.length);
+    const view = new Uint8Array(buffer);
+    for (let n = 0; n < imageContent.length; n++) {
+      view[n] = imageContent.charCodeAt(n);
     }
     const blob = new Blob([buffer], { type });
     return new File([blob], fileName, { lastModified: new Date().getTime(), type });
@@ -207,8 +218,10 @@ const Capture = () => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
+      console.log(reader.result);
       axios.post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result }).then((res) => {
-        const gifFile = getFileFromBase64(res.data.data, "Image.gif", "image/gif");
+        console.log(res.data.data);
+        const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
         handleSetState({ gif: gifFile, currenFile: gifFile });
 
         dispatch(setLoader(""));
@@ -252,7 +265,7 @@ const Capture = () => {
       });
       const file = new File([blob], "video.mp4", { lastModified: new Date().getTime(), type });
       getBase64(file);
-      // handleSetState({ video: file, currenFile: file });
+      handleSetState({ video: file, currenFile: file });
       setRecordedChunks([]);
     }
   }, [recordedChunks]);
@@ -362,7 +375,7 @@ const Capture = () => {
           {gif ? (
             <img className={`${classes.cameraShot}`} src={URL.createObjectURL(gif)} alt="camera-shot" />
           ) : video ? (
-            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} />
+            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} loop />
           ) : (
             <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
           )}
