@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
-import { clearRule } from "../../gen-state/gen.actions";
+import { useLocation } from "react-router-dom";
+import { setImageAction, setLayerAction, setNftLayers } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   deleteAllTraits,
@@ -8,15 +9,19 @@ import {
   saveCollectionName,
   saveLayers,
   saveNftLayers,
+  savePreNftLayers,
   saveRules,
   saveTraits,
 } from "./StoreData.script";
 
 const StoreData = () => {
+  const location = useLocation();
+
   const {
     dispatch,
     layers,
     nftLayers,
+    preNftLayers,
     rule,
     collectionName,
     sessionId,
@@ -26,37 +31,68 @@ const StoreData = () => {
     upgradePlan,
   } = useContext(GenContext);
 
-  useEffect(() => {
-    saveCollectionName({ currentUser, sessionId, collectionName });
-  }, [currentUser, sessionId, collectionName]);
+  const resetLayerAction = () => {
+    dispatch(
+      setLayerAction({
+        type: "",
+      })
+    );
+  };
 
   useEffect(() => {
     const { type } = layerAction;
+    if (type !== "name") return;
+    saveCollectionName({ currentUser, sessionId, collectionName });
+    resetLayerAction();
+    console.log("saving name...");
+  }, [layerAction, currentUser, sessionId, collectionName]);
+
+  useEffect(() => {
+    const { type } = layerAction;
+    if ((!type && !imageAction.type) || type === "generate" || type === "loadPreNftLayers") return;
     const newLayers = layers.map(({ traits, ...otherLayerProps }) => {
       const newTraits = traits.map(({ image, ...otherTraitProps }) => {
         return { image: "", ...otherTraitProps };
       });
       return { traits: newTraits, ...otherLayerProps };
     });
-
     if (type !== "order") {
       saveLayers({ currentUser, sessionId, layers: newLayers });
     } else if (type === "order") {
       saveLayers({ currentUser, sessionId, layers: newLayers });
     }
-  }, [layerAction, layers, currentUser, sessionId]);
+    if (location.pathname === "/create" && type !== "rule") {
+      dispatch(setNftLayers([]));
+    }
+    console.log("saving layers...");
+    resetLayerAction();
+  }, [layerAction, imageAction, layers, currentUser, sessionId]);
 
   useEffect(() => {
+    const { type } = layerAction;
+    if (type !== "generate") return;
     const nftTraits = [];
     const newNftLayers = nftLayers.map(({ image, id, attributes, ...otherLayerProps }) => {
       nftTraits.push({ image, id });
       return { image: "", id, attributes, ...otherLayerProps };
     });
     saveNftLayers({ currentUser, sessionId, nftLayers: newNftLayers, nftTraits });
-  }, [nftLayers, currentUser, sessionId]);
+    console.log("saving nftLayers....");
+    resetLayerAction();
+  }, [layerAction, nftLayers, currentUser, sessionId]);
+
+  useEffect(() => {
+    const { type } = layerAction;
+    if (type !== "generate") return;
+    savePreNftLayers({ currentUser, sessionId, preNftLayers });
+    console.log("saving preNftLayers....");
+    resetLayerAction();
+  }, [layerAction, preNftLayers, currentUser, sessionId]);
 
   useEffect(() => {
     const { type, value } = imageAction;
+    if (!type) return;
+
     switch (type) {
       case "upload":
         saveTraits({ dispatch, currentUser, sessionId, ...value });
@@ -73,6 +109,13 @@ const StoreData = () => {
       default:
         break;
     }
+
+    dispatch(
+      setImageAction({
+        type: "",
+        value: {},
+      })
+    );
   }, [imageAction, currentUser, sessionId]);
 
   useEffect(() => {
@@ -93,6 +136,8 @@ const StoreData = () => {
   }, [currentUser, sessionId, upgradePlan]);
 
   useEffect(() => {
+    const { type } = layerAction;
+    if (type !== "rule") return;
     let newRules = rule.map((r) => {
       let iRule = r.map(({ imageFile, ...ir }) => {
         return { imageFile: "", ...ir };
@@ -102,7 +147,9 @@ const StoreData = () => {
 
     let strRules = JSON.stringify(newRules);
     saveRules({ currentUser, sessionId, rules: strRules });
-  }, [currentUser, sessionId, rule]);
+    console.log("saving rule...");
+    resetLayerAction();
+  }, [layerAction, currentUser, sessionId, rule]);
 
   return null;
 };

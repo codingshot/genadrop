@@ -9,6 +9,7 @@ import {
   setCurrentSession,
   setLayers,
   setNftLayers,
+  setPreNftLayers,
   setToggleSessionModal,
 } from "../../../gen-state/gen.actions";
 import { fetchUserSession } from "../../../renderless/store-data/StoreData.script";
@@ -32,6 +33,7 @@ const SessionModal = () => {
       dispatch(setCollectionName(res.collectionName));
       dispatch(setCurrentSession(sessionId));
       dispatch(addRule(res.rules));
+      dispatch(setPreNftLayers(res.preNftLayers));
       dispatch(setToggleSessionModal(false));
     }
     setLoading(false);

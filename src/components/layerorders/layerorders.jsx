@@ -83,6 +83,11 @@ const LayerOrders = ({ isCreateModal }) => {
     if (!inputValue) return;
     handleSetState({ renameAction: false });
     dispatch(setCollectionName(inputValue));
+    dispatch(
+      setLayerAction({
+        type: "name",
+      })
+    );
   };
 
   useEffect(() => {

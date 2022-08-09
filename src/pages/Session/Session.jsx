@@ -10,9 +10,11 @@ import {
   setCollectionName,
   setCurrentPlan,
   setCurrentSession,
+  setLayerAction,
   setLayers,
   setNftLayers,
   setOverlay,
+  setPreNftLayers,
   setSession,
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
@@ -40,9 +42,15 @@ const Session = () => {
       dispatch(setCurrentPlan(plan));
       dispatch(setLayers(res.layers));
       dispatch(setNftLayers(res.nftLayers));
+      dispatch(setPreNftLayers(res.preNftLayers));
       dispatch(setCollectionName(res.collectionName));
       dispatch(addRule(res.rules));
       dispatch(setCurrentSession(sessionId));
+      dispatch(
+        setLayerAction({
+          type: "loadPreNftLayers",
+        })
+      );
       history.push("/create");
     }
     dispatch(setOverlay(false));

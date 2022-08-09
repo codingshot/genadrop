@@ -19,6 +19,7 @@ export const INITIAL_STATE = {
   layers: [],
   preview: [],
   nftLayers: [],
+  preNftLayers: [],
   combinations: 0,
   mintAmount: 0,
   outputFormat: "ipfs",
@@ -171,6 +172,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mintAmount: action.payload,
+      };
+    case genActionTypes.SET_PRE_NFT_LAYERS:
+      return {
+        ...state,
+        preNftLayers: action.payload,
       };
     case genActionTypes.SET_NFT_LAYERS:
       return {

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { setCollectionName, setCurrentSession } from "../../../gen-state/gen.actions";
+import { setCollectionName, setCurrentSession, setLayerAction } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import { handleResetCreate } from "../../../utils";
 import { v4 as uuid } from "uuid";
@@ -10,7 +10,7 @@ import { useHistory } from "react-router-dom";
 const SuccessPlan = () => {
   const history = useHistory();
   const { dispatch, upgradePlan, sessionId, currentPlan, collectionName } = useContext(GenContext);
-  const [inputValue, setInputValue] = useState();
+  const [inputValue, setInputValue] = useState("");
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -19,6 +19,11 @@ const SuccessPlan = () => {
   const handleContinue = (e) => {
     e.preventDefault();
     dispatch(setCollectionName(inputValue));
+    dispatch(
+      setLayerAction({
+        type: "name",
+      })
+    );
     history.push("/create");
   };
 
@@ -27,9 +32,10 @@ const SuccessPlan = () => {
     if (!upgradePlan) {
       handleResetCreate({ dispatch });
       dispatch(setCurrentSession(ID));
-      dispatch(setCollectionName("New Collection"));
     } else if (!sessionId) {
       dispatch(setCurrentSession(ID));
+    }
+    if (!collectionName) {
       dispatch(setCollectionName("New Collection"));
     }
   }, []);

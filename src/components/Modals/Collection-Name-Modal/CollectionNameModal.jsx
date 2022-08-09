@@ -2,7 +2,7 @@ import classes from "./CollectionNameModal.module.css";
 import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
-import { setCollectionName, setToggleCollectionNameModal } from "../../../gen-state/gen.actions";
+import { setCollectionName, setLayerAction, setToggleCollectionNameModal } from "../../../gen-state/gen.actions";
 
 const CollectionNameModal = () => {
   const [inputValue, setInputValue] = useState("");
@@ -20,6 +20,11 @@ const CollectionNameModal = () => {
     e.preventDefault();
     if (!inputValue) return setError(true);
     dispatch(setCollectionName(inputValue));
+    dispatch(
+      setLayerAction({
+        type: "name",
+      })
+    );
     handleClose();
   };
 

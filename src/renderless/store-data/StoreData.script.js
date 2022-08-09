@@ -52,7 +52,7 @@ export const saveRules = ({ currentUser, sessionId, rules }) => {
 };
 
 export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) => {
-  if (currentUser && sessionId && nftLayers.length) {
+  if (currentUser && sessionId) {
     const docRef = doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`);
     setDoc(docRef, { nftLayers });
     // save the layer trait to storage
@@ -64,6 +64,13 @@ export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) 
         console.log(`error ${error}`);
       }
     });
+  }
+};
+
+export const savePreNftLayers = ({ currentUser, sessionId, preNftLayers }) => {
+  if (currentUser && sessionId) {
+    const docRef = doc(firestore, `users/${currentUser.uid}/preNftLayers/${sessionId}`);
+    setDoc(docRef, { preNftLayers });
   }
 };
 
@@ -108,10 +115,7 @@ export const renameTrait = async ({ currentUser, sessionId, id, oldName, newName
 
 export const deleteAllLayers = async ({ currentUser, sessionId }) => {
   const res = await fetchNftLayers({ currentUser, sessionId });
-  res &&
-    res.nftLayers.forEach(async (layer) => {
-      await deleteAllNftTraits({ currentUser, sessionId, id: layer.id });
-    });
+  res && (await deleteAllNftTraits({ currentUser, sessionId }));
   const { layers } = await fetchLayers({ currentUser, sessionId });
   layers.forEach(async (layer) => {
     await deleteAllTraits({ currentUser, sessionId, id: layer.id });
@@ -154,9 +158,9 @@ export const deleteAllTraits = async ({ currentUser, sessionId, id }) => {
   }
 };
 
-export const deleteAllNftTraits = async ({ currentUser, sessionId, id }) => {
+export const deleteAllNftTraits = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
-    const listRef = ref(storage, `${currentUser.uid}/nftLayers/${sessionId}/${id}`);
+    const listRef = ref(storage, `${currentUser.uid}/nftLayers/${sessionId}`);
     const res = await listAll(listRef);
     const folder = await Promise.all(
       res.items.map(async (folderRef) => {
@@ -229,6 +233,18 @@ export const fetchNftLayers = async ({ currentUser, sessionId }) => {
       return docSnapshot.data();
     } else {
       console.log("nftLayers does not exist");
+    }
+  }
+};
+
+export const fetchPreNftLayers = async ({ currentUser, sessionId }) => {
+  if (currentUser && sessionId) {
+    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/preNftLayers/${sessionId}`));
+    const docSnapshot = await getDoc(querySnapshot);
+    if (docSnapshot.exists()) {
+      return docSnapshot.data();
+    } else {
+      console.log("preNftLayers does not exist");
     }
   }
 };
@@ -335,19 +351,41 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
     const result = await Promise.all([
       fetchCollectionName({ currentUser, sessionId }),
       fetchLayers({ currentUser, sessionId }),
+      fetchNftLayers({ currentUser, sessionId }),
+      fetchPreNftLayers({ currentUser, sessionId }),
       fetchRules({ currentUser, sessionId }),
       fetchTraits({ currentUser, sessionId }),
-      fetchNftLayers({ currentUser, sessionId }),
       fetchNftTraits({ currentUser, sessionId }),
     ]);
-    const [storedCollectionName, storedLayers, storedRules, storedTraits, storedNftLayers, storedNftTraits] = result;
+    const [
+      storedCollectionName,
+      storedLayers,
+      storedNftLayers,
+      storedPreNftLayers,
+      storedRules,
+      storedTraits,
+      storedNftTraits,
+    ] = result;
+
     const transformedTraits = await transfromTraits(storedTraits);
     const newLayers = constructLayers({ storedLayers, transformedTraits });
+    let preNftLayers = [];
+    if (storedPreNftLayers) {
+      let startTime = performance.now();
+      preNftLayers = constructPreNftLayers({ newLayers, storedPreNftLayers });
+      let endTime = performance.now();
+      console.log(`Call to fetch preNftLayers collection took ${(endTime - startTime) / 1000} seconds`);
+    }
+
     let newNftLayers = [];
     if (storedNftLayers) {
+      let startTime = performance.now();
       const transformedNftTraits = await transfromNftTraits(storedNftTraits);
       newNftLayers = constructNftLayers({ storedNftLayers, transformedNftTraits });
+      let endTime = performance.now();
+      console.log(`Call to fetch newNftLayers collection took ${(endTime - startTime) / 1000} seconds`);
     }
+
     let newRules = [];
     if (storedRules) {
       try {
@@ -358,6 +396,7 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
       }
     }
     return {
+      preNftLayers,
       rules: newRules,
       layers: newLayers,
       nftLayers: newNftLayers,
@@ -390,6 +429,29 @@ export const constructNftLayers = ({ storedNftLayers, transformedNftTraits }) =>
   return storedNftLayers.nftLayers.map(({ id, image, ...otherLayerProps }) => {
     const file = transformedNftTraits[id];
     return { id, image: file, ...otherLayerProps };
+  });
+};
+
+export const constructPreNftLayers = ({ newLayers, storedPreNftLayers }) => {
+  const mapLayersToObj = () => {
+    const mapedLayers = {};
+    newLayers.forEach((layer) => (mapedLayers[layer.id] = layer));
+    return mapedLayers;
+  };
+  const layers = mapLayersToObj();
+  return storedPreNftLayers.preNftLayers.map(({ attributes, ...otherLayerProps }) => {
+    const newAttributes = attributes.map(({ id, image, imageName, ...otherAttrProps }) => {
+      let { traits } = layers[id];
+      let imageFile = null;
+      for (let { traitTitle, image } of traits) {
+        if (traitTitle === imageName) {
+          imageFile = image;
+          break;
+        }
+      }
+      return { image: imageFile, imageName, ...otherAttrProps };
+    });
+    return { attributes: newAttributes, ...otherLayerProps };
   });
 };
 

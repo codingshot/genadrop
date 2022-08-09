@@ -1,5 +1,12 @@
 import { v4 as uuid } from "uuid";
-import { setCurrentDnaLayers, setNftLayers, setNotification, setLoader } from "../../gen-state/gen.actions";
+import {
+  setCurrentDnaLayers,
+  setNftLayers,
+  setNotification,
+  setLoader,
+  setPreNftLayers,
+  setLayerAction,
+} from "../../gen-state/gen.actions";
 import { getDefaultName, handleImage } from "../../utils";
 
 export const createDna = (layers) => {
@@ -31,7 +38,7 @@ export const createDna = (layers) => {
 export const isUnique = (attributes, attr, rule) => {
   const parseAttrToRule = attr.map((p) => ({
     layerTitle: p.trait_type,
-    imageName: p.value,
+    imageName: p.imageName,
   }));
 
   const att_str = JSON.stringify(attr);
@@ -73,14 +80,15 @@ removing ${uniqueIndex} duplicates`
       );
 
       const attr = [];
-      layers.forEach(({ layerTitle, traits }) => {
+      layers.forEach(({ layerTitle, traits, id }) => {
         const randNum = Math.floor(Math.random() * traits.length);
         const { traitTitle, Rarity, image } = traits[randNum];
         attr.push({
           trait_type: layerTitle,
-          value: traitTitle.replace(".png", ""),
+          imageName: traitTitle.replace(".png", ""),
           rarity: Rarity,
           image,
+          id,
         });
       });
 
@@ -140,12 +148,14 @@ export const parseLayers = (props) => {
   });
 };
 
+export const getFirstLayerWithTrait = (layers) => {
+  return layers.find((layer) => layer.traits.length);
+};
+
 export const handleGenerate = async (generateProps) => {
+  var startTime = performance.now();
   const { isRule, mintAmount, combinations, layers, collectionName, dispatch, rule, canvasRef, imageQuality } =
     generateProps;
-  const getFirstLayerWithTrait = (layers) => {
-    return layers.find((layer) => layer.traits.length);
-  };
 
   if (isRule) {
     return dispatch(
@@ -199,12 +209,49 @@ export const handleGenerate = async (generateProps) => {
     image: getFirstLayerWithTrait(layers).traits[0].image,
     imageQuality,
   });
+
+  (function unpackLayers() {
+    const preNftLayers = uniqueLayers.map(({ attributes, ...otherLayerProps }) => {
+      const newAttributes = attributes.map(({ image, ...otherAttrProps }) => {
+        return { image: "", ...otherAttrProps };
+      });
+      return { attributes: newAttributes, ...otherLayerProps };
+    });
+    dispatch(setPreNftLayers(preNftLayers));
+  })();
+
   dispatch(setCurrentDnaLayers(dnaLayers));
   dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
+  dispatch(
+    setLayerAction({
+      type: "generate",
+    })
+  );
   dispatch(
     setNotification({
       message: "Done! Click on the preview button to view assets.",
       type: "success",
     })
   );
+  var endTime = performance.now();
+  console.log(`Call to generate collection took ${(endTime - startTime) / 1000} seconds`);
+};
+
+export const packLayers = async (generateProps) => {
+  const { dispatch, preNftLayers, canvasRef, imageQuality, layers } = generateProps;
+  let startTime = performance.now();
+  const arts = await generateArt({
+    dispatch,
+    setLoader,
+    layers: preNftLayers,
+    canvas: canvasRef.current,
+    image: getFirstLayerWithTrait(layers).traits[0].image,
+    imageQuality,
+  });
+
+  const nftLayers = parseLayers({ uniqueLayers: preNftLayers, arts });
+  var endTime = performance.now();
+  console.log(`Call to generate preNftLayers took ${(endTime - startTime) / 1000} seconds`);
+  dispatch(setPreNftLayers([]));
+  // dispatch(setNftLayers(nftLayers));
 };

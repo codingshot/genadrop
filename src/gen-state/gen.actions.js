@@ -78,6 +78,11 @@ export const setNftLayers = (layers) => ({
   payload: layers,
 });
 
+export const setPreNftLayers = (layers) => ({
+  type: genActionTypes.SET_PRE_NFT_LAYERS,
+  payload: layers,
+});
+
 export const setCombinations = (val) => ({
   type: genActionTypes.SET_COMBINATIONS,
   payload: val,

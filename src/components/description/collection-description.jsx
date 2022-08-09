@@ -5,7 +5,9 @@ import {
   setMintAmount,
   setNftLayers,
   setNotification,
+  setLoader,
   setToggleUpgradeModal,
+  setLayerAction,
 } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
@@ -15,7 +17,7 @@ import CollectionPreview from "../preview/collection-preview";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
-import { handleGenerate } from "./collection-description-script";
+import { handleGenerate, packLayers } from "./collection-description-script";
 import { plans } from "../../pages/Pricing/Pricing.script";
 
 const CollectionDescription = () => {
@@ -30,6 +32,8 @@ const CollectionDescription = () => {
     collectionName,
     imageQuality,
     currentPlan,
+    preNftLayers,
+    layerAction,
   } = useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
@@ -81,6 +85,18 @@ const CollectionDescription = () => {
       dispatch(setMintAmount(combinations - rule.length ? parseInt(combinations - rule.length) : 0));
     }
   }, [combinations]);
+
+  useEffect(() => {
+    if (layerAction.type === "loadPreNftLayers") {
+      console.log("called preNftLayers");
+      packLayers({ ...generateProps, preNftLayers });
+      dispatch(
+        setLayerAction({
+          type: "",
+        })
+      );
+    }
+  }, [preNftLayers, layerAction]);
 
   const ripple = window.sessionStorage.ripple;
 

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CollectionMenu from "../menu/collection-menu";
 import classes from "./collection-overview.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import { addRule, clearPreview, clearRule, setConflictRule } from "../../gen-state/gen.actions";
+import { addRule, clearPreview, clearRule, setConflictRule, setLayerAction } from "../../gen-state/gen.actions";
 import isUnique from "./collection-overview-script";
 import RulesCard from "../rulesCard/rulesCard.component";
 import { reOrderPreview } from "../../utils";
@@ -42,12 +42,16 @@ const CollectionOverview = () => {
     const newPreview = reOrderPreview({ preview, layers });
     if (isUnique({ rule, preview: newPreview }) && newPreview.length) {
       dispatch(addRule([...rule, newPreview]));
+      dispatch(
+        setLayerAction({
+          type: "rule",
+        })
+      );
     }
     closeRule();
   };
 
   useEffect(() => {
-    console.log("called", rule);
     const ruleCopy = [...rule];
     let orderedRule = [];
     dispatch(clearRule());
