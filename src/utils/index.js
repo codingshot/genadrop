@@ -216,7 +216,8 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
-  const responses = await Promise.allSettled(singleNfts?.map((NFT) => fetchNFT(NFT, mainnet)));
+  const _1of1 = singleNfts.filter((s) => !s.collection);
+  const responses = await Promise.allSettled(_1of1?.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
   // // removing rejected responses
   responses.forEach((element) => {
@@ -313,6 +314,23 @@ export const getGraphCollection = async (collection, mainnet) => {
   return nftArr;
 };
 
+export const getTransactions = async (transactions) => {
+  const trnArr = [];
+  for (let i = 0; i < transactions?.length; i++) {
+    try {
+      const trnObj = {};
+      (trnObj.buyer = transactions[i]?.to?.id),
+        (trnObj.price = transactions[i]?.price * 0.000000000000000001),
+        (trnObj.seller = transactions[i].from?.id),
+        (trnObj.txDate = transactions[i]?.txDate),
+        (trnObj.txId = transactions[i]?.txId),
+        (trnObj.type = transactions[i]?.type);
+      trnArr.push(trnObj);
+    } catch (error) {}
+  }
+  return trnArr;
+};
+
 export const getUserGraphNft = async (collection, address) => {
   console.log(collection);
   const nftArr = [];
@@ -342,24 +360,6 @@ export const getUserGraphNft = async (collection, address) => {
     }
   }
   return nftArr;
-};
-
-export const getTransactions = async (transactions) => {
-  const trnArr = [];
-  console.log(transactions);
-  for (let i = 0; i < transactions.length; i++) {
-    try {
-      const trnObj = {};
-      (trnObj.buyer = transactions[i]?.to?.id),
-        (trnObj.price = Number(transactions[i]?.price) * 0.000000000000000001),
-        // (trnObj.seller = transactions[i].from?.id),
-        (trnObj.txDate = transactions[i]?.txDate),
-        (trnObj.txId = transactions[i]?.txId),
-        (trnObj.type = transactions[i]?.type);
-      trnArr.push(trnObj);
-    } catch (error) {}
-    return trnArr;
-  }
 };
 
 export const getCeloGraphNft = async (collection) => {

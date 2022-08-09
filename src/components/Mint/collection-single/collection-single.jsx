@@ -103,7 +103,7 @@ const CollectionToSingleMinter = () => {
     if (params.mintId === "collection") {
       handleSetState({ acceptedFileType: ".zip" });
     } else {
-      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .mp4, .gif" });
+      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .gif" });
     }
     handleSetState({ mintType: params.mintId });
   }, [params.mintId]);

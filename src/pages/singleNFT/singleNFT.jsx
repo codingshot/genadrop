@@ -141,7 +141,7 @@ const SingleNFT = () => {
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
-        if (Number(chainId) === 44787 || Number(chainId) === 42220) {
+        if (Number(nftChainId) === 44787 || Number(nftChainId) === 42220) {
           const [celoData, trHistory] = await celoUserData(nftId);
           handleSetState({
             nftDetails: celoData,
