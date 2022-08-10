@@ -136,7 +136,7 @@ const SingleNFT = () => {
 
   useEffect(() => {
     dispatch(setOverlay(true));
-
+    console.log("xxx", nftChainId);
     if (Number(nftChainId) === 4160) return;
     (async function getNftDetails() {
       try {
@@ -148,7 +148,7 @@ const SingleNFT = () => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(chainId) === 1313161555) {
+        } else if (Number(nftChainId) === 1313161555) {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return;
           handleSetState({
