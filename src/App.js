@@ -40,6 +40,7 @@ import Success from "./pages/Pricing/Success";
 import Cancel from "./pages/Pricing/Cancel";
 import "@stripe/stripe-js";
 import Minter from "./components/Mint/minter/minter";
+import Pitch from "./pages/Pitch/Pitch";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -82,6 +83,7 @@ function App() {
             <Route exact path="/create/pricing" component={Pricing} />
             <Route exact path="/success" component={Success} />
             <Route exact path="/cancel" component={Cancel} />
+            <Route exact path="/pitch" component={Pitch} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
