@@ -42,22 +42,22 @@ const PricingModal = ({ modal, price, closeModal }) => {
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
-    "client-id": "test",
+    "client-id": "ARJ2J1LIdEcX0Pbd9hOteNAonKVzaSTavPSI8vbvPA9dlv9Ptp7Hc-3s4D3KHoIyoGY_2qHEgUdijW1g",
     currency: "USD",
     intent: "capture",
   };
 
   const item = [
     {
-      price: "price_1LPcwyBNj5DiViWraDJpzpeh",
+      price: "price_1LQrfZFiDLqRMLIXoXqtKhas",
       quantity: 1,
     },
     {
-      price: "price_1LPcxsBNj5DiViWrY6LBUNHp",
+      price: "price_1LQriKFiDLqRMLIX1HBQwggL",
       quantity: 1,
     },
     {
-      price: "price_1LPcyWBNj5DiViWrS47kiQgt",
+      price: "price_1LQroRFiDLqRMLIXBVqu6fbY",
       quantity: 1,
     },
   ];
