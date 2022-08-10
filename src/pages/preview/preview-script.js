@@ -1,5 +1,7 @@
 import axios from "axios";
 import {
+  addDescription,
+  promptDeleteAsset,
   renameAsset,
   setCollectionDescription,
   setCollectionName,
@@ -8,6 +10,7 @@ import {
   setNftLayers,
   setNotification,
   setOutputFormat,
+  setPrompt,
 } from "../../gen-state/gen.actions";
 import { getDefaultName, handleImage } from "../../utils";
 import { v4 as uuid } from "uuid";
@@ -299,17 +302,16 @@ export const handleCollectionDescription = (descriptionProps) => {
 };
 
 export const handleRename = (renameProps) => {
-  const { input, dispatch } = renameProps;
-
-  if (!input.value) {
+  const { id, value, index, dispatch } = renameProps;
+  if (!value) {
     dispatch(
       renameAsset({
-        id: input.id,
-        name: `${collectionName} ${getDefaultName(input.index + 1)}`.trim(),
+        id,
+        name: `${collectionName} ${getDefaultName(index + 1)}`.trim(),
       })
     );
   } else {
-    dispatch(renameAsset({ id: input.id, name: input.value }));
+    dispatch(renameAsset({ id, name: value }));
   }
 };
 
@@ -321,4 +323,12 @@ export const handleCollectionName = async (collectionNameProps) => {
     name: `${value} ${getDefaultName(idx + 1)}`.trim(),
   }));
   dispatch(setNftLayers(newLayers));
+};
+
+export const handleDelete = ({ dispatch, id }) => {
+  dispatch(setPrompt(promptDeleteAsset(id)));
+};
+
+export const handleDescription = ({ dispatch, id, description }) => {
+  dispatch(addDescription({ id, description }));
 };
