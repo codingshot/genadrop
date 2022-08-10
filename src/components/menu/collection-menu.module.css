@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   overflow: auto;
-  border: 1px solid var(--outline-light);
+  border: 1px solid var(--outline);
   background: var(--default);
   border-radius: 0.5em;
   margin-bottom: 2em;
@@ -59,7 +59,7 @@
   gap: 1em;
   cursor: var(--cursor-pointer);
   border: 1px solid var(--outline);
-  background: var(--outline-light);
+  background: var(--outline);
 }
 
 .uploadBtn {

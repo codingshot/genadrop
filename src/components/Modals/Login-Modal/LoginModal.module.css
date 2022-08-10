@@ -1,0 +1,100 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.container.active {
+  display: flex;
+}
+
+.card {
+  width: 100%;
+  max-width: 48em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4em;
+  padding: 4em;
+  border-radius: 0.5em;
+  background: var(--default);
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.heading span {
+  color: var(--main-color);
+}
+
+.signinBtn {
+  width: auto;
+  border-radius: 0.5em;
+  padding: 1em 4em;
+  background: var(--default);
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  cursor: pointer;
+  border: 2px solid var(--main-color);
+  white-space: nowrap;
+  transition: all 300ms;
+}
+
+.signinBtn:hover {
+  border-color: var(--main-hovered);
+  transform: scale(0.995);
+}
+
+@media screen and (max-width: 768px) {
+  .card {
+    padding: 4em 2em;
+  }
+
+  .heading {
+    font-size: 1.2rem;
+  }
+
+  .logoHead {
+    width: 6em;
+    height: 6em;
+  }
+
+  .signinBtn {
+    padding: 1em 2em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .card {
+    padding: 2em;
+  }
+
+  .heading {
+    font-size: 1rem;
+  }
+
+  .logoHead {
+    width: 4em;
+    height: 4em;
+  }
+
+  .signinBtn {
+    padding: 0.5em 1em;
+  }
+}

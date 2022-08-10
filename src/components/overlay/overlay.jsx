@@ -8,11 +8,13 @@ const Overlay = () => {
 
   return (
     <div className={`${classes.overlay} ${isLoading && classes.isLoading}`}>
-      <img src={drop} alt="" />
-      <div className={classes.loader}>
-        <div className={classes.dotOne} />
-        <div className={classes.dotTwo} />
-        <div className={classes.dotThree} />
+      <div className={classes.wrapper}>
+        <img src={drop} alt="" />
+        <div className={classes.loader}>
+          <div className={classes.dotOne} />
+          <div className={classes.dotTwo} />
+          <div className={classes.dotThree} />
+        </div>
       </div>
     </div>
   );
