@@ -161,7 +161,7 @@ const Session = () => {
                       <div className={`${classes.sessionDropdown} ${dropdownId === idx && classes.active}`}>
                         <div className={classes.cost}>
                           <div className={classes.title}>cost per session</div>
-                          <div className={classes.amount}>${plans[session.currentPlan].price}</div>
+                          {/* <div className={classes.amount}>${plans[session.currentPlan].price}</div> */}
                         </div>
                         <div className={classes.services}>
                           {plans[session.currentPlan].services.map(({ name, available }, idx) => (

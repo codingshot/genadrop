@@ -1,9 +1,6 @@
 import classes from "./PricingModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import stripeIcon from "../../../assets/icon-stripe.svg";
-import paypalIcon from "../../../assets/icon-paypal.svg";
-import { useState, useContext } from "react";
-import { GenContext } from "../../../gen-state/gen.context";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
@@ -13,30 +10,18 @@ let stripePromise;
 
 const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.STRIPE_LIVE_PUBLIC_KEY);
+    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_LIVE_PUBLIC_KEY);
   }
   return stripePromise;
 };
 
 const PricingModal = ({ modal, price, closeModal }) => {
   const history = useHistory();
-  const [activeMode, setActive] = useState("paypal");
-  const [loading, setLoading] = useState(false);
-  const { dispatch, upgradePlan, currentPlan, sessionId } = useContext(GenContext);
-
-  /**
-   * Before payment, create a paymentID which will also be a sessionID
-   * Use the ID to process payment.
-   * If payment was successful, create a session for the user using the same sessionID
-   * used in processing payment.
-   * if creating session was successful, prompt the user to choose a collection name
-   * setCurrentSession(sessionId)
-   */
 
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
-    "client-id": process.env.PAYPAL_LIVE_CLIENT_ID,
+    "client-id": process.env.REACT_APP_PAYPAL_LIVE_CLIENT_ID,
     currency: "USD",
     intent: "capture",
   };
@@ -80,12 +65,11 @@ const PricingModal = ({ modal, price, closeModal }) => {
   const checkoutOptions = {
     lineItems: [item[0]],
     mode: "payment",
-    successUrl: `/create/session/create`, // you decide where to redirect. This is just for test
-    cancelUrl: `/create/session/pricing/failed`,
+    successUrl: `${window.location.origin}/create/session/create`,
+    cancelUrl: `${window.location.origin}/create/session/pricing/failed`,
   };
 
   const redirectToCheckout = async () => {
-    setLoading(true);
     console.log("redirectToCheckout");
 
     const stripe = await getStripe();
@@ -95,7 +79,6 @@ const PricingModal = ({ modal, price, closeModal }) => {
 
     if (res.error) setStripeError(res.error.message);
     // else handleClick();
-    setLoading(false);
   };
 
   if (stripeError) alert(stripeError);
@@ -116,26 +99,13 @@ const PricingModal = ({ modal, price, closeModal }) => {
         <div className={classes.content}>
           <h1>Choose a payment method</h1>
           <div className={classes.methodContainer}>
-            {/* <PayPalScriptProvider options={initialOptionsPaypal}>
+            <PayPalScriptProvider options={initialOptionsPaypal}>
               <PaypalButton createOrder={createOrderHandler} onApprove={onApproveHandler} />
-            </PayPalScriptProvider> */}
-            <div
-              onClick={() => setActive("paypal")}
-              className={`${activeMode === "paypal" && classes.active} ${classes.paymentMethod}`}
-            >
-              <img src={paypalIcon} alt="" />
-              <div>paypal</div>
-            </div>
-            <div
-              // onClick={redirectToCheckout}
-              onClick={() => setActive("stripe")}
-              className={`${activeMode === "stripe" && classes.active} ${classes.paymentMethod}`}
-            >
-              <img src={stripeIcon} alt="" />
-              {/* <div>Stripe</div> */}
+            </PayPalScriptProvider>
+            <div onClick={redirectToCheckout} className={classes.paymentMethod}>
+              <div>Stripe</div>
             </div>
           </div>
-          <button onClick={handleClick}>Continue</button>
         </div>
       </div>
     </div>

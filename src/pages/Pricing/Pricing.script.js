@@ -37,8 +37,8 @@ export const plans = {
       },
     ],
   },
-  noobs: {
-    type: "noobs",
+  hobby: {
+    type: "hobby",
     amount: "2000",
     description: "Up to 2,000 unique art generation",
     coveredCost: "Cost per collection",
@@ -67,7 +67,7 @@ export const plans = {
       },
       {
         name: "Generate GIf",
-        available: false,
+        available: true,
       },
       {
         name: "Technical support",
@@ -75,8 +75,8 @@ export const plans = {
       },
     ],
   },
-  geeks: {
-    type: "geeks",
+  pro: {
+    type: "pro",
     amount: "5000",
     description: "Up to 5,000 unique art generation",
     coveredCost: "Cost per collection",
@@ -114,8 +114,8 @@ export const plans = {
       },
     ],
   },
-  ogs: {
-    type: "ogs",
+  agency: {
+    type: "agency",
     amount: "10000",
     description: "Up to ,10000 unique art generation",
     coveredCost: "Cost per collection",
