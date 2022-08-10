@@ -3,12 +3,11 @@ import { useContext, useEffect } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./googleAuth.module.css";
 import { getCurrentUser, signInWithGoogle } from "./googleAuth.script";
-import ProfileDropdown from "./profile-dropdown/profileDropdown";
 
 const GoogleAuth = () => {
   const { dispatch, currentUser } = useContext(GenContext);
   const [user, setUser] = useState(null);
-  const [dropdown, setDropdown] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleSignIn = () => {
     signInWithGoogle({ dispatch });
@@ -30,17 +29,19 @@ const GoogleAuth = () => {
   return (
     <div className={classes.container}>
       {user ? (
-        <div
-          onMouseOver={() => setDropdown(true)}
-          onMouseOut={() => setDropdown(false)}
-          className={classes.profileContainer}
-        >
-          <div className={classes.profileIcon}>{getInitial(user.displayName)}</div>
-          <ProfileDropdown dropdown={dropdown} setDropdown={setDropdown} userName={user.displayName} />
+        <div className={classes.profileContainer}>
+          <img
+            style={{ display: `${imageLoaded ? "block" : "none"}` }}
+            onLoad={() => setImageLoaded(true)}
+            src={user.photoURL}
+            alt=""
+            className={classes.profileIcon}
+          />
+          {!imageLoaded && <div className={classes.profileIcon}>{getInitial(user.displayName)}</div>}
         </div>
       ) : (
         <div className={classes.signIn} onClick={handleSignIn}>
-          sign in / sign up
+          sign in
         </div>
       )}
     </div>

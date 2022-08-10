@@ -83,6 +83,11 @@ const LayerOrders = ({ isCreateModal }) => {
     if (!inputValue) return;
     handleSetState({ renameAction: false });
     dispatch(setCollectionName(inputValue));
+    dispatch(
+      setLayerAction({
+        type: "name",
+      })
+    );
   };
 
   useEffect(() => {
@@ -107,7 +112,6 @@ const LayerOrders = ({ isCreateModal }) => {
           {renameAction ? (
             <form onSubmit={handleRename}>
               <input
-                className={renameAction}
                 type="text"
                 onChange={(e) => handleSetState({ inputValue: e.target.value })}
                 value={inputValue}
@@ -116,7 +120,7 @@ const LayerOrders = ({ isCreateModal }) => {
               />
             </form>
           ) : (
-            <div className={renameAction}>{collectionName}</div>
+            <div>{collectionName}</div>
           )}
 
           <div className={classes.editBtn}>

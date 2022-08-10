@@ -19,6 +19,7 @@ export const INITIAL_STATE = {
   layers: [],
   preview: [],
   nftLayers: [],
+  preNftLayers: [],
   combinations: 0,
   mintAmount: 0,
   outputFormat: "ipfs",
@@ -46,7 +47,7 @@ export const INITIAL_STATE = {
   activeCollection: [],
   notification: {
     message: "",
-    type: "", // warning, error, success, default
+    type: "", // warning|error|success|default
   },
   switchWalletNotification: false,
   clipboardMessage: "",
@@ -59,7 +60,7 @@ export const INITIAL_STATE = {
   promptLayer: null,
   promptRules: null,
   toggleWalletPopup: false,
-  imageQuality: 0.5, // high:1, medium:0.5, low:0.2,
+  imageQuality: 0.5, // high:1|medium:0.5|low:0.2,
   zip: {},
   connectFromMint: {
     isComingSoon: null,
@@ -67,19 +68,27 @@ export const INITIAL_STATE = {
   },
   currentUser: null,
   imageAction: {
-    type: "", // upload, rename, delete, deleteAll
+    type: "", // upload|rename|delete|deleteAll
     value: {},
   },
   layerAction: {
-    type: "", // add, delete, order, rename,
+    type: "", // add| delete|order|rename,
   },
   sessionId: "",
   sessions: [],
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
+  isUser: "", // true|false|null,
+  currentPlan: "free", // free|noobs|geeks|ogs
+  upgradePlan: false,
+  actionProgress: {
+    totalCount: 0,
+    resetCount: true,
+  },
   isUser: "", // true false null,
   currentPlan: "free",
   minter: "",
+  toggleUpgradeModal: "",
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -163,6 +172,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mintAmount: action.payload,
+      };
+    case genActionTypes.SET_PRE_NFT_LAYERS:
+      return {
+        ...state,
+        preNftLayers: action.payload,
       };
     case genActionTypes.SET_NFT_LAYERS:
       return {
@@ -426,10 +440,25 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentPlan: action.payload,
       };
+    case genActionTypes.SET_UPGRADE_PLAN:
+      return {
+        ...state,
+        upgradePlan: action.payload,
+      };
+    case genActionTypes.SET_ACTION_PROGRESS:
+      return {
+        ...state,
+        actionProgress: action.payload,
+      };
     case genActionTypes.SET_MINTER:
       return {
         ...state,
         minter: action.payload,
+      };
+    case genActionTypes.TOGGLE_UPGRADE_MODAL:
+      return {
+        ...state,
+        toggleUpgradeModal: action.payload,
       };
     default:
       return state;

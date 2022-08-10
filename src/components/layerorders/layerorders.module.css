@@ -2,7 +2,7 @@
   width: 20em;
   position: sticky;
   top: 5em;
-  border: 1px solid var(--outline-light);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
   padding: 1em 0;
   height: calc(100vh - 10em);

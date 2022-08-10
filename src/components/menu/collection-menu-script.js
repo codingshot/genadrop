@@ -1,15 +1,14 @@
 import { setImageAction, setLayers, setOverlay } from "../../gen-state/gen.actions";
-import { dataURItoBlob, getFile, handleBlankImage } from "../../utils";
+import { dataURItoBlob, handleBlankImage, handleTemplateImage } from "../../utils";
 import { v4 as uuid } from "uuid";
+import { getFile } from "../../utils";
 
 export const handleFileChange = (props) => {
   const { layerId, event, traits, layerTitle, dispatch } = props;
-
   const { files } = event.target;
   const imageFiles = Object.values(files);
   const currentImageFiles = [...traits];
   const filterArr = traits.map(({ image }) => image.name);
-
   let newImageFiles = [];
   imageFiles.forEach((imageFile) => {
     if (!filterArr.includes(imageFile.name)) {
@@ -21,7 +20,6 @@ export const handleFileChange = (props) => {
       filterArr.push(imageFile.name);
     }
   });
-
   dispatch(
     setImageAction({
       type: "upload",

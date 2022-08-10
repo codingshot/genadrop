@@ -175,21 +175,9 @@
 
 .wallet {
   text-align: right;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: flex-end;
-}
-
-.wallet.active {
-  display: flex;
-}
-
-.auth {
-  display: none;
-}
-
-.auth.active {
-  display: block;
 }
 
 .walletAuthContainer.mobile {
@@ -211,6 +199,11 @@
 @media screen and (max-width: 1000px) {
   .container {
     background: var(--default);
+  }
+
+  .navContainer.active {
+    border: 1px solid var(--outline);
+    box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
   }
 
   .navList {
@@ -257,7 +250,6 @@
     max-height: 22em;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow-light-1);
   }
 
   .navList {

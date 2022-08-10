@@ -5,7 +5,8 @@ import { GenContext } from "../../gen-state/gen.context";
 import userIcon from "../../assets/icon-user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
-import chevronDown from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as ChevronIcon } from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
@@ -36,9 +37,6 @@ function ConnectWallet() {
     isMetamask: true,
     overrideWalletConnect: false,
     rpc: null,
-    // rpc: {
-    //   4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
-    // },
   });
 
   const { clipboardState, network, walletConnectProvider, overrideWalletConnect, connectionMethod, rpc, isMetamask } =
@@ -140,6 +138,9 @@ function ConnectWallet() {
         <div className={classes.address}>
           <span>{breakAddress(account)}</span>
         </div>
+        <div className={classes.dropdownIconContainer}>
+          <DropdownIcon className={classes.dropdownIcon} />
+        </div>
       </div>
       {dropdown}
     </div>
@@ -150,7 +151,7 @@ function ConnectWallet() {
       <div className={classes.network}>
         <div className={classes.dot} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-        <img src={chevronDown} alt="" />
+        <ChevronIcon className={classes.chevronIcon} />
       </div>
       <div className={classes.networkDropdownContainer}>
         <div onClick={handleNetworkClick} className={classes.networkDropdown}>

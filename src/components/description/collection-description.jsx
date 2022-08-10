@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { setImageQuality, setOverlay, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
+import {
+  setImageQuality,
+  setOverlay,
+  setMintAmount,
+  setNftLayers,
+  setNotification,
+  setLoader,
+  setToggleUpgradeModal,
+  setLayerAction,
+} from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
@@ -8,11 +17,24 @@ import CollectionPreview from "../preview/collection-preview";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
-import { handleGenerate } from "./collection-description-script";
+import { handleGenerate, packLayers } from "./collection-description-script";
+import { plans } from "../../pages/Pricing/Pricing.script";
 
 const CollectionDescription = () => {
-  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName, imageQuality } =
-    useContext(GenContext);
+  const {
+    layers,
+    nftLayers,
+    mintAmount,
+    dispatch,
+    combinations,
+    rule,
+    isRule,
+    collectionName,
+    imageQuality,
+    currentPlan,
+    preNftLayers,
+    layerAction,
+  } = useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
     selectInputValue: 0.5,
@@ -46,28 +68,10 @@ const CollectionDescription = () => {
   };
 
   const handleGenerateClick = () => {
-    if (!combinations)
-      return dispatch(
-        setNotification({
-          type: "warning",
-          message: "Upload assets and try again.",
-        })
-      );
-    if (amountInputValue <= "0")
-      return dispatch(
-        setNotification({
-          message: "Add valid amount to generate input",
-          type: "error",
-        })
-      );
-    if (amountInputValue > combinations)
-      return dispatch(
-        setNotification({
-          message: "Number of arts cannot be greater than the possible combinations",
-          type: "error",
-        })
-      );
-    dispatch(setNftLayers([]));
+    if (parseInt(amountInputValue) > Number(plans[currentPlan].amount)) {
+      dispatch(setToggleUpgradeModal(true));
+      return;
+    }
     dispatch(setMintAmount(parseInt(amountInputValue)));
     handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
   };
@@ -81,6 +85,18 @@ const CollectionDescription = () => {
       dispatch(setMintAmount(combinations - rule.length ? parseInt(combinations - rule.length) : 0));
     }
   }, [combinations]);
+
+  useEffect(() => {
+    if (layerAction.type === "loadPreNftLayers") {
+      console.log("called preNftLayers");
+      packLayers({ ...generateProps, preNftLayers });
+      dispatch(
+        setLayerAction({
+          type: "",
+        })
+      );
+    }
+  }, [preNftLayers, layerAction]);
 
   const ripple = window.sessionStorage.ripple;
 

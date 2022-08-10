@@ -3,7 +3,7 @@
 import axios from "axios";
 // import fileDownload from "js-file-download";
 // eslint-disable-next-line import/no-unresolved
-import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
+// import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { getAlgoData, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
@@ -15,6 +15,13 @@ import {
   setAlgoSingleNfts,
   setOverlay,
   setNotification,
+  setCollectionName,
+  clearRule,
+  clearPreview,
+  setCurrentSession,
+  setLayerAction,
+  setImageAction,
+  setNftLayers,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
 import { v4 as uuid } from "uuid";
@@ -666,6 +673,19 @@ export const getFile = async (url, name, type) => {
   return file;
 };
 
+export const getBase64FromUrl = async (url) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      const base64data = reader.result;
+      resolve(base64data);
+    };
+  });
+};
+
 export const handleImage = async (props) => {
   const { canvas, images, image } = props;
   const { height, width } = await getImageSize(image);
@@ -737,22 +757,22 @@ export const reOrderPreview = ({ preview, layers }) => {
   return newPreview;
 };
 
-export const handleAddSampleLayers = ({ dispatch }) => {
-  const sampleLayers = [
-    { layerName: "Goo", dirName: "Goo" },
-    { layerName: "Top Lid", dirName: "TopLid" },
-    { layerName: "Bottom Lid", dirName: "BottomLid" },
-    { layerName: "Eye Color", dirName: "EyeColor" },
-  ];
+export const handleResetCreate = ({ dispatch }) => {
+  dispatch(setCollectionName(""));
   dispatch(clearLayers());
-  sampleLayers.map((sample) => {
-    dispatch(
-      addLayer({
-        id: uuid(),
-        traitsAmount: 0,
-        layerTitle: sample.layerName,
-        traits: [],
-      })
-    );
-  });
+  dispatch(clearPreview());
+  dispatch(clearRule());
+  dispatch(setNftLayers([]));
+  dispatch(setCurrentSession(null));
+  dispatch(
+    setLayerAction({
+      type: "",
+    })
+  );
+  dispatch(
+    setImageAction({
+      type: "",
+      value: {},
+    })
+  );
 };
