@@ -3,7 +3,6 @@ import CollectionDescription from "../../components/description/collection-descr
 import CollectionOverview from "../../components/overview/collection-overview";
 import classes from "./create.module.css";
 import { useEffect, useState } from "react";
-import LoginModal from "../../components/Login-Modal/LoginModal";
 import SubscriptionNotification from "../../components/Subscription-Notification/SubscriptionNotification";
 import CollectionNameModal from "../../components/Modals/Collection-Name-Modal/CollectionNameModal";
 import { useContext } from "react";
@@ -25,6 +24,7 @@ import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.s
 import ProgressBar from "./Progress-Bar/ProgressBar";
 import { useRef } from "react";
 import { handleSampleLayers } from "../../components/menu/collection-menu-script";
+import LoginModal from "../../components/Modals/Login-Modal/LoginModal";
 
 const Create = () => {
   const collectionNameRef = useRef();
