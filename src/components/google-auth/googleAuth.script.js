@@ -16,7 +16,7 @@ export const signInWithGoogle = ({ dispatch }) => {
       dispatch(
         setNotification({
           type: "error",
-          message: "something went wrong",
+          message: "something went wrong. Try again",
         })
       );
     });
