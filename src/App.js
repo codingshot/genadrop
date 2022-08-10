@@ -15,6 +15,7 @@ import Home from "./pages/home/home";
 import Create from "./pages/create/create";
 import Mint from "./pages/mint/mint";
 import CollectionToSingleMinter from "./components/Mint/collection-single/collection-single";
+import Camera from "./pages/camera/Camera";
 import Marketplace from "./pages/Marketplace/Marketplace";
 import Preview from "./pages/preview/preview";
 import Explore from "./pages/Explore/Explore";
@@ -61,6 +62,7 @@ function App() {
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
+            <Route exact path="/mint/camera" component={Camera} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />

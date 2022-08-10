@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import {
   setClipboard,
   setConnectFromMint,
@@ -20,8 +21,7 @@ import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
-import { initConnectWallet } from "../../../components/wallet/wallet-script";
-import { useHistory } from "react-router-dom";
+import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = () => {
   const history = useHistory();
@@ -34,7 +34,7 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: "", value: "" } },
+    attributes: { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     price: "",
@@ -276,7 +276,6 @@ const Minter = () => {
       }
     }
   }, [price, chainId]);
-
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -305,6 +304,8 @@ const Minter = () => {
                         className={classes.imageContainer}
                       />
                     ))
+                ) : file[0].type === "video/mp4" ? (
+                  <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
                 ) : (
                   <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                 )}
