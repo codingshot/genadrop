@@ -19,6 +19,7 @@ export const INITIAL_STATE = {
   layers: [],
   preview: [],
   nftLayers: [],
+  preNftLayers: [],
   combinations: 0,
   mintAmount: 0,
   outputFormat: "ipfs",
@@ -39,12 +40,14 @@ export const INITIAL_STATE = {
   singleAlgoNfts: {},
   auroraCollections: [],
   polygonCollections: [],
+  celoCollections: [],
   singleAuroraNfts: [],
+  singleCeloNfts: [],
   singlePolygonNfts: [],
   activeCollection: [],
   notification: {
     message: "",
-    type: "", // warning, error, success, default
+    type: "", // warning|error|success|default
   },
   switchWalletNotification: false,
   clipboardMessage: "",
@@ -57,16 +60,40 @@ export const INITIAL_STATE = {
   promptLayer: null,
   promptRules: null,
   toggleWalletPopup: false,
-  imageQuality: 0.5, // high:1, medium:0.5, low:0.2,
+  imageQuality: 0.5, // high:1|medium:0.5|low:0.2,
+  zip: {},
   connectFromMint: {
     isComingSoon: null,
     chainId: null,
   },
+  currentUser: null,
+  imageAction: {
+    type: "", // upload|rename|delete|deleteAll
+    value: {},
+  },
+  layerAction: {
+    type: "", // add| delete|order|rename,
+  },
+  sessionId: "",
+  sessions: [],
+  toggleSessionModal: false,
+  toggleCollectionNameModal: false,
+  isUser: "", // true|false|null,
+  currentPlan: "free", // free|noobs|geeks|ogs
+  upgradePlan: false,
+  actionProgress: {
+    totalCount: 0,
+    resetCount: true,
+  },
+  isUser: "", // true false null,
+  currentPlan: "free",
+  minter: "",
+  toggleUpgradeModal: "",
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case genActionTypes.ORDER_LAYERS:
+    case genActionTypes.SET_LAYERS:
       return {
         ...state,
         layers: action.payload,
@@ -146,6 +173,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         mintAmount: action.payload,
       };
+    case genActionTypes.SET_PRE_NFT_LAYERS:
+      return {
+        ...state,
+        preNftLayers: action.payload,
+      };
     case genActionTypes.SET_NFT_LAYERS:
       return {
         ...state,
@@ -157,7 +189,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         // combinations: Math.ceil((100 / 100) * Number(action.payload)),
         combinations: action.payload,
       };
-    case genActionTypes.SET_LOADING:
+    case genActionTypes.SET_OVERLAY:
       return {
         ...state,
         isLoading: action.payload,
@@ -243,10 +275,20 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         algoCollections: action.payload,
       };
+    case genActionTypes.SET_CELO_SINGLE_NFT:
+      return {
+        ...state,
+        singleCeloNfts: action.payload,
+      };
     case genActionTypes.SET_AURORA_COLLECTIONS:
       return {
         ...state,
         auroraCollections: action.payload,
+      };
+    case genActionTypes.SET_CELO_COLLECTIONS:
+      return {
+        ...state,
+        celoCollections: action.payload,
       };
     case genActionTypes.SET_POLYGON_COLLECTIONS:
       return {
@@ -343,10 +385,80 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         imageQuality: action.payload,
       };
+    case genActionTypes.SET_ZIP:
+      return {
+        ...state,
+        zip: action.payload,
+      };
     case genActionTypes.CONNECT_FROM_MINT:
       return {
         ...state,
         connectFromMint: action.payload,
+      };
+    case genActionTypes.SET_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
+    case genActionTypes.SET_IMAGE_ACTION:
+      return {
+        ...state,
+        imageAction: action.payload,
+      };
+    case genActionTypes.SET_LAYER_ACTION:
+      return {
+        ...state,
+        layerAction: action.payload,
+      };
+    case genActionTypes.SET_CURRENT_SESSION:
+      return {
+        ...state,
+        sessionId: action.payload,
+      };
+    case genActionTypes.SET_SESSION:
+      return {
+        ...state,
+        sessions: action.payload,
+      };
+    case genActionTypes.TOGGLE_SESSION_MODAL:
+      return {
+        ...state,
+        toggleSessionModal: action.payload,
+      };
+    case genActionTypes.TOGGLE_COLLECTION_NAME_MODAL:
+      return {
+        ...state,
+        toggleCollectionNameModal: action.payload,
+      };
+    case genActionTypes.SET_IS_USER:
+      return {
+        ...state,
+        isUser: action.payload,
+      };
+    case genActionTypes.SET_CURRENT_PLAN:
+      return {
+        ...state,
+        currentPlan: action.payload,
+      };
+    case genActionTypes.SET_UPGRADE_PLAN:
+      return {
+        ...state,
+        upgradePlan: action.payload,
+      };
+    case genActionTypes.SET_ACTION_PROGRESS:
+      return {
+        ...state,
+        actionProgress: action.payload,
+      };
+    case genActionTypes.SET_MINTER:
+      return {
+        ...state,
+        minter: action.payload,
+      };
+    case genActionTypes.TOGGLE_UPGRADE_MODAL:
+      return {
+        ...state,
+        toggleUpgradeModal: action.payload,
       };
     default:
       return state;

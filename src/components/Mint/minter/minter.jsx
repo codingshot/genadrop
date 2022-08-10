@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import {
   setClipboard,
   setConnectFromMint,
   setLoader,
-  setLoading,
+  setOverlay,
   setNotification,
+  setMinter,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
@@ -13,20 +15,26 @@ import { handleMint, handleSingleMint } from "./minter-script";
 import classes from "./minter.module.css";
 import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
-import infoIcon from "../../../assets/icon-info.svg";
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
 import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
-import dropdownIcon from "../../../assets/icon-dropdown2.svg";
-import { initConnectWallet } from "../../../components/wallet/wallet-script";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
+import { initConnectWallet } from "../../wallet/wallet-script";
 
-const Minter = ({ data, changeFile, handleSetFileState }) => {
-  const { file, fileName: fName, metadata, zip } = data;
-  const { dispatch, connector, account, chainId, mainnet } = useContext(GenContext);
+const Minter = () => {
+  const history = useHistory();
+  const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
+
+  if (!minter) {
+    history.push("/mint");
+    return null;
+  }
+
+  const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: "", value: "" } },
+    attributes: { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     price: "",
@@ -144,8 +152,21 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
     });
   };
 
+  const handleCancel = () => {
+    dispatch(setMinter(null));
+    history.push("/mint");
+  };
+
   const handlePrice = (event) => {
     handleSetState({ price: event.target.value > 0 ? event.target.value : "" });
+  };
+
+  const handleSetFileState = () => {
+    console.log("handleSetFileState");
+  };
+
+  const changeFile = () => {
+    history.push(`/mint/${minter.mintType}`);
   };
 
   const setMint = () => {
@@ -176,9 +197,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           })
         );
       }
-      dispatch(setLoading(true));
+      dispatch(setOverlay(true));
       handleMint(mintProps).then((url) => {
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         if (typeof url === "object") {
           handleSetState({
             popupProps: {
@@ -206,9 +227,9 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
           })
         );
       }
-      dispatch(setLoading(true));
+      dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
-        dispatch(setLoading(false));
+        dispatch(setOverlay(false));
         if (typeof url === "object") {
           handleSetState({
             popupProps: {
@@ -255,7 +276,6 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
       }
     }
   }, [price, chainId]);
-
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -277,12 +297,15 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 {file.length > 1 ? (
                   file
                     .filter((_, idx) => idx < 3)
-                    .map((f) => (
+                    .map((f, idx) => (
                       <div
+                        key={idx}
                         style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
                         className={classes.imageContainer}
                       />
                     ))
+                ) : file[0].type === "video/mp4" ? (
+                  <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
                 ) : (
                   <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                 )}
@@ -355,7 +378,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                       <div className={classes.attributes}>
                         {Object.keys(attributes).map((key, index) => (
                           <Attribute
-                            key={key}
+                            key={index}
                             attribute={attributes[key]}
                             id={key}
                             index={index}
@@ -414,13 +437,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
               </section>
 
               <section className={classes.mintOptions}>
-                <div className={classes.category}>
-                  Set Mint Options{" "}
-                  <div className={classes.info}>
-                    <img src={infoIcon} alt="" />
-                    <span>Your asset(s) will be automatically listed on Genadrop marketplace</span>
-                  </div>
-                </div>
+                <div className={classes.category}>Set Mint Options</div>
                 <div className={classes.inputWrapper}>
                   <label>Blockchain</label>
                   <div
@@ -435,7 +452,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                     ) : (
                       <span>Select Chain</span>
                     )}
-                    <img className={classes.dropdownIcon} src={dropdownIcon} alt="" />
+                    <DropdownIcon className={classes.dropdownIcon} />
                   </div>
                   <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
                     {Object.values(supportedChains)
@@ -473,14 +490,7 @@ const Minter = ({ data, changeFile, handleSetFileState }) => {
                 <button type="button" onClick={setMint} className={classes.mintBtn}>
                   Mint
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    window.location.reload();
-                    changeFile;
-                  }}
-                  className={classes.cancelBtn}
-                >
+                <button type="button" onClick={handleCancel} className={classes.cancelBtn}>
                   Cancel
                 </button>
               </section>

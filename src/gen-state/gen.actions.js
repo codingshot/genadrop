@@ -1,7 +1,7 @@
 import genActionTypes from "./gen.types";
 
-export const orderLayers = (layers) => ({
-  type: genActionTypes.ORDER_LAYERS,
+export const setLayers = (layers) => ({
+  type: genActionTypes.SET_LAYERS,
   payload: layers,
 });
 
@@ -78,14 +78,19 @@ export const setNftLayers = (layers) => ({
   payload: layers,
 });
 
+export const setPreNftLayers = (layers) => ({
+  type: genActionTypes.SET_PRE_NFT_LAYERS,
+  payload: layers,
+});
+
 export const setCombinations = (val) => ({
   type: genActionTypes.SET_COMBINATIONS,
   payload: val,
 });
 
-export const setLoading = (val) => ({
-  type: genActionTypes.SET_LOADING,
-  payload: val,
+export const setOverlay = (state) => ({
+  type: genActionTypes.SET_OVERLAY,
+  payload: state,
 });
 
 export const setMintInfo = (val) => ({
@@ -182,6 +187,16 @@ export const setAuroraCollections = (collections) => ({
   payload: collections,
 });
 
+export const setCeloCollections = (collections) => ({
+  type: genActionTypes.SET_CELO_COLLECTIONS,
+  payload: collections,
+});
+
+export const setCeloSingleNft = (nfts) => ({
+  type: genActionTypes.SET_CELO_SINGLE_NFT,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,
@@ -271,8 +286,77 @@ export const setImageQuality = (value) => ({
   type: genActionTypes.SET_IMAGE_QUALITY,
   payload: value,
 });
+export const setZip = (value) => ({
+  type: genActionTypes.SET_ZIP,
+  payload: value,
+});
 
 export const setConnectFromMint = (prop) => ({
   type: genActionTypes.CONNECT_FROM_MINT,
   payload: prop,
+});
+
+export const setCurrentUser = (currentUser) => ({
+  type: genActionTypes.SET_CURRENT_USER,
+  payload: currentUser,
+});
+
+export const setImageAction = (action) => ({
+  type: genActionTypes.SET_IMAGE_ACTION,
+  payload: action,
+});
+
+export const setLayerAction = (action) => ({
+  type: genActionTypes.SET_LAYER_ACTION,
+  payload: action,
+});
+
+export const setCurrentSession = (id) => ({
+  type: genActionTypes.SET_CURRENT_SESSION,
+  payload: id,
+});
+
+export const setSession = (session) => ({
+  type: genActionTypes.SET_SESSION,
+  payload: session,
+});
+
+export const setToggleSessionModal = (state) => ({
+  type: genActionTypes.TOGGLE_SESSION_MODAL,
+  payload: state,
+});
+
+export const setToggleCollectionNameModal = (state) => ({
+  type: genActionTypes.TOGGLE_COLLECTION_NAME_MODAL,
+  payload: state,
+});
+
+export const setIsUser = (state) => ({
+  type: genActionTypes.SET_IS_USER,
+  payload: state,
+});
+
+export const setCurrentPlan = (plan) => ({
+  type: genActionTypes.SET_CURRENT_PLAN,
+  payload: plan,
+});
+
+export const setUpgradePlan = (state) => ({
+  type: genActionTypes.SET_UPGRADE_PLAN,
+  payload: state,
+});
+
+export const setActionProgress = (state) => ({
+  type: genActionTypes.SET_ACTION_PROGRESS,
+  payload: state,
+});
+
+export const setMinter = (minter) => ({
+  type: genActionTypes.SET_MINTER,
+  payload: minter,
+});
+
+export const setToggleUpgradeModal = (state) => ({
+  type: genActionTypes.TOGGLE_UPGRADE_MODAL,
+  payload: state,
 });

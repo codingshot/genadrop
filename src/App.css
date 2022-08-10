@@ -2,10 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
-  --icon-color: rgb(18, 18, 18);
-
-  --btn-shadow-open: 2px 2px 2px rgba(0, 0, 0, 0.2);
-  --btn-shadow-close: 0px 0px 2px rgba(0, 0, 0, 0.2);
+  --btn-open: 0px 3.03px 3.03px rgba(0, 0, 0, 0.2);
+  --btn-close: 0px 0px 3.03px rgba(0, 0, 0, 0.2);
 
   --shadow-dark: 3px 3px 6px rgba(0, 0, 0, 0.2);
   --shadow-light: 2px 2px 4px rgba(0, 0, 0, 0.2);
@@ -20,17 +18,20 @@
 
   --text-heading: #0f1d40;
   --text-sub-heading: #525c76;
+  --text-light: #6c757d;
   --text-placeholder: #b2b7c2;
+  --text-placeholder-light: #d3d6de;
 
   --outline: #e5e8eb;
-  --outline-light: #e5e8eb;
   --card-outline: #c4c4c4;
   --outline-dark: #a4a9b6;
 
+  --icon-color: #4b4b5a;
+
   --card-bg: #626277;
-  --card-shade: #646a89;
-  --card-icon-color: #515164;
   --card-bg-light: #737387;
+  --card-icon-color: #515164;
+  --card-shade: #646a89;
   --card-preview: #646a89;
   --card-layer: #585e7d;
   --card-tooltip: #686f93;
@@ -38,6 +39,7 @@
   --card-upload: #f6faff;
   --card-trait: #f4f5f6;
   --card-light: #eff3f9;
+  --card-lighter: #fcfdff;
   --btn-close: #eef5f9;
 
   --success-100: #ebfcd5;
@@ -80,15 +82,15 @@
   --text-dark-800: #192648;
   --text-dark-900: #0f1d40;
 
-  --cursor-default: url("./assets/default-cursor.svg"), auto;
-  --cursor-pointer: url("./assets/cursor-pointer.svg"), auto;
-  --cursor-disabled: url("./assets/cursor-disabled.svg"), auto;
-  --cursor-grab: url("./assets/cursor-grab.svg"), auto;
-  --cursor-hover: url("./assets/cursor-hover.svg"), auto;
-  --cursor-scopeg: url("./assets/cursor-scope.svg"), auto;
+  --cursor-default: default;
+  --cursor-pointer: pointer;
+  /* --cursor-disabled: url("./assets/cursor-disabled.svg"), auto; */
+  --cursor-grab: grab;
+  --cursor-hover: default;
+  /* --cursor-scopeg: url("./assets/cursor-scope.svg"), auto;
   --cursor-camera: url("./assets/cursor-camera.svg"), auto;
   --cursor-default-disabled: url("./assets/cursor-default-disabled.svg"), auto;
-  --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto;
+  --cursor-default-loading: url("./assets/cursor-default-loading.svg"), auto; */
 }
 
 li {

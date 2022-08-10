@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import classes from "./text-editor.module.css";
-import editIcon from "../../assets/icon-edit.svg";
-import markIcon from "../../assets/icon-mark.svg";
+import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
+import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 
 const TextEditor = ({ placeholder, submitHandler, invert }) => {
   const [state, setState] = useState({
@@ -27,14 +27,14 @@ const TextEditor = ({ placeholder, submitHandler, invert }) => {
         <form onSubmit={handleSubmit}>
           <input autoFocus type="text" value={value} onChange={(e) => handleSetState({ value: e.target.value })} />
           <button type="submit">
-            <img src={markIcon} alt="" />
+            <MarkIcon className={classes.editIcon} />
           </button>
         </form>
       ) : (
         <div>
           <p>{placeholder}</p>
           <button type="button" onClick={() => handleSetState({ editor: true, value: placeholder })}>
-            <img src={editIcon} alt="" />
+            <EditIcon className={classes.editIcon} />
           </button>
         </div>
       )}

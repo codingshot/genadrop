@@ -1,12 +1,19 @@
 import React, { useContext, useState, useEffect } from "react";
-import { addPreview, removeImage, removePreview, updateImage, updatePreview } from "../../gen-state/gen.actions";
+import {
+  addPreview,
+  removeImage,
+  removePreview,
+  setImageAction,
+  updateImage,
+  updatePreview,
+} from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./art-card.module.css";
 import checkActiveIcon from "../../assets/icon-check-active.svg";
 import checkIcon from "../../assets/icon-check.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import editIconDark from "../../assets/icon-edit-dark.svg";
-import markIconDark from "../../assets/icon-mark-dark.svg";
+import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
+import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 
 const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index }) => {
   const [state, setState] = useState({
@@ -31,8 +38,19 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
   };
 
   const handleRemove = () => {
+    console.log("delete trait starts");
     dispatch(removePreview({ layerId, layerTitle, imageName: traitTitle }));
     dispatch(removeImage({ layerId, layerTitle, traitTitle }));
+    dispatch(
+      setImageAction({
+        type: "delete",
+        value: {
+          id: layerId,
+          traitTitle,
+        },
+      })
+    );
+    console.log("delete trait ends");
   };
 
   const handleChange = (event) => {
@@ -57,6 +75,19 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
         Rarity: Number(inputValue.rarity) > 100 ? "100" : Number(inputValue.rarity) < 1 ? "1" : inputValue.rarity,
       })
     );
+    if (prompt === "name" && previousValue !== inputValue.name) {
+      dispatch(
+        setImageAction({
+          type: "rename",
+          value: {
+            id: layerId,
+            oldName: previousValue,
+            newName: inputValue.name,
+            image,
+          },
+        })
+      );
+    }
   };
 
   const handlePrompt = (value) => {
@@ -95,14 +126,14 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
           {prompt !== "name" ? (
             <div className={classes.inputText}>
               <div>{traitTitle}</div>
-              <img onClick={() => handlePrompt("name")} src={editIconDark} alt="" />
+              <EditIcon onClick={() => handlePrompt("name")} className={classes.editIcon} />
             </div>
           ) : (
             <div className={classes.editInput}>
               <form onSubmit={(e) => handleRename(e, image)}>
                 <input autoFocus type="text" name="name" value={inputValue.name} onChange={handleChange} />
               </form>
-              <img onClick={(e) => handleRename(e, image)} src={markIconDark} alt="" />
+              <MarkIcon onClick={(e) => handleRename(e, image)} className={classes.editIcon} />
             </div>
           )}
         </div>
@@ -111,7 +142,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
           {prompt !== "rarity" ? (
             <div className={classes.inputText}>
               <div>Rarity: {Rarity}</div>
-              <img onClick={() => handlePrompt("rarity")} src={editIconDark} alt="" />
+              <EditIcon onClick={() => handlePrompt("rarity")} className={classes.editIcon} />
             </div>
           ) : (
             <div className={classes.editInput}>
@@ -126,7 +157,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
                   onChange={handleChange}
                 />
               </form>
-              <img onClick={handleRename} src={markIconDark} alt="" />
+              <MarkIcon className={classes.editIcon} onClick={handleRename} />
             </div>
           )}
         </div>

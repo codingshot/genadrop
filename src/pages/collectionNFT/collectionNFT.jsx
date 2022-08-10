@@ -10,7 +10,7 @@ import Search from "../../components/Nft-details/history/search";
 import NFT from "../../components/Nft-details/collection/nft";
 import Graph from "../../components/Nft-details/graph/graph";
 import { GenContext } from "../../gen-state/gen.context";
-import { buyNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
+import { buyGraphNft, buyNft, getCeloGraphNft, getGraphCollection, getGraphNft, getTransactions } from "../../utils";
 import "react-loading-skeleton/dist/skeleton.css";
 import { readNftTransaction } from "../../utils/firebase";
 // import bidIcon from '../../assets/bid.png';
@@ -25,8 +25,17 @@ import detailsIcon from "../../assets/details.png";
 import supportedChains from "../../utils/supportedChains";
 
 const CollectionNFT = () => {
-  const { account, activeCollection, connector, mainnet, dispatch, auroraCollections, polygonCollections, chainId } =
-    useContext(GenContext);
+  const {
+    account,
+    activeCollection,
+    connector,
+    mainnet,
+    dispatch,
+    auroraCollections,
+    polygonCollections,
+    celoCollections,
+    chainId,
+  } = useContext(GenContext);
   const {
     params: { collectionName, nftId },
   } = useRouteMatch();
@@ -106,29 +115,29 @@ const CollectionNFT = () => {
   }, [nftId]);
 
   const getAllCollectionChains = () => {
-    return !auroraCollections && !polygonCollections
+    return !auroraCollections && !polygonCollections && !celoCollections
       ? null
-      : [...(auroraCollections || []), ...(polygonCollections || [])];
+      : [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
   };
 
   useEffect(() => {
     (async function getGraphResult() {
       const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
-      const filteredCollection = allCollections?.filter((col) => col?.owner === collectionName);
+      const filteredCollection = allCollections?.filter((col) => col?.Id === collectionName);
       if (filteredCollection) {
         // filtering to get the unique nft
 
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
         if (filteredId) {
-          const result = await getGraphNft(filteredId[0], collectionName);
+          const result = await getCeloGraphNft(filteredId[0], collectionName);
+
           const trHistory = await getTransactions(filteredId[0]?.transactions);
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
 
           trHistory.find((t) => {
             if (t.type === "Minting") t.price = result[0].price;
           });
-
           handleSetState({
             nftDetails: result[0],
             collection: collectionData,
@@ -138,7 +147,7 @@ const CollectionNFT = () => {
         }
       }
     })();
-  }, [auroraCollections, polygonCollections, nftId]);
+  }, [auroraCollections, polygonCollections, celoCollections, nftId]);
 
   useEffect(() => {
     if (nftDetails?.chain) {
@@ -285,49 +294,80 @@ const CollectionNFT = () => {
                 </svg>
               </div>
             </div>
-            <div className={classes.priceSection}>
-              <span className={classes.title}>Current price</span>
-              <span className={classes.price}>
-                <img src={supportedChains[nftDetails.chain].icon} alt="" />
-                <p className={classes.tokenValue}>
-                  {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
-                </p>
-                <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
-              </span>
-            </div>
+            {nftDetails.price == 0 || nftDetails.price === null ? (
+              <div></div>
+            ) : (
+              <div className={classes.priceSection}>
+                <span className={classes.title}>Current price</span>
+                <span className={classes.price}>
+                  <img src={supportedChains[nftDetails.chain].icon} alt="" />
+                  <p className={classes.tokenValue}>
+                    {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
+                  </p>
+                  <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
+                </span>
+              </div>
+            )}
 
-            <div className={classes.btns}>
-              {nftDetails.sold ? (
-                <>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    SOLD!
+            {nftDetails.price === 0 || nftDetails.price === null ? (
+              nftDetails.owner === account ? (
+                <div className={classes.btns}>
+                  <button
+                    onClick={() => history.push(`/marketplace/single-mint/list/${chainId}/${nftDetails.Id}`)}
+                    className={classes.buy}
+                  >
+                    List
                   </button>
-                </>
+                </div>
               ) : (
-                <>
-                  {Number(nftDetails.chain) !== 4160 ? (
-                    <button className={classes.sold} disabled={nftDetails.chain}>
-                      {/* <img src={walletIcon} alt="" /> */}
-                      Coming Soon
-                    </button>
+                <div className={classes.btns}>
+                  <button className={classes.sold} disabled={nftDetails.sold}>
+                    Not Listed!
+                  </button>
+                </div>
+              )
+            ) : (
+              <div className={classes.btns}>
+                {nftDetails.sold ? (
+                  nftDetails?.isListed ? (
+                    <>
+                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                        Buy
+                      </button>
+                    </>
                   ) : (
-                    <button
-                      type="button"
-                      className={classes.buy}
-                      disabled={nftDetails.sold}
-                      onClick={() => buyNft(buyProps)}
-                    >
-                      <img src={walletIcon} alt="" />
-                      Buy now
-                    </button>
-                  )}
-                  {/* <button type="button" className={classes.bid}>
-                    <img src={bidIcon} alt="" />
-                    Place Bid
-                  </button> */}
-                </>
-              )}
-            </div>
+                    <>
+                      <button className={classes.sold} disabled={nftDetails.sold}>
+                        SOLD!
+                      </button>
+                    </>
+                  )
+                ) : (
+                  <>
+                    {Number(nftDetails.chain) !== 4160 ? (
+                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                        <img src={walletIcon} alt="" />
+                        Buy now
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className={classes.buy}
+                        disabled={nftDetails.sold}
+                        onClick={() => buyNft(buyProps)}
+                      >
+                        <img src={walletIcon} alt="" />
+                        Buy now
+                      </button>
+                    )}
+                    {/* <button type="button" className={classes.bid}>
+                   <img src={bidIcon} alt="" />
+                   Place Bid
+                 </button> */}
+                  </>
+                )}
+              </div>
+            )}
           </div>
           {/* PRICE HISTORY */}
           {/* <div className={classes.feature}>

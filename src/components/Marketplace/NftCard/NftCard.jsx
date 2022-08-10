@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./NftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import Copy from "../../copy/copy";
@@ -10,6 +10,7 @@ import avatar from "../../../assets/avatar.png";
 const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
+  const history = useHistory();
   const breakAddress = (address = "", width = 6) => {
     return address && `${address.slice(0, width)}...${address.slice(-width)}`;
   };
@@ -19,9 +20,9 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
   useEffect(() => {
     if (!chinPrice) {
       axios
-        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`)
+        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain]?.id}&vs_currencies=usd`)
         .then((res) => {
-          const value = Object.values(res.data)[0].usd;
+          const value = Object.values(res?.data)[0]?.usd;
           setTotalPrice(value * price);
         });
     }
@@ -60,29 +61,53 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           <div className={classes.chainLogo} />
           <div className={classes.creator}>
             <img src={avatar} alt="" />
-            <div className={classes.creatorAddress}>
-              <div className={classes.createdBy}>Owned By</div>
-              <div className={classes.address}>{breakAddress(nft.owner)}</div>
-            </div>
+            {!fromDashboard ? (
+              <div className={classes.creatorAddress}>
+                <div className={classes.createdBy}>Owned By</div>
+                <div className={classes.address}>{breakAddress(nft.owner)}</div>
+              </div>
+            ) : (
+              <div className={classes.createdBy}>Owned by you</div>
+            )}
           </div>
           <div className={classes.wrapper}>
             <div className={classes.listPrice}>
               <div className={classes.list}>LIST PRICE</div>
-              <div className={classes.price}>
-                <img src={supportedChains[chain].icon} alt="" />
-                {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain].sybmol}</span>
-                <span className={classes.usdPrice}>
-                  ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} USD)
-                </span>
-              </div>
+              {price === 0 ? (
+                <div className={classes.price}>
+                  <img src={supportedChains[chain]?.icon} alt="" />
+                </div>
+              ) : (
+                <div className={classes.price}>
+                  <img src={supportedChains[chain]?.icon} alt="" />
+                  {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>
+                  <span className={classes.usdPrice}>
+                    ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} USD)
+                  </span>
+                </div>
+              )}
             </div>
-            {listed ? (
+            {price === 0 ? (
+              fromDashboard ? (
+                <button
+                  type="button"
+                  onClick={() => history.push(`/marketplace/single-mint/preview/${chain}/${Id}`)}
+                  className={`${classes.button} ${classes.buttonSold}`}
+                >
+                  List
+                </button>
+              ) : (
+                <button type="button" className={`${classes.notListed} ${classes.buttonSold}`}>
+                  Not Listed!
+                </button>
+              )
+            ) : listed ? (
               <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
                 {nft.sold ? "Sold" : "Buy"}
               </button>
             ) : (
               <button type="button" className={`${classes.button} ${nft.sold ? classes.buttonSold : ""}`}>
-                {nft.sold ? "List" : "Buy"}
+                {nft.sold ? "List" : "De-list"}
               </button>
             )}
           </div>

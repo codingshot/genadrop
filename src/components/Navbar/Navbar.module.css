@@ -1,5 +1,7 @@
 .container {
   width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -7,7 +9,7 @@
   box-shadow: var(--shadow-light);
   z-index: 1;
   padding: 0.5em 2em;
-  gap: 12em;
+  gap: 8em;
 }
 
 .logoContainer {
@@ -65,9 +67,9 @@
 .searchAndNavWrapper {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-end;
-  gap: 4em;
+  gap: 6em;
 }
 
 .searchContainer {
@@ -105,7 +107,7 @@
   width: 100%;
   border: 1px solid transparent;
   outline: none;
-  padding: 0.25em 0.5em;
+  padding: 0.5em 1.5em;
 }
 
 .navContainer {
@@ -120,10 +122,9 @@
   align-items: center;
   justify-content: center;
   align-items: center;
-  gap: 1em;
+  gap: 3em;
   font-size: 1rem;
   text-transform: capitalize;
-  margin-right: 4em;
 }
 
 .navItem {
@@ -134,7 +135,7 @@
 }
 
 .navItem li {
-  padding: 0.5em 1em;
+  padding: 0.25em 0;
   cursor: var(--cursor-pointer);
 }
 
@@ -161,6 +162,15 @@
 
 .closeIcon {
   fill: var(--icon-color);
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.walletAuthContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
 }
 
 .wallet {
@@ -170,19 +180,19 @@
   justify-content: flex-end;
 }
 
+.walletAuthContainer.mobile {
+  display: none;
+}
+
 @media screen and (max-width: 1440px) {
   .container {
-    gap: 2em;
+    gap: 4em;
   }
 }
 
 @media screen and (max-width: 1200px) {
   .searchAndNavWrapper {
-    gap: 2em;
-  }
-
-  .navList {
-    margin-right: 2em;
+    gap: 4em;
   }
 }
 
@@ -191,8 +201,17 @@
     background: var(--default);
   }
 
+  .navContainer.active {
+    border: 1px solid var(--outline);
+    box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
+  }
+
   .navList {
     margin-right: 0;
+  }
+
+  .navItem {
+    padding: 0.5em;
   }
 
   .logoDesktop {
@@ -210,7 +229,7 @@
   }
 
   .searchAndNavWrapper {
-    gap: 2em;
+    align-items: center;
   }
 
   .navContainer {
@@ -220,9 +239,8 @@
     flex-direction: column-reverse;
     gap: 3em;
     right: 0;
-    top: 3.5em;
+    top: 3.4em;
     padding: 0 2em;
-    padding-top: 2em;
     max-height: 0;
     overflow: hidden;
     transition: max-height 650ms;
@@ -232,7 +250,6 @@
     max-height: 22em;
     justify-content: center;
     align-items: center;
-    box-shadow: var(--shadow-light-1);
   }
 
   .navList {
@@ -257,16 +274,31 @@
 
   .navItem:hover {
     cursor: var(--cursor-hover);
-    background: var(--main-lightest);
+    color: var(--default);
+    background: var(--main-color);
+  }
+
+  .navItem:hover li {
+    color: var(--default);
   }
 
   .line {
     display: none;
   }
 
+  .walletAuthContainer {
+    display: none;
+    width: 100%;
+    margin-top: 3em;
+    white-space: nowrap;
+  }
+
+  .walletAuthContainer.mobile {
+    display: flex;
+  }
+
   .wallet {
     width: 100%;
-    margin-top: 1em;
   }
 
   .drop {

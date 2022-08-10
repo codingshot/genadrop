@@ -1,0 +1,107 @@
+.container {
+  width: 100%;
+  min-height: calc(100vh - 4em);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2em;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 58em;
+  padding: 4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2em;
+  border-radius: 1em;
+  border: 1px solid var(--outline);
+  box-shadow: -26px 0px 30px -12px rgba(93, 134, 194, 0.03), 26px 18px 18px rgba(93, 134, 194, 0.03);
+}
+
+.heading {
+  font-weight: 600;
+}
+
+.description {
+  width: 90%;
+  max-width: 32em;
+  text-align: center;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1em;
+  gap: 2em;
+  flex-wrap: wrap;
+}
+
+.btn_1,
+.btn_2 {
+  transition: all 300ms;
+  width: 10em;
+  text-align: center;
+  padding: 0.75em;
+  font-size: 1rem;
+  border-radius: 2em;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.btn_1 {
+  color: var(--default);
+  background: var(--main-color);
+}
+
+.btn_2 {
+  color: var(--main-color);
+  border-color: var(--main-color);
+  background: var(--default);
+}
+
+.btn_1:hover {
+  background: var(--main-hovered);
+}
+
+.btn_2:hover {
+  color: var(--main-hovered);
+  border-color: var(--main-hovered);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    padding: 1em;
+  }
+
+  .wrapper {
+    padding: 4em 2em;
+  }
+
+  .failedIcon {
+    width: 8em;
+    height: 8em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: 4em 1em;
+  }
+
+  .description {
+    font-size: 0.85rem;
+  }
+
+  .btnContainer {
+    gap: 1em;
+  }
+
+  .btn_1 .btn_2 {
+    font-size: 0.85rem;
+  }
+}

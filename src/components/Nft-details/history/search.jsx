@@ -26,7 +26,7 @@ class Search extends React.Component {
     }
 
     return (
-      <div>
+      <div style={{ overflow: "scroll" }}>
         <UserInput update={(e) => this.handleChange(e)} />
         {records.length >= 1 ? (
           <Table data={records} chain={chain} />

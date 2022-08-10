@@ -5,7 +5,8 @@ import { GenContext } from "../../gen-state/gen.context";
 import userIcon from "../../assets/icon-user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
-import chevronDown from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as ChevronIcon } from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
@@ -29,28 +30,17 @@ function ConnectWallet() {
   const { dispatch, account, chainId, proposedChain, mainnet, toggleWalletPopup } = useContext(GenContext);
 
   const [state, setState] = useState({
-    toggleDropdown: false,
     clipboardState: "Copy Address",
     network: null,
     walletConnectProvider: null,
     connectionMethod: null,
     isMetamask: true,
     overrideWalletConnect: false,
-    rpc: {
-      4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
-    },
+    rpc: null,
   });
 
-  const {
-    toggleDropdown,
-    clipboardState,
-    network,
-    walletConnectProvider,
-    overrideWalletConnect,
-    connectionMethod,
-    rpc,
-    isMetamask,
-  } = state;
+  const { clipboardState, network, walletConnectProvider, overrideWalletConnect, connectionMethod, rpc, isMetamask } =
+    state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -90,6 +80,10 @@ function ConnectWallet() {
     dispatch(setSwitchWalletNotification(true));
   };
 
+  const handleDashboard = () => {
+    history.push(`/me/${account}`);
+  };
+
   useEffect(() => {
     setNetworkType(walletProps);
   }, [chainId]);
@@ -113,56 +107,56 @@ function ConnectWallet() {
     initializeConnection(walletProps);
   }, [rpc]);
 
-  const goToDashboard = (
-    <div
-      onClick={() => {
-        history.push(`/me/${account}`);
-      }}
-      className={classes.user}
-    >
-      <img src={userIcon} alt="" />
-    </div>
-  );
-
   const dropdown = (
-    <div className={`${classes.dropdown} ${toggleDropdown && classes.active}`}>
-      <div onClick={() => initConnectWallet(walletProps)} className={classes.option}>
-        <img src={switchIcon} alt="" />
-        <div>Switch network</div>
-      </div>
-      <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
-        <img src={copyIcon} alt="" />
-        <div>{clipboardState}</div>
-        <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
-      </div>
-      <div onClick={handleDisconnet} className={classes.option}>
-        <img src={disconnectIcon} alt="" />
-        <div>Disconnect</div>
+    <div className={classes.dropdownContainer}>
+      <div className={classes.dropdown}>
+        <div onClick={handleDashboard} className={classes.option}>
+          <img src={userIcon} alt="" />
+          <div>View Profile</div>
+        </div>
+        <div onClick={() => initConnectWallet(walletProps)} className={classes.option}>
+          <img src={switchIcon} alt="" />
+          <div>Switch network</div>
+        </div>
+        <div onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.option}>
+          <img src={copyIcon} alt="" />
+          <div>{clipboardState}</div>
+          <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={account} />
+        </div>
+        <div onClick={handleDisconnet} className={classes.option}>
+          <img src={disconnectIcon} alt="" />
+          <div>Disconnect</div>
+        </div>
       </div>
     </div>
   );
 
   const connected = (
-    <div
-      onMouseLeave={() => handleSetState({ toggleDropdown: false })}
-      onMouseOver={() => handleSetState({ toggleDropdown: true })}
-      className={`${classes.connected} ${toggleDropdown && classes.active}`}
-    >
-      <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
-      <div className={classes.address}>
-        <span>{breakAddress(account)}</span>
+    <div className={classes.connectedContainer}>
+      <div className={classes.connected}>
+        <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
+        <div className={classes.address}>
+          <span>{breakAddress(account)}</span>
+        </div>
+        <div className={classes.dropdownIconContainer}>
+          <DropdownIcon className={classes.dropdownIcon} />
+        </div>
       </div>
       {dropdown}
     </div>
   );
 
   const changeNetwork = (
-    <div className={classes.network}>
-      <div className={classes.dot} />{" "}
-      <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-      <img src={chevronDown} alt="" />
-      <div onClick={handleNetworkClick} className={classes.networkDrop}>
-        {network === "mainnet" ? "Switch to testnet" : "Switch to mainnet"}
+    <div className={classes.networkContainer}>
+      <div className={classes.network}>
+        <div className={classes.dot} />{" "}
+        <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
+        <ChevronIcon className={classes.chevronIcon} />
+      </div>
+      <div className={classes.networkDropdownContainer}>
+        <div onClick={handleNetworkClick} className={classes.networkDropdown}>
+          {network === "mainnet" ? "Switch to testnet" : "Switch to mainnet"}
+        </div>
       </div>
     </div>
   );
@@ -176,7 +170,6 @@ function ConnectWallet() {
         <div className={classes.container}>
           {connected}
           {changeNetwork}
-          {goToDashboard}
         </div>
       ) : (
         <div className={classes.connect} onClick={() => initConnectWallet(walletProps)}>

@@ -2,17 +2,28 @@ import React, { useContext, useEffect, useState } from "react";
 import { useRouteMatch, Link, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails, getUserBoughtNftCollection } from "../../../utils";
+import { getSingleNftDetails, getUserBoughtNftCollection, getUserGraphNft } from "../../../utils";
 import classes from "./listed.module.css";
 import { fetchUserBoughtNfts } from "../../../utils/firebase";
+import { ethers } from "ethers";
+import telegram from "../../../assets/blue-telegram.svg";
+import twitterIcon from "../../../assets/blue-twitter.svg";
+import facebookIcon from "../../../assets/blue-facebook.svg";
+import linktree from "../../../assets/linked-tree.svg";
+import {
+  celoUserData,
+  getCeloNFTToList,
+  getPolygonNFTToList,
+  polygonUserData,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const Listed = () => {
-  const { account, mainnet } = useContext(GenContext);
+  const { account, mainnet, dispatch } = useContext(GenContext);
 
   const {
-    params: { nftId },
+    params: { nftId, url },
   } = useRouteMatch();
-  const { singleNfts } = useContext(GenContext);
+  const { singleNfts, chainId } = useContext(GenContext);
   const history = useHistory();
   const [state, setState] = useState({
     isLoading: true,
@@ -25,12 +36,30 @@ const Listed = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      const userNftCollections = await fetchUserBoughtNfts(account);
-      const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
+      if (chainId === 80001 || chainId === 137) {
+        const [nft] = await polygonUserData(nftId);
+        if (!nft) history.push("/");
+        else {
+          handleSetState({
+            nftDetails: nft,
+            isLoading: false,
+          });
+        }
+      } else if (chainId === 44787 || chainId === 42220) {
+        const [nft] = await celoUserData(nftId);
+        if (!nft) history.push("/");
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+        });
+      } else {
+        const userNftCollections = await fetchUserBoughtNfts(account);
+        const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
 
-      const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
-      if (!nft) history.push("/");
-      handleSetState({ nftDetails: nft, isLoading: false });
+        const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
+        if (!nft) history.push("/");
+        handleSetState({ nftDetails: nft, isLoading: false });
+      }
     })();
     document.documentElement.scrollTop = 0;
   }, []);
@@ -66,52 +95,29 @@ const Listed = () => {
   return (
     <div className={classes.container}>
       <span>Your item is now listed for sale</span>
-      <img className={classes.nft} src={nftDetails.image_url} alt="" />
+      <img className={classes.nft} src={nftDetails?.image_url} alt="" />
 
-      <div className={classes.feature}>
-        <div className={classes.mainDetails}>
-          <div className={classes.collectionHeader}>
-            <div className={classes.nftId}>Enable Email Notification</div>
-          </div>
-        </div>
-
+      <div className={classes.nftId}>
+        Share
         <div className={classes.detailContent}>
-          <div className={classes.priceDescription}>
-            Enter your email address in your account settings so we can let you know, when your listing sells or
-            receives offers
-          </div>
-          <button type="button" className={classes.buy}>
-            Profile Settings
-          </button>
-        </div>
-      </div>
-
-      <div className={classes.feature}>
-        <div className={classes.mainDetails}>
-          <div className={classes.collectionHeader}>
-            <div className={classes.nftId}>Share your listing</div>
-          </div>
-        </div>
-
-        <div className={classes.detailContent}>
-          <img src="/assets/twitter-clear.svg" alt="" />
-          <img src="/assets/facebook-clear.svg" alt="" />
-          <img src="/assets/telegram.svg" alt="" />
-          <img src="/assets/link.svg" alt="" />
+          <img src={twitterIcon} alt="" />
+          <img src={facebookIcon} alt="" />
+          <img src={telegram} alt="" />
+          <img src={linktree} alt="" />
         </div>
       </div>
       <Link
         to={
           nftDetails.collection_name
-            ? `${match.url}/${Id}`
+            ? `${url}/${nftDetails.Id}`
             : nftDetails.chain
-            ? `/marketplace/single-mint/${nftDetails.chain}/${nftDetails.Id}`
+            ? `/marketplace`
             : `/marketplace/single-mint/${nftDetails.Id}`
         }
         className={classes.view}
       >
         <button type="button" className={classes.viewtext}>
-          View Item
+          Go to Marketplace
         </button>
       </Link>
     </div>

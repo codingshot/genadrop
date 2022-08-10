@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import CollectionMenu from "../menu/collection-menu";
 import classes from "./collection-overview.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import { addRule, clearPreview, clearRule, setConflictRule } from "../../gen-state/gen.actions";
+import { addRule, clearPreview, clearRule, setConflictRule, setLayerAction } from "../../gen-state/gen.actions";
 import isUnique from "./collection-overview-script";
 import RulesCard from "../rulesCard/rulesCard.component";
 import { reOrderPreview } from "../../utils";
@@ -11,7 +11,7 @@ import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import createIcon from "../../assets/create-icon2.svg";
 
 const CollectionOverview = () => {
-  const { dispatch, isRule, preview, rule, layers } = useContext(GenContext);
+  const { dispatch, isRule, preview, rule, layers, combinations } = useContext(GenContext);
   const [state, setState] = useState({
     toggleInfo: false,
     showRule: false,
@@ -42,6 +42,11 @@ const CollectionOverview = () => {
     const newPreview = reOrderPreview({ preview, layers });
     if (isUnique({ rule, preview: newPreview }) && newPreview.length) {
       dispatch(addRule([...rule, newPreview]));
+      dispatch(
+        setLayerAction({
+          type: "rule",
+        })
+      );
     }
     closeRule();
   };
@@ -64,7 +69,7 @@ const CollectionOverview = () => {
 
   return (
     <div className={`${classes.container} ${showRule && classes.active}`}>
-      {layers[0]?.traits.length ? (
+      {combinations ? (
         <div className={classes.rules}>
           {isRule ? (
             <>

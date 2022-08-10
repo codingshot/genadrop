@@ -11,7 +11,7 @@ import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDrop
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, chainId } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const location = useLocation();
@@ -38,12 +38,13 @@ const Collections = () => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollectionsArr && !polygonCollections && !celoCollection && !nearCollection && !auroraCollections
+        return !algoCollectionsArr && !polygonCollections && !celoCollections && !nearCollection && !auroraCollections
           ? null
           : [
               ...(algoCollectionsArr || []),
               ...(polygonCollections || []),
-              ...(celoCollection || []),
+              // ...(celoCollection || []),
+              ...(celoCollections || []),
               ...(auroraCollections || []),
               ...(nearCollection || []),
             ];
@@ -52,7 +53,7 @@ const Collections = () => {
       case "polygon":
         return polygonCollections;
       case "celo":
-        return celoCollection;
+        return celoCollections;
       case "near":
         return nearCollection;
       case "aurora":
@@ -119,9 +120,17 @@ const Collections = () => {
       // } else if (filterProp === "txVolume") {
       //   sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
     } else if (filterProp === "newest") {
-      sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+      if (chainId === 4160) {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+      } else {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+      }
     } else if (filterProp === "oldest") {
-      sorted = filteredCollection.sort((a, b) => b?.createdAt["seconds"] - a?.createdAt["seconds"]);
+      if (chainId === 4160) {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+      } else {
+        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+      }
     } else if (filterProp === "descAlphabet") {
       sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
     } else if (filterProp === "ascAlphabet") {
@@ -143,9 +152,7 @@ const Collections = () => {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
     const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
-    if (algoCollectionsArr || auroraCollections) {
-      console.log("FILTERED: ", filtered);
-
+    if (algoCollectionsArr || auroraCollections || celoCollection || polygonCollections) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });

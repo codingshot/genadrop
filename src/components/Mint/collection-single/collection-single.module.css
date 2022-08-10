@@ -167,22 +167,19 @@
 .supportedFiles {
   text-align: center;
   font-size: 0.9rem;
-  color: var(--text-placeholder);
+  color: var(--text-sub-heading);
 }
 
 .btn {
   width: 10em;
-  padding: 0.5em 0;
   border-radius: 2em;
   font-size: 1rem;
-  border: 2px solid var(--main-color);
   transition: all 300ms;
   color: var(--main-color);
 }
 
 .btn:hover {
-  background: var(--main-color);
-  color: var(--default);
+  color: var(--main-hovered);
 }
 
 .goBack {
@@ -192,14 +189,58 @@
   justify-content: flex-start;
   gap: 1em;
   margin-bottom: 2em;
-  margin-left: 5em;
 }
 
-.goBack > img {
+.backIcon {
   transition: all 300ms;
   width: 1.2em;
 }
 
-.goBack:hover img {
+.backIcon:hover {
   transform: translateX(-50%);
+}
+
+.takePic {
+  display: flex;
+  align-items: center;
+  cursor: var(--cursor-pointer);
+  border-radius: 100px;
+  background: #0d99ff;
+  padding: 0 2rem;
+  transition: all 300ms;
+}
+.takePic:hover {
+  background: var(--main-hovered);
+}
+.takePic p {
+  font-size: 1rem;
+  transition: color 0.2s ease;
+  color: var(--default);
+}
+.takePic div {
+  border-radius: 0.75em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.4em;
+  margin-right: 0.5em;
+}
+.explanatoryText {
+  width: 100%;
+  text-align: center;
+}
+.explanatoryText div {
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+.explanatoryText p {
+  font-size: 0.8125rem;
+  color: var(--text-sub-heading);
+  line-height: 1.5rem;
+}
+
+@media screen and (max-width: 480px) {
+  .backIcon {
+    width: 0.85em;
+  }
 }

@@ -57,7 +57,7 @@ const Footer = () => (
               <div className={classes.orgs}>
                 Powered by
                 {orgs.map((org) => (
-                  <a href={org.link} target="_blank" rel="noopener noreferrer">
+                  <a key={org.link} href={org.link} target="_blank" rel="noopener noreferrer">
                     <img key={org.name} src={org.icon} alt="" />
                   </a>
                 ))}

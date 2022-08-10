@@ -21,11 +21,7 @@ ${i + 1} of ${nftLayers.length}`
           name: nftLayers[i].name,
           image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
-            trait_type,
-            value,
-            rarity,
-          })),
+          attributes: nftLayers[i].attributes,
           symbol: "",
           seller_fee_basis_points: "",
           external_url: "",
@@ -70,11 +66,7 @@ ${i + 1} of ${nftLayers.length}`
           name: nftLayers[i].name,
           image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
-            trait_type,
-            value,
-            rarity,
-          })),
+          attributes: nftLayers[i].attributes,
         });
         resolve();
       }, 0);
@@ -100,7 +92,7 @@ export const paginate = (input, count) => {
 };
 
 const downloadCallback = async (props) => {
-  const { value, name, outputFormat, dispatch, setLoader, id } = props;
+  const { value, name, outputFormat, dispatch, setLoader, setZip, id } = props;
   const zip = new JSZip();
   if (outputFormat.toLowerCase() === "arweave") {
     const aweave = await getAweaveFormat(value, dispatch, setLoader, id);
@@ -135,14 +127,19 @@ ${i + 1} of ${value.length}`
   dispatch(setLoader("zipping...."));
   const content = await zip.generateAsync({ type: "blob" });
 
+  dispatch(
+    setZip({
+      name,
+      file: content,
+    })
+  );
   fileDownload(content, `${name}.zip`);
-
   dispatch(setLoader(""));
 };
 
 // eslint-disable-next-line consistent-return
 export const handleDownload = async (input) => {
-  const { value, dispatch, setNotification, name } = input;
+  const { value, dispatch, setZip, setNotification, name } = input;
   if (!name) {
     return dispatch(
       setNotification({
@@ -160,7 +157,7 @@ export const handleDownload = async (input) => {
     })
   );
   for (let i = 1; i <= index; i += 1) {
-    await downloadCallback({ ...input, id: i, value: paginated[i] });
+    await downloadCallback({ ...input, id: i, value: paginated[i], setZip });
   }
   dispatch(
     setNotification({
@@ -168,4 +165,9 @@ export const handleDownload = async (input) => {
       type: "success",
     })
   );
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("zip file loaded");
+    }, 0);
+  });
 };

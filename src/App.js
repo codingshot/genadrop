@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
 import Footer from "./components/footer/footer";
@@ -15,6 +15,7 @@ import Home from "./pages/home/home";
 import Create from "./pages/create/create";
 import Mint from "./pages/mint/mint";
 import CollectionToSingleMinter from "./components/Mint/collection-single/collection-single";
+import Camera from "./pages/camera/Camera";
 import Marketplace from "./pages/Marketplace/Marketplace";
 import Preview from "./pages/preview/preview";
 import Explore from "./pages/Explore/Explore";
@@ -32,24 +33,15 @@ import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
 import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
-
-// const Home = lazy(() => import("./pages/home/home"));
-// const Create = lazy(() => import("./pages/create/create"));
-// const Mint = lazy(() => import("./pages/mint/mint"));
-// const CollectionToSingleMinter = lazy(() => import("./components/Mint/collection-single/collection-single"));
-// const Marketplace = lazy(() => import("./pages/Marketplace/Marketplace"));
-// const Preview = lazy(() => import("./pages/preview/preview"));
-// const Explore = lazy(() => import("./pages/Explore/Explore"));
-// const Fallback = lazy(() => import("./pages/fallback/fallback"));
-// const CollectionNFT = lazy(() => import("./pages/collectionNFT/collectionNFT"));
-// const Collections = lazy(() => import("./pages/collections/collections"));
-// const Dashboard = lazy(() => import("./pages/dashboard/dashboard"));
-// const docsEmbed = lazy(() => import("./pages/docs/docsEmbed"));
-// const List = lazy(() => import("./pages/listNFT/list"));
-// const Profile = lazy(() => import("./pages/profile/profile"));
-// const SingleNftCollection = lazy(() => import("./pages/singleNftCollection/singleNftCollection"));
-// const SingleNFT = lazy(() => import("./pages/singleNFT/singleNFT"));
-// const Artist = lazy(() => import("./pages/artist/artist"));
+import StoreData from "./renderless/store-data/StoreData";
+import Pricing from "./pages/Pricing/Pricing";
+import "@stripe/stripe-js";
+import Session from "./pages/Session/Session";
+import Minter from "./components/Mint/minter/minter";
+import SessionModal from "./components/Modals/Session-Modal/SessionModal";
+import UpgradeModal from "./components/Modals/Upgrade-Modal/UpgradeModal";
+import SuccessPlan from "./pages/Pricing/Success-Plan/SuccessPlan";
+import FailedPlan from "./pages/Pricing/Failed-Plan/FailedPlan";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -70,7 +62,9 @@ function App() {
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
+            <Route exact path="/mint/camera" component={Camera} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
+            <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
             {/* <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} /> */}
@@ -87,6 +81,10 @@ function App() {
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
+            <Route exact path="/create/session" component={Session} />
+            <Route exact path="/create/session/pricing" component={Pricing} />
+            <Route exact path="/create/session/create" component={SuccessPlan} />
+            <Route exact path="/create/session/pricing/failed" component={FailedPlan} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
@@ -99,6 +97,9 @@ function App() {
       <Loader />
       <Prompt />
       <FetchData />
+      <SessionModal />
+      <UpgradeModal />
+      <StoreData />
     </div>
   );
 }

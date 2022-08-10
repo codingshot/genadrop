@@ -1,9 +1,9 @@
-import vid1 from "../../assets/vid/1Add_Layers.webm";
-import vid2 from "../../assets/vid/1Upload_images.webm";
-import vid3 from "../../assets/vid/1Re-order Layers.webm";
-import vid4 from "../../assets/vid/1Set conflict rule.webm";
-import vid5 from "../../assets/vid/set-number.webm";
-import vid6 from "../../assets/vid/1Generate.webm";
+import vid1 from "../../assets/vid/T1.mp4";
+import vid2 from "../../assets/vid/T2.mp4";
+import vid3 from "../../assets/vid/T3.mp4";
+import vid4 from "../../assets/vid/T4.mp4";
+import vid5 from "../../assets/vid/T5.mp4";
+import vid6 from "../../assets/vid/T6.mp4";
 
 export const guide = {
   1: {
@@ -28,6 +28,6 @@ export const guide = {
   },
   6: {
     vid: vid6,
-    title: "Generate, preview and download arts",
+    title: "Preview and download arts",
   },
 };

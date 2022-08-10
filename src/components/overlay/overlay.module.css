@@ -7,18 +7,41 @@
   justify-content: center;
   flex-direction: column;
   gap: 1em;
-  color: white;
   top: 0;
   left: 0;
   z-index: 5000;
   overflow: hidden;
-  font-style: italic;
 }
 
 .overlay.isLoading {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.7);
   width: 100vw;
   height: 100vh;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1.5em 2em;
+  border-radius: 1em;
+  background: var(--default);
+}
+
+.wrapper img {
+  width: 4em;
+  margin-bottom: 1em;
+  animation: bounce 450ms infinite alternate;
+}
+
+@keyframes bounce {
+  from {
+    transform: translateY(1em);
+  }
+  to {
+    transform: translateY(0);
+  }
 }
 
 .loader {
@@ -32,11 +55,11 @@
 .dotOne,
 .dotTwo,
 .dotThree {
-  width: 0.75em;
-  height: 0.75em;
+  width: 1em;
+  height: 1em;
   border-radius: 50%;
-  background: var(--main-hovered);
-  animation: blink 300ms infinite alternate linear;
+  background: var(--default);
+  animation: blink 450ms infinite alternate linear;
 }
 
 .dotOne {
@@ -44,16 +67,16 @@
 }
 
 .dotTwo {
-  animation-delay: 150ms;
+  animation-delay: 300ms;
 }
 
 .dotThree {
-  animation-delay: 300ms;
+  animation-delay: 600ms;
 }
 
 @keyframes blink {
   from {
-    background: transparent;
+    background: var(--main-light);
   }
   to {
     background: var(--main-color);

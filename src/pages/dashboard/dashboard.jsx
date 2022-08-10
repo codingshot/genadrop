@@ -16,14 +16,24 @@ import {
 } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
+import { ethers } from "ethers";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import NotFound from "../../components/not-found/notFound";
 import bg from "../../assets/bg.png"; // remove this when done!
-import twitter from "../../assets/icon-twitter-green.svg";
-import discord from "../../assets/icon-discord-green.svg";
-import instagram from "../../assets/icon-instagram-green.svg";
+import twitter from "../../assets/icon-twitter-blue.svg";
+import discord from "../../assets/icon-discord-blue.svg";
+import instagram from "../../assets/icon-instagram-blue.svg";
 import youtube from "../../assets/icon-youtube-green.svg";
+import { celoClient, polygonClient } from "../../utils/graphqlClient";
+import { GET_USER_NFT } from "../../graphql/querries/getCollections";
+import { setNotification } from "../../gen-state/gen.actions";
+import {
+  getCeloCollectedNFTs,
+  getCeloUserCollections,
+  getPolygonCollectedNFTs,
+  getPolygonUserCollections,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -46,8 +56,18 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const { account, mainnet, singleAuroraNfts, singlePolygonNfts, auroraCollections, polygonCollections } =
-    useContext(GenContext);
+  const {
+    account,
+    mainnet,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    singleCeloNfts,
+    auroraCollections,
+    polygonCollections,
+    celoCollections,
+    dispatch,
+    chainId,
+  } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -62,32 +82,53 @@ const Dashboard = () => {
     // Get User Created NFTs
 
     (async function getUserNFTs() {
-      const singleNfts = await fetchUserCreatedNfts(account);
       let algoNFTs = [];
-      if (singleNfts) {
+      if (chainId == 4160) {
+        const singleNfts = await fetchUserCreatedNfts(account);
         algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       }
-      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft.owner === account);
-      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft.owner === account);
-      handleSetState({ createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || [])] });
+      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);
+      const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account);
+      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account);
+      handleSetState({
+        createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
+      });
     })();
 
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
-      const collectedNfts = await fetchUserBoughtNfts(account);
+      let address = "";
+      if (chainId != 4160) {
+        address = ethers.utils.hexlify(account);
+      }
 
+      const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
+      const celoCollectedNfts = await getCeloCollectedNFTs(address);
+      const collectedNfts = await fetchUserBoughtNfts(account);
       const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-      handleSetState({ collectedNfts: algoCollectedNfts });
+      handleSetState({
+        collectedNfts: [...(algoCollectedNfts || []), ...(celoCollectedNfts || []), ...(polygonCollectedNfts || [])],
+      });
     })();
 
     // Get User created Collections
     (async function getCreatedCollections() {
+      let hexAddress;
+      if (chainId != 4160) {
+        hexAddress = ethers.utils.hexlify(account);
+      }
       const collections = await fetchUserCollections(account);
       const algoCollections = await getUserNftCollections({ collections, mainnet });
       const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      const polyCollections = polygonCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
+      const polyCollections = await getPolygonUserCollections(hexAddress);
+      const celoCollection = await getCeloUserCollections(hexAddress);
       handleSetState({
-        myCollections: [...(algoCollections || []), ...(aurrCollections || []), ...(polyCollections || [])],
+        myCollections: [
+          ...(algoCollections || []),
+          ...(aurrCollections || []),
+          ...(polyCollections || []),
+          ...(celoCollection || []),
+        ],
       });
     })();
 
@@ -154,75 +195,73 @@ const Dashboard = () => {
 
   return (
     <div className={classes.container}>
+      {/* change background to dynamic */}
+      <div className={classes.bannerContainer}>
+        <img src={bg} alt="" className={classes.banner} />
+        <img className={classes.imageContainer} src={avatar} alt="" />
+      </div>
+
       <div className={classes.wrapper}>
         <section className={classes.header}>
-          {/* change background to dynamic */}
-          <img src={bg} alt="" className={classes.banner} />
+          {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
 
-          <div className={classes.imageContainer}>
-            <img src={avatar} alt="" />
+          <div className={classes.address}>
+            <Copy message={account} placeholder={breakAddress(account)} />
           </div>
 
-          <div className={classes.lower}>
-            {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
-            <div className={classes.address}>
-              <Copy message={account} placeholder={breakAddress(account)} />
-            </div>
+          <div className={classes.social}>
+            {userDetails?.twitter ? (
+              <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
+                {" "}
+                <img src={twitter} alt="" className={classes.socialIcon} />{" "}
+              </a>
+            ) : (
+              ""
+            )}
+            {userDetails?.youtube ? (
+              <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
+                {" "}
+                <img src={youtube} alt="" className={classes.socialIcon} />{" "}
+              </a>
+            ) : (
+              ""
+            )}
+            {userDetails?.instagram ? (
+              <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
+                {" "}
+                <img src={instagram} alt="" className={classes.socialIcon} />{" "}
+              </a>
+            ) : (
+              ""
+            )}
+            {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
+          </div>
 
-            <div className={classes.social}>
-              {userDetails?.twitter ? (
-                <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
-                  {" "}
-                  <img src={twitter} alt="" className={classes.socialIcon} />{" "}
-                </a>
-              ) : (
-                ""
-              )}
-              {userDetails?.youtube ? (
-                <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
-                  {" "}
-                  <img src={youtube} alt="" className={classes.socialIcon} />{" "}
-                </a>
-              ) : (
-                ""
-              )}
-              {userDetails?.instagram ? (
-                <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
-                  {" "}
-                  <img src={instagram} alt="" className={classes.socialIcon} />{" "}
-                </a>
-              ) : (
-                ""
-              )}
-              {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
-            </div>
-            <div className={classes.social} />
-            <Link to={`${url}/profile/settings`}>
-              <div className={classes.editProfile}>Edit Profile</div>
-            </Link>
+          <Link to={`${url}/profile/settings`}>
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
 
-            <div className={classes.details}>
-              <div
-                onClick={() => handleSetState({ activeDetail: "created" })}
-                className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
-              >
-                <p>Created NFT</p>
-                <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
-              </div>
-              <div
-                onClick={() => handleSetState({ activeDetail: "collected" })}
-                className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
-              >
-                <p>Collected NFTs</p>
-                <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
-              </div>
-              <div
-                onClick={() => handleSetState({ activeDetail: "collections" })}
-                className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
-              >
-                <p>My Collections</p>
-                <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
-              </div>
+          <div className={classes.details}>
+            <div
+              onClick={() => handleSetState({ activeDetail: "created" })}
+              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
+            >
+              <p>Created NFT</p>
+              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => handleSetState({ activeDetail: "collected" })}
+              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
+            >
+              <p>Collected NFTs</p>
+              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => handleSetState({ activeDetail: "collections" })}
+              className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
+            >
+              <p>My Collections</p>
+              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
             </div>
           </div>
         </section>
@@ -237,7 +276,7 @@ const Dashboard = () => {
             activeDetail === "collections" ? (
               <div className={classes.overview}>
                 {filteredCollection.map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} />
+                  <CollectionsCard key={idx} collection={collection} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (

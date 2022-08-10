@@ -1,0 +1,141 @@
+.container {
+  width: 100%;
+  position: sticky;
+  top: 3.7em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5em;
+  background: var(--default);
+  z-index: 1;
+  margin-bottom: 0.5em;
+}
+
+.detailsWrapper {
+  width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1em;
+  margin-left: 2em;
+  flex-wrap: wrap;
+}
+
+.gifDetail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.5em 1em;
+  border-radius: 2em;
+  background: var(--default);
+  cursor: var(--cursor-pointer);
+  border: 1px solid var(--main-color);
+  margin-right: 1em;
+}
+
+.gifDetail:hover {
+  cursor: var(--cursor-hover);
+  background: var(--main-color);
+}
+
+.gifDetail:hover p {
+  color: var(--default);
+}
+
+.gifDetail p {
+  margin: auto;
+  font-weight: 500;
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+}
+
+.gifDetail span {
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  border: 1px solid var(--main-color);
+  background: var(--main-color);
+  color: var(--default);
+}
+
+.gifDetail:hover span {
+  color: var(--main-color);
+  background: var(--default);
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.65em 1em;
+  font-size: 0.95rem;
+  border-radius: 0.25em;
+  border: 1px solid var(--card-layer);
+  background: var(--default);
+  color: var(--card-layer);
+}
+
+.detail span:last-child {
+  background: var(--card-layer);
+  border: 1px solid var(--card-layer);
+  color: var(--default);
+  padding: 0 1em;
+}
+
+.detail i {
+  color: red;
+}
+
+.btnContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btnContainer:hover .btnIcon {
+  transform: translateX(-50%);
+}
+
+.btnIcon {
+  width: 1.5em;
+  height: 1.5em;
+  transition: all 300ms;
+}
+
+@media screen and (max-width: 1024px) {
+  .detail {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    top: 2.9em;
+    border-radius: 0.5em;
+    align-items: flex-start;
+  }
+
+  .detailsWrapper {
+    gap: 0.5em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .btnIcon {
+    width: 1em;
+    height: 1em;
+  }
+
+  .detailsWrapper {
+    flex-direction: column-reverse;
+    align-items: flex-end;
+  }
+}

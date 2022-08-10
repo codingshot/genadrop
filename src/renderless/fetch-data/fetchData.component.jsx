@@ -10,16 +10,27 @@ import {
   setAuroraSingleNfts,
   setPolygonSingleNfts,
   setNotification,
+  setCeloCollections,
+  setCeloSingleNft,
 } from "../../gen-state/gen.actions";
-import { getAuroraCollections, getNftCollections, getSingleNfts, getSingleGraphNfts } from "../../utils";
 import {
-  GET_ALL_AURORA_COLLECTIONS,
+  getGraphCollections,
+  getNftCollections,
+  getSingleNfts,
+  getSingleGraphNfts,
+  getCeloGraphCollections,
+} from "../../utils";
+import {
+  GET_GRAPH_COLLECTIONS,
   GET_ALL_POLYGON_COLLECTIONS,
   GET_AURORA_SINGLE_NFTS,
   GET_POLYGON_SINGLE_NFTS,
+  GET_CELO_SINGLE_NFT,
+  GET_CELO_GRAPH_COLLECITONS,
 } from "../../graphql/querries/getCollections";
-import { graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
+import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
+import { ethers } from "ethers";
 
 const FetchData = () => {
   const { dispatch, mainnet, account } = useContext(GenContext);
@@ -51,7 +62,7 @@ const FetchData = () => {
     (async function getDataFromEndpointA() {
       const { data, error } = await graphQLClient
         .query(
-          GET_ALL_AURORA_COLLECTIONS,
+          GET_GRAPH_COLLECTIONS,
           {},
           {
             clientName: "aurora",
@@ -66,7 +77,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
+      const result = await getGraphCollections(data?.collections);
       if (result?.length) {
         dispatch(setAuroraCollections(result));
       } else {
@@ -122,10 +133,14 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getAuroraCollections(data?.collections);
-
-      if (result?.length) {
-        dispatch(setPolygonCollections(result));
+      const result = await getGraphCollections(data?.collections);
+      const filterAddress =
+        process.env.REACT_APP_ENV_STAGING === "true"
+          ? "0xd6b01b63dd514cf771d8d21b776197fdf9648d54"
+          : "0x3243cd574e9d51ad012c7fa4957e8037beb8792f";
+      const res = result?.filter((data) => data?.Id !== filterAddress);
+      if (res?.length) {
+        dispatch(setPolygonCollections(res));
       } else {
         dispatch(setPolygonCollections(null));
       }
@@ -152,10 +167,55 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
+      console.log("polygon single", result);
       if (result?.length) {
         dispatch(setPolygonSingleNfts(result));
       } else {
         dispatch(setPolygonSingleNfts(null));
+      }
+      return null;
+    })();
+
+    // Get Celo Single NFTs
+    (async function getCeloSingleNft() {
+      const { data, error } = await celoClient.query(GET_CELO_SINGLE_NFT).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
+      if (result?.length) {
+        dispatch(setCeloSingleNft(result));
+      } else {
+        dispatch(setCeloSingleNft(null));
+      }
+      return null;
+    })();
+
+    (async function getCeloCollections() {
+      const { data, error } = await celoClient.query(GET_CELO_GRAPH_COLLECITONS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getGraphCollections(data?.collections);
+      const filterAddress =
+        process.env.REACT_APP_ENV_STAGING === "true"
+          ? "0x68c79f7d19b5de514b1fc23cbd5c4b84f05bf178"
+          : "0x0d2e152fc5cfc53f3baf7e1ae0f6b967953706ed";
+      const res = result.filter((data) => data?.Id !== filterAddress);
+      if (res?.length) {
+        dispatch(setCeloCollections(res));
+      } else {
+        dispatch(setCeloCollections(null));
       }
       return null;
     })();

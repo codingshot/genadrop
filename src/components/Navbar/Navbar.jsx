@@ -68,10 +68,17 @@ const Navbar = () => {
               </div>
             </Link>
           </ul>
+          <div className={`${classes.walletAuthContainer} ${classes.mobile}`}>
+            <div className={classes.wallet}>
+              <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
+            </div>
+          </div>
+        </nav>
+        <div className={classes.walletAuthContainer}>
           <div className={classes.wallet}>
             <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
           </div>
-        </nav>
+        </div>
         {dropdown ? (
           <CloseIcon onClick={() => handleSetState({ dropdown: !dropdown })} className={classes.closeIcon} />
         ) : (
