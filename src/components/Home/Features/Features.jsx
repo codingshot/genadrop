@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import classes from "./Features.module.css";
 import { features } from "./Feature-Script";
 import linkIcon from "../../../assets/icon-arr-right-long.svg";
-import { Link } from "react-router-dom";
 
 const Features = () => {
   useEffect(() => {
     const cards = document.getElementsByClassName("features-card");
     const offSet = 100;
     window.addEventListener("scroll", () => {
-      for (let card of cards) {
-        let cardTop = card.getBoundingClientRect().top;
+      for (const card of cards) {
+        const cardTop = card.getBoundingClientRect().top;
         if (cardTop + offSet <= window.innerHeight) {
           card.children[0].style.transform = "translateX(0)";
           card.children[1].style.transform = "translateX(0)";

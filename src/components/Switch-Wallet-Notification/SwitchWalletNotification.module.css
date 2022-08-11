@@ -3,7 +3,7 @@
   display: none;
   position: fixed;
   top: 4em;
-  z-index: 10;
+  z-index: 18;
 }
 
 .container.active {
