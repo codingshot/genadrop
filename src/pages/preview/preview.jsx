@@ -24,6 +24,7 @@ const Preview = () => {
     layers,
     promptAsset,
     imageQuality,
+    currentPlan,
   } = useContext(GenContext);
 
   const [state, setState] = useState({
@@ -81,6 +82,7 @@ const Preview = () => {
     currentPage,
     currentPageValue,
     paginate,
+    currentPlan,
     handleSetState,
   };
 
