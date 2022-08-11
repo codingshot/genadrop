@@ -14,8 +14,12 @@ const GoogleAuth = () => {
   };
 
   const getInitial = (name) => {
+    if (!name) return "";
     name = name.split(" ");
-    return `${name[0][0]} ${name[1][0]}`;
+    if (name.length >= 2) {
+      return `${name[0][0]} ${name[1][0]}`;
+    }
+    return `${name[0][0]}`;
   };
 
   useEffect(() => {

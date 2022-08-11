@@ -1,18 +1,19 @@
 import GenadropToolTip from "../../../components/Genadrop-Tooltip/GenadropTooltip";
 import { handleDownload } from "../../../utils/index2";
 import { generateGif, handleCollectionDescription, handleCollectionName, handleFormatChange } from "../preview-script";
-// import { ReactComponent as PlayIcon } from "../../../assets/icon-play.svg";
 import { ReactComponent as CheckIcon } from "../../../assets/check-solid.svg";
 import CaretDown from "../../../assets/icon-caret-down.svg";
 import CaretUP from "../../../assets/icon-caret-up.svg";
 import TextEditor from "../text-editor";
 import classes from "../preview.module.css";
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { setNotification, setLoader, setZip } from "../../../gen-state/gen.actions";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const Sidebar = ({ sidebarProps }) => {
   const ipfsRef = useRef(null);
   const arweaveRef = useRef(null);
+  const { currentPlan } = useContext(GenContext);
 
   const {
     gifShow,
@@ -25,6 +26,19 @@ const Sidebar = ({ sidebarProps }) => {
     duration,
     nftLayers,
   } = sidebarProps;
+
+  const handleGif = () => {
+    if (currentPlan === "free") {
+      dispatch(
+        setNotification({
+          type: "error",
+          message: "This feature is not available on the free plan",
+        })
+      );
+    } else {
+      handleSetState({ gifShow: true });
+    }
+  };
 
   return (
     <aside className={`${classes.sidebar} ${gifShow && classes.sidebarActive}`}>
@@ -98,7 +112,7 @@ const Sidebar = ({ sidebarProps }) => {
         </div>
         <div className={classes.btnWrapper}>
           {!gifShow && (
-            <button onClick={() => handleSetState({ gifShow: true })} className={classes.gifButton} type="button">
+            <button onClick={handleGif} className={classes.gifButton} type="button">
               Genrate GIF
             </button>
           )}
@@ -154,7 +168,7 @@ const Sidebar = ({ sidebarProps }) => {
         <div className={classes.btnWrapper}>
           <button
             type="button"
-            onClick={() => {
+            onClick={() =>
               handleDownload({
                 window,
                 dispatch,
@@ -164,8 +178,9 @@ const Sidebar = ({ sidebarProps }) => {
                 value: nftLayers,
                 name: collectionName,
                 outputFormat,
-              });
-            }}
+                currentPlan,
+              })
+            }
           >
             Download zip
           </button>

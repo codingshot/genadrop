@@ -8,7 +8,7 @@ import { setNotification, setLoader, setZip } from "../../../gen-state/gen.actio
 
 const ArtCard = ({ previewProps, asset }) => {
   const { image, id, name, description, index } = asset;
-  const { gifImages, gifShow, dispatch, outputFormat } = previewProps;
+  const { gifImages, gifShow, dispatch, outputFormat, currentPlan } = previewProps;
 
   return (
     <div className={`${classes.card} ${gifImages.filter((e) => e.id === id).length > 0 ? classes.cardActive : ""}`}>
@@ -43,6 +43,7 @@ const ArtCard = ({ previewProps, asset }) => {
               handleDownload({
                 window,
                 dispatch,
+                currentPlan,
                 setLoader,
                 setZip,
                 setNotification,
