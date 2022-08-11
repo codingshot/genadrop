@@ -23,6 +23,15 @@
   white-space: nowrap;
 }
 
+.alignIcon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.alignIcon img {
+  margin-right: 10px;
+}
+
 .left {
   width: 30%;
   max-width: 25em;

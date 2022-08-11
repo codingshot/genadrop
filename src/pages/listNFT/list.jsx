@@ -59,23 +59,26 @@ const List = () => {
       id: nftDetails.tokenID,
     };
     if (chainId === 80001 || chainId === 137) {
-      console.log(listProps);
       const listNft = await listPolygonNft(listProps);
       if (listNft.error) {
-        setNotification({
-          message: "Transaction not completed",
-          type: "warning",
-        });
+        dispatch(
+          setNotification({
+            message: "Transaction failed",
+            type: "warning",
+          })
+        );
       } else {
         return history.push(`${nftId}/listed`);
       }
     } else if (chainId === 44787 || chainId === 42220) {
       const listNft = await listCeloNft(listProps);
       if (listNft.error) {
-        setNotification({
-          message: "Transaction not completed",
-          type: "warning",
-        });
+        dispatch(
+          setNotification({
+            message: "Transaction failed",
+            type: "warning",
+          })
+        );
       } else {
         return history.push(`${nftId}/listed`);
       }
@@ -104,8 +107,17 @@ const List = () => {
     (async function getUserCollection() {
       if (chainId === 80001 || chainId === 137) {
         const [nft] = await polygonUserData(nftId);
-        console.log(nft);
-        if (!nft) history.goBack();
+        if (nft === null) {
+          return (
+            dispatch(
+              setNotification({
+                message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
+                type: "warning",
+              })
+            ),
+            history.goBack()
+          );
+        }
         handleSetState({
           nftDetails: nft,
           isLoading: false,
@@ -113,7 +125,17 @@ const List = () => {
         });
       } else if (chainId === 44787 || chainId === 42220) {
         const [nft] = await celoUserData(nftId);
-        if (!nft) history.goBack();
+        if (nft === null) {
+          return (
+            dispatch(
+              setNotification({
+                message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
+                type: "warning",
+              })
+            ),
+            history.goBack()
+          );
+        }
         handleSetState({
           nftDetails: nft,
           image_url: nft?.ipfs_data?.image,
@@ -134,6 +156,10 @@ const List = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    console.log(nftDetails);
+  }, [nftDetails]);
 
   if (isLoading) {
     return (
