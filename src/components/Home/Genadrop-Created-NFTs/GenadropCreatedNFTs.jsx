@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./GenadropCreatedNFTs.module.css";
 import NFT1 from "../../../assets/nft-1.png";
 import NFT2 from "../../../assets/nft-2.png";

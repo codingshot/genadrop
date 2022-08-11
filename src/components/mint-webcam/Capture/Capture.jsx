@@ -11,7 +11,6 @@ import useTimer from "./useTimer";
 import WebcamEnable from "../webcam-enable/webcamEnable";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
-import { ReactComponent as CaptureIcon } from "../../../assets/capture-icon.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
 import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
