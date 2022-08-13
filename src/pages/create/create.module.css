@@ -72,7 +72,7 @@
 }
 
 .collectionNameContainer {
-  width: 6em;
+  max-width: 6em;
   overflow: hidden;
 }
 

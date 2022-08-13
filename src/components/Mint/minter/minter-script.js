@@ -10,7 +10,7 @@ import {
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
-  const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
+  const { account, chain, dispatch, setNotification, setLoader } = args;
   if (!account) {
     return dispatch(
       setNotification({
