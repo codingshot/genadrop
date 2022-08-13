@@ -155,7 +155,7 @@
 }
 .uploadBtn {
   position: absolute;
-  display: none;
+  /* display: none; */
   right: 2rem;
   align-items: center;
   top: 50%;
