@@ -56,10 +56,17 @@ const PricingModal = ({ modal, price, closeModal }) => {
 
   const onApproveHandler = (data, actions) => {
     // This function captures the funds from the transaction.
-    return actions.order.capture().then(function (details) {
-      // This function shows a transaction success message to your buyer.
-      handleClick();
-    });
+    return actions.order
+      .capture()
+      .then(function (details) {
+        // This function shows a transaction success message to your buyer.
+        handleClick();
+      })
+      .catch((error) => {
+        console.log(error);
+        history.push("/create/session/pricing/failed");
+        handleClose();
+      });
   };
 
   const checkoutOptions = {
@@ -106,6 +113,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
               <div>Stripe</div>
             </div>
           </div>
+          <button onClick={handleClick}>Continue without payment</button>
         </div>
       </div>
     </div>
