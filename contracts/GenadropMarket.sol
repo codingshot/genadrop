@@ -12,7 +12,7 @@ interface customIERC1155 {
     function uri(uint id) external view returns (string memory);
 }
 
-contract NFTMarket is ReentrancyGuard, EIP712 {
+contract NFTMarket4 is ReentrancyGuard, EIP712 {
     using Counters for Counters.Counter;
     Counters.Counter private _itemIds; // Id for each individual item
     Counters.Counter private _itemsSold; // Number of items sold

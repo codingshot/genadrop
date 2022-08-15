@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./IERC165.sol";
+import "./IERC165Upgradeable.sol";
 
 /**
  * @dev Required interface of an ERC1155 compliant contract, as defined in the
@@ -11,7 +11,7 @@ import "./IERC165.sol";
  *
  * _Available since v3.1._
  */
-interface IERC1155 is IERC165 {
+interface IERC1155Upgradeable is IERC165Upgradeable {
     /**
      * @dev Emitted when `value` tokens of token type `id` are transferred from `from` to `to` by `operator`.
      */
