@@ -1,0 +1,57 @@
+.container {
+  width: max-content;
+  top: 2em;
+  position: absolute;
+  visibility: hidden;
+}
+
+.container.active {
+  animation: drop 300ms forwards;
+  visibility: visible;
+}
+
+@keyframes drop {
+  from {
+    transform: translateY(-0.5em);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.wrapper {
+  width: 18em;
+  max-height: 60vh;
+  overflow: auto;
+  border: 1px solid var(--outline);
+  margin-top: 1em;
+  background: var(--default);
+  border-radius: 0.5em;
+  box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
+}
+
+.session {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 1em;
+  cursor: pointer;
+}
+
+.session:hover {
+  background: var(--card-light);
+}
+
+.session.active {
+  border-bottom: 1px solid var(--outline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.session.create {
+  justify-content: center;
+}

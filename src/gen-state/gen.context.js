@@ -11,6 +11,7 @@ const GenContextProvider = ({ children }) => {
     preview,
     mintAmount,
     nftLayers,
+    preNftLayers,
     combinations,
     isLoading,
     mintInfo,
@@ -59,7 +60,10 @@ const GenContextProvider = ({ children }) => {
     toggleCollectionNameModal,
     isUser,
     currentPlan,
+    upgradePlan,
+    actionProgress,
     minter,
+    toggleUpgradeModal,
   } = state;
 
   return (
@@ -69,6 +73,7 @@ const GenContextProvider = ({ children }) => {
         preview,
         mintAmount,
         nftLayers,
+        preNftLayers,
         combinations,
         isLoading,
         mintInfo,
@@ -117,7 +122,10 @@ const GenContextProvider = ({ children }) => {
         toggleCollectionNameModal,
         isUser,
         currentPlan,
+        upgradePlan,
+        actionProgress,
         minter,
+        toggleUpgradeModal,
         dispatch,
       }}
     >

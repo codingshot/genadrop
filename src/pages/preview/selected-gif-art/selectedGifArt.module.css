@@ -1,0 +1,95 @@
+.galleryGif {
+  background: #f6fdff;
+  backdrop-filter: blur(23px);
+  border-radius: 7px;
+  padding: 1rem;
+  margin-top: 20px;
+  position: sticky;
+  bottom: 0;
+}
+
+.galleryGifLine {
+  height: 3px;
+  width: 100%;
+  box-shadow: var(--shadow-light);
+  background: #ced4da;
+  margin-bottom: 0.7rem;
+}
+
+.galleryGifInfo {
+  color: var(--card-layer);
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 0 1rem;
+}
+
+.galleryGifInfo > p {
+  display: flex;
+  align-items: center;
+}
+
+.galleryGifslides {
+  display: flex;
+  overflow-x: scroll;
+  padding: 0 1rem;
+}
+
+/* width */
+.galleryGifslides::-webkit-scrollbar {
+  height: 20px;
+}
+
+/* Track */
+.galleryGifslides::-webkit-scrollbar-track {
+  background: #f3f4f7;
+  border-radius: 0px 0px 8px 8px;
+}
+
+/* Handle */
+.galleryGifslides::-webkit-scrollbar-thumb {
+  background: #b6b6b6;
+  border-radius: 30px;
+}
+
+.galleryGifslides > div {
+  position: relative;
+  margin-right: 10px;
+}
+
+.galleryGifslides > div > img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 9px;
+  padding: 8px;
+  background: #e5e8eb;
+}
+
+.closeIcon path {
+  fill: #f1423b;
+}
+
+.iconClose {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  cursor: var(--cursor-pointer);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5em;
+  background: var(--default);
+  box-shadow: var(--shadow-light);
+  border-radius: 0.15em;
+  transition: all 300ms;
+}
+
+.iconClose img {
+  width: 0.7em;
+  margin: 0;
+}
+
+.card > .iconClose:hover {
+  box-shadow: var(--shadow-light);
+}

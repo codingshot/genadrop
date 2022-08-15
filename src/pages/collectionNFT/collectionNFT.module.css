@@ -225,22 +225,24 @@
 .attribute {
   display: flex;
   flex-direction: column;
-  background-color: var(--main-color);
+  background-color: var(--main-lighter);
+  border: 1px solid var(--main-color);
   border-radius: 10px;
   padding: 1rem;
-  color: white;
+  color: var(--text-heading);
   width: 8.5rem;
 }
 
 .attribute .title {
-  font-size: 10px;
-  color: white;
+  font-size: 14px;
+  margin-bottom: 0.313rem;
+  color: var(--text-dark-200);
 }
 
 .attribute .description {
-  font-size: 15px;
+  font-size: 18px;
   text-overflow: ellipsis;
-  color: white;
+  color: black;
 }
 
 .heading {

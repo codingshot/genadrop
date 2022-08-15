@@ -1,0 +1,167 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  background: rgb(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1em;
+}
+
+.container.active {
+  display: flex;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 48em;
+  border-radius: 0.5em;
+  background: var(--default);
+  padding: 4em 1em;
+  position: relative;
+  animation: show 300ms alternate;
+}
+
+@keyframes show {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.closeBtn {
+  fill: var(--icon-color);
+  position: absolute;
+  right: 1em;
+  top: 1em;
+  width: 1.4em;
+  height: 1.4em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+  background: var(--btn-close);
+  cursor: var(--cursor-pointer);
+  transition: all 300ms;
+}
+
+.closeBtn:hover {
+  box-shadow: var(--shadow-dark);
+}
+
+.content {
+  width: 100%;
+  max-width: 36em;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4em;
+  padding: 2em 4em;
+  border-radius: 0.5em;
+}
+
+.content h1 {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.methodContainer {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2em;
+}
+
+.paymentMethod {
+  border: 1px solid var(--outline);
+  width: 12em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  border-radius: 0.5em;
+  padding: 0.5em;
+  cursor: pointer;
+  transition: all 300ms;
+}
+
+.paymentMethod:hover {
+  box-shadow: var(--shadow-light);
+}
+
+.paymentMethod.active {
+  border: 1px solid var(--main-color);
+  box-shadow: none;
+}
+
+.content button {
+  align-self: center;
+  width: 80%;
+  padding: 0.75em 2em;
+  border-radius: 2em;
+  background: var(--main-color);
+  color: var(--default);
+  font-size: 1rem;
+  transition: all 300ms;
+  cursor: pointer;
+  box-shadow: var(--btn-open);
+}
+
+.content button:hover {
+  background: var(--main-hovered);
+  box-shadow: var(--btn-close);
+}
+
+@media screen and (max-width: 1024px) {
+  .wrapper {
+    max-width: 36em;
+  }
+
+  .content {
+    padding: 2em;
+    gap: 3em;
+  }
+
+  .content h1 {
+    font-size: 1.5rem;
+  }
+
+  .paymentMethod {
+    width: 10em;
+  }
+
+  .paymentMethod img {
+    width: 6em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .wrapper {
+    padding: 2em;
+  }
+
+  .content {
+    gap: 2em;
+    padding: 1em 2em;
+  }
+
+  .content h1 {
+    font-size: 1.2rem;
+  }
+
+  .paymentMethod {
+    width: 6em;
+  }
+
+  .paymentMethod img {
+    width: 4em;
+  }
+}

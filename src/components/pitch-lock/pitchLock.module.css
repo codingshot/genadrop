@@ -1,0 +1,153 @@
+.selectContainer {
+  display: none;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 10000;
+}
+
+.selectContainer.active {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 1em 1em;
+  flex-direction: column;
+  position: relative;
+}
+
+.card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 43px;
+  display: flex;
+  align-items: center;
+  padding: 2em;
+  justify-content: flex-start;
+  flex-direction: column;
+  grid-gap: 1em;
+  gap: 1em;
+  animation: show 300ms alternate;
+}
+@keyframes show {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.Icon {
+  background: #dbf0ff;
+  height: 6rem;
+  width: 6rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.Icon svg path {
+  fill: var(--main-color);
+}
+.title {
+  font-weight: 700;
+  font-size: 2rem;
+  margin-top: 0.5em;
+  color: var(--text-dark-400);
+}
+
+.text {
+  font-weight: 400;
+  font-size: 1.5rem;
+  padding-left: 1rem;
+  margin-bottom: 2em;
+  color: var(--text-dark-400);
+}
+
+.btn {
+  background: var(--main-color);
+  border: none;
+  border-radius: 67px;
+  width: 100%;
+  height: 2.5em;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 300ms;
+  color: var(--default);
+}
+.btn:hover {
+  background: var(--main-hovered);
+}
+.passInput {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  border: 2px solid transparent;
+  border-bottom: 2px solid #8c93a3;
+  padding: 1rem;
+  color: #000000;
+  font-weight: 700;
+  transition: all 0.2s ease-in-out;
+}
+.inputWrapper,
+.card form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.card form {
+  gap: 1rem;
+}
+.inputWrapper P {
+  text-align: left;
+  color: var(--main-color);
+  margin-bottom: 0.6em;
+}
+.passInput::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #000000;
+  opacity: 1; /* Firefox */
+}
+
+.passInput:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #000000;
+}
+
+.passInput::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: #000000;
+}
+.passInput:focus {
+  border: 2px solid #8c93a3;
+  border-radius: 39.8818px;
+}
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.5rem;
+  }
+  .text {
+    font-size: 1rem;
+  }
+  .btn {
+    font-size: 1rem;
+  }
+}

@@ -15,6 +15,7 @@ import Home from "./pages/home/home";
 import Create from "./pages/create/create";
 import Mint from "./pages/mint/mint";
 import CollectionToSingleMinter from "./components/Mint/collection-single/collection-single";
+import Camera from "./pages/camera/Camera";
 import Marketplace from "./pages/Marketplace/Marketplace";
 import Preview from "./pages/preview/preview";
 import Explore from "./pages/Explore/Explore";
@@ -33,12 +34,15 @@ import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
 import StoreData from "./renderless/store-data/StoreData";
-import SessionModal from "./components/Session-Modal/SessionModal";
 import Pricing from "./pages/Pricing/Pricing";
-import Success from "./pages/Pricing/Success";
-import Cancel from "./pages/Pricing/Cancel";
 import "@stripe/stripe-js";
+import Session from "./pages/Session/Session";
 import Minter from "./components/Mint/minter/minter";
+import SessionModal from "./components/Modals/Session-Modal/SessionModal";
+import UpgradeModal from "./components/Modals/Upgrade-Modal/UpgradeModal";
+import SuccessPlan from "./pages/Pricing/Success-Plan/SuccessPlan";
+import FailedPlan from "./pages/Pricing/Failed-Plan/FailedPlan";
+import Pitch from "./pages/Pitch/Pitch";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -59,6 +63,7 @@ function App() {
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
+            <Route exact path="/mint/camera" component={Camera} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
@@ -77,9 +82,11 @@ function App() {
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
-            <Route exact path="/create/pricing" component={Pricing} />
-            <Route exact path="/success" component={Success} />
-            <Route exact path="/cancel" component={Cancel} />
+            <Route exact path="/pitch" component={Pitch} />
+            <Route exact path="/create/session" component={Session} />
+            <Route exact path="/create/session/pricing" component={Pricing} />
+            <Route exact path="/create/session/create" component={SuccessPlan} />
+            <Route exact path="/create/session/pricing/failed" component={FailedPlan} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
@@ -93,6 +100,7 @@ function App() {
       <Prompt />
       <FetchData />
       <SessionModal />
+      <UpgradeModal />
       <StoreData />
     </div>
   );

@@ -2,7 +2,7 @@
   width: 20em;
   position: sticky;
   top: 5em;
-  border: 1px solid var(--outline-light);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
   padding: 1em 0;
   height: calc(100vh - 10em);
@@ -56,6 +56,13 @@
   border: 1px solid transparent;
   margin-right: 0.5em;
   font-size: 1rem;
+}
+
+.collectionName label {
+  max-width: 14em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .collectionName input::placeholder {

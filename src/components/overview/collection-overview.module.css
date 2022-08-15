@@ -93,7 +93,7 @@
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  border: 1px solid var(--outline-light);
+  border: 1px solid var(--outline);
   border-radius: 0.5em;
   min-height: calc(100vh - 9em);
 }

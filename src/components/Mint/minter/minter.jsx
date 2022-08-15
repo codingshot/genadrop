@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import {
   setClipboard,
   setConnectFromMint,
@@ -20,8 +21,7 @@ import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
-import { initConnectWallet } from "../../../components/wallet/wallet-script";
-import { useHistory } from "react-router-dom";
+import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = () => {
   const history = useHistory();
@@ -34,13 +34,11 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: "", value: "" } },
+    attributes: { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
-    price: "",
     chain: null,
     preview: false,
-    dollarPrice: 0,
     collectionProfile: "",
     toggleGuide: false,
     toggleDropdown: false,
@@ -56,10 +54,8 @@ const Minter = () => {
     attributes,
     fileName,
     description,
-    price,
     chain,
     preview,
-    dollarPrice,
     collectionProfile,
     toggleGuide,
     toggleDropdown,
@@ -79,10 +75,8 @@ const Minter = () => {
     connector,
     file: zip,
     fileName,
-    price,
     mainnet,
     chain: chain?.chain,
-    dollarPrice,
   };
 
   const singleMintProps = {
@@ -100,23 +94,12 @@ const Minter = () => {
       attributes: Object.values(attributes),
     },
     fileName,
-    price,
     mainnet,
     chain: chain?.chain,
-    dollarPrice,
   };
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
-  };
-
-  const getUintByChain = {
-    algorand: "Algo",
-    celo: "CGLD",
-    polygon: "Matic",
-    "polygon testnet": "Matic",
-    "aurora testnet": "ETH",
-    aurora: "ETH",
   };
 
   const handleAddAttribute = () => {
@@ -157,10 +140,6 @@ const Minter = () => {
     history.push("/mint");
   };
 
-  const handlePrice = (event) => {
-    handleSetState({ price: event.target.value > 0 ? event.target.value : "" });
-  };
-
   const handleSetFileState = () => {
     console.log("handleSetFileState");
   };
@@ -180,19 +159,11 @@ const Minter = () => {
         })
       );
     }
-    if (!parseInt(price)) {
-      return dispatch(
-        setNotification({
-          message: "enter a valid price",
-          type: "warning",
-        })
-      );
-    }
     if (file.length > 1) {
       if (!mintProps.description) {
         return dispatch(
           setNotification({
-            message: "fill out the required fields",
+            message: "fill in the required fields",
             type: "warning",
           })
         );
@@ -263,19 +234,9 @@ const Minter = () => {
 
   useEffect(() => {
     if (chainId) {
-      const c = supportedChains[chainId];
-      handleSetState({ chain: c });
-      if (c.symbol === "AURORA") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price * res.data.ethereum.usd });
-        });
-      } else {
-        axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
-          handleSetState({ dollarPrice: price * res.data.data.amount });
-        });
-      }
+      handleSetState({ chain: supportedChains[chainId] });
     }
-  }, [price, chainId]);
+  }, [chainId]);
 
   return (
     <div className={classes.container}>
@@ -305,6 +266,8 @@ const Minter = () => {
                         className={classes.imageContainer}
                       />
                     ))
+                ) : file[0].type === "video/mp4" ? (
+                  <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
                 ) : (
                   <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                 )}
@@ -468,20 +431,6 @@ const Minter = () => {
                         </div>
                       ))}
                   </div>
-
-                  <br />
-                  <label>
-                    List Price ({getUintByChain[chain?.label.toLowerCase()]}){" "}
-                    <span className={classes.required}>*</span>
-                  </label>
-                  {chainId ? (
-                    <div className={classes.price}>
-                      <input type="number" min="0" value={price} onChange={handlePrice} />
-                      <span>{dollarPrice.toFixed(4)} USD</span>
-                    </div>
-                  ) : (
-                    <span className={classes.warn}>Connect wallet to add price</span>
-                  )}
                 </div>
               </section>
 

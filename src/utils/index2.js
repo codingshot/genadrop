@@ -1,7 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import fileDownload from "js-file-download";
 import JSZip from "jszip";
-import { setCollectionName, setLayers } from "../gen-state/gen.actions";
 
 export const getAweaveFormat = async (nftLayers, dispatch, setLoader) => {
   const clone = [];
@@ -22,11 +21,7 @@ ${i + 1} of ${nftLayers.length}`
           name: nftLayers[i].name,
           image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
-            trait_type,
-            value,
-            rarity,
-          })),
+          attributes: nftLayers[i].attributes,
           symbol: "",
           seller_fee_basis_points: "",
           external_url: "",
@@ -71,11 +66,7 @@ ${i + 1} of ${nftLayers.length}`
           name: nftLayers[i].name,
           image: `${nftLayers[i].name}.${fileType}`,
           description: nftLayers[i].description,
-          attributes: nftLayers[i].attributes.map(({ trait_type, value, rarity }) => ({
-            trait_type,
-            value,
-            rarity,
-          })),
+          attributes: nftLayers[i].attributes,
         });
         resolve();
       }, 0);
@@ -148,7 +139,16 @@ ${i + 1} of ${value.length}`
 
 // eslint-disable-next-line consistent-return
 export const handleDownload = async (input) => {
-  const { value, dispatch, setZip, setNotification, name } = input;
+  const { value, dispatch, setZip, setNotification, name, currentPlan } = input;
+  if (currentPlan === "free") {
+    dispatch(
+      setNotification({
+        type: "error",
+        message: "This feature is not available on the free plan",
+      })
+    );
+    return;
+  }
   if (!name) {
     return dispatch(
       setNotification({
@@ -168,8 +168,6 @@ export const handleDownload = async (input) => {
   for (let i = 1; i <= index; i += 1) {
     await downloadCallback({ ...input, id: i, value: paginated[i], setZip });
   }
-  dispatch(setCollectionName(""));
-  dispatch(setLayers([]));
   dispatch(
     setNotification({
       message: "downloaded successfully",

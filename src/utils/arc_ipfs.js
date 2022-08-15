@@ -105,14 +105,14 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 };
 
 const uploadToIpfs = async (nftFile, nftFileName, asset) => {
-  const fileCat = "image";
+  const fileCat = nftFile.type.split("/")[0];
 
   const nftFileNameSplit = nftFileName.split(".");
   const fileExt = nftFileNameSplit[1];
 
   const kvProperties = {
     url: nftFileNameSplit[0],
-    mimetype: `image/${fileExt}`,
+    mimetype: `${fileCat}/${fileExt}`,
   };
   const pinataMetadata = JSON.stringify({
     name: asset.name,
@@ -1088,6 +1088,38 @@ export async function mintToAurora(polyProps) {
   let tx;
 
   dispatch(setLoader("finalizing"));
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const ethNonce = await signer.getTransactionCount();
+    tx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully.",
+          type: "success",
+        })
+      );
+      return mainnet ? `https://aurorascan.dev/tx/${result.hash}` : `https://testnet.aurorascan.dev/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+
   try {
     tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
@@ -1102,7 +1134,12 @@ export async function mintToAurora(polyProps) {
     // );
   } catch (error) {
     dispatch(setLoader(""));
-    dispatch(setNotification(`${error.message}`));
+    dispatch(
+      setNotification({
+        message: `${error.message}`,
+        type: "error",
+      })
+    );
     return;
   }
   dispatch(setLoader(""));

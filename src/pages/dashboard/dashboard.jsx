@@ -98,14 +98,15 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       let address = "";
+      let algoCollectedNfts = [];
       if (chainId != 4160) {
         address = ethers.utils.hexlify(account);
+        const collectedNfts = await fetchUserBoughtNfts(account);
+        algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
       }
 
       const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
       const celoCollectedNfts = await getCeloCollectedNFTs(address);
-      const collectedNfts = await fetchUserBoughtNfts(account);
-      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
       handleSetState({
         collectedNfts: [...(algoCollectedNfts || []), ...(celoCollectedNfts || []), ...(polygonCollectedNfts || [])],
       });

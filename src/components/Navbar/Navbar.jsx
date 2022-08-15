@@ -6,7 +6,6 @@ import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
-import GoogleAuth from "../google-auth/googleAuth";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -70,20 +69,14 @@ const Navbar = () => {
             </Link>
           </ul>
           <div className={`${classes.walletAuthContainer} ${classes.mobile}`}>
-            <div className={`${classes.wallet} ${true && classes.active}`}>
+            <div className={classes.wallet}>
               <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
-            </div>
-            <div className={`${classes.auth} ${false && classes.active}`}>
-              <GoogleAuth />
             </div>
           </div>
         </nav>
         <div className={classes.walletAuthContainer}>
-          <div className={`${classes.wallet} ${true && classes.active}`}>
+          <div className={classes.wallet}>
             <ConnectWallet setToggleNav={(states) => handleSetState({ dropdown: states })} />
-          </div>
-          <div className={`${classes.auth} ${false && classes.active}`}>
-            <GoogleAuth />
           </div>
         </div>
         {dropdown ? (
@@ -100,6 +93,5 @@ const Navbar = () => {
     </div>
   );
 };
-// !pathname.includes("/create")
 
 export default Navbar;
