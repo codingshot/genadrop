@@ -3,7 +3,8 @@
 
 pragma solidity ^0.8.0;
 
-import "./IERC165.sol";
+import "./IERC165Upgradeable.sol";
+import "./Initializable.sol";
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -19,11 +20,20 @@ import "./IERC165.sol";
  *
  * Alternatively, {ERC165Storage} provides an easier to use but more expensive implementation.
  */
-abstract contract ERC165 is IERC165 {
+abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
+    function __ERC165_init() internal onlyInitializing {
+    }
+
+    function __ERC165_init_unchained() internal onlyInitializing {
+    }
     /**
      * @dev See {IERC165-supportsInterface}.
      */
     function supportsInterface(bytes4 interfaceId) public view virtual override returns (bool) {
-        return interfaceId == type(IERC165).interfaceId;
+        return interfaceId == type(IERC165Upgradeable).interfaceId;
     }
+
+
+
+    uint256[50] private __gap;
 }
