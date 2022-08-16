@@ -10,7 +10,7 @@
 }
 
 .container * {
-  transition: all 850ms;
+  transition: max-width 300ms;
 }
 
 .heading {
@@ -35,6 +35,7 @@
   margin-bottom: 3em;
   font-size: 1.2rem;
   color: var(--text-sub-heading);
+  line-height: 1.5em;
 }
 
 .wrapper {
@@ -44,7 +45,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 6em;
+  gap: 10em;
 }
 
 .featureContainer {
@@ -65,7 +66,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 2em;
+  gap: 1em;
   transition: all 650ms;
 }
 
@@ -98,11 +99,17 @@
   cursor: var(--cursor-pointer);
 }
 
-.fLink img {
-  transition: all 300ms;
+.fLink div {
+  color: var(--main-color);
 }
 
-.fLink:hover img {
+.fLink svg {
+  transition: all 300ms;
+  fill: var(--text-sub-heading);
+  fill: var(--main-color);
+}
+
+.fLink:hover svg {
   transform: translateX(1em);
 }
 
@@ -114,8 +121,9 @@
 
 @media screen and (max-width: 1280px) {
   .wrapper {
-    gap: 4em;
+    gap: 6em;
   }
+
   .featureContainer {
     gap: 2em;
   }
@@ -146,10 +154,6 @@
     margin-bottom: 4em;
   }
 
-  .wrapper {
-    gap: 3em;
-  }
-
   .featureContainer.not,
   .featureContainer {
     flex-direction: column-reverse;
@@ -158,6 +162,6 @@
 
 @media screen and (max-width: 540px) {
   .wrapper {
-    gap: 2em;
+    gap: 4em;
   }
 }

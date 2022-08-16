@@ -14,7 +14,7 @@ const CameraMint = () => {
         <Link to="/mint/camera" className={classes.btn}>
           Take a photo
         </Link>
-        <WebcamBG />
+        <WebcamBG className={classes.cameraIcon} />
       </div>
     </div>
   );

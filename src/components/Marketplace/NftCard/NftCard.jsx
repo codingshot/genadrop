@@ -35,13 +35,13 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           ? nft.collection_name
             ? `${match.url}/${Id}`
             : chain
-            ? `/marketplace/single-mint/preview/${chain}/${Id}`
-            : `/marketplace/single-mint/preview/${Id}`
+            ? `/marketplace/1of1/preview/${chain}/${Id}`
+            : `/marketplace/1of1/preview/${Id}`
           : nft.collection_name
           ? `${match.url}/${Id}`
           : chain
-          ? `/marketplace/single-mint/${chain}/${Id}`
-          : `/marketplace/single-mint/${Id}`
+          ? `/marketplace/1of1/${chain}/${Id}`
+          : `/marketplace/1of1/${Id}`
       }
     >
       <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
@@ -91,7 +91,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
               fromDashboard ? (
                 <button
                   type="button"
-                  onClick={() => history.push(`/marketplace/single-mint/preview/${chain}/${Id}`)}
+                  onClick={() => history.push(`/marketplace/1of1/preview/${chain}/${Id}`)}
                   className={`${classes.button} ${classes.buttonSold}`}
                 >
                   List

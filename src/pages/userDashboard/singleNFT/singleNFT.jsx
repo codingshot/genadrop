@@ -296,8 +296,8 @@ const ListSingleNFT = (nft) => {
                   nft.collection_name
                     ? `${match.url}/${nftDetails.Id}`
                     : nftDetails.chain
-                    ? `/marketplace/single-mint/list/${nftDetails.chain}/${nftId}`
-                    : `/marketplace/single-mint/list/${nftDetails.Id}`
+                    ? `/marketplace/1of1/list/${nftDetails.chain}/${nftId}`
+                    : `/marketplace/1of1/list/${nftDetails.Id}`
                 }
                 className={classes.alignIcon}
               >

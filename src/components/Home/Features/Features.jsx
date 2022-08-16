@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import classes from "./Features.module.css";
 import { features } from "./Feature-Script";
-import linkIcon from "../../../assets/icon-arr-right-long.svg";
+import { ReactComponent as LinkIcon } from "../../../assets/icon-arr-right-long.svg";
 
 const Features = () => {
   useEffect(() => {
@@ -40,7 +40,7 @@ const Features = () => {
               <div className={classes.fDescription}>{f.description}</div>
               <Link to={f.url} className={classes.fLink}>
                 <div>{f.link}</div>
-                <img src={linkIcon} alt="" />
+                <LinkIcon />
               </Link>
             </div>
             <img className={classes.image} src={f.image} alt="" />

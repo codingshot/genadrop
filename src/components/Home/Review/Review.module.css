@@ -1,7 +1,7 @@
 .container {
   width: 100%;
   margin-bottom: 8em;
-  padding: 0 1em;
+  padding: 0 4em;
 }
 
 .heading {
@@ -118,6 +118,10 @@
 }
 
 @media screen and (max-width: 1200px) {
+  .container {
+    padding: 0 2em;
+  }
+
   .heading {
     font-size: calc(1rem + 2vmin);
   }
@@ -133,6 +137,6 @@
 
 @media screen and (max-width: 480px) {
   .container {
-    padding: 0;
+    padding: 0 1em;
   }
 }

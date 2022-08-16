@@ -31,7 +31,7 @@ const Banner = () => {
           </div>
           <div className={classes.description}>
             Generate all combinations from your art assets, preview and edit meta data, upload to ipfs, mint, and list
-            to multiple blockchains with NO CODE.
+            to multiple blockchains with <span>NO CODE</span>.
           </div>
           <div className={classes.btns}>
             <Link to="/create" className={classes.btn_create}>
