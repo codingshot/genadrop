@@ -7,7 +7,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 1.5rem;
+  padding: 1rem;
   background-color: white;
   z-index: 10000;
   border-radius: 20px;
@@ -38,7 +38,7 @@ th:first-child {
   font-weight: 400;
   font-size: 20px;
   color: var(--main-color);
-  background-color: rgba(0, 153, 135, 0.12);
+  /* background-color: rgba(0, 153, 135, 0.12); */
   margin-top: 0.5rem;
 }
 

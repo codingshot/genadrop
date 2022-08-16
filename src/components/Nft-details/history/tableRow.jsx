@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import classes from "./tableRow.module.css";
 import saleIcon from "../../../assets/sale-icon.png";
-import transferIcon from "../../../assets/transfer-icon.png";
+import transferIcon from "../../../assets/mint-icon.png";
 import mintIcon from "../../../assets/mint-icon.png";
 import Transaction from "../../transactionDetails/TransactionDetails";
 import { readUserProfile } from "../../../utils/firebase";
@@ -11,34 +11,44 @@ const TableRow = (data) => {
     showTransaction: false,
     to: "",
     from: "",
+    userDetails: "",
   });
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const { showTransaction, to, from } = state;
+  const { showTransaction, to, from, userDetails } = state;
 
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";
     return `${address.slice(0, width)}...${address.slice(-width)}`;
   }
 
+  useEffect(() => {
+    (async function getUsername() {
+      const data = await readUserProfile(to);
+
+      handleSetState({ userDetails: data });
+      readUserProfile(to).then((data) => {
+        if (data) setState({ to: data.username });
+      });
+
+      readUserProfile(from).then((data) => {
+        if (data) setState({ from: data.username });
+      });
+    })();
+  }, []);
   const icons = [saleIcon, transferIcon, mintIcon];
   const getDate = () => {
+    let now = new Date();
     let date = new Date(data.date.seconds * 1000);
-    let graphDate = new Date(data.date * 1000);
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    let formatedGraphDate = `${
-      months[graphDate.getMonth()]
-    } ${graphDate.getDate()}, ${graphDate.getFullYear()} - ${graphDate.getHours()}:${graphDate.getMinutes()}:${graphDate.getSeconds()} ${
-      graphDate.getHours() >= 12 ? "PM" : "AM"
-    }`;
-    let formattedDate = `${
-      months[date.getMonth()]
-    } ${date.getDate()}, ${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()} ${
-      graphDate.getHours() >= 12 ? "PM" : "AM"
-    } `;
-    return date.getDate() ? formattedDate : formatedGraphDate;
+    let diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
+    if (diff < 0.04) return parseInt(diff * 24 * 60) + " mins ago";
+    else if (diff < 1) return parseInt(diff * 24) + " hours ago";
+    else if (diff < 31) return parseInt(diff) + " days ago";
+    else if (diff < 356) return parseInt(diff / 30) + " months ago";
+    else return diff / 30 / 12 + " years ago";
   };
+
   const icon = () => {
     let icon = "";
     switch (data.event) {
@@ -86,16 +96,6 @@ const TableRow = (data) => {
     }, [ref]);
   }
 
-  const getUsername = (address) => {};
-  useEffect(() => {
-    readUserProfile(to).then((data) => {
-      if (data) setState({ to: data.username });
-    });
-
-    readUserProfile(from).then((data) => {
-      if (data) setState({ from: data.username });
-    });
-  }, [to, from]);
   useOutsideAlerter(wrapperRef);
   return (
     <>
@@ -111,6 +111,8 @@ const TableRow = (data) => {
           </span>
           {data.event}
         </td>
+        <td>{userDetails?.username ? userDetails?.username : breakAddress(data.to)}</td>
+
         <td>{!data.txId ? "--" : breakAddress(data.txId)}</td>
         <td>{getDate(data.date)}</td>
         <td>{!data.price ? "--" : data.price}</td>
