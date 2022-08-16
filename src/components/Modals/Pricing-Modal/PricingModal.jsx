@@ -28,7 +28,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
 
   const item = [
     {
-      price: "price_1LQrfZFiDLqRMLIXoXqtKhas",
+      price: "price_1LX0LQFiDLqRMLIXQJD2Tgmi",
       quantity: 1,
     },
     {

@@ -1183,7 +1183,7 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
 
 export async function purchasePolygonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1226,7 +1226,7 @@ export async function purchasePolygonNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet ? `https://polygonscan.com/tx/${tx.hash}` : `https://mumbai.polygonscan.com/tx/${tx.hash}`;
   } catch (error) {
@@ -1240,9 +1240,9 @@ export async function purchasePolygonNfts(buyProps) {
   }
 }
 
-export async function purchaseAuroragonNfts(buyProps) {
+export async function purchaseAuroraNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract} = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1285,7 +1285,7 @@ export async function purchaseAuroragonNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
   } catch (error) {
@@ -1300,7 +1300,7 @@ export async function purchaseAuroragonNfts(buyProps) {
 }
 export async function purchaseCeloNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract} = nftDetails;
   console.log(buyProps);
   if (!connector) {
     return dispatch(
@@ -1344,7 +1344,7 @@ export async function purchaseCeloNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet
       ? `https://blockscout.celo.org/tx/${tx.hash}`

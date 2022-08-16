@@ -50,7 +50,6 @@ export const GET_CELO_GRAPH_COLLECITONS = gql`
         id
         isSold
         isListed
-        marketId
         price
         collection {
           name
@@ -95,7 +94,6 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
         id
         isSold
         isListed
-        marketId
         price
         collection {
           name
@@ -215,7 +213,6 @@ export const GET_CELO_NFT = gql`
       isSold
       price
       isListed
-      marketId
       tokenID
       owner {
         id
@@ -248,7 +245,6 @@ export const GET_GRAPH_NFT = gql`
       isSold
       price
       tokenID
-      marketId
       owner {
         id
       }
@@ -273,7 +269,6 @@ export const GET_CELO_GRAPH_NFT = gql`
       id
       isSold
       price
-      marketId
       tokenID
       owner {
         id
@@ -344,7 +339,6 @@ export const GET_CELO_SINGLE_NFT = gql`
       createdAtTimestamp
       id
       isSold
-      marketId
       price
       tokenID
       owner {

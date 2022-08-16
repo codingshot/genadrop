@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect, useCallback } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLongPress } from "use-long-press";
 import axios from "axios";
@@ -71,6 +71,7 @@ const Capture = () => {
     gifGenrating: false,
     webcamCurrentType: "picture",
     trackRecord: false,
+    videoDuration: 0,
   });
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -89,6 +90,7 @@ const Capture = () => {
     gifGenrating,
     webcamCurrentType,
     trackRecord,
+    videoDuration,
   } = state;
 
   const handleSetState = (payload) => {
@@ -168,6 +170,50 @@ const Capture = () => {
     const blob = new Blob([buffer], { type });
     return new File([blob], fileName, { lastModified: new Date().getTime(), type });
   }
+
+  // Genrate GIF
+  async function getBase64(file) {
+    // console.log(duration);
+    dispatch(setLoader("Generating GIF"));
+    handleSetState({
+      gifGenrating: true,
+    });
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      axios
+        .post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result, duration: videoDuration / 100 })
+        .then((res) => {
+          const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
+          handleSetState({ gif: gifFile, currenFile: gifFile });
+
+          dispatch(setLoader(""));
+          dispatch(
+            setNotification({
+              message: "GIF generated successfully",
+              type: "success",
+            })
+          );
+          handleSetState({
+            gifGenrating: false,
+          });
+          return res.data.data;
+        })
+        .catch(() => {
+          dispatch(setLoader(""));
+          dispatch(
+            setNotification({
+              message: `Something Went Wrong, Please Try Again`,
+              type: "error",
+            })
+          );
+        });
+    };
+    reader.onerror = function (error) {
+      console.log("Error: ", error);
+    };
+  }
+
   // stopwatch, set to 8 sec
   const { seconds, start, stop } = useTimer();
 
@@ -208,54 +254,6 @@ const Capture = () => {
     [webcamRef, setCapturing, mediaRecorderRef]
   );
 
-  // Genrate GIF
-  function getBase64(file) {
-    dispatch(setLoader("Generating GIF"));
-    handleSetState({
-      gifGenrating: true,
-    });
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-      axios.post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result }).then((res) => {
-        console.log(res.data.data);
-        const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
-        handleSetState({ gif: gifFile, currenFile: gifFile });
-
-        dispatch(setLoader(""));
-        dispatch(
-          setNotification({
-            message: "GIF generated successfully",
-            type: "success",
-          })
-        );
-        handleSetState({
-          gifGenrating: false,
-        });
-        return res.data.data;
-      });
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
-  }
-
-  // file type switch
-  // useEffect(() => {
-  //   if (activeFile === "gif") {
-  //     if (gif) {
-  //       handleSetState({ currenFile: gif });
-  //     } else {
-  //       getBase64(currenFile);s
-  //     }
-  //   } else if (activeFile === "mp4") {
-  //     handleSetState({
-  //       currenFile: video,
-  //     });
-  //   }
-  // }, [activeFile]);
-
   const handleDownload = React.useCallback(() => {
     if (recordedChunks.length) {
       const type = "video/mp4";
@@ -274,38 +272,24 @@ const Capture = () => {
       handleDownload();
     }
   }, [recordedChunks]);
+
   const handleStopCaptureClick = React.useCallback(() => {
     stop();
     mediaRecorderRef.current.stop();
     setCapturing(false);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
-  const callback = useCallback(() => {
+  const callback = () => {
+    const time = seconds;
+    handleSetState({
+      videoDuration: time,
+    });
     handleStopCaptureClick();
-  }, []);
+  };
 
-  // const startRecord = () => {
-  //   if (!trackRecord) {
-  //     handleStartCaptureClick();
-  //     handleSetState({
-  //       trackRecord: !trackRecord,
-  //     });
-  //   } else {
-  //     handleStopCaptureClick();
-  //     handleSetState({
-  //       trackRecord: !trackRecord,
-  //     });
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (seconds === 500 && trackRecord) {
-  //     startRecord();
-  //   }
-  // }, [seconds]);
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
-    onCancel: handleStopCaptureClick,
+    onCancel: callback,
     threshold: 5000,
     captureEvent: true,
     cancelOnMovement: false,
@@ -328,15 +312,15 @@ const Capture = () => {
     let name;
     let file;
     if (img) {
-      name = "Image.png";
+      name = "Image";
       const result = getFileFromBase64(img, name, "image/png");
       file = result;
     } else if (activeFile === "gif") {
       file = currenFile;
-      name = "Short.gif";
+      name = "Short";
     } else {
       file = currenFile;
-      name = "video.mp4";
+      name = "video";
     }
     dispatch(
       setZip({
@@ -348,15 +332,26 @@ const Capture = () => {
     history.push("/mint/1of1");
   };
 
+  // file type switch
+  // useEffect(() => {
+  //   if (activeFile === "gif") {
+  //     if (gif) {
+  //       handleSetState({ currenFile: gif });
+  //     } else {
+  //       getBase64(currenFile);s
+  //     }
+  //   } else if (activeFile === "mp4") {
+  //     handleSetState({
+  //       currenFile: video,
+  //     });
+  //   }
+  // }, [activeFile]);
   return (
     <div className={`${classes.container}`}>
       <WebcamEnable toggle={toggle} getVideo={getVideo} />
 
       {img || gif || video ? (
-        <div
-          className={classes.cameraWrapper}
-          // className={(!img || !gif) && classes.none}
-        >
+        <div className={classes.cameraWrapper}>
           <div
             onClick={() => {
               handleSetState({
