@@ -74,7 +74,7 @@
   align-items: center;
   background: rgb(15 29 64 / 60%);
   padding: 0rem 2rem;
-  /* height: 6rem; */
+  height: 6rem;
   width: 20em;
   border-radius: 16px;
 }
@@ -97,7 +97,7 @@
 }
 .holdBtn.active {
   position: initial;
-  padding: 1.5rem;
+  /* padding: 1.5rem; */
   transform: inherit;
 }
 .RecordBtnWrapper {
@@ -140,10 +140,12 @@
 }
 .captureBtn {
   height: 100%;
-  padding: 1.5rem 0;
+  display: flex;
+  align-items: center;
 }
 .captureBtn svg {
-  height: 100%;
+  height: 64px;
+  width: 64px;
 }
 .captureBtn svg circle {
   transition: all 0.2s ease-in-out;
@@ -153,7 +155,7 @@
 }
 .uploadBtn {
   position: absolute;
-  display: none;
+  /* display: none; */
   right: 2rem;
   align-items: center;
   top: 50%;

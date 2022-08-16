@@ -64,6 +64,7 @@ const GenContextProvider = ({ children }) => {
     actionProgress,
     minter,
     toggleUpgradeModal,
+    searchContainer,
   } = state;
 
   return (
@@ -126,6 +127,7 @@ const GenContextProvider = ({ children }) => {
         actionProgress,
         minter,
         toggleUpgradeModal,
+        searchContainer,
         dispatch,
       }}
     >

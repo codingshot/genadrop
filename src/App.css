@@ -104,6 +104,7 @@ li {
   scroll-behavior: smooth;
   font-family: sans-serif !important;
   color: var(--text-heading);
+  line-height: 1.5em;
 }
 
 a {

@@ -112,7 +112,7 @@ const Listed = () => {
             ? `${url}/${nftDetails.Id}`
             : nftDetails.chain
             ? `/marketplace`
-            : `/marketplace/single-mint/${nftDetails.Id}`
+            : `/marketplace/1of1/${nftDetails.Id}`
         }
         className={classes.view}
       >

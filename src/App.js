@@ -42,6 +42,7 @@ import SessionModal from "./components/Modals/Session-Modal/SessionModal";
 import UpgradeModal from "./components/Modals/Upgrade-Modal/UpgradeModal";
 import SuccessPlan from "./pages/Pricing/Success-Plan/SuccessPlan";
 import FailedPlan from "./pages/Pricing/Failed-Plan/FailedPlan";
+import Pitch from "./pages/Pitch/Pitch";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -66,12 +67,12 @@ function App() {
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
-            <Route exact path="/marketplace/single-mint" component={SingleNftCollection} />
-            {/* <Route exact path="/marketplace/single-mint/:nftId" component={SingleNFT} /> */}
-            <Route exact path="/marketplace/single-mint/:chainId/:nftId" component={SingleNFT} />
-            <Route exact path="/marketplace/single-mint/preview/:chainId/:nftId" component={ListSingleNFT} />
-            <Route exact path="/marketplace/single-mint/list/:chainId/:nftId" component={List} />
-            <Route exact path="/marketplace/single-mint/list/:chainId/:nftId/listed" component={Listed} />
+            <Route exact path="/marketplace/1of1" component={SingleNftCollection} />
+            {/* <Route exact path="/marketplace/1of1/:nftId" component={SingleNFT} /> */}
+            <Route exact path="/marketplace/1of1/:chainId/:nftId" component={SingleNFT} />
+            <Route exact path="/marketplace/1of1/preview/:chainId/:nftId" component={ListSingleNFT} />
+            <Route exact path="/marketplace/1of1/list/:chainId/:nftId" component={List} />
+            <Route exact path="/marketplace/1of1/list/:chainId/:nftId/listed" component={Listed} />
             <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />
@@ -81,6 +82,7 @@ function App() {
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
+            <Route exact path="/pitch" component={Pitch} />
             <Route exact path="/create/session" component={Session} />
             <Route exact path="/create/session/pricing" component={Pricing} />
             <Route exact path="/create/session/create" component={SuccessPlan} />

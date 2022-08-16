@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { fetchAlgoCollections, fetchAlgoSingle, fetchUserCollections, fetchUserNfts } from "../../utils/firebase";
+import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
   setCollections,
   setSingleNfts,
@@ -12,6 +12,7 @@ import {
   setNotification,
   setCeloCollections,
   setCeloSingleNft,
+  setSearchContainer,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -30,10 +31,19 @@ import {
 } from "../../graphql/querries/getCollections";
 import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
-import { ethers } from "ethers";
+import {
+  parseAlgoCollection,
+  parseAlgoSingle,
+  parseAuroraCollection,
+  parseAuroraSingle,
+  parseCeloCollection,
+  parseCeloSingle,
+  parsePolygonCollection,
+  parsePolygonSingle,
+} from "./fetchData-script";
 
 const FetchData = () => {
-  const { dispatch, mainnet, account } = useContext(GenContext);
+  const { dispatch, mainnet } = useContext(GenContext);
 
   useEffect(() => {
     // Get ALGO Collection
@@ -41,7 +51,12 @@ const FetchData = () => {
       const collections = await fetchAlgoCollections(mainnet);
       dispatch(setCollections(collections));
       if (collections?.length) {
-        getNftCollections({ collections, mainnet, dispatch });
+        const result = await getNftCollections({ collections, mainnet, dispatch });
+        dispatch(
+          setSearchContainer({
+            "Algorand collection": parseAlgoCollection(result),
+          })
+        );
       } else {
         dispatch(setAlgoCollections({}));
       }
@@ -52,7 +67,12 @@ const FetchData = () => {
       const singleNfts = await fetchAlgoSingle(mainnet);
       dispatch(setSingleNfts(singleNfts));
       if (singleNfts?.length) {
-        getSingleNfts({ mainnet, singleNfts, dispatch });
+        const result = await getSingleNfts({ mainnet, singleNfts, dispatch });
+        dispatch(
+          setSearchContainer({
+            "Algorand 1of1": parseAlgoSingle(result),
+          })
+        );
       } else {
         dispatch(setAlgoSingleNfts({}));
       }
@@ -80,6 +100,11 @@ const FetchData = () => {
       const result = await getGraphCollections(data?.collections);
       if (result?.length) {
         dispatch(setAuroraCollections(result));
+        dispatch(
+          setSearchContainer({
+            "Aurora collection": parseAuroraCollection(result),
+          })
+        );
       } else {
         dispatch(setAuroraCollections(null));
       }
@@ -108,6 +133,11 @@ const FetchData = () => {
       const result = await getSingleGraphNfts(data?.nfts);
       if (result?.length) {
         dispatch(setAuroraSingleNfts(result));
+        dispatch(
+          setSearchContainer({
+            "Aurora 1of1": parseAuroraSingle(result),
+          })
+        );
       } else {
         dispatch(setAuroraSingleNfts(null));
       }
@@ -141,6 +171,11 @@ const FetchData = () => {
       const res = result?.filter((data) => data?.Id !== filterAddress);
       if (res?.length) {
         dispatch(setPolygonCollections(res));
+        dispatch(
+          setSearchContainer({
+            "Polygon collection": parsePolygonCollection(result),
+          })
+        );
       } else {
         dispatch(setPolygonCollections(null));
       }
@@ -167,9 +202,13 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
-      console.log("polygon single", result);
       if (result?.length) {
         dispatch(setPolygonSingleNfts(result));
+        dispatch(
+          setSearchContainer({
+            "Polygon 1of1": parsePolygonSingle(result),
+          })
+        );
       } else {
         dispatch(setPolygonSingleNfts(null));
       }
@@ -190,12 +229,18 @@ const FetchData = () => {
       const result = await getSingleGraphNfts(data?.nfts);
       if (result?.length) {
         dispatch(setCeloSingleNft(result));
+        dispatch(
+          setSearchContainer({
+            "Celo 1of1": parseCeloSingle(result),
+          })
+        );
       } else {
         dispatch(setCeloSingleNft(null));
       }
       return null;
     })();
 
+    // Get Celo Collection NFTs
     (async function getCeloCollections() {
       const { data, error } = await celoClient.query(GET_CELO_GRAPH_COLLECITONS).toPromise();
       if (error) {
@@ -214,6 +259,11 @@ const FetchData = () => {
       const res = result.filter((data) => data?.Id !== filterAddress);
       if (res?.length) {
         dispatch(setCeloCollections(res));
+        dispatch(
+          setSearchContainer({
+            "Celo collection": parseCeloCollection(result),
+          })
+        );
       } else {
         dispatch(setCeloCollections(null));
       }
