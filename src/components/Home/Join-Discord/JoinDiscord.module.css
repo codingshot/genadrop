@@ -3,8 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1em;
-  margin-bottom: 8em;
+  padding: 0 4em;
+  margin-bottom: 6em;
   background: var(--main-lightest);
 }
 
@@ -29,7 +29,7 @@
   align-items: flex-start;
   justify-content: center;
   flex-direction: column;
-  gap: 0.5em;
+  gap: 1em;
 }
 
 .heading {
@@ -60,10 +60,6 @@
 }
 
 @media screen and (max-width: 1200px) {
-  .container {
-    margin-bottom: 4em;
-  }
-
   .wrapper img {
     max-width: 24em;
   }
@@ -74,8 +70,17 @@
 }
 
 @media screen and (max-width: 768px) {
+  .container {
+    margin-bottom: 4em;
+    padding: 0 2em;
+  }
+
   .wrapper {
     flex-direction: column;
+  }
+
+  .content {
+    padding: 1em 0;
   }
 
   .image {
@@ -84,5 +89,11 @@
 
   .description {
     font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0 1em;
   }
 }

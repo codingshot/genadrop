@@ -360,3 +360,8 @@ export const setToggleUpgradeModal = (state) => ({
   type: genActionTypes.TOGGLE_UPGRADE_MODAL,
   payload: state,
 });
+
+export const setSearchContainer = (val) => ({
+  type: genActionTypes.SET_SEARCH_cONTAINER,
+  payload: val,
+});

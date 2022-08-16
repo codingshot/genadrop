@@ -89,6 +89,7 @@ export const INITIAL_STATE = {
   currentPlan: "free",
   minter: "",
   toggleUpgradeModal: "",
+  searchContainer: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -459,6 +460,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         toggleUpgradeModal: action.payload,
+      };
+    case genActionTypes.SET_SEARCH_cONTAINER:
+      return {
+        ...state,
+        searchContainer: { ...state.searchContainer, ...action.payload },
       };
     default:
       return state;
