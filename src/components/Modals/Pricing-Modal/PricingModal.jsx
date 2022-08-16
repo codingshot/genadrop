@@ -113,7 +113,6 @@ const PricingModal = ({ modal, price, closeModal }) => {
               <div>Stripe</div>
             </div>
           </div>
-          <button onClick={handleClick}>Continue without payment</button>
         </div>
       </div>
     </div>
