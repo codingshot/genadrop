@@ -295,7 +295,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     dispatch(setLoader("asset uploaded, minting in progress"));
     try {
       const { assetID, txId } = await signTx(connector, [txn], dispatch);
-      await write.writeNft(account, undefined, assetID[0], price, false, null, null, mainnet, txId[0]);
+      await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
       // notification: asset minted
       return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
     } catch (error) {
@@ -747,7 +747,7 @@ export async function mintToAlgo(algoProps) {
         pinataMetadata: { name: "collection" },
       });
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-      await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
+      await write.writeUserData(account, collectionUrl, fileName, assetID, price || 0, description, mainnet, txId);
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
