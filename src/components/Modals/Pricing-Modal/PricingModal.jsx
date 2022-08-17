@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalButton from "./PaypalButton";
+import { ReactComponent as StripeIcon } from "../../../assets/icon-stripe.svg";
 
 let stripePromise;
 
@@ -110,7 +111,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
               <PaypalButton createOrder={createOrderHandler} onApprove={onApproveHandler} />
             </PayPalScriptProvider>
             <div onClick={redirectToCheckout} className={classes.paymentMethod}>
-              <div>Stripe</div>
+              <StripeIcon className={classes.stripeIcon} />
             </div>
           </div>
         </div>

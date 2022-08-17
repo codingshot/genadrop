@@ -12,12 +12,11 @@ async function main() {
   );
   console.log("proxy deployed to:", Nft.address);
   console.log("version no. : ", await Nft.name());
-  
-  }
-  
-  main()
-    .then(() => process.exit(0))
-    .catch(error => {
-      console.error(error);
-      process.exit(1);
-    });
+}
+
+main()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });

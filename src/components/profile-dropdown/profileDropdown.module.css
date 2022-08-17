@@ -60,3 +60,8 @@
 .option:hover {
   background: var(--card-light);
 }
+
+.icon {
+  width: 1em;
+  height: 1em;
+}

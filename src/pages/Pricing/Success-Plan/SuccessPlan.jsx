@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { setCollectionName, setCurrentSession, setLayerAction } from "../../../gen-state/gen.actions";
+import { setCollectionName, setCurrentPlan, setCurrentSession, setLayerAction } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import { handleResetCreate } from "../../../utils";
 import { v4 as uuid } from "uuid";
@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 
 const SuccessPlan = () => {
   const history = useHistory();
-  const { dispatch, upgradePlan, sessionId, currentPlan, collectionName } = useContext(GenContext);
+  const { dispatch, upgradePlan, sessionId, collectionName, proposedPlan } = useContext(GenContext);
   const [inputValue, setInputValue] = useState("");
 
   const handleChange = (e) => {
@@ -38,10 +38,11 @@ const SuccessPlan = () => {
     if (!collectionName) {
       dispatch(setCollectionName("New Collection"));
     }
+    dispatch(setCurrentPlan(proposedPlan));
   }, []);
 
   useEffect(() => {
-    if (currentPlan === "free") {
+    if (!proposedPlan) {
       return history.push("/create");
     }
     document.documentElement.scrollTop = 0;

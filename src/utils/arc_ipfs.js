@@ -1242,7 +1242,7 @@ export async function purchasePolygonNfts(buyProps) {
 
 export async function purchaseAuroraNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract} = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1300,7 +1300,7 @@ export async function purchaseAuroraNfts(buyProps) {
 }
 export async function purchaseCeloNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract} = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   console.log(buyProps);
   if (!connector) {
     return dispatch(
