@@ -12,13 +12,24 @@ import { handleResetCreate } from "../../utils";
 
 const Pricing = () => {
   const history = useHistory();
-  const [plan, setPlan] = useState(0);
+  const [plan, setPlan] = useState("");
   const [price, setPrice] = useState(0);
+
   const { dispatch, currentPlan, upgradePlan, collectionName } = useContext(GenContext);
 
   const handlePlan = (plan, price) => {
     if (price) {
-      setPlan(plan);
+      if (upgradePlan) {
+        if (currentPlan === "hobby" && plan === "pro") {
+          setPlan("hobbyToPro");
+        } else if (currentPlan === "hobby" && plan === "agency") {
+          setPlan("hobbyToAgency");
+        } else if (currentPlan === "pro" && plan === "agency") {
+          setPlan("proToAgency");
+        }
+      } else {
+        setPlan(plan);
+      }
       setPrice(price - Number(plans[currentPlan].price));
       dispatch(setProposedPlan(plan));
     } else {
@@ -54,7 +65,7 @@ const Pricing = () => {
 
   return (
     <div className={classes.container}>
-      {plan != 0 ? <PricingModal modal={plan} price={price} closeModal={closeModal} /> : ""}
+      {price !== 0 ? <PricingModal plan={plan} price={price} closeModal={closeModal} /> : ""}
       <div className={classes.heading}>
         <h1>Pricing $ plans</h1>
         <p>Simple pricing.. No hidden fees. Advanced features for your NFT collections</p>
