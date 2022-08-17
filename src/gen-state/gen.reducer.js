@@ -79,7 +79,7 @@ export const INITIAL_STATE = {
   toggleCollectionNameModal: false,
   isUser: "", // true|false|null,
   currentPlan: "free", // free|noobs|geeks|ogs
-  upgradePlan: "",
+  upgradePlan: false,
   actionProgress: {
     totalCount: 0,
     resetCount: true,
