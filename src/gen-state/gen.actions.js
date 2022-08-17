@@ -78,11 +78,6 @@ export const setNftLayers = (layers) => ({
   payload: layers,
 });
 
-export const setPreNftLayers = (layers) => ({
-  type: genActionTypes.SET_PRE_NFT_LAYERS,
-  payload: layers,
-});
-
 export const setCombinations = (val) => ({
   type: genActionTypes.SET_COMBINATIONS,
   payload: val,
@@ -338,6 +333,11 @@ export const setIsUser = (state) => ({
 
 export const setCurrentPlan = (plan) => ({
   type: genActionTypes.SET_CURRENT_PLAN,
+  payload: plan,
+});
+
+export const setProposedPlan = (plan) => ({
+  type: genActionTypes.SET_PROPOSED_PLAN,
   payload: plan,
 });
 

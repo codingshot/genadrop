@@ -9,7 +9,6 @@ import {
   saveCollectionName,
   saveLayers,
   saveNftLayers,
-  savePreNftLayers,
   saveRules,
   saveTraits,
 } from "./StoreData.script";
@@ -21,7 +20,6 @@ const StoreData = () => {
     dispatch,
     layers,
     nftLayers,
-    preNftLayers,
     rule,
     collectionName,
     sessionId,
@@ -80,14 +78,6 @@ const StoreData = () => {
     console.log("saving nftLayers....");
     resetLayerAction();
   }, [layerAction, nftLayers, currentUser, sessionId]);
-
-  useEffect(() => {
-    const { type } = layerAction;
-    if (type !== "generate") return;
-    savePreNftLayers({ currentUser, sessionId, preNftLayers });
-    console.log("saving preNftLayers....");
-    resetLayerAction();
-  }, [layerAction, preNftLayers, currentUser, sessionId]);
 
   useEffect(() => {
     const { type, value } = imageAction;
