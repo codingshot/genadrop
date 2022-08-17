@@ -16,8 +16,16 @@ const getStripe = () => {
   return stripePromise;
 };
 
-const PricingModal = ({ modal, price, closeModal }) => {
+const PricingModal = ({ plan, price, closeModal }) => {
   const history = useHistory();
+
+  let levels = {
+    hobby: 1,
+    pro: 2,
+    hobbyToPro: 3,
+    hobbyToAgency: 4,
+    proToAgency: 5,
+  };
 
   const [stripeError, setStripeError] = useState(null);
 
@@ -27,20 +35,36 @@ const PricingModal = ({ modal, price, closeModal }) => {
     intent: "capture",
   };
 
-  const item = [
-    {
-      price: "price_1LX0LQFiDLqRMLIXQJD2Tgmi",
+  const item = {
+    test: {
+      price: "price_1LXs3aFiDLqRMLIX4KmmZYyS",
       quantity: 1,
     },
-    {
+    hobby: {
+      price: "price_1LQrfZFiDLqRMLIXoXqtKhas",
+      quantity: 1,
+    },
+    pro: {
       price: "price_1LQriKFiDLqRMLIX1HBQwggL",
       quantity: 1,
     },
-    {
+    agency: {
       price: "price_1LQroRFiDLqRMLIXBVqu6fbY",
       quantity: 1,
     },
-  ];
+    hobbyToPro: {
+      price: "",
+      quantity: 1,
+    },
+    hobbyToAgency: {
+      price: "price_1LS7igFiDLqRMLIXTkWBHspT",
+      quantity: 1,
+    },
+    proToAgency: {
+      price: "price_1LS7maFiDLqRMLIXW1GZTDeg",
+      quantity: 1,
+    },
+  };
 
   const createOrderHandler = (data, actions) => {
     // Set up the transaction
@@ -71,7 +95,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
   };
 
   const checkoutOptions = {
-    lineItems: [item[0]],
+    lineItems: [item["test"]], //replace test with plan. plan is a variable name
     mode: "payment",
     successUrl: `${window.location.origin}/create/session/create`,
     cancelUrl: `${window.location.origin}/create/session/pricing/failed`,
@@ -101,7 +125,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
   };
 
   return (
-    <div className={`${classes.container} ${modal && classes.active}`}>
+    <div className={`${classes.container} ${plan && classes.active}`}>
       <div className={classes.wrapper}>
         <CloseIcon onClick={handleClose} className={classes.closeBtn} />
         <div className={classes.content}>
@@ -114,6 +138,7 @@ const PricingModal = ({ modal, price, closeModal }) => {
               <StripeIcon className={classes.stripeIcon} />
             </div>
           </div>
+          <button onClick={handleClick}>continue</button>
         </div>
       </div>
     </div>
