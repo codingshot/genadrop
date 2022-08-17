@@ -18,6 +18,7 @@ const Pricing = () => {
   const { dispatch, currentPlan, upgradePlan, collectionName } = useContext(GenContext);
 
   const handlePlan = (plan, price) => {
+    console.log({ plan, price, upgradePlan });
     if (price) {
       if (upgradePlan) {
         if (currentPlan === "hobby" && plan === "pro") {
@@ -26,6 +27,8 @@ const Pricing = () => {
           setPlan("hobbyToAgency");
         } else if (currentPlan === "pro" && plan === "agency") {
           setPlan("proToAgency");
+        } else {
+          setPlan(plan);
         }
       } else {
         setPlan(plan);
