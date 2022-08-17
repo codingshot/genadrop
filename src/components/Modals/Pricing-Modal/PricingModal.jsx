@@ -138,7 +138,6 @@ const PricingModal = ({ plan, price, closeModal }) => {
               <StripeIcon className={classes.stripeIcon} />
             </div>
           </div>
-          <button onClick={handleClick}>continue</button>
         </div>
       </div>
     </div>
