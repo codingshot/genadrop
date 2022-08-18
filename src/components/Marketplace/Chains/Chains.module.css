@@ -1,35 +1,12 @@
 .container {
   width: 100%;
-  padding: 0 1em;
-  margin-bottom: 6em;
-}
-
-.wrapper {
-  width: 100%;
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
-.heading {
-  text-align: center;
-  max-width: 38em;
-  margin: 0 auto;
-  margin-bottom: 2em;
-}
-
-.heading h3 {
-  font-size: 2rem;
-  font-weight: 600;
-}
-
-.heading p {
-  font-size: 1.2rem;
+  margin-top: 10em;
 }
 
 .card {
-  width: 10em;
-  height: 12em;
-  border-radius: 0.5em;
+  width: 12em;
+  height: 15em;
+  border-radius: 1em;
   display: flex;
   flex-direction: column;
   align-items: center;

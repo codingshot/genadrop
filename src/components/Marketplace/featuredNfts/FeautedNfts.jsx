@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import classes from "./NewListing.module.css";
+import classes from "./FeautedNfts.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
+import bannerImg from "../../../assets/sub-explore-banner.svg";
 
-const NewListing = () => {
+const FeautedNfts = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
   const algoCollectionsArr = algoCollections
     ? Object.values(algoCollections).sort(
@@ -87,8 +88,8 @@ const NewListing = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <h3>What's New</h3>
-        <ChainDropdown onChainFilter={chainChange} />
+        <h3>Featured NFTs </h3>
+        {/* <ChainDropdown onChainFilter={chainChange} /> */}
       </div>
 
       <GenadropCarouselScreen cardWidth={16 * 20} gap={16} init={init}>
@@ -110,8 +111,14 @@ const NewListing = () => {
           ))
         )}
       </GenadropCarouselScreen>
+      <div>
+        <span className={classes.blueBox}>Feeds</span>
+        <img src="" alt="" />
+        <span>#215 Minority X H.E.R</span>
+        sold [<span>0x694c…7489</span> To <span>Onallee.algo</span> ]<span className={classes.time}>3 Minutes ago</span>
+      </div>
     </div>
   );
 };
 
-export default NewListing;
+export default FeautedNfts;
