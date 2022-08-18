@@ -6,7 +6,6 @@ import logo from "../../assets/genadrop-logo.svg";
 import drop from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
-import Search from "../Search/Search";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -33,7 +32,6 @@ const Navbar = () => {
         <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
-        <Search />
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />
           <ul className={classes.navList}>

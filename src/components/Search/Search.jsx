@@ -4,6 +4,7 @@ import { GenContext } from "../../gen-state/gen.context";
 import supportedChains from "../../utils/supportedChains";
 import { handleSuggestions } from "./Search-script";
 import classes from "./Search.module.css";
+import searchIcon from "../../assets/icon-search.svg";
 
 const Search = () => {
   const history = useHistory();
@@ -43,6 +44,7 @@ const Search = () => {
   return (
     <div className={`${classes.container} ${toggleSearch && classes.active}`}>
       <div onClick={handleToggleSearch} className={classes.placeholder}>
+        <img src={searchIcon} alt="" />
         <input type="text" placeholder="Search collections, and 1 of 1s" />
       </div>
       <div onClick={handleCloseSearch} className={classes.dropdownContainer}>

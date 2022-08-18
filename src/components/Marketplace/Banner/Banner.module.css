@@ -1,10 +1,9 @@
 .container {
   width: 100%;
-  margin-bottom: 4em;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2em 1em;
+  padding: 2em 1em 0 1em;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -15,8 +14,7 @@
   max-width: 1440px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 4em;
+  flex-direction: column;
 }
 
 .content {
@@ -25,12 +23,22 @@
 }
 
 .title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 0.75em;
-  color: var(--default);
+  font-size: 63px;
+  font-weight: 700;
+  color: var(--text-heading);
+  width: 20em;
+  text-align: center;
 }
 
+.searchAndNavWrapper {
+  margin-bottom: 1em;
+  width: 40em;
+}
+
+.searchBottom span {
+  margin-right: 1em;
+  color: var(--text-banner);
+}
 .description {
   margin-bottom: 1em;
   color: var(--default);

@@ -1,22 +1,25 @@
 .container {
   width: 100%;
-  padding: 0 1em;
   margin-bottom: 4em;
   background: var(--default);
 }
 
 .heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background: var(--default);
   padding: 0 1em;
   margin-bottom: 0.5em;
+  height: 7em;
+  height: 225.46px;
+
+  background: linear-gradient(89.73deg, rgba(253, 240, 251, 0.11) 6.08%, rgba(204, 234, 251, 0.11) 99.94%),
+    linear-gradient(180deg, #fef1fc 0%, rgba(254, 241, 252, 0) 100%);
 }
 
 .heading h3 {
-  font-size: 2rem;
-  font-weight: 600;
+  font-size: 48px;
+  font-weight: 700;
+  margin-left: 2.3em;
+  padding-top: 1em;
 }
 
 .heading button {

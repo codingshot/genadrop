@@ -18,6 +18,7 @@
 
   --text-heading: #0f1d40;
   --text-sub-heading: #525c76;
+  --text-banner: #939599;
   --text-light: #6c757d;
   --text-placeholder: #b2b7c2;
   --text-placeholder-light: #d3d6de;
@@ -172,4 +173,33 @@ button {
   border: none;
   outline: none;
   background: transparent;
+}
+
+/* input placeholder */
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: var(--text-banner);
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: var(--text-banner);
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: var(--text-banner);
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--text-banner);
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--text-banner);
+}
+
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: var(--text-banner);
 }
