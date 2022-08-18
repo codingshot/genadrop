@@ -10,6 +10,13 @@ import { useHistory } from "react-router-dom";
 const SuccessPlan = () => {
   const history = useHistory();
   const { dispatch, upgradePlan, sessionId, collectionName, proposedPlan } = useContext(GenContext);
+  console.log({
+    upgradePlan,
+    sessionId,
+    collectionName,
+    proposedPlan,
+  });
+
   const [inputValue, setInputValue] = useState("");
 
   const handleChange = (e) => {
@@ -41,12 +48,12 @@ const SuccessPlan = () => {
     dispatch(setCurrentPlan(proposedPlan));
   }, []);
 
-  useEffect(() => {
-    if (!proposedPlan) {
-      return history.push("/create");
-    }
-    document.documentElement.scrollTop = 0;
-  }, []);
+  // useEffect(() => {
+  //   if (!proposedPlan) {
+  //     return history.push("/create");
+  //   }
+  //   document.documentElement.scrollTop = 0;
+  // }, []);
 
   useEffect(() => {
     setInputValue(collectionName);
