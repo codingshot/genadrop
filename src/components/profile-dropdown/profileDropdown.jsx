@@ -13,9 +13,9 @@ const ProfileDropdown = ({ dropdown, setDropdown, userName }) => {
   const { dispatch, currentPlan } = useContext(GenContext);
 
   const handleUpgrade = () => {
-    if (currentPlan !== "free") {
-      dispatch(setUpgradePlan(true));
-    }
+    // if (currentPlan !== "free") {
+    dispatch(setUpgradePlan(true));
+    // }
     history.push("/create/session/pricing");
   };
 

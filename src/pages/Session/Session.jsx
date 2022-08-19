@@ -31,7 +31,6 @@ const Session = () => {
   const [noResult, toggleNotResult] = useState(null);
 
   const { dispatch, currentUser, sessions, isUser, currentPlan } = useContext(GenContext);
-
   const handleLoad = async (sessionId, plan) => {
     console.log("fetch starts");
     handleResetCreate({ dispatch });
@@ -65,7 +64,6 @@ const Session = () => {
       toggleNotResult("true");
       dispatch(setCurrentPlan("free"));
       if (currentPlan !== "free") {
-        console.log("reset");
         handleResetCreate({ dispatch });
       }
     }
@@ -159,7 +157,7 @@ const Session = () => {
                       <div className={`${classes.sessionDropdown} ${dropdownId === idx && classes.active}`}>
                         <div className={classes.cost}>
                           <div className={classes.title}>cost per session</div>
-                          <div className={classes.amount}>${plans[session.currentPlan].price}</div>
+                          {/* <div className={classes.amount}>${plans[session.currentPlan].price}</div> */}
                         </div>
                         <div className={classes.services}>
                           {plans[session.currentPlan].services.map(({ name, available }, idx) => (

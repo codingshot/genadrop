@@ -39,7 +39,7 @@ const SessionModal = () => {
   };
 
   const handleCreate = () => {
-    dispatch(setUpgradePlan(""));
+    dispatch(setUpgradePlan(false));
     history.push("/create/session/pricing");
     handleClose();
   };

@@ -1,11 +1,13 @@
 import classes from "./PricingModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PaypalButton from "./PaypalButton";
 import { ReactComponent as StripeIcon } from "../../../assets/icon-stripe.svg";
+import { saveUserData } from "../../../renderless/store-data/StoreDataLocal";
+import { GenContext } from "../../../gen-state/gen.context";
 
 let stripePromise;
 
@@ -18,15 +20,8 @@ const getStripe = () => {
 
 const PricingModal = ({ plan, price, closeModal }) => {
   const history = useHistory();
-
-  let levels = {
-    hobby: 1,
-    pro: 2,
-    hobbyToPro: 3,
-    hobbyToAgency: 4,
-    proToAgency: 5,
-  };
-
+  const { layers, rule, preview, collectionName, sessionId, upgradePlan, proposedPlan, currentUser } =
+    useContext(GenContext);
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
@@ -36,6 +31,10 @@ const PricingModal = ({ plan, price, closeModal }) => {
   };
 
   const item = {
+    local: {
+      price: "price_1LPcyWBNj5DiViWrS47kiQgt",
+      quantity: 1,
+    },
     test: {
       price: "price_1LXs3aFiDLqRMLIX4KmmZYyS",
       quantity: 1,
@@ -95,7 +94,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
   };
 
   const checkoutOptions = {
-    lineItems: [item["test"]], //replace test with plan. plan is a variable name
+    lineItems: [item[plan]], //replace test with plan. plan is a variable name
     mode: "payment",
     successUrl: `${window.location.origin}/create/session/create`,
     cancelUrl: `${window.location.origin}/create/session/pricing/failed`,
@@ -103,14 +102,13 @@ const PricingModal = ({ plan, price, closeModal }) => {
 
   const redirectToCheckout = async () => {
     console.log("redirectToCheckout");
-
+    saveUserData({ layers, rule, preview, collectionName, sessionId, upgradePlan, proposedPlan, currentUser });
     const stripe = await getStripe();
     console.log("Got stripe");
     const res = await stripe.redirectToCheckout(checkoutOptions);
     console.log("Stripe checkout error", res);
 
     if (res.error) setStripeError(res.error.message);
-    // else handleClick();
   };
 
   if (stripeError) alert(stripeError);
@@ -134,7 +132,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
             <PayPalScriptProvider options={initialOptionsPaypal}>
               <PaypalButton createOrder={createOrderHandler} onApprove={onApproveHandler} />
             </PayPalScriptProvider>
-            <div onClick={redirectToCheckout} className={classes.paymentMethod}>
+            <div onClick={redirectToCheckout} className={classes.stripeBtn}>
               <StripeIcon className={classes.stripeIcon} />
             </div>
           </div>
