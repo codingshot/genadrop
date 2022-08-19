@@ -18,6 +18,7 @@ const Pricing = () => {
   const { dispatch, currentPlan, upgradePlan, collectionName } = useContext(GenContext);
   const handlePlan = (plan, price) => {
     if (price) {
+      dispatch(setProposedPlan(plan));
       if (upgradePlan) {
         if (currentPlan === "hobby" && plan === "pro") {
           setPlan("hobbyToPro");
@@ -33,7 +34,6 @@ const Pricing = () => {
         setPrice(price);
         setPlan(plan);
       }
-      dispatch(setProposedPlan(plan));
     } else {
       handleResetCreate({ dispatch });
       dispatch(setCurrentPlan(plan));

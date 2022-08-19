@@ -88,6 +88,7 @@ const SuccessPlan = () => {
           dispatch(setCurrentUser(currentUser));
           dispatch(setCollectionName("New Collection"));
           dispatch(setCurrentPlan(proposedPlan));
+          dispatch(setProposedPlan(proposedPlan));
           return;
         } else if (!sessionId) {
           dispatch(setCurrentSession(ID));
