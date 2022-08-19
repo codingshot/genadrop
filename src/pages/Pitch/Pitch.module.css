@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+  background: var(--default);
+  display: flex;
+  /* padding: 2rem 0; */
+}
+.form {
+  height: calc(100vh - 3.7em);
+  margin: auto;
+}

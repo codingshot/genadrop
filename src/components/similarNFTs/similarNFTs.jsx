@@ -121,7 +121,7 @@ const SimilarNFTs = (data) => {
       <GenadropCarouselScreen cardWidth={16 * 20} gap={16}>
         {nfts?.map((nft, id) => (
           <div key={id} ref={cardRef} className={classes.card}>
-            <NftCard useWidth="20em" key={nft.Id} nft={nft} listed extend="/single-mint" />
+            <NftCard useWidth="20em" key={nft.Id} nft={nft} listed extend="/1of1" />
           </div>
         ))}
       </GenadropCarouselScreen>

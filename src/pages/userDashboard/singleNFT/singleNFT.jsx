@@ -138,7 +138,7 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(chainId) === 1313161555) {
+        } else if (Number(nftChainId) === supportedChains[nftChainId].networkId) {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return history.goBack();
           handleSetState({
@@ -146,7 +146,7 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(chainId) === 44787 || Number(chainId) === 42220) {
+        } else if (Number(nftChainId) === 44787 || Number(nftChainId) === 42220) {
           const [celoData, trHistory] = await celoUserData(nftId);
           if (!celoData) return history.goBack();
           handleSetState({
@@ -296,10 +296,12 @@ const ListSingleNFT = (nft) => {
                   nft.collection_name
                     ? `${match.url}/${nftDetails.Id}`
                     : nftDetails.chain
-                    ? `/marketplace/single-mint/list/${nftDetails.chain}/${nftId}`
-                    : `/marketplace/single-mint/list/${nftDetails.Id}`
+                    ? `/marketplace/1of1/list/${nftDetails.chain}/${nftId}`
+                    : `/marketplace/1of1/list/${nftDetails.Id}`
                 }
+                className={classes.alignIcon}
               >
+                <img src={supportedChains[nftDetails?.chain]?.icon} />
                 <button className={classes.list}>List</button>
               </Link>
             </div>

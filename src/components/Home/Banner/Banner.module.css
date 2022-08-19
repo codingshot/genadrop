@@ -3,7 +3,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4em 1em;
+  padding: 2em;
+  margin-bottom: 6em;
+  margin-top: 5em;
 }
 
 .container * {
@@ -12,16 +14,17 @@
 
 .wrapper {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3em;
+  gap: 2em;
 }
 
 .content {
   width: 100%;
   max-width: 36em;
+  min-width: 28em;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -33,10 +36,21 @@
   font-size: 2rem;
   color: var(--text-heading);
   font-weight: 600;
+  font-size: calc(1rem + 2vmax);
+}
+
+.description {
+  color: var(--text-sub-heading);
+  font-size: 1.4rem;
+  line-height: 1.5em;
+}
+
+.description span {
+  color: var(--text-sub-heading);
 }
 
 .features {
-  height: 1em;
+  height: 1.2em;
   overflow: hidden;
   display: inline-flex;
   flex-direction: column;
@@ -61,11 +75,11 @@
   }
   40%,
   60% {
-    transform: translateY(-1.2em);
+    transform: translateY(-1.7em);
   }
   80%,
   100% {
-    transform: translateY(-2.4em);
+    transform: translateY(-3.2em);
   }
 }
 
@@ -127,13 +141,18 @@
 }
 
 .btn_video img {
-  width: 1.6em;
+  width: 1.2em;
+  transition: all 100ms;
+}
+
+.btn_video_m img {
+  width: 1.2em;
   transition: all 100ms;
 }
 
 .btn_video_m:hover img,
 .btn_video:hover img {
-  width: 1.5em;
+  width: 1em;
 }
 
 .illustration {
@@ -148,28 +167,21 @@
   width: 100%;
 }
 
-@media screen and (max-width: 1280px) {
-  .content {
-    gap: 1em;
-  }
-
-  .title {
-    font-size: 1.6rem;
-  }
-}
-
 @media screen and (max-width: 900px) {
   .container {
-    padding: 2em 1em;
+    padding: 2em;
+    margin-bottom: 4em;
+    margin-top: 2em;
   }
 
   .wrapper {
     flex-direction: column;
-    gap: 2em;
+    gap: 4em;
   }
 
   .content {
     max-width: 30em;
+    min-width: unset;
   }
 
   .title {
@@ -178,9 +190,12 @@
     font-size: 2rem;
   }
 
+  .features {
+    text-align: left;
+  }
+
   .description {
     text-align: center;
-    color: var(--text-sub-heading);
   }
 
   .btns {
@@ -197,12 +212,24 @@
 }
 
 @media screen and (max-width: 540px) {
-  .content {
-    gap: 1em;
+  .container {
+    padding: 2em 1em;
   }
 
   .btn_explore,
   .btn_create {
     padding: 0.5em 2em;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .features {
+    text-align: center;
+    margin-left: 0;
+    margin-top: 0.25em;
+  }
+
+  .description {
+    font-size: 1rem;
   }
 }

@@ -313,7 +313,7 @@ const CollectionNFT = () => {
               nftDetails.owner === account ? (
                 <div className={classes.btns}>
                   <button
-                    onClick={() => history.push(`/marketplace/single-mint/list/${chainId}/${nftDetails.Id}`)}
+                    onClick={() => history.push(`/marketplace/1of1/list/${chainId}/${nftDetails.Id}`)}
                     className={classes.buy}
                   >
                     List

@@ -7,6 +7,7 @@ const DeletePrompt = () => {
   const { prompt, dispatch } = useContext(GenContext);
 
   const handleAccept = () => {
+    console.log("delete all-trait starts");
     dispatch(prompt);
     dispatch(setPrompt(null));
     dispatch(
@@ -20,6 +21,7 @@ const DeletePrompt = () => {
         type: "delete",
       })
     );
+    console.log("delete all-trait ends");
   };
 
   const handleReject = () => {

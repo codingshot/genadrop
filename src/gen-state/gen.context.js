@@ -59,7 +59,12 @@ const GenContextProvider = ({ children }) => {
     toggleCollectionNameModal,
     isUser,
     currentPlan,
+    proposedPlan,
+    upgradePlan,
+    actionProgress,
     minter,
+    toggleUpgradeModal,
+    searchContainer,
   } = state;
 
   return (
@@ -117,7 +122,12 @@ const GenContextProvider = ({ children }) => {
         toggleCollectionNameModal,
         isUser,
         currentPlan,
+        proposedPlan,
+        upgradePlan,
+        actionProgress,
         minter,
+        toggleUpgradeModal,
+        searchContainer,
         dispatch,
       }}
     >

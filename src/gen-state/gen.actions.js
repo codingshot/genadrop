@@ -336,7 +336,32 @@ export const setCurrentPlan = (plan) => ({
   payload: plan,
 });
 
+export const setProposedPlan = (plan) => ({
+  type: genActionTypes.SET_PROPOSED_PLAN,
+  payload: plan,
+});
+
+export const setUpgradePlan = (state) => ({
+  type: genActionTypes.SET_UPGRADE_PLAN,
+  payload: state,
+});
+
+export const setActionProgress = (state) => ({
+  type: genActionTypes.SET_ACTION_PROGRESS,
+  payload: state,
+});
+
 export const setMinter = (minter) => ({
   type: genActionTypes.SET_MINTER,
   payload: minter,
+});
+
+export const setToggleUpgradeModal = (state) => ({
+  type: genActionTypes.TOGGLE_UPGRADE_MODAL,
+  payload: state,
+});
+
+export const setSearchContainer = (val) => ({
+  type: genActionTypes.SET_SEARCH_cONTAINER,
+  payload: val,
 });

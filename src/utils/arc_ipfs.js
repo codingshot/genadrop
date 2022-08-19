@@ -105,14 +105,14 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 };
 
 const uploadToIpfs = async (nftFile, nftFileName, asset) => {
-  const fileCat = "image";
+  const fileCat = nftFile.type.split("/")[0];
 
   const nftFileNameSplit = nftFileName.split(".");
   const fileExt = nftFileNameSplit[1];
 
   const kvProperties = {
     url: nftFileNameSplit[0],
-    mimetype: `image/${fileExt}`,
+    mimetype: `${fileCat}/${fileExt}`,
   };
   const pinataMetadata = JSON.stringify({
     name: asset.name,
@@ -295,7 +295,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     dispatch(setLoader("asset uploaded, minting in progress"));
     try {
       const { assetID, txId } = await signTx(connector, [txn], dispatch);
-      await write.writeNft(account, undefined, assetID[0], price, false, null, null, mainnet, txId[0]);
+      await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
       // notification: asset minted
       return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
     } catch (error) {
@@ -747,7 +747,7 @@ export async function mintToAlgo(algoProps) {
         pinataMetadata: { name: "collection" },
       });
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-      await write.writeUserData(account, collectionUrl, fileName, assetID, price, description, mainnet, txId);
+      await write.writeUserData(account, collectionUrl, fileName, assetID, price || 0, description, mainnet, txId);
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
@@ -1088,6 +1088,38 @@ export async function mintToAurora(polyProps) {
   let tx;
 
   dispatch(setLoader("finalizing"));
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const ethNonce = await signer.getTransactionCount();
+    tx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully.",
+          type: "success",
+        })
+      );
+      return mainnet ? `https://aurorascan.dev/tx/${result.hash}` : `https://testnet.aurorascan.dev/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+
   try {
     tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
@@ -1102,7 +1134,12 @@ export async function mintToAurora(polyProps) {
     // );
   } catch (error) {
     dispatch(setLoader(""));
-    dispatch(setNotification(`${error.message}`));
+    dispatch(
+      setNotification({
+        message: `${error.message}`,
+        type: "error",
+      })
+    );
     return;
   }
   dispatch(setLoader(""));
@@ -1146,7 +1183,7 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
 
 export async function purchasePolygonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1189,7 +1226,7 @@ export async function purchasePolygonNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet ? `https://polygonscan.com/tx/${tx.hash}` : `https://mumbai.polygonscan.com/tx/${tx.hash}`;
   } catch (error) {
@@ -1203,9 +1240,9 @@ export async function purchasePolygonNfts(buyProps) {
   }
 }
 
-export async function purchaseAuroragonNfts(buyProps) {
+export async function purchaseAuroraNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   if (!connector) {
     return dispatch(
       setNotification({
@@ -1248,7 +1285,7 @@ export async function purchaseAuroragonNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
   } catch (error) {
@@ -1263,7 +1300,7 @@ export async function purchaseAuroragonNfts(buyProps) {
 }
 export async function purchaseCeloNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
-  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract, marketId: itemId } = nftDetails;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   console.log(buyProps);
   if (!connector) {
     return dispatch(
@@ -1307,7 +1344,7 @@ export async function purchaseCeloNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(Number(itemId), price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet
       ? `https://blockscout.celo.org/tx/${tx.hash}`

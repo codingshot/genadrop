@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import { setImageQuality, setOverlay, setMintAmount, setNftLayers, setNotification } from "../../gen-state/gen.actions";
+import { setImageQuality, setOverlay, setMintAmount, setToggleUpgradeModal } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
@@ -9,10 +9,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
 import { handleGenerate } from "./collection-description-script";
+import { plans } from "../../pages/Pricing/Pricing.script";
 
 const CollectionDescription = () => {
-  const { layers, nftLayers, mintAmount, dispatch, combinations, rule, isRule, collectionName, imageQuality } =
-    useContext(GenContext);
+  const {
+    layers,
+    nftLayers,
+    mintAmount,
+    dispatch,
+    combinations,
+    rule,
+    isRule,
+    collectionName,
+    imageQuality,
+    currentPlan,
+  } = useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
     selectInputValue: 0.5,
@@ -46,28 +57,10 @@ const CollectionDescription = () => {
   };
 
   const handleGenerateClick = () => {
-    if (!combinations)
-      return dispatch(
-        setNotification({
-          type: "warning",
-          message: "Upload assets and try again.",
-        })
-      );
-    if (amountInputValue <= "0")
-      return dispatch(
-        setNotification({
-          message: "Add valid amount to generate input",
-          type: "error",
-        })
-      );
-    if (amountInputValue > combinations)
-      return dispatch(
-        setNotification({
-          message: "Number of arts cannot be greater than the possible combinations",
-          type: "error",
-        })
-      );
-    dispatch(setNftLayers([]));
+    if (parseInt(amountInputValue) > Number(plans[currentPlan].amount)) {
+      dispatch(setToggleUpgradeModal(true));
+      return;
+    }
     dispatch(setMintAmount(parseInt(amountInputValue)));
     handleGenerate({ ...generateProps, mintAmount: parseInt(amountInputValue) });
   };
@@ -99,7 +92,7 @@ const CollectionDescription = () => {
       <div className={classes.combinations_amount}>
         <div className={classes.combinations}>
           <div className={classes.title}>
-            <span>Possible Combinations</span>
+            <span>Combinations</span>
             {/* <GenadropToolTip content={"The maximum number of arts the uploaded assets can generate"} fill="#3d3d3d" /> */}
           </div>
           <div className={classes.count}>{combinations - rule.length}</div>

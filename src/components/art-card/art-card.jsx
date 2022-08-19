@@ -38,6 +38,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
   };
 
   const handleRemove = () => {
+    console.log("delete trait starts");
     dispatch(removePreview({ layerId, layerTitle, imageName: traitTitle }));
     dispatch(removeImage({ layerId, layerTitle, traitTitle }));
     dispatch(
@@ -49,6 +50,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
         },
       })
     );
+    console.log("delete trait ends");
   };
 
   const handleChange = (event) => {

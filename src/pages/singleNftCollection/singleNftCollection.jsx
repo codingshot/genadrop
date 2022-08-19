@@ -63,6 +63,8 @@ const SingleNftCollection = () => {
 
   // get search result for all blockchains
   const searchHandler = (value) => {
+    value = value.trim().toLowerCase();
+    if (!value) return;
     handleSetState({ filter: { ...filter, searchValue: value } });
     const { search } = location;
     const chainParam = new URLSearchParams(search).get("chain");
@@ -73,7 +75,9 @@ const SingleNftCollection = () => {
     history.replace({ pathname: location.pathname, search: params.toString() });
     const collection = getCollectionByChain();
     if (!collection) return;
-    const filtered = collection.filter((col) => col.name.toLowerCase().includes(value.toLowerCase()));
+    const filtered = collection.filter(
+      (col) => col.name.toLowerCase().includes(value) || col.description.toLowerCase().includes(value)
+    );
     if (filtered.length) {
       handleSetState({ filteredCollection: filtered });
     } else {
@@ -93,7 +97,11 @@ const SingleNftCollection = () => {
     const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
     if (collection) {
       if (filter.searchValue) {
-        const filtered = collection.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
+        const filtered = collection.filter(
+          (col) =>
+            col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
+            col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
+        );
         if (filtered.length) {
           handleSetState({ filteredCollection: filtered });
         } else {
@@ -148,7 +156,11 @@ const SingleNftCollection = () => {
     if (name) {
       handleSetState({ filter: { ...filter, searchValue: name } });
     }
-    const filtered = collection?.filter((col) => col.name.toLowerCase().includes(name ? name.toLowerCase() : ""));
+    const filtered = collection?.filter(
+      (col) =>
+        col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
+        col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
+    );
     if (singleAlgoNftsArr || singleAuroraNfts) {
       handleSetState({ filteredCollection: filtered });
     } else {

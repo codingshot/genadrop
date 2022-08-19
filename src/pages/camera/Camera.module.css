@@ -1,0 +1,13 @@
+.container {
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 2em 1em;
+  padding-bottom: 6em;
+  z-index: 10;
+}
