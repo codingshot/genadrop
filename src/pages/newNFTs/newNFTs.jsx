@@ -1,26 +1,24 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useHistory, useLocation } from "react-router-dom";
-import classes from "./collections.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
-import { GenContext } from "../../gen-state/gen.context";
+import { useHistory, useLocation } from "react-router-dom";
+import classes from "./newNFTs.module.css";
+import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import NotFound from "../../components/not-found/notFound";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
-import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import { GenContext } from "../../gen-state/gen.context";
 
-const Collections = ({ len }) => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, chainId } = useContext(GenContext);
-  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
+const NewNFTs = ({ len }) => {
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, chainId } = useContext(GenContext);
+  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const location = useLocation();
   const history = useHistory();
 
   const [state, setState] = useState({
+    togglePriceFilter: false,
+    toggleChainFilter: false,
     filteredCollection: [],
     celoCollection: null,
-    nearCollection: null,
     allChains: null,
     filter: {
       searchValue: "",
@@ -29,7 +27,7 @@ const Collections = ({ len }) => {
     },
   });
 
-  const { celoCollection, nearCollection, filter, filteredCollection } = state;
+  const { celoCollection, filter, filteredCollection } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -38,26 +36,22 @@ const Collections = ({ len }) => {
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
-        return !algoCollectionsArr && !polygonCollections && !celoCollections && !nearCollection && !auroraCollections
+        return !singleAlgoNftsArr && !singlePolygonNfts && !singleCeloNfts && !singleAuroraNfts
           ? null
           : [
-              ...(algoCollectionsArr || []),
-              ...(polygonCollections || []),
-              // ...(celoCollection || []),
-              ...(celoCollections || []),
-              ...(auroraCollections || []),
-              ...(nearCollection || []),
+              ...(singleAlgoNftsArr || []),
+              ...(singlePolygonNfts || []),
+              ...(singleCeloNfts || []),
+              ...(singleAuroraNfts || []),
             ];
       case "algorand":
-        return algoCollectionsArr;
+        return singleAlgoNftsArr;
       case "polygon":
-        return polygonCollections;
+        return singlePolygonNfts;
       case "celo":
-        return celoCollections;
-      case "near":
-        return nearCollection;
+        return singleCeloNfts;
       case "aurora":
-        return auroraCollections;
+        return singleAuroraNfts;
       default:
         break;
     }
@@ -123,7 +117,7 @@ const Collections = ({ len }) => {
     let sorted = [];
     if (filterProp === "high") {
       sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else if (filterProp === "low") {
+    } else if (filterProp == "low") {
       sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
       // } else if (filterProp === "txVolume") {
       //   sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
@@ -164,19 +158,19 @@ const Collections = ({ len }) => {
         col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
         col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
     );
-    if (algoCollectionsArr || auroraCollections || celoCollection || polygonCollections) {
+    if (singleAlgoNftsArr || singleAuroraNfts) {
       handleSetState({ filteredCollection: filtered });
     } else {
       handleSetState({ filteredCollection: null });
     }
     return null;
-  }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
+  }, [singleAlgoNfts, singlePolygonNfts, celoCollection, singleAuroraNfts]);
 
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         {/* <div className={classes.header}>
-          <h1>Collections</h1>
+          <h1>1 of 1s</h1>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={searchHandler} />
             <ChainDropdown onChainFilter={chainChange} />
@@ -189,9 +183,9 @@ const Collections = ({ len }) => {
               ? [
                   ...(filteredCollection || [])
                     ?.filter((_, idx) => idx < 12)
-                    .map((collection, idx) => <CollectionsCard key={idx} collection={collection} />),
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
                 ]
-              : filteredCollection.map((collection, idx) => <CollectionsCard key={idx} collection={collection} />)}
+              : filteredCollection.map((nft) => <NftCard key={nft.Id} nft={nft} listed />)}
           </div>
         ) : !filteredCollection && filter.searchValue ? (
           <NotFound />
@@ -205,7 +199,7 @@ const Collections = ({ len }) => {
                 <br />
                 <Skeleton count={1} height={30} />
                 <br />
-                <Skeleton count={1} height={30} />
+                <Skeleton count={1} height={30} />{" "}
               </div>
             ))}
           </div>
@@ -215,4 +209,4 @@ const Collections = ({ len }) => {
   );
 };
 
-export default Collections;
+export default NewNFTs;

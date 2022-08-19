@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  /* padding-top: 2em; */
+  padding-top: 2em;
   padding-bottom: 4em;
   background: var(--default);
 }
@@ -14,19 +14,6 @@
   background: var(--default);
 }
 
-.title {
-  padding-top: 1em;
-  font-size: 63px;
-  font-weight: 700;
-  color: var(--text-heading);
-  width: 20em;
-  text-align: center;
-}
-
-.subTitle {
-  font-size: 24px;
-}
-
 .innerContainer > input {
   display: none;
 }
@@ -34,35 +21,21 @@
 .header {
   width: 100%;
   margin-bottom: 2.5em;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.searchAndNavWrapper {
-  display: flex;
-  gap: 1.5em;
-  margin: 1.5em 0;
-}
-
-.search {
-  width: 40em;
+.header h1 {
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 1em;
 }
 
 .searchAndFilter {
+  width: 100%;
   display: flex;
-}
-
-.btn {
-  border: 1px solid var(--card-outline);
-  border-radius: 30px;
-  padding: 0.5em 2em;
-  margin-right: 1em;
-}
-
-.active {
-  border: 1px solid #1c1b1c1a;
-  background-color: var(--main-color);
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 1em;
+  margin-bottom: 0.5em;
 }
 
 .wrapper {

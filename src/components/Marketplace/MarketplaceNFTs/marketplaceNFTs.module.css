@@ -1,0 +1,65 @@
+.wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2em 0;
+}
+
+.header {
+  display: flex;
+  border-bottom: 1px solid var(--card-outline2);
+}
+
+.tab,
+.tabActive {
+  background-color: var(--tab-bg);
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--main-color);
+  padding: 0.3em 1em 0.1em 1em;
+  margin-right: 1.5em;
+  margin-bottom: 2px;
+}
+
+.tab {
+  border-radius: 10px;
+}
+
+.tab:hover,
+.tabActive:hover {
+  cursor: pointer;
+  color: var(--main-hovered);
+}
+.tabActive {
+  border-bottom: 5px solid;
+  border-radius: 10px 10px 0 0;
+}
+
+.circle {
+  position: relative;
+  top: -15px;
+}
+
+.renderAll {
+  display: flex;
+  flex-direction: column;
+}
+
+.more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.more span {
+  border: 2px solid var(--main-color);
+  border-radius: 50px;
+  padding: 1em;
+  width: 10em;
+  text-align: center;
+  color: var(--main-color);
+}
+
+.more span:hover {
+  color: var(--main-hovered);
+  cursor: pointer;
+}

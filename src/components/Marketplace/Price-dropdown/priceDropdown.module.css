@@ -6,7 +6,7 @@
 .priceDropdown {
   position: relative;
   width: 12em;
-  background: var(--default);
+  /* background: var(--default); */
   z-index: 10;
 }
 

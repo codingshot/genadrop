@@ -12,6 +12,8 @@
   --main-color: #0d99ff;
   --main-hovered: #0082e0;
   --main-light: #62bdff;
+  --main-light2: #0d99ff4d;
+
   --main-lighter: #dbf0ff;
   --main-lightest: #f3faff;
   --main-disable: #ccecff;
@@ -25,11 +27,13 @@
 
   --outline: #e5e8eb;
   --card-outline: #c4c4c4;
+  --card-outline2: #d8dbea;
   --outline-dark: #a4a9b6;
 
   --icon-color: #4b4b5a;
 
   --card-bg: #626277;
+  --tab-bg: #f7f9fd;
   --card-bg-light: #737387;
   --card-icon-color: #515164;
   --card-shade: #646a89;

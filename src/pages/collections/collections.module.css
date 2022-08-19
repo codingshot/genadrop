@@ -1,5 +1,5 @@
 .container {
-  padding: 1em;
+  /* padding: 1em; */
   padding-top: 2em;
   padding-bottom: 4em;
   background: var(--default);
@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 2em;
+  /* padding: 2em; */
   border-radius: 1em;
   background: var(--default);
 }

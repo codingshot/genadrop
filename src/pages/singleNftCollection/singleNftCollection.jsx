@@ -5,12 +5,14 @@ import { useHistory, useLocation } from "react-router-dom";
 import classes from "./singleNftCollection.module.css";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import NotFound from "../../components/not-found/notFound";
+import bannerImg from "../../assets/explore-banner2.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
+import Search from "../../components/Search/Search";
 
-const SingleNftCollection = () => {
+const SingleNftCollection = ({ len }) => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, chainId } = useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
@@ -28,9 +30,10 @@ const SingleNftCollection = () => {
       price: "low",
       chain: "All Chains",
     },
+    selected: "all",
   });
 
-  const { celoCollection, filter, filteredCollection } = state;
+  const { celoCollection, filter, filteredCollection, selected } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -169,27 +172,79 @@ const SingleNftCollection = () => {
     return null;
   }, [singleAlgoNfts, singlePolygonNfts, celoCollection, singleAuroraNfts]);
 
-  useEffect(() => {
-    window.localStorage.activeAlgoNft = null;
-    document.documentElement.scrollTop = 0;
-  }, []);
-
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
-        <div className={classes.header}>
-          <h1>1 of 1s</h1>
-          <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={searchHandler} />
+        <div className={classes.header} style={{ backgroundImage: `url(${bannerImg})` }}>
+          <div className={classes.title}>1 of 1s</div>
+          <div className={classes.subTitle}>View listed 1 of 1s (21,000 Listed)</div>
+          <div className={classes.searchAndNavWrapper}>
+            <div className={classes.search}>
+              <Search />
+            </div>
             <ChainDropdown onChainFilter={chainChange} />
             <PriceDropdown onPriceFilter={sortPrice} />
+          </div>
+          <div className={classes.searchAndFilter}>
+            <div
+              className={`${classes.btn} && ${selected === "" ? classes.active : ""}`}
+              onClick={() => {
+                handleSetState({ selected: "all" });
+              }}
+            >
+              All
+            </div>
+            <div
+              className={`${classes.btn} && ${selected === "" ? classes.active : ""}`}
+              onClick={() => {
+                handleSetState({ selected: "painting" });
+              }}
+            >
+              Painting
+            </div>
+            <div
+              className={`${classes.btn} && ${selected === "" ? classes.active : ""}`}
+              onClick={() => {
+                handleSetState({ selected: "shorts" });
+              }}
+            >
+              Shorts
+            </div>
+            <div
+              className={`${classes.btn} && ${selected === "" ? classes.active : ""}`}
+              onClick={() => {
+                handleSetState({ selected: "photography" });
+              }}
+            >
+              Photography
+            </div>
+            <div
+              className={`${classes.btn} && ${selected === "" ? classes.active : ""}`}
+              onClick={() => {
+                handleSetState({ selected: "Illustration" });
+              }}
+            >
+              Illustration
+            </div>
+            <div
+              className={`${classes.btn} && ${selected === "" ? classes.active : ""}`}
+              onClick={() => {
+                handleSetState({ selected: "3d" });
+              }}
+            >
+              3D
+            </div>
           </div>
         </div>
         {filteredCollection?.length ? (
           <div className={classes.wrapper}>
-            {filteredCollection.map((nft) => (
-              <NftCard key={nft.Id} nft={nft} listed />
-            ))}
+            {len
+              ? [
+                  ...(filteredCollection || [])
+                    ?.filter((_, idx) => idx < 12)
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
+                ]
+              : filteredCollection.map((nft) => <NftCard key={nft.Id} nft={nft} listed />)}
           </div>
         ) : !filteredCollection && filter.searchValue ? (
           <NotFound />

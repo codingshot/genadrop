@@ -7,7 +7,7 @@ import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
-import bannerImg from "../../../assets/sub-explore-banner.svg";
+import herImg from "../../../assets/her-img.svg";
 
 const FeautedNfts = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
@@ -88,7 +88,9 @@ const FeautedNfts = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <h3>Featured NFTs </h3>
+        <div className={classes.wrapper}>
+          <h3>Featured NFTs </h3>
+        </div>
         {/* <ChainDropdown onChainFilter={chainChange} /> */}
       </div>
 
@@ -111,11 +113,82 @@ const FeautedNfts = () => {
           ))
         )}
       </GenadropCarouselScreen>
-      <div>
-        <span className={classes.blueBox}>Feeds</span>
-        <img src="" alt="" />
-        <span>#215 Minority X H.E.R</span>
-        sold [<span>0x694c…7489</span> To <span>Onallee.algo</span> ]<span className={classes.time}>3 Minutes ago</span>
+      <div className={classes.wrapper}>
+        <div className={classes.feed}>
+          <div className={classes.left}>
+            <span className={classes.blueBox}>Feeds</span>
+            <img src={herImg} alt="" />
+            <span className={classes.blue}>#215 Minority X H.E.R</span>
+            sold [<span className={classes.blue}>0x694c…7489</span> To{" "}
+            <span className={classes.blue}>Onallee.algo</span> ]
+          </div>
+          <div className={classes.time}>3 Minutes ago</div>
+        </div>
+      </div>
+
+      <div className={classes.wrapper}>
+        <div className={classes.heading2}>
+          <h3>Popular Creators</h3>
+          <div className={classes.blueBtn}>View All</div>
+        </div>
+        <div className={classes.creators}>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+          <div className={classes.creator}>
+            <img src={herImg} alt="" />
+            <div className={classes.creatorDetails}>
+              <div className={classes.creatorName}>Amichael.algo</div>
+              <div className={classes.dropedNfts}>710 NFT Drops</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
