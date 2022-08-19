@@ -58,6 +58,13 @@
   font-size: 1rem;
 }
 
+.collectionName label {
+  max-width: 14em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .collectionName input::placeholder {
   color: var(--text-placeholder-light);
 }

@@ -14,7 +14,6 @@ import {
   setLayers,
   setNftLayers,
   setOverlay,
-  setPreNftLayers,
   setSession,
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
@@ -32,7 +31,6 @@ const Session = () => {
   const [noResult, toggleNotResult] = useState(null);
 
   const { dispatch, currentUser, sessions, isUser, currentPlan } = useContext(GenContext);
-
   const handleLoad = async (sessionId, plan) => {
     console.log("fetch starts");
     handleResetCreate({ dispatch });
@@ -42,7 +40,6 @@ const Session = () => {
       dispatch(setCurrentPlan(plan));
       dispatch(setLayers(res.layers));
       dispatch(setNftLayers(res.nftLayers));
-      dispatch(setPreNftLayers(res.preNftLayers));
       dispatch(setCollectionName(res.collectionName));
       dispatch(addRule(res.rules));
       dispatch(setCurrentSession(sessionId));
@@ -67,7 +64,6 @@ const Session = () => {
       toggleNotResult("true");
       dispatch(setCurrentPlan("free"));
       if (currentPlan !== "free") {
-        console.log("reset");
         handleResetCreate({ dispatch });
       }
     }
@@ -80,10 +76,10 @@ const Session = () => {
     history.push("/create/session/pricing");
   };
 
-  const handleUpgrade = () => {
-    dispatch(setUpgradePlan(true));
-    history.push("/create/session/pricing");
-  };
+  // const handleUpgrade = () => {
+  //   dispatch(setUpgradePlan(true));
+  //   history.push("/create/session/pricing");
+  // };
 
   const handleDropdown = (id) => {
     if (id === dropdownId) return setDropdown(-1);
@@ -114,6 +110,7 @@ const Session = () => {
     getCurrentUser({ dispatch });
   }, []);
 
+  // return null
   return (
     <div className={classes.container}>
       <div onClick={() => history.goBack()} className={classes.backBtnContainer}>
@@ -161,7 +158,7 @@ const Session = () => {
                       <div className={`${classes.sessionDropdown} ${dropdownId === idx && classes.active}`}>
                         <div className={classes.cost}>
                           <div className={classes.title}>cost per session</div>
-                          {/* <div className={classes.amount}>${plans[session.currentPlan].price}</div> */}
+                          <div className={classes.amount}>${plans[session.currentPlan].price}</div>
                         </div>
                         <div className={classes.services}>
                           {plans[session.currentPlan].services.map(({ name, available }, idx) => (
@@ -175,9 +172,9 @@ const Session = () => {
                             </div>
                           ))}
                         </div>
-                        <div className={classes.upgradeBtnContainer}>
+                        {/* <div className={classes.upgradeBtnContainer}>
                           <button onClick={handleUpgrade}>Upgrade plan</button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ))}

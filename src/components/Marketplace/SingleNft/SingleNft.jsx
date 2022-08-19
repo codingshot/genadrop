@@ -26,7 +26,7 @@ const SingleNft = () => {
           <h3>1 of 1s</h3>
           {/* <DateFilter /> */}
         </div>
-        <button type="button" onClick={() => history.push(`${url}/single-mint`)}>
+        <button type="button" onClick={() => history.push(`${url}/1of1`)}>
           view all
         </button>
       </div>

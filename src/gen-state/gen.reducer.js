@@ -19,7 +19,6 @@ export const INITIAL_STATE = {
   layers: [],
   preview: [],
   nftLayers: [],
-  preNftLayers: [],
   combinations: 0,
   mintAmount: 0,
   outputFormat: "ipfs",
@@ -87,8 +86,10 @@ export const INITIAL_STATE = {
   },
   isUser: "", // true false null,
   currentPlan: "free",
+  proposedPlan: "",
   minter: "",
   toggleUpgradeModal: "",
+  searchContainer: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -172,11 +173,6 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mintAmount: action.payload,
-      };
-    case genActionTypes.SET_PRE_NFT_LAYERS:
-      return {
-        ...state,
-        preNftLayers: action.payload,
       };
     case genActionTypes.SET_NFT_LAYERS:
       return {
@@ -440,6 +436,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         currentPlan: action.payload,
       };
+    case genActionTypes.SET_PROPOSED_PLAN:
+      return {
+        ...state,
+        proposedPlan: action.payload,
+      };
     case genActionTypes.SET_UPGRADE_PLAN:
       return {
         ...state,
@@ -459,6 +460,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         toggleUpgradeModal: action.payload,
+      };
+    case genActionTypes.SET_SEARCH_cONTAINER:
+      return {
+        ...state,
+        searchContainer: { ...state.searchContainer, ...action.payload },
       };
     default:
       return state;

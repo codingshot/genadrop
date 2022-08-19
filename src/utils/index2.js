@@ -139,7 +139,16 @@ ${i + 1} of ${value.length}`
 
 // eslint-disable-next-line consistent-return
 export const handleDownload = async (input) => {
-  const { value, dispatch, setZip, setNotification, name } = input;
+  const { value, dispatch, setZip, setNotification, name, currentPlan } = input;
+  if (currentPlan === "free") {
+    dispatch(
+      setNotification({
+        type: "error",
+        message: "This feature is not available on the free plan",
+      })
+    );
+    return;
+  }
   if (!name) {
     return dispatch(
       setNotification({

@@ -42,7 +42,7 @@ export const plans = {
     amount: "2000",
     description: "Up to 2,000 unique art generation",
     coveredCost: "Cost per collection",
-    price: "99.99",
+    price: "100",
     subscription: "Upgrade",
     services: [
       {
@@ -80,7 +80,7 @@ export const plans = {
     amount: "5000",
     description: "Up to 5,000 unique art generation",
     coveredCost: "Cost per collection",
-    price: "199.99",
+    price: "200",
     subscription: "Upgrade",
     mostPopular: true,
     services: [
@@ -119,7 +119,7 @@ export const plans = {
     amount: "10000",
     description: "Up to ,10000 unique art generation",
     coveredCost: "Cost per collection",
-    price: "299.99",
+    price: "300",
     subscription: "Upgrade",
     services: [
       {

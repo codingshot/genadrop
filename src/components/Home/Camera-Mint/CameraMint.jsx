@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import classes from "./CameraMint.module.css";
-import { ReactComponent as WebcamBG } from "../../../assets/home-webcam.svg";
+import webcamBG from "../../../assets/home-webcam.svg";
 
 const CameraMint = () => {
   return (
@@ -14,7 +14,7 @@ const CameraMint = () => {
         <Link to="/mint/camera" className={classes.btn}>
           Take a photo
         </Link>
-        <WebcamBG />
+        <img src={webcamBG} loading="lazy" alt="" />
       </div>
     </div>
   );

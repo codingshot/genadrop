@@ -78,11 +78,6 @@ export const setNftLayers = (layers) => ({
   payload: layers,
 });
 
-export const setPreNftLayers = (layers) => ({
-  type: genActionTypes.SET_PRE_NFT_LAYERS,
-  payload: layers,
-});
-
 export const setCombinations = (val) => ({
   type: genActionTypes.SET_COMBINATIONS,
   payload: val,
@@ -341,6 +336,11 @@ export const setCurrentPlan = (plan) => ({
   payload: plan,
 });
 
+export const setProposedPlan = (plan) => ({
+  type: genActionTypes.SET_PROPOSED_PLAN,
+  payload: plan,
+});
+
 export const setUpgradePlan = (state) => ({
   type: genActionTypes.SET_UPGRADE_PLAN,
   payload: state,
@@ -359,4 +359,9 @@ export const setMinter = (minter) => ({
 export const setToggleUpgradeModal = (state) => ({
   type: genActionTypes.TOGGLE_UPGRADE_MODAL,
   payload: state,
+});
+
+export const setSearchContainer = (val) => ({
+  type: genActionTypes.SET_SEARCH_cONTAINER,
+  payload: val,
 });

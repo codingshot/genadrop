@@ -74,32 +74,24 @@
 
 .methodContainer {
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   gap: 2em;
 }
 
-.paymentMethod {
-  border: 1px solid var(--outline);
-  width: 12em;
+.stripeBtn {
+  border: 1px solid var(--main-color);
+  width: 10em;
+  border-radius: 0.5em;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1em;
-  border-radius: 0.5em;
-  padding: 0.5em;
   cursor: pointer;
-  transition: all 300ms;
 }
 
-.paymentMethod:hover {
-  box-shadow: var(--shadow-light);
-}
-
-.paymentMethod.active {
-  border: 1px solid var(--main-color);
-  box-shadow: none;
+.stripeIcon {
+  width: auto;
+  height: 1.5em;
 }
 
 .content button {
@@ -133,14 +125,6 @@
   .content h1 {
     font-size: 1.5rem;
   }
-
-  .paymentMethod {
-    width: 10em;
-  }
-
-  .paymentMethod img {
-    width: 6em;
-  }
 }
 
 @media screen and (max-width: 480px) {
@@ -155,13 +139,5 @@
 
   .content h1 {
     font-size: 1.2rem;
-  }
-
-  .paymentMethod {
-    width: 6em;
-  }
-
-  .paymentMethod img {
-    width: 4em;
   }
 }

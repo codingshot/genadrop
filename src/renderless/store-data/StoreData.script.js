@@ -67,13 +67,6 @@ export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) 
   }
 };
 
-export const savePreNftLayers = ({ currentUser, sessionId, preNftLayers }) => {
-  if (currentUser && sessionId) {
-    const docRef = doc(firestore, `users/${currentUser.uid}/preNftLayers/${sessionId}`);
-    setDoc(docRef, { preNftLayers });
-  }
-};
-
 export const saveTraits = async ({ dispatch, currentUser, sessionId, id, traits }) => {
   if (!traits.length) return;
   if (currentUser && sessionId) {
@@ -237,18 +230,6 @@ export const fetchNftLayers = async ({ currentUser, sessionId }) => {
   }
 };
 
-export const fetchPreNftLayers = async ({ currentUser, sessionId }) => {
-  if (currentUser && sessionId) {
-    const querySnapshot = query(doc(firestore, `users/${currentUser.uid}/preNftLayers/${sessionId}`));
-    const docSnapshot = await getDoc(querySnapshot);
-    if (docSnapshot.exists()) {
-      return docSnapshot.data();
-    } else {
-      console.log("preNftLayers does not exist");
-    }
-  }
-};
-
 export const fetchTraits = async ({ currentUser, sessionId }) => {
   if (currentUser && sessionId) {
     const listRef = ref(storage, `${currentUser.uid}/${sessionId}/`);
@@ -352,29 +333,28 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
       fetchCollectionName({ currentUser, sessionId }),
       fetchLayers({ currentUser, sessionId }),
       fetchNftLayers({ currentUser, sessionId }),
-      fetchPreNftLayers({ currentUser, sessionId }),
       fetchRules({ currentUser, sessionId }),
       fetchTraits({ currentUser, sessionId }),
       fetchNftTraits({ currentUser, sessionId }),
     ]);
-    const [
+    const [storedCollectionName, storedLayers, storedNftLayers, storedRules, storedTraits, storedNftTraits] = result;
+    console.log({
       storedCollectionName,
       storedLayers,
       storedNftLayers,
-      storedPreNftLayers,
       storedRules,
       storedTraits,
       storedNftTraits,
-    ] = result;
+    });
+    let newCollectionName = "New Collection";
+    if (storedCollectionName) {
+      newCollectionName = storedCollectionName.collectionName;
+    }
 
-    const transformedTraits = await transfromTraits(storedTraits);
-    const newLayers = constructLayers({ storedLayers, transformedTraits });
-    let preNftLayers = [];
-    if (storedPreNftLayers) {
-      let startTime = performance.now();
-      preNftLayers = constructPreNftLayers({ newLayers, storedPreNftLayers });
-      let endTime = performance.now();
-      console.log(`Call to fetch preNftLayers collection took ${(endTime - startTime) / 1000} seconds`);
+    let newLayers = [];
+    if (storedLayers) {
+      const transformedTraits = await transfromTraits(storedTraits);
+      newLayers = constructLayers({ storedLayers, transformedTraits });
     }
 
     let newNftLayers = [];
@@ -395,12 +375,12 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
         console.log({ error });
       }
     }
+
     return {
-      preNftLayers,
       rules: newRules,
       layers: newLayers,
       nftLayers: newNftLayers,
-      collectionName: storedCollectionName.collectionName,
+      collectionName: newCollectionName,
     };
   } catch (error) {
     console.log(error);
@@ -429,29 +409,6 @@ export const constructNftLayers = ({ storedNftLayers, transformedNftTraits }) =>
   return storedNftLayers.nftLayers.map(({ id, image, ...otherLayerProps }) => {
     const file = transformedNftTraits[id];
     return { id, image: file, ...otherLayerProps };
-  });
-};
-
-export const constructPreNftLayers = ({ newLayers, storedPreNftLayers }) => {
-  const mapLayersToObj = () => {
-    const mapedLayers = {};
-    newLayers.forEach((layer) => (mapedLayers[layer.id] = layer));
-    return mapedLayers;
-  };
-  const layers = mapLayersToObj();
-  return storedPreNftLayers.preNftLayers.map(({ attributes, ...otherLayerProps }) => {
-    const newAttributes = attributes.map(({ id, image, imageName, ...otherAttrProps }) => {
-      let { traits } = layers[id];
-      let imageFile = null;
-      for (let { traitTitle, image } of traits) {
-        if (traitTitle === imageName) {
-          imageFile = image;
-          break;
-        }
-      }
-      return { image: imageFile, imageName, ...otherAttrProps };
-    });
-    return { attributes: newAttributes, ...otherLayerProps };
   });
 };
 

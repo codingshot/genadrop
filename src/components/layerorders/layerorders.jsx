@@ -120,7 +120,7 @@ const LayerOrders = ({ isCreateModal }) => {
               />
             </form>
           ) : (
-            <div>{collectionName}</div>
+            <label>{collectionName}</label>
           )}
 
           <div className={classes.editBtn}>

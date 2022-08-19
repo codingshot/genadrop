@@ -2,6 +2,7 @@
 // OpenZeppelin Contracts v4.3.2 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
+import "./Initializable.sol";
 
 /**
  * @dev Provides information about the current execution context, including the
@@ -13,7 +14,12 @@ pragma solidity ^0.8.0;
  *
  * This contract is only required for intermediate, library-like contracts.
  */
-abstract contract Context {
+abstract contract ContextUpgradeable is Initializable {
+    function __Context_init() internal onlyInitializing {
+    }
+
+    function __Context_init_unchained() internal onlyInitializing {
+    }
     function _msgSender() internal view virtual returns (address) {
         return msg.sender;
     }
@@ -21,4 +27,6 @@ abstract contract Context {
     function _msgData() internal view virtual returns (bytes calldata) {
         return msg.data;
     }
+
+    uint256[50] private __gap;
 }

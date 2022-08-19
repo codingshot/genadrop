@@ -5,16 +5,20 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 1em;
+  padding: 0 4em;
   overflow: hidden;
 }
+
+.container * {
+  transition: max-width 300ms;
+}
+
 .heading {
   width: 100%;
   text-align: center;
-  margin-bottom: 0.5em;
   font-size: 2.5rem;
   font-weight: 500;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   color: var(--text-heading);
 }
 
@@ -30,7 +34,9 @@
   margin-bottom: 3em;
   font-size: 1.2rem;
   color: var(--text-sub-heading);
+  line-height: 1.5em;
 }
+
 .wrapper {
   width: 100%;
   max-width: 1280px;
@@ -40,11 +46,13 @@
   flex-direction: column;
   gap: 3em;
 }
-.wrapper svg {
+
+.wrapper img {
   width: 100%;
   height: 100%;
-  max-width: 1024px;
+  max-width: 48em;
 }
+
 .btn {
   color: var(--text-dark-900-main-hovered);
   background: var(--main-color);
@@ -55,6 +63,7 @@
   cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
+
 .btn:hover {
   background: var(--main-hovered);
 }
@@ -63,6 +72,7 @@
   .heading {
     font-size: calc(1rem + 2vmin);
   }
+
   .description {
     font-size: 1rem;
   }
@@ -70,6 +80,7 @@
 
 @media screen and (max-width: 900px) {
   .container {
+    padding: 0 2em;
     margin-bottom: 4em;
   }
 }
