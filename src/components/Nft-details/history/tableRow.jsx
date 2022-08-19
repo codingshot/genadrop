@@ -39,8 +39,12 @@ const TableRow = (data) => {
   }, []);
   const icons = [saleIcon, transferIcon, mintIcon];
   const getDate = () => {
+    let newDate = data.date.seconds;
+    if (!newDate) {
+      newDate = data.date;
+    }
     let now = new Date();
-    let date = new Date(data.date.seconds * 1000);
+    let date = new Date(newDate * 1000);
     let diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
     if (diff < 0.04) return parseInt(diff * 24 * 60) + " mins ago";
     else if (diff < 1) return parseInt(diff * 24) + " hours ago";
