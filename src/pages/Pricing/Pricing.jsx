@@ -16,9 +16,7 @@ const Pricing = () => {
   const [price, setPrice] = useState(0);
 
   const { dispatch, currentPlan, upgradePlan, collectionName } = useContext(GenContext);
-
   const handlePlan = (plan, price) => {
-    console.log({ plan, price, upgradePlan });
     if (price) {
       if (upgradePlan) {
         if (currentPlan === "hobby" && plan === "pro") {
@@ -30,10 +28,11 @@ const Pricing = () => {
         } else {
           setPlan(plan);
         }
+        setPrice(price - Number(plans[currentPlan].price));
       } else {
+        setPrice(price);
         setPlan(plan);
       }
-      setPrice(price - Number(plans[currentPlan].price));
       dispatch(setProposedPlan(plan));
     } else {
       handleResetCreate({ dispatch });
@@ -56,7 +55,7 @@ const Pricing = () => {
   };
 
   const closeModal = () => {
-    setPlan(0);
+    setPlan("");
   };
 
   useEffect(() => {

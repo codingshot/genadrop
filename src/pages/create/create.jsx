@@ -69,17 +69,6 @@ const Create = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    const save = async () => {
-      if (collectionName && sessionId && currentPlan && currentUser) {
-        const res = await saveSession({ currentUser, sessionId, collectionName, currentPlan });
-        if (!res) return; // showNotification
-        dispatch(setUpgradePlan(false));
-      }
-    };
-    save();
-  }, [collectionName, sessionId, currentPlan]);
-
-  useEffect(() => {
     let width = collectionNameRef.current.offsetWidth;
     setNameWidth(width / 16);
   }, [collectionName]);

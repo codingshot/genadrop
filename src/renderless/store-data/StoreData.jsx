@@ -42,7 +42,6 @@ const StoreData = () => {
     if (type !== "name") return;
     saveCollectionName({ currentUser, sessionId, collectionName });
     resetLayerAction();
-    console.log("saving name...");
   }, [layerAction, currentUser, sessionId, collectionName]);
 
   useEffect(() => {
@@ -62,7 +61,6 @@ const StoreData = () => {
     if (location.pathname === "/create" && type !== "rule") {
       dispatch(setNftLayers([]));
     }
-    console.log("saving layers...");
     resetLayerAction();
   }, [layerAction, imageAction, layers, currentUser, sessionId]);
 
@@ -75,7 +73,6 @@ const StoreData = () => {
       return { image: "", id, attributes, ...otherLayerProps };
     });
     saveNftLayers({ currentUser, sessionId, nftLayers: newNftLayers, nftTraits });
-    console.log("saving nftLayers....");
     resetLayerAction();
   }, [layerAction, nftLayers, currentUser, sessionId]);
 
@@ -137,7 +134,6 @@ const StoreData = () => {
 
     let strRules = JSON.stringify(newRules);
     saveRules({ currentUser, sessionId, rules: strRules });
-    console.log("saving rule...");
     resetLayerAction();
   }, [layerAction, currentUser, sessionId, rule]);
 

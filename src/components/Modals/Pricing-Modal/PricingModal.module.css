@@ -79,13 +79,14 @@
   gap: 2em;
 }
 
-.paymentMethod {
+.stripeBtn {
   border: 1px solid var(--main-color);
   width: 10em;
   border-radius: 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .stripeIcon {

@@ -338,9 +338,25 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
       fetchNftTraits({ currentUser, sessionId }),
     ]);
     const [storedCollectionName, storedLayers, storedNftLayers, storedRules, storedTraits, storedNftTraits] = result;
+    console.log({
+      storedCollectionName,
+      storedLayers,
+      storedNftLayers,
+      storedRules,
+      storedTraits,
+      storedNftTraits,
+    });
+    let newCollectionName = "New Collection";
+    if (storedCollectionName) {
+      newCollectionName = storedCollectionName.collectionName;
+    }
 
-    const transformedTraits = await transfromTraits(storedTraits);
-    const newLayers = constructLayers({ storedLayers, transformedTraits });
+    let newLayers = [];
+    if (storedLayers) {
+      const transformedTraits = await transfromTraits(storedTraits);
+      newLayers = constructLayers({ storedLayers, transformedTraits });
+    }
+
     let newNftLayers = [];
     if (storedNftLayers) {
       let startTime = performance.now();
@@ -359,11 +375,12 @@ export const fetchUserSession = async ({ currentUser, sessionId }) => {
         console.log({ error });
       }
     }
+
     return {
       rules: newRules,
       layers: newLayers,
       nftLayers: newNftLayers,
-      collectionName: storedCollectionName.collectionName,
+      collectionName: newCollectionName,
     };
   } catch (error) {
     console.log(error);
