@@ -7,6 +7,7 @@
 .header {
   display: flex;
   border-bottom: 1px solid var(--card-outline2);
+  margin-bottom: 1em;
 }
 
 .tab,
@@ -62,4 +63,22 @@
 .more span:hover {
   color: var(--main-hovered);
   cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  .tab {
+    font-size: 20px;
+  }
+  .circle {
+    width: 10px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 680px) {
+}
+
+@media screen and (max-width: 480px) {
 }

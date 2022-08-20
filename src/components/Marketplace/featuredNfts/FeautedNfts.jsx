@@ -6,8 +6,8 @@ import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
-import ChainDropdown from "../Chain-dropdown/chainDropdown";
-import herImg from "../../../assets/her-img.svg";
+
+import { readUserProfile } from "../../../utils/firebase";
 
 const FeautedNfts = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
@@ -33,6 +33,10 @@ const FeautedNfts = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  function breakAddress(address = "", width = 6) {
+    if (!address) return "--";
+    return `${address.slice(0, width)}...${address.slice(-width)}`;
+  }
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
@@ -61,20 +65,15 @@ const FeautedNfts = () => {
     return null;
   };
 
-  const chainChange = (value) => {
-    handleSetState({ filter: { ...filter, chain: value } });
-    const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
-    if (collection) {
-      handleSetState({ filteredCollection: collection });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-    handleSetState({ init: !init });
-  };
+  async function getUsername(account) {
+    const data = await readUserProfile(account);
 
+    return data.username;
+  }
   useEffect(() => {
-    const collection = getCollectionByChain(filter.chain);
+    const collection = getCollectionByChain(filter.chain).sort((a, b) => a.createdAt - b.createdAt);
     if (collection) {
+      console.log("collect", collection);
       handleSetState({ filteredCollection: collection });
     } else {
       handleSetState({ filteredCollection: null });
@@ -117,10 +116,12 @@ const FeautedNfts = () => {
         <div className={classes.feed}>
           <div className={classes.left}>
             <span className={classes.blueBox}>Feeds</span>
-            <img src={herImg} alt="" />
-            <span className={classes.blue}>#215 Minority X H.E.R</span>
-            sold [<span className={classes.blue}>0x694c…7489</span> To{" "}
-            <span className={classes.blue}>Onallee.algo</span> ]
+            <img className={classes.newestNft} src={filteredCollection[0]?.image_url} alt="" />
+            <span className={classes.address}>
+              <span className={classes.blue}>{filteredCollection[0]?.name}</span>
+              sold [<span className={classes.blue}>0x694c…7489</span> To{" "}
+              <span className={classes.blue}>Onallee.algo</span> ]
+            </span>
           </div>
           <div className={classes.time}>3 Minutes ago</div>
         </div>
@@ -132,62 +133,21 @@ const FeautedNfts = () => {
           <div className={classes.blueBtn}>View All</div>
         </div>
         <div className={classes.creators}>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
-          <div className={classes.creator}>
-            <img src={herImg} alt="" />
-            <div className={classes.creatorDetails}>
-              <div className={classes.creatorName}>Amichael.algo</div>
-              <div className={classes.dropedNfts}>710 NFT Drops</div>
-            </div>
-          </div>
+          {[
+            ...(filteredCollection || [])
+              ?.filter((_, idx) => idx < 8)
+              .map((collection, idx) => {
+                return (
+                  <div className={classes.creator}>
+                    <img src={collection.image_url} className={classes.profile} alt="" />
+                    <div className={classes.creatorDetails}>
+                      <div className={classes.creatorName}>{breakAddress(collection.owner)}</div>
+                      <div className={classes.dropedNfts}>{collection.nfts.length} NFT Drops</div>
+                    </div>
+                  </div>
+                );
+              }),
+          ]}
         </div>
       </div>
     </div>

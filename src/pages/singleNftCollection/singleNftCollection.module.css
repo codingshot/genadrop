@@ -5,13 +5,15 @@
   background: var(--default);
 }
 
-.innerContainer {
+.wrapperContainer {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   /* padding: 2em; */
   border-radius: 1em;
-  background: var(--default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -33,16 +35,17 @@
 
 .header {
   width: 100%;
-  margin-bottom: 2.5em;
+  margin-bottom: 4em;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-size: cover;
 }
 
 .searchAndNavWrapper {
   display: flex;
   gap: 1.5em;
-  margin: 1.5em 0;
+  margin: 2em 0;
 }
 
 .search {
@@ -58,8 +61,13 @@
   border-radius: 30px;
   padding: 0.5em 2em;
   margin-right: 1em;
+  margin-bottom: 2em;
 }
 
+.btn:hover {
+  cursor: pointer;
+  color: var(--main-hovered);
+}
 .active {
   border: 1px solid #1c1b1c1a;
   background-color: var(--main-color);
@@ -91,10 +99,60 @@
   text-align: center;
   font-size: 1.2rem;
 }
+
+.pagination {
+  display: flex;
+  margin-top: 2em;
+}
+
+.pagination img {
+  margin: 0 1em;
+}
+
+.pagination img:hover {
+  cursor: pointer;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.right input {
+  width: 3em;
+  height: 2em;
+  padding: 1em;
+}
+
+.greyText {
+  color: var(--text-light);
+}
+
+.go {
+  color: var(--main-color);
+}
+
+.go:hover {
+  color: var(--main-hovered);
+  cursor: pointer;
+}
+
+.activePage {
+  border: 1px solid var(--main-color);
+  padding: 0.5em;
+  border-radius: 5px;
+}
+
 @media screen and (max-width: 1200px) {
   .wrapper,
   .skeleton {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  .wrapperContainer {
+    max-width: 1000px;
   }
 }
 
@@ -102,6 +160,14 @@
   .wrapper,
   .skeleton {
     grid-template-columns: repeat(3, 1fr);
+  }
+  .searchAndNavWrapper {
+    flex-direction: column;
+    gap: 0.5em;
+    align-items: center;
+  }
+  .searchAndFilter {
+    display: none;
   }
 }
 
@@ -124,12 +190,18 @@
 }
 
 @media screen and (max-width: 680px) {
-  .searchAndFilter {
+  .searchAndNavWrapper,
+  .pagination {
     flex-direction: column;
     gap: 0.5em;
+    align-items: center;
   }
 
-  .searchAndFilter > div {
+  .searchAndFilter {
+    display: none;
+  }
+  .searchAndFilter > div,
+  .search {
     width: 100%;
   }
 }

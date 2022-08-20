@@ -15,12 +15,13 @@
 
 .imageContainer {
   width: 100%;
-  padding: 0.2em;
+  padding: 0.5em;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 16em;
+  border-bottom: 1px solid var(--outline);
 }
 
 .creator {
@@ -58,13 +59,20 @@
 }
 
 .collectionName {
-  margin-bottom: 0.5em;
-  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chainIcon {
+  width: 2.5em;
 }
 .listPrice {
   margin-top: 15px;
 }
 .name {
+  background-color: var(--main-light);
+  border-radius: 8px;
+  padding: 0.3em 0.5em;
   margin-bottom: 1em;
   overflow: auto;
 }

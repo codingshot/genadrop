@@ -56,9 +56,13 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           />
         </div>
         <div className={classes.cardBody}>
-          <div className={classes.collectionName}>{collection_name}</div>
-          <div className={classes.name}>{name}</div>
-          <div className={classes.chainLogo} />
+          <div className={classes.collectionName}>
+            <div className={classes.name}>{name}</div>
+            <div>
+              <img className={classes.chainIcon} src={supportedChains[chain]?.icon} alt="" />
+            </div>
+          </div>
+
           <div className={classes.creator}>
             <img src={avatar} alt="" />
             {!fromDashboard ? (
@@ -79,7 +83,6 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
                 </div>
               ) : (
                 <div className={classes.price}>
-                  <img src={supportedChains[chain]?.icon} alt="" />
                   {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>
                   <span className={classes.usdPrice}>
                     ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} USD)

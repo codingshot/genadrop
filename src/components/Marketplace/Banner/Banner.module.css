@@ -246,6 +246,9 @@
     border-radius: 0.5em;
   }
 
+  .searchAndNavWrapper {
+    width: 100%;
+  }
   .title {
     font-size: 1.8rem;
   }
