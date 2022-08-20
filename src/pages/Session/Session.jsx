@@ -28,9 +28,9 @@ import { handleResetCreate } from "../../utils";
 const Session = () => {
   const history = useHistory();
   const [dropdownId, setDropdown] = useState(-1);
-  const [noResult, toggleNotResult] = useState(null);
+  const [noResult, toggleNoResult] = useState(null);
 
-  const { dispatch, currentUser, sessions, isUser, currentPlan } = useContext(GenContext);
+  const { dispatch, currentUser, sessions, currentPlan } = useContext(GenContext);
   const handleLoad = async (sessionId, plan) => {
     console.log("fetch starts");
     handleResetCreate({ dispatch });
@@ -61,8 +61,8 @@ const Session = () => {
     const sessions = await fetchSession({ currentUser });
     dispatch(setSession(sessions));
     if (!sessions.length) {
-      toggleNotResult("true");
-      dispatch(setCurrentPlan("free"));
+      toggleNoResult("true");
+      // dispatch(setCurrentPlan("free"));
       if (currentPlan !== "free") {
         handleResetCreate({ dispatch });
       }
@@ -93,10 +93,10 @@ const Session = () => {
         const sessions = await fetchSession({ currentUser });
         dispatch(setOverlay(false));
         if (sessions.length) {
-          toggleNotResult("false");
+          toggleNoResult("false");
           dispatch(setSession(sessions));
         } else {
-          toggleNotResult("true");
+          toggleNoResult("true");
         }
       } catch (error) {
         console.log(error);
@@ -106,7 +106,7 @@ const Session = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    if (isUser === "true") return;
+    if (currentUser) return;
     getCurrentUser({ dispatch });
   }, []);
 

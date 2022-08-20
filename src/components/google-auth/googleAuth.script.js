@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
-import { setCurrentUser, setIsUser, setNotification } from "../../gen-state/gen.actions";
+import { setCollectionName, setCurrentUser, setNotification } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
 
 const provider = new GoogleAuthProvider();
@@ -27,20 +27,20 @@ export const getCurrentUser = ({ dispatch }) => {
     if (user) {
       const { displayName, email, uid, photoURL } = user;
       dispatch(setCurrentUser({ displayName, email, uid, photoURL }));
-      dispatch(setIsUser("true"));
     } else {
-      dispatch(setIsUser("false"));
+      dispatch(setCurrentUser(null));
     }
   });
 };
 
-export const logOut = ({ history, dispatch }) => {
+export const logOut = ({ currentPlan, dispatch }) => {
   signOut(auth)
     .then(() => {
       dispatch(setCurrentUser(null));
-      handleResetCreate({ dispatch });
-      // dispatch(setIsUser(null));
-      history.push("/");
+      if (currentPlan !== "free") {
+        handleResetCreate({ dispatch });
+        dispatch(setCollectionName("New Collection"));
+      }
     })
     .catch((error) => {
       console.log(error);
