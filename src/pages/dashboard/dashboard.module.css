@@ -102,34 +102,92 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  background: url("../../assets/bg.png");
+  height: 25vw;
+  min-height: 10rem;
+  background-size: cover;
+  margin-bottom: 8rem;
 }
 
 .banner {
   width: 100%;
 }
-
-.imageContainer {
-  width: 10%;
-  border-radius: 50%;
-  position: absolute;
-  bottom: -1em;
-  object-fit: cover;
+.bannerWrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  padding: 0 2rem;
+  margin-top: auto;
+  margin-bottom: -8rem;
 }
-
+.bannerWrapper > div {
+  display: flex;
+}
+.bannerWrapper > a {
+  display: flex;
+  align-items: center;
+  padding-top: 4.5rem;
+  margin-left: auto;
+}
+.imageContainer {
+  border-radius: 50%;
+  object-fit: cover;
+  max-width: 12.5rem;
+  max-height: 12.5rem;
+  min-width: 6rem;
+  border: 5px solid #eeeff2;
+}
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  grid-gap: 1rem;
+  gap: 1rem;
+  padding-left: 1rem;
+  padding-top: 4.5rem;
+}
+.profileDetail {
+  display: flex;
+  gap: 1rem;
+}
+.social {
+  display: flex;
+}
+.social a {
+  display: flex;
+  align-items: center;
+}
 .socialIcon {
-  width: 2rem;
-  height: 2rem;
+  width: 100%;
+  height: 70%;
   margin-right: 5px;
 }
-
+.socialIcon path {
+  transition: 300ms ease;
+}
+.socialIcon:hover path {
+  fill: var(--main-hovered);
+}
+.address {
+  padding: 0.25em 0.5em;
+  background: #e9f2ff;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+}
+.address > div span {
+  color: #4b4b5a;
+}
 .editProfile {
   border: 1px solid var(--main-color);
-  background: var(--main-lightest);
-  color: var(--main-color);
-  padding: 0.5em 0.5em;
+  background: var(--default);
+  color: #000;
+  padding: 0.5em 2em;
   border-radius: 0.5em;
   transition: all 300ms;
   margin-bottom: 1em;
+  height: fit-content;
 }
 
 .editProfile:hover {
@@ -144,7 +202,7 @@
 }
 
 .username {
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 

@@ -170,7 +170,7 @@ const Profile = () => {
             </label>
             <input
               type="text"
-              value={discord}
+              value={`https://discord.com/users/${discord}`}
               name="discord"
               onChange={(event) => handleInputChange({ event, ...inputProps })}
             />

@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { ethers } from "ethers";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import Copy from "../../components/copy/copy";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
-import NftCard from "../../components/Marketplace/NftCard/NftCard";
+import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import { getUserNftCollections, getUserSingleNfts } from "../../utils";
+import { setNotification } from "../../gen-state/gen.actions";
 import {
   fetchUserBoughtNfts,
   fetchUserCollections,
@@ -14,26 +13,30 @@ import {
   fetchUserNfts,
   readUserProfile,
 } from "../../utils/firebase";
-import classes from "./dashboard.module.css";
-import avatar from "../../assets/avatar.png";
-import { ethers } from "ethers";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
-import NotFound from "../../components/not-found/notFound";
-import bg from "../../assets/bg.png"; // remove this when done!
-import twitter from "../../assets/icon-twitter-blue.svg";
-import discord from "../../assets/icon-discord-blue.svg";
-import instagram from "../../assets/icon-instagram-blue.svg";
-import youtube from "../../assets/icon-youtube-green.svg";
 import { celoClient, polygonClient } from "../../utils/graphqlClient";
 import { GET_USER_NFT } from "../../graphql/querries/getCollections";
-import { setNotification } from "../../gen-state/gen.actions";
 import {
   getCeloCollectedNFTs,
   getCeloUserCollections,
   getPolygonCollectedNFTs,
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
+// utils
+import Copy from "../../components/copy/copy";
+import { getUserNftCollections, getUserSingleNfts } from "../../utils";
+import supportedChains from "../../utils/supportedChains";
+// components
+import NftCard from "../../components/Marketplace/NftCard/NftCard";
+import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
+import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import NotFound from "../../components/not-found/notFound";
+// assets
+import avatar from "../../assets/avatar.png";
+import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
+import { ReactComponent as Twitter } from "../../assets/icon-twitter-blue.svg";
+import { ReactComponent as Discord } from "../../assets/icon-discord-blue.svg";
+import { ReactComponent as Instagram } from "../../assets/icon-instagram-blue.svg";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -198,50 +201,64 @@ const Dashboard = () => {
     <div className={classes.container}>
       {/* change background to dynamic */}
       <div className={classes.bannerContainer}>
-        <img src={bg} alt="" className={classes.banner} />
-        <img className={classes.imageContainer} src={avatar} alt="" />
+        {/* <img src={bg} alt="" className={classes.banner} /> */}
+        <div className={classes.bannerWrapper}>
+          <div>
+            <img className={classes.imageContainer} src={avatar} alt="" />
+            <div className={classes.profileHeader}>
+              <div className={classes.profileDetail}>
+                {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
+
+                <div className={classes.social}>
+                  {userDetails?.twitter ? (
+                    <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
+                      {" "}
+                      <Twitter className={classes.socialIcon} />
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                  {userDetails?.youtube ? (
+                    <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
+                      {" "}
+                      <Youtube className={classes.socialIcon} />
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                  {userDetails?.instagram ? (
+                    <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
+                      {" "}
+                      <Instagram className={classes.socialIcon} />
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                  {userDetails?.discord ? (
+                    <a href={`https://discord.com/users/${userDetails.discord}`} target="_blank" rel="noreferrer">
+                      {" "}
+                      <Discord className={classes.socialIcon} />
+                    </a>
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
+
+              <div className={classes.address}>
+                <img src={supportedChains[chainId]?.icon} alt="blockchain" />
+                <Copy message={account} placeholder={breakAddress(account)} />
+              </div>
+            </div>
+          </div>
+          <Link to={`${url}/profile/settings`}>
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
+        </div>
       </div>
 
       <div className={classes.wrapper}>
         <section className={classes.header}>
-          {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
-
-          <div className={classes.address}>
-            <Copy message={account} placeholder={breakAddress(account)} />
-          </div>
-
-          <div className={classes.social}>
-            {userDetails?.twitter ? (
-              <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
-                {" "}
-                <img src={twitter} alt="" className={classes.socialIcon} />{" "}
-              </a>
-            ) : (
-              ""
-            )}
-            {userDetails?.youtube ? (
-              <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
-                {" "}
-                <img src={youtube} alt="" className={classes.socialIcon} />{" "}
-              </a>
-            ) : (
-              ""
-            )}
-            {userDetails?.instagram ? (
-              <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
-                {" "}
-                <img src={instagram} alt="" className={classes.socialIcon} />{" "}
-              </a>
-            ) : (
-              ""
-            )}
-            {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
-          </div>
-
-          <Link to={`${url}/profile/settings`}>
-            <div className={classes.editProfile}>Edit Profile</div>
-          </Link>
-
           <div className={classes.details}>
             <div
               onClick={() => handleSetState({ activeDetail: "created" })}
