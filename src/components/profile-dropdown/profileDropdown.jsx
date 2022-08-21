@@ -21,7 +21,7 @@ const ProfileDropdown = ({ dropdown, setDropdown, userName }) => {
 
   const handleLogOut = () => {
     setDropdown(false);
-    logOut({ history, dispatch });
+    logOut({ currentPlan, dispatch });
   };
 
   return (

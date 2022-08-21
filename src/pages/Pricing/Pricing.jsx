@@ -36,7 +36,7 @@ const Pricing = () => {
       }
     } else {
       handleResetCreate({ dispatch });
-      dispatch(setCurrentPlan(plan));
+      // dispatch(setCurrentPlan(plan));
       history.push("/create");
     }
   };

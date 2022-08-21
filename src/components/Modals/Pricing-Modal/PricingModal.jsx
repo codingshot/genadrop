@@ -94,7 +94,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
   };
 
   const checkoutOptions = {
-    lineItems: [item["test"]], //replace test with plan. plan is a variable name
+    lineItems: [item[plan]], //replace test with plan. plan is a variable name
     mode: "payment",
     successUrl: `${window.location.origin}/create/session/create`,
     cancelUrl: `${window.location.origin}/create/session/pricing/failed`,
