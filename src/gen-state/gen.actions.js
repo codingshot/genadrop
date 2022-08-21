@@ -360,3 +360,8 @@ export const setSearchContainer = (val) => ({
   type: genActionTypes.SET_SEARCH_cONTAINER,
   payload: val,
 });
+
+export const setIsUser = (state) => ({
+  type: genActionTypes.SET_IS_USER,
+  payload: state,
+});

@@ -1,5 +1,5 @@
 import { GoogleAuthProvider, getAuth, signInWithPopup, onAuthStateChanged, signOut } from "firebase/auth";
-import { setCollectionName, setCurrentUser, setNotification } from "../../gen-state/gen.actions";
+import { setCollectionName, setCurrentUser, setIsUser, setNotification } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
 
 const provider = new GoogleAuthProvider();
@@ -27,8 +27,10 @@ export const getCurrentUser = ({ dispatch }) => {
     if (user) {
       const { displayName, email, uid, photoURL } = user;
       dispatch(setCurrentUser({ displayName, email, uid, photoURL }));
+      dispatch(setIsUser("true"));
     } else {
       dispatch(setCurrentUser(null));
+      dispatch(setIsUser("false"));
     }
   });
 };

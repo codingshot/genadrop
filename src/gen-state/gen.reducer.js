@@ -88,6 +88,7 @@ export const INITIAL_STATE = {
   minter: "",
   toggleUpgradeModal: "",
   searchContainer: null,
+  isUser: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -458,6 +459,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchContainer: { ...state.searchContainer, ...action.payload },
+      };
+    case genActionTypes.SET_IS_USER:
+      return {
+        ...state,
+        isUser: action.payload,
       };
     default:
       return state;

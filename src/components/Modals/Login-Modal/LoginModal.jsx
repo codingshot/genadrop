@@ -8,7 +8,7 @@ import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { setCollectionName } from "../../../gen-state/gen.actions";
 
 const LoginModal = () => {
-  const { dispatch, currentUser, collectionName } = useContext(GenContext);
+  const { dispatch, isUser, collectionName } = useContext(GenContext);
   const [toggleModal, setToggleModal] = useState(true);
 
   const handleSignIn = () => {
@@ -23,7 +23,7 @@ const LoginModal = () => {
   };
 
   return (
-    <div className={`${classes.container} ${!currentUser && toggleModal && classes.active}`}>
+    <div className={`${classes.container} ${isUser === "false" && toggleModal && classes.active}`}>
       <div className={classes.card}>
         <CloseIcon onClick={handleClose} className={classes.closeBtn} />
         <div className={classes.heading}>

@@ -34,7 +34,7 @@ const Create = () => {
   const [toggleGuide, setGuide] = useState(false);
   const [nameWidth, setNameWidth] = useState(0);
 
-  const { dispatch, currentUser, currentPlan, collectionName } = useContext(GenContext);
+  const { dispatch, isUser, currentUser, currentPlan, collectionName } = useContext(GenContext);
 
   const handleSample = () => {
     handleSampleLayers({ dispatch });
@@ -50,7 +50,7 @@ const Create = () => {
   };
 
   useEffect(() => {
-    if (!currentUser) return;
+    if (!currentUser || isUser === "true") return;
     const fetch = async () => {
       try {
         dispatch(setOverlay(true));
@@ -72,7 +72,7 @@ const Create = () => {
   useEffect(() => {
     let width = collectionNameRef.current.offsetWidth;
     setNameWidth(width / 16);
-  }, [collectionName]);
+  }, [collectionName, currentUser]);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
