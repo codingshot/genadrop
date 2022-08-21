@@ -46,7 +46,7 @@
   display: none;
   border: 1px solid var(--main-color);
   color: var(--main-color);
-  padding: 0.25em 2em;
+  padding: 0.25em 1em;
   border-radius: 2em;
   transition: all 300ms;
   cursor: pointer;
