@@ -22,6 +22,8 @@ import {
   setLayerAction,
   setImageAction,
   setNftLayers,
+  setActionProgress,
+  setCurrentPlan,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
 import { v4 as uuid } from "uuid";
@@ -764,6 +766,7 @@ export const handleResetCreate = ({ dispatch }) => {
   dispatch(clearRule());
   dispatch(setNftLayers([]));
   dispatch(setCurrentSession(null));
+  dispatch(setCurrentPlan("free"));
   dispatch(
     setLayerAction({
       type: "",
@@ -773,6 +776,12 @@ export const handleResetCreate = ({ dispatch }) => {
     setImageAction({
       type: "",
       value: {},
+    })
+  );
+  dispatch(
+    setActionProgress({
+      totalCount: 0,
+      resetCount: true,
     })
   );
 };
