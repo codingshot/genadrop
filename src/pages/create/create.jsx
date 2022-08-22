@@ -89,7 +89,7 @@ const Create = () => {
           onClick={() => signInWithGoogle({ dispatch })}
           className={`${classes.signIn} ${!currentUser && classes.active}`}
         >
-          sign in to auto-save
+          Sign in to auto-save
         </div>
         <div className={`${classes.profileContainer} ${currentUser && classes.active}`}>
           <div
