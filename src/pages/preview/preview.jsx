@@ -8,6 +8,7 @@ import Navbar from "./navbar/navbar";
 import SelectedGifArt from "./selected-gif-art/selectedGifArt";
 import PageControl from "./page-control/pageControl";
 import GifModal from "./gif-modal/gifModal";
+import SubscriptionNotification from "../../components/Subscription-Notification/SubscriptionNotification";
 
 const Preview = () => {
   const {
@@ -133,6 +134,7 @@ const Preview = () => {
 
   return (
     <div className={classes.wrapper}>
+      <SubscriptionNotification />
       <Navbar navbarProps={previewProps} />
       <div className={classes.container}>
         <Sidebar sidebarProps={previewProps} />

@@ -1,6 +1,7 @@
 /* eslint-disable no-await-in-loop */
 import fileDownload from "js-file-download";
 import JSZip from "jszip";
+import { setToggleUpgradeModal } from "../gen-state/gen.actions";
 
 export const getAweaveFormat = async (nftLayers, dispatch, setLoader) => {
   const clone = [];
@@ -141,12 +142,7 @@ ${i + 1} of ${value.length}`
 export const handleDownload = async (input) => {
   const { value, dispatch, setZip, setNotification, name, currentPlan } = input;
   if (currentPlan === "free") {
-    dispatch(
-      setNotification({
-        type: "error",
-        message: "This feature is not available on the free plan",
-      })
-    );
+    dispatch(setToggleUpgradeModal(true));
     return;
   }
   if (!name) {
