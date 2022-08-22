@@ -7,7 +7,7 @@ import PricingModal from "../../components/Modals/Pricing-Modal/PricingModal";
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
-import { setCurrentPlan, setProposedPlan } from "../../gen-state/gen.actions";
+import { setProposedPlan } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
 
 const Pricing = () => {
@@ -16,10 +16,9 @@ const Pricing = () => {
   const [price, setPrice] = useState(0);
 
   const { dispatch, currentPlan, upgradePlan, collectionName } = useContext(GenContext);
-
   const handlePlan = (plan, price) => {
-    console.log({ plan, price, upgradePlan });
     if (price) {
+      dispatch(setProposedPlan(plan));
       if (upgradePlan) {
         if (currentPlan === "hobby" && plan === "pro") {
           setPlan("hobbyToPro");
@@ -30,14 +29,14 @@ const Pricing = () => {
         } else {
           setPlan(plan);
         }
+        setPrice(price - Number(plans[currentPlan].price));
       } else {
+        setPrice(price);
         setPlan(plan);
       }
-      setPrice(price - Number(plans[currentPlan].price));
-      dispatch(setProposedPlan(plan));
     } else {
       handleResetCreate({ dispatch });
-      dispatch(setCurrentPlan(plan));
+      // dispatch(setCurrentPlan(plan));
       history.push("/create");
     }
   };
@@ -56,7 +55,7 @@ const Pricing = () => {
   };
 
   const closeModal = () => {
-    setPlan(0);
+    setPlan("");
   };
 
   useEffect(() => {

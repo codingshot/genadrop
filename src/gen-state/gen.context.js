@@ -57,7 +57,6 @@ const GenContextProvider = ({ children }) => {
     sessions,
     toggleSessionModal,
     toggleCollectionNameModal,
-    isUser,
     currentPlan,
     proposedPlan,
     upgradePlan,
@@ -65,6 +64,7 @@ const GenContextProvider = ({ children }) => {
     minter,
     toggleUpgradeModal,
     searchContainer,
+    isUser,
   } = state;
 
   return (
@@ -120,7 +120,6 @@ const GenContextProvider = ({ children }) => {
         sessions,
         toggleSessionModal,
         toggleCollectionNameModal,
-        isUser,
         currentPlan,
         proposedPlan,
         upgradePlan,
@@ -128,6 +127,7 @@ const GenContextProvider = ({ children }) => {
         minter,
         toggleUpgradeModal,
         searchContainer,
+        isUser,
         dispatch,
       }}
     >

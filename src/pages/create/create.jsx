@@ -14,7 +14,7 @@ import {
   setToggleSessionModal,
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
-import { fetchSession, saveSession } from "../../renderless/store-data/StoreData.script";
+import { fetchSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
 import CreateGuide from "../../components/create-guide/create-guide";
 import GoogleAuth from "../../components/google-auth/googleAuth";
@@ -25,6 +25,7 @@ import ProgressBar from "./Progress-Bar/ProgressBar";
 import { useRef } from "react";
 import { handleSampleLayers } from "../../components/menu/collection-menu-script";
 import LoginModal from "../../components/Modals/Login-Modal/LoginModal";
+import { signInWithGoogle } from "../../components/google-auth/googleAuth.script";
 
 const Create = () => {
   const collectionNameRef = useRef();
@@ -33,7 +34,7 @@ const Create = () => {
   const [toggleGuide, setGuide] = useState(false);
   const [nameWidth, setNameWidth] = useState(0);
 
-  const { isUser, dispatch, currentUser, currentPlan, sessionId, collectionName } = useContext(GenContext);
+  const { dispatch, isUser, currentUser, currentPlan, collectionName } = useContext(GenContext);
 
   const handleSample = () => {
     handleSampleLayers({ dispatch });
@@ -69,20 +70,9 @@ const Create = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    const save = async () => {
-      if (collectionName && sessionId && currentPlan && currentUser) {
-        const res = await saveSession({ currentUser, sessionId, collectionName, currentPlan });
-        if (!res) return; // showNotification
-        dispatch(setUpgradePlan(false));
-      }
-    };
-    save();
-  }, [collectionName, sessionId, currentPlan]);
-
-  useEffect(() => {
     let width = collectionNameRef.current.offsetWidth;
     setNameWidth(width / 16);
-  }, [collectionName]);
+  }, [collectionName, currentUser]);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -95,7 +85,13 @@ const Create = () => {
       <CollectionNameModal />
       <CreateGuide toggleGuide={toggleGuide} setGuide={setGuide} />
       <div className={classes.details}>
-        <div className={classes.profileContainer}>
+        <div
+          onClick={() => signInWithGoogle({ dispatch })}
+          className={`${classes.signIn} ${!currentUser && classes.active}`}
+        >
+          Sign in to auto-save
+        </div>
+        <div className={`${classes.profileContainer} ${currentUser && classes.active}`}>
           <div
             onMouseOver={() => toggleProfileDropdown(true)}
             onMouseOut={() => toggleProfileDropdown(false)}
