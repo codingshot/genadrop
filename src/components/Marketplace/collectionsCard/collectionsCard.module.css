@@ -109,6 +109,10 @@
   font-weight: bold;
 }
 
+.priceImg {
+  width: 25px;
+}
+
 .price img {
   transform: translateY(20%);
   margin-right: 10px;

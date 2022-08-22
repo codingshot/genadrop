@@ -11,6 +11,7 @@ import twitterIcon from "../../../assets/blue-twitter.svg";
 import facebookIcon from "../../../assets/blue-facebook.svg";
 import linktree from "../../../assets/linked-tree.svg";
 import {
+  auroraUserData,
   celoUserData,
   getCeloNFTToList,
   getPolygonNFTToList,
@@ -47,6 +48,13 @@ const Listed = () => {
         }
       } else if (chainId === 44787 || chainId === 42220) {
         const [nft] = await celoUserData(nftId);
+        if (!nft) history.push("/");
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+        });
+      } else if (chainId === 1313161555 || chainId === 1313161554) {
+        const [nft] = await auroraUserData(nftId);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

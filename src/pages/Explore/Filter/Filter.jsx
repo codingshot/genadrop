@@ -25,8 +25,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-  const capitalize = (arr) => arr.charAt(0).toUpperCase() + arr.slice(1); // Capitalize first letter of the word
+  const countOccurrences = (arr, val) => arr?.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const capitalize = (arr) => arr?.charAt(0)?.toUpperCase() + arr?.slice(1); // Capitalize first letter of the word
   const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
 
   const handleApplyPriceFilter = () => {

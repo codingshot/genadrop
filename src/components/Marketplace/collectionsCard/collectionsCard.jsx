@@ -34,7 +34,7 @@ const CollectionsCard = ({ collection, useWidth, fromDashboard }) => {
         <div className={classes.wrapper}>
           {price === "0" && !fromDashboard ? (
             <div className={classes.notListedWrap}>
-              <img src={supportedChains[chain]?.icon} alt="" />
+              <img className={classes.priceImg} src={supportedChains[chain]?.icon} alt="" />
               <div className={classes.notListed}>
                 <span>Not Listed</span>
               </div>

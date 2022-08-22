@@ -9,8 +9,9 @@ import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import { polygonClient } from "../../utils/graphqlClient";
 import { ethers } from "ethers";
 import algoIcon from "../../assets/icon-algo.svg";
-import { listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
+import { listAuroraNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
 import {
+  auroraUserData,
   celoUserData,
   getCeloNFTToList,
   getPolygonNFTToList,
@@ -82,6 +83,18 @@ const List = () => {
       } else {
         return history.push(`${nftId}/listed`);
       }
+    } else if (chainId === 1313161555 || chainId === 1313161554) {
+      const listNft = await listAuroraNft(listProps);
+      if (listNft.error) {
+        dispatch(
+          setNotification({
+            message: "Transaction failed",
+            type: "warning",
+          })
+        );
+      } else {
+        return history.push(`${nftId}/listed`);
+      }
     } else {
       console.log("RES: ", await listNft(nftDetails.Id, price, account));
       history.push(`${match.url}/listed`);
@@ -125,6 +138,24 @@ const List = () => {
         });
       } else if (chainId === 44787 || chainId === 42220) {
         const [nft] = await celoUserData(nftId);
+        if (nft === null) {
+          return (
+            dispatch(
+              setNotification({
+                message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
+                type: "warning",
+              })
+            ),
+            history.goBack()
+          );
+        }
+        handleSetState({
+          nftDetails: nft,
+          image_url: nft?.ipfs_data?.image,
+          isLoading: false,
+        });
+      } else if (chainId === 1313161555 || chainId === 1313161554) {
+        const [nft] = await auroraUserData(nftId);
         if (nft === null) {
           return (
             dispatch(
@@ -223,7 +254,7 @@ const List = () => {
                     <option value="Polygon">Polygon</option>
                   </select>
                 </div> */}
-                <img src={supportedChains[nftDetails?.chain].icon} alt="" />
+                <img className={classes.icon} src={supportedChains[nftDetails?.chain].icon} alt="" />
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
