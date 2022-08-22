@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 const Navbar = ({ navbarProps }) => {
   const history = useHistory();
-  const { gifShow, gifs, handleSetState, mintAmount, mintInfo, combinations, rule, nftLayers } = navbarProps;
+  const { gifShow, gifs, handleSetState, mintAmount, mintInfo, combinations, rule, layers, nftLayers } = navbarProps;
 
   return (
     <div className={classes.container}>
@@ -29,7 +29,7 @@ const Navbar = ({ navbarProps }) => {
         <div className={classes.detail}>
           {mintInfo ? <WarnIcon /> : null}
           <span>Unused Combinations</span>
-          <span>{combinations - mintAmount - rule.length}</span>
+          <span>{combinations - mintAmount - rule.length || combinations - nftLayers.length}</span>
         </div>
       </div>
     </div>

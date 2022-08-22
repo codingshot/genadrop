@@ -48,9 +48,20 @@ export const saveLayers = async ({ layers }) => {
   window.sessionStorage.storedLayers = cache;
 };
 
-export const fetchLayers = async ({ dispatch }) => {
+export const saveNftLayers = async ({ nftLayers }) => {
+  const cache = JSON.stringify(nftLayers);
+  window.sessionStorage.storedNftLayers = cache;
+};
+
+export const fetchNftLayers = async () => {
+  if (!window.sessionStorage.storedNftLayers) return [];
+  // delay function is a hack to get one machine cycle off javascript. This is to ensure that the color to window sessionstorage has returned;
+  await delay();
+  return JSON.parse(window.sessionStorage.storedNftLayers);
+};
+
+export const fetchLayers = async () => {
   if (!window.sessionStorage.storedLayers) return [];
-  // below is a hack to get one machine cycle off javascript. This is to ensure that the color to window sessionstorage has returned;
   await delay();
   const layers = JSON.parse(window.sessionStorage.storedLayers);
   const newLayers = await Promise.all(
@@ -84,7 +95,7 @@ export const savePreview = async ({ preview }) => {
   window.sessionStorage.storedPreview = cache;
 };
 
-export const fetchPreview = async ({ dispatch }) => {
+export const fetchPreview = async () => {
   if (!window.sessionStorage.storedPreview) return [];
   const preview = JSON.parse(window.sessionStorage.storedPreview);
   await delay();
@@ -119,7 +130,7 @@ export const saveRule = async ({ rule }) => {
   window.sessionStorage.storedRule = cache;
 };
 
-export const fetchRules = async ({ dispatch }) => {
+export const fetchRules = async () => {
   if (!window.sessionStorage.storedRule) return [];
   const rule = JSON.parse(window.sessionStorage.storedRule);
   await delay();
@@ -139,15 +150,18 @@ export const fetchRules = async ({ dispatch }) => {
 
 export const saveUserData = ({
   layers,
+  nftLayers,
   rule,
   preview,
   collectionName,
   sessionId,
   upgradePlan,
   proposedPlan,
+  currentPlan,
   currentUser,
 }) => {
   saveLayers({ layers });
+  saveNftLayers({ nftLayers });
   saveRule({ rule });
   savePreview({ preview });
   const data = {
@@ -155,27 +169,31 @@ export const saveUserData = ({
     sessionId,
     upgradePlan,
     proposedPlan,
+    currentPlan,
     currentUser,
   };
   window.sessionStorage.otherInfo = JSON.stringify(data);
   window.sessionStorage.isStripe = "true";
 };
 
-export const fetchUserData = async ({ dispatch }) => {
-  const layers = await fetchLayers({ dispatch });
-  const preview = await fetchPreview({ dispatch });
-  const rule = await fetchRules({ dispatch });
-  const { collectionName, sessionId, upgradePlan, proposedPlan, currentUser } = JSON.parse(
+export const fetchUserData = async () => {
+  const layers = await fetchLayers();
+  const nftLayers = await fetchNftLayers();
+  const preview = await fetchPreview();
+  const rule = await fetchRules();
+  const { collectionName, sessionId, upgradePlan, proposedPlan, currentPlan, currentUser } = JSON.parse(
     window.sessionStorage.otherInfo
   );
   return {
     layers,
+    nftLayers,
     preview,
     rule,
     collectionName,
     sessionId,
     upgradePlan,
     proposedPlan,
+    currentPlan,
     currentUser,
   };
 };
