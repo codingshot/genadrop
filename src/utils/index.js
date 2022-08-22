@@ -690,7 +690,7 @@ export const dataURItoBlob = (dataURI) => {
   return blob;
 };
 
-export const getFile = async (url, name, type) => {
+export const getFile = async (url, name = "image", type = "image/png") => {
   const response = await fetch(url);
   const blob = await response.blob();
   const file = new File([blob], name, { type });

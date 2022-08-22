@@ -7,7 +7,7 @@ import CaretUP from "../../../assets/icon-caret-up.svg";
 import TextEditor from "../text-editor";
 import classes from "../preview.module.css";
 import { useContext, useRef } from "react";
-import { setNotification, setLoader, setZip } from "../../../gen-state/gen.actions";
+import { setNotification, setLoader, setZip, setToggleUpgradeModal } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const Sidebar = ({ sidebarProps }) => {
@@ -29,12 +29,7 @@ const Sidebar = ({ sidebarProps }) => {
 
   const handleGif = () => {
     if (currentPlan === "free") {
-      dispatch(
-        setNotification({
-          type: "error",
-          message: "This feature is not available on the free plan",
-        })
-      );
+      dispatch(setToggleUpgradeModal(true));
     } else {
       handleSetState({ gifShow: true });
     }
