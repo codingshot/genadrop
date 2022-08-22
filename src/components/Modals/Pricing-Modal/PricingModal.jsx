@@ -20,8 +20,18 @@ const getStripe = () => {
 
 const PricingModal = ({ plan, price, closeModal }) => {
   const history = useHistory();
-  const { layers, rule, preview, collectionName, sessionId, upgradePlan, proposedPlan, currentUser } =
-    useContext(GenContext);
+  const {
+    layers,
+    nftLayers,
+    rule,
+    preview,
+    collectionName,
+    sessionId,
+    upgradePlan,
+    proposedPlan,
+    currentPlan,
+    currentUser,
+  } = useContext(GenContext);
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
@@ -102,7 +112,18 @@ const PricingModal = ({ plan, price, closeModal }) => {
 
   const redirectToCheckout = async () => {
     console.log("redirectToCheckout");
-    saveUserData({ layers, rule, preview, collectionName, sessionId, upgradePlan, proposedPlan, currentUser });
+    saveUserData({
+      layers,
+      nftLayers,
+      rule,
+      preview,
+      collectionName,
+      sessionId,
+      upgradePlan,
+      proposedPlan,
+      currentPlan,
+      currentUser,
+    });
     const stripe = await getStripe();
     console.log("Got stripe");
     const res = await stripe.redirectToCheckout(checkoutOptions);
