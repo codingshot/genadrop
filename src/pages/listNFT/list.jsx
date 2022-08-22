@@ -59,7 +59,7 @@ const List = () => {
       price,
       id: nftDetails.tokenID,
     };
-    if (chainId === 80001 || chainId === 137) {
+    if (supportedChains[chainId].chain === "Polygon") {
       const listNft = await listPolygonNft(listProps);
       if (listNft.error) {
         dispatch(
@@ -71,7 +71,7 @@ const List = () => {
       } else {
         return history.push(`${nftId}/listed`);
       }
-    } else if (chainId === 44787 || chainId === 42220) {
+    } else if (supportedChains[chainId].chain === "Celo") {
       const listNft = await listCeloNft(listProps);
       if (listNft.error) {
         dispatch(
@@ -83,7 +83,7 @@ const List = () => {
       } else {
         return history.push(`${nftId}/listed`);
       }
-    } else if (chainId === 1313161555 || chainId === 1313161554) {
+    } else if (supportedChains[chainId].chain === "Aurora") {
       const listNft = await listAuroraNft(listProps);
       if (listNft.error) {
         dispatch(
@@ -104,7 +104,9 @@ const List = () => {
   useEffect(() => {
     (async function getAmount() {
       axios
-        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId].id}&vs_currencies=usd`)
+        .get(
+          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId].coinGeckoLabel}&vs_currencies=usd`
+        )
         .then((res) => {
           const value = Object.values(res.data)[0].usd;
           handleSetState({
@@ -118,7 +120,7 @@ const List = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      if (chainId === 80001 || chainId === 137) {
+      if (supportedChains[chainId].chain === "Polygon") {
         const [nft] = await polygonUserData(nftId);
         if (nft === null) {
           return (
@@ -136,7 +138,7 @@ const List = () => {
           isLoading: false,
           image_url: nft?.ipfs_data?.image,
         });
-      } else if (chainId === 44787 || chainId === 42220) {
+      } else if (supportedChains[chainId].chain === "Celo") {
         const [nft] = await celoUserData(nftId);
         if (nft === null) {
           return (
@@ -154,7 +156,7 @@ const List = () => {
           image_url: nft?.ipfs_data?.image,
           isLoading: false,
         });
-      } else if (chainId === 1313161555 || chainId === 1313161554) {
+      } else if (supportedChains[chainId].chain === "Aurora") {
         const [nft] = await auroraUserData(nftId);
         if (nft === null) {
           return (
@@ -187,10 +189,6 @@ const List = () => {
       }
     })();
   }, []);
-
-  useEffect(() => {
-    console.log(nftDetails);
-  }, [nftDetails]);
 
   if (isLoading) {
     return (
@@ -254,7 +252,7 @@ const List = () => {
                     <option value="Polygon">Polygon</option>
                   </select>
                 </div> */}
-                <img className={classes.icon} src={supportedChains[nftDetails?.chain].icon} alt="" />
+                <img className={classes.icon} src={supportedChains[nftDetails?.chain]?.icon} alt="" />
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
@@ -297,7 +295,7 @@ const List = () => {
               Genadrop <span>10%</span>
             </div>
             <div className={classes.row}>
-              {nftDetails.name ? nftDetails.name : ""} <span>7%</span>
+              {nftDetails?.name ? nftDetails?.name : ""} <span>7%</span>
             </div>
             <div className={classes.row}>
               Total <span>17%</span>

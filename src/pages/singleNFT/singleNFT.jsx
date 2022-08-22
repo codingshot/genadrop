@@ -41,7 +41,7 @@ const SingleNFT = () => {
     isLoading: true,
     transactionHistory: null,
     showSocial: false,
-    chainIcon: algoLogo,
+    chainIcon: "",
     isCopied: false,
     chainSymbol: "",
   });
@@ -119,10 +119,6 @@ const SingleNFT = () => {
       // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
         const tHistory = await readNftTransaction(nftId);
-        tHistory.find((t) => {
-          if (t.type === "Minting" && tHistory.length > 1) t.price = tHistory[1].price;
-          else t.price = nftDetails.price;
-        });
         handleSetState({
           nftDetails,
           isLoading: false,
@@ -136,19 +132,18 @@ const SingleNFT = () => {
 
   useEffect(() => {
     dispatch(setOverlay(true));
-    console.log("xxx", nftChainId);
-    if (Number(nftChainId) === 4160) return;
+    if (supportedChains[Number(nftChainId)].chain === "Algorand") return;
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
-        if (Number(nftChainId) === 44787 || Number(nftChainId) === 42220) {
+        if (supportedChains[Number(nftChainId)].chain === "Celo") {
           const [celoData, trHistory] = await celoUserData(nftId);
           handleSetState({
             nftDetails: celoData,
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === 1313161555) {
+        } else if (supportedChains[Number(nftChainId)].chain === "Aurora") {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return;
           handleSetState({
@@ -156,7 +151,7 @@ const SingleNFT = () => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === 80001 || Number(nftChainId) === 137) {
+        } else if (supportedChains[Number(nftChainId)].chain === "Polygon") {
           const [polygonData, trHistory] = await polygonUserData(nftId);
           if (!polygonData) return history.goBack();
           handleSetState({
@@ -175,19 +170,20 @@ const SingleNFT = () => {
 
   useEffect(() => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
-    if (Number(nftChainId) !== 4160 && pair) {
+    if (supportedChains[Number(nftChainId)].chain !== "Algorand" && pair) {
+      let value;
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        const value = Object.values(res.data)[0].usd;
-        handleSetState({
-          chainIcon: supportedChains[nftDetails.chain].icon,
-          algoPrice: value,
-          chainSymbol: supportedChains[nftDetails.chain].symbol,
-        });
+        value = Object.values(res?.data)[0]?.usd;
+      });
+      handleSetState({
+        chainIcon: supportedChains[nftDetails.chain].icon,
+        algoPrice: value ? value : 0,
+        chainSymbol: supportedChains[nftDetails.chain].symbol,
       });
     }
-    if (Number(nftChainId) === 4160) {
+    if (supportedChains[Number(nftChainId)].chain === "Algorand") {
       axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount });
+        handleSetState({ algoPrice: res.data.data.amount, chainIcon: algoLogo });
       });
     }
   }, [nftDetails]);
@@ -316,7 +312,7 @@ const SingleNFT = () => {
             <div className={classes.priceSection}>
               <span className={classes.title}>Current price</span>
               <span className={classes.price}>
-                <img src={chainIcon} alt="" />
+                <img className={classes.iconImg} src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
                   {nftDetails.price} {chainSymbol || ""}
                 </p>
