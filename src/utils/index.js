@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import axios from "axios";
-import { getAlgoData, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
+import { getAlgoData, purchaseAuroraNfts, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
@@ -22,6 +22,7 @@ import {
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
 
+const PRICE_CONVERSION_VALUE = 0.000000000000000001;
 // setting a delay as not exceed the API limit
 const getDelayTime = (index, data, batch) => {
   const reqPagination = [...new Array(Math.floor(data.length / batch) + 1)].map((_, idx) => (idx + 1) * batch);
@@ -110,7 +111,7 @@ export const getGraphCollections = async (collections) => {
         const getPrice = collection?.nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         const chain = collection?.nfts?.map((col) => col.chain).reduce((a, b) => a === b && a);
         collectionObj.chain = chain;
-        collectionObj.price = (getPrice * 0.000000000000000001).toString();
+        collectionObj.price = (getPrice * PRICE_CONVERSION_VALUE).toString();
         collectionObj.description = collection?.description;
         collectionObj.isListed = collection?.isListed ? collection?.isListed : false;
         collectionObj.nfts = collection?.nfts;
@@ -302,8 +303,8 @@ export const getGraphCollection = async (collection, mainnet) => {
         nftObj.owner = collection[i]?.owner?.id;
         nftObj.Id = collection[i].id;
         const getPrice = collection.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
-        nftObj.collectionPrice = getPrice * 0.000000000000000001;
-        nftObj.price = collection[i].price * 0.000000000000000001;
+        nftObj.collectionPrice = getPrice * PRICE_CONVERSION_VALUE;
+        nftObj.price = collection[i].price * PRICE_CONVERSION_VALUE;
         nftObj.sold = collection[i].isSold;
         nftObj.ipfs_data = data;
         nftObj.name = data.name;
@@ -324,7 +325,7 @@ export const getTransactions = async (transactions) => {
     try {
       const trnObj = {};
       (trnObj.buyer = transactions[i]?.to?.id),
-        (trnObj.price = transactions[i]?.price * 0.000000000000000001),
+        (trnObj.price = transactions[i]?.price * PRICE_CONVERSION_VALUE),
         (trnObj.seller = transactions[i].from?.id),
         (trnObj.txDate = transactions[i]?.txDate),
         (trnObj.txId = transactions[i]?.txId),
@@ -336,7 +337,6 @@ export const getTransactions = async (transactions) => {
 };
 
 export const getUserGraphNft = async (collection, address) => {
-  console.log(collection);
   const nftArr = [];
   if (collection) {
     for (let i = 0; i < collection?.length; i++) {
@@ -349,8 +349,8 @@ export const getUserGraphNft = async (collection, address) => {
         nftObj.Id = collection[i]?.id;
         nftObj.tokenID = collection[i]?.tokenID;
         const getPrice = collection.map((col) => col?.price).reduce((a, b) => (a < b ? a : b));
-        nftObj.collectionPrice = getPrice * 0.000000000000000001;
-        nftObj.price = collection[i]?.price * 0.000000000000000001;
+        nftObj.collectionPrice = getPrice * PRICE_CONVERSION_VALUE;
+        nftObj.price = collection[i]?.price * PRICE_CONVERSION_VALUE;
         nftObj.sold = collection[i]?.isSold;
         nftObj.ipfs_data = data;
         nftObj.contractAddress = collection[i]?.id?.split(collection[i]?.tokenID)[0];
@@ -378,7 +378,7 @@ export const getCeloGraphNft = async (collection) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
-    nftArr.price = collection?.price * 0.000000000000000001;
+    nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
     nftArr.isListed = collection?.isListed;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
@@ -409,7 +409,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
-    nftArr.price = collection?.price * 0.000000000000000001;
+    nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.sold = collection?.isSold;
@@ -449,7 +449,7 @@ export const getSingleGraphNfts = async (nfts) => {
             NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
           );
           nftObj.Id = NFT?.id;
-          nftObj.price = NFT?.price * 0.000000000000000001;
+          nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
@@ -523,9 +523,32 @@ export const buyGraphNft = async (buyProps) => {
       })
     );
   }
-  if (chainId === 44787 || chainId === 42220) {
+  if (supportedChains[chainId].chain === "Celo") {
     dispatch(setOverlay(true));
     const res = await purchaseCeloNfts(buyProps);
+    if (res) {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/me/${account}`);
+      }, 3000);
+    } else {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
+  } else if (supportedChains[chainId].chain === "Aurora") {
+    dispatch(setOverlay(true));
+    const res = await purchaseAuroraNfts(buyProps);
     if (res) {
       dispatch(setOverlay(false));
       dispatch(
@@ -548,7 +571,6 @@ export const buyGraphNft = async (buyProps) => {
       );
     }
   } else {
-    console.log(buyProps);
     dispatch(setOverlay(true));
     const res = await purchasePolygonNfts(buyProps);
     if (res) {

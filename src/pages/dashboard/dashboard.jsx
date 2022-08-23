@@ -23,6 +23,7 @@ import youtube from "../../assets/icon-youtube-green.svg";
 // import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 // import { setNotification } from "../../gen-state/gen.actions";
 import {
+  getAuroraCollectedNFTs,
   getCeloCollectedNFTs,
   getCeloUserCollections,
   getPolygonCollectedNFTs,
@@ -84,9 +85,9 @@ const Dashboard = () => {
         const singleNfts = await fetchUserCreatedNfts(account);
         algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       }
-      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account);
-      const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account);
-      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account);
+      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account && nft.sold !== true);
+      const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account && nft.sold !== true);
+      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account && nft.sold !== true);
       handleSetState({
         createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
       });
@@ -95,17 +96,22 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       let address = "";
-      let algoCollectedNfts = [];
       if (supportedChains[chainId].label !== "Algorand") {
         address = ethers.utils.hexlify(account);
-        const collectedNfts = await fetchUserBoughtNfts(account);
-        algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
       }
+      const collectedNfts = await fetchUserBoughtNfts(account);
+      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
 
       const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
       const celoCollectedNfts = await getCeloCollectedNFTs(address);
+      const auroraCollectedNfts = await getAuroraCollectedNFTs(address);
       handleSetState({
-        collectedNfts: [...(algoCollectedNfts || []), ...(celoCollectedNfts || []), ...(polygonCollectedNfts || [])],
+        collectedNfts: [
+          ...(algoCollectedNfts || []),
+          ...(auroraCollectedNfts || []),
+          ...(celoCollectedNfts || []),
+          ...(polygonCollectedNfts || []),
+        ],
       });
     })();
 

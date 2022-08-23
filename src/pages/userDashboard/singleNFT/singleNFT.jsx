@@ -125,12 +125,12 @@ const ListSingleNFT = (nft) => {
   }, [singleAlgoNfts]);
 
   useEffect(() => {
-    if (Number(nftChainId) === 4160) return;
+    if (supportedChains[Number(nftChainId)].chain === "Algorand") return;
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
 
-        if (Number(nftChainId) === 80001 || Number(nftChainId) === 137) {
+        if (supportedChains[Number(nftChainId)].chain === "Polygon") {
           const [polygonData, trHistory] = await polygonUserData(nftId);
           if (!polygonData) return history.goBack();
           handleSetState({
@@ -138,7 +138,7 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === supportedChains[nftChainId].networkId) {
+        } else if (supportedChains[Number(nftChainId)].chain === "Aurora") {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return history.goBack();
           handleSetState({
@@ -146,7 +146,7 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === 44787 || Number(nftChainId) === 42220) {
+        } else if (supportedChains[Number(nftChainId)].chain === "Celo") {
           const [celoData, trHistory] = await celoUserData(nftId);
           if (!celoData) return history.goBack();
           handleSetState({
@@ -301,7 +301,7 @@ const ListSingleNFT = (nft) => {
                 }
                 className={classes.alignIcon}
               >
-                <img src={supportedChains[nftDetails?.chain]?.icon} />
+                <img className={classes.iconImg} src={supportedChains[nftDetails?.chain]?.icon} />
                 <button className={classes.list}>List</button>
               </Link>
             </div>
