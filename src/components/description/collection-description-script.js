@@ -69,7 +69,7 @@ export const createUniqueLayer = async (props) => {
   const newAttributes = [];
   let uniqueIndex = 0;
 
-  const mintCallback = (resolve) => {
+  const uniqueLayerCallback = (resolve) => {
     setTimeout(() => {
       dispatch(
         setLoader(
@@ -101,7 +101,7 @@ removing ${uniqueIndex} duplicates`
   };
 
   for (let i = 0; i < mintAmount + uniqueIndex; i += 1) {
-    await new Promise(mintCallback);
+    await new Promise(uniqueLayerCallback);
   }
 
   newAttributes.forEach((attr, id) => {

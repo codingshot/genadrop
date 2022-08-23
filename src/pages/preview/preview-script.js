@@ -225,7 +225,6 @@ export const generateGif = (generateGifProps) => {
 
 export const addToCollection = (addToCollectionProps) => {
   const { gif, gifs, nftLayers, collectionName, handleSetState, dispatch } = addToCollectionProps;
-  console.log({ gifs, nftLayers });
   const updatedGifs = gifs.filter((img) => gif.id !== img.id);
   const newLayers = [gif, ...nftLayers].map((asset, idx) => ({
     ...asset,
