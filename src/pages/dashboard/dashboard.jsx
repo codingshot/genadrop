@@ -261,18 +261,18 @@ const Dashboard = () => {
         <section className={classes.header}>
           <div className={classes.details}>
             <div
-              onClick={() => handleSetState({ activeDetail: "created" })}
-              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
-            >
-              <p>Created NFT</p>
-              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
-            </div>
-            <div
               onClick={() => handleSetState({ activeDetail: "collected" })}
               className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
-              <p>Collected NFTs</p>
+              <p>Collected</p>
               <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => handleSetState({ activeDetail: "created" })}
+              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
+            >
+              <p>Created</p>
+              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collections" })}

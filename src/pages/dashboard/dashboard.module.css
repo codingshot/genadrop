@@ -35,7 +35,8 @@
   width: 100%;
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #b2c5d0;
   flex-wrap: wrap;
   gap: 2em;
 }
@@ -45,24 +46,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4em;
+  gap: 0.625em;
   padding: 0.75em 1em;
-  border-radius: 0.5em;
-  background: var(--default);
   cursor: var(--cursor-pointer);
-  color: var(--main-color);
-  transition: all 100ms;
-  border: 1px solid var(--main-color);
+  transition: all 300ms;
+  border-bottom: 5px solid transparent;
+  margin-bottom: -3px;
 }
 
 .detail:hover {
-  box-shadow: var(--shadow-light);
+  /* box-shadow: var(--shadow-light); */
+  border-color: var(--main-color);
 }
 
 .detail p {
   font-size: 1.2rem;
   transition: all 100ms;
-  color: var(--main-color);
+  color: #4b4b5a;
   white-space: nowrap;
 }
 
@@ -74,26 +74,26 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--main-light);
-  color: var(--default);
+  background: #e9f2ff;
+  color: #6c757d;
   font-weight: bold;
   transition: all 100ms;
 }
 
 .detail.active {
-  background: var(--main-color);
-  color: var(--default);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .detail.active p {
   font-size: 1.2rem;
   transition: all 100ms;
-  color: var(--default);
+  color: var(--main-color);
 }
 
 .detail.active span {
-  background: var(--default);
-  color: var(--main-color);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .bannerContainer {
@@ -119,7 +119,7 @@
   display: flex;
   padding: 0 2rem;
   margin-top: auto;
-  margin-bottom: -8rem;
+  margin-bottom: -7rem;
 }
 .bannerWrapper > div {
   display: flex;
@@ -133,8 +133,8 @@
 .imageContainer {
   border-radius: 50%;
   object-fit: cover;
-  max-width: 12.5rem;
-  max-height: 12.5rem;
+  max-width: 10.5rem;
+  max-height: 10.5rem;
   min-width: 6rem;
   border: 5px solid #eeeff2;
 }
