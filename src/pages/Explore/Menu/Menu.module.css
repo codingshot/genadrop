@@ -9,6 +9,10 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+.loader {
+  z-index: 0;
+}
+
 @media screen and (max-width: 1200px) {
   .menu {
     grid-template-columns: repeat(3, 1fr);

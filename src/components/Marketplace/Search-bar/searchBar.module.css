@@ -1,5 +1,4 @@
 .searchInput {
-  width: 100%;
   flex: 1;
   padding: 0 25px;
   transition: all 300ms;
@@ -12,7 +11,7 @@
 }
 
 .searchInput:focus-within {
-  outline: 1px solid gray;
+  outline: 1px solid var(--main-color);
 }
 .searchInput > input {
   border: none;
