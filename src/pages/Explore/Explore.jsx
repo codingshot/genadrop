@@ -10,7 +10,6 @@ import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import { setActiveCollection } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 
@@ -28,9 +27,6 @@ const Explore = () => {
     headerHeight: 0,
     filter: {
       searchValue: "",
-      price: "low - high",
-      name: "a - z",
-      date: "newest - oldest",
     },
   });
   const {
@@ -55,10 +51,6 @@ const Explore = () => {
 
   const handleFilter = (_filter) => {
     handleSetState({ filter: { ...filter, ..._filter } });
-  };
-
-  const handleFilterDropdown = ({ name, label }) => {
-    handleSetState({ filter: { ...filter, [name]: label } });
   };
 
   const getHeight = (res) => {
@@ -122,53 +114,6 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = null;
-    if (filter.price === "low - high") {
-      filtered = NFTCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else {
-      filtered = NFTCollection.sort((a, b) => Number(b.price) - Number(a.price));
-    }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.price]);
-
-  useEffect(() => {
-    if (!NFTCollection) return;
-    let filtered = null;
-    if (filter.name === "a - z") {
-      filtered = NFTCollection.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        return -1;
-      });
-    } else {
-      filtered = NFTCollection.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
-        return 1;
-      });
-    }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.name]);
-
-  useEffect(() => {
-    if (!NFTCollection) return;
-    let filtered = null;
-    if (filter.date === "newest - oldest") {
-      if (supportedChains[chainId].label === "Algorand") {
-        filtered = NFTCollection.sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
-      } else {
-        filtered = NFTCollection.sort((a, b) => a?.createdAt - b?.createdAt);
-      }
-    } else {
-      if (supportedChains[chainId].label === "Algorand") {
-        filtered = NFTCollection.sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
-      } else {
-        filtered = NFTCollection.sort((a, b) => b?.createdAt - a?.createdAt);
-      }
-    }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.date]);
-
-  useEffect(() => {
-    if (!NFTCollection) return;
     const filtered = NFTCollection.filter(
       (col) => Number(col.price) >= Number(filter.priceRange.min) && Number(col.price) <= Number(filter.priceRange.max)
     );
@@ -212,7 +157,6 @@ const Explore = () => {
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
-            <FilterDropdown onFilter={handleFilterDropdown} />
           </div>
 
           <div className={classes.filterDisplay}>
