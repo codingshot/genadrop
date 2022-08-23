@@ -1,14 +1,18 @@
-.container {
+.pageOverlay {
+  height: 100%;
+  width: 100vw;
   position: absolute;
-  min-height: 100vh;
-  top: 0;
   z-index: 1000;
+  inset: 0px;
+  top: 0;
+}
+.container {
   flex: 1 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 24px 12px;
-  height: fit-content;
+  height: 100%;
   width: 100%;
   background-color: rgb(255, 255, 255);
 }
