@@ -5,8 +5,12 @@ import arrowIconRight from "../../../assets/icon-arrow-right.svg";
 import filterIcon from "../../../assets/icon-filter.svg";
 import dropdownIcon from "../../../assets/icon-dropdown.svg";
 import Dropdown from "../Dropdown/Dropdown";
+import { useContext } from "react";
+import { GenContext } from "../../../gen-state/gen.context";
+import { setNotification } from "../../../gen-state/gen.actions";
 
 const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handleExploreSetState }) => {
+  const { dispatch } = useContext(GenContext);
   const [state, setState] = useState({
     toggleAttribute: true,
     toggleLayer: -1,
@@ -30,6 +34,14 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
   const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
 
   const handleApplyPriceFilter = () => {
+    if (!Number(lowestPrice) || !Number(highestPrice)) {
+      return dispatch(
+        setNotification({
+          message: "Invalid input detected!",
+          type: "error",
+        })
+      );
+    }
     handleSetState({
       filter: {
         ...filter,
@@ -66,6 +78,11 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
     } else {
       handleAddToFilterAttribute(val);
     }
+  };
+
+  const handlePrice = (event) => {
+    let { name, value } = event.target;
+    handleSetState({ [name]: Number(value) >= 0 ? value : "0" });
   };
 
   useEffect(() => {
@@ -109,19 +126,11 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
               <div className={classes.priceFilter}>
                 <div className={classes.filterInput}>
                   <div>
-                    <input
-                      value={lowestPrice}
-                      onChange={(event) => handleSetState({ lowestPrice: event.target.value })}
-                      type="number"
-                    />
+                    <input value={lowestPrice} onChange={handlePrice} type="number" min={0} name="lowestPrice" />
                   </div>
                   to
                   <div>
-                    <input
-                      value={highestPrice}
-                      onChange={(event) => handleSetState({ highestPrice: event.target.value })}
-                      type="number"
-                    />
+                    <input value={highestPrice} onChange={handlePrice} type="number" min="0" name="highestPrice" />
                   </div>
                 </div>
                 <button onClick={handleApplyPriceFilter}>Apply</button>

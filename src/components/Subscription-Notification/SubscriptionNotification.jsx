@@ -11,7 +11,7 @@ const SubscriptionNotification = () => {
   const history = useHistory();
   const [toggle, setToggle] = useState(false);
   const { dispatch, currentUser, currentPlan, collectionName } = useContext(GenContext);
-  const _5mins = 1000 * 60 * 500;
+  const _5mins = 1000 * 60 * 5;
 
   let timerId = null;
   const counter = () => {

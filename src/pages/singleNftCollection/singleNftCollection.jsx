@@ -7,8 +7,9 @@ import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import NotFound from "../../components/not-found/notFound";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import { GenContext } from "../../gen-state/gen.context";
+import supportedChains from "../../utils/supportedChains";
 
 const SingleNftCollection = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, chainId } = useContext(GenContext);
@@ -25,8 +26,10 @@ const SingleNftCollection = () => {
     allChains: null,
     filter: {
       searchValue: "",
-      price: "low",
       chain: "All Chains",
+      price: "low - high",
+      name: "a - z",
+      date: "newest - oldest",
     },
   });
 
@@ -115,34 +118,56 @@ const SingleNftCollection = () => {
     }
   };
 
-  // sort by price function for different blockchains
-  const sortPrice = (filterProp) => {
-    let sorted = [];
-    if (filterProp === "high") {
-      sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else if (filterProp == "low") {
-      sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
-      // } else if (filterProp === "txVolume") {
-      //   sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
-    } else if (filterProp === "newest") {
-      if (chainId === 4160) {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
-      } else {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
-      }
-    } else if (filterProp === "oldest") {
-      if (chainId === 4160) {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
-      } else {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
-      }
-    } else if (filterProp === "descAlphabet") {
-      sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-    } else if (filterProp === "ascAlphabet") {
-      sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())).reverse();
-    }
-    handleSetState({ filteredCollection: sorted });
+  const handleFilterDropdown = ({ name, label }) => {
+    handleSetState({ filter: { ...filter, [name]: label } });
   };
+
+  useEffect(() => {
+    if (!filteredCollection) return;
+    let filtered = null;
+    if (filter.price === "low - high") {
+      filtered = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
+    } else {
+      filtered = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+    }
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.price]);
+
+  useEffect(() => {
+    if (!filteredCollection) return;
+    let filtered = null;
+    if (filter.name === "a - z") {
+      filtered = filteredCollection.sort((a, b) => {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+        return -1;
+      });
+    } else {
+      filtered = filteredCollection.sort((a, b) => {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+        return 1;
+      });
+    }
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.name]);
+
+  useEffect(() => {
+    if (!filteredCollection) return;
+    let filtered = null;
+    if (filter.date === "newest - oldest") {
+      if (supportedChains[chainId].label === "Algorand") {
+        filtered = filteredCollection.sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
+      } else {
+        filtered = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+      }
+    } else {
+      if (supportedChains[chainId].label === "Algorand") {
+        filtered = filteredCollection.sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
+      } else {
+        filtered = filteredCollection.sort((a, b) => b?.createdAt - a?.createdAt);
+      }
+    }
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.date]);
 
   // compile data for all blockchains
   useEffect(() => {
@@ -182,7 +207,7 @@ const SingleNftCollection = () => {
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={searchHandler} />
             <ChainDropdown onChainFilter={chainChange} />
-            <PriceDropdown onPriceFilter={sortPrice} />
+            <FilterDropdown onFilter={handleFilterDropdown} />
           </div>
         </div>
         {filteredCollection?.length ? (

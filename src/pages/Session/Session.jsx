@@ -48,10 +48,10 @@ const Session = () => {
           type: "loadPreNftLayers",
         })
       );
+      dispatch(setOverlay(false));
+      console.log("fetch ends");
       history.push("/create");
     }
-    dispatch(setOverlay(false));
-    console.log("fetch ends");
   };
 
   const handleDelete = async (sessionId) => {
