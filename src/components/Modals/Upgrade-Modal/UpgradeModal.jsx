@@ -17,9 +17,9 @@ const UpgradeModal = () => {
   const mapPlanToState = (plan, state) => {
     let states = {
       free: 0,
-      noobs: 1,
-      geeks: 2,
-      ogs: 3,
+      hobby: 1,
+      pro: 2,
+      agency: 3,
     };
 
     let currentState = states[plan];

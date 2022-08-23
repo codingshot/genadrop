@@ -1,16 +1,12 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import axios from "axios";
-// import fileDownload from "js-file-download";
-// eslint-disable-next-line import/no-unresolved
-// import worker from "workerize-loader!../worker"; // eslint-disable-line import/no-webpack-loader-syntax
 import { getAlgoData, purchaseAuroraNfts, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
+import { getAlgoData, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
 import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
-  addLayer,
   clearLayers,
-  setActiveCollection,
   setAlgoCollections,
   setAlgoSingleNfts,
   setOverlay,
@@ -26,7 +22,6 @@ import {
   setCurrentPlan,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
-import { v4 as uuid } from "uuid";
 
 const PRICE_CONVERSION_VALUE = 0.000000000000000001;
 // setting a delay as not exceed the API limit
@@ -238,7 +233,7 @@ export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
   return nftArr;
 };
 
-export const getNftCollection = async ({ collection, mainnet, handleSetState, dispatch }) => {
+export const getNftCollection = async ({ collection, mainnet }) => {
   const urlIPF = collection.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
   const { data } = await axios.get(urlIPF);
 
@@ -286,11 +281,12 @@ export const getNftCollection = async ({ collection, mainnet, handleSetState, di
   });
   window.localStorage.activeCollection = JSON.stringify({ ...nftsObj });
 
-  handleSetState({
-    NFTCollection: nftArr,
-    loadedChain: 4160,
-  });
-  dispatch(setActiveCollection(nftArr));
+  return { NFTCollection: nftArr, loadedChain: 4160 };
+  // handleSetState({
+  //   NFTCollection: nftArr,
+  //   loadedChain: 4160,
+  // });
+  // dispatch(setActiveCollection(nftArr));
 };
 
 export const getGraphCollection = async (collection, mainnet) => {

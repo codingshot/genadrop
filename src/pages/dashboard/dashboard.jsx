@@ -7,27 +7,21 @@ import CollectionsCard from "../../components/Marketplace/collectionsCard/collec
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import { GenContext } from "../../gen-state/gen.context";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
-import {
-  fetchUserBoughtNfts,
-  fetchUserCollections,
-  fetchUserCreatedNfts,
-  fetchUserNfts,
-  readUserProfile,
-} from "../../utils/firebase";
+import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
 import avatar from "../../assets/avatar.png";
 import { ethers } from "ethers";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import NotFound from "../../components/not-found/notFound";
 import bg from "../../assets/bg.png"; // remove this when done!
 import twitter from "../../assets/icon-twitter-blue.svg";
 import discord from "../../assets/icon-discord-blue.svg";
 import instagram from "../../assets/icon-instagram-blue.svg";
 import youtube from "../../assets/icon-youtube-green.svg";
-import { celoClient, polygonClient } from "../../utils/graphqlClient";
-import { GET_USER_NFT } from "../../graphql/querries/getCollections";
-import { setNotification } from "../../gen-state/gen.actions";
+// import { celoClient, polygonClient } from "../../utils/graphqlClient";
+// import { GET_USER_NFT } from "../../graphql/querries/getCollections";
+// import { setNotification } from "../../gen-state/gen.actions";
 import {
   getAuroraCollectedNFTs,
   getCeloCollectedNFTs,
@@ -35,6 +29,7 @@ import {
   getPolygonCollectedNFTs,
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
+import supportedChains from "../../utils/supportedChains";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -45,7 +40,9 @@ const Dashboard = () => {
     togglePriceFilter: false,
     filter: {
       searchValue: "",
-      price: "high",
+      price: "low - high",
+      name: "a - z",
+      date: "newest - oldest",
     },
     activeDetail: "created",
     collectedNfts: null,
@@ -84,7 +81,7 @@ const Dashboard = () => {
 
     (async function getUserNFTs() {
       let algoNFTs = [];
-      if (chainId == 4160) {
+      if (supportedChains[chainId].label === "Algorand") {
         const singleNfts = await fetchUserCreatedNfts(account);
         algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
       }
@@ -99,7 +96,7 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       let address = "";
-      if (chainId != 4160) {
+      if (supportedChains[chainId].label !== "Algorand") {
         address = ethers.utils.hexlify(account);
       }
       const collectedNfts = await fetchUserBoughtNfts(account);
@@ -121,7 +118,7 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       let hexAddress;
-      if (chainId != 4160) {
+      if (supportedChains[chainId].label !== "Algorand") {
         hexAddress = ethers.utils.hexlify(account);
       }
       const collections = await fetchUserCollections(account);
@@ -171,17 +168,56 @@ const Dashboard = () => {
     handleSetState({ filteredCollection: filtered, filter: { ...filter, searchValue: value } });
   };
 
+  const handleFilterDropdown = ({ name, label }) => {
+    handleSetState({ filter: { ...filter, [name]: label } });
+  };
+
   useEffect(() => {
-    if (!account) return;
-    if (!filteredCollection) return;
+    if (!filteredCollection || !account) return;
     let filtered = null;
-    if (filter.price === "low") {
+    if (filter.price === "low - high") {
       filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price));
     } else {
       filtered = getCollectionToFilter().sort((a, b) => Number(b.price) - Number(a.price));
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.price]);
+
+  useEffect(() => {
+    if (!filteredCollection || !account) return;
+    let filtered = null;
+    if (filter.name === "a - z") {
+      filtered = getCollectionToFilter().sort((a, b) => {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+        return -1;
+      });
+    } else {
+      filtered = getCollectionToFilter().sort((a, b) => {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+        return 1;
+      });
+    }
+    handleSetState({ filteredCollection: filtered });
+  }, [filter.name]);
+
+  useEffect(() => {
+    if (!filteredCollection || !account) return;
+    let filtered = null;
+    if (filter.date === "newest - oldest") {
+      if (supportedChains[chainId].label === "Algorand") {
+        filtered = getCollectionToFilter().sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
+      } else {
+        filtered = getCollectionToFilter().sort((a, b) => a?.createdAt - b?.createdAt);
+      }
+    } else {
+      if (supportedChains[chainId].label === "Algorand") {
+        filtered = getCollectionToFilter().sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
+      } else {
+        filtered = getCollectionToFilter().sort((a, b) => b?.createdAt - a?.createdAt);
+      }
+    }
+    handleSetState({ filteredCollection: filtered });
+  }, [filter.date]);
 
   useEffect(() => {
     if (!account) return;
@@ -276,7 +312,7 @@ const Dashboard = () => {
         <section className={classes.main}>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={(value) => searchHandler(value)} />
-            <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
+            <FilterDropdown onFilter={handleFilterDropdown} />
           </div>
 
           {filteredCollection?.length > 0 ? (

@@ -1,20 +1,21 @@
-.priceDropdown {
-  z-index: 1 !important;
-  /* color: var(--main-color); */
-}
-
-.priceDropdown {
+.filterDropdown {
   position: relative;
-  width: 12em;
+  width: max-content;
+  min-width: 12em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   background: var(--default);
   z-index: 10;
 }
 
-.priceDropdown span {
+.filterDropdown span {
   font-size: 0.85rem;
 }
 
-.selectedPrice {
+.filterHeading {
+  width: 100%;
   cursor: var(--cursor-pointer);
   background: var(--default);
   border: 1px solid var(--main-color);
@@ -29,25 +30,26 @@
   gap: 0.5em;
 }
 
-.selectedPrice span {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1em;
+.filterHeading:hover {
+  background: var(--card-light);
 }
 
-.selectedPrice:hover {
-  background: var(--btn-close);
-}
-
-.selectedPrice {
+.filterHeading {
   color: var(--main-color);
 }
 
-.priceDropdown .dropdown {
-  width: 100%;
-  left: 0;
+.filterDetail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.dropdown {
+  width: max-content;
+  min-width: 100%;
   position: absolute;
+  top: 2.5em;
   background: var(--default);
   visibility: hidden;
   opacity: 0;
@@ -57,34 +59,29 @@
   cursor: var(--cursor-pointer);
   transform: translateY(-0.5em);
   text-transform: capitalize;
+  border-radius: 0.5em;
+  overflow: hidden;
+  box-shadow: -9px 13px 18px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
 }
 
-.priceDropdown .dropdown.active {
+.dropdown.active {
   visibility: visible;
   opacity: 1;
   margin-top: 0.25em;
   transform: translateY(0em);
 }
 
-.priceDropdown .dropdown > div {
-  padding: 0.5em 1em;
-  border: 1px solid var(--outline);
+.filter {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1em;
+  gap: 2em;
+  padding: 0.75em 1em;
+  border-bottom: 1px solid var(--outline);
 }
 
-.priceDropdown .priceInfo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  font-size: 0.55rem;
-}
-
-.priceDropdown .dropdown > div:hover {
-  background: var(--btn-close);
+.filter:hover {
+  background: var(--card-light);
 }
 
 .dropdownIcon {
