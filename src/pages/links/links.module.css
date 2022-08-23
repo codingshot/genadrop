@@ -1,10 +1,11 @@
 .pageOverlay {
   height: 100%;
-  width: 100vw;
+  width: 100%;
   position: absolute;
   z-index: 1000;
   inset: 0px;
   top: 0;
+  display: flex;
 }
 .container {
   flex: 1 1;
@@ -188,7 +189,7 @@
 .bg {
   position: fixed;
   inset: 0px;
-  z-index: -1;
+  z-index: 0;
 }
 .bg div {
   width: 100%;
