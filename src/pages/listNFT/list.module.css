@@ -197,6 +197,9 @@
     flex-direction: column;
   }
 }
+.icon {
+  width: 30px;
+}
 
 .amount {
   color: var(--main-color);

@@ -302,7 +302,7 @@ const CollectionNFT = () => {
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
                   <p className={classes.tokenValue}>
-                    {nftDetails.price} {supportedChains[nftDetails.chain].sybmol}
+                    {nftDetails?.price?.toFixed(2)} {supportedChains[nftDetails?.chain]?.sybmol}
                   </p>
                   <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
                 </span>

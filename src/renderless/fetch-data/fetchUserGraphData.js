@@ -43,7 +43,8 @@ export const getPolygonNFTToList = async (address, nftId) => {
 export const getPolygonCollectedNFTs = async (address) => {
   const { data, error: polygonError } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (polygonError) return;
-  const polygonBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
+  const response = await getUserGraphNft(data?.user?.nfts, address);
+  const polygonBoughtNft = response?.filter((NFTS) => NFTS.sold === true);
   return polygonBoughtNft;
 };
 
@@ -58,8 +59,19 @@ export const getCeloNFTToList = async (address, nftId) => {
 export const getCeloCollectedNFTs = async (address) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (celoError) return;
-  const celoCollectedNfts = await getUserGraphNft(data?.user?.nfts, address);
+
+  const response = await getUserGraphNft(data?.user?.nfts, address);
+  const celoCollectedNfts = response?.filter((NFTS) => NFTS.sold === true);
   return celoCollectedNfts;
+};
+
+export const getAuroraCollectedNFTs = async (address) => {
+  const { data, error: auroraError } = await auroraClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (auroraError) return;
+  const response = await getUserGraphNft(data?.user?.nfts, address);
+  const auroraCollectedNfts = response?.filter((NFTS) => NFTS?.sold === true);
+  // const auroraCollectedNfts = await getUserGraphNft(data?.user?.nfts, address);
+  return auroraCollectedNfts;
 };
 
 export const getCeloUserCollections = async (account) => {
