@@ -128,6 +128,21 @@
   color: var(--text-light);
   font-size: 16px;
 }
+
+@media screen and (max-width: 1100px) {
+  .heading h3 {
+    font-size: 1.6rem;
+  }
+
+  .creators {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+  .address {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 900px) {
   .heading h3 {
     font-size: 1.6rem;
@@ -136,9 +151,6 @@
   .creators {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
-  }
-  .address {
-    display: none;
   }
 }
 

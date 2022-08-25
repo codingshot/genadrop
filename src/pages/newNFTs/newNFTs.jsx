@@ -199,7 +199,6 @@ const NewNFTs = ({ len }) => {
 
   const handleLeftClick = () => {
     if (activePage > 3) {
-      console.log(">>>", page1, page2, page3, activePage);
       handleSetState({
         page1: page1 - 1,
         page2: page2 - 1,
@@ -314,12 +313,12 @@ const NewNFTs = ({ len }) => {
               ? [
                   ...(filteredCollection || [])
                     ?.filter((_, idx) => idx < 12)
-                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed is1of1 />),
                 ]
               : [
                   ...(filteredCollection || [])
                     ?.filter((_, idx) => idx < 16)
-                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed is1of1 />),
                 ]}
           </div>
         ) : !filteredCollection && filter.searchValue ? (

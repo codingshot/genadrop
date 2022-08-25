@@ -22,10 +22,13 @@
   --text-sub-heading: #525c76;
   --text-banner: #939599;
   --text-light: #6c757d;
+  --text-label: #959cab;
   --text-placeholder: #b2b7c2;
   --text-placeholder-light: #d3d6de;
 
   --outline: #e5e8eb;
+  --outline2: #eeeff2;
+
   --card-outline: #c4c4c4;
   --card-outline2: #d8dbea;
   --outline-dark: #a4a9b6;
@@ -36,6 +39,10 @@
   --tab-bg: #f7f9fd;
   --tab-bg-2: #cacdd5;
   --card-bg-light: #737387;
+  --card-bg-light2: #1c1b1c0f;
+  --explore-bg: #c5fffe;
+  --detail-bg: #f4fafc;
+  --header-bg: #f5f6f7;
   --card-icon-color: #515164;
   --card-shade: #646a89;
   --card-preview: #646a89;
@@ -47,6 +54,7 @@
   --card-light: #eff3f9;
   --card-lighter: #fcfdff;
   --btn-close: #eef5f9;
+  --btn-bg: #aadbff66;
 
   --success-100: #ebfcd5;
   --success-200: #d4f9ac;
@@ -220,4 +228,31 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Radio Buttons */
+input[type="radio"] {
+  /* remove standard background appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* create custom radiobutton appearance */
+
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  /* background-color only for content */
+  background-clip: content-box;
+  border: 2px solid #bbbbbb;
+
+  border-radius: 50%;
+}
+input[type="radio"]:checked {
+  background-color: var(--main-color);
+}
+
+/* Custom Checkbox */
+input[type="checkbox"] {
+  transform: scale(1.5);
+  filter: var(--main-color);
 }

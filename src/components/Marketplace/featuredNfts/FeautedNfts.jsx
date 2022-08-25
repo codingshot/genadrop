@@ -112,7 +112,8 @@ const FeautedNfts = () => {
           ))
         )}
       </GenadropCarouselScreen>
-      <div className={classes.wrapper}>
+
+      <div className={`${classes.wrapper}`}>
         <div className={classes.feed}>
           <div className={classes.left}>
             <span className={classes.blueBox}>Feeds</span>

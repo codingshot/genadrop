@@ -314,12 +314,12 @@ const SingleNftCollection = ({ len }) => {
               ? [
                   ...(filteredCollection || [])
                     ?.filter((_, idx) => idx < 12)
-                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed is1of1 />),
                 ]
               : [
                   ...(filteredCollection || [])
                     ?.filter((_, idx) => idx < 16)
-                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed is1of1 />),
                 ]}
           </div>
         ) : !filteredCollection && filter.searchValue ? (

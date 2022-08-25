@@ -204,7 +204,6 @@ const Collections = ({ len }) => {
 
   const handleLeftClick = () => {
     if (activePage > 3) {
-      console.log(">>>", page1, page2, page3, activePage);
       handleSetState({
         page1: page1 - 1,
         page2: page2 - 1,

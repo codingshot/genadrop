@@ -1,129 +1,173 @@
 .card {
   width: 100%;
   border-radius: 0.5em;
-  background: var(--default);
-  transition: all 250ms;
   border: 1px solid var(--outline);
-  overflow: hidden;
+  transition: all 300ms;
   max-width: 32em;
+  height: 28rem;
 }
 
 .card:hover {
-  box-shadow: var(--shadow-light);
-  transform: translateY(-5px);
   cursor: var(--cursor-pointer);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-dark);
 }
 
 .imageContainer {
-  background: rgba(0, 0, 0, 0.05);
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
   width: 100%;
-  height: 16em;
-}
-
-.body {
-  width: 100%;
-  position: relative;
+  padding: 0.5em;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 16em;
+  border-bottom: 1px solid var(--outline);
+}
+
+.creator {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.7rem;
+}
+.creator img {
+  height: 2rem;
+  width: 2rem;
+  border-radius: 50%;
+  margin-right: 0.7rem;
+}
+.creatoAddress {
   flex-direction: column;
-  padding: 0 0.5em;
-  padding-top: 3em;
-  padding-bottom: 1em;
 }
 
-.thumbnail {
-  width: 5em;
-  height: 5em;
-  overflow: hidden;
-  border-radius: 50%;
-  position: absolute;
-  top: 0;
-  transform: translateY(-50%);
-  background: var(--default);
-  box-shadow: var(--shadow-light);
+.address {
+  color: var(--main-color);
 }
 
-.thumbnail img {
+.imageContainer img {
+  object-fit: cover;
+  border-radius: 0.5em;
   width: 100%;
-  border-radius: 50%;
+  height: 100%;
 }
 
-.name {
-  margin-bottom: 1em;
-}
-
-.description {
+.cardBody {
   width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  text-align: center;
-  margin-bottom: 1em;
-  padding: 0 1em;
-  min-height: 1.5em;
+  padding: 0.5em;
+  margin-top: 2px;
+  border-bottom-left-radius: 0.25em;
+  border-bottom-right-radius: 0.25em;
 }
 
+.collectionName {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.chainIcon {
+  width: 2em;
+  margin-right: 0.5em;
+}
+.listPrice {
+  margin-top: 15px;
+}
+
+.is1of1 {
+  background-color: var(--card-bg-light2);
+  border-radius: 8px;
+  padding: 0.3em 0.5em;
+  overflow: auto;
+}
+
+.nftName {
+  font-weight: 600;
+  font-size: 19.8px;
+}
+
+.collection {
+  background-color: var(--main-light);
+  border-radius: 8px;
+  padding: 0.3em 0.5em;
+  overflow: auto;
+}
 .usdPrice {
   font-size: 0.7rem;
   font-weight: lighter;
 }
 
 .wrapper {
-  width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
+  border-top: 1px solid var(--outline);
+  margin-top: 15px;
 }
 
-.notListedWrap {
-  display: flex;
-  flex-direction: row;
-  margin-top: 5px;
-  align-items: center;
-  justify-content: center;
-}
-
-.notListed {
-  margin-left: 10px;
-  background-color: var(--outline);
-  padding: 5px 15px;
-  border-radius: 16px;
-}
-.notListed span {
-  font-size: 14px;
-  color: black;
-}
-
-.floor {
-  font-size: 0.65em;
-  font-weight: bold;
-  color: rgba(173, 181, 189, 1);
+.list {
+  font-weight: 500;
+  color: gray;
+  font-size: 0.75rem;
 }
 
 .price {
   color: var(--main-color);
   font-weight: bold;
 }
-
 .price img {
   transform: translateY(20%);
   margin-right: 10px;
-  width: 30px;
+  width: 25px;
 }
-
 .chain {
-  font-weight: 300;
-  font-size: 0.85em;
+  font-size: 0.75rem;
 }
 
-.nftCount {
-  padding: 0.5em 1.5em;
+.notListed {
+  font-size: 1rem;
+  padding: 0.65em 1em;
+  margin-top: 1.5em;
+  border-radius: 2em;
   background: var(--main-color);
   color: white;
+  transition: all 300ms;
+}
+
+.button {
+  font-size: 1rem;
+  padding: 0.65em 1.5em;
   border-radius: 2em;
-  font-size: 0.85rem;
+  background: var(--main-color);
+  color: white;
+  transition: all 300ms;
+}
+
+.button:hover {
+  background: var(--main-hovered);
+  outline: 2px solid var(--main-color);
+}
+.buttonSold {
+  background-color: #707a83;
+  cursor: var(--cursor-default);
+}
+.buttonSold:hover {
+  cursor: var(--cursor-hover);
+  background: #707a83;
+  outline: none;
+}
+
+.description {
+  margin-top: 1em;
+  height: 3em;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-light);
+  font-size: 14px;
+}
+.nftCount {
+  background-color: var(--btn-bg);
+  border-radius: 1em;
+  padding: 0.3em 0.5em;
 }
