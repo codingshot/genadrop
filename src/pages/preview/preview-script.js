@@ -20,6 +20,7 @@ export const isUnique = (attributes, attr, rule) => {
     layerTitle: p.trait_type,
     imageName: p.value,
   }));
+  attr = attr.map(({ image, ...otherAttrs }) => otherAttrs);
   const att_str = JSON.stringify(attr);
   for (const _attr of attributes) {
     const _attr_str = JSON.stringify(_attr);
@@ -64,14 +65,15 @@ export const createUniqueLayer = async (props) => {
     setTimeout(() => {
       dispatch(setLoader(`removing ${uniqueIndex} duplicates`));
       const attribute = [];
-      layers.forEach(({ layerTitle, traits }) => {
+      layers.forEach(({ layerTitle, traits, id }) => {
         const randNum = Math.floor(Math.random() * traits.length);
         const { traitTitle, Rarity, image } = traits[randNum];
         attribute.push({
           trait_type: layerTitle,
-          value: traitTitle.replace(".png", ""),
+          imageName: traitTitle.replace(".png", ""),
           rarity: Rarity,
           image,
+          id,
         });
       });
       if (isUnique(prevAttributes, attribute, rule)) {
