@@ -24,12 +24,17 @@ import youtube from "../../assets/icon-youtube-green.svg";
 // import { setNotification } from "../../gen-state/gen.actions";
 import {
   getAuroraCollectedNFTs,
+  getAuroraMintedNfts,
+  getAuroraUserCollections,
   getCeloCollectedNFTs,
+  getCeloMintedNFTs,
   getCeloUserCollections,
   getPolygonCollectedNFTs,
+  getPolygonMintedNFTs,
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import supportedChains from "../../utils/supportedChains";
+import FetchData from "../../renderless/fetch-data/fetchData.component";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -54,18 +59,7 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const {
-    account,
-    mainnet,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleCeloNfts,
-    auroraCollections,
-    polygonCollections,
-    celoCollections,
-    dispatch,
-    chainId,
-  } = useContext(GenContext);
+  const { account, mainnet, dispatch, chainId } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -78,62 +72,86 @@ const Dashboard = () => {
   useEffect(() => {
     if (!account) history.push("/");
     // Get User Created NFTs
-
+    let address = "";
+    if (supportedChains[chainId]?.chain !== "Algorand" && account) {
+      address = ethers?.utils?.hexlify(account);
+    }
     (async function getUserNFTs() {
-      let algoNFTs = [];
-      if (supportedChains[chainId].label === "Algorand") {
-        const singleNfts = await fetchUserCreatedNfts(account);
-        algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+      switch (supportedChains[chainId]?.chain) {
+        case "Algorand":
+          const singleNfts = await fetchUserCreatedNfts(account);
+          const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
+          handleSetState({ createdNfts: [...(algoNFTs || [])] });
+          break;
+        case "Celo":
+          const celoNfts = await getCeloMintedNFTs(address);
+          handleSetState({ createdNfts: [...(celoNfts || [])] });
+          break;
+        case "Aurora":
+          const aurroraNFTs = await getAuroraMintedNfts(address);
+          handleSetState({ createdNfts: [...(aurroraNFTs || [])] });
+          break;
+        case "Polygon":
+          const polygonNFTs = await getPolygonMintedNFTs(address);
+          handleSetState({ createdNfts: [...(polygonNFTs || [])] });
+          break;
+        default:
+          break;
       }
-      const aurroraNFTs = singleAuroraNfts?.filter((nft) => nft?.owner === account && nft.sold !== true);
-      const celoNfts = singleCeloNfts?.filter((nft) => nft?.owner === account && nft.sold !== true);
-      const polygonNFTs = singlePolygonNfts?.filter((nft) => nft?.owner === account && nft.sold !== true);
-      handleSetState({
-        createdNfts: [...(algoNFTs || []), ...(aurroraNFTs || []), ...(polygonNFTs || []), ...(celoNfts || [])],
-      });
     })();
-
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
-      let address = "";
-      if (supportedChains[chainId].label !== "Algorand") {
-        address = ethers.utils.hexlify(account);
-      }
-      const collectedNfts = await fetchUserBoughtNfts(account);
-      const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
 
-      const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
-      const celoCollectedNfts = await getCeloCollectedNFTs(address);
-      const auroraCollectedNfts = await getAuroraCollectedNFTs(address);
-      handleSetState({
-        collectedNfts: [
-          ...(algoCollectedNfts || []),
-          ...(auroraCollectedNfts || []),
-          ...(celoCollectedNfts || []),
-          ...(polygonCollectedNfts || []),
-        ],
-      });
+      switch (supportedChains[chainId]?.chain) {
+        case "Algorand":
+          const collectedNfts = await fetchUserBoughtNfts(account);
+          const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
+          handleSetState({ collectedNfts: [...(algoCollectedNfts || [])] });
+          break;
+        case "Celo":
+          const celoCollectedNfts = await getCeloCollectedNFTs(address);
+          handleSetState({ collectedNfts: [...(celoCollectedNfts || [])] });
+          break;
+        case "Aurora":
+          const auroraCollectedNfts = await getAuroraCollectedNFTs(address);
+          handleSetState({ collectedNfts: [...(auroraCollectedNfts || [])] });
+          break;
+        case "Polygon":
+          const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
+          handleSetState({ collectedNfts: [...(polygonCollectedNfts || [])] });
+          break;
+        default:
+          break;
+      }
     })();
 
     // Get User created Collections
     (async function getCreatedCollections() {
-      let hexAddress;
-      if (supportedChains[chainId].label !== "Algorand") {
-        hexAddress = ethers.utils.hexlify(account);
+      let address = "";
+      if (supportedChains[chainId]?.chain !== "Algorand" && account) {
+        address = ethers?.utils?.hexlify(account);
       }
-      const collections = await fetchUserCollections(account);
-      const algoCollections = await getUserNftCollections({ collections, mainnet });
-      const aurrCollections = auroraCollections?.filter((collection) => collection.nfts[0]?.owner?.id === account);
-      const polyCollections = await getPolygonUserCollections(hexAddress);
-      const celoCollection = await getCeloUserCollections(hexAddress);
-      handleSetState({
-        myCollections: [
-          ...(algoCollections || []),
-          ...(aurrCollections || []),
-          ...(polyCollections || []),
-          ...(celoCollection || []),
-        ],
-      });
+      switch (supportedChains[chainId]?.chain) {
+        case "Algorand":
+          const collections = await fetchUserCollections(account);
+          const algoCollections = await getUserNftCollections({ collections, mainnet });
+          handleSetState({ myCollections: [...(algoCollections || [])] });
+          break;
+        case "Celo":
+          const celoCollection = await getCeloUserCollections(address);
+          handleSetState({ myCollections: [...(celoCollection || [])] });
+          break;
+        case "Aurora":
+          const auroraCollections = await getAuroraUserCollections(address);
+          handleSetState({ myCollections: [...(auroraCollections || [])] });
+          break;
+        case "Polygon":
+          const polyCollections = await getPolygonUserCollections(address);
+          handleSetState({ myCollections: [...(polyCollections || [])] });
+          break;
+        default:
+          break;
+      }
     })();
 
     (async function getUsername() {
@@ -141,7 +159,7 @@ const Dashboard = () => {
 
       handleSetState({ userDetails: data });
     })();
-  }, [account]);
+  }, [account, chainId]);
 
   // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
