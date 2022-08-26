@@ -18,8 +18,9 @@ import { v4 as uuid } from "uuid";
 export const isUnique = (attributes, attr, rule) => {
   const parseAttrToRule = attr.map((p) => ({
     layerTitle: p.trait_type,
-    imageName: p.value,
+    imageName: p.imageName,
   }));
+  attr = attr.map(({ image, ...otherAttrs }) => otherAttrs);
   const att_str = JSON.stringify(attr);
   for (const _attr of attributes) {
     const _attr_str = JSON.stringify(_attr);
@@ -61,24 +62,26 @@ export const createUniqueLayer = async (props) => {
   const prevAttributes = newLayersCopy.map(({ attributes }) => attributes);
 
   const uniqueCall = (resolve) => {
-    setTimeout(() => {
-      dispatch(setLoader(`removing ${uniqueIndex} duplicates`));
-      const attribute = [];
-      layers.forEach(({ layerTitle, traits }) => {
-        const randNum = Math.floor(Math.random() * traits.length);
-        const { traitTitle, Rarity, image } = traits[randNum];
-        attribute.push({
-          trait_type: layerTitle,
-          value: traitTitle.replace(".png", ""),
-          rarity: Rarity,
-          image,
-        });
+    dispatch(setLoader(`removing ${uniqueIndex} duplicates`));
+    const attribute = [];
+    layers.forEach(({ layerTitle, traits, id }) => {
+      const randNum = Math.floor(Math.random() * traits.length);
+      const { traitTitle, Rarity, image } = traits[randNum];
+      attribute.push({
+        trait_type: layerTitle,
+        imageName: traitTitle.replace(".png", ""),
+        rarity: Rarity,
+        image,
+        id,
       });
-      if (isUnique(prevAttributes, attribute, rule)) {
-        newAttributes = [...attribute];
-      } else {
-        uniqueIndex += 1;
-      }
+    });
+    if (isUnique(prevAttributes, attribute, rule)) {
+      newAttributes = [...attribute];
+    } else {
+      uniqueIndex += 1;
+    }
+
+    setTimeout(() => {
       resolve();
     }, 0);
   };
@@ -134,8 +137,14 @@ export const handleDeleteAndReplace = async (deleteAndReplaceProps) => {
         message: "Sorry! you need to generate a new collection to use this feature",
       })
     );
-  if (!(combinations - rule.length - mintAmount)) {
-    dispatch(setMintInfo("  cannot generate asset from 0 combination"));
+  if (!(combinations - mintAmount)) {
+    dispatch(setMintInfo("You have no possible combinations. Delete some art to use this feature."));
+    dispatch(
+      setNotification({
+        message: "You have no possible combinations. Delete some art to use this feature.",
+        type: "warning",
+      })
+    );
   } else {
     dispatch(setLoader("generating..."));
     dispatch(setMintInfo(""));
@@ -225,7 +234,6 @@ export const generateGif = (generateGifProps) => {
 
 export const addToCollection = (addToCollectionProps) => {
   const { gif, gifs, nftLayers, collectionName, handleSetState, dispatch } = addToCollectionProps;
-  console.log({ gifs, nftLayers });
   const updatedGifs = gifs.filter((img) => gif.id !== img.id);
   const newLayers = [gif, ...nftLayers].map((asset, idx) => ({
     ...asset,

@@ -110,14 +110,16 @@ const WalletPopup = ({ handleSetState }) => {
             </div>
           </div>
           <div className={`${classes.connectionMethods} ${showConnectionMethods && classes.active}`}>
-            <div
-              onClick={handleMetamask}
-              className={`${classes.connectionMethod} ${classes.metamask} ${showMetamask && classes.active}`}
-            >
-              <img src={metamaskIcon} alt="" />
-              <h3>MetaMask</h3>
-              <p>Connect to you MetaMask Wallet</p>
-            </div>
+            {window.ethereum !== undefined && (
+              <div
+                onClick={handleMetamask}
+                className={`${classes.connectionMethod} ${classes.metamask} ${showMetamask && classes.active}`}
+              >
+                <img src={metamaskIcon} alt="" />
+                <h3>MetaMask</h3>
+                <p>Connect to you MetaMask Wallet</p>
+              </div>
+            )}
             <div onClick={handleWalletConnect} className={classes.connectionMethod}>
               <img src={walletConnectIcon} alt="" />
               <h3>WalletConnect</h3>

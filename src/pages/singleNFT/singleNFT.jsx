@@ -173,12 +173,12 @@ const SingleNFT = () => {
     if (supportedChains[Number(nftChainId)].chain !== "Algorand" && pair) {
       let value;
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        value = Object.values(res?.data)[0]?.usd;
-      });
-      handleSetState({
-        chainIcon: supportedChains[nftDetails.chain].icon,
-        algoPrice: value ? value : 0,
-        chainSymbol: supportedChains[nftDetails.chain].symbol,
+        value = Object.values(res.data)[0]?.usd;
+        handleSetState({
+          chainIcon: supportedChains[nftDetails.chain].icon,
+          algoPrice: value ? value : 0,
+          chainSymbol: supportedChains[nftDetails.chain].symbol,
+        });
       });
     }
     if (supportedChains[Number(nftChainId)].chain === "Algorand") {
@@ -354,7 +354,7 @@ const SingleNFT = () => {
                   </>
                 ) : (
                   <>
-                    {Number(nftDetails.chain) !== 4160 ? (
+                    {supportedChains[nftDetails.chain]?.chain !== "Algorand" ? (
                       <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
                         Buy now
                       </button>

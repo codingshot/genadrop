@@ -80,6 +80,21 @@
   border: 1px solid var(--card-layer);
   background: var(--default);
   color: var(--card-layer);
+  transition: all 300ms;
+}
+
+.detail.active {
+  border: 2px solid var(--error-500);
+}
+
+.detail.active span {
+  color: var(--error-500);
+}
+
+.detail.active span:last-child {
+  background: var(--error-500);
+  color: var(--default);
+  border-color: transparent;
 }
 
 .detail span:last-child {
@@ -87,10 +102,7 @@
   border: 1px solid var(--card-layer);
   color: var(--default);
   padding: 0 1em;
-}
-
-.detail i {
-  color: red;
+  border-radius: 0.25em;
 }
 
 .btnContainer {

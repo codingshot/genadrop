@@ -8,6 +8,7 @@ import PaypalButton from "./PaypalButton";
 import { ReactComponent as StripeIcon } from "../../../assets/icon-stripe.svg";
 import { saveUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { GenContext } from "../../../gen-state/gen.context";
+import { setOverlay } from "../../../gen-state/gen.actions";
 
 let stripePromise;
 
@@ -31,6 +32,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
     proposedPlan,
     currentPlan,
     currentUser,
+    dispatch,
   } = useContext(GenContext);
   const [stripeError, setStripeError] = useState(null);
 
@@ -124,7 +126,10 @@ const PricingModal = ({ plan, price, closeModal }) => {
       currentPlan,
       currentUser,
     });
+    dispatch(setOverlay(true));
     const stripe = await getStripe();
+    window.sessionStorage.createNew = "kd@#ff_dafknk_fiiqv//";
+    dispatch(setOverlay(false));
     console.log("Got stripe");
     const res = await stripe.redirectToCheckout(checkoutOptions);
     console.log("Stripe checkout error", res);
@@ -135,6 +140,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
   if (stripeError) alert(stripeError);
 
   const handleClick = () => {
+    window.sessionStorage.createNew = "kd@#ff_dafknk_fiiqv//";
     history.push("/create/session/create");
     handleClose();
   };

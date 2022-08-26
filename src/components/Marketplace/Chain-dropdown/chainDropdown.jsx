@@ -62,20 +62,20 @@ const ChainDropdown = ({ onChainFilter }) => {
       </div>
       <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
         {[
-          <div onClick={() => chainHandler("All Chains")} className={classes.chain}>
+          <div key={0} onClick={() => chainHandler("All Chains")} className={classes.chain}>
             <img src={allChainsIcon} alt="All Chains" /> <span>All Chains</span>
           </div>,
           ...Object.values(supportedChains)
-            .filter((chainE) => mainnet === chainE.isMainnet)
-            .map((chainE) => (
+            .filter((_chain) => mainnet === _chain.isMainnet)
+            .map((_chain, idx) => (
               <div
-                key={chainE.id}
+                key={idx + 1}
                 onClick={() => {
-                  !chainE.comingSoon ? chainHandler(chainE.chain) : {};
+                  !_chain.comingSoon ? chainHandler(_chain.chain) : {};
                 }}
-                className={`${classes.chain} ${chainE.comingSoon && classes.inActive}`}
+                className={`${classes.chain} ${_chain.comingSoon && classes.inActive}`}
               >
-                {chainE.icon ? <img src={chainE.icon} alt={chainE.chain} /> : <p />} <span>{chainE.chain}</span>
+                {_chain.icon ? <img src={_chain.icon} alt={_chain.chain} /> : <p />} <span>{_chain.chain}</span>
               </div>
             )),
         ]}

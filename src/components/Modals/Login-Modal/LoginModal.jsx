@@ -6,17 +6,28 @@ import { GenContext } from "../../../gen-state/gen.context";
 import { signInWithGoogle } from "../../google-auth/googleAuth.script";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { setCollectionName } from "../../../gen-state/gen.actions";
+import { ReactComponent as LoadingIcon } from "../../../assets/icon-loading.svg";
 
 const LoginModal = () => {
   const { dispatch, isUser, collectionName } = useContext(GenContext);
-  const [toggleModal, setToggleModal] = useState(true);
+  const [state, setState] = useState({
+    toggleModal: true,
+    isSignIn: false,
+  });
+
+  const { toggleModal, isSignIn } = state;
+
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
 
   const handleSignIn = () => {
-    signInWithGoogle({ dispatch });
+    handleSetState({ isSignIn: true });
+    signInWithGoogle({ dispatch, handleSetState });
   };
 
   const handleClose = () => {
-    setToggleModal(false);
+    handleSetState({ toggleModal: false, isSignIn: false });
     if (!collectionName) {
       dispatch(setCollectionName("New Collection"));
     }
@@ -30,7 +41,10 @@ const LoginModal = () => {
           Sign in/Sign up in to continue using <span>Genadrop</span>
         </div>
         <FolderIcon className={classes.logoHead} />
-        <div onClick={handleSignIn} className={classes.signinBtn}>
+        <div onClick={!isSignIn ? handleSignIn : () => {}} className={classes.signinBtn}>
+          <div className={`${classes.overlayer} ${isSignIn && classes.active}`}>
+            <LoadingIcon className={classes.loadingIcon} />
+          </div>
           <GoogleIcon />
           <div>sign in with google</div>
         </div>

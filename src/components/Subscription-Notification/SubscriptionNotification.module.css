@@ -1,5 +1,5 @@
 .container {
-  max-width: 24em;
+  max-width: 26em;
   border-radius: 2em;
   background: var(--default);
   position: fixed;
@@ -45,12 +45,14 @@
   text-align: center;
   font-size: 1.2rem;
   font-weight: 600;
+  color: var(--main-color);
 }
 
 .description {
   text-align: center;
-  color: var(--text-light);
+  color: var(--text-sub-heading);
   margin-bottom: 0.5em;
+  font-size: 0.95rem;
 }
 
 .list {
@@ -58,7 +60,12 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  font-weight: 600;
   gap: 1em;
+}
+
+.list > div {
+  color: var(--text-sub-heading);
 }
 
 .listIcon {
@@ -75,6 +82,7 @@
   align-self: center;
   color: var(--default);
   cursor: pointer;
+  margin-top: 1em;
 }
 
 .upgradeBtn:hover {

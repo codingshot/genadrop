@@ -44,13 +44,13 @@ const HotAuctions = () => {
           {[
             ...algoCollectionsArr
               ?.filter((_, idx) => idx < 10)
-              .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx} collection={collection} />),
+              .map((collection, idx) => <CollectionsCard use_width="20em" key={idx} collection={collection} />),
             ...auroraCollections
               ?.filter((_, idx) => idx < 10)
-              .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 20} collection={collection} />),
+              .map((collection, idx) => <CollectionsCard use_width="20em" key={idx + 20} collection={collection} />),
             ...polygonCollections
               ?.filter((_, idx) => idx < 10)
-              .map((collection, idx) => <CollectionsCard useWidth="20em" key={idx + 30} collection={collection} />),
+              .map((collection, idx) => <CollectionsCard use_width="20em" key={idx + 30} collection={collection} />),
           ]}
         </GenadropCarouselScreen>
       ) : !algoCollectionsArr && !auroraCollections && !polygonCollections ? (

@@ -7,6 +7,9 @@ export const GET_GRAPH_COLLECTIONS = gql`
       description
       id
       name
+      creator {
+        id
+      }
       nfts {
         chain
         category
@@ -149,6 +152,9 @@ export const GET_USER_NFT = gql`
         isSold
         price
         tokenID
+        collection {
+          id
+        }
         tokenIPFSPath
         owner {
           id

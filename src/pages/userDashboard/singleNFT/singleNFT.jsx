@@ -163,10 +163,10 @@ const ListSingleNFT = (nft) => {
   }, []);
 
   useEffect(() => {
-    const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
+    const pair = supportedChains[nftDetails.chain]?.coinGeckoLabel;
     if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0].usd;
+        let value = Object.values(res.data)[0]?.usd;
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,

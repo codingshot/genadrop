@@ -4,9 +4,13 @@ import { ReactComponent as FailedIcon } from "../../../assets/icon-payment-faile
 import classes from "./FailedPlan.module.css";
 import { useHistory } from "react-router-dom";
 import { setProposedPlan } from "../../../gen-state/gen.actions";
+import Fallback from "../..//fallback/fallback";
 
 const FailedPlan = () => {
   const history = useHistory();
+  if (window.sessionStorage.createNew !== "kd@#ff_dafknk_fiiqv//") {
+    return <Fallback />;
+  }
   const { dispatch, proposedPlan } = useContext(GenContext);
 
   useEffect(() => {

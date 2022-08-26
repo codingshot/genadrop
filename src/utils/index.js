@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-syntax */
 import axios from "axios";
 import { getAlgoData, purchaseAuroraNfts, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
-import { readSIngleUserNft } from "./firebase";
+import { fetchUserNfts, readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
   clearLayers,
@@ -336,32 +336,46 @@ export const getTransactions = async (transactions) => {
   return trnArr;
 };
 
-export const getUserGraphNft = async (collection, address) => {
-  const nftArr = [];
-  if (collection) {
-    for (let i = 0; i < collection?.length; i++) {
-      const { data } = await axios.get(collection[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+export const getUserGraphNft = async (collections, address) => {
+  function fetchUserNfts(collection) {
+    const fetch = async (resolve, reject) => {
       try {
+        const { data } = await axios.get(collection.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
         const nftObj = {};
-        // nftObj.collection_name = collection[i]?.owner.collections[0]?.name;
+        // nftObj.collection_name = collection?.owner.collections[0]?.name;
         nftObj.owner = address;
-        nftObj.chain = collection[i]?.chain;
-        nftObj.Id = collection[i]?.id;
-        nftObj.tokenID = collection[i]?.tokenID;
-        const getPrice = collection.map((col) => col?.price).reduce((a, b) => (a < b ? a : b));
+        nftObj.chain = collection?.chain;
+        nftObj.Id = collection?.id;
+        nftObj.collectionId = collection?.collection?.id;
+        nftObj.tokenID = collection?.tokenID;
+        const getPrice = collection?.price;
         nftObj.collectionPrice = getPrice * PRICE_CONVERSION_VALUE;
-        nftObj.price = collection[i]?.price * PRICE_CONVERSION_VALUE;
-        nftObj.sold = collection[i]?.isSold;
+        nftObj.price = collection?.price * PRICE_CONVERSION_VALUE;
+        nftObj.sold = collection?.isSold;
         nftObj.ipfs_data = data;
-        nftObj.contractAddress = collection[i]?.id?.split(collection[i]?.tokenID)[0];
-        nftObj.collection_contract = collection[i]?.id?.split(collection[i]?.tokenID)[0];
+        nftObj.contractAddress = collection?.id?.split(collection?.tokenID)[0];
+        nftObj.collection_contract = collection?.id?.split(collection?.tokenID)[0];
         nftObj.name = data?.name;
         nftObj.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
-        nftArr.push(nftObj);
+        resolve(nftObj);
       } catch (error) {
         console.log(error);
+        reject(error);
       }
-    }
+    };
+    return new Promise((resolve, reject) => {
+      fetch(resolve, reject);
+    });
+  }
+
+  const nftArr = [];
+  if (collections) {
+    const responses = await Promise.allSettled(collections.map((collection) => fetchUserNfts(collection)));
+    responses.forEach((element) => {
+      if (element?.status === "fulfilled") {
+        nftArr.push(element.value);
+      }
+    });
   }
   return nftArr;
 };
@@ -456,6 +470,13 @@ export const getSingleGraphNfts = async (nfts) => {
           nftObj.description = data?.description;
           nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
+          nftObj.collectionId = NFT?.collection?.id;
+          nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
+          nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
+          nftObj.tokenID = NFT?.tokenID;
+          nftObj.ipfs_data = data;
+          nftObj.collection_contract = NFT?.id?.split(NFT?.tokenID)[0];
+          nftObj.contractAddress = NFT?.id?.split(NFT?.tokenID)[0];
           resolve(nftObj);
         } catch (err) {
           console.log(err);
