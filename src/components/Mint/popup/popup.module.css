@@ -62,7 +62,7 @@
   top: 1em;
   right: 1em;
   transition: all 300ms;
-  cursor: var(--cursor-pointer);
+  cursor: pointer;
   padding: 0.25em;
   width: 1.5em;
   height: 1.5em;
@@ -93,6 +93,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
+  cursor: pointer;
 }
 
 .errorBtn {
@@ -118,12 +119,10 @@
 }
 
 .actionBtn._1:hover {
-  cursor: var(--cursor-hover);
   background: var(--main-hovered);
 }
 
 .actionBtn._2:hover {
-  cursor: var(--cursor-hover);
   background: var(--main-color);
   color: white;
 }

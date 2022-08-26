@@ -34,7 +34,6 @@ import {
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import supportedChains from "../../utils/supportedChains";
-import FetchData from "../../renderless/fetch-data/fetchData.component";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -59,7 +58,7 @@ const Dashboard = () => {
 
   const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
 
-  const { account, mainnet, dispatch, chainId } = useContext(GenContext);
+  const { account, mainnet, chainId } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -69,8 +68,8 @@ const Dashboard = () => {
     return address && `${address.slice(0, width)}...${address.slice(-width)}`;
   };
 
+  // return null;
   useEffect(() => {
-    if (!account) history.push("/");
     // Get User Created NFTs
     let address = "";
     if (supportedChains[chainId]?.chain !== "Algorand" && account) {
@@ -221,18 +220,25 @@ const Dashboard = () => {
   useEffect(() => {
     if (!filteredCollection || !account) return;
     let filtered = null;
+    console.log({ filteredCollection });
     if (filter.date === "newest - oldest") {
-      if (supportedChains[chainId].label === "Algorand") {
-        filtered = getCollectionToFilter().sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
-      } else {
-        filtered = getCollectionToFilter().sort((a, b) => a?.createdAt - b?.createdAt);
-      }
+      filtered = getCollectionToFilter().sort((a, b) => {
+        if (!a.createdAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
+        if (typeof a.createdAt === "object") {
+          return a.createdAt.seconds - b.createdAt.seconds;
+        } else {
+          return a.createdAt - b.createdAt;
+        }
+      });
     } else {
-      if (supportedChains[chainId].label === "Algorand") {
-        filtered = getCollectionToFilter().sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
-      } else {
-        filtered = getCollectionToFilter().sort((a, b) => b?.createdAt - a?.createdAt);
-      }
+      filtered = getCollectionToFilter().sort((a, b) => {
+        if (!a.createdAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
+        if (typeof a.createdAt === "object") {
+          return b.createdAt.seconds - a.createdAt.seconds;
+        } else {
+          return b.createdAt - a.createdAt;
+        }
+      });
     }
     handleSetState({ filteredCollection: filtered });
   }, [filter.date]);
@@ -363,7 +369,7 @@ const Dashboard = () => {
             )
           ) : (
             <div className={classes.skeleton}>
-              {[...new Array(5)].map((id) => (
+              {[...new Array(5)].map((_, id) => (
                 <div key={id}>
                   <Skeleton count={1} height={200} />
                   <br />

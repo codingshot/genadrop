@@ -265,11 +265,11 @@ export const updateAccount = async (walletProps) => {
 
 export const disconnectWallet = async ({ walletConnectProvider, dispatch, history, pathname, handleSetState }) => {
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  dispatch(setAccount(null));
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
   handleSetState({ toggleDropdown: false });
   if (pathname.includes("/me")) {
     history.push("/marketplace");
   }
+  dispatch(setAccount(null));
 };
