@@ -299,9 +299,11 @@ const CollectionNFT = () => {
                 <span className={classes.title}>Current price</span>
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
-                  <p className={classes.tokenValue}>
-                    {parseInt(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain]?.sybmol}
-                  </p>
+                  {nftDetails && (
+                    <p className={classes.tokenValue}>
+                      {parseInt(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain].sybmol}
+                    </p>
+                  )}
                   <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
                 </span>
               </div>
