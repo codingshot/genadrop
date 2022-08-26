@@ -354,7 +354,7 @@ const SingleNFT = () => {
                   </>
                 ) : (
                   <>
-                    {supportedChains[parseInt(nftDetails.chain)]?.chain !== "Algorand" ? (
+                    {supportedChains[nftDetails.chain]?.chain !== "Algorand" ? (
                       <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
                         Buy now
                       </button>

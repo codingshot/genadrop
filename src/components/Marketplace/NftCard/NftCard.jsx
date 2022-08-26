@@ -7,7 +7,7 @@ import Copy from "../../copy/copy";
 import { GenContext } from "../../../gen-state/gen.context";
 import avatar from "../../../assets/avatar.png";
 
-const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
+const NftCard = ({ nft, listed, chinPrice, use_width, fromDashboard }) => {
   const { Id, collection_name, name, price, image_url, chain } = nft;
   const match = useRouteMatch();
   const history = useHistory();
@@ -44,7 +44,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
           : `/marketplace/1of1/${Id}`
       }
     >
-      <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
+      <div style={use_width ? { width: use_width } : {}} className={classes.card}>
         <div className={classes.imageContainer}>
           <img
             onError={({ currentTarget }) => {

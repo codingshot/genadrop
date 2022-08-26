@@ -9,10 +9,9 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import { GenContext } from "../../gen-state/gen.context";
-import supportedChains from "../../utils/supportedChains";
 
 const SingleNftCollection = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, chainId } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts } = useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const location = useLocation();
@@ -151,20 +150,26 @@ const SingleNftCollection = () => {
   }, [filter.name]);
 
   useEffect(() => {
-    if (!filteredCollection) return;
+    console.log({ filteredCollection });
+    if (!filteredCollection || true) return; // 1of1 nfts currently do not have createdAt property.
+    // Remove || true when the property is available
     let filtered = null;
     if (filter.date === "newest - oldest") {
-      if (supportedChains[chainId]?.label === "Algorand") {
-        filtered = filteredCollection.sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
-      } else {
-        filtered = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
-      }
+      filtered = filteredCollection.sort((a, b) => {
+        if (typeof a.createdAt === "object") {
+          return a.createdAt.seconds - b.createdAt.seconds;
+        } else {
+          return a.createdAt - b.createdAt;
+        }
+      });
     } else {
-      if (supportedChains[chainId]?.label === "Algorand") {
-        filtered = filteredCollection.sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
-      } else {
-        filtered = filteredCollection.sort((a, b) => b?.createdAt - a?.createdAt);
-      }
+      filtered = filteredCollection.sort((a, b) => {
+        if (typeof a.createdAt === "object") {
+          return b.createdAt.seconds - a.createdAt.seconds;
+        } else {
+          return b.createdAt - a.createdAt;
+        }
+      });
     }
     handleSetState({ FilteredCollection: filtered });
   }, [filter.date]);
