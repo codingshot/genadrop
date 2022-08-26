@@ -21,9 +21,13 @@ import classes from "./SuccessPlan.module.css";
 import { useHistory } from "react-router-dom";
 import { fetchUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { saveSession } from "../../../renderless/store-data/StoreData.script";
+import Fallback from "../../fallback/fallback";
 
 const SuccessPlan = () => {
   const history = useHistory();
+  if (window.sessionStorage.createNew !== "kd@#ff_dafknk_fiiqv//") {
+    return <Fallback />;
+  }
   const { dispatch, upgradePlan, sessionId, collectionName, proposedPlan, currentUser } = useContext(GenContext);
   const [inputValue, setInputValue] = useState("");
   let isStripe = window.sessionStorage.isStripe;

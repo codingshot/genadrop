@@ -8,6 +8,7 @@
   background: var(--card-layer);
   border-radius: 0.25em;
   color: var(--default);
+  cursor: grab;
 }
 
 ._name {
@@ -27,7 +28,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  cursor: var(--cursor-pointer);
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;

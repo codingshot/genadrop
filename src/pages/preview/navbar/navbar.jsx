@@ -1,5 +1,4 @@
 import classes from "./navbar.module.css";
-import { ReactComponent as WarnIcon } from "../../../assets/icon-warn.svg";
 import { ReactComponent as BackIcon } from "../../../assets/icon-arrow-left.svg";
 import { useHistory } from "react-router-dom";
 
@@ -26,10 +25,9 @@ const Navbar = ({ navbarProps }) => {
           <span>Number of Generative Arts</span>
           <span>{nftLayers.length}</span>
         </div>
-        <div className={classes.detail}>
-          {mintInfo ? <WarnIcon /> : null}
+        <div className={`${classes.detail} ${mintInfo && classes.active}`}>
           <span>Unused Combinations</span>
-          <span>{combinations - mintAmount - rule.length || combinations - nftLayers.length}</span>
+          <span>{combinations - nftLayers.length}</span>
         </div>
       </div>
     </div>

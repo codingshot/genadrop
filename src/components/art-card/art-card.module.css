@@ -4,7 +4,6 @@
   position: relative;
   border-radius: 0.5em;
   overflow: hidden;
-  transition: all 100ms;
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-light);
@@ -22,10 +21,6 @@
 
 .container.active .addRuleBtn {
   color: var(--main-color);
-}
-
-.container * {
-  transition: all 150ms;
 }
 
 .imageContainer {
@@ -47,17 +42,11 @@
 
 .action {
   width: 100%;
-  top: 0;
-  left: 0;
   background: var(--default);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0.5em;
-}
-
-.action i {
-  font-weight: bold;
 }
 
 .details {
@@ -148,9 +137,9 @@
   fill: var(--icon-color);
   width: 1.4em;
   height: 1.4em;
+  cursor: pointer;
 }
 
 .closeIcon:hover {
-  cursor: var(--cursor-hover);
   box-shadow: var(--shadow-dark);
 }
