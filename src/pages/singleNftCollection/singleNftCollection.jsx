@@ -154,13 +154,13 @@ const SingleNftCollection = () => {
     if (!filteredCollection) return;
     let filtered = null;
     if (filter.date === "newest - oldest") {
-      if (supportedChains[chainId].label === "Algorand") {
+      if (supportedChains[chainId]?.label === "Algorand") {
         filtered = filteredCollection.sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
       } else {
         filtered = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
       }
     } else {
-      if (supportedChains[chainId].label === "Algorand") {
+      if (supportedChains[chainId]?.label === "Algorand") {
         filtered = filteredCollection.sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
       } else {
         filtered = filteredCollection.sort((a, b) => b?.createdAt - a?.createdAt);

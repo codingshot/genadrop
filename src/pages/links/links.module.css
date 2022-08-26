@@ -1,0 +1,227 @@
+.pageOverlay {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1000;
+  inset: 0px;
+  top: 0;
+  display: flex;
+}
+.container {
+  flex: 1 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 12px;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(255, 255, 255);
+}
+.wrapper {
+  margin: 0px auto;
+  height: 100%;
+  width: 100%;
+  max-width: 680px;
+  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 12px;
+  margin-bottom: 32px;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.logo {
+  border-radius: 50%;
+  width: 96px;
+  height: 96px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+}
+.title {
+  white-space: nowrap;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.description {
+  line-height: 1.5;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  font-weight: 500;
+}
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding-bottom: 80px;
+}
+.link {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  padding-left: 66px;
+  padding-right: 66px;
+  min-height: 56px;
+  border-radius: 14px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-shadow: rgb(10 11 13 / 8%) 0px 2px 4px 0px;
+  transition: transform 0.15s cubic-bezier(0, 0.2, 0.5, 3) 0s;
+}
+.link:hover {
+  transform: scale(1.02);
+}
+.link img {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 4px;
+  width: 48px;
+  height: 48px;
+}
+.link div {
+  line-height: 1.5;
+  font-weight: 500;
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+}
+.topBar {
+  display: flex;
+  width: calc(100% - 12px);
+  left: 0px;
+  right: 0px;
+  grid-template-columns: 1fr auto 1fr;
+  transform: translateY(0px);
+  position: fixed;
+  margin: 0px auto;
+  height: 64px;
+  align-items: center;
+  padding-left: 12px;
+  padding-right: 12px;
+  z-index: 10;
+  top: 0px;
+  justify-content: flex-end;
+}
+.topBar.active {
+  transform: translateY(12px);
+  border: 1px solid rgb(235, 238, 241);
+  border-radius: 72px;
+  background-color: rgba(255, 255, 255, 0.5);
+  transition: background 100ms ease 0s, -webkit-transform 100ms ease 0s, -webkit-backdrop-filter 1ms ease 0s;
+  backdrop-filter: blur(10px);
+  justify-content: space-between;
+}
+.shareBtn {
+  border: 1px solid rgb(226, 226, 226);
+  background-color: rgb(240, 240, 240);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 100ms ease;
+}
+.shareBtn svg {
+  width: 1rem;
+  width: 1rem;
+  fill: rgb(0, 0, 0);
+}
+.shareBtn svg path {
+  fill: rgb(0, 0, 0);
+}
+.shareBtn:hover {
+  background-color: rgb(231, 231, 231);
+  /* background-color: rgb(39, 39, 39); */
+}
+.topBar.active .shareBtn {
+  border: 1px solid black;
+  background-color: black;
+}
+.topBar.active .shareBtn svg path {
+  fill: rgb(251, 251, 251);
+}
+.topBar.active .shareBtn:hover {
+  background-color: rgb(39, 39, 39);
+}
+.topLogo {
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  overflow: hidden;
+  display: none;
+}
+.topLogo img {
+  width: 100%;
+}
+
+.headerTop {
+  font-weight: 600;
+  font-size: 16px;
+  color: black;
+  display: none;
+}
+.topBar.active .topLogo,
+.topBar.active .headerTop {
+  display: block;
+}
+.copyright {
+  font-weight: 600;
+  text-align: center;
+}
+.bg {
+  position: fixed;
+  inset: 0px;
+  z-index: 0;
+}
+.bg div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.bg div::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  background-image: url(https://d1fdloi71mui9q.cloudfront.net/6ERzInNWR4CsQAywumpx_O5pXdojFkm3aBjxf);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  opacity: 0.25;
+  filter: blur(50px);
+}
+.bg div::after {
+  content: "";
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  height: 100%;
+  background-image: url(https://assets.production.linktr.ee/profiles/_next/static/images/img-noise-256x256-fb8404a….png);
+  background-repeat: repeat;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+}
+@media (min-width: 768px) {
+  .topBar {
+    max-width: calc(764px);
+  }
+}

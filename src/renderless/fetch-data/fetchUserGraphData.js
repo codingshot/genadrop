@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_CELO_NFT,
@@ -10,6 +11,7 @@ import {
   getGraphCollection,
   getGraphCollections,
   getGraphNft,
+  getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
 } from "../../utils";
@@ -43,8 +45,21 @@ export const getPolygonNFTToList = async (address, nftId) => {
 export const getPolygonCollectedNFTs = async (address) => {
   const { data, error: polygonError } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (polygonError) return;
-  const polygonBoughtNft = await getUserGraphNft(data?.user?.nfts, address);
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const polygonBoughtNft = response?.filter((NFTS) => NFTS.sold === true);
   return polygonBoughtNft;
+};
+
+export const getPolygonMintedNFTs = async (address) => {
+  const { data, error: polygonError } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (polygonError) return;
+  const filterAddress =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? ethers.utils.hexlify(process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS)
+      : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const polygonMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS?.collectionId === filterAddress);
+  return polygonMintedNfts;
 };
 
 export const getCeloNFTToList = async (address, nftId) => {
@@ -55,11 +70,46 @@ export const getCeloNFTToList = async (address, nftId) => {
   return nft;
 };
 
+export const getCeloMintedNFTs = async (address) => {
+  const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (celoError) return;
+  const filterAddress =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? ethers?.utils?.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
+      : ethers?.utils?.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  console.log(response);
+  const celoMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS?.collectionId === filterAddress);
+  return celoMintedNfts;
+};
+
 export const getCeloCollectedNFTs = async (address) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (celoError) return;
-  const celoCollectedNfts = await getUserGraphNft(data?.user?.nfts, address);
+
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const celoCollectedNfts = response?.filter((NFTS) => NFTS.sold === true);
   return celoCollectedNfts;
+};
+
+export const getAuroraMintedNfts = async (address) => {
+  const { data, error: auroraError } = await auroraClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (auroraError) return;
+  const filterAddress =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
+      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const auroraMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS.collectionId === filterAddress);
+  return auroraMintedNfts;
+};
+
+export const getAuroraCollectedNFTs = async (address) => {
+  const { data, error: auroraError } = await auroraClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (auroraError) return;
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const auroraCollectedNfts = response?.filter((NFTS) => NFTS?.sold === true);
+  return auroraCollectedNfts;
 };
 
 export const getCeloUserCollections = async (account) => {
@@ -72,6 +122,13 @@ export const getCeloUserCollections = async (account) => {
 export const getPolygonUserCollections = async (account) => {
   const { data, error: polygonError } = await polygonClient.query(GET_USER_COLLECTIONS, { id: account }).toPromise();
   if (polygonError) return;
+  const result = await getGraphCollections(data?.user?.collections);
+  return result;
+};
+
+export const getAuroraUserCollections = async (account) => {
+  const { data, error: auroraError } = await auroraClient.query(GET_USER_COLLECTIONS, { id: account }).toPromise();
+  if (auroraError) return;
   const result = await getGraphCollections(data?.user?.collections);
   return result;
 };

@@ -116,6 +116,7 @@ a {
 .App {
   width: 100%;
   cursor: var(--cursor-default);
+  position: relative;
 }
 
 .App * {
