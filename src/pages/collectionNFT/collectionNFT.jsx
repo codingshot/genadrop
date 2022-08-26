@@ -121,6 +121,10 @@ const CollectionNFT = () => {
   };
 
   useEffect(() => {
+    console.log(nftDetails);
+  }, [nftDetails]);
+
+  useEffect(() => {
     (async function getGraphResult() {
       const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
@@ -302,7 +306,7 @@ const CollectionNFT = () => {
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
                   <p className={classes.tokenValue}>
-                    {nftDetails?.price?.toFixed(2)} {supportedChains[nftDetails?.chain]?.sybmol}
+                    {parseInt(nftDetails.price).toFixed()} {supportedChains[nftDetails.chain]?.sybmol}
                   </p>
                   <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
                 </span>
