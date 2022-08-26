@@ -121,10 +121,6 @@ const CollectionNFT = () => {
   };
 
   useEffect(() => {
-    console.log(nftDetails);
-  }, [nftDetails]);
-
-  useEffect(() => {
     (async function getGraphResult() {
       const allCollections = getAllCollectionChains();
       // filtering to get the unqiue collection
