@@ -153,9 +153,7 @@ const CollectionNFT = () => {
     if (nftDetails?.chain) {
       axios
         .get(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${
-            supportedChains[nftDetails?.chain]?.id
-          }&vs_currencies=usd`
+          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[nftDetails.chain]?.id}&vs_currencies=usd`
         )
         .then((res) => {
           const value = Object.values(res.data)[0].usd;
@@ -302,7 +300,7 @@ const CollectionNFT = () => {
                 <span className={classes.price}>
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
                   <p className={classes.tokenValue}>
-                    {parseInt(nftDetails.price).toFixed()} {supportedChains[nftDetails.chain]?.sybmol}
+                    {parseInt(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain]?.sybmol}
                   </p>
                   <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
                 </span>
