@@ -167,7 +167,7 @@ export const handleGenerate = async (generateProps) => {
   if (mintAmount <= 0 || !mintAmount) {
     return dispatch(
       setNotification({
-        message: "Set the number to generate",
+        message: "Set amount to generate",
         type: "warning",
       })
     );
