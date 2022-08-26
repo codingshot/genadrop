@@ -180,7 +180,7 @@ export const handleGenerate = async (generateProps) => {
       })
     );
   }
-  if (mintAmount > combinations - rule.length) {
+  if (mintAmount > combinations) {
     return dispatch(
       setNotification({
         message: "Cannot generate more than the possible combinations",

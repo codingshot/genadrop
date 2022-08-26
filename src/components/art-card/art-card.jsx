@@ -33,6 +33,13 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
   };
 
   const handleAddPreview = (name, imageFile) => {
+    for (let p of preview) {
+      if (JSON.stringify(p) === JSON.stringify({ layerId, layerTitle, imageName: name, imageFile })) {
+        dispatch(removePreview({ layerId, layerTitle, imageName: name }));
+        setActiveCard(-1);
+        return;
+      }
+    }
     dispatch(addPreview({ layerId, layerTitle, imageName: name, imageFile }));
     setActiveCard(index);
   };
