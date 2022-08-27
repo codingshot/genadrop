@@ -6,8 +6,8 @@ import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
-import ChainDropdown from "../Chain-dropdown/chainDropdown";
-import bannerImg from "../../../assets/sub-explore-banner.svg";
+
+import { readUserProfile } from "../../../utils/firebase";
 
 const FeautedNfts = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
@@ -33,6 +33,10 @@ const FeautedNfts = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  function breakAddress(address = "", width = 6) {
+    if (!address) return "--";
+    return `${address.slice(0, width)}...${address.slice(-width)}`;
+  }
   const getCollectionByChain = (network = filter.chain) => {
     switch (network.toLowerCase().replace(/ /g, "")) {
       case "allchains":
@@ -61,20 +65,15 @@ const FeautedNfts = () => {
     return null;
   };
 
-  const chainChange = (value) => {
-    handleSetState({ filter: { ...filter, chain: value } });
-    const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
-    if (collection) {
-      handleSetState({ filteredCollection: collection });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-    handleSetState({ init: !init });
-  };
+  async function getUsername(account) {
+    const data = await readUserProfile(account);
 
+    return data.username;
+  }
   useEffect(() => {
-    const collection = getCollectionByChain(filter.chain);
+    const collection = getCollectionByChain(filter.chain).sort((a, b) => a.createdAt - b.createdAt);
     if (collection) {
+      console.log("collect", collection);
       handleSetState({ filteredCollection: collection });
     } else {
       handleSetState({ filteredCollection: null });
@@ -88,20 +87,22 @@ const FeautedNfts = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <h3>Featured NFTs </h3>
+        <div className={classes.wrapper}>
+          <h3>Featured NFTs </h3>
+        </div>
         {/* <ChainDropdown onChainFilter={chainChange} /> */}
       </div>
 
       <GenadropCarouselScreen cardWidth={16 * 20} gap={16} init={init}>
         {filteredCollection?.length ? (
           filteredCollection.map((collection, idx) => (
-            <CollectionsCard use_width="20em" key={idx} collection={collection} />
+            <CollectionsCard useWidth="20em" key={idx} collection={collection} />
           ))
         ) : !filteredCollection ? (
           <NotFound />
         ) : (
           [...new Array(4)].map((_, idx) => (
-            <div className={classes.skeleton} use_width="20em" key={idx}>
+            <div className={classes.skeleton} useWidth="20em" key={idx}>
               <Skeleton count={1} height={250} />
               <br />
               <Skeleton count={1} height={30} />
@@ -111,11 +112,44 @@ const FeautedNfts = () => {
           ))
         )}
       </GenadropCarouselScreen>
-      <div>
-        <span className={classes.blueBox}>Feeds</span>
-        <img src="" alt="" />
-        <span>#215 Minority X H.E.R</span>
-        sold [<span>0x694c…7489</span> To <span>Onallee.algo</span> ]<span className={classes.time}>3 Minutes ago</span>
+
+      <div className={`${classes.wrapper}`}>
+        <div className={classes.feed}>
+          <div className={classes.left}>
+            <span className={classes.blueBox}>Feeds</span>
+            <img className={classes.newestNft} src={filteredCollection[0]?.image_url} alt="" />
+            <span className={classes.address}>
+              <span className={classes.blue}>{filteredCollection[0]?.name}</span>
+              sold [<span className={classes.blue}>0x694c…7489</span> To{" "}
+              <span className={classes.blue}>Onallee.algo</span> ]
+            </span>
+          </div>
+          <div className={classes.time}>3 Minutes ago</div>
+        </div>
+      </div>
+
+      <div className={classes.wrapper}>
+        <div className={classes.heading2}>
+          <h3>Popular Creators</h3>
+          <div className={classes.blueBtn}>View All</div>
+        </div>
+        <div className={classes.creators}>
+          {[
+            ...(filteredCollection || [])
+              ?.filter((_, idx) => idx < 8)
+              .map((collection, idx) => {
+                return (
+                  <div className={classes.creator}>
+                    <img src={collection.image_url} className={classes.profile} alt="" />
+                    <div className={classes.creatorDetails}>
+                      <div className={classes.creatorName}>{breakAddress(collection.owner)}</div>
+                      <div className={classes.dropedNfts}>{collection.nfts.length} NFT Drops</div>
+                    </div>
+                  </div>
+                );
+              }),
+          ]}
+        </div>
       </div>
     </div>
   );

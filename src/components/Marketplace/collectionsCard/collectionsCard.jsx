@@ -4,7 +4,7 @@ import axios from "axios";
 import classes from "./collectionsCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 
-const CollectionsCard = ({ collection, use_width, fromDashboard }) => {
+const CollectionsCard = ({ collection, useWidth, fromDashboard }) => {
   const { name, price, description, image_url, chain, Id, nfts } = collection;
   const history = useHistory();
 
@@ -19,38 +19,45 @@ const CollectionsCard = ({ collection, use_width, fromDashboard }) => {
   }, []);
   return (
     <div
-      style={use_width ? { width: use_width } : {}}
+      style={useWidth ? { width: useWidth } : {}}
       onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? Id : name}`)}
       className={classes.card}
     >
-      <div style={{ backgroundImage: `url(${image_url})` }} className={classes.imageContainer} />
-
-      <div className={classes.body}>
-        <div className={classes.thumbnail}>
-          <img src={image_url} alt="collection-profile-img" />
+      <div className={classes.imageContainer}>
+        <img
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src = image_url;
+          }}
+          src={image_url}
+          alt=""
+        />
+      </div>
+      <div className={classes.cardBody}>
+        <div className={classes.collectionName}>
+          <div className={classes.name}>
+            <div className={classes.collection}>category</div>
+          </div>
+          <div>
+            <img className={classes.chainIcon} src={supportedChains[chain]?.icon} alt="" />
+          </div>
         </div>
-        <div className={classes.name}>{name}</div>
         <div className={classes.description}>{description}</div>
+
         <div className={classes.wrapper}>
-          {price === "0" && !fromDashboard ? (
-            <div className={classes.notListedWrap}>
-              <img className={classes.priceImg} src={supportedChains[chain]?.icon} alt="" />
-              <div className={classes.notListed}>
-                <span>Not Listed</span>
-              </div>
-            </div>
-          ) : (
-            <div className={classes.floorPrice}>
-              <div className={classes.floor}>FLOORPRICE</div>
+          <div className={classes.listPrice}>
+            <div className={classes.list}>FLOOR PRICE</div>
+            {price === 0 ? (
               <div className={classes.price}>
-                <img src={supportedChains[chain]?.icon} alt="" />
-                {price} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
-                <div>
-                  <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
-                </div>
+                <img className={classes.chainIcon} src={supportedChains[chain]?.icon} alt="" />
               </div>
-            </div>
-          )}
+            ) : (
+              <div className={classes.price}>
+                {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>
+                <span className={classes.usdPrice}>({totalPrice.toFixed(2)} USD)</span>
+              </div>
+            )}
+          </div>
           <div className={classes.nftCount}>{nfts?.length} NFTs</div>
         </div>
       </div>

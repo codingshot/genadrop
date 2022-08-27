@@ -4,6 +4,9 @@
   justify-content: space-between;
   padding: 0.75em 1em;
   cursor: var(--cursor-pointer);
+}
+
+.borders {
   border-top: 1px solid var(--outline);
   border-bottom: 1px solid var(--outline);
 }
@@ -13,6 +16,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
+  font-weight: 600;
 }
 
 .content {

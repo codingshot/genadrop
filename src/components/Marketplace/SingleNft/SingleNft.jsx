@@ -21,30 +21,30 @@ const SingleNft = () => {
   }, []);
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>
+      {/* <div className={classes.heading}>
         <div className={classes.headingWrapper}>
           <h3>1 of 1s</h3>
-          {/* <DateFilter /> */}
+          <DateFilter />
         </div>
         <button type="button" onClick={() => history.push(`${url}/1of1`)}>
           view all
         </button>
-      </div>
+      </div> */}
       {singleAlgoNftsArr?.length || singleAuroraNfts?.length || singlePolygonNfts?.length || singleCeloNfts?.length ? (
         <GenadropCarouselScreen cardWidth={20 * 16} gap={16}>
           {[
             ...(singleAlgoNftsArr || [])
-              ?.filter((_, idx) => idx < 5)
-              .map((nft, idx) => <NftCard use_width="20em" key={idx} nft={nft} listed />),
+              ?.filter((_, idx) => idx < 9)
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx} nft={nft} listed />),
             ...(singleAuroraNfts || [])
-              ?.filter((_, idx) => idx < 5)
-              .map((nft, idx) => <NftCard use_width="20em" key={idx + 10} nft={nft} listed />),
+              ?.filter((_, idx) => idx < 9)
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 10} nft={nft} listed />),
             ...(singlePolygonNfts || [])
-              ?.filter((_, idx) => idx < 5)
-              .map((nft, idx) => <NftCard use_width="20em" key={idx + 20} nft={nft} listed />),
+              ?.filter((_, idx) => idx < 3)
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} listed />),
             ...(singleCeloNfts || [])
-              ?.filter((_, idx) => idx < 5)
-              .map((nft, idx) => <NftCard use_width="20em" key={idx + 30} nft={nft} listed />),
+              ?.filter((_, idx) => idx < 3)
+              .map((nft, idx) => <NftCard useWidth="20em" key={idx + 20} nft={nft} listed />),
           ]}
         </GenadropCarouselScreen>
       ) : !singleAlgoNftsArr && !singleAuroraNfts && !singlePolygonNfts && !singleCeloNfts ? (
