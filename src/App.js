@@ -44,6 +44,7 @@ import Fallback from "./pages/fallback/fallback";
 import StoreData from "./renderless/store-data/StoreData";
 import FetchData from "./renderless/fetch-data/fetchData.component";
 import Links from "./pages/links/links";
+import SearchResult from "./pages/searchResult/searchResult";
 import "@stripe/stripe-js";
 
 function App() {
@@ -90,6 +91,7 @@ function App() {
             <Route exact path="/create/session/create" component={SuccessPlan} />
             <Route exact path="/create/session/pricing/failed" component={FailedPlan} />
             <Route exact path="/links" component={Links} />
+            <Route exact path="/search" component={SearchResult} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>

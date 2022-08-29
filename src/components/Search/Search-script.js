@@ -1,4 +1,4 @@
-export const handleSuggestions = async ({ handleSetState, searchContainer, value }) => {
+const handleSuggestions = async ({ handleSetState, searchContainer, value }) => {
   let newSearch = [];
   let oldSearch = [];
   value = value.trim().toLowerCase();
@@ -22,3 +22,4 @@ export const handleSuggestions = async ({ handleSetState, searchContainer, value
     oldSearch = [...oldSearch, ...newSearch];
   });
 };
+export default handleSuggestions;
