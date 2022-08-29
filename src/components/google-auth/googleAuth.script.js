@@ -5,20 +5,43 @@ import { handleResetCreate } from "../../utils";
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 
-export const signInWithGoogle = ({ dispatch }) => {
+export const signInWithGoogle = ({ dispatch, handleSetState = () => {} }) => {
   signInWithPopup(auth, provider)
     .then((result) => {
       const { displayName, email, uid } = result.user;
       dispatch(setCurrentUser({ displayName, email, uid }));
+      handleSetState({ isSignIn: false });
     })
-    .catch((error) => {
-      console.log(error);
-      dispatch(
-        setNotification({
-          type: "error",
-          message: "something went wrong! Please try again.",
-        })
-      );
+    .catch(({ code }) => {
+      switch (code) {
+        case "auth/popup-closed-by-user":
+          dispatch(
+            setNotification({
+              type: "error",
+              message: "Popup closed by user",
+            })
+          );
+          handleSetState({ isSignIn: false });
+          break;
+        case "auth/cancelled-popup-request":
+          dispatch(
+            setNotification({
+              type: "error",
+              message: "Popup request cancelled",
+            })
+          );
+          handleSetState({ isSignIn: false });
+          break;
+        default:
+          dispatch(
+            setNotification({
+              type: "error",
+              message: "Something went wrong!. Try again",
+            })
+          );
+          handleSetState({ isSignIn: false });
+          break;
+      }
     });
 };
 

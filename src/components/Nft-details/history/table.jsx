@@ -18,7 +18,7 @@ const Table = (props) => (
         <TableRow
           key={i}
           event={d.type}
-          price={d.price}
+          price={Number(d.price)?.toFixed(2)}
           quantity={1}
           from={d.seller}
           to={d.buyer}

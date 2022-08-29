@@ -11,11 +11,13 @@ import twitterIcon from "../../../assets/blue-twitter.svg";
 import facebookIcon from "../../../assets/blue-facebook.svg";
 import linktree from "../../../assets/linked-tree.svg";
 import {
+  auroraUserData,
   celoUserData,
   getCeloNFTToList,
   getPolygonNFTToList,
   polygonUserData,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
+import supportedChains from "../../../utils/supportedChains";
 
 const Listed = () => {
   const { account, mainnet, dispatch } = useContext(GenContext);
@@ -36,7 +38,7 @@ const Listed = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      if (chainId === 80001 || chainId === 137) {
+      if (supportedChains[chainId].chain === "Polygon") {
         const [nft] = await polygonUserData(nftId);
         if (!nft) history.push("/");
         else {
@@ -45,8 +47,15 @@ const Listed = () => {
             isLoading: false,
           });
         }
-      } else if (chainId === 44787 || chainId === 42220) {
+      } else if (supportedChains[chainId].chain === "Celo") {
         const [nft] = await celoUserData(nftId);
+        if (!nft) history.push("/");
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+        });
+      } else if (supportedChains[chainId].chain === "Aurora") {
+        const [nft] = await auroraUserData(nftId);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

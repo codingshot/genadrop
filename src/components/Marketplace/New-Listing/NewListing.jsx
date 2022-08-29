@@ -94,13 +94,13 @@ const NewListing = () => {
       <GenadropCarouselScreen cardWidth={16 * 20} gap={16} init={init}>
         {filteredCollection?.length ? (
           filteredCollection.map((collection, idx) => (
-            <CollectionsCard useWidth="20em" key={idx} collection={collection} />
+            <CollectionsCard use_width="20em" key={idx} collection={collection} />
           ))
         ) : !filteredCollection ? (
           <NotFound />
         ) : (
           [...new Array(4)].map((_, idx) => (
-            <div className={classes.skeleton} useWidth="20em" key={idx}>
+            <div className={classes.skeleton} use_width="20em" key={idx}>
               <Skeleton count={1} height={250} />
               <br />
               <Skeleton count={1} height={30} />

@@ -9,10 +9,9 @@ import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import supportedChains from "../../utils/supportedChains";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, chainId } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const location = useLocation();
@@ -156,17 +155,21 @@ const Collections = () => {
     if (!filteredCollection) return;
     let filtered = null;
     if (filter.date === "newest - oldest") {
-      if (supportedChains[chainId].label === "Algorand") {
-        filtered = filteredCollection.sort((a, b) => a?.createdAt?.seconds - b?.createdAt?.seconds);
-      } else {
-        filtered = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
-      }
+      filtered = filteredCollection.sort((a, b) => {
+        if (typeof a.createdAt === "object") {
+          return a.createdAt.seconds - b.createdAt.seconds;
+        } else {
+          return a.createdAt - b.createdAt;
+        }
+      });
     } else {
-      if (supportedChains[chainId].label === "Algorand") {
-        filtered = filteredCollection.sort((a, b) => b?.createdAt?.seconds - a?.createdAt?.seconds);
-      } else {
-        filtered = filteredCollection.sort((a, b) => b?.createdAt - a?.createdAt);
-      }
+      filtered = filteredCollection.sort((a, b) => {
+        if (typeof a.createdAt === "object") {
+          return b.createdAt.seconds - a.createdAt.seconds;
+        } else {
+          return b.createdAt - a.createdAt;
+        }
+      });
     }
     handleSetState({ FilteredCollection: filtered });
   }, [filter.date]);

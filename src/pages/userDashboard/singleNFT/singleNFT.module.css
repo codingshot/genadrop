@@ -32,6 +32,10 @@
   margin-right: 10px;
 }
 
+.iconImg {
+  width: 30px;
+}
+
 .left {
   width: 30%;
   max-width: 25em;

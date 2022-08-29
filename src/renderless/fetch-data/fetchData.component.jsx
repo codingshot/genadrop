@@ -99,11 +99,16 @@ const FetchData = () => {
         );
       }
       const result = await getGraphCollections(data?.collections);
-      if (result?.length) {
-        dispatch(setAuroraCollections(result));
+      const filterAddress =
+        process.env.REACT_APP_ENV_STAGING === "true"
+          ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
+          : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
+      const res = result?.filter((data) => data?.Id !== filterAddress);
+      if (res?.length) {
+        dispatch(setAuroraCollections(res));
         dispatch(
           setSearchContainer({
-            "Aurora collection": parseAuroraCollection(result),
+            "Aurora collection": parseAuroraCollection(res),
           })
         );
       } else {
@@ -132,6 +137,7 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
+
       if (result?.length) {
         dispatch(setAuroraSingleNfts(result));
         dispatch(
@@ -174,7 +180,7 @@ const FetchData = () => {
         dispatch(setPolygonCollections(res));
         dispatch(
           setSearchContainer({
-            "Polygon collection": parsePolygonCollection(result),
+            "Polygon collection": parsePolygonCollection(res),
           })
         );
       } else {
@@ -262,7 +268,7 @@ const FetchData = () => {
         dispatch(setCeloCollections(res));
         dispatch(
           setSearchContainer({
-            "Celo collection": parseCeloCollection(result),
+            "Celo collection": parseCeloCollection(res),
           })
         );
       } else {
