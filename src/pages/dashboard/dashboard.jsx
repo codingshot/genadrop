@@ -30,6 +30,7 @@ import CollectionsCard from "../../components/Marketplace/collectionsCard/collec
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import Pagination from "../../components/pagination/Pagination";
 // assets
 import avatar from "../../assets/avatar.png";
 import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
@@ -50,7 +51,7 @@ const Dashboard = () => {
       name: "a - z",
       date: "newest - oldest",
     },
-    activeDetail: "collected",
+    activeDetail: "sale",
     collectedNfts: null,
     createdNfts: null,
     myCollections: null,
@@ -58,6 +59,8 @@ const Dashboard = () => {
     userDetails: null,
     created: null,
     onSale: null,
+    paginatePage: "",
+    pageNumber: 0,
   });
 
   const {
@@ -70,6 +73,8 @@ const Dashboard = () => {
     userDetails,
     created,
     onSale,
+    paginatePage,
+    pageNumber,
   } = state;
 
   const { account, mainnet, chainId } = useContext(GenContext);
@@ -270,6 +275,10 @@ const Dashboard = () => {
     handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
 
+  // pagination
+  const perPage = 12;
+  const pageVisited = pageNumber * perPage;
+
   return (
     <div className={classes.container}>
       {/* change background to dynamic */}
@@ -364,13 +373,13 @@ const Dashboard = () => {
           {filteredCollection?.length > 0 ? (
             activeDetail === "sale" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((collection) => (
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((collection) => (
                   <CollectionsCard key={collection.Id} collection={collection} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((nft) => {
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => {
                   if (nft.nfts) {
                     return <CollectionsCard key={nft.Id} collection={nft} fromDashboard />;
                   }
@@ -379,7 +388,7 @@ const Dashboard = () => {
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((nft) => (
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
                   <NftCard key={nft.Id} nft={nft} listed={!nft.sold} fromDashboard />
                 ))}
               </div>
@@ -404,6 +413,15 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
+          )}
+          {filteredCollection?.length && (
+            <Pagination
+              handleSetState={handleSetState}
+              paginatePage={paginatePage}
+              pageNumber={pageNumber}
+              perPage={perPage}
+              filteredCollection={filteredCollection}
+            />
           )}
         </section>
       </div>
