@@ -87,7 +87,6 @@
 }
 
 .detail.active p {
-  font-size: 1.2rem;
   transition: all 100ms;
   color: var(--main-color);
 }
@@ -295,6 +294,11 @@
   }
   .bannerWrapper > a {
     margin: unset;
+  }
+}
+@media screen and (max-width: 768px) {
+  .detail {
+    gap: 1em;
   }
 }
 @media screen and (max-width: 480px) {
