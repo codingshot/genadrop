@@ -5,10 +5,10 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import { setNotification } from "../../gen-state/gen.actions";
+// import { setNotification } from "../../gen-state/gen.actions";
 import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
-import { celoClient, polygonClient } from "../../utils/graphqlClient";
-import { GET_USER_NFT } from "../../graphql/querries/getCollections";
+// import { celoClient, polygonClient } from "../../utils/graphqlClient";
+// import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
@@ -50,7 +50,7 @@ const Dashboard = () => {
       name: "a - z",
       date: "newest - oldest",
     },
-    activeDetail: "created",
+    activeDetail: "collected",
     collectedNfts: null,
     createdNfts: null,
     myCollections: null,
@@ -78,81 +78,77 @@ const Dashboard = () => {
       address = ethers?.utils?.hexlify(account);
     }
     (async function getUserNFTs() {
+      let nfts;
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          const singleNfts = await fetchUserCreatedNfts(account);
-          const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
-          handleSetState({ createdNfts: [...(algoNFTs || [])] });
+          nfts = await fetchUserCreatedNfts(account);
           break;
         case "Celo":
-          const celoNfts = await getCeloMintedNFTs(address);
-          handleSetState({ createdNfts: [...(celoNfts || [])] });
+          nfts = await getCeloMintedNFTs(address);
           break;
         case "Aurora":
-          const aurroraNFTs = await getAuroraMintedNfts(address);
-          handleSetState({ createdNfts: [...(aurroraNFTs || [])] });
+          nfts = await getAuroraMintedNfts(address);
           break;
         case "Polygon":
-          const polygonNFTs = await getPolygonMintedNFTs(address);
-          handleSetState({ createdNfts: [...(polygonNFTs || [])] });
+          nfts = await getPolygonMintedNFTs(address);
           break;
         default:
           break;
       }
+      console.log(nfts);
+      handleSetState({ createdNfts: [...(nfts || [])] });
     })();
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
+      let nfts;
+      const collectedNFTs = await fetchUserBoughtNfts(account);
 
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          const collectedNfts = await fetchUserBoughtNfts(account);
-          const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-          handleSetState({ collectedNfts: [...(algoCollectedNfts || [])] });
+          nfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNFTs });
           break;
         case "Celo":
-          const celoCollectedNfts = await getCeloCollectedNFTs(address);
-          handleSetState({ collectedNfts: [...(celoCollectedNfts || [])] });
+          nfts = await getCeloCollectedNFTs(address);
           break;
         case "Aurora":
-          const auroraCollectedNfts = await getAuroraCollectedNFTs(address);
-          handleSetState({ collectedNfts: [...(auroraCollectedNfts || [])] });
+          nfts = await getAuroraCollectedNFTs(address);
           break;
         case "Polygon":
-          const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
-          handleSetState({ collectedNfts: [...(polygonCollectedNfts || [])] });
+          nfts = await getPolygonCollectedNFTs(address);
           break;
         default:
           break;
       }
+      console.log(nfts);
+      handleSetState({ collectedNfts: [...(nfts || [])] });
     })();
 
     // Get User created Collections
     (async function getCreatedCollections() {
-      let address = "";
+      let walletAddress = "";
       if (supportedChains[chainId]?.chain !== "Algorand" && account) {
-        address = ethers?.utils?.hexlify(account);
+        walletAddress = ethers?.utils?.hexlify(account);
       }
+      let collection;
+      const collections = await fetchUserCollections(account);
+
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          const collections = await fetchUserCollections(account);
-          const algoCollections = await getUserNftCollections({ collections, mainnet });
-          handleSetState({ myCollections: [...(algoCollections || [])] });
+          collection = await getUserNftCollections({ collections, mainnet });
           break;
         case "Celo":
-          const celoCollection = await getCeloUserCollections(address);
-          handleSetState({ myCollections: [...(celoCollection || [])] });
+          collection = await getCeloUserCollections(walletAddress);
           break;
         case "Aurora":
-          const auroraCollections = await getAuroraUserCollections(address);
-          handleSetState({ myCollections: [...(auroraCollections || [])] });
+          collection = await getAuroraUserCollections(walletAddress);
           break;
         case "Polygon":
-          const polyCollections = await getPolygonUserCollections(address);
-          handleSetState({ myCollections: [...(polyCollections || [])] });
+          collection = await getPolygonUserCollections(walletAddress);
           break;
         default:
           break;
       }
+      handleSetState({ myCollections: [...(collection || [])] });
     })();
 
     (async function getUsername() {
@@ -168,8 +164,8 @@ const Dashboard = () => {
       case "collected":
         return collectedNfts;
       case "created":
-        return createdNfts;
-      case "collections":
+        return [...(createdNfts || []), ...(myCollections || [])];
+      case "sale":
         return myCollections;
       default:
         break;
@@ -222,7 +218,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (!filteredCollection || !account) return;
     let filtered = null;
-    console.log({ filteredCollection });
     if (filter.date === "newest - oldest") {
       filtered = getCollectionToFilter().sort((a, b) => {
         if (!a.createdAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
@@ -322,6 +317,13 @@ const Dashboard = () => {
         <section className={classes.header}>
           <div className={classes.details}>
             <div
+              onClick={() => handleSetState({ activeDetail: "sale" })}
+              className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
+            >
+              <p>On sale</p>
+              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
+            </div>
+            <div
               onClick={() => handleSetState({ activeDetail: "collected" })}
               className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
@@ -333,14 +335,12 @@ const Dashboard = () => {
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created</p>
-              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
-            </div>
-            <div
-              onClick={() => handleSetState({ activeDetail: "collections" })}
-              className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
-            >
-              <p>My Collections</p>
-              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
+              <span>
+                {" "}
+                {Array.isArray(myCollections) || Array.isArray(createdNfts)
+                  ? [...(createdNfts || []), ...(myCollections || [])].length
+                  : 0}
+              </span>
             </div>
           </div>
         </section>
@@ -352,22 +352,25 @@ const Dashboard = () => {
           </div>
 
           {filteredCollection?.length > 0 ? (
-            activeDetail === "collections" ? (
+            activeDetail === "sale" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} fromDashboard />
+                {filteredCollection.map((collection) => (
+                  <CollectionsCard key={collection.Id} collection={collection} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
-                ))}
+                {filteredCollection.map((nft) => {
+                  if (nft.nfts) {
+                    return <CollectionsCard key={nft.Id} collection={nft} fromDashboard />;
+                  }
+                  return <NftCard key={nft.Id} nft={nft} listed={false} fromDashboard />;
+                })}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={!nft.sold} fromDashboard />
+                {filteredCollection.map((nft) => (
+                  <NftCard key={nft.Id} nft={nft} listed={!nft.sold} fromDashboard />
                 ))}
               </div>
             ) : (
@@ -381,7 +384,7 @@ const Dashboard = () => {
             )
           ) : (
             <div className={classes.skeleton}>
-              {[...new Array(5)].map((_, id) => (
+              {[...new Array(5)].map((id) => (
                 <div key={id}>
                   <Skeleton count={1} height={200} />
                   <br />

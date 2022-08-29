@@ -132,18 +132,18 @@ const SingleNFT = () => {
 
   useEffect(() => {
     dispatch(setOverlay(true));
-    if (supportedChains[Number(nftChainId)].chain === "Algorand") return;
+    if (supportedChains[Number(nftChainId)]?.chain === "Algorand") return;
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
-        if (supportedChains[Number(nftChainId)].chain === "Celo") {
+        if (supportedChains[Number(nftChainId)]?.chain === "Celo") {
           const [celoData, trHistory] = await celoUserData(nftId);
           handleSetState({
             nftDetails: celoData,
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (supportedChains[Number(nftChainId)].chain === "Aurora") {
+        } else if (supportedChains[Number(nftChainId)]?.chain === "Aurora") {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return;
           handleSetState({
@@ -151,7 +151,7 @@ const SingleNFT = () => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (supportedChains[Number(nftChainId)].chain === "Polygon") {
+        } else if (supportedChains[Number(nftChainId)]?.chain === "Polygon") {
           const [polygonData, trHistory] = await polygonUserData(nftId);
           if (!polygonData) return history.goBack();
           handleSetState({
@@ -170,14 +170,14 @@ const SingleNFT = () => {
 
   useEffect(() => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
-    if (supportedChains[Number(nftChainId)].chain !== "Algorand" && pair) {
+    if (supportedChains[Number(nftChainId)]?.chain !== "Algorand" && pair) {
       let value;
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
         value = Object.values(res.data)[0]?.usd;
         handleSetState({
-          chainIcon: supportedChains[nftDetails.chain].icon,
-          algoPrice: value ? value : 0,
-          chainSymbol: supportedChains[nftDetails.chain].symbol,
+          chainIcon: supportedChains[nftDetails?.chain].icon,
+          algoPrice: value || 0,
+          chainSymbol: supportedChains[nftDetails?.chain].symbol,
         });
       });
     }
@@ -333,7 +333,7 @@ const SingleNFT = () => {
               <div className={classes.btns}>
                 {account === nftDetails.owner ? (
                   <button
-                    onClick={() => history.push(`/marketplace/1of1/list/${nftDetails.chain}/${nftDetails.Id}`)}
+                    onClick={() => history.push(`/marketplace/1of1/list/${nftDetails?.chain}/${nftDetails.Id}`)}
                     className={classes.buy}
                   >
                     List
@@ -396,7 +396,7 @@ const SingleNFT = () => {
         </div>
 
         <div className={classes.history}>
-          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
+          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails?.chain : ""} />
         </div>
       </div>
       <div className={classes.section}>
