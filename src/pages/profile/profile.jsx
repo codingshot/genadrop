@@ -83,108 +83,110 @@ const Profile = () => {
             <img src={bg} alt="" />
           </div>
         </div>
-        <div className={classes.option}>
-          <h3>Wallet Address</h3>
-          <div
-            className={classes.text}
-            onMouseDown={() => setCopy(true)}
-            onMouseUp={() => setCopy(false)}
-            onClick={() => handleCopy({ navigator, copy: copyRef.xcurrent })}
-          >
-            <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
-            <input className={account && classes.wallet} type="text" value={account} disabled />
-            <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />
+        <div className={classes.content}>
+          <div className={classes.option}>
+            <h3>Wallet Address</h3>
+            <div
+              className={classes.text}
+              onMouseDown={() => setCopy(true)}
+              onMouseUp={() => setCopy(false)}
+              onClick={() => handleCopy({ navigator, copy: copyRef.xcurrent })}
+            >
+              <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
+              <input className={account && classes.wallet} type="text" value={account} disabled />
+              <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />
+            </div>
+
+            <p>To update your address just change your account in your wallet.</p>
           </div>
 
-          <p>To update your address just change your account in your wallet.</p>
-        </div>
-
-        <div className={classes.option}>
-          <h3>Username</h3>
-          <input
-            type="text"
-            value={username}
-            name="username"
-            onChange={(event) => handleInputChange({ event, ...inputProps })}
-          />
-        </div>
-
-        <div className={`${classes.option} ${!isEmail && classes.invalid}`}>
-          <h3>Email</h3>
-          <input
-            type="email"
-            value={email}
-            name="email"
-            onChange={(event) => handleInputChange({ event, ...inputProps })}
-            placeholder="me@gmail.com"
-          />
-        </div>
-
-        <div className={classes.option}>
-          <h3>Email Subscription</h3>
-          <div
-            onClick={() => handleSetState({ subscribe: !subscribe })}
-            className={`${classes.toggleButton} ${subscribe && classes.active}`}
-          >
-            <div className={classes.toggle} />
-          </div>
-          <p className={`${classes.warn} ${!subscribe && classes.active}`}>
-            (You won&apos;t recieve ANY emails from GenaDrop if do not subscribe - including important ones related to
-            your account security or purchases)
-          </p>
-        </div>
-
-        <section className={classes.social}>
-          <h2 className={classes.subheading}>Social Media</h2>
-
-          <div className={`${classes.option} ${!isTwitter && classes.invalid}`}>
-            <label>
-              <img src={twitterIcon} alt="" />
-              <div>Twitter</div>
-            </label>
+          <div className={classes.option}>
+            <h3>Username</h3>
             <input
               type="text"
-              value={`https://twitter.com/${twitter}`}
-              name="twitter"
+              value={username}
+              name="username"
               onChange={(event) => handleInputChange({ event, ...inputProps })}
             />
           </div>
 
-          <div className={`${classes.option} ${!isInstagram && classes.invalid}`}>
-            <label>
-              <img src={instagramIcon} alt="" />
-              <div>Instagram</div>
-            </label>
+          <div className={`${classes.option} ${!isEmail && classes.invalid}`}>
+            <h3>Email</h3>
             <input
-              type="text"
-              value={`https://www.instagram.com/${instagram}`}
-              name="instagram"
+              type="email"
+              value={email}
+              name="email"
               onChange={(event) => handleInputChange({ event, ...inputProps })}
+              placeholder="me@gmail.com"
             />
           </div>
 
-          <div className={`${classes.option} ${!isDiscord && classes.invalid}`}>
-            <label>
-              <img src={discordIcon} alt="" />
-              <div>Discord</div>
-            </label>
-            <input
-              type="text"
-              value={`https://discord.com/users/${discord}`}
-              name="discord"
-              onChange={(event) => handleInputChange({ event, ...inputProps })}
-            />
+          <div className={classes.option}>
+            <h3>Email Subscription</h3>
+            <div
+              onClick={() => handleSetState({ subscribe: !subscribe })}
+              className={`${classes.toggleButton} ${subscribe && classes.active}`}
+            >
+              <div className={classes.toggle} />
+            </div>
+            <p className={`${classes.warn} ${!subscribe && classes.active}`}>
+              (You won&apos;t recieve ANY emails from GenaDrop if do not subscribe - including important ones related to
+              your account security or purchases)
+            </p>
           </div>
 
-          <div className={classes.buttons}>
-            <button type="button" onClick={() => handleSave(saveProps)} className={classes.submit}>
-              Save Changes
-            </button>
-            <button type="button" onClick={() => handleCancel(cancelProps)} className={classes.cancel}>
-              Cancel
-            </button>
-          </div>
-        </section>
+          <section className={classes.social}>
+            <h2 className={classes.subheading}>Social Media</h2>
+
+            <div className={`${classes.option} ${!isTwitter && classes.invalid}`}>
+              <label>
+                <img src={twitterIcon} alt="" />
+                <div>Twitter</div>
+              </label>
+              <input
+                type="text"
+                value={`https://twitter.com/${twitter}`}
+                name="twitter"
+                onChange={(event) => handleInputChange({ event, ...inputProps })}
+              />
+            </div>
+
+            <div className={`${classes.option} ${!isInstagram && classes.invalid}`}>
+              <label>
+                <img src={instagramIcon} alt="" />
+                <div>Instagram</div>
+              </label>
+              <input
+                type="text"
+                value={`https://www.instagram.com/${instagram}`}
+                name="instagram"
+                onChange={(event) => handleInputChange({ event, ...inputProps })}
+              />
+            </div>
+
+            <div className={`${classes.option} ${!isDiscord && classes.invalid}`}>
+              <label>
+                <img src={discordIcon} alt="" />
+                <div>Discord</div>
+              </label>
+              <input
+                type="text"
+                value={`https://discord.com/users/${discord}`}
+                name="discord"
+                onChange={(event) => handleInputChange({ event, ...inputProps })}
+              />
+            </div>
+
+            <div className={classes.buttons}>
+              <button type="button" onClick={() => handleSave(saveProps)} className={classes.submit}>
+                Save Changes
+              </button>
+              <button type="button" onClick={() => handleCancel(cancelProps)} className={classes.cancel}>
+                Cancel
+              </button>
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );

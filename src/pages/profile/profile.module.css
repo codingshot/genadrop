@@ -19,13 +19,18 @@
   max-width: 900px;
   margin: 0 auto;
   background: var(--default);
-  padding: 2em 4em;
+  padding: 2em 0em;
   border-radius: 0.5em;
   box-shadow: var(--shadow-light);
 }
-
+.content {
+  display: flex;
+  flex-direction: column;
+  padding: 0 4rem;
+}
 .heading {
   margin-bottom: 2em;
+  padding: 0 4rem;
 }
 
 .wallet {
@@ -106,10 +111,11 @@
 .banner {
   width: 100%;
   height: 18.6em;
+  display: flex;
 }
 .banner img {
-  width: 121.5%;
-  margin-left: -4em;
+  width: 100%;
+
   height: 18.6em;
 }
 
@@ -168,6 +174,7 @@
   border-radius: 2em;
   font-size: 1rem;
   transition: all 300ms;
+  cursor: pointer;
 }
 
 .submit {
@@ -177,7 +184,6 @@
 }
 
 .submit:hover {
-  cursor: var(--cursor-hover);
   background: var(--main-hovered);
   border: 2px solid var(--main-color);
 }
@@ -187,7 +193,6 @@
 }
 
 .cancel:hover {
-  cursor: var(--cursor-hover);
   background: var(--main-lightest);
 }
 
@@ -232,8 +237,14 @@
     height: 130px;
   }
   .wrapper {
-    padding: 2em;
+    padding: 2em 0;
     max-width: 768px;
+  }
+  .content {
+    padding: 0 2rem;
+  }
+  .heading {
+    padding: 0 2rem;
   }
   .banner {
     height: 14em;

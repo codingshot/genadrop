@@ -1,8 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
-import { doc, getDoc } from "firebase/firestore";
-import { query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, query, where, getDocs } from "firebase/firestore";
 
 // const {
 //   getDatabase,
@@ -122,7 +121,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
 
 async function writeUserProfile(userObj, user) {
   try {
-    let lendy = await db
+    const lendy = await db
       .collection("profile")
       .doc(`${user}`)
       .set(
