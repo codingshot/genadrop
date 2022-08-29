@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import classes from "./chainDropdown.module.css";
 import polygonIcon from "../../../assets/icon-polygon.svg";
@@ -8,7 +8,6 @@ import celoIcon from "../../../assets/icon-celo.svg";
 import dropdownIcon from "../../../assets/icon-caret-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
 import supportedChains from "../../../utils/supportedChains";
-import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const chainIcon = {
@@ -62,20 +61,20 @@ const ChainDropdown = ({ onChainFilter }) => {
       </div>
       <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
         {[
-          <div onClick={() => chainHandler("All Chains")} className={classes.chain}>
+          <div key={0} onClick={() => chainHandler("All Chains")} className={classes.chain}>
             <img src={allChainsIcon} alt="All Chains" /> <span>All Chains</span>
           </div>,
           ...Object.values(supportedChains)
-            .filter((chainE) => mainnet === chainE.isMainnet)
-            .map((chainE) => (
+            .filter((_chain) => mainnet === _chain.isMainnet)
+            .map((_chain, idx) => (
               <div
-                key={chainE.id}
+                key={idx + 1}
                 onClick={() => {
-                  !chainE.comingSoon ? chainHandler(chainE.chain) : {};
+                  !_chain.comingSoon ? chainHandler(_chain.chain) : {};
                 }}
-                className={`${classes.chain} ${chainE.comingSoon && classes.inActive}`}
+                className={`${classes.chain} ${_chain.comingSoon && classes.inActive}`}
               >
-                {chainE.icon ? <img src={chainE.icon} alt={chainE.chain} /> : <p />} <span>{chainE.chain}</span>
+                {_chain.icon ? <img src={_chain.icon} alt={_chain.chain} /> : <p />} <span>{_chain.chain}</span>
               </div>
             )),
         ]}

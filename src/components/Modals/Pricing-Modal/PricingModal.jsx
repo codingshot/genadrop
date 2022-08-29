@@ -8,6 +8,7 @@ import PaypalButton from "./PaypalButton";
 import { ReactComponent as StripeIcon } from "../../../assets/icon-stripe.svg";
 import { saveUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { GenContext } from "../../../gen-state/gen.context";
+import { setOverlay } from "../../../gen-state/gen.actions";
 
 let stripePromise;
 
@@ -20,8 +21,19 @@ const getStripe = () => {
 
 const PricingModal = ({ plan, price, closeModal }) => {
   const history = useHistory();
-  const { layers, rule, preview, collectionName, sessionId, upgradePlan, proposedPlan, currentUser } =
-    useContext(GenContext);
+  const {
+    layers,
+    nftLayers,
+    rule,
+    preview,
+    collectionName,
+    sessionId,
+    upgradePlan,
+    proposedPlan,
+    currentPlan,
+    currentUser,
+    dispatch,
+  } = useContext(GenContext);
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
@@ -102,8 +114,22 @@ const PricingModal = ({ plan, price, closeModal }) => {
 
   const redirectToCheckout = async () => {
     console.log("redirectToCheckout");
-    saveUserData({ layers, rule, preview, collectionName, sessionId, upgradePlan, proposedPlan, currentUser });
+    saveUserData({
+      layers,
+      nftLayers,
+      rule,
+      preview,
+      collectionName,
+      sessionId,
+      upgradePlan,
+      proposedPlan,
+      currentPlan,
+      currentUser,
+    });
+    dispatch(setOverlay(true));
     const stripe = await getStripe();
+    window.sessionStorage.createNew = "kd@#ff_dafknk_fiiqv//";
+    dispatch(setOverlay(false));
     console.log("Got stripe");
     const res = await stripe.redirectToCheckout(checkoutOptions);
     console.log("Stripe checkout error", res);
@@ -114,6 +140,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
   if (stripeError) alert(stripeError);
 
   const handleClick = () => {
+    window.sessionStorage.createNew = "kd@#ff_dafknk_fiiqv//";
     history.push("/create/session/create");
     handleClose();
   };

@@ -71,25 +71,24 @@ export const INITIAL_STATE = {
     value: {},
   },
   layerAction: {
-    type: "", // add| delete|order|rename,
+    type: "", // add|delete|order|rename,
   },
   sessionId: "",
   sessions: [],
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
-  isUser: "", // true|false|null,
   currentPlan: "free", // free|noobs|geeks|ogs
   upgradePlan: false,
   actionProgress: {
     totalCount: 0,
     resetCount: true,
   },
-  isUser: "", // true false null,
   currentPlan: "free",
   proposedPlan: "",
   minter: "",
   toggleUpgradeModal: "",
   searchContainer: null,
+  isUser: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -426,11 +425,6 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         toggleCollectionNameModal: action.payload,
       };
-    case genActionTypes.SET_IS_USER:
-      return {
-        ...state,
-        isUser: action.payload,
-      };
     case genActionTypes.SET_CURRENT_PLAN:
       return {
         ...state,
@@ -465,6 +459,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchContainer: { ...state.searchContainer, ...action.payload },
+      };
+    case genActionTypes.SET_IS_USER:
+      return {
+        ...state,
+        isUser: action.payload,
       };
     default:
       return state;

@@ -4,7 +4,7 @@ import axios from "axios";
 import classes from "./collectionsCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 
-const CollectionsCard = ({ collection, useWidth, fromDashboard }) => {
+const CollectionsCard = ({ collection, use_width, fromDashboard }) => {
   const { name, price, description, image_url, chain, Id, nfts } = collection;
   const history = useHistory();
 
@@ -19,7 +19,7 @@ const CollectionsCard = ({ collection, useWidth, fromDashboard }) => {
   }, []);
   return (
     <div
-      style={useWidth ? { width: useWidth } : {}}
+      style={use_width ? { width: use_width } : {}}
       onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? Id : name}`)}
       className={classes.card}
     >
@@ -34,7 +34,7 @@ const CollectionsCard = ({ collection, useWidth, fromDashboard }) => {
         <div className={classes.wrapper}>
           {price === "0" && !fromDashboard ? (
             <div className={classes.notListedWrap}>
-              <img src={supportedChains[chain]?.icon} alt="" />
+              <img className={classes.priceImg} src={supportedChains[chain]?.icon} alt="" />
               <div className={classes.notListed}>
                 <span>Not Listed</span>
               </div>

@@ -7,17 +7,19 @@ import { ReactComponent as FailureIcon } from "../../../assets/icon-failure-circ
 import { ReactComponent as SuccessIcon } from "../../../assets/icon-success-circle.svg";
 import { ReactComponent as UpgradeIcon } from "../../../assets/icon-upgrade.svg";
 import { plans } from "../../../pages/Pricing/Pricing.script";
+import { useHistory } from "react-router-dom";
 
 const UpgradeModal = () => {
+  const history = useHistory();
   const { toggleUpgradeModal, dispatch, currentPlan } = useContext(GenContext);
   const planState = [<FailureIcon />, <SuccessIcon />];
 
   const mapPlanToState = (plan, state) => {
     let states = {
       free: 0,
-      noobs: 1,
-      geeks: 2,
-      ogs: 3,
+      hobby: 1,
+      pro: 2,
+      agency: 3,
     };
 
     let currentState = states[plan];
@@ -31,6 +33,7 @@ const UpgradeModal = () => {
 
   const handleUpgrade = () => {
     dispatch(setUpgradePlan(true));
+    handleClose();
     history.push("/create/session/pricing");
   };
 

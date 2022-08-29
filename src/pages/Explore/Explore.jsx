@@ -10,10 +10,10 @@ import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
+import { setActiveCollection } from "../../gen-state/gen.actions";
+import supportedChains from "../../utils/supportedChains";
 
 const Explore = () => {
-  const collectionNameRef = useRef(true);
   const [state, setState] = useState({
     toggleFilter: true,
     togglePriceFilter: false,
@@ -27,7 +27,6 @@ const Explore = () => {
     headerHeight: 0,
     filter: {
       searchValue: "",
-      price: "high",
     },
   });
   const {
@@ -41,7 +40,7 @@ const Explore = () => {
     headerHeight,
     loadedChain,
   } = state;
-  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
+  const { dispatch, mainnet, chainId, algoCollections, auroraCollections, polygonCollections, celoCollections } =
     useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -65,26 +64,31 @@ const Explore = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(algoCollections).length) {
-      const collection = algoCollections[collectionName.trimEnd()];
-      if (collection && collectionNameRef.current) {
-        collectionNameRef.current = false;
-        handleSetState({ collection });
-        getNftCollection({ collection, mainnet, dispatch, handleSetState });
+    (async function getAlgoResult() {
+      if (Object.keys(algoCollections).length) {
+        const collection = algoCollections[collectionName.trimEnd()];
+        if (collection) {
+          const { NFTCollection, loadedChain } = await getNftCollection({
+            collection,
+            mainnet,
+          });
+          handleSetState({ NFTCollection, loadedChain, collection });
+          dispatch(setActiveCollection(NFTCollection));
+        }
       }
-    }
+    })();
   }, [algoCollections]);
 
   useEffect(() => {
     (async function getGraphResult() {
       const allCollection = getAllCollectionChains();
-      const filteredCollection = allCollection?.filter((col) => col?.Id === collectionName);
-      if (filteredCollection?.length) {
-        const result = await getGraphCollection(filteredCollection[0]?.nfts, filteredCollection[0]);
+      const NFTCollection = allCollection?.filter((col) => col?.Id === collectionName);
+      if (NFTCollection?.length) {
+        const result = await getGraphCollection(NFTCollection[0]?.nfts, NFTCollection[0]);
         handleSetState({
           collection: {
-            ...filteredCollection[0],
-            owner: filteredCollection[0]?.owner,
+            ...NFTCollection[0],
+            owner: NFTCollection[0]?.owner,
             price: result[0]?.collectionPrice,
           },
           NFTCollection: result,
@@ -107,17 +111,6 @@ const Explore = () => {
     const filtered = NFTCollection.filter((col) => col.name.toLowerCase().includes(filter.searchValue.toLowerCase()));
     handleSetState({ FilteredCollection: filtered });
   }, [filter.searchValue]);
-
-  useEffect(() => {
-    if (!NFTCollection) return;
-    let filtered = null;
-    if (filter.price === "low") {
-      filtered = NFTCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else {
-      filtered = NFTCollection.sort((a, b) => Number(b.price) - Number(a.price));
-    }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.price]);
 
   useEffect(() => {
     if (!NFTCollection) return;
@@ -164,7 +157,6 @@ const Explore = () => {
         <main className={classes.displayWrapper}>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
-            <PriceDropdown onPriceFilter={(value) => handleSetState({ filter: { ...filter, price: value } })} />
           </div>
 
           <div className={classes.filterDisplay}>

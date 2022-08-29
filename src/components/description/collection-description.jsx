@@ -67,13 +67,8 @@ const CollectionDescription = () => {
 
   useEffect(() => {
     dispatch(setOverlay(false));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (combinations) {
-      dispatch(setMintAmount(combinations - rule.length ? parseInt(combinations - rule.length) : 0));
-    }
-  }, [combinations]);
+    handleSetState({ amountInputValue: mintAmount });
+  }, []);
 
   const ripple = window.sessionStorage.ripple;
 
@@ -95,7 +90,7 @@ const CollectionDescription = () => {
             <span>Combinations</span>
             {/* <GenadropToolTip content={"The maximum number of arts the uploaded assets can generate"} fill="#3d3d3d" /> */}
           </div>
-          <div className={classes.count}>{combinations - rule.length}</div>
+          <div className={classes.count}>{combinations}</div>
         </div>
 
         <div className={classes.amount}>

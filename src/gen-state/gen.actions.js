@@ -326,11 +326,6 @@ export const setToggleCollectionNameModal = (state) => ({
   payload: state,
 });
 
-export const setIsUser = (state) => ({
-  type: genActionTypes.SET_IS_USER,
-  payload: state,
-});
-
 export const setCurrentPlan = (plan) => ({
   type: genActionTypes.SET_CURRENT_PLAN,
   payload: plan,
@@ -364,4 +359,9 @@ export const setToggleUpgradeModal = (state) => ({
 export const setSearchContainer = (val) => ({
   type: genActionTypes.SET_SEARCH_cONTAINER,
   payload: val,
+});
+
+export const setIsUser = (state) => ({
+  type: genActionTypes.SET_IS_USER,
+  payload: state,
 });

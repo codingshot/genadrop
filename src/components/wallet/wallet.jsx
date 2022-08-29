@@ -164,7 +164,7 @@ function ConnectWallet() {
   return (
     <>
       <div className={`${classes.popupContainer} ${toggleWalletPopup && classes.active}`}>
-        <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />
+        {toggleWalletPopup && <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />}
       </div>
       {account ? (
         <div className={classes.container}>

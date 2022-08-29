@@ -10,33 +10,21 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
   const [state, setState] = useState({
     toggleAttribute: true,
     toggleLayer: -1,
-    lowestPrice: "0",
-    highestPrice: "0",
     filter: {
-      priceRange: { min: 0, max: 0 },
       onlyListed: true,
       attributes: [],
     },
   });
 
-  const { lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter } = state;
+  const { toggleAttribute, toggleLayer, filter } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-  const capitalize = (arr) => arr.charAt(0).toUpperCase() + arr.slice(1); // Capitalize first letter of the word
+  const countOccurrences = (arr, val) => arr?.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const capitalize = (arr) => arr?.charAt(0)?.toUpperCase() + arr?.slice(1); // Capitalize first letter of the word
   const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
-
-  const handleApplyPriceFilter = () => {
-    handleSetState({
-      filter: {
-        ...filter,
-        priceRange: { min: lowestPrice, max: highestPrice },
-      },
-    });
-  };
 
   const handleStatus = () => {
     handleSetState({ filter: { ...filter, onlyListed: !filter.onlyListed } });
@@ -103,28 +91,6 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
                 >
                   <div className={classes.toggle} />
                 </div>
-              </div>
-            </Dropdown>
-            <Dropdown title="Price">
-              <div className={classes.priceFilter}>
-                <div className={classes.filterInput}>
-                  <div>
-                    <input
-                      value={lowestPrice}
-                      onChange={(event) => handleSetState({ lowestPrice: event.target.value })}
-                      type="number"
-                    />
-                  </div>
-                  to
-                  <div>
-                    <input
-                      value={highestPrice}
-                      onChange={(event) => handleSetState({ highestPrice: event.target.value })}
-                      type="number"
-                    />
-                  </div>
-                </div>
-                <button onClick={handleApplyPriceFilter}>Apply</button>
               </div>
             </Dropdown>
             <Dropdown title="Attribute">

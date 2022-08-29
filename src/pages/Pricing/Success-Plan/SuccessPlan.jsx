@@ -5,8 +5,10 @@ import {
   setCurrentPlan,
   setCurrentSession,
   setCurrentUser,
+  setIsUser,
   setLayerAction,
   setLayers,
+  setNftLayers,
   setPreview,
   setProposedPlan,
   setUpgradePlan,
@@ -19,11 +21,16 @@ import classes from "./SuccessPlan.module.css";
 import { useHistory } from "react-router-dom";
 import { fetchUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { saveSession } from "../../../renderless/store-data/StoreData.script";
+import Fallback from "../../fallback/fallback";
 
 const SuccessPlan = () => {
   const history = useHistory();
+  if (window.sessionStorage.createNew !== "kd@#ff_dafknk_fiiqv//") {
+    return <Fallback />;
+  }
   const { dispatch, upgradePlan, sessionId, collectionName, proposedPlan, currentUser } = useContext(GenContext);
   const [inputValue, setInputValue] = useState("");
+  let isStripe = window.sessionStorage.isStripe;
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -49,7 +56,7 @@ const SuccessPlan = () => {
   };
 
   useEffect(() => {
-    if (window.sessionStorage.isStripe) return;
+    if (isStripe === "true") return;
     let ID = uuid();
     if (!upgradePlan) {
       handleResetCreate({ dispatch });
@@ -68,7 +75,7 @@ const SuccessPlan = () => {
   }, []);
 
   useEffect(() => {
-    if (window.sessionStorage.isStripe) return;
+    if (isStripe === "true") return;
     if (!proposedPlan) {
       return history.push("/create");
     }
@@ -77,9 +84,19 @@ const SuccessPlan = () => {
 
   useEffect(() => {
     async function runFetch() {
-      if (window.sessionStorage.isStripe) {
-        const { layers, preview, rule, collectionName, sessionId, upgradePlan, proposedPlan, currentUser } =
-          await fetchUserData({ dispatch });
+      if (isStripe === "true") {
+        const {
+          layers,
+          nftLayers,
+          preview,
+          rule,
+          collectionName,
+          sessionId,
+          upgradePlan,
+          proposedPlan,
+          currentPlan,
+          currentUser,
+        } = await fetchUserData();
         let ID = uuid();
         if (!upgradePlan) {
           handleResetCreate({ dispatch });
@@ -95,17 +112,19 @@ const SuccessPlan = () => {
         } else {
           dispatch(setCurrentSession(sessionId));
         }
-        await save({ collectionName, sessionId: sessionId ? sessionId : ID, currentUser, proposedPlan });
+        await save({ collectionName, sessionId: sessionId ? sessionId : ID, currentUser, proposedPlan: currentPlan });
         dispatch(setLayers(layers));
+        dispatch(setNftLayers(nftLayers));
         dispatch(setPreview(preview));
         dispatch(addRule(rule));
         dispatch(setCollectionName(collectionName));
-        dispatch(setCurrentPlan(proposedPlan));
         dispatch(setProposedPlan(proposedPlan));
         dispatch(setCurrentUser(currentUser));
         dispatch(setUpgradePlan(upgradePlan));
+        dispatch(setCurrentPlan(proposedPlan));
       }
-      window.sessionStorage.isStripe = undefined;
+      window.sessionStorage.isStripe = "false";
+      dispatch(setIsUser("true"));
     }
     runFetch();
   }, []);

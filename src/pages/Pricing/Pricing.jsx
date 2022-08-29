@@ -7,7 +7,7 @@ import PricingModal from "../../components/Modals/Pricing-Modal/PricingModal";
 import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
-import { setCurrentPlan, setProposedPlan } from "../../gen-state/gen.actions";
+import { setProposedPlan } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
 
 const Pricing = () => {
@@ -36,7 +36,7 @@ const Pricing = () => {
       }
     } else {
       handleResetCreate({ dispatch });
-      dispatch(setCurrentPlan(plan));
+      // dispatch(setCurrentPlan(plan));
       history.push("/create");
     }
   };

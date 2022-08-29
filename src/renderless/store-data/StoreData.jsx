@@ -27,6 +27,7 @@ const StoreData = () => {
     imageAction,
     layerAction,
     upgradePlan,
+    currentPlan,
   } = useContext(GenContext);
 
   const resetLayerAction = () => {
@@ -65,8 +66,6 @@ const StoreData = () => {
   }, [layerAction, imageAction, layers, currentUser, sessionId]);
 
   useEffect(() => {
-    const { type } = layerAction;
-    if (type !== "generate") return;
     const nftTraits = [];
     const newNftLayers = nftLayers.map(({ image, id, attributes, ...otherLayerProps }) => {
       nftTraits.push({ image, id });
@@ -74,7 +73,7 @@ const StoreData = () => {
     });
     saveNftLayers({ currentUser, sessionId, nftLayers: newNftLayers, nftTraits });
     resetLayerAction();
-  }, [layerAction, nftLayers, currentUser, sessionId]);
+  }, [nftLayers, currentUser, sessionId]);
 
   useEffect(() => {
     const { type, value } = imageAction;
@@ -106,23 +105,6 @@ const StoreData = () => {
   }, [imageAction, currentUser, sessionId]);
 
   useEffect(() => {
-    if (currentUser && sessionId && upgradePlan) {
-      const newLayers = layers.map(({ traits, ...otherLayerProps }) => {
-        const newTraits = traits.map(({ image, ...otherTraitProps }) => {
-          return { image: "", ...otherTraitProps };
-        });
-        return { traits: newTraits, ...otherLayerProps };
-      });
-      layers.forEach(({ id, traits }, i) => {
-        traits.forEach(async (trait, j) => {
-          await saveTraits({ dispatch, currentUser, sessionId, id, traits: [trait] });
-        });
-      });
-      saveLayers({ currentUser, sessionId, layers: newLayers });
-    }
-  }, [currentUser, sessionId, upgradePlan]);
-
-  useEffect(() => {
     const { type } = layerAction;
     if (type !== "rule") return;
     let newRules = rule.map((r) => {
@@ -136,6 +118,29 @@ const StoreData = () => {
     saveRules({ currentUser, sessionId, rules: strRules });
     resetLayerAction();
   }, [layerAction, currentUser, sessionId, rule]);
+
+  useEffect(() => {
+    if (currentUser && sessionId && upgradePlan && currentPlan === "free") {
+      const newLayers = layers.map(({ traits, ...otherLayerProps }) => {
+        const newTraits = traits.map(({ image, ...otherTraitProps }) => {
+          return { image: "", ...otherTraitProps };
+        });
+        return { traits: newTraits, ...otherLayerProps };
+      });
+      layers.forEach(({ id, traits }, i) => {
+        traits.forEach(async (trait, j) => {
+          await saveTraits({ dispatch, currentUser, sessionId, id, traits: [trait] });
+        });
+      });
+      saveLayers({ currentUser, sessionId, layers: newLayers });
+      const nftTraits = [];
+      const newNftLayers = nftLayers.map(({ image, id, attributes, ...otherLayerProps }) => {
+        nftTraits.push({ image, id });
+        return { image: "", id, attributes, ...otherLayerProps };
+      });
+      saveNftLayers({ currentUser, sessionId, nftLayers: newNftLayers, nftTraits });
+    }
+  }, [currentUser, sessionId, upgradePlan, currentPlan]);
 
   return null;
 };

@@ -5,7 +5,7 @@ import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
 const PaypalButton = ({ createOrder, createSubscription, onApprove }) => {
   const [{ options, isResolved }] = usePayPalScriptReducer();
 
-  if (!isResolved) return <div>Loading paypal, please wait...</div>;
+  if (!isResolved) return <div>Loading paypal...</div>;
 
   const oderOptions = {
     createOrder: createOrder,

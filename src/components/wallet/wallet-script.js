@@ -110,16 +110,15 @@ export const connectWithQRCode = async ({ walletConnectProvider, dispatch, suppo
   let proposedChain = Object.keys(walletConnectProvider.rpc)[0];
   try {
     await walletConnectProvider.enable();
-    console.log("opopoo", proposedChain);
-    // if (proposedChain !== String(walletConnectProvider.chainId)) {
-    //   walletConnectProvider.disconnect();
-    //   setTimeout(() => {
-    //     alert(
-    //       `Invalid connection! Please ensure that ${supportedChains[proposedChain].label} network is selected on your scanning wallet`
-    //     );
-    //     window.location.reload();
-    //   }, 100);
-    // }
+    if (proposedChain !== String(walletConnectProvider.chainId)) {
+      walletConnectProvider.disconnect();
+      setTimeout(() => {
+        alert(
+          `Invalid connection! Please ensure that ${supportedChains[proposedChain].label} network is selected on your scanning wallet`
+        );
+        window.location.reload();
+      }, 100);
+    }
     dispatch(setConnector(walletConnectProvider));
   } catch (error) {
     console.log("error: ", error);
@@ -266,11 +265,11 @@ export const updateAccount = async (walletProps) => {
 
 export const disconnectWallet = async ({ walletConnectProvider, dispatch, history, pathname, handleSetState }) => {
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  dispatch(setAccount(null));
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
   handleSetState({ toggleDropdown: false });
   if (pathname.includes("/me")) {
     history.push("/marketplace");
   }
+  dispatch(setAccount(null));
 };

@@ -14,38 +14,55 @@ import {
   setToggleSessionModal,
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
-import { fetchSession, saveSession } from "../../renderless/store-data/StoreData.script";
+import { fetchSession } from "../../renderless/store-data/StoreData.script";
 import { useHistory } from "react-router-dom";
 import CreateGuide from "../../components/create-guide/create-guide";
 import GoogleAuth from "../../components/google-auth/googleAuth";
 import ProfileDropdown from "../../components/profile-dropdown/profileDropdown";
 import { ReactComponent as Diskicon } from "../../assets/icon-disk.svg";
 import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
+import { ReactComponent as LoadingIcon } from "../../assets/icon-loading.svg";
 import ProgressBar from "./Progress-Bar/ProgressBar";
 import { useRef } from "react";
 import { handleSampleLayers } from "../../components/menu/collection-menu-script";
 import LoginModal from "../../components/Modals/Login-Modal/LoginModal";
+import { signInWithGoogle } from "../../components/google-auth/googleAuth.script";
 
 const Create = () => {
   const collectionNameRef = useRef();
   const history = useHistory();
-  const [profileDropdown, toggleProfileDropdown] = useState(false);
-  const [toggleGuide, setGuide] = useState(false);
-  const [nameWidth, setNameWidth] = useState(0);
 
-  const { isUser, dispatch, currentUser, currentPlan, sessionId, collectionName } = useContext(GenContext);
+  const [state, setState] = useState({
+    isSignIn: false,
+    toggleDropdown: false,
+    toggleGuide: false,
+    nameWidth: 0,
+  });
+
+  const { isSignIn, toggleDropdown, toggleGuide, nameWidth } = state;
+
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
+
+  const { dispatch, isUser, currentUser, currentPlan, collectionName } = useContext(GenContext);
 
   const handleSample = () => {
     handleSampleLayers({ dispatch });
   };
 
   const handleTutorial = () => {
-    setGuide(true);
+    handleSetState({ toggleGuide: true });
   };
 
   const handleUpgrade = () => {
     dispatch(setUpgradePlan(true));
     history.push("/create/session/pricing");
+  };
+
+  const handleSignIn = () => {
+    handleSetState({ isSignIn: true });
+    signInWithGoogle({ dispatch, handleSetState });
   };
 
   useEffect(() => {
@@ -70,8 +87,8 @@ const Create = () => {
 
   useEffect(() => {
     let width = collectionNameRef.current.offsetWidth;
-    setNameWidth(width / 16);
-  }, [collectionName]);
+    handleSetState({ nameWidth: width / 16 });
+  }, [collectionName, currentUser]);
 
   useEffect(() => {
     document.documentElement.scrollTop = 0;
@@ -82,12 +99,21 @@ const Create = () => {
       <SubscriptionNotification />
       <LoginModal />
       <CollectionNameModal />
-      <CreateGuide toggleGuide={toggleGuide} setGuide={setGuide} />
+      <CreateGuide toggleGuide={toggleGuide} setGuide={(e) => handleSetState({ toggleGuide: e })} />
       <div className={classes.details}>
-        <div className={classes.profileContainer}>
+        <div
+          onClick={!isSignIn ? handleSignIn : () => {}}
+          className={`${classes.signIn} ${!currentUser && classes.active}`}
+        >
+          <div className={`${classes.overlayer} ${isSignIn && classes.active}`}>
+            <LoadingIcon className={classes.loadingIcon} />
+          </div>
+          Sign in to auto-save
+        </div>
+        <div className={`${classes.profileContainer} ${currentUser && classes.active}`}>
           <div
-            onMouseOver={() => toggleProfileDropdown(true)}
-            onMouseOut={() => toggleProfileDropdown(false)}
+            onMouseOver={() => handleSetState({ toggleDropdown: true })}
+            onMouseOut={() => handleSetState({ toggleDropdown: false })}
             className={`${classes.profile} ${currentUser && classes.active}`}
           >
             <GoogleAuth />
@@ -102,8 +128,8 @@ const Create = () => {
               </div>
             </div>
             <ProfileDropdown
-              dropdown={profileDropdown}
-              setDropdown={toggleProfileDropdown}
+              dropdown={toggleDropdown}
+              setDropdown={(e) => handleSetState({ toggleDropdown: e })}
               userName={currentUser?.displayName}
             />
             <div className={classes.dropdownIconContainer}>

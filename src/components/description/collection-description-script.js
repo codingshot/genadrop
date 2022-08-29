@@ -69,7 +69,7 @@ export const createUniqueLayer = async (props) => {
   const newAttributes = [];
   let uniqueIndex = 0;
 
-  const mintCallback = (resolve) => {
+  const uniqueLayerCallback = (resolve) => {
     setTimeout(() => {
       dispatch(
         setLoader(
@@ -101,7 +101,7 @@ removing ${uniqueIndex} duplicates`
   };
 
   for (let i = 0; i < mintAmount + uniqueIndex; i += 1) {
-    await new Promise(mintCallback);
+    await new Promise(uniqueLayerCallback);
   }
 
   newAttributes.forEach((attr, id) => {
@@ -167,7 +167,7 @@ export const handleGenerate = async (generateProps) => {
   if (mintAmount <= 0 || !mintAmount) {
     return dispatch(
       setNotification({
-        message: "Set the number to generate",
+        message: "Set amount to generate",
         type: "warning",
       })
     );
@@ -180,7 +180,7 @@ export const handleGenerate = async (generateProps) => {
       })
     );
   }
-  if (mintAmount > combinations - rule.length) {
+  if (mintAmount > combinations) {
     return dispatch(
       setNotification({
         message: "Cannot generate more than the possible combinations",

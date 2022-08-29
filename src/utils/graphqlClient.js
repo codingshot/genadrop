@@ -4,7 +4,7 @@ import { authExchange } from "@urql/exchange-auth";
 export const graphQLClient = createClient({
   url:
     process.env.REACT_APP_ENV_STAGING === "true"
-      ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
       : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
   exchanges: [
     dedupExchange,
@@ -25,7 +25,7 @@ export const graphQLClient = createClient({
               ...operation.context,
               url:
                 process.env.REACT_APP_ENV_STAGING === "true"
-                  ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet"
+                  ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
                   : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
               fetchOptions: {
                 ...options,
@@ -48,7 +48,7 @@ export const graphQLClient = createClient({
 export const graphQLClientPolygon = createClient({
   url:
     process.env.REACT_APP_ENV_STAGING === "true"
-      ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
       : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
   exchanges: [
     dedupExchange,
@@ -105,6 +105,6 @@ export const celoClient = createClient({
 export const auroraClient = createClient({
   url:
     process.env.REACT_APP_ENV_STAGING === "true"
-      ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
       : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
 });

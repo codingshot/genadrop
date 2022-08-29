@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  margin-bottom: 6em;
   background: var(--default);
 }
 
@@ -106,7 +107,6 @@
   height: 25vw;
   min-height: 10rem;
   background-size: cover;
-  margin-bottom: 8rem;
 }
 
 .banner {
@@ -118,23 +118,25 @@
   margin: 0 auto;
   display: flex;
   padding: 0 2rem;
-  margin-top: auto;
-  margin-bottom: -7rem;
+  margin-top: -4rem;
+  margin-bottom: 4rem;
+  position: relative;
 }
 .bannerWrapper > div {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .bannerWrapper > a {
   display: flex;
   align-items: center;
-  padding-top: 4.5rem;
   margin-left: auto;
 }
 .imageContainer {
   border-radius: 50%;
   object-fit: cover;
-  max-width: 10.5rem;
-  max-height: 10.5rem;
+  max-width: 12.5rem;
+  max-height: 12.5rem;
   min-width: 6rem;
   border: 5px solid #eeeff2;
 }
@@ -142,14 +144,14 @@
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  grid-gap: 1rem;
-  gap: 1rem;
+  gap: 1.5rem;
   padding-left: 1rem;
-  padding-top: 4.5rem;
+  padding-bottom: 2rem;
 }
 .profileDetail {
   display: flex;
   gap: 1rem;
+  margin-top: auto;
 }
 .social {
   display: flex;
@@ -191,14 +193,12 @@
 }
 
 .editProfile:hover {
-  box-shadow: var(--shadow-light);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .main {
   padding: 2em;
-  border-radius: 1em;
-  background: var(--default);
-  box-shadow: var(--shadow-light);
 }
 
 .username {
@@ -230,6 +230,16 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1em;
+}
+
+.noResult {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10em;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 @media screen and (max-width: 1280px) {
@@ -278,8 +288,20 @@
     min-height: 2em;
   }
 }
-
+@media screen and (max-width: 768px) {
+  .bannerWrapper {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .bannerWrapper > a {
+    margin: unset;
+  }
+}
 @media screen and (max-width: 480px) {
+  .container {
+    margin-bottom: 4em;
+  }
+
   .searchAndFilter {
     flex-direction: column;
     gap: 0.5em;
@@ -298,13 +320,10 @@
     gap: 1em;
   }
 }
-
-.noResult {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 10em;
-  text-align: center;
-  font-size: 1.2rem;
+@media screen and (max-width: 400px) {
+  .imageContainer {
+    max-width: 10rem;
+    max-height: 10rem;
+    margin-bottom: 1rem;
+  }
 }
