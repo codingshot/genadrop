@@ -56,9 +56,21 @@ const Dashboard = () => {
     myCollections: null,
     filteredCollection: null,
     userDetails: null,
+    created: null,
+    onSale: null,
   });
 
-  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
+  const {
+    filter,
+    activeDetail,
+    myCollections,
+    createdNfts,
+    collectedNfts,
+    filteredCollection,
+    userDetails,
+    created,
+    onSale,
+  } = state;
 
   const { account, mainnet, chainId } = useContext(GenContext);
 
@@ -96,7 +108,7 @@ const Dashboard = () => {
           break;
       }
       console.log(nfts);
-      handleSetState({ createdNfts: [...(nfts || [])] });
+      handleSetState({ createdNfts: [...(nfts || [])], created: [...(created || []), ...(nfts || [])] });
     })();
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
@@ -148,7 +160,10 @@ const Dashboard = () => {
         default:
           break;
       }
-      handleSetState({ myCollections: [...(collection || [])] });
+      handleSetState({
+        myCollections: [...(collection || [])],
+        created: [...(created || []), ...(collection || [])],
+      });
     })();
 
     (async function getUsername() {
@@ -164,7 +179,7 @@ const Dashboard = () => {
       case "collected":
         return collectedNfts;
       case "created":
-        return [...(createdNfts || []), ...(myCollections || [])];
+        return created;
       case "sale":
         return myCollections;
       default:
@@ -335,12 +350,7 @@ const Dashboard = () => {
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created</p>
-              <span>
-                {" "}
-                {Array.isArray(myCollections) || Array.isArray(createdNfts)
-                  ? [...(createdNfts || []), ...(myCollections || [])].length
-                  : 0}
-              </span>
+              <span> {Array.isArray(created) ? created.length : 0}</span>
             </div>
           </div>
         </section>
