@@ -41,9 +41,8 @@ const FilterDropdown = ({ onFilter }) => {
         newLabel[0] = newLabel[1];
         newLabel[1] = tmp;
         return { name: filter.name, label: newLabel };
-      } else {
-        return filter;
       }
+      return filter;
     });
     handleSetState({ filterObj: newFilterObj });
     onFilter({ name: filterProp.name, label: filterProp.label[0] });
