@@ -70,15 +70,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
     <header ref={headerRef} className={classes.container}>
       <div className={classes.wrapper}>
         {imageUrl ? (
-          <img
-            className={classes.imageContainer}
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = imageUrl;
-            }}
-            src={imageUrl}
-            alt="asset"
-          />
+          <img className={classes.imageContainer} src={imageUrl} alt="asset" />
         ) : (
           <div className={classes.imageLoadingContainer}>
             <Skeleton count={1} height={200} />

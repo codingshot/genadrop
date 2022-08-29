@@ -46,14 +46,7 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard }) => {
     >
       <div style={useWidth ? { width: useWidth } : {}} className={classes.card}>
         <div className={classes.imageContainer}>
-          <img
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null; // prevents looping
-              currentTarget.src = image_url;
-            }}
-            src={image_url}
-            alt=""
-          />
+          <img src={image_url} alt="" />
         </div>
         <div className={classes.cardBody}>
           <div className={classes.collectionName}>{collection_name}</div>

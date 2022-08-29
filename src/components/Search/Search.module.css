@@ -109,10 +109,28 @@
 
 .hint {
   width: 100%;
-  color: var(--main-color);
   font-size: 0.85rem;
+  display: flex;
+  gap: 4px;
 }
-
+.result {
+  color: var(--main-color);
+}
+.showAll {
+  display: flex;
+  gap: 4px;
+  cursor: pointer;
+}
+.showAll div {
+  height: 100%;
+  display: block;
+  background: #e5e8eb;
+  width: 2px;
+  transition: color 300ms ease;
+}
+.showAll:hover {
+  color: var(--main-color);
+}
 .image {
   width: 3.5em;
   height: 3.5em;

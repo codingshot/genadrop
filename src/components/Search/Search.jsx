@@ -1,12 +1,14 @@
-import { useContext, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import supportedChains from "../../utils/supportedChains";
-import { handleSuggestions } from "./Search-script";
+import handleSuggestions from "./Search-script";
 import classes from "./Search.module.css";
 
 const Search = () => {
   const history = useHistory();
+  const location = useLocation();
+  console.log(location.pathname);
   const { searchContainer } = useContext(GenContext);
   const [state, setState] = useState({
     value: "",
@@ -40,11 +42,45 @@ const Search = () => {
     history.push(`/marketplace/${searchType}${`?search=${value}`}`);
   };
 
+  const hanldeAllResults = (keyword = value) => {
+    console.log(keyword);
+    const params = new URLSearchParams({
+      keyword,
+    });
+    history.replace({ pathname: "/search", search: params.toString() });
+    handleSetState({ toggleSearch: false });
+  };
+  const hanldeSeachChange = (e) => {
+    handleChange(e);
+    console.log(e.target.value);
+    hanldeAllResults(e.target.value);
+  };
+
+  function getHighlightedText(text, highlight) {
+    // Split on highlight term and include term into parts, ignore case
+    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    return (
+      <span>
+        {" "}
+        {parts.map((part, i) => (
+          <span key={i} style={part.toLowerCase() === highlight.toLowerCase() ? { background: "#FEDA03B0" } : {}}>
+            {part}
+          </span>
+        ))}{" "}
+      </span>
+    );
+  }
   return (
     <div className={`${classes.container} ${toggleSearch && classes.active}`}>
-      <div onClick={handleToggleSearch} className={classes.placeholder}>
-        <input type="text" placeholder="Search collections, and 1 of 1s" />
-      </div>
+      {location.pathname === "/search" ? (
+        <div className={classes.placeholder}>
+          <input onChange={hanldeSeachChange} type="text" value={value} placeholder="Search collections, and 1 of 1s" />
+        </div>
+      ) : (
+        <div onClick={handleToggleSearch} className={classes.placeholder}>
+          <input type="text" value={value} placeholder="Search collections, and 1 of 1s" />
+        </div>
+      )}
       <div onClick={handleCloseSearch} className={classes.dropdownContainer}>
         <div
           onMouseOut={() => handleSetState({ ignoreSearch: false })}
@@ -61,26 +97,33 @@ const Search = () => {
                 placeholder="Search collections, and 1 of 1s"
               />
               <div className={classes.hint}>
-                {!suggestions
-                  ? "No results"
-                  : suggestions.length
-                  ? `Showing ${suggestions.length} results`
-                  : "No results"}
+                <div className={classes.result}>
+                  {!suggestions
+                    ? "No results"
+                    : suggestions.length
+                    ? `Showing ${suggestions.length} results `
+                    : "No results"}
+                </div>
+                {suggestions?.length && (
+                  <div className={classes.showAll} onClick={() => hanldeAllResults()}>
+                    <div /> Show All results{" "}
+                  </div>
+                )}
               </div>
             </div>
           )}
           <div className={classes.suggestions}>
             {suggestions && suggestions.length ? (
-              suggestions.map(({ imageUrl, type, name, description, chainId }, idx) => (
+              suggestions.map(({ image_url, type, name, description, chain }, idx) => (
                 <div onClick={() => handleSearch(type)} key={idx} className={classes.suggestion}>
-                  <img className={classes.image} src={imageUrl} alt="" />
+                  <img className={classes.image} src={image_url} alt="" />
                   <div className={classes.content}>
-                    <div className={classes.name}>{name}</div>
-                    <div className={classes.description}>{description}</div>
+                    <div className={classes.name}>{getHighlightedText(name, value)}</div>
+                    <div className={classes.description}>{getHighlightedText(description, value)}</div>
                     <div className={classes.type_m}>{type}</div>
                   </div>
                   <div className={classes.type}>{type}</div>
-                  <img className={classes.chain} src={supportedChains[chainId].icon} alt="" />
+                  <img className={classes.chain} src={supportedChains[chain]?.icon} alt="" />
                 </div>
               ))
             ) : suggestions ? (

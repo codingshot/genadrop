@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import classes from "./chainDropdown.module.css";
 import polygonIcon from "../../../assets/icon-polygon.svg";
@@ -8,7 +8,6 @@ import celoIcon from "../../../assets/icon-celo.svg";
 import dropdownIcon from "../../../assets/icon-caret-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
 import supportedChains from "../../../utils/supportedChains";
-import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const chainIcon = {
