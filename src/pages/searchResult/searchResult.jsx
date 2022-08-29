@@ -1,18 +1,17 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import ReactPaginate from "react-paginate";
 import classes from "./searchResult.module.css";
-import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
-import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import handleSuggestions from "../../components/Search/Search-script";
 import { GenContext } from "../../gen-state/gen.context";
+import { ReactComponent as AngleLeft } from "../../assets/icon-pagination-left.svg";
+import { ReactComponent as AngleRight } from "../../assets/icon-pagination-right.svg";
+import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import NotFound from "../../components/not-found/notFound";
 import supportedChains from "../../utils/supportedChains";
-import { ReactComponent as AngleLeft } from "../../assets/icon-pagination-left.svg";
-import { ReactComponent as AngleRight } from "../../assets/icon-pagination-right.svg";
 
 const SearchResult = () => {
   const [state, setState] = useState({

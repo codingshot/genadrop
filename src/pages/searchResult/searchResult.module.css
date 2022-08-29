@@ -36,7 +36,7 @@
 .tabs > div {
   font-weight: 600;
   font-size: 1.5rem;
-  line-height: 36px;
+  line-height: 1.5em;
   color: #8c93a3;
   padding: 0 1rem 0.6rem;
   border-bottom: 2px solid transparent;

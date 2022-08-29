@@ -8,7 +8,6 @@ import classes from "./Search.module.css";
 const Search = () => {
   const history = useHistory();
   const location = useLocation();
-  console.log(location.pathname);
   const { searchContainer } = useContext(GenContext);
   const [state, setState] = useState({
     value: "",
@@ -43,7 +42,6 @@ const Search = () => {
   };
 
   const hanldeAllResults = (keyword = value) => {
-    console.log(keyword);
     const params = new URLSearchParams({
       keyword,
     });
@@ -52,7 +50,6 @@ const Search = () => {
   };
   const hanldeSeachChange = (e) => {
     handleChange(e);
-    console.log(e.target.value);
     hanldeAllResults(e.target.value);
   };
 

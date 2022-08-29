@@ -45,7 +45,7 @@ const FilterDropdown = ({ onFilter }) => {
       return filter;
     });
     handleSetState({ filterObj: newFilterObj });
-    // onFilter({ name: filterProp.name, label: filterProp.label[0] });
+    onFilter({ name: filterProp.name, label: filterProp.label[0] });
   };
 
   useEffect(() => {
