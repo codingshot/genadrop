@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import { ethers } from "ethers";
 import {
   GET_CELO_GRAPH_COLLECITONS,
@@ -11,6 +12,7 @@ import {
   getGraphCollection,
   getGraphCollections,
   getGraphNft,
+  getGraphTransactionHistory,
   getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
@@ -150,7 +152,6 @@ export const auroraUserData = async (address) => {
 
 export const celoUserData = async (address) => {
   const { data: celoData, error: celoError } = await celoClient.query(GET_CELO_NFT, { id: address }).toPromise();
-  console.log("xxxx", celoData);
   if (celoError) return;
   let trHistory;
   let celoResult = [];
@@ -162,4 +163,31 @@ export const celoUserData = async (address) => {
     });
   }
   return [celoResult[0], trHistory];
+};
+
+export const celoCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await celoClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return transaction;
 };

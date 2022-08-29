@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./exploreTransactionHistory.module.css";
 import timerIcon from "../../../assets/icon-timer.svg";
 import transferIcon from "../../../assets/icon-transfer.svg";
@@ -8,17 +8,36 @@ import cartIcon from "../../../assets/icon-cart-no-bg.svg";
 import exportIcon from "../../../assets/icon-export.svg";
 
 import { breakAddress } from "../../../components/wallet/wallet-script";
+import { celoCollectionTransactions } from "../../../renderless/fetch-data/fetchUserGraphData";
 
-const ExploreTransactionHistory = () => {
+const ExploreTransactionHistory = ({ collectionId }) => {
   const [state, setState] = useState({
     selected: "all",
+    transactionData: [],
   });
 
-  const { selected } = state;
-
+  const { transactionData, selected } = state;
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+  useEffect(() => {
+    (async function getTransactions() {
+      const data = await celoCollectionTransactions(collectionId);
+      console.log("rrr", data);
+      switch (selected) {
+        case "all":
+          handleSetState({
+            transactionData: data,
+          });
+        case "mints":
+          const minting = data.filter((data) => data.type === "Minting");
+          handleSetState({
+            transactionData: minting,
+          });
+      }
+    })();
+    console.log(selected);
+  }, [collectionId, selected]);
 
   return (
     <div className={classes.container}>
@@ -72,29 +91,32 @@ const ExploreTransactionHistory = () => {
           <input type="text" placeholder="Search" />
         </div>
         <div className={classes.transactionContainer}>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
+          {transactionData?.map((data) => (
+            <div className={classes.transaction}>
+              <div className={classes.status}>
+                <img src={mintIcon} alt="" />
+                {data?.type}
+              </div>
+              <div className={classes.transactionDetails}>
+                <div className={classes.detail}>
+                  <span className={classes.label}>From:</span>
+                  <span className={classes.value}>{data.from ? breakAddress(data.from) : "--"}</span>
+                </div>
+                <div className={classes.detail}>
+                  <span className={classes.label}>to:</span>
+                  <span className={classes.value}>{data.to ? breakAddress(data.to) : "--"}</span>
+                </div>
+                <div className={classes.detail}>
+                  <span className={classes.date}>{data.date}</span>
+                </div>
+                <div className={classes.export}>
+                  <img src={exportIcon} alt="" />
+                </div>
+              </div>
             </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
+          ))}
+
+          {/* <div className={classes.transaction}>
             <div className={classes.status}>
               <img src={mintIcon} alt="" />
               Transfer
@@ -203,8 +225,8 @@ const ExploreTransactionHistory = () => {
               <div className={classes.export}>
                 <img src={exportIcon} alt="" />
               </div>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
         </div>
       </div>
     </div>

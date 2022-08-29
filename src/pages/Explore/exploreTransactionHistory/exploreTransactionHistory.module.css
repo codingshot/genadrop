@@ -108,6 +108,9 @@
   width: 1em;
   margin: 0 0.3em;
 }
+.detail {
+  min-width: 240px;
+}
 
 .transactionDetails {
   display: flex;

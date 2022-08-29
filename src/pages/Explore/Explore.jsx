@@ -23,6 +23,7 @@ const Explore = () => {
     NFTCollection: null,
     FilteredCollection: null,
     loadedChain: null,
+    collectionId: null,
     allGraphCollection: [],
     collection: null,
     attributes: null,
@@ -40,15 +41,15 @@ const Explore = () => {
     NFTCollection,
     attributes,
     filter,
+    collectionId,
     filterToDelete,
     FilteredCollection,
     headerHeight,
     loadedChain,
     seleted,
   } = state;
-  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } = useContext(
-    GenContext
-  );
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
+    useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -85,7 +86,7 @@ const Explore = () => {
     (async function getGraphResult() {
       const allCollection = getAllCollectionChains();
       const filteredCollection = allCollection?.filter((col) => col?.Id === collectionName);
-      if (filteredCollection?.length) {
+      if (filteredCollection.length) {
         const result = await getGraphCollection(filteredCollection[0]?.nfts, filteredCollection[0]);
         handleSetState({
           collection: {
@@ -93,6 +94,7 @@ const Explore = () => {
             owner: filteredCollection[0]?.owner,
             price: result[0]?.collectionPrice,
           },
+          collectionId: filteredCollection[0]?.Id,
           NFTCollection: result,
           loadedChain: result[0]?.chain,
         });
@@ -102,7 +104,6 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    console.log(NFTCollection);
     handleSetState({
       attributes: mapAttributeToFilter(NFTCollection),
       FilteredCollection: NFTCollection,
@@ -118,7 +119,6 @@ const Explore = () => {
   useEffect(() => {
     if (!NFTCollection) return;
     let filtered = null;
-    console.log(filter.sort);
     if (filter.sort === "alphaAscending") {
       filtered = NFTCollection.sort((a, b) => a.name - b.name);
     } else {
@@ -222,7 +222,7 @@ const Explore = () => {
             />
           </main>
         ) : (
-          <ExploreTransactionHistory />
+          <ExploreTransactionHistory collectionId={collectionId} />
         )}
       </div>
     </div>
