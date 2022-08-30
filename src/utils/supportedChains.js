@@ -52,6 +52,7 @@ const supportedChains = {
     icon: celoIcon,
     symbol: "CGLD",
     networkId: 42220,
+    explorer: "https://explorer.celo.org/address",
     add: addChain,
     isMainnet: true,
     switch: switchChain,
