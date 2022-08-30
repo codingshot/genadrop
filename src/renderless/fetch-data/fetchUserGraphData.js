@@ -171,6 +171,7 @@ export const celoCollectionTransactions = async (id) => {
       gql`query MyQuery {
       transactions(
         where: {nft_contains: "${id}"}
+        orderBy: txDate
       ) {
         id
         price
@@ -189,5 +190,61 @@ export const celoCollectionTransactions = async (id) => {
     .toPromise();
   if (celoError) return;
   const transaction = getGraphTransactionHistory(celoData?.transactions);
-  if (transaction) return transaction;
+  if (transaction) return (await transaction).reverse();
+};
+
+export const polygonCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await polygonClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
+};
+
+export const auroraCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await auroraClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
 };

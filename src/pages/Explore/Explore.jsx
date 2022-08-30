@@ -222,7 +222,7 @@ const Explore = () => {
             />
           </main>
         ) : (
-          <ExploreTransactionHistory collectionId={collectionId} />
+          <ExploreTransactionHistory collectionId={collectionId} chain={NFTCollection ? NFTCollection[0]?.chain : 0} />
         )}
       </div>
     </div>

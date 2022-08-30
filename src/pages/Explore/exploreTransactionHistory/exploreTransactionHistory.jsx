@@ -8,9 +8,14 @@ import cartIcon from "../../../assets/icon-cart-no-bg.svg";
 import exportIcon from "../../../assets/icon-export.svg";
 
 import { breakAddress } from "../../../components/wallet/wallet-script";
-import { celoCollectionTransactions } from "../../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraCollectionTransactions,
+  celoCollectionTransactions,
+  polygonCollectionTransactions,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
+import supportedChains from "../../../utils/supportedChains";
 
-const ExploreTransactionHistory = ({ collectionId }) => {
+const ExploreTransactionHistory = ({ collectionId, chain }) => {
   const [state, setState] = useState({
     selected: "all",
     transactionData: [],
@@ -22,22 +27,53 @@ const ExploreTransactionHistory = ({ collectionId }) => {
   };
   useEffect(() => {
     (async function getTransactions() {
-      const data = await celoCollectionTransactions(collectionId);
-      console.log("rrr", data);
+      let data = [];
+      switch (supportedChains[chain]?.chain) {
+        case "Celo":
+          data = await celoCollectionTransactions(collectionId);
+          break;
+        case "Aurora":
+          data = await auroraCollectionTransactions(collectionId);
+          break;
+        case "Polygon":
+          data = await polygonCollectionTransactions(collectionId);
+          break;
+        default:
+          break;
+      }
       switch (selected) {
         case "all":
           handleSetState({
             transactionData: data,
           });
+          break;
         case "mints":
           const minting = data.filter((data) => data.type === "Minting");
           handleSetState({
             transactionData: minting,
           });
+          break;
+        case "transfers":
+          const transfers = data.filter((data) => data.type === "Transfers");
+          handleSetState({
+            transactionData: transfers,
+          });
+          break;
+        case "sales":
+          const sales = data.filter((data) => data.type === "Sale");
+          handleSetState({
+            transactionData: sales,
+          });
+          break;
+        case "listings":
+          const listing = data.filter((data) => data.type === "Listing");
+          handleSetState({
+            transactionData: listing,
+          });
+          break;
       }
     })();
-    console.log(selected);
-  }, [collectionId, selected]);
+  }, [collectionId, selected, chain]);
 
   return (
     <div className={classes.container}>
@@ -71,7 +107,7 @@ const ExploreTransactionHistory = ({ collectionId }) => {
             Sales
           </div>
           <div
-            className={`${classes.option && classes.disabled}`}
+            className={`${classes.option} && ${selected === "listings" && classes.active}`}
             disabled
             onClick={() => handleSetState({ selected: "listings" })}
           >
@@ -115,118 +151,6 @@ const ExploreTransactionHistory = ({ collectionId }) => {
               </div>
             </div>
           ))}
-
-          {/* <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div> */}
-          {/* </div> */}
         </div>
       </div>
     </div>
