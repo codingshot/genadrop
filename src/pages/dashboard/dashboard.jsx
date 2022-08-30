@@ -112,7 +112,7 @@ const Dashboard = () => {
         default:
           break;
       }
-      const onSaleNFTs = nfts?.map((nft) => nft.price !== 0 && !nft.sold);
+      const onSaleNFTs = nfts?.filter((nft) => nft.price !== 0 && !nft.sold);
       handleSetState({
         createdNfts: [...(nfts || [])],
         created: [...(created || []), ...(nfts || [])],
