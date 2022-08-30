@@ -9,15 +9,22 @@ import exportIcon from "../../../assets/icon-export.svg";
 import { chainIdToParams } from "../../../utils/chainConnect";
 
 import { breakAddress, getDate } from "../../../components/wallet/wallet-script";
+import supportedChains from "../../../utils/supportedChains";
+import {
+  auroraCollectionTransactions,
+  celoCollectionTransactions,
+  polygonCollectionTransactions,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
-const ExploreTransactionHistory = ({ data, chain, fromCollection }) => {
+const ExploreTransactionHistory = ({ collectionId, data, chain, fromCollection }) => {
   const [state, setState] = useState({
     selected: "all",
+    transactionData: [],
     explorer:
       process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
   });
 
-  const { selected, explorer } = state;
+  const { selected, explorer, transactionData } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -27,6 +34,62 @@ const ExploreTransactionHistory = ({ data, chain, fromCollection }) => {
       handleSetState({ explorer: chainIdToParams[chain].blockExplorerUrls });
     }
   }, []);
+
+  useEffect(() => {
+    // if (!data) {
+    (async function getTransactions() {
+      let data = [];
+      switch (supportedChains[chain]?.chain) {
+        case "Celo":
+          data = await celoCollectionTransactions(collectionId);
+          break;
+        case "Aurora":
+          data = await auroraCollectionTransactions(collectionId);
+          break;
+        case "Polygon":
+          data = await polygonCollectionTransactions(collectionId);
+          break;
+        default:
+          break;
+      }
+      switch (selected) {
+        case "all":
+          handleSetState({
+            transactionData: data,
+          });
+          break;
+        case "mints":
+          const minting = data.filter((data) => data.type === "Minting");
+          handleSetState({
+            transactionData: minting,
+          });
+          break;
+        case "transfers":
+          const transfers = data.filter((data) => data.type === "Transfers");
+          handleSetState({
+            transactionData: transfers,
+          });
+          break;
+        case "sales":
+          const sales = data.filter((data) => data.type === "Sale");
+          handleSetState({
+            transactionData: sales,
+          });
+          break;
+        case "listings":
+          const listing = data.filter((data) => data.type === "Listing");
+          handleSetState({
+            transactionData: listing,
+          });
+          break;
+      }
+    })();
+    // } else {
+    //   handleSetState({
+    //     transactionData: data,
+    //   });
+    // }
+  }, [collectionId, selected, chain]);
 
   const icons = [cartIcon, transferIcon, mintIcon];
 
@@ -103,29 +166,29 @@ const ExploreTransactionHistory = ({ data, chain, fromCollection }) => {
           <input type="text" placeholder="Search" />
         </div>
         <div className={classes.transactionContainer}>
-          {data?.map((d, i) => {
+          {transactionData?.map((data) => {
             return (
               <div className={classes.transaction}>
                 <div className={classes.status}>
-                  <img src={icon(d.type)} alt="" />
-                  {d.type}
+                  <img src={icon(data?.type)} alt="" />
+                  {data?.type}
                 </div>
                 <div className={classes.transactionDetails}>
                   <div className={classes.detail}>
                     <span className={classes.label}>From:</span>
-                    <span className={classes.value}>{d.buyer ? breakAddress(d.buyer, 4) : "--"}</span>
+                    <span className={classes.value}>{data?.buyer ? breakAddress(data?.buyer, 4) : "--"}</span>
                   </div>
                   <div className={classes.detail}>
                     <span className={classes.label}>To:</span>
-                    <span className={classes.value}>{d.seller ? breakAddress(d.seller, 4) : "--"}</span>
+                    <span className={classes.value}>{data?.seller ? breakAddress(data?.seller, 4) : "--"}</span>
                   </div>
                   <div className={classes.detail}>
                     <span className={classes.date}>
-                      {fromCollection ? getDate(d.txDate) : getDate(d.txDate?.seconds)}
+                      {fromCollection ? getDate(data?.txDate) : getDate(data?.txDate?.seconds)}
                     </span>
                   </div>
                   <div className={classes.export}>
-                    <a href={explorer + "tx/" + d.txId} target="_blank">
+                    <a href={explorer + "tx/" + data?.txId} target="_blank">
                       <img src={exportIcon} alt="" />
                     </a>
                   </div>

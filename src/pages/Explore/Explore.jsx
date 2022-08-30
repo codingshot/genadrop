@@ -26,6 +26,7 @@ const Explore = () => {
     allGraphCollection: [],
     collection: null,
     attributes: null,
+    collectionId: null,
     filterToDelete: null,
     headerHeight: 0,
     filter: {
@@ -39,6 +40,7 @@ const Explore = () => {
     collection,
     NFTCollection,
     attributes,
+    collectionId,
     filter,
     filterToDelete,
     FilteredCollection,
@@ -46,6 +48,7 @@ const Explore = () => {
     loadedChain,
     seleted,
   } = state;
+
   const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } = useContext(
     GenContext
   );
@@ -93,6 +96,7 @@ const Explore = () => {
             owner: filteredCollection[0]?.owner,
             price: result[0]?.collectionPrice,
           },
+          collectionId: filteredCollection[0]?.Id,
           NFTCollection: result,
           loadedChain: result[0]?.chain,
         });
@@ -222,7 +226,11 @@ const Explore = () => {
             />
           </main>
         ) : (
-          <ExploreTransactionHistory />
+          <ExploreTransactionHistory
+            collectionId={collectionId}
+            chain={NFTCollection ? NFTCollection[0]?.chain : 0}
+            fromCollection
+          />
         )}
       </div>
     </div>

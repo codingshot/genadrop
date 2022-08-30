@@ -319,6 +319,28 @@ export const getGraphCollection = async (collection, mainnet) => {
   return nftArr;
 };
 
+export const getGraphTransactionHistory = async (transactions) => {
+  const transactionArr = [];
+  if (transactions) {
+    for (let i = 0; i < transactions.length; i++) {
+      try {
+        const transactionObj = {};
+        transactionObj.type = transactions[i].type;
+        const newDate = getDate(transactions[i].txDate);
+        transactionObj.date = newDate;
+        transactionObj.price = transactions[i].price;
+        transactionObj.from = transactions[i].from?.id;
+        transactionObj.to = transactions[i].to?.id;
+        transactionObj.id = transactions[i].txId;
+        transactionArr.push(transactionObj);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+  return transactionArr;
+};
+
 export const getTransactions = async (transactions) => {
   const trnArr = [];
   for (let i = 0; i < transactions?.length; i++) {
