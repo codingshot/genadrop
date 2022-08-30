@@ -4,6 +4,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import algoIcon from "../../assets/icon-algo.svg";
 import supportedChains from "../../utils/supportedChains";
 import { chainIdToParams } from "../../utils/chainConnect";
+
 const Transaction = (data) => {
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";

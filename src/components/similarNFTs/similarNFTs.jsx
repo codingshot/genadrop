@@ -15,7 +15,7 @@ const SimilarNFTs = (data) => {
     nfts: [],
   });
 
-  const { nfts } = state;
+  const { nfts, init } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -118,10 +118,10 @@ const SimilarNFTs = (data) => {
 
   return (
     <div className={classes.container}>
-      <GenadropCarouselScreen cardWidth={16 * 20} gap={16}>
+      <GenadropCarouselScreen cardWidth={16 * 20} gap={16} init={init}>
         {nfts?.map((nft, id) => (
           <div key={id} ref={cardRef} className={classes.card}>
-            <NftCard use_width="20em" key={nft.Id} nft={nft} listed extend="/1of1" />
+            <NftCard use_width="20em" key={nft.Id} nft={nft} listed extend="/1of1" is1of1 />
           </div>
         ))}
       </GenadropCarouselScreen>

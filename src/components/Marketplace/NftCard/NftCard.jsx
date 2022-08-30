@@ -38,8 +38,10 @@ const NftCard = ({ nft, listed, chinPrice, useWidth, fromDashboard, is1of1, coll
         });
     }
     (async function getUsername() {
-      const data = await readUserProfile(owner);
-      handleSetState({ ownerName: data.username });
+      if (owner) {
+        const data = await readUserProfile(owner);
+        handleSetState({ ownerName: data.username });
+      }
     })();
   }, []);
 

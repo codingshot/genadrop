@@ -3,6 +3,7 @@
   border-radius: 10px;
   width: 100%;
   padding-bottom: 3em;
+  min-height: 37.5em;
 }
 
 .wrapper {
@@ -60,11 +61,15 @@
   border: 1px solid var(--tab-bg-2);
 }
 
+.disabled:hover {
+  cursor: not-allowed;
+}
+
 .searchInput {
   width: 100%;
-  max-width: 30em;
+  max-width: 45em;
   flex: 1;
-  margin: 0.5em 0;
+  margin: 1em 0;
   padding: 0 25px;
   transition: all 300ms;
   border-radius: 2em;
@@ -88,7 +93,6 @@
 }
 
 .transaction {
-  border-top: 1px solid var(--tab-bg-2);
   border-bottom: 1px solid var(--tab-bg-2);
 }
 
@@ -118,16 +122,59 @@
 .label {
   color: var(--text-label);
   margin-right: 0.5em;
+  font-size: 14px;
 }
 
+.detail {
+  width: 10em;
+}
 .value {
+  font-size: 14px;
   color: var(--text-dark-900);
 }
 
-.export {
+.export img {
   border: 1px solid var(--tab-bg-2);
   padding: 0.2em 0.4em;
   border-radius: 5px;
   position: relative;
   top: -1em;
+}
+
+@media screen and (max-width: 1440px) {
+}
+
+@media screen and (max-width: 1200px) {
+}
+
+@media screen and (max-width: 1000px) {
+  .option,
+  .disabled {
+    font-size: 0.3em;
+    padding: 1em 2em;
+    display: flex;
+    align-items: center;
+  }
+
+  .value,
+  .label,
+  .date {
+    font-size: 0.2em;
+  }
+
+  .export img {
+    width: 1.2em;
+    padding: 0.1em;
+  }
+
+  .container {
+    height: fit-content;
+    min-height: fit-content;
+  }
+}
+
+@media screen and (max-width: 768px) {
+}
+
+@media screen and (max-width: 480px) {
 }

@@ -12,7 +12,7 @@
   --main-color: #0d99ff;
   --main-hovered: #0082e0;
   --main-light: #62bdff;
-  --main-light2: #0d99ff4d;
+  --main-light2: 0d99ff;
 
   --main-lighter: #dbf0ff;
   --main-lightest: #f3faff;
@@ -29,7 +29,9 @@
   --outline: #e5e8eb;
   --card-outline: #c4c4c4;
   --card-outline2: #d8dbea;
+  --outline-light: #eeeff2;
   --outline-dark: #a4a9b6;
+  --outline-dark2: #cacdd5;
 
   --icon-color: #4b4b5a;
 
@@ -87,7 +89,9 @@
   --text-dark-100: #747c90;
   --text-dark-200: #656e85;
   --text-dark-300: #5c657d;
+  --text-dark-350: #adb5bd;
   --text-dark-400: #525c76;
+  --text-dark-450: #8c93a3;
   --text-dark-500: #49536e;
   --text-dark-600: #3a4662;
   --text-dark-700: #2c3857;

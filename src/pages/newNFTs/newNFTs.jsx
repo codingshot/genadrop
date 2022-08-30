@@ -183,9 +183,9 @@ const NewNFTs = ({ len }) => {
               ? [
                   ...(filteredCollection || [])
                     ?.filter((_, idx) => idx < 12)
-                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed />),
+                    .map((nft) => <NftCard key={nft.Id} nft={nft} listed is1of1 />),
                 ]
-              : filteredCollection.map((nft) => <NftCard key={nft.Id} nft={nft} listed />)}
+              : filteredCollection.map((nft) => <NftCard key={nft.Id} nft={nft} listed is1of1 />)}
           </div>
         ) : !filteredCollection && filter.searchValue ? (
           <NotFound />

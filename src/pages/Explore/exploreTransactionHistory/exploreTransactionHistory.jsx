@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import classes from "./exploreTransactionHistory.module.css";
 import timerIcon from "../../../assets/icon-timer.svg";
 import transferIcon from "../../../assets/icon-transfer.svg";
@@ -6,18 +6,49 @@ import searchIcon from "../../../assets/icon-search.svg";
 import mintIcon from "../../../assets/icon-mint.svg";
 import cartIcon from "../../../assets/icon-cart-no-bg.svg";
 import exportIcon from "../../../assets/icon-export.svg";
+import { chainIdToParams } from "../../../utils/chainConnect";
 
-import { breakAddress } from "../../../components/wallet/wallet-script";
+import { breakAddress, getDate } from "../../../components/wallet/wallet-script";
 
-const ExploreTransactionHistory = () => {
+const ExploreTransactionHistory = ({ data, chain, fromCollection }) => {
   const [state, setState] = useState({
     selected: "all",
+    explorer:
+      process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
   });
 
-  const { selected } = state;
+  const { selected, explorer } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
+  };
+  useEffect(() => {
+    if (chainIdToParams[chain]) {
+      handleSetState({ explorer: chainIdToParams[chain].blockExplorerUrls });
+    }
+  }, []);
+
+  const icons = [cartIcon, transferIcon, mintIcon];
+
+  const icon = (e) => {
+    let icon = "";
+    switch (e) {
+      case "Sale":
+        icon = icons[0];
+        break;
+      case "Transfer":
+        icon = icons[1];
+        break;
+      case "Minting":
+        icon = icons[2];
+        break;
+      case "Listing":
+        icon = icons[1];
+        break;
+      default:
+        break;
+    }
+    return icon;
   };
 
   return (
@@ -72,139 +103,36 @@ const ExploreTransactionHistory = () => {
           <input type="text" placeholder="Search" />
         </div>
         <div className={classes.transactionContainer}>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
+          {data?.map((d, i) => {
+            return (
+              <div className={classes.transaction}>
+                <div className={classes.status}>
+                  <img src={icon(d.type)} alt="" />
+                  {d.type}
+                </div>
+                <div className={classes.transactionDetails}>
+                  <div className={classes.detail}>
+                    <span className={classes.label}>From:</span>
+                    <span className={classes.value}>{d.buyer ? breakAddress(d.buyer, 4) : "--"}</span>
+                  </div>
+                  <div className={classes.detail}>
+                    <span className={classes.label}>To:</span>
+                    <span className={classes.value}>{d.seller ? breakAddress(d.seller, 4) : "--"}</span>
+                  </div>
+                  <div className={classes.detail}>
+                    <span className={classes.date}>
+                      {fromCollection ? getDate(d.txDate) : getDate(d.txDate?.seconds)}
+                    </span>
+                  </div>
+                  <div className={classes.export}>
+                    <a href={explorer + "tx/" + d.txId} target="_blank">
+                      <img src={exportIcon} alt="" />
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
-          <div className={classes.transaction}>
-            <div className={classes.status}>
-              <img src={mintIcon} alt="" />
-              Transfer
-            </div>
-            <div className={classes.transactionDetails}>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.label}>From:</span>
-                <span className={classes.value}>{breakAddress("0x7d81a27b25c05163dd8ef643c6b00d02405ed9d7")}</span>
-              </div>
-              <div className={classes.detail}>
-                <span className={classes.date}>2 days ago</span>
-              </div>
-              <div className={classes.export}>
-                <img src={exportIcon} alt="" />
-              </div>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </div>
     </div>

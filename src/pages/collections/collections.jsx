@@ -32,7 +32,7 @@ const Collections = ({ len }) => {
       price: "low",
       chain: "All Chains",
     },
-    selected: "24h",
+    selected: "all",
     page1: 1,
     page2: 2,
     page3: 3,
@@ -202,6 +202,45 @@ const Collections = ({ len }) => {
     return null;
   }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
 
+  useEffect(() => {
+    let newCollections = [];
+    const secondInDay = 24 * 60 * 60;
+    const now = new Date().getTime() / 1000;
+    const collection = getCollectionByChain();
+
+    handleSetState({ filteredCollection: collection });
+
+    if (selected === "24h") {
+      newCollections = collection.filter((e) => {
+        if (e.chain == 4160) {
+          return now - e.createdAt.seconds <= secondInDay;
+        } else {
+          return now - e.createdAt <= secondInDay;
+        }
+      });
+    } else if (selected === "7d") {
+      newCollections = collection.filter((e) => {
+        if (e.chain == 4160) {
+          return now - e.createdAt.seconds <= secondInDay * 7;
+        } else {
+          return now - e.createdAt <= secondInDay * 7;
+        }
+      });
+    } else if (selected === "30d") {
+      newCollections = collection.filter((e) => {
+        if (e.chain == 4160) {
+          return now - e.createdAt.seconds <= secondInDay * 30;
+        } else {
+          return now - e.createdAt <= secondInDay * 30;
+        }
+      });
+    } else {
+      newCollections = collection;
+    }
+
+    handleSetState({ filteredCollection: newCollections });
+  }, [selected]);
+
   const handleLeftClick = () => {
     if (activePage > 3) {
       handleSetState({
@@ -261,12 +300,20 @@ const Collections = ({ len }) => {
             <div className={classes.subTitle}>View listed Collections ({numNfts})</div>
             <div className={classes.searchAndNavWrapper}>
               <div className={classes.search}>
-                <Search />
+                <SearchBar onSearch={searchHandler} />
               </div>
               <ChainDropdown onChainFilter={chainChange} />
               <PriceDropdown onPriceFilter={sortPrice} />
             </div>
             <div className={classes.searchAndFilter}>
+              <div
+                className={`${classes.btn} && ${selected === "all" ? classes.active : ""}`}
+                onClick={() => {
+                  handleSetState({ selected: "all" });
+                }}
+              >
+                All time
+              </div>
               <div
                 className={`${classes.btn} && ${selected === "24h" ? classes.active : ""}`}
                 onClick={() => {

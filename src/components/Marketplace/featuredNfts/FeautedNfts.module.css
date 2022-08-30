@@ -13,7 +13,7 @@
 .wrapper {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 2em 0;
+  padding: 2em 1em;
 }
 .heading {
   height: 7em;

@@ -37,7 +37,7 @@ const TableRow = (data) => {
       });
     })();
   }, []);
-  const icons = [saleIcon, transferIcon, mintIcon];
+
   const getDate = () => {
     let newDate = data.date.seconds;
     if (!newDate) {
@@ -52,6 +52,7 @@ const TableRow = (data) => {
     else if (diff < 356) return parseInt(diff / 30) + " months ago";
     else return diff / 30 / 12 + " years ago";
   };
+  const icons = [saleIcon, transferIcon, mintIcon];
 
   const icon = () => {
     let icon = "";
@@ -101,6 +102,7 @@ const TableRow = (data) => {
   }
 
   useOutsideAlerter(wrapperRef);
+
   return (
     <>
       {showTransaction ? (

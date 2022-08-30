@@ -12,7 +12,6 @@ import SearchBar from "../../components/Marketplace/Search-bar/searchBar.compone
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import PriceDropdown from "../../components/Marketplace/Price-dropdown/priceDropdown";
 import { GenContext } from "../../gen-state/gen.context";
-import Search from "../../components/Search/Search";
 
 const SingleNftCollection = ({ len }) => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, chainId } = useContext(GenContext);
@@ -142,28 +141,30 @@ const SingleNftCollection = ({ len }) => {
   // sort by price function for different blockchains
   const sortPrice = (filterProp) => {
     let sorted = [];
+    const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
+
     if (filterProp === "high") {
-      sorted = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
+      sorted = collection?.sort((a, b) => Number(a.price) - Number(b.price));
     } else if (filterProp == "low") {
-      sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+      sorted = collection?.sort((a, b) => Number(b.price) - Number(a.price));
       // } else if (filterProp === "txVolume") {
-      //   sorted = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+      //   sorted = collection?.sort((a, b) => Number(b.price) - Number(a.price));
     } else if (filterProp === "newest") {
       if (chainId === 4160) {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+        sorted = collection?.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
       } else {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+        sorted = collection?.sort((a, b) => a?.createdAt - b?.createdAt);
       }
     } else if (filterProp === "oldest") {
       if (chainId === 4160) {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
+        sorted = collection?.sort((a, b) => a?.createdAt["seconds"] - b?.createdAt["seconds"]);
       } else {
-        sorted = filteredCollection.sort((a, b) => a?.createdAt - b?.createdAt);
+        sorted = collection?.sort((a, b) => a?.createdAt - b?.createdAt);
       }
     } else if (filterProp === "descAlphabet") {
-      sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+      sorted = collection?.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
     } else if (filterProp === "ascAlphabet") {
-      sorted = filteredCollection.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())).reverse();
+      sorted = collection?.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())).reverse();
     }
     handleSetState({ filteredCollection: sorted });
   };
@@ -199,7 +200,6 @@ const SingleNftCollection = ({ len }) => {
 
   const handleLeftClick = () => {
     if (activePage > 3) {
-      console.log(">>>", page1, page2, page3, activePage);
       handleSetState({
         page1: page1 - 1,
         page2: page2 - 1,
@@ -249,7 +249,7 @@ const SingleNftCollection = ({ len }) => {
             <div className={classes.subTitle}>View listed 1 of 1s ({Number(numNfts).toLocaleString()} Listed)</div>
             <div className={classes.searchAndNavWrapper}>
               <div className={classes.search}>
-                <Search />
+                <SearchBar onSearch={searchHandler} />
               </div>
               <ChainDropdown onChainFilter={chainChange} />
               <PriceDropdown onPriceFilter={sortPrice} />
@@ -264,7 +264,8 @@ const SingleNftCollection = ({ len }) => {
                 All
               </div>
               <div
-                className={`${classes.btn} && ${selected === "painting" ? classes.active : ""}`}
+                className={`${classes.btn && classes.disabled} && ${selected === "painting" ? classes.active : ""}`}
+                disabled
                 onClick={() => {
                   handleSetState({ selected: "painting" });
                 }}
@@ -272,7 +273,8 @@ const SingleNftCollection = ({ len }) => {
                 Painting
               </div>
               <div
-                className={`${classes.btn} && ${selected === "shorts" ? classes.active : ""}`}
+                className={`${classes.btn && classes.disabled} && ${selected === "shorts" ? classes.active : ""}`}
+                disabled
                 onClick={() => {
                   handleSetState({ selected: "shorts" });
                 }}
@@ -280,7 +282,8 @@ const SingleNftCollection = ({ len }) => {
                 Shorts
               </div>
               <div
-                className={`${classes.btn} && ${selected === "photography" ? classes.active : ""}`}
+                className={`${classes.btn && classes.disabled} && ${selected === "photography" ? classes.active : ""}`}
+                disabled
                 onClick={() => {
                   handleSetState({ selected: "photography" });
                 }}
@@ -288,7 +291,8 @@ const SingleNftCollection = ({ len }) => {
                 Photography
               </div>
               <div
-                className={`${classes.btn} && ${selected === "Illustration" ? classes.active : ""}`}
+                className={`${classes.btn && classes.disabled} && ${selected === "Illustration" ? classes.active : ""}`}
+                disabled
                 onClick={() => {
                   handleSetState({ selected: "Illustration" });
                 }}
@@ -296,7 +300,8 @@ const SingleNftCollection = ({ len }) => {
                 Illustration
               </div>
               <div
-                className={`${classes.btn} && ${selected === "3d" ? classes.active : ""}`}
+                className={`${classes.btn && classes.disabled} && ${selected === "3d" ? classes.active : ""}`}
+                disabled
                 onClick={() => {
                   handleSetState({ selected: "3d" });
                 }}

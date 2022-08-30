@@ -32,7 +32,8 @@
 
 .searchAndNavWrapper {
   margin-bottom: 1em;
-  width: 40em;
+  max-width: 40em;
+  width: 90%;
 }
 
 .searchBottom span {
