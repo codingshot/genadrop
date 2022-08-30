@@ -20,7 +20,12 @@
 
 .header {
   width: 100%;
-  margin-bottom: 2.5em;
+  margin-bottom: 1.5em;
+  position: sticky;
+  top: 1.5rem;
+  background: white;
+  z-index: 1;
+  padding-bottom: 1rem;
 }
 
 .header h1 {

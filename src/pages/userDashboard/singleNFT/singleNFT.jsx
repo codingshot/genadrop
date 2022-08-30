@@ -107,7 +107,7 @@ const ListSingleNFT = (nft) => {
 
   useEffect(() => {
     if (Number(nftChainId) !== 4160) return;
-    let nftDetails = singleAlgoNfts[nftId];
+    const nftDetails = singleAlgoNfts[nftId];
     if (nftDetails) {
       // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
@@ -166,7 +166,7 @@ const ListSingleNFT = (nft) => {
     const pair = supportedChains[nftDetails?.chain]?.id;
     if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0]?.usd;
+        const value = Object.values(res.data)[0]?.usd;
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
