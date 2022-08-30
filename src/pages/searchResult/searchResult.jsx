@@ -119,13 +119,15 @@ const SearchResult = () => {
       ) : (
         <NotFound />
       )}
-      <Pagination
-        handleSetState={handleSetState}
-        paginatePage={paginatePage}
-        pageNumber={pageNumber}
-        perPage={perPage}
-        filteredCollection={filteredCollection}
-      />
+      {filteredCollection?.length > 0 && (
+        <Pagination
+          handleSetState={handleSetState}
+          paginatePage={paginatePage}
+          pageNumber={pageNumber}
+          perPage={perPage}
+          filteredCollection={filteredCollection}
+        />
+      )}
     </div>
   );
 };

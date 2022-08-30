@@ -224,7 +224,15 @@
   justify-items: center;
   gap: 1em;
 }
-
+.overview > a {
+  display: flex;
+  width: 100%;
+}
+.overview > a > div {
+  height: 100%;
+  width: 100%;
+  min-height: 28rem;
+}
 .skeleton {
   display: grid;
   grid-template-columns: repeat(5, 1fr);

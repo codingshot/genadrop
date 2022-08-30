@@ -57,7 +57,6 @@ const Dashboard = () => {
     myCollections: null,
     filteredCollection: null,
     userDetails: null,
-    created: null,
     onSale: null,
     paginatePage: "",
     pageNumber: 0,
@@ -71,7 +70,6 @@ const Dashboard = () => {
     collectedNfts,
     filteredCollection,
     userDetails,
-    created,
     onSale,
     paginatePage,
     pageNumber,
@@ -113,9 +111,9 @@ const Dashboard = () => {
           break;
       }
       const onSaleNFTs = nfts?.filter((nft) => nft.price !== 0 && !nft.sold);
+
       handleSetState({
         createdNfts: [...(nfts || [])],
-        created: [...(created || []), ...(nfts || [])],
         onSale: onSaleNFTs || [],
       });
     })();
@@ -170,7 +168,6 @@ const Dashboard = () => {
       }
       handleSetState({
         myCollections: [...(collection || [])],
-        created: [...(created || []), ...(collection || [])],
       });
     })();
 
@@ -187,7 +184,7 @@ const Dashboard = () => {
       case "collected":
         return collectedNfts;
       case "created":
-        return created;
+        return [...(createdNfts || []), ...(myCollections || [])];
       case "sale":
         return onSale;
       default:
@@ -362,7 +359,12 @@ const Dashboard = () => {
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created</p>
-              <span> {Array.isArray(created) ? created.length : 0}</span>
+              <span>
+                {" "}
+                {Array.isArray(myCollections) || Array.isArray(createdNfts)
+                  ? [...(createdNfts || []), ...(myCollections || [])].length
+                  : 0}
+              </span>
             </div>
           </div>
         </section>
@@ -376,8 +378,8 @@ const Dashboard = () => {
           {filteredCollection?.length > 0 ? (
             activeDetail === "sale" ? (
               <div className={classes.overview}>
-                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((collection) => (
-                  <CollectionsCard key={collection.Id} collection={collection} fromDashboard />
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
+                  <NftCard key={nft.Id} nft={nft} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
@@ -392,7 +394,7 @@ const Dashboard = () => {
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <NftCard key={nft.Id} nft={nft} listed={!nft.sold} fromDashboard />
+                  <NftCard key={nft.Id} nft={nft} fromDashboard />
                 ))}
               </div>
             ) : (
