@@ -112,8 +112,12 @@ const Dashboard = () => {
         default:
           break;
       }
-      console.log(nfts);
-      handleSetState({ createdNfts: [...(nfts || [])], created: [...(created || []), ...(nfts || [])] });
+      const onSaleNFTs = nfts?.map((nft) => nft.price !== 0 && !nft.sold);
+      handleSetState({
+        createdNfts: [...(nfts || [])],
+        created: [...(created || []), ...(nfts || [])],
+        onSale: onSaleNFTs || [],
+      });
     })();
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
@@ -136,7 +140,6 @@ const Dashboard = () => {
         default:
           break;
       }
-      console.log(nfts);
       handleSetState({ collectedNfts: [...(nfts || [])] });
     })();
 
@@ -186,7 +189,7 @@ const Dashboard = () => {
       case "created":
         return created;
       case "sale":
-        return myCollections;
+        return onSale;
       default:
         break;
     }
@@ -345,7 +348,7 @@ const Dashboard = () => {
               className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
             >
               <p>On sale</p>
-              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
+              <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collected" })}
@@ -414,7 +417,7 @@ const Dashboard = () => {
               ))}
             </div>
           )}
-          {filteredCollection?.length && (
+          {filteredCollection?.length > 0 && (
             <Pagination
               handleSetState={handleSetState}
               paginatePage={paginatePage}
