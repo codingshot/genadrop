@@ -46,122 +46,67 @@
 .section {
   display: flex;
   flex-direction: column;
-  margin: 1.5rem 0;
-  border: 2px solid var(--outline-light);
-  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
-  border-radius: 16px;
+  border: 1px solid #e5e8eb;
+  border-radius: 10px;
+  margin-top: 1.5rem;
 }
 
 .v_subsection1 {
   margin-right: 1rem;
-  max-width: 40%;
+  max-width: 20rem;
 }
 
-.imgContainer {
-  border: 2px solid var(--outline-dark2);
-  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
-  border-radius: 24px;
-  padding: 1em;
-}
-
-.imgTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.nftName {
-  font-size: 24px;
-  font-weight: 700;
-}
-
-.avatar {
-  width: 2em;
-  border-radius: 50%;
-  margin-right: 0.5em;
-}
-
-.ownerProfile {
-  display: flex;
-  align-items: center;
-}
-.details {
-  display: flex;
-  align-items: center;
-}
-
-.detailTitle {
-  color: var(--main-color);
-  font-size: 16px;
-}
 .nft {
   width: 100%;
   margin-bottom: 1rem;
-  border-radius: 24px;
-  margin: 1em 0;
 }
 
-.shadowBox {
-  border: 2px solid var(--outline-light);
-  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
-  border-radius: 16px;
-  padding: 1em;
-  margin: 1em 0;
-}
-
-.line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: var(--text-dark-400);
-  margin-top: 0.5em;
-}
-
-.key {
-  font-size: 20px;
-}
-
-.value {
-  font-size: 14px;
-}
-.explorer {
-  margin-left: 0.5em;
-}
-
-.explorer:hover {
-  cursor: pointer;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 0.5em;
-}
-
-.totalKey {
-  font-weight: 600;
+.faq {
+  white-space: pre-line;
+  width: 100%;
+  border: solid 1px #e5e8eb;
+  border-radius: 10px;
 }
 
 .v_subsection2 {
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 100%;
 }
 
-.priceTitle {
-  font-size: 24px;
-  padding-left: 0.5em;
-  color: var(--text-dark-350);
+.feature {
+  margin: 1rem 0;
+  border: solid 1px #e5e8eb;
+  border-radius: 10px;
 }
 
-.left {
+.mainDetails {
+  padding: 0.8rem 0.5rem;
+  border-bottom: 1px solid #e5e8eb;
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  background-color: #f3f4f7;
+  border-radius: 10px 10px 0 0;
+}
+
+.collectionHeader {
+  display: flex;
+  flex-direction: column;
+}
+
+.collectionName {
+  color: #009987;
+  font-size: 0.5rem;
 }
 
 .nftId {
   font-size: 1.5rem;
   font-weight: bold;
+}
+
+.icons {
+  margin-left: auto;
+  order: 2;
 }
 
 .icon {
@@ -193,19 +138,10 @@
 .btns {
   padding-left: 1rem;
 }
-.priceSection {
+.priceSection .title {
   margin: 0.1rem 0;
   font-size: 13px;
   color: #707a83;
-}
-
-.sectionHistory {
-  height: 28em;
-
-  margin: 1.5rem 0;
-  border: 2px solid var(--outline-light);
-  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
-  border-radius: 16px;
 }
 
 .price {
@@ -220,7 +156,7 @@
 
 .tokenValue {
   font-weight: bolder;
-  font-size: 48px;
+  font-size: 25px;
   margin-right: 0.3rem;
 }
 
@@ -228,20 +164,21 @@
   /* -ms-transform: translateY(-50%); */
   transform: translateY(20%);
   top: 50%;
-  font-size: 24px;
-  color: var(--text-dark-450);
+  font-size: 15px;
+  color: #707a83;
   /* font-weight: 30px; */
 }
 
 .buy,
 .bid,
 .sold {
+  flex-direction: row;
+  margin: 1rem 0.5rem 1rem 0;
   color: white;
-  padding: 0.8rem;
-  border-radius: 35px;
+  padding: 0 1rem;
+  height: 35px;
+  border-radius: 5px;
   font-weight: bold;
-  width: 8em;
-  font-size: 24px;
 }
 
 .buy {
@@ -258,6 +195,12 @@
   cursor: var(--cursor-hover);
 }
 
+.buy img,
+.bid img {
+  width: 14px;
+  margin-right: 3px;
+}
+
 .buy:hover,
 .bid:hover {
   cursor: var(--cursor-hover);
@@ -267,7 +210,7 @@
 
 .attributesContainer {
   display: grid;
-  grid-gap: 0.5em;
+  grid-gap: 5px 5px;
   grid-template-columns: auto auto;
 }
 
@@ -279,13 +222,14 @@
   border-radius: 10px;
   padding: 1rem;
   color: var(--text-heading);
-  width: 100%;
+  width: 8.5rem;
 }
+
 .iconImg {
   width: 30px;
 }
 
-.attribute {
+.attribute .title {
   font-size: 14px;
   margin-bottom: 0.313rem;
   color: var(--text-dark-200);
@@ -300,40 +244,12 @@
 .heading {
   padding: 0.5rem;
   border-bottom: 1px solid #e5e8eb;
-  background-color: #f5f6f7;
-  display: flex;
-  align-items: center;
-  border-radius: 10px 10px 0 0;
-}
-
-.heading img {
-  margin-right: 0.5em;
-}
-
-.data {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2em;
-}
-
-.txHistory {
-  width: 50%;
-  height: 100%;
-}
-
-.sectioncode {
-  width: 50%;
-  margin: 1.5rem 0;
-  border-radius: 16px;
-  overflow: hidden;
-  overflow-x: hidden;
+  background-color: #f3f4f7;
 }
 
 .code {
-  height: 35em;
-  overflow-y: scroll;
-  background-color: #282a36;
+  max-height: 30em;
+  overflow: scroll;
 }
 
 .code * {
@@ -341,7 +257,9 @@
 }
 
 .tableContainer {
-  height: fit-content;
+  max-height: 20em;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 .collectionItems {
   align-items: center;
@@ -385,42 +303,6 @@
 @media screen and (max-width: 1000px) {
   .container {
     max-width: 768px;
-  }
-  .nftName {
-    font-size: 15px;
-  }
-  .key {
-    font-size: 15px;
-  }
-  .sectionHistory {
-    height: fit-content;
-  }
-  .data {
-    flex-direction: column;
-  }
-  .txHistory,
-  .sectioncode {
-    width: 100%;
-  }
-
-  .code {
-    height: fit-content;
-    max-height: 25em;
-  }
-
-  .tokenValue {
-    font-size: 25px;
-  }
-  .usdValue {
-    font-size: 15px;
-  }
-
-  .sold,
-  .buy {
-    font-size: 15px;
-  }
-  .v_subsection2 {
-    width: 100%;
   }
 }
 
