@@ -7,15 +7,16 @@ import Chains from "../../components/Marketplace/Chains/Chains";
 // import Creators from "../../components/Marketplace/Creators/Creators";
 import NewListing from "../../components/Marketplace/New-Listing/NewListing";
 // import HotAuctions from "../../components/Marketplace/Hot-Auctions/HotAuctions";
+import FeautedNfts from "../../components/Marketplace/featuredNfts/FeautedNfts";
 // import Subscribe from "../../components/Marketplace/Subscribe/Subscribe";
+import MarketplaceNFTs from "../../components/Marketplace/MarketplaceNFTs/marketplaceNFTs";
 
 const Marketplace = () => (
   <div className={classes.container}>
     <Banner />
-    <Chains />
-    <NewListing />
-    <Collections />
-    <SingleNft />
+    <FeautedNfts />
+    <MarketplaceNFTs />
+
     {/* <Creators /> */}
     {/* <HotAuctions /> */}
     {/* <Subscribe /> */}

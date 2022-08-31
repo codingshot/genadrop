@@ -10,24 +10,34 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
   const [state, setState] = useState({
     toggleAttribute: true,
     toggleLayer: -1,
+    lowestPrice: "0",
+    highestPrice: "0",
     filter: {
+      priceRange: { min: 0, max: 0 },
       onlyListed: true,
       attributes: [],
+      status: "all",
+      sort: "alphaDescending",
     },
   });
 
-  const { toggleAttribute, toggleLayer, filter } = state;
+  const { lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const countOccurrences = (arr, val) => arr?.reduce((a, v) => (v === val ? a + 1 : a), 0);
-  const capitalize = (arr) => arr?.charAt(0)?.toUpperCase() + arr?.slice(1); // Capitalize first letter of the word
+  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const capitalize = (arr) => arr.charAt(0).toUpperCase() + arr.slice(1); // Capitalize first letter of the word
   const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
 
-  const handleStatus = () => {
-    handleSetState({ filter: { ...filter, onlyListed: !filter.onlyListed } });
+  const handleApplyPriceFilter = () => {
+    handleSetState({
+      filter: {
+        ...filter,
+        priceRange: { min: lowestPrice, max: highestPrice },
+      },
+    });
   };
 
   const handleAddToFilterAttribute = (val) => {
@@ -68,6 +78,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
       const newAttributes = filter.attributes.filter((attr) => JSON.stringify(attr) !== strVal);
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     }
+
+    console.log("Filter: ", filter);
   }, [filterToDelete]);
 
   return (
@@ -82,18 +94,151 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
             <img className={classes.leftArrow} src={arrowIconLeft} alt="" />
           </div>
           <div className={classes.sideOverflowWrapper}>
+            <Dropdown title="Price filter">
+              <div className={classes.priceFilter}>
+                <div className={classes.filterInput}>
+                  <div>
+                    <div className={classes.label}>Min</div>
+                    <input
+                      value={lowestPrice}
+                      onChange={(event) => handleSetState({ lowestPrice: event.target.value })}
+                      type="number"
+                    />
+                  </div>
+                  <div>
+                    <div className={classes.label}>Max</div>
+
+                    <input
+                      value={highestPrice}
+                      onChange={(event) => handleSetState({ highestPrice: event.target.value })}
+                      type="number"
+                    />
+                  </div>
+                </div>
+                <button onClick={handleApplyPriceFilter}>Apply</button>
+              </div>
+            </Dropdown>
             <Dropdown title="Status">
               <div className={classes.statusFilter}>
-                <span>Show only listed item</span>
-                <div
+                {/* <div
                   onClick={handleStatus}
                   className={`${classes.toggleButton} ${filter.onlyListed && classes.active}`}
                 >
                   <div className={classes.toggle} />
+                </div> */}
+                <div className={classes.radioGroup}>
+                  <div className={classes.radio}>
+                    <input
+                      type="radio"
+                      name="status"
+                      id=""
+                      value={"all"}
+                      defaultChecked
+                      onClick={() => handleSetState({ filter: { ...filter, status: "all" } })}
+                    />
+                    All
+                  </div>
+                  <div className={classes.radio}>
+                    <input
+                      type="radio"
+                      name="status"
+                      id=""
+                      value={"listed"}
+                      onClick={() => handleSetState({ filter: { ...filter, status: "listed" } })}
+                    />
+                    Listed
+                  </div>
+                  <div className={classes.radio}>
+                    <input
+                      type="radio"
+                      name="status"
+                      id=""
+                      value={"notListed"}
+                      onClick={() => handleSetState({ filter: { ...filter, status: "notListed" } })}
+                    />
+                    Not Listed
+                  </div>
+                  <div className={`${classes.radio && classes.disabled}`}>
+                    <input
+                      type="radio"
+                      name="status"
+                      id=""
+                      disabled
+                      value={"onAuction"}
+                      onClick={() => handleSetState({ filter: { ...filter, status: "onAuction" } })}
+                    />
+                    On Auction
+                  </div>
                 </div>
               </div>
             </Dropdown>
-            <Dropdown title="Attribute">
+
+            <Dropdown title="Sort by">
+              <div className={classes.statusFilter}>
+                <div className={classes.radioGroup}>
+                  <div className={classes.radio}>
+                    <input
+                      type="radio"
+                      name="sort"
+                      id=""
+                      value={"alphaAscending"}
+                      defaultChecked
+                      onClick={() => handleSetState({ filter: { ...filter, sort: "alphaAscending" } })}
+                    />
+                    A-Z
+                  </div>
+                  <div className={classes.radio}>
+                    <input
+                      type="radio"
+                      name="sort"
+                      id=""
+                      value={"alphaDescending"}
+                      onClick={() => handleSetState({ filter: { ...filter, sort: "alphaDescending" } })}
+                    />
+                    Z-A
+                  </div>
+                  <div className={`${classes.radio && classes.disabled}`}>
+                    <input type="radio" name="sort" id="" value={"newest"} disabled={true} />
+                    Newest
+                  </div>
+                  <div className={`${classes.radio && classes.disabled}`}>
+                    <input
+                      type="radio"
+                      name="sort"
+                      id=""
+                      value={"oldest"}
+                      disabled={true}
+                      onClick={() => handleSetState({ filter: { ...filter, sort: "oldest" } })}
+                    />
+                    Oldest
+                  </div>
+                  <div className={`${classes.radio && classes.disabled}`}>
+                    <input
+                      type="radio"
+                      name="sort"
+                      id=""
+                      value={"highestPrice"}
+                      disabled={true}
+                      onClick={() => handleSetState({ filter: { ...filter, sort: "highestPrice" } })}
+                    />
+                    Highest Price
+                  </div>
+                  <div className={`${classes.radio && classes.disabled}`}>
+                    <input
+                      type="radio"
+                      name="sort"
+                      id=""
+                      value={"lowestPrice"}
+                      disabled={true}
+                      onClick={() => handleSetState({ filter: { ...filter, sort: "lowestPrice" } })}
+                    />
+                    Lowest Price
+                  </div>
+                </div>
+              </div>
+            </Dropdown>
+
+            <Dropdown title="Attribute" logo>
               <div className={classes.attributeFilter}>
                 <div className={`${classes.attribute} ${toggleAttribute && classes.active}`}>
                   {attributes &&
@@ -132,17 +277,17 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
                                   trait_type: attr.trait_type,
                                   value: val,
                                   rarity: attr.rarity[idx],
-                                })
-                                  ? "+"
-                                  : "-"}
+                                }) ? (
+                                  <input type="checkbox" name="" checked id="" />
+                                ) : (
+                                  <input type="checkbox" name="" id="" />
+                                )}
                               </span>
                               {/* percentage of each value in an attribute */}
                               <div className={classes.valuesOfAttr}>
                                 <span>{capitalize(val)}</span>
                                 <span>
-                                  <span style={{ marginRight: "3px" }}>{countOccurrences(attr.value, val)}</span>(
-                                  {toPercent(countOccurrences(attr.value, val), attr.value.length)}
-                                  %)
+                                  <span style={{ marginRight: "3px" }}>{countOccurrences(attr.value, val)}</span>
                                 </span>
                               </div>
                             </div>

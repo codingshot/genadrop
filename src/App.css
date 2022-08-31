@@ -12,24 +12,35 @@
   --main-color: #0d99ff;
   --main-hovered: #0082e0;
   --main-light: #62bdff;
+  --main-light2: #0d99ff;
   --main-lighter: #dbf0ff;
   --main-lightest: #f3faff;
   --main-disable: #ccecff;
 
   --text-heading: #0f1d40;
   --text-sub-heading: #525c76;
+  --text-banner: #939599;
   --text-light: #6c757d;
+  --text-label: #959cab;
   --text-placeholder: #b2b7c2;
   --text-placeholder-light: #d3d6de;
 
   --outline: #e5e8eb;
   --card-outline: #c4c4c4;
+  --card-outline2: #d8dbea;
+  --outline-light: #eeeff2;
   --outline-dark: #a4a9b6;
-
+  --outline-dark2: #cacdd5;
   --icon-color: #4b4b5a;
 
   --card-bg: #626277;
+  --tab-bg: #f7f9fd;
+  --tab-bg-2: #cacdd5;
   --card-bg-light: #737387;
+  --card-bg-light2: #1c1b1c0f;
+  --explore-bg: #c5fffe;
+  --detail-bg: #f4fafc;
+  --header-bg: #f5f6f7;
   --card-icon-color: #515164;
   --card-shade: #646a89;
   --card-preview: #646a89;
@@ -41,6 +52,7 @@
   --card-light: #eff3f9;
   --card-lighter: #fcfdff;
   --btn-close: #eef5f9;
+  --btn-bg: #aadbff66;
 
   --success-100: #ebfcd5;
   --success-200: #d4f9ac;
@@ -75,7 +87,9 @@
   --text-dark-100: #747c90;
   --text-dark-200: #656e85;
   --text-dark-300: #5c657d;
+  --text-dark-350: #adb5bd;
   --text-dark-400: #525c76;
+  --text-dark-450: #8c93a3;
   --text-dark-500: #49536e;
   --text-dark-600: #3a4662;
   --text-dark-700: #2c3857;
@@ -173,4 +187,72 @@ button {
   border: none;
   outline: none;
   background: transparent;
+}
+
+/* input placeholder */
+::-webkit-input-placeholder {
+  /* WebKit, Blink, Edge */
+  color: var(--text-banner);
+}
+:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: var(--text-banner);
+  opacity: 1;
+}
+::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: var(--text-banner);
+  opacity: 1;
+}
+:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: var(--text-banner);
+}
+::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: var(--text-banner);
+}
+
+::placeholder {
+  /* Most modern browsers support this now. */
+  color: var(--text-banner);
+}
+
+/* hide input decor */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Radio Buttons */
+input[type="radio"] {
+  /* remove standard background appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* create custom radiobutton appearance */
+
+  width: 20px;
+  height: 20px;
+  padding: 2px;
+  /* background-color only for content */
+  background-clip: content-box;
+  border: 2px solid #bbbbbb;
+
+  border-radius: 50%;
+}
+input[type="radio"]:checked {
+  background-color: var(--main-color);
+}
+
+/* Custom Checkbox */
+input[type="checkbox"] {
+  transform: scale(1.1);
 }
