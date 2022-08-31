@@ -1,0 +1,96 @@
+.priceDropdown {
+  z-index: 1 !important;
+  /* color: var(--main-color); */
+}
+
+.priceDropdown {
+  position: relative;
+  width: 12em;
+  /* background: var(--default); */
+  z-index: 10;
+}
+
+.priceDropdown span {
+  font-size: 0.85rem;
+}
+
+.selectedPrice {
+  cursor: var(--cursor-pointer);
+  background: var(--default);
+  border: 1px solid var(--main-color);
+  padding: 0.5em 1em;
+  z-index: 99;
+  border-radius: 2.5em;
+  transition: all 300ms;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-transform: capitalize;
+  gap: 0.5em;
+}
+
+.selectedPrice span {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.selectedPrice:hover {
+  background: var(--btn-close);
+}
+
+.selectedPrice {
+  color: var(--main-color);
+}
+
+.priceDropdown .dropdown {
+  width: 100%;
+  left: 0;
+  position: absolute;
+  background: var(--default);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 250ms;
+  display: flex;
+  flex-direction: column;
+  cursor: var(--cursor-pointer);
+  transform: translateY(-0.5em);
+  text-transform: capitalize;
+}
+
+.priceDropdown .dropdown.active {
+  visibility: visible;
+  opacity: 1;
+  margin-top: 0.25em;
+  transform: translateY(0em);
+}
+
+.priceDropdown .dropdown > div {
+  padding: 0.5em 1em;
+  border: 1px solid var(--outline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+}
+
+.priceDropdown .priceInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  font-size: 0.55rem;
+}
+
+.priceDropdown .dropdown > div:hover {
+  background: var(--btn-close);
+}
+
+.dropdownIcon {
+  transition: all 250ms;
+}
+
+.dropdownIcon.active {
+  transform: rotate(180deg);
+}

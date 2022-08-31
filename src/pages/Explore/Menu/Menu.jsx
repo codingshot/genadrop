@@ -8,6 +8,7 @@ import supportedChains from "../../../utils/supportedChains";
 const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
   const [chinPrice, setChainPrice] = useState(0);
   useEffect(() => {
+    console.log("COL", NFTCollection);
     if (chain) {
       axios
         .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`)
@@ -22,7 +23,15 @@ const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
     <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
       {NFTCollection
         ? NFTCollection.map((nft, idx) => (
-            <NftCard chinPrice={chinPrice} key={nft.Id} nft={nft} listed index={idx} loadedChain={loadedChain} />
+            <NftCard
+              chinPrice={chinPrice}
+              key={nft.Id}
+              nft={nft}
+              listed
+              index={idx}
+              loadedChain={loadedChain}
+              collectionName={nft.collection_name}
+            />
           ))
         : [...new Array(8)]
             .map((_, idx) => idx)

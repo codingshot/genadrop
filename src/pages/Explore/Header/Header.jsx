@@ -9,20 +9,27 @@ import Copy from "../../../components/copy/copy";
 import supportedChains from "../../../utils/supportedChains";
 import { readUserProfile } from "../../../utils/firebase";
 
+import twitter from "../../../assets/icon-twitter-blue.svg";
+import discord from "../../../assets/icon-discord-blue.svg";
+import instagram from "../../../assets/icon-instagram-blue.svg";
+import youtube from "../../../assets/icon-youtube-green.svg";
+import { breakAddress } from "../../../components/wallet/wallet-script";
+
 const Header = ({ collection, getHeight, loadedChain }) => {
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
-  const [explorerLink, setExplorerLink] = useState("");
-  const [username, setUsername] = useState("");
   const [state, setState] = useState({
     dollarPrice: 0,
+    ownerDetails: null,
+    username: "",
+    explorerLink: "",
   });
-  const { dollarPrice } = state;
+  const { dollarPrice, ownerDetails, username, explorerLink } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const { name, owner, price, imageUrl, numberOfNfts, description, nfts } = collection;
+  const { name, owner, price, imageUrl, numberOfNfts, description, chain, nfts } = collection;
   const getUsdValue = () => {
     if (loadedChain) {
       axios
@@ -35,20 +42,21 @@ const Header = ({ collection, getHeight, loadedChain }) => {
   };
   const viewOnExplorer = () => {
     if (loadedChain && loadedChain !== 4160) {
-      return setExplorerLink(`${supportedChains[loadedChain]?.explorer}/${owner}`);
+      return handleSetState({ explorerLink: `${supportedChains[loadedChain]?.explorer}/${owner}` });
     }
     if (process.env.REACT_APP_ENV_STAGING === "false") {
-      return setExplorerLink(`https://algoexplorer.io/address/${owner}`);
+      return handleSetState({ explorerLink: `https://algoexplorer.io/address/${owner}` });
     }
-    return setExplorerLink(`https://testnet.algoexplorer.io/address/${owner}`);
+    return handleSetState({ explorerLink: `https://testnet.algoexplorer.io/address/${owner}` });
   };
 
   useEffect(() => {
     if (owner)
       readUserProfile(owner).then((data) => {
-        if (data) setUsername(data.username);
+        if (data) handleSetState({ ownerDetails: data });
       });
   }, [owner]);
+
   useEffect(() => {
     getUsdValue();
     viewOnExplorer();
@@ -68,77 +76,103 @@ const Header = ({ collection, getHeight, loadedChain }) => {
 
   return (
     <header ref={headerRef} className={classes.container}>
-      <div className={classes.wrapper}>
-        {imageUrl ? (
-          <img className={classes.imageContainer} src={imageUrl} alt="asset" />
-        ) : (
-          <div className={classes.imageLoadingContainer}>
-            <Skeleton count={1} height={200} />
-          </div>
-        )}
-        <div className={classes.collectionName}>{name}</div>
-        <div className={classes.creator}>
-          {owner ? (
-            <div className={classes.ownerDetails}>
-              <div>
-                Created by
-                <span className={classes.address}>
-                  <Copy
-                    message={owner}
-                    placeholder={
-                      username ||
-                      (owner && `${owner.substring(0, 5)}...${owner.substring(owner.length - 4, owner.length)}`)
-                    }
-                  />
-                </span>
-              </div>
-              <a className={classes["link-explorer"]} rel="noopener noreferrer" target="_blank" href={explorerLink}>
-                View on block explorer
-              </a>
-            </div>
+      <div className={classes.banner}>
+        <div className={classes.wrapper}>
+          {imageUrl ? (
+            <img
+              className={classes.imageContainer}
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null; // prevents looping
+                currentTarget.src = imageUrl;
+              }}
+              src={imageUrl}
+              alt="asset"
+            />
           ) : (
-            <div className={classes.skeleton}>
-              <Skeleton count={1} height={16} />
+            <div className={classes.imageLoadingContainer}>
+              <Skeleton count={1} height={200} />
             </div>
           )}
-        </div>
-        <div className={classes.description}>
-          {description || (
-            <div className={classes.skeleton}>
-              <Skeleton count={2} height={20} />
+          <div className={classes.collectionDetails}>
+            <div className={classes.sup}>
+              <div className={classes.left}>
+                {name} <img src={supportedChains[chain]?.icon} alt="" />
+              </div>
+              <div className={classes.right}>
+                {ownerDetails?.twitter ? (
+                  <a href={`https://twitter.com/${ownerDetails.twitter}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <img src={twitter} alt="" className={classes.socialIcon} />{" "}
+                  </a>
+                ) : (
+                  ""
+                )}
+                {ownerDetails?.youtube ? (
+                  <a href={`https://youtube.com/${ownerDetails.youtube}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <img src={youtube} alt="" className={classes.socialIcon} />{" "}
+                  </a>
+                ) : (
+                  ""
+                )}
+                {ownerDetails?.instagram ? (
+                  <a href={`https://www.instagram.com/${ownerDetails.instagram}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <img src={instagram} alt="" className={classes.socialIcon} />{" "}
+                  </a>
+                ) : (
+                  ""
+                )}
+                {ownerDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
+              </div>
             </div>
-          )}
-        </div>
-      </div>
-      <div className={classes.details}>
-        <div className={classes.detailContentWrapper}>
-          <div className={classes.floorPrice}>
-            <div className={classes.floor}>FLOOR PRICE</div>
-
-            <div className={classes.price}>
-              <span style={{ marginRight: 3 }}>{price}</span>
-              <span className={classes.chain}>
-                {supportedChains[loadedChain]?.sybmol} ({dollarPrice.toFixed(2)} USD)
+            <div className={classes.sub}>
+              <span className={classes.label}>Created By</span>
+              <span className={classes.address}>
+                {ownerDetails?.username ? ownerDetails?.username : breakAddress(owner)}
               </span>
             </div>
           </div>
-          <img src={stackIcon} alt="" />
         </div>
+      </div>
 
-        <div className={classes.detailContentWrapper}>
-          <div className={classes.floorPrice}>
-            <div className={classes.floor}>TOTAL VOLUME TRADED</div>
-            <div className={classes.price}>0</div>
-          </div>
-          <img src={tradeIcon} alt="" />
-        </div>
+      <div className={classes.wrapper}>
+        <div className={classes.description}>{description}</div>
+      </div>
+      <div className={classes.wrapper}>
+        <div className={classes.details}>
+          <div className={classes.detailContentWrapper}>
+            <img src={stackIcon} alt="" />
 
-        <div className={classes.detailContentWrapper}>
-          <div className={classes.floorPrice}>
-            <div className={classes.floor}>TOTAL LIST COUNT</div>
-            <div className={classes.price}>{numberOfNfts}</div>
+            <div className={classes.floorPrice}>
+              <div className={classes.floor}>FLOOR PRICE</div>
+
+              <div className={classes.price}>
+                <span style={{ marginRight: 3 }}>{price}</span>
+                <span className={classes.chain}>
+                  {supportedChains[loadedChain]?.sybmol} ({dollarPrice.toFixed(2)} USD)
+                </span>
+              </div>
+            </div>
           </div>
-          <img src={listIcon} alt="" />
+
+          <div className={classes.detailContentWrapper}>
+            <img src={tradeIcon} alt="" />
+
+            <div className={classes.floorPrice}>
+              <div className={classes.floor}>TOTAL VOLUME TRADED</div>
+              <div className={classes.price}>0</div>
+            </div>
+          </div>
+
+          <div className={classes.detailContentWrapper}>
+            <img src={listIcon} alt="" />
+
+            <div className={classes.floorPrice}>
+              <div className={classes.floor}>TOTAL LIST COUNT</div>
+              <div className={classes.price}>{numberOfNfts}</div>
+            </div>
+          </div>
         </div>
       </div>
     </header>

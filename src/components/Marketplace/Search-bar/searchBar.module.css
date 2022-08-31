@@ -8,6 +8,7 @@
   align-items: center;
   border: 1px solid var(--outline);
   outline: 1px solid transparent;
+  background-color: var(--default);
 }
 
 .searchInput:focus-within {

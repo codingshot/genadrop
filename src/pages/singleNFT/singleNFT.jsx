@@ -12,11 +12,16 @@ import Graph from "../../components/Nft-details/graph/graph";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
 import copiedIcon from "../../assets/copied.svg";
 import copyIcon from "../../assets/copy-solid.svg";
-import walletIcon from "../../assets/wallet-icon.png";
+import shareIcon from "../../assets/icon-share.svg";
 import twitterIcon from "../../assets/twitter.svg";
+import avatar from "../../assets/avatar.png";
 import facebookIcon from "../../assets/facebook.svg";
+import exportIcon from "../../assets/icon-export.svg";
 import whatsappIcon from "../../assets/whatsapp.svg";
 import descriptionIcon from "../../assets/description-icon.png";
+import priceIcon from "../../assets/icon-price-history.svg";
+import transactionIcon from "../../assets/icon-transaction.svg";
+import codeTagIcon from "../../assets/icon-code-tags.svg";
 import detailsIcon from "../../assets/details.png";
 import Search from "../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../utils/firebase";
@@ -25,6 +30,10 @@ import { setOverlay, setNotification } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 import SimilarNFTs from "../../components/similarNFTs/similarNFTs";
 import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
+import { breakAddress, timeConverter } from "../../components/wallet/wallet-script";
+import { readUserProfile } from "../../utils/firebase";
+import ExploreTransactionHistory from "../Explore/exploreTransactionHistory/exploreTransactionHistory";
+import { chainIdToParams } from "../../utils/chainConnect";
 
 const SingleNFT = () => {
   const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
@@ -44,6 +53,10 @@ const SingleNFT = () => {
     chainIcon: "",
     isCopied: false,
     chainSymbol: "",
+    ownerName: "",
+    mintedDetails: "",
+    explorer:
+      process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
   });
   const {
     dropdown,
@@ -55,6 +68,9 @@ const SingleNFT = () => {
     showSocial,
     isCopied,
     transactionHistory,
+    ownerName,
+    mintedDetails,
+    explorer,
   } = state;
 
   const buyProps = {
@@ -66,20 +82,6 @@ const SingleNFT = () => {
     history,
     chainId,
   };
-
-  const Explorers = [
-    { algo: [{ testnet: "https://testnet.algoexplorer.io/" }, { mainnet: "https://algoexplorer.io/tx/" }] },
-    { matic: [{ testnet: "https://mumbai.polygonscan.com/tx/" }, { mainnet: "https://polygonscan.com/tx/" }] },
-    {
-      near: [{ testnet: "https://testnet.aurorascan.dev/tx/" }, { mainnet: "https://explorer.mainnet.aurora.dev/tx/" }],
-    },
-    {
-      celo: [
-        { mainnet: "https://alfajores-blockscout.celo-testnet.org/tx/" },
-        { testnet: "https://explorer.celo.org/tx/" },
-      ],
-    },
-  ];
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -123,43 +125,57 @@ const SingleNFT = () => {
           nftDetails,
           isLoading: false,
           transactionHistory: tHistory.reverse(),
+          mintedDetails: tHistory.find((e) => e.type == "Minting"),
         });
         dispatch(setOverlay(false));
         document.documentElement.scrollTop = 0;
+      })();
+
+      (async function getUsername() {
+        const data = await readUserProfile(nftDetails?.owner);
+        handleSetState({ ownerName: data.username });
       })();
     }
   }, [singleAlgoNfts, nftId]);
 
   useEffect(() => {
     dispatch(setOverlay(true));
-    if (supportedChains[Number(nftChainId)]?.chain === "Algorand") return;
+    if (supportedChains[Number(nftChainId)].chain === "Algorand") return;
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
-        if (supportedChains[Number(nftChainId)]?.chain === "Celo") {
+        if (supportedChains[Number(nftChainId)].chain === "Celo") {
           const [celoData, trHistory] = await celoUserData(nftId);
           handleSetState({
             nftDetails: celoData,
             isLoading: false,
             transactionHistory: trHistory,
+            mintedDetails: trHistory.find((e) => e.type == "Minting"),
           });
-        } else if (supportedChains[Number(nftChainId)]?.chain === "Aurora") {
+        } else if (supportedChains[Number(nftChainId)].chain === "Aurora") {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return;
           handleSetState({
             nftDetails: auroraData,
             isLoading: false,
             transactionHistory: trHistory,
+            mintedDetails: trHistory.find((e) => e.type == "Minting"),
           });
-        } else if (supportedChains[Number(nftChainId)]?.chain === "Polygon") {
+        } else if (supportedChains[Number(nftChainId)].chain === "Polygon") {
           const [polygonData, trHistory] = await polygonUserData(nftId);
           if (!polygonData) return history.goBack();
           handleSetState({
             nftDetails: polygonData,
             isLoading: false,
             transactionHistory: trHistory,
+            mintedDetails: trHistory.find((e) => e.type == "Minting"),
           });
         }
+
+        (async function getUsername() {
+          const data = await readUserProfile(nftDetails?.owner);
+          handleSetState({ ownerName: data.username });
+        })();
       } catch (error) {
         console.log({ error });
       }
@@ -169,15 +185,21 @@ const SingleNFT = () => {
   }, [nftId]);
 
   useEffect(() => {
+    if (chainIdToParams[chainId]) {
+      handleSetState({ explorer: chainIdToParams[chainId].blockExplorerUrls });
+    }
+  });
+
+  useEffect(() => {
     const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
-    if (supportedChains[Number(nftChainId)]?.chain !== "Algorand" && pair) {
+    if (supportedChains[Number(nftChainId)].chain !== "Algorand" && pair) {
       let value;
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
         value = Object.values(res.data)[0]?.usd;
         handleSetState({
-          chainIcon: supportedChains[nftDetails?.chain].icon,
-          algoPrice: value || 0,
-          chainSymbol: supportedChains[nftDetails?.chain].symbol,
+          chainIcon: supportedChains[nftDetails.chain].icon,
+          algoPrice: value ? value : 0,
+          chainSymbol: supportedChains[nftDetails.chain].symbol,
         });
       });
     }
@@ -245,186 +267,211 @@ const SingleNFT = () => {
   };
 
   const attributeContent = () => (
-    <div className={classes.attributesContainer}>
-      {nftDetails.properties.map((attribute, idx) => {
-        return attribute.trait_type && attribute.value ? (
-          <div key={idx} className={classes.attribute}>
-            <span className={classes.title}>{attribute.trait_type}</span>
-            <span className={classes.description}>{attribute.value}</span>
-          </div>
-        ) : nftDetails.properties.length === 1 ? (
-          <span key={idx}> No Attributes Available</span>
-        ) : (
-          <></>
-        );
-      })}
-    </div>
+    <>
+      <div className={classes.title}>Attributes</div>
+      <div className={classes.attributesContainer}>
+        {nftDetails.properties.map((attribute, idx) => {
+          return attribute.trait_type && attribute.value ? (
+            <div key={idx} className={classes.attribute}>
+              <span className={classes.title}>{attribute.trait_type}</span>
+              <span className={classes.description}>{attribute.value}</span>
+            </div>
+          ) : nftDetails.properties.length === 1 ? (
+            <span key={idx}> No Attributes Available</span>
+          ) : (
+            <></>
+          );
+        })}
+      </div>
+    </>
   );
-
-  const attributesItem = {
-    icon: descriptionIcon,
-    title: "Attributes",
-    content: attributeContent(),
-  };
-
-  const similar = {
-    icon: "",
-    title: "Similar NFTs",
-    content: <SimilarNFTs data={nftDetails} />,
-  };
 
   return (
     <div className={classes.container}>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
-          <img className={classes.nft} src={nftDetails.image_url} alt="" />
+          <div className={classes.imgContainer}>
+            <div className={classes.imgTop}>
+              <div className={classes.nftName}>{nftDetails.name}</div>
+              <div>
+                <img
+                  src={shareIcon}
+                  onClick={() => handleSetState({ showSocial: true })}
+                  alt=""
+                  className={classes.social}
+                />
+              </div>
+            </div>
+            <img className={classes.nft} src={nftDetails.image_url} alt="" />
 
-          <div className={classes.feature}>
-            <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
+            <div className={classes.details}>
+              <div className={classes.detail}>
+                <div className={classes.detailTitle}>Owned By</div>
+                <div className={classes.ownerProfile}>
+                  <img src={avatar} alt="owners" className={classes.avatar} />
+                  <span className={classes.nftName}>{ownerName ? ownerName : breakAddress(nftDetails.owner)}</span>
+                </div>
+              </div>
+              {/* <div className={classes.detail}>
+                <div className={classes.detailTitle}>Nft Name</div>
+                <div className={classes.nftName}>{nftDetails.name}</div>
+              </div> */}
+            </div>
+          </div>
+          <div className={classes.shadowBox}>
+            <div className={classes.title}>Details</div>
+            <div className={classes.line}>
+              <div className={classes.key}>Mint Address</div>
+              <div className={classes.value}>
+                {breakAddress(nftDetails.owner)}
+                <a href={explorer + "address/" + nftDetails.owner} target="_blank" rel="noopener noreferrer">
+                  <img src={exportIcon} alt="explorer" className={classes.explorer} />
+                </a>
+              </div>
+            </div>
+            <div className={classes.line}>
+              <div className={classes.key}>Minted</div>
+              <div className={classes.value}>{timeConverter(mintedDetails.txDate.seconds)}</div>
+            </div>
+            <div className={classes.line}>
+              <div className={classes.key}>Creator Royalty</div>
+              <div className={classes.value}>7%</div>
+            </div>
+            <div className={classes.line}>
+              <div className={classes.key}>Genadrop Royalty</div>
+              <div className={classes.value}>10%</div>
+            </div>
+            <div className={classes.line}>
+              <div className={classes.totalKey}>Total</div>
+              <div className={classes.value}>17%</div>
+            </div>
           </div>
         </div>
         <div className={classes.v_subsection2}>
-          <div className={classes.feature}>
-            <div className={classes.mainDetails}>
-              <div className={classes.collectionHeader}>
-                <div className={classes.nftId}>{nftDetails.name}</div>
+          <div>
+            <span className={classes.priceTitle}>CURRENT PRICE</span>
+            <div className={classes.left}>
+              <div className={classes.priceSection}>
+                <span className={classes.price}>
+                  <img className={classes.iconImg} src={chainIcon} alt="" />
+                  <p className={classes.tokenValue}>
+                    {parseInt(nftDetails.price).toFixed(2)} {chainSymbol || ""}
+                  </p>
+                  {nftDetails?.price === 0 ||
+                    (nftDetails?.price === null ? (
+                      <></>
+                    ) : (
+                      <>
+                        <span className={classes.usdValue}>
+                          ($
+                          {(nftDetails.price * algoPrice).toFixed(2)})
+                        </span>
+                      </>
+                    ))}
+                </span>
               </div>
-
-              <div className={classes.icons}>
-                <svg
-                  onClick={() => {
-                    handleSetState({ showSocial: true });
-                  }}
-                  className={`${classes.icon}`}
-                  width="18"
-                  height="20"
-                  viewBox="0 0 18 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M15 14.0781C15.8125 14.0781 16.5 14.375 17.0625 14.9688C17.625 15.5312 17.9062 16.2031 17.9062 16.9844C17.9062 17.7969 17.6094 18.5 17.0156 19.0938C16.4531 19.6562 15.7812 19.9375 15 19.9375C14.2188 19.9375 13.5312 19.6562 12.9375 19.0938C12.375 18.5 12.0938 17.7969 12.0938 16.9844C12.0938 16.6719 12.1094 16.4531 12.1406 16.3281L5.0625 12.2031C4.46875 12.7344 3.78125 13 3 13C2.1875 13 1.48438 12.7031 0.890625 12.1094C0.296875 11.5156 0 10.8125 0 10C0 9.1875 0.296875 8.48438 0.890625 7.89062C1.48438 7.29688 2.1875 7 3 7C3.78125 7 4.46875 7.26562 5.0625 7.79688L12.0938 3.71875C12.0312 3.40625 12 3.17188 12 3.01562C12 2.20312 12.2969 1.5 12.8906 0.90625C13.4844 0.3125 14.1875 0.015625 15 0.015625C15.8125 0.015625 16.5156 0.3125 17.1094 0.90625C17.7031 1.5 18 2.20312 18 3.01562C18 3.82812 17.7031 4.53125 17.1094 5.125C16.5156 5.71875 15.8125 6.01562 15 6.01562C14.25 6.01562 13.5625 5.73438 12.9375 5.17188L5.90625 9.29688C5.96875 9.60938 6 9.84375 6 10C6 10.1562 5.96875 10.3906 5.90625 10.7031L13.0312 14.8281C13.5938 14.3281 14.25 14.0781 15 14.0781Z"
-                    fill="#707A83"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className={classes.priceSection}>
-              <span className={classes.title}>Current price</span>
-              <span className={classes.price}>
-                <img className={classes.iconImg} src={chainIcon} alt="" />
-                <p className={classes.tokenValue}>
-                  {nftDetails.price} {chainSymbol || ""}
-                </p>
-                {nftDetails?.price === 0 ||
-                  (nftDetails?.price === null ? (
-                    <></>
+              {nftDetails?.price === 0 || nftDetails.price === null ? (
+                <div className={classes.btns}>
+                  {account === nftDetails.owner ? (
+                    <button
+                      onClick={() => history.push(`/marketplace/1of1/list/${nftDetails.chain}/${nftDetails.Id}`)}
+                      className={classes.buy}
+                    >
+                      List
+                    </button>
+                  ) : (
+                    <button className={classes.sold} disabled={nftDetails.sold}>
+                      Not Listed
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className={classes.btns}>
+                  {nftDetails.sold ? (
+                    <>
+                      <button className={classes.sold} disabled={nftDetails.sold}>
+                        SOLD
+                      </button>
+                    </>
                   ) : (
                     <>
-                      <span className={classes.usdValue}>
-                        ($
-                        {(nftDetails.price * algoPrice).toFixed(2)})
-                      </span>
+                      {supportedChains[nftDetails.chain]?.chain !== "Algorand" ? (
+                        <button
+                          className={classes.buy}
+                          disabled={nftDetails.sold}
+                          onClick={() => buyGraphNft(buyProps)}
+                        >
+                          Buy now
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          className={classes.buy}
+                          disabled={nftDetails.sold}
+                          onClick={() => buyNft(buyProps)}
+                        >
+                          Buy now
+                        </button>
+                      )}
                     </>
-                  ))}
-              </span>
+                  )}
+                </div>
+              )}
             </div>
-            {nftDetails?.price === 0 || nftDetails.price === null ? (
-              <div className={classes.btns}>
-                {account === nftDetails.owner ? (
-                  <button
-                    onClick={() => history.push(`/marketplace/1of1/list/${nftDetails?.chain}/${nftDetails.Id}`)}
-                    className={classes.buy}
-                  >
-                    List
-                  </button>
-                ) : (
-                  <button className={classes.sold} disabled={nftDetails.sold}>
-                    Not Listed!
-                  </button>
-                )}
-              </div>
-            ) : (
-              <div className={classes.btns}>
-                {nftDetails.sold ? (
-                  <>
-                    <button className={classes.sold} disabled={nftDetails.sold}>
-                      SOLD!
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    {supportedChains[nftDetails.chain]?.chain !== "Algorand" ? (
-                      <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
-                        Buy now
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className={classes.buy}
-                        disabled={nftDetails.sold}
-                        onClick={() => buyNft(buyProps)}
-                      >
-                        Buy now
-                      </button>
-                    )}
-                  </>
-                )}
-              </div>
-            )}
           </div>
-          {/* PRICE HISTORY */}
-          {/* <div className={classes.feature}>
-            <DropItem
-              key={2}
-              item={graph}
-              id={2}
-              dropdown={dropdown}
-              handleSetState={handleSetState}
-            />
-          </div> */}
-          <div className={classes.feature}>
-            <DropItem key={3} item={description} id={3} dropdown={dropdown} handleSetState={handleSetState} />
+
+          <div className={classes.shadowBox}>
+            <div className={classes.title}>Description</div>
+            <div className={classes.description}>{nftDetails.description}</div>
           </div>
+
+          <div className={classes.shadowBox}>{attributeContent()}</div>
         </div>
       </div>
-
-      {/* TRANSACTION HISTORY */}
-      <div className={classes.section}>
+      <div className={classes.sectionHistory}>
         <div className={classes.heading}>
-          <h3>Transaction History</h3>
-        </div>
-
-        <div className={classes.history}>
-          <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails?.chain : ""} />
-        </div>
-      </div>
-      <div className={classes.section}>
-        <div className={classes.heading}>
+          <img src={priceIcon} alt="" />
           <h3>Price History</h3>
         </div>
         <div className={classes.tableContainer}>{graph.content}</div>
       </div>
+      {/* TRANSACTION HISTORY */}
+      <div className={classes.history}>
+        {/* <div className={classes.section}>
+          <div className={classes.heading}>
+            <img src={transactionIcon} alt="" />
+            <h3>Transaction History</h3>
+          </div>
 
-      <div className={classes.section}>
-        <div className={classes.heading}>
-          <h3>Meta Data</h3>
-        </div>
-        <div className={classes.code}>
-          <CopyBlock
-            language="json"
-            text={JSON.stringify(nftDetails.properties, null, 2)}
-            showLineNumbers={false}
-            theme={dracula}
-            wrapLines
-            codeBlock
-          />
+          <div className={classes.history}>
+            <Search data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
+          </div>
+        </div> */}
+
+        <div className={classes.data}>
+          <div className={classes.txHistory}>
+            <ExploreTransactionHistory data={transactionHistory} chain={nftDetails?.chain ? nftDetails.chain : ""} />
+          </div>
+          <div className={classes.sectioncode}>
+            <div className={classes.heading}>
+              <img src={codeTagIcon} alt="" />
+              <h3>Meta Data</h3>
+            </div>
+            <div className={classes.code}>
+              <CopyBlock
+                language="json"
+                text={JSON.stringify(nftDetails.properties, null, 2)}
+                showLineNumbers={false}
+                theme={dracula}
+                wrapLines
+                codeBlock
+              />
+            </div>
+          </div>
         </div>
       </div>
-
-      <div className={classes.feature}>
-        <DropItem key={4} item={similar} id={4} dropdown={dropdown} handleSetState={handleSetState} />
-      </div>
+      <div className={classes.title}>Similar NFTs</div>
+      <SimilarNFTs data={nftDetails} />
       {showSocial ? (
         <div ref={shareRef}>
           <div ref={wrapperRef} className={classes.share}>
