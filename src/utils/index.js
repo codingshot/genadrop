@@ -485,7 +485,7 @@ export const getSingleGraphNfts = async (nfts) => {
       }, delay);
     });
   }
-  const responses = await Promise.allSettled(nfts.map((NFT, idx) => fetchGraphNFT(NFT, idx, nfts)));
+  const responses = await Promise.allSettled(nfts?.map((NFT, idx) => fetchGraphNFT(NFT, idx, nfts)));
   const nftArr = [];
   // removing rejected responses
   responses.forEach((element) => {
