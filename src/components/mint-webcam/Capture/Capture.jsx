@@ -138,6 +138,7 @@ const Capture = () => {
   // Picture Handler
   const takePicture = () => {
     const imageSrc = webcamRef.current.takePhoto();
+    console.log(imageSrc);
     handleSetState({ img: imageSrc });
   };
   const downloadImg = () => {

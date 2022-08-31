@@ -1,27 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { ethers } from "ethers";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
-import Copy from "../../components/copy/copy";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
-import NftCard from "../../components/Marketplace/NftCard/NftCard";
-import { GenContext } from "../../gen-state/gen.context";
-import { getUserNftCollections, getUserSingleNfts } from "../../utils";
-import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
 import classes from "./dashboard.module.css";
-import avatar from "../../assets/avatar.png";
-import { ethers } from "ethers";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
-import NotFound from "../../components/not-found/notFound";
-import bg from "../../assets/bg.png"; // remove this when done!
-import twitter from "../../assets/icon-twitter-blue.svg";
-import discord from "../../assets/icon-discord-blue.svg";
-import instagram from "../../assets/icon-instagram-blue.svg";
-import youtube from "../../assets/icon-youtube-green.svg";
+import { GenContext } from "../../gen-state/gen.context";
+// import { setNotification } from "../../gen-state/gen.actions";
+import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
 // import { celoClient, polygonClient } from "../../utils/graphqlClient";
 // import { GET_USER_NFT } from "../../graphql/querries/getCollections";
-// import { setNotification } from "../../gen-state/gen.actions";
 import {
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
@@ -33,7 +20,23 @@ import {
   getPolygonMintedNFTs,
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
+// utils
+import Copy from "../../components/copy/copy";
+import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
+// components
+import NftCard from "../../components/Marketplace/NftCard/NftCard";
+import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
+import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import NotFound from "../../components/not-found/notFound";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import Pagination from "../../components/pagination/Pagination";
+// assets
+import avatar from "../../assets/avatar.png";
+import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
+import { ReactComponent as Twitter } from "../../assets/icon-twitter-blue.svg";
+import { ReactComponent as Discord } from "../../assets/icon-discord-blue.svg";
+import { ReactComponent as Instagram } from "../../assets/icon-instagram-blue.svg";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -48,15 +51,29 @@ const Dashboard = () => {
       name: "a - z",
       date: "newest - oldest",
     },
-    activeDetail: "created",
+    activeDetail: "sale",
     collectedNfts: null,
     createdNfts: null,
     myCollections: null,
     filteredCollection: null,
     userDetails: null,
+    onSale: null,
+    paginatePage: "",
+    pageNumber: 0,
   });
 
-  const { filter, activeDetail, myCollections, createdNfts, collectedNfts, filteredCollection, userDetails } = state;
+  const {
+    filter,
+    activeDetail,
+    myCollections,
+    createdNfts,
+    collectedNfts,
+    filteredCollection,
+    userDetails,
+    onSale,
+    paginatePage,
+    pageNumber,
+  } = state;
 
   const { account, mainnet, chainId } = useContext(GenContext);
 
@@ -76,81 +93,82 @@ const Dashboard = () => {
       address = ethers?.utils?.hexlify(account);
     }
     (async function getUserNFTs() {
+      let nfts;
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          const singleNfts = await fetchUserCreatedNfts(account);
-          const algoNFTs = await getUserSingleNfts({ mainnet, singleNfts });
-          handleSetState({ createdNfts: [...(algoNFTs || [])] });
+          nfts = await fetchUserCreatedNfts(account);
           break;
         case "Celo":
-          const celoNfts = await getCeloMintedNFTs(address);
-          handleSetState({ createdNfts: [...(celoNfts || [])] });
+          nfts = await getCeloMintedNFTs(address);
           break;
         case "Aurora":
-          const aurroraNFTs = await getAuroraMintedNfts(address);
-          handleSetState({ createdNfts: [...(aurroraNFTs || [])] });
+          nfts = await getAuroraMintedNfts(address);
           break;
         case "Polygon":
-          const polygonNFTs = await getPolygonMintedNFTs(address);
-          handleSetState({ createdNfts: [...(polygonNFTs || [])] });
+          nfts = await getPolygonMintedNFTs(address);
           break;
         default:
           break;
       }
+      const onSaleNFTs = nfts?.filter((nft) => nft.price !== 0 && !nft.sold);
+
+      handleSetState({
+        createdNfts: [...(nfts || [])],
+        onSale: onSaleNFTs || [],
+      });
     })();
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
+      let nfts;
+      const collectedNFTs = await fetchUserBoughtNfts(account);
 
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          const collectedNfts = await fetchUserBoughtNfts(account);
-          const algoCollectedNfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNfts });
-          handleSetState({ collectedNfts: [...(algoCollectedNfts || [])] });
+          nfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNFTs });
           break;
         case "Celo":
-          const celoCollectedNfts = await getCeloCollectedNFTs(address);
-          handleSetState({ collectedNfts: [...(celoCollectedNfts || [])] });
+          nfts = await getCeloCollectedNFTs(address);
           break;
         case "Aurora":
-          const auroraCollectedNfts = await getAuroraCollectedNFTs(address);
-          handleSetState({ collectedNfts: [...(auroraCollectedNfts || [])] });
+          nfts = await getAuroraCollectedNFTs(address);
           break;
         case "Polygon":
-          const polygonCollectedNfts = await getPolygonCollectedNFTs(address);
-          handleSetState({ collectedNfts: [...(polygonCollectedNfts || [])] });
+          nfts = await getPolygonCollectedNFTs(address);
           break;
         default:
           break;
       }
+      handleSetState({ collectedNfts: [...(nfts || [])] });
     })();
 
     // Get User created Collections
     (async function getCreatedCollections() {
-      let address = "";
+      let walletAddress = "";
       if (supportedChains[chainId]?.chain !== "Algorand" && account) {
-        address = ethers?.utils?.hexlify(account);
+        walletAddress = ethers?.utils?.hexlify(account);
       }
+      let collection;
+      const collections = await fetchUserCollections(account);
+
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          const collections = await fetchUserCollections(account);
-          const algoCollections = await getUserNftCollections({ collections, mainnet });
-          handleSetState({ myCollections: [...(algoCollections || [])] });
+          collection = await getUserNftCollections({ collections, mainnet });
           break;
         case "Celo":
-          const celoCollection = await getCeloUserCollections(address);
-          handleSetState({ myCollections: [...(celoCollection || [])] });
+          collection = await getCeloUserCollections(walletAddress);
           break;
         case "Aurora":
-          const auroraCollections = await getAuroraUserCollections(address);
-          handleSetState({ myCollections: [...(auroraCollections || [])] });
+          collection = await getAuroraUserCollections(walletAddress);
           break;
         case "Polygon":
-          const polyCollections = await getPolygonUserCollections(address);
-          handleSetState({ myCollections: [...(polyCollections || [])] });
+          collection = await getPolygonUserCollections(walletAddress);
           break;
         default:
           break;
       }
+      handleSetState({
+        myCollections: [...(collection || [])],
+      });
     })();
 
     (async function getUsername() {
@@ -166,9 +184,9 @@ const Dashboard = () => {
       case "collected":
         return collectedNfts;
       case "created":
-        return createdNfts;
-      case "collections":
-        return myCollections;
+        return [...(createdNfts || []), ...(myCollections || [])];
+      case "sale":
+        return onSale;
       default:
         break;
     }
@@ -220,24 +238,21 @@ const Dashboard = () => {
   useEffect(() => {
     if (!filteredCollection || !account) return;
     let filtered = null;
-    console.log({ filteredCollection });
     if (filter.date === "newest - oldest") {
       filtered = getCollectionToFilter().sort((a, b) => {
         if (!a.createdAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
         if (typeof a.createdAt === "object") {
           return a.createdAt.seconds - b.createdAt.seconds;
-        } else {
-          return a.createdAt - b.createdAt;
         }
+        return a.createdAt - b.createdAt;
       });
     } else {
       filtered = getCollectionToFilter().sort((a, b) => {
         if (!a.createdAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
         if (typeof a.createdAt === "object") {
           return b.createdAt.seconds - a.createdAt.seconds;
-        } else {
-          return b.createdAt - a.createdAt;
         }
+        return b.createdAt - a.createdAt;
       });
     }
     handleSetState({ filteredCollection: filtered });
@@ -260,75 +275,96 @@ const Dashboard = () => {
     handleSetState({ filteredCollection: filteredNFTCollection });
   }, [activeDetail, createdNfts, collectedNfts, myCollections]);
 
+  // pagination
+  const perPage = 12;
+  const pageVisited = pageNumber * perPage;
+
   return (
     <div className={classes.container}>
       {/* change background to dynamic */}
-      <div className={classes.bannerContainer}>
-        <img src={bg} alt="" className={classes.banner} />
-        <img className={classes.imageContainer} src={avatar} alt="" />
+      <div className={classes.bannerContainer}>{/* <img src={bg} alt="" className={classes.banner} /> */}</div>
+      <div className={classes.bannerWrapper}>
+        <div>
+          <img className={classes.imageContainer} src={avatar} alt="" />
+          <div className={classes.profileHeader}>
+            <div className={classes.profileDetail}>
+              {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
+
+              <div className={classes.social}>
+                {userDetails?.twitter ? (
+                  <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <Twitter className={classes.socialIcon} />
+                  </a>
+                ) : (
+                  ""
+                )}
+                {userDetails?.youtube ? (
+                  <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <Youtube className={classes.socialIcon} />
+                  </a>
+                ) : (
+                  ""
+                )}
+                {userDetails?.instagram ? (
+                  <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <Instagram className={classes.socialIcon} />
+                  </a>
+                ) : (
+                  ""
+                )}
+                {userDetails?.discord ? (
+                  <a href={`https://discord.com/users/${userDetails.discord}`} target="_blank" rel="noreferrer">
+                    {" "}
+                    <Discord className={classes.socialIcon} />
+                  </a>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+
+            <div className={classes.address}>
+              <img src={supportedChains[chainId]?.icon} alt="blockchain" />
+              <Copy message={account} placeholder={breakAddress(account)} />
+            </div>
+          </div>
+        </div>
+        <Link to={`${url}/profile/settings`}>
+          <div className={classes.editProfile}>Edit Profile</div>
+        </Link>
       </div>
 
       <div className={classes.wrapper}>
         <section className={classes.header}>
-          {userDetails?.username ? <div className={classes.username}> {userDetails.username}</div> : ""}
-
-          <div className={classes.address}>
-            <Copy message={account} placeholder={breakAddress(account)} />
-          </div>
-
-          <div className={classes.social}>
-            {userDetails?.twitter ? (
-              <a href={`https://twitter.com/${userDetails.twitter}`} target="_blank" rel="noreferrer">
-                {" "}
-                <img src={twitter} alt="" className={classes.socialIcon} />{" "}
-              </a>
-            ) : (
-              ""
-            )}
-            {userDetails?.youtube ? (
-              <a href={`https://youtube.com/${userDetails.youtube}`} target="_blank" rel="noreferrer">
-                {" "}
-                <img src={youtube} alt="" className={classes.socialIcon} />{" "}
-              </a>
-            ) : (
-              ""
-            )}
-            {userDetails?.instagram ? (
-              <a href={`https://www.instagram.com/${userDetails.instagram}`} target="_blank" rel="noreferrer">
-                {" "}
-                <img src={instagram} alt="" className={classes.socialIcon} />{" "}
-              </a>
-            ) : (
-              ""
-            )}
-            {userDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
-          </div>
-
-          <Link to={`${url}/profile/settings`}>
-            <div className={classes.editProfile}>Edit Profile</div>
-          </Link>
-
           <div className={classes.details}>
             <div
-              onClick={() => handleSetState({ activeDetail: "created" })}
-              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
+              onClick={() => handleSetState({ activeDetail: "sale" })}
+              className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
             >
-              <p>Created NFT</p>
-              <span>{Array.isArray(createdNfts) ? createdNfts.length : 0}</span>
+              <p>On sale</p>
+              <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
             </div>
             <div
               onClick={() => handleSetState({ activeDetail: "collected" })}
               className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
-              <p>Collected NFTs</p>
+              <p>Collected</p>
               <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
             </div>
             <div
-              onClick={() => handleSetState({ activeDetail: "collections" })}
-              className={`${classes.detail} ${activeDetail === "collections" && classes.active}`}
+              onClick={() => handleSetState({ activeDetail: "created" })}
+              className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
-              <p>My Collections</p>
-              <span>{Array.isArray(myCollections) ? myCollections.length : 0}</span>
+              <p>Created</p>
+              <span>
+                {" "}
+                {Array.isArray(myCollections) || Array.isArray(createdNfts)
+                  ? [...(createdNfts || []), ...(myCollections || [])].length
+                  : 0}
+              </span>
             </div>
           </div>
         </section>
@@ -340,22 +376,25 @@ const Dashboard = () => {
           </div>
 
           {filteredCollection?.length > 0 ? (
-            activeDetail === "collections" ? (
+            activeDetail === "sale" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((collection, idx) => (
-                  <CollectionsCard key={idx} collection={collection} fromDashboard />
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
+                  <NftCard key={nft.Id} nft={nft} fromDashboard />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={false} fromDashboard />
-                ))}
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => {
+                  if (nft.nfts) {
+                    return <CollectionsCard key={nft.Id} collection={nft} fromDashboard />;
+                  }
+                  return <NftCard key={nft.Id} nft={nft} listed={false} fromDashboard />;
+                })}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
-                {filteredCollection.map((nft, idx) => (
-                  <NftCard key={idx} nft={nft} listed={!nft.sold} fromDashboard />
+                {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
+                  <NftCard key={nft.Id} nft={nft} fromDashboard />
                 ))}
               </div>
             ) : (
@@ -369,7 +408,7 @@ const Dashboard = () => {
             )
           ) : (
             <div className={classes.skeleton}>
-              {[...new Array(5)].map((_, id) => (
+              {[...new Array(5)].map((id) => (
                 <div key={id}>
                   <Skeleton count={1} height={200} />
                   <br />
@@ -379,6 +418,15 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
+          )}
+          {filteredCollection?.length > 0 && (
+            <Pagination
+              handleSetState={handleSetState}
+              paginatePage={paginatePage}
+              pageNumber={pageNumber}
+              perPage={perPage}
+              filteredCollection={filteredCollection}
+            />
           )}
         </section>
       </div>
