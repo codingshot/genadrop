@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 import classes from "./Review.module.css";
 import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
-import { getFormattedDateTweets, twitterAPIURL } from "./Reviews-Script";
+import { twitterAPIURL } from "./Reviews-Script";
+import displayShadow from "../../../assets/home-display-shadow.png";
 
 const reviews = [
   "1486289656203427845",
@@ -16,14 +16,12 @@ const reviews = [
 ];
 
 const Review = () => {
-  const cardRef = useRef(null);
-
   const [state, setState] = useState({
     cardWidth: 0,
     tweetsData: [],
   });
 
-  const { cardWidth, tweetsData } = state;
+  const { tweetsData } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -32,11 +30,6 @@ const Review = () => {
   const formattedContent = (content) => {
     return `${content.substring(0, 140)}...`;
   };
-
-  useEffect(() => {
-    const cardWidth = cardRef.current && cardRef.current.getBoundingClientRect().width;
-    handleSetState({ cardWidth });
-  }, [tweetsData]);
 
   useEffect(() => {
     axios
@@ -93,37 +86,31 @@ const Review = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>
-        Keep Up To Date for <span>Early Access</span>
+      <div className={classes.wrapper}>
+        <div className={classes.heading}>
+          Some people think we’re <span>Pretty Cool.</span>
+        </div>
+        <div className={classes.description}>See what people are saying about GenaDrop.</div>
+        <div className={classes.display}>
+          <div className={classes.row}>
+            {tweetsData.map((review, idx) => (
+              <a key={idx} href={review.url} target="_blank" rel="norefferrer">
+                <div className={classes.reviewCard}>
+                  <div className={classes.review}>{formattedContent(review.text)} </div>
+                  <div className={classes.profile}>
+                    <img src={review.author_id.profile_image_url} className={classes.thumbnail} />
+                    <div className={classes.innerContainer}>
+                      <div className={classes.name}>{review.author_id.name}</div>
+                      <div className={classes.handle}>@{review.author_id.username}</div>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+          <img className={classes.shadow} src={displayShadow} alt="" />
+        </div>
       </div>
-      <div className={classes.description}>See what the buzz about GenaDrop is on twitter.</div>
-      <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
-        {tweetsData.map((review) => (
-          <a href={review.url} target="_blank" rel="noreferrer" key={review.id} ref={cardRef} className={classes.card}>
-            <div className={classes.header}>
-              <img src={review.icon} alt="" className={classes.icon} />
-              <div className={classes.date}>{getFormattedDateTweets(review.created_at)}</div>
-              <div className={classes.domain}>{review.domain}</div>
-            </div>
-            {review?.media?.type === "photo" && review?.media?.url ? (
-              <img src={review.media.url} alt="" className={classes.banner} />
-            ) : review?.media?.url ? (
-              <video className={classes.banner} src={review.media?.url} loop />
-            ) : (
-              ""
-            )}
-            <div className={classes.content}>{formattedContent(review.text)}</div>
-            <div className={classes.line} />
-            <div className={classes.footer}>
-              <img className={classes.thumbnail} src={review.author_id.profile_image_url} alt="" />
-              <div className={classes.wrapper}>
-                <div className={classes.name}>{review.author_id.name}</div>
-                <div className={classes.handle}>@{review.author_id.username}</div>
-              </div>
-            </div>
-          </a>
-        ))}
-      </GenadropCarouselCard>
     </div>
   );
 };

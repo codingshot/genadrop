@@ -1,25 +1,28 @@
 .container {
   width: 100%;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4em;
+  padding: 0 2em;
   margin-bottom: 6em;
 }
 
 .wrapper {
   width: 100%;
-  max-width: 1280px;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 4em;
+}
+
+.content {
+  flex: 60%;
+  max-width: 36em;
 }
 
 .heading {
-  width: 100%;
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 500;
-  line-height: 1.5em;
-  margin-bottom: 0.5em;
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1em;
 }
 
 .heading span {
@@ -27,60 +30,76 @@
 }
 
 .description {
-  width: 100%;
-  text-align: center;
-  max-width: 36em;
-  font-size: 1.2rem;
-  margin: 0 auto;
-  margin-bottom: 4em;
-  color: var(--text-sub-heading);
-  line-height: 1.5em;
+  margin-bottom: 2em;
+  font-size: 1.5rem;
 }
 
-.orgs {
-  display: flex;
+.link {
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
+  justify-content: center;
   gap: 1em;
 }
 
-.orgs > img {
-  width: 12em;
+.link svg {
+  transition: transform 300ms;
+  fill: var(--text-sub-heading);
+  fill: var(--main-color);
+}
+
+.link:hover svg {
+  transform: translateX(1em);
+}
+
+.orgsIcon {
+  width: 32em;
 }
 
 @media screen and (max-width: 1200px) {
   .heading {
-    font-size: calc(1rem + 2vmin);
-  }
-
-  .heading span {
-    white-space: nowrap;
+    font-size: 2.5rem;
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 900px) {
+  .wrapper {
+    flex-direction: column;
+    gap: 2em;
+  }
+
+  .heading {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+  }
+
+  .content {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .orgsIcon {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 540px) {
   .container {
-    padding: 0 2em;
+    padding: 0 1em;
     margin-bottom: 4em;
   }
 
-  .orgs img {
-    width: 8em;
+  .heading {
+    font-size: 1.5rem;
   }
 
   .description {
     font-size: 1rem;
   }
-}
 
-.org:hover {
-  cursor: var(--cursor-pointer);
-  transform: scale(1.02);
-}
-
-@media screen and (max-width: 468px) {
-  .container {
-    padding: 0 1em;
+  .orgsIcon {
+    height: 20em;
   }
 }
