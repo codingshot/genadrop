@@ -18,7 +18,7 @@ const Plans = () => {
   const mapDescriptionToPlan = {
     pro: "Take advantage of our pro plan and do more",
     agency: "Go big with our Agency plan",
-    hobby: "Try out our Hobby plan",
+    hobby: "Make sleek and sizeable collection with our Hobby plan",
   };
 
   const handleSetState = (payload) => {

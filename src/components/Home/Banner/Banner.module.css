@@ -10,13 +10,17 @@
   flex-direction: column;
   gap: 0.5em;
   margin-bottom: 3em;
-  padding-top: 3em;
+  padding-top: 5em;
   padding-left: 2em;
   padding-right: 2em;
   padding-bottom: 16em;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background: linear-gradient(
+    255.93deg,
+    #eff3f9 -39.69%,
+    #eff3f9 5.2%,
+    rgba(205, 237, 255, 0.65) 49.41%,
+    #ffffff 91.12%
+  );
 }
 
 .features {
@@ -59,7 +63,7 @@
 
 .btn_1,
 .btn_2 {
-  padding: 0.75em 3em;
+  padding: 0.75em 4em;
   border-radius: 2em;
   color: var(--main-color);
   border: 1px solid transparent;
@@ -89,24 +93,46 @@
 
 .demo {
   width: 90%;
-  height: 42em;
   max-width: 80%;
   margin: 0 auto;
   background: #ffffff;
-  border: 1px solid #e5e8eb;
   box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
   border-radius: 4em;
-  transform: matrix(-1, 0, 0, 1, 0, 0);
   margin-top: -14em;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.demo video {
+  width: 100%;
+}
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(75, 75, 90, 0.44);
+  position: absolute;
+  display: none;
+}
+
+.demo.active .overlay {
+  display: block;
 }
 
 .playIcon {
   cursor: pointer;
   transition: transform 300ms;
   width: 12em;
+  position: absolute;
+  z-index: 10em;
+  display: none;
+}
+
+.demo.active .playIcon {
+  display: block;
 }
 
 .playIcon:hover {
@@ -136,10 +162,6 @@
     font-size: 1.5rem;
   }
 
-  .demo {
-    height: 36em;
-  }
-
   .playIcon {
     width: 8em;
   }
@@ -153,7 +175,6 @@
 
   .demo {
     margin-top: -6em;
-    height: 32em;
   }
 
   .playIcon {
@@ -181,10 +202,6 @@
   .description {
     font-size: 1.2rem;
   }
-
-  .demo {
-    height: 24em;
-  }
 }
 
 @media screen and (max-width: 540px) {
@@ -205,7 +222,6 @@
   }
 
   .demo {
-    height: 20em;
     border-radius: 2em;
   }
 

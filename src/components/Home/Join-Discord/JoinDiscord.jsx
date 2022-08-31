@@ -1,12 +1,11 @@
 import React from "react";
 import classes from "./JoinDiscord.module.css";
 import devIcon from "../../../assets/icon-dev.png";
-import joinShadow from "../../../assets/home-join-shadow.png";
 import { Link } from "react-router-dom";
 
 const JoinDiscord = () => {
   return (
-    <div style={{ backgroundImage: `url(${joinShadow})` }} className={classes.container}>
+    <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.content}>
           <div className={classes.heading}>Try Genadrop create app for free</div>

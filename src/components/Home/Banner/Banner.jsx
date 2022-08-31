@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import classes from "./Banner.module.css";
-import bannerBg from "../../../assets/home-banner-bg.png";
 import { ReactComponent as PlayIcon } from "../../../assets/icon-play.svg";
 import { Link } from "react-router-dom";
+import demo from "../../../assets/vid/Demo.mp4";
+import { useEffect } from "react";
 
 const Banner = () => {
+  const videoRef = useRef(null);
+  const [showOverlayer, setShowOverlay] = useState(true);
+
+  const handlePlay = () => {
+    videoRef.current.play();
+    setShowOverlay(false);
+  };
+
+  useEffect(() => {
+    videoRef.current.addEventListener("ended", () => {
+      setShowOverlay(true);
+    });
+  }, []);
+
   return (
     <div className={classes.container}>
-      <div style={{ backgroundImage: `url(${bannerBg})` }} className={classes.heading}>
+      <div className={classes.heading}>
         <div className={classes.features}>
           Create<span></span> Mint<span></span> Sell<span></span>
         </div>
@@ -22,8 +37,10 @@ const Banner = () => {
           </Link>
         </div>
       </div>
-      <div className={classes.demo}>
-        <PlayIcon className={classes.playIcon} />
+      <div className={`${classes.demo} ${showOverlayer && classes.active}`}>
+        <video ref={videoRef} src={demo}></video>
+        <div className={classes.overlay}></div>
+        <PlayIcon onClick={handlePlay} className={classes.playIcon} />
       </div>
     </div>
   );

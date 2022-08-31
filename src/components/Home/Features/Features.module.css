@@ -154,6 +154,10 @@
     margin-bottom: 4em;
   }
 
+  .content {
+    animation-delay: 300ms;
+  }
+
   .heading {
     font-size: 1.5rem;
   }
