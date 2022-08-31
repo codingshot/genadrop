@@ -38,7 +38,7 @@ const Banner = () => {
         </div>
       </div>
       <div className={`${classes.demo} ${showOverlayer && classes.active}`}>
-        <video ref={videoRef} src={demo}></video>
+        <video ref={videoRef} preload={auto} src={demo}></video>
         <div className={classes.overlay}></div>
         <PlayIcon onClick={handlePlay} className={classes.playIcon} />
       </div>
