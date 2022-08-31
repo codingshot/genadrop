@@ -1,19 +1,28 @@
 import React from "react";
-import graph from "../../../assets/discord-graph.svg";
 import classes from "./JoinDiscord.module.css";
+import devIcon from "../../../assets/icon-dev.png";
+import joinShadow from "../../../assets/home-join-shadow.png";
+import { Link } from "react-router-dom";
 
 const JoinDiscord = () => {
   return (
-    <div className={classes.container}>
+    <div style={{ backgroundImage: `url(${joinShadow})` }} className={classes.container}>
       <div className={classes.wrapper}>
-        <img src={graph} alt="" />
         <div className={classes.content}>
-          <div className={classes.heading}>Join the conversation</div>
-          <div className={classes.description}>Join our community on Discord</div>
-          <a href="https://discord.gg/ynTSZWhs" target="_blank" rel="noreferrer" className={classes.link}>
-            Join
-          </a>
+          <div className={classes.heading}>Try Genadrop create app for free</div>
+          <Link to="/create">
+            <div className={classes.btn}>Try Now</div>
+          </Link>
+          <div className={classes.listContainer}>
+            <div className={classes.listItem}>
+              <span className={classes.listStyle} /> No coding needed, Drag & Drop.
+            </div>
+            <div className={classes.listItem}>
+              <span className={classes.listStyle} /> Supports PNG of the same size.
+            </div>
+          </div>
         </div>
+        <img src={devIcon} className={classes.image} alt="" />
       </div>
     </div>
   );

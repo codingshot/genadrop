@@ -1,17 +1,19 @@
 .container {
   width: 100%;
-  margin-bottom: 8em;
-  padding: 0 4em;
+  margin-bottom: 6em;
+  padding: 0 2em;
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 .heading {
-  width: 100%;
-  margin-bottom: 0.5em;
-  font-size: 2.5rem;
-  font-weight: 500;
+  font-size: 3rem;
+  font-weight: 600;
   text-align: center;
-  text-transform: capitalize;
-  color: var(--text-heading);
 }
 
 .heading span {
@@ -19,77 +21,64 @@
 }
 
 .description {
-  width: 100%;
-  max-width: 32em;
-  margin: 0 auto;
-  margin-bottom: 3em;
-  font-size: 1.2rem;
+  margin-bottom: 2em;
+  font-size: 1.5rem;
   text-align: center;
   color: var(--text-sub-heading);
 }
 
-.card {
-  width: 20em;
-  min-height: 28em;
-  border-radius: 0.75em;
-  padding: 1em;
+.display {
+  width: 100%;
+  height: 42em;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  gap: 2em;
+  position: relative;
+}
+
+.shadow {
+  width: 100%;
+  height: 20em;
+  bottom: 0;
+  position: absolute;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   align-items: center;
-  justify-content: flex-start;
-  gap: 1em;
-  background: var(--default);
-  border: 1px solid #e5e8eb;
-  box-shadow: var(--shadow-light);
-  cursor: var(--cursor-pointer);
-  transition: all 300ms;
+  justify-content: center;
+  gap: 2em;
+  animation: scroll 15s infinite linear forwards;
 }
 
-.card:hover {
-  box-shadow: var(--shadow-dark);
+.row:hover {
+  animation-play-state: paused;
 }
 
-.header {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.5em;
+@keyframes scroll {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-56em);
+  }
 }
 
-.icon {
-  width: 1.4em;
-  height: 1.4em;
+.reviewCard {
+  background: #f5f6f8;
+  padding: 2em;
+  border-radius: 1em;
 }
 
-.date {
-  font-size: 0.65rem;
+.review {
+  font-size: 1.5rem;
+  font-style: italic;
+  margin-bottom: 1em;
 }
 
-.domain {
-  font-size: 0.65rem;
-}
-
-.banner {
-  width: 100%;
-  height: 10em;
-}
-
-.content {
-  width: 100%;
-  height: 8em;
-  font-size: 0.95rem;
-}
-
-.line {
-  background: #c4c4c4;
-  width: 100%;
-  height: 0.75px;
-  margin-top: auto;
-}
-
-.footer {
-  width: 100%;
+.profile {
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -97,46 +86,103 @@
 }
 
 .thumbnail {
-  height: 3em;
-  width: 3em;
+  width: 2.5em;
+  height: 2.5em;
   border-radius: 50%;
+  border: 1px solid gray;
 }
 
 .name {
-  width: 100%;
-  max-width: 16em;
-  font-size: 0.85rem;
-  font-weight: bold;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
 .handle {
-  width: 100%;
-  font-size: 0.75rem;
+  font-size: 1rem;
+  color: var(--text-sub-heading);
 }
 
 @media screen and (max-width: 1200px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+
+  .row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @keyframes scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-72em);
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .heading {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1.2rem;
+  }
+
+  .display {
+    height: 28em;
+  }
+
+  .shadow {
+    height: 16em;
+  }
+
+  .name,
+  .handle,
+  .review {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .row {
+    grid-template-columns: auto;
+    animation-delay: 20s;
+  }
+
+  @keyframes scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-84em);
+    }
+  }
+
+  .reviewCard {
+    padding: 1em;
+    border-radius: 0.5em;
+  }
+
+  .name,
+  .handle,
+  .review {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
   .container {
-    padding: 0 2em;
+    padding: 0 1em;
+    margin-bottom: 4em;
   }
 
   .heading {
-    font-size: calc(1rem + 2vmin);
+    font-size: 1.5rem;
   }
 
   .description {
     font-size: 1rem;
-  }
-
-  .container {
-    margin-bottom: 4em;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .container {
-    padding: 0 1em;
   }
 }

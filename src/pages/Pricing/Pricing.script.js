@@ -85,7 +85,7 @@ export const plans = {
     mostPopular: true,
     services: [
       {
-        name: "Up to 2000 unique art generartion",
+        name: "Up to 5000 unique art generartion",
         available: true,
       },
       {
@@ -117,13 +117,13 @@ export const plans = {
   agency: {
     type: "agency",
     amount: "10000",
-    description: "Up to ,10000 unique art generation",
+    description: "Up to 10000 unique art generation",
     coveredCost: "Cost per collection",
     price: "300",
     subscription: "Upgrade",
     services: [
       {
-        name: "Up to 2000 unique art generartion",
+        name: "Up to 10000 unique art generartion",
         available: true,
       },
       {
