@@ -15,13 +15,12 @@
 
 .imageContainer {
   width: 100%;
-  padding: 0.5em;
+  padding: 0.2em;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 16em;
-  border-bottom: 1px solid var(--outline);
 }
 
 .creator {
@@ -59,36 +58,17 @@
 }
 
 .collectionName {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.chainIcon {
-  width: 2em;
-  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+  overflow: auto;
 }
 .listPrice {
   margin-top: 15px;
 }
-
-.is1of1 {
-  background-color: var(--card-bg-light2);
-  border-radius: 8px;
-  padding: 0.3em 0.5em;
+.name {
+  margin-bottom: 1em;
   overflow: auto;
 }
 
-.nftName {
-  font-weight: 600;
-  font-size: 19.8px;
-}
-
-.collection {
-  background-color: var(--main-light);
-  border-radius: 8px;
-  padding: 0.3em 0.5em;
-  overflow: auto;
-}
 .usdPrice {
   font-size: 0.7rem;
   font-weight: lighter;
@@ -98,8 +78,6 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  border-top: 1px solid var(--outline);
-  margin-top: 15px;
 }
 
 .list {

@@ -34,6 +34,12 @@ const Chains = () => {
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
+        <div className={classes.heading}>
+          <h3>Start Exploring Now</h3>
+          <p className={classes.description}>
+            Explore/List your NFTs on the next generation of multi-chains NFT trading marketplace
+          </p>
+        </div>
         <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
           {chains.map((chain, idx) => (
             <div

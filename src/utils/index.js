@@ -116,7 +116,6 @@ export const getGraphCollections = async (collections) => {
         collectionObj.isListed = collection?.isListed ? collection?.isListed : false;
         collectionObj.nfts = collection?.nfts;
         collectionObj.createdAt = Number(collection?.nfts?.[0].createdAtTimestamp);
-        collectionObj.transactions = collection?.nfts?.transactions;
         resolve(collectionObj);
       } catch (err) {
         console.log(err);
@@ -318,39 +317,6 @@ export const getGraphCollection = async (collection, mainnet) => {
     }
   }
   return nftArr;
-};
-
-const getDate = (newDate) => {
-  let now = new Date();
-  let date = new Date(newDate * 1000);
-  let diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
-  if (diff < 0.04) return parseInt(diff * 24 * 60) + " mins ago";
-  else if (diff < 1) return parseInt(diff * 24) + " hours ago";
-  else if (diff < 31) return parseInt(diff) + " days ago";
-  else if (diff < 356) return parseInt(diff / 30) + " months ago";
-  else return diff / 30 / 12 + " years ago";
-};
-
-export const getGraphTransactionHistory = async (transactions) => {
-  const transactionArr = [];
-  if (transactions) {
-    for (let i = 0; i < transactions.length; i++) {
-      try {
-        const transactionObj = {};
-        transactionObj.type = transactions[i].type;
-        const newDate = getDate(transactions[i].txDate);
-        transactionObj.date = newDate;
-        transactionObj.price = transactions[i].price;
-        transactionObj.from = transactions[i].from?.id;
-        transactionObj.to = transactions[i].to?.id;
-        transactionObj.id = transactions[i].txId;
-        transactionArr.push(transactionObj);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-  return transactionArr;
 };
 
 export const getTransactions = async (transactions) => {

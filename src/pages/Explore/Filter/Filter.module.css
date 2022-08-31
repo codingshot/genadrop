@@ -14,9 +14,6 @@
   overflow: auto;
 }
 
-.label {
-  font-size: 12px;
-}
 .filterHeading {
   display: flex;
   align-items: center;
@@ -64,20 +61,38 @@
   padding-bottom: 1.5em;
 }
 
-.radioGroup {
-}
-
-.radio,
-.disabled {
+.toggleButton {
+  background: var(--text-placeholder);
+  display: inline-block;
+  width: 48px;
   display: flex;
   align-items: center;
-  margin-bottom: 0.5em;
+  justify-content: flex-start;
+  border-radius: 0.75em;
+  cursor: var(--cursor-pointer);
+  padding: 2px;
+  border: 1px solid transparent;
+  transition: all 300ms;
 }
 
-.radio input,
-.disabled input {
-  margin-right: 0.5em;
+.toggleButton.active {
+  background: var(--main-lighter);
+  border: 1px solid var(--main-lighter);
 }
+
+.toggleButton.active .toggle {
+  transform: translateX(23px);
+  background: var(--main-color);
+}
+
+.toggleButton .toggle {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: all 300ms;
+  background: var(--default);
+}
+
 .priceFilter {
   display: flex;
   flex-direction: column;
@@ -111,7 +126,7 @@
   background: var(--main-color);
   color: white;
   padding: 1em;
-  border-radius: 0.5em;
+  border-radius: 0.25em;
   transition: all 300ms;
 }
 
@@ -172,11 +187,8 @@
   background: var(--default);
 }
 
-.disabled {
-  color: var(--outline-dark);
-}
 .layer.active {
-  max-height: fit-content;
+  max-height: 10em;
   overflow: auto;
   visibility: visible;
   transform: translateY(4px);
@@ -185,12 +197,13 @@
 .layer > div {
   border: 1px solid white;
   padding: 0.5em 0.25em;
+  background: var(--main-lightest);
   border-radius: 0.25em;
 }
 
 .layer > div:hover {
   background: var(--outline);
-  cursor: var(--cursor-pointer);
+  cursor: var(--cursor-hover);
 }
 
 .value {
@@ -212,6 +225,7 @@
   border-radius: 0.15em;
   background: var(--default);
   color: var(--outline-dark);
+  border: 1px solid var(--outline-dark);
 }
 
 .sidebar2 {
