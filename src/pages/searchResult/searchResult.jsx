@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import ReactPaginate from "react-paginate";
 import classes from "./searchResult.module.css";
 import handleSuggestions from "../../components/Search/Search-script";
 import { GenContext } from "../../gen-state/gen.context";
-import { ReactComponent as AngleLeft } from "../../assets/icon-pagination-left.svg";
-import { ReactComponent as AngleRight } from "../../assets/icon-pagination-right.svg";
+import Pagination from "../../components/pagination/Pagination";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
@@ -15,14 +13,14 @@ import supportedChains from "../../utils/supportedChains";
 
 const SearchResult = () => {
   const [state, setState] = useState({
-    value: "",
+    paginatePage: "",
     suggestions: null,
     filteredCollection: null,
     type: "all",
     chainID: "all",
     pageNumber: 0,
   });
-  const { value, suggestions, type, chainID, filteredCollection, pageNumber } = state;
+  const { paginatePage, suggestions, type, chainID, filteredCollection, pageNumber } = state;
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
@@ -50,16 +48,9 @@ const SearchResult = () => {
     });
   };
 
+  // pagination
   const perPage = 12;
   const pageVisited = pageNumber * perPage;
-
-  const PageCount = (list = []) => {
-    return list ? Math.ceil(list.length / perPage) : 1;
-  };
-
-  const changePage = ({ selected }) => {
-    handleSetState({ pageNumber: selected });
-  };
 
   useEffect(() => {
     const collection = suggestions
@@ -128,36 +119,15 @@ const SearchResult = () => {
       ) : (
         <NotFound />
       )}
-      <div className={classes.footer}>
-        <ReactPaginate
-          previousLabel={<AngleLeft />}
-          nextLabel={<AngleRight />}
-          breakLabel="..."
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={1}
-          pageCount={PageCount(filteredCollection)}
-          onPageChange={changePage}
-          forcePage={pageNumber}
-          containerClassName={classes.pagination}
-          previousLinkClassName={classes.pagePrev}
-          nextLinkClassName={classes.pageNext}
-          disabledClassName={classes.pageDisabled}
-          activeClassName={classes.activePage}
-          pageLinkClassName={classes.pageNumber}
+      {filteredCollection?.length > 0 && (
+        <Pagination
+          handleSetState={handleSetState}
+          paginatePage={paginatePage}
+          pageNumber={pageNumber}
+          perPage={perPage}
+          filteredCollection={filteredCollection}
         />
-        <div className={classes.directPagination}>
-          <p>Go to page</p>
-          <input type="text" onChange={(e) => handleSetState({ value: e.target.value })} />
-          <div
-            onClick={() => {
-              handleSetState({ pageNumber: value - 1 });
-            }}
-          >
-            Go
-            <AngleRight />
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

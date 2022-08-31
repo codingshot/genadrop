@@ -158,17 +158,15 @@ const SingleNftCollection = () => {
       filtered = filteredCollection.sort((a, b) => {
         if (typeof a.createdAt === "object") {
           return a.createdAt.seconds - b.createdAt.seconds;
-        } else {
-          return a.createdAt - b.createdAt;
         }
+        return a.createdAt - b.createdAt;
       });
     } else {
       filtered = filteredCollection.sort((a, b) => {
         if (typeof a.createdAt === "object") {
           return b.createdAt.seconds - a.createdAt.seconds;
-        } else {
-          return b.createdAt - a.createdAt;
         }
+        return b.createdAt - a.createdAt;
       });
     }
     handleSetState({ FilteredCollection: filtered });
@@ -203,7 +201,6 @@ const SingleNftCollection = () => {
     window.localStorage.activeAlgoNft = null;
     document.documentElement.scrollTop = 0;
   }, []);
-
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>

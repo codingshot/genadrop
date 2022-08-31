@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  margin-bottom: 6em;
+  margin-bottom: 8em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,8 +16,8 @@
 .heading {
   width: 100%;
   text-align: center;
-  font-size: 2.5rem;
-  font-weight: 500;
+  font-size: 3rem;
+  font-weight: 600;
   margin-bottom: 0.5em;
   color: var(--text-heading);
 }
@@ -49,23 +49,25 @@
 
 .wrapper img {
   width: 100%;
+  max-width: 60em;
   height: 100%;
-  max-width: 48em;
 }
 
 .btn {
-  color: var(--text-dark-900-main-hovered);
   background: var(--main-color);
   border: 1px solid transparent;
-  color: white;
+  color: var(--default);
   padding: 0.75em 3em;
   border-radius: 2em;
-  cursor: var(--cursor-pointer);
   transition: all 300ms;
+  border: 1px solid transparent;
+  cursor: pointer;
 }
 
 .btn:hover {
-  background: var(--main-hovered);
+  background: var(--default);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 @media screen and (max-width: 1200px) {
