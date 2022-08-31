@@ -32,7 +32,7 @@ const Banner = () => {
           <Link to="/create">
             <div className={classes.btn_1}>Create</div>
           </Link>
-          <Link to="/explore">
+          <Link to="/marketplace">
             <div className={classes.btn_2}>Explore</div>
           </Link>
         </div>
