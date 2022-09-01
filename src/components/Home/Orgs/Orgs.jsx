@@ -1,7 +1,15 @@
 import React from "react";
 import classes from "./Orgs.module.css";
-import { ReactComponent as OrgsIcon } from "../../../assets/icon-orgs.svg";
 import { ReactComponent as LinkIcon } from "../../../assets/icon-arr-right-long.svg";
+import mpLogo from "../../../assets/logo-mp.png";
+import celoLogo from "../../../assets/logo-celo.png";
+import algoLogo from "../../../assets/logo-algo.png";
+import nearLogo from "../../../assets/logo-near.png";
+import mpIcon from "../../../assets/logo-polygon-icon.png";
+import celoIcon from "../../../assets/logo-celo-icon.png";
+import algoIcon from "../../../assets/logo-algo-icon.png";
+import nearIcon from "../../../assets/logo-near-icon.png";
+
 import { Link } from "react-router-dom";
 
 const Orgs = () => (
@@ -20,8 +28,44 @@ const Orgs = () => (
           <LinkIcon className={classes.linkIcon} />
         </Link>
       </div>
-
-      <OrgsIcon className={classes.orgsIcon} />
+      <div className={classes.orgs}>
+        <a
+          href="https://celocommunityfund.org/"
+          target="_blank"
+          rel="noreferrer"
+          className={`${classes.org} ${classes.celo}`}
+        >
+          <img className={classes.logo} src={celoLogo} alt="" />
+          <img className={classes.icon} src={celoIcon} alt="" />
+        </a>
+        <a
+          href="https://near.foundation/"
+          target="_blank"
+          rel="noreferrer"
+          className={`${classes.org} ${classes.near}`}
+        >
+          <img className={classes.logo} src={nearLogo} alt="" />
+          <img className={classes.icon} src={nearIcon} alt="" />
+        </a>
+        <a
+          href="https://www.minorityprogrammers.com/"
+          target="_blank"
+          rel="noreferrer"
+          className={`${classes.org} ${classes.mp}`}
+        >
+          <img className={classes.logo} src={mpLogo} alt="" />
+          <img className={classes.icon} src={mpIcon} alt="" />
+        </a>
+        <a
+          href="https://www.algorand.com/"
+          target="_blank"
+          rel="noreferrer"
+          className={`${classes.org} ${classes.algo}`}
+        >
+          <img className={classes.logo} src={algoLogo} alt="" />
+          <img className={classes.icon} src={algoIcon} alt="" />
+        </a>
+      </div>
     </div>
   </div>
 );
