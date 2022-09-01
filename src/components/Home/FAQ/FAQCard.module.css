@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  padding: 0 2em;
+  padding: 1em 2em;
   border-radius: 0.5em;
   border: 1px solid var(--outline-dark);
   cursor: var(--cursor-pointer);
@@ -16,7 +16,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 3em;
-  white-space: pre-line;
 }
 
 .question {
@@ -24,7 +23,9 @@
   font-weight: 600;
   font-size: 1.5rem;
 }
-
+.question span {
+  display: flex;
+}
 .question .title {
   color: var(--text-sub-heading);
 }
@@ -48,7 +49,7 @@
   transition: all 1250ms;
   color: var(--text-heading);
   font-size: 1.2rem;
-  margin-bottom: 1em;
+  width: 100%;
 }
 
 .answer a {
