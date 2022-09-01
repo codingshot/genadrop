@@ -51,13 +51,134 @@
   transform: translateX(1em);
 }
 
-.orgsIcon {
-  width: 32em;
+.orgs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2em;
+}
+
+.org {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2.5em;
+  background: #ffffff;
+  border: 1px solid transparent;
+  border-right: 3px solid #e5e8eb;
+  box-shadow: -26px -18px 30px -12px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
+  position: relative;
+  transition: all 300ms;
+  cursor: pointer;
+}
+
+.org:hover {
+  border: 3px solid #e5e8eb;
+}
+
+.org:hover .icon {
+  animation-play-state: paused;
+}
+
+.icon {
+  position: absolute;
+  width: 5em;
+  animation: rotate 12s infinite linear;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg) translate(0, 0);
+  }
+
+  50% {
+    transform: rotate(360deg) translate(1em, 1em);
+  }
+
+  100% {
+    transform: rotate(360deg) translate(0, 0);
+  }
+}
+
+.celo .icon {
+  top: -2em;
+  left: -2em;
+  z-index: -1;
+  animation-delay: 1s;
+}
+
+.mp .icon {
+  bottom: -2em;
+  left: -2em;
+  z-index: -1;
+  animation-delay: 2s;
+}
+
+.algo .icon {
+  bottom: -2em;
+  right: -2em;
+  z-index: -1;
+  animation-delay: 3s;
+}
+
+.near .icon {
+  top: -2em;
+  right: -2em;
+  z-index: -1;
+  animation-delay: 4s;
+}
+
+.mp {
+  align-self: flex-start;
+  justify-self: flex-end;
+}
+
+.near {
+  align-self: flex-end;
+}
+
+.celo,
+.algo {
+  width: 13em;
+  height: 12.5em;
+}
+
+.near,
+.mp {
+  width: 12em;
+  height: 10em;
 }
 
 @media screen and (max-width: 1200px) {
   .heading {
     font-size: 2.5rem;
+  }
+
+  .celo,
+  .algo {
+    width: 12em;
+    height: 11.5em;
+  }
+
+  .near,
+  .mp {
+    width: 11em;
+    height: 9em;
+  }
+
+  .mp .logo {
+    width: 5em;
+  }
+
+  .near .logo {
+    width: 6em;
+  }
+
+  .celo .logo {
+    width: 6em;
+  }
+
+  .algo .logo {
+    width: 6em;
   }
 }
 
@@ -101,5 +222,39 @@
 
   .orgsIcon {
     height: 20em;
+  }
+
+  .orgs {
+    gap: 1em;
+  }
+
+  .org {
+    border-radius: 1.5em;
+  }
+
+  .icon {
+    width: 3.5em;
+  }
+
+  .celo,
+  .algo {
+    width: 8em;
+    height: 7.5em;
+  }
+
+  .near,
+  .mp {
+    width: 7em;
+    height: 6em;
+  }
+
+  .mp .logo {
+    width: 3em;
+  }
+
+  .algo .logo,
+  .celo .logo,
+  .near .logo {
+    width: 4em;
   }
 }
