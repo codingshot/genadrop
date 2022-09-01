@@ -1,0 +1,13 @@
+.container {
+  border: 1px solid red;
+  height: 16em;
+  margin-bottom: 2em;
+  border-radius: 1em;
+}
+
+.heading {
+  border: 1px solid red;
+  padding: 0.5em;
+  font-weight: 600;
+  font-size: 1.5rem;
+}

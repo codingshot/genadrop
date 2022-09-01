@@ -5,38 +5,41 @@ import arrowIconRight from "../../../assets/icon-arrow-right.svg";
 import filterIcon from "../../../assets/icon-filter.svg";
 import dropdownIcon from "../../../assets/icon-dropdown.svg";
 import Dropdown from "../Dropdown/Dropdown";
+import RadioButton from "../Radio-Button/RadioButton";
+import { ReactComponent as MarkIcon } from "../../../assets/icon-mark.svg";
 
 const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handleExploreSetState }) => {
   const [state, setState] = useState({
     toggleAttribute: true,
     toggleLayer: -1,
-    lowestPrice: "0",
-    highestPrice: "0",
     filter: {
-      priceRange: { min: 0, max: 0 },
-      onlyListed: true,
+      status: "not listed",
+      sortby: "newest",
       attributes: [],
-      status: "all",
-      sort: "alphaDescending",
     },
   });
 
-  const { lowestPrice, highestPrice, toggleAttribute, toggleLayer, filter } = state;
+  const { toggleAttribute, toggleLayer, filter } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const countOccurrences = (arr, val) => arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
-  const capitalize = (arr) => arr.charAt(0).toUpperCase() + arr.slice(1); // Capitalize first letter of the word
+  const countOccurrences = (arr, val) => arr?.reduce((a, v) => (v === val ? a + 1 : a), 0);
+  const capitalize = (arr) => arr?.charAt(0)?.toUpperCase() + arr?.slice(1); // Capitalize first letter of the word
   const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
 
-  const handleApplyPriceFilter = () => {
+  const handleStatus = (status) => {
+    handleSetState({ filter: { ...filter, status: status } });
+  };
+
+  const handleSort = (sort) => {
+    handleSetState({ filter: { ...filter, sortby: sort } });
+  };
+
+  const handleToggleLayer = (idx) => {
     handleSetState({
-      filter: {
-        ...filter,
-        priceRange: { min: lowestPrice, max: highestPrice },
-      },
+      toggleLayer: idx === toggleLayer ? -1 : idx,
     });
   };
 
@@ -66,9 +69,8 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
     }
   };
 
-  useEffect(() => {
-    handleFilter(filter);
-  }, [filter]);
+  const statusFilter = ["listed", "not listed", "on auction"];
+  const sortFilter = ["newest", "oldest", "highest price", "lowest price", "a - z", "z - a"];
 
   useEffect(() => {
     if (Array.isArray(filterToDelete) && !filterToDelete.length) {
@@ -78,9 +80,11 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
       const newAttributes = filter.attributes.filter((attr) => JSON.stringify(attr) !== strVal);
       handleSetState({ filter: { ...filter, attributes: newAttributes } });
     }
-
-    console.log("Filter: ", filter);
   }, [filterToDelete]);
+
+  useEffect(() => {
+    handleFilter(filter);
+  }, [filter]);
 
   return (
     <>
@@ -94,171 +98,36 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
             <img className={classes.leftArrow} src={arrowIconLeft} alt="" />
           </div>
           <div className={classes.sideOverflowWrapper}>
-            <Dropdown title="Price filter">
-              <div className={classes.priceFilter}>
-                <div className={classes.filterInput}>
-                  <div>
-                    <div className={classes.label}>Min</div>
-                    <input
-                      value={lowestPrice}
-                      onChange={(event) => handleSetState({ lowestPrice: event.target.value })}
-                      type="number"
-                    />
-                  </div>
-                  <div>
-                    <div className={classes.label}>Max</div>
-
-                    <input
-                      value={highestPrice}
-                      onChange={(event) => handleSetState({ highestPrice: event.target.value })}
-                      type="number"
-                    />
-                  </div>
-                </div>
-                <button onClick={handleApplyPriceFilter}>Apply</button>
-              </div>
-            </Dropdown>
             <Dropdown title="Status">
-              <div className={classes.statusFilter}>
-                {/* <div
-                  onClick={handleStatus}
-                  className={`${classes.toggleButton} ${filter.onlyListed && classes.active}`}
-                >
-                  <div className={classes.toggle} />
-                </div> */}
-                <div className={classes.radioGroup}>
-                  <div className={classes.radio}>
-                    <input
-                      type="radio"
-                      name="status"
-                      id=""
-                      value={"all"}
-                      defaultChecked
-                      onClick={() => handleSetState({ filter: { ...filter, status: "all" } })}
-                    />
-                    All
-                  </div>
-                  <div className={classes.radio}>
-                    <input
-                      type="radio"
-                      name="status"
-                      id=""
-                      value={"listed"}
-                      onClick={() => handleSetState({ filter: { ...filter, status: "listed" } })}
-                    />
-                    Listed
-                  </div>
-                  <div className={classes.radio}>
-                    <input
-                      type="radio"
-                      name="status"
-                      id=""
-                      value={"notListed"}
-                      onClick={() => handleSetState({ filter: { ...filter, status: "notListed" } })}
-                    />
-                    Not Listed
-                  </div>
-                  <div className={`${classes.radio && classes.disabled}`}>
-                    <input
-                      type="radio"
-                      name="status"
-                      id=""
-                      disabled
-                      value={"onAuction"}
-                      onClick={() => handleSetState({ filter: { ...filter, status: "onAuction" } })}
-                    />
-                    On Auction
-                  </div>
+              {statusFilter.map((status, idx) => (
+                <div key={idx} className={classes.status}>
+                  <RadioButton onClick={() => handleStatus(status)} active={status === filter.status} />
+                  <div>{status}</div>
                 </div>
-              </div>
+              ))}
             </Dropdown>
-
             <Dropdown title="Sort by">
-              <div className={classes.statusFilter}>
-                <div className={classes.radioGroup}>
-                  <div className={classes.radio}>
-                    <input
-                      type="radio"
-                      name="sort"
-                      id=""
-                      value={"alphaAscending"}
-                      defaultChecked
-                      onClick={() => handleSetState({ filter: { ...filter, sort: "alphaAscending" } })}
-                    />
-                    A-Z
-                  </div>
-                  <div className={classes.radio}>
-                    <input
-                      type="radio"
-                      name="sort"
-                      id=""
-                      value={"alphaDescending"}
-                      onClick={() => handleSetState({ filter: { ...filter, sort: "alphaDescending" } })}
-                    />
-                    Z-A
-                  </div>
-                  <div className={`${classes.radio && classes.disabled}`}>
-                    <input type="radio" name="sort" id="" value={"newest"} disabled={true} />
-                    Newest
-                  </div>
-                  <div className={`${classes.radio && classes.disabled}`}>
-                    <input
-                      type="radio"
-                      name="sort"
-                      id=""
-                      value={"oldest"}
-                      disabled={true}
-                      onClick={() => handleSetState({ filter: { ...filter, sort: "oldest" } })}
-                    />
-                    Oldest
-                  </div>
-                  <div className={`${classes.radio && classes.disabled}`}>
-                    <input
-                      type="radio"
-                      name="sort"
-                      id=""
-                      value={"highestPrice"}
-                      disabled={true}
-                      onClick={() => handleSetState({ filter: { ...filter, sort: "highestPrice" } })}
-                    />
-                    Highest Price
-                  </div>
-                  <div className={`${classes.radio && classes.disabled}`}>
-                    <input
-                      type="radio"
-                      name="sort"
-                      id=""
-                      value={"lowestPrice"}
-                      disabled={true}
-                      onClick={() => handleSetState({ filter: { ...filter, sort: "lowestPrice" } })}
-                    />
-                    Lowest Price
-                  </div>
+              {sortFilter.map((sort, idx) => (
+                <div key={idx} className={classes.sort}>
+                  <RadioButton onClick={() => handleSort(sort)} active={sort === filter.sortby} />
+                  <div>{sort}</div>
                 </div>
-              </div>
+              ))}
             </Dropdown>
-
-            <Dropdown title="Attribute" logo>
+            <Dropdown title="Attribute" isAttribute>
               <div className={classes.attributeFilter}>
                 <div className={`${classes.attribute} ${toggleAttribute && classes.active}`}>
                   {attributes &&
                     attributes.map((attr, idx) => (
                       <div key={idx}>
-                        <div
-                          onClick={() =>
-                            handleSetState({
-                              toggleLayer: idx === toggleLayer ? -1 : idx,
-                            })
-                          }
-                          key={idx}
-                          className={classes.layerWrapper}
-                        >
-                          <div>{capitalize(attr.trait_type)}</div>
+                        <div onClick={() => handleToggleLayer(idx)} key={idx} className={classes.layerWrapper}>
+                          <div className={classes.attributeName}>{capitalize(attr.trait_type)}</div>
                           <div className={`${classes.layerIcon} ${toggleLayer === idx && classes.active}`}>
                             <div>{attr.value.length}</div>
                             <img src={dropdownIcon} alt="" />
                           </div>
                         </div>
+
                         <div className={`${classes.layer} ${toggleLayer === idx && classes.active}`}>
                           {attr.value.map((val, idx) => (
                             <div
@@ -272,22 +141,24 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
                               }
                               className={classes.value}
                             >
-                              <span className={classes.statusIcon}>
-                                {isSelected({
-                                  trait_type: attr.trait_type,
-                                  value: val,
-                                  rarity: attr.rarity[idx],
-                                }) ? (
-                                  <input type="checkbox" name="" checked id="" />
-                                ) : (
-                                  <input type="checkbox" name="" id="" />
-                                )}
-                              </span>
-                              {/* percentage of each value in an attribute */}
+                              {isSelected({
+                                trait_type: attr.trait_type,
+                                value: val,
+                                rarity: attr.rarity[idx],
+                              }) ? (
+                                <span className={`${classes.statusIcon} ${classes.active}`}>
+                                  <MarkIcon className={classes.markIcon} />
+                                </span>
+                              ) : (
+                                <span className={`${classes.statusIcon}`}></span>
+                              )}
+
                               <div className={classes.valuesOfAttr}>
-                                <span>{capitalize(val)}</span>
+                                <span className={classes.attributeValue}>{capitalize(val)}</span>
                                 <span>
-                                  <span style={{ marginRight: "3px" }}>{countOccurrences(attr.value, val)}</span>
+                                  <span style={{ marginRight: "3px" }}>{countOccurrences(attr.value, val)}</span>(
+                                  {toPercent(countOccurrences(attr.value, val), attr.value.length)}
+                                  %)
                                 </span>
                               </div>
                             </div>

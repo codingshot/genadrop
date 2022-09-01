@@ -1,181 +1,149 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import Skeleton from "react-loading-skeleton";
 import classes from "./Header.module.css";
+import bannerImg from "../../../assets/explore-banner2.svg";
 import listIcon from "../../../assets/icon-list.svg";
 import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
-import Copy from "../../../components/copy/copy";
 import supportedChains from "../../../utils/supportedChains";
+import { getFormatedPrice } from "../../../utils";
+import { useEffect, useRef, useState } from "react";
 import { readUserProfile } from "../../../utils/firebase";
-
-import twitter from "../../../assets/icon-twitter-blue.svg";
-import discord from "../../../assets/icon-discord-blue.svg";
-import instagram from "../../../assets/icon-instagram-blue.svg";
-import youtube from "../../../assets/icon-youtube-green.svg";
+import Copy from "../../../components/copy/copy";
 import { breakAddress } from "../../../components/wallet/wallet-script";
+import discordIcon from "../../../assets/icon-discord-blue.svg";
+import twitterIcon from "../../../assets/icon-twitter-blue.svg";
 
-const Header = ({ collection, getHeight, loadedChain }) => {
+const linkIcons = {
+  discord: discordIcon,
+  twitter: twitterIcon,
+};
+
+const Header = ({ collection, getHeight }) => {
+  const { name, owner, description, nfts, image_url, chain, price } = collection;
+  const volumeTraded = 0;
   const domMountRef = useRef(false);
   const headerRef = useRef(null);
   const [state, setState] = useState({
-    dollarPrice: 0,
-    ownerDetails: null,
-    username: "",
-    explorerLink: "",
+    usdValue: 0,
+    UsdVolumeValue: 0,
+    user: null,
+    links: [],
   });
-  const { dollarPrice, ownerDetails, username, explorerLink } = state;
+
+  const { usdValue, UsdVolumeValue, user, links } = state;
 
   const handleSetState = (payload) => {
-    setState((states) => ({ ...states, ...payload }));
-  };
-  const { name, owner, price, imageUrl, numberOfNfts, description, chain, nfts } = collection;
-  const getUsdValue = () => {
-    if (loadedChain) {
-      axios
-        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[loadedChain].id}&vs_currencies=usd`)
-        .then((res) => {
-          const value = Object.values(res.data)[0].usd;
-          handleSetState({ dollarPrice: value * price });
-        });
-    }
-  };
-  const viewOnExplorer = () => {
-    if (loadedChain && loadedChain !== 4160) {
-      return handleSetState({ explorerLink: `${supportedChains[loadedChain]?.explorer}/${owner}` });
-    }
-    if (process.env.REACT_APP_ENV_STAGING === "false") {
-      return handleSetState({ explorerLink: `https://algoexplorer.io/address/${owner}` });
-    }
-    return handleSetState({ explorerLink: `https://testnet.algoexplorer.io/address/${owner}` });
+    setState((state) => ({ ...state, ...payload }));
   };
 
-  useEffect(() => {
-    if (owner)
-      readUserProfile(owner).then((data) => {
-        if (data) handleSetState({ ownerDetails: data });
-      });
-  }, [owner]);
+  const getUsdValue = async () => {
+    let value = await getFormatedPrice(supportedChains[chain].id);
+    handleSetState({ usdValue: value * parseInt(price), UsdVolumeValue: volumeTraded * parseInt(price) });
+  };
+
+  const getUser = async () => {
+    const user = await readUserProfile(owner);
+    const links = [];
+    let link = {};
+    if (user.twitter) {
+      link.url = `https://twitter.com/${user.twitter}`;
+      link.icon = linkIcons["twitter"];
+      links.push(link);
+    } else if (links.discord) {
+      link.url = `https://discord.com/users/${user.discord}`;
+      link.icon = linkIcons["discord"];
+      links.push(link);
+    }
+    handleSetState({ user, links });
+  };
 
   useEffect(() => {
     getUsdValue();
-    viewOnExplorer();
-  }, [price, loadedChain]);
+    getUser();
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", () => {
       if (domMountRef.current) {
         const res = headerRef.current?.getBoundingClientRect().height;
-        getHeight(res);
+        getHeight(res + 100);
       } else {
         domMountRef.current = true;
       }
     });
-    getHeight(500);
+    getHeight(400);
   }, []);
 
+  if (!collection) return null;
   return (
-    <header ref={headerRef} className={classes.container}>
-      <div className={classes.banner}>
+    <div ref={headerRef} className={classes.container}>
+      <div style={{ backgroundImage: `url(${bannerImg})` }} className={classes.innerContainer}>
         <div className={classes.wrapper}>
-          {imageUrl ? (
-            <img
-              className={classes.imageContainer}
-              onError={({ currentTarget }) => {
-                currentTarget.onerror = null; // prevents looping
-                currentTarget.src = imageUrl;
-              }}
-              src={imageUrl}
-              alt="asset"
-            />
-          ) : (
-            <div className={classes.imageLoadingContainer}>
-              <Skeleton count={1} height={200} />
-            </div>
-          )}
-          <div className={classes.collectionDetails}>
-            <div className={classes.sup}>
-              <div className={classes.left}>
-                {name} <img src={supportedChains[chain]?.icon} alt="" />
+          <img className={classes.thumbnail} src={image_url} alt="" />
+          <div className={classes.linksAndCollectionDetailWrapper}>
+            <div className={classes.collectionDetail}>
+              <div className={classes.nameAndChainWrapper}>
+                <div className={classes.name}>{name}</div>
+                <img className={classes.chain} src={supportedChains[chain].icon} alt="" />
               </div>
-              <div className={classes.right}>
-                {ownerDetails?.twitter ? (
-                  <a href={`https://twitter.com/${ownerDetails.twitter}`} target="_blank" rel="noreferrer">
-                    {" "}
-                    <img src={twitter} alt="" className={classes.socialIcon} />{" "}
-                  </a>
-                ) : (
-                  ""
-                )}
-                {ownerDetails?.youtube ? (
-                  <a href={`https://youtube.com/${ownerDetails.youtube}`} target="_blank" rel="noreferrer">
-                    {" "}
-                    <img src={youtube} alt="" className={classes.socialIcon} />{" "}
-                  </a>
-                ) : (
-                  ""
-                )}
-                {ownerDetails?.instagram ? (
-                  <a href={`https://www.instagram.com/${ownerDetails.instagram}`} target="_blank" rel="noreferrer">
-                    {" "}
-                    <img src={instagram} alt="" className={classes.socialIcon} />{" "}
-                  </a>
-                ) : (
-                  ""
-                )}
-                {ownerDetails?.discord ? <img src={discord} alt="" className={classes.socialIcon} /> : ""}
-              </div>
-            </div>
-            <div className={classes.sub}>
-              <span className={classes.label}>Created By</span>
-              <span className={classes.address}>
-                {ownerDetails?.username ? ownerDetails?.username : breakAddress(owner)}
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className={classes.wrapper}>
-        <div className={classes.description}>{description}</div>
-      </div>
-      <div className={classes.wrapper}>
-        <div className={classes.details}>
-          <div className={classes.detailContentWrapper}>
-            <img src={stackIcon} alt="" />
-
-            <div className={classes.floorPrice}>
-              <div className={classes.floor}>FLOOR PRICE</div>
-
-              <div className={classes.price}>
-                <span style={{ marginRight: 3 }}>{price}</span>
-                <span className={classes.chain}>
-                  {supportedChains[loadedChain]?.sybmol} ({dollarPrice.toFixed(2)} USD)
+              <div className={classes.creator}>
+                <span>Created by</span>
+                <span className={classes.accent}>
+                  <Copy message={owner} placeholder={(user && user.username) || breakAddress(owner)} />
                 </span>
               </div>
             </div>
-          </div>
 
-          <div className={classes.detailContentWrapper}>
-            <img src={tradeIcon} alt="" />
-
-            <div className={classes.floorPrice}>
-              <div className={classes.floor}>TOTAL VOLUME TRADED</div>
-              <div className={classes.price}>0</div>
-            </div>
-          </div>
-
-          <div className={classes.detailContentWrapper}>
-            <img src={listIcon} alt="" />
-
-            <div className={classes.floorPrice}>
-              <div className={classes.floor}>TOTAL LIST COUNT</div>
-              <div className={classes.price}>{numberOfNfts}</div>
+            <div className={classes.socialLinks}>
+              {links.map((link, idx) => (
+                <a key={idx} className={classes.link} href={link.url}>
+                  <img src={link.icon} alt="" />
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </header>
+      <div className={classes.innerContainer_2}>
+        <div className={classes.wrapper_2}>
+          <div className={classes.description}>{description}</div>
+          <div className={classes.statsContainer}>
+            <div className={classes.statWrapper}>
+              <img src={stackIcon} alt="" />
+              <div className={classes.details}>
+                <div className={classes._1}>FLOOR PRICE</div>
+                <div className={classes._2}>
+                  <span className={classes.accent}>{price}</span>{" "}
+                  <span className={classes.accent}>{supportedChains[chain].symbol}</span>{" "}
+                  <span>{`$${usdValue.toFixed(4)}`}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={classes.statWrapper}>
+              <img src={tradeIcon} alt="" />
+              <div className={classes.details}>
+                <div className={classes._1}>TOTAL VOLUME TRADED</div>
+                <div className={classes._2}>
+                  <span className={classes.accent}>{volumeTraded}</span>{" "}
+                  <span className={classes.accent}>{supportedChains[chain].symbol}</span>{" "}
+                  <span>{`$${UsdVolumeValue}`}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={classes.statWrapper}>
+              <img src={listIcon} alt="" />
+              <div className={classes.details}>
+                <div className={classes._1}>TOTAL LIST COUNT</div>
+                <div className={classes._2}>
+                  <span className={classes.accent}>{nfts.length}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

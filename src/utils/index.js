@@ -179,7 +179,7 @@ export const getCeloGraphCollections = async (collections) => {
   return collectionsArr;
 };
 
-export const getNftCollections = async ({ collections, mainnet, dispatch }) => {
+export const getNftCollections = async ({ collections, mainnet }) => {
   const responses = await Promise.allSettled(collections.map((collection) => fetchCollection(collection, mainnet)));
 
   // removing rejected responses
@@ -189,7 +189,6 @@ export const getNftCollections = async ({ collections, mainnet, dispatch }) => {
       collectionsObj[element.value.name.trimEnd()] = element.value;
     }
   });
-  dispatch(setAlgoCollections(collectionsObj));
   return collectionsObj;
 };
 
@@ -269,19 +268,19 @@ export const getNftCollection = async ({ collection, mainnet }) => {
   }
 
   const responses = await Promise.allSettled(data.map((id, idx) => fetchCollectionNFT(id, idx)));
-  const nftArr = [];
+  const NFTCollection = [];
   const nftsObj = {};
   // removing rejected responses
   responses.forEach((element) => {
     if (element?.status === "fulfilled") {
-      nftArr.push(element.value);
+      NFTCollection.push(element.value);
       const nftObj = element.value;
       nftsObj[nftObj.Id] = nftObj;
     }
   });
   window.localStorage.activeCollection = JSON.stringify({ ...nftsObj });
 
-  return { NFTCollection: nftArr, loadedChain: 4160 };
+  return { NFTCollection };
   // handleSetState({
   //   NFTCollection: nftArr,
   //   loadedChain: 4160,
@@ -703,6 +702,11 @@ export const buyNft = async (buyProps) => {
       })
     );
   }
+};
+
+export const getFormatedPrice = async (id) => {
+  const res = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${id}&vs_currencies=usd`);
+  return Object.values(res?.data)[0]?.usd;
 };
 
 export const getImageSize = async (img) =>

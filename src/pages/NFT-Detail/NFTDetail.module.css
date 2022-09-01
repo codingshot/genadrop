@@ -1,0 +1,104 @@
+.container {
+  border: 1px solid red;
+  width: 100%;
+  margin-bottom: 8em;
+  padding: 0 2em;
+}
+
+.backBtnContainer {
+  border: 1px solid red;
+  padding: 1em;
+  margin-bottom: 2em;
+}
+
+.wrapper {
+  border: 1px solid red;
+  width: 100%;
+  max-width: 72em;
+  margin: 0 auto;
+}
+
+.sectionWrapper {
+  border: 1px solid red;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+  margin-bottom: 1em;
+}
+
+.nftSection {
+  width: 50%;
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+}
+
+.detailSection {
+  border: 1px solid red;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
+.priceHistory {
+  border: 1px solid red;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.historySection {
+  border: 1px solid red;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2em;
+  margin-bottom: 3em;
+}
+
+.moreSection {
+  border: 1px solid red;
+}
+
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    max-width: 56em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    max-width: 64em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    border: 1px solid blue;
+  }
+
+  .wrapper {
+    max-width: 64em;
+  }
+
+  .sectionWrapper {
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid blue;
+  }
+
+  .detailSection,
+  .nftSection {
+    width: 100%;
+    border: 4px solid red;
+  }
+}

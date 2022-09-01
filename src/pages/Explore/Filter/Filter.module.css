@@ -1,11 +1,9 @@
 .sidebar {
-  border-right: 1px solid var(--outline);
+  border: 1px solid var(--card-outline);
   width: 100%;
   max-width: 20em;
   position: sticky;
   top: 5em;
-  border-top-left-radius: 1em;
-  border-bottom-left-radius: 1em;
 }
 
 .sideOverflowWrapper {
@@ -17,6 +15,7 @@
 .label {
   font-size: 12px;
 }
+
 .filterHeading {
   display: flex;
   align-items: center;
@@ -24,6 +23,7 @@
   padding: 1em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
+  border-bottom: 1px solid var(--card-outline);
 }
 
 .filterHeading:hover {
@@ -46,6 +46,16 @@
   height: 1em;
 }
 
+.sort,
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.5em 1em;
+  text-transform: capitalize;
+}
+
 .attributeFilter .title {
   display: flex;
   align-items: center;
@@ -56,28 +66,6 @@
   border-top: 2px solid var(--outline);
 }
 
-.statusFilter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  padding-bottom: 1.5em;
-}
-
-.radioGroup {
-}
-
-.radio,
-.disabled {
-  display: flex;
-  align-items: center;
-  margin-bottom: 0.5em;
-}
-
-.radio input,
-.disabled input {
-  margin-right: 0.5em;
-}
 .priceFilter {
   display: flex;
   flex-direction: column;
@@ -144,9 +132,15 @@
   align-items: center;
   justify-content: space-between;
   cursor: var(--cursor-pointer);
-  padding: 1em;
+  padding: 0.5em;
   border-radius: 0.25em;
   border: 1px solid var(--outline);
+}
+
+.attributeName {
+  max-width: 10em;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .layerIcon {
@@ -172,25 +166,11 @@
   background: var(--default);
 }
 
-.disabled {
-  color: var(--outline-dark);
-}
 .layer.active {
   max-height: fit-content;
   overflow: auto;
   visibility: visible;
   transform: translateY(4px);
-}
-
-.layer > div {
-  border: 1px solid white;
-  padding: 0.5em 0.25em;
-  border-radius: 0.25em;
-}
-
-.layer > div:hover {
-  background: var(--outline);
-  cursor: var(--cursor-pointer);
 }
 
 .value {
@@ -201,17 +181,33 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+}
+
+.value:hover {
+  background: var(--outline);
+  cursor: pointer;
 }
 
 .statusIcon {
-  width: 16px;
-  height: 16px;
+  width: 1.4em;
+  height: 1.2em;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.15em;
+  border-radius: 0.2em;
   background: var(--default);
-  color: var(--outline-dark);
+  border: 1px solid var(--card-outline);
+}
+
+.statusIcon.active {
+  background: var(--main-color);
+  border: 1px solid var(--main-color);
+}
+
+.markIcon {
+  fill: var(--default);
 }
 
 .sidebar2 {
@@ -232,10 +228,16 @@
   padding: 1em;
   transition: all 300ms;
 }
+
 .valuesOfAttr {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.attributeValue {
+  width: 7em;
+  overflow: auto;
 }
 
 .sidebar2 img:hover {

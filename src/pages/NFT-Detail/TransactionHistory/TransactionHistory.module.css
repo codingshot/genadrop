@@ -1,0 +1,75 @@
+.container {
+  border: 1px solid red;
+  width: 50%;
+  overflow: auto;
+}
+
+.heading {
+  width: 100%;
+  border: 1px solid red;
+  padding: 0.5em;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 0.5em;
+}
+
+.tabs {
+  width: 100%;
+  border: 4px solid red;
+  display: flex;
+  gap: 1em;
+  overflow: auto;
+  margin-bottom: 1em;
+}
+
+.tab {
+  border: 1px solid red;
+  padding: 0.1em 0.5em;
+  border-radius: 0.5em;
+}
+
+.search {
+  border: 1px solid red;
+  width: 100%;
+  border-radius: 2em;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+.list {
+  border: 1px solid red;
+  width: 100%;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25em 1em;
+  font-size: 0.85rem;
+  border-radius: 2em;
+  border: 1px solid red;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid red;
+}
+
+.listContainer {
+  border: 1px solid red;
+  width: 100%;
+  height: 24em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 1em;
+  overflow: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+}

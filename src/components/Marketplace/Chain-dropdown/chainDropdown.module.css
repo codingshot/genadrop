@@ -34,7 +34,7 @@
   padding: 0.25em 1em;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid var(--main-color);
+  border: 1px solid var(--outline);
   border-radius: 2.5em;
   cursor: var(--cursor-pointer);
   height: 100%;
@@ -132,4 +132,32 @@
 
 .dropdownIcon.active {
   transform: rotate(180deg);
+}
+
+@media screen and (max-width: 540px) {
+  .chainDropdown {
+    width: 9em;
+  }
+
+  .selectedChain {
+    padding: 0.5em;
+  }
+
+  .chainDropdown * {
+    font-size: 0.75rem;
+  }
+
+  .chainImg {
+    width: 1.4em;
+    height: 1.4em;
+  }
+
+  .chainDropdown .dropdown img {
+    width: 1em;
+    height: 1em;
+  }
+
+  .dropdownIcon {
+    width: 1em;
+  }
 }

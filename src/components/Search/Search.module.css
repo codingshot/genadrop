@@ -27,8 +27,12 @@
 
 .placeholder {
   border-radius: 2em;
-  padding: 0.15em;
+  padding: 0.15em 1em;
   border: 1px solid var(--outline);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
 }
 
 .container.active .placeholder {
@@ -50,7 +54,7 @@
 }
 
 .placeholder input {
-  padding: 0.25em 1.5em;
+  padding: 0.25em;
 }
 
 .dropdownContainer {

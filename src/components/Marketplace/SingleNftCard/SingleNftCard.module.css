@@ -1,0 +1,135 @@
+.container {
+  width: 100%;
+  max-width: 24em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 1.5em;
+  cursor: pointer;
+  background: #ffffff;
+  border: 1.41429px solid rgba(28, 27, 28, 0.1);
+  box-shadow: 5.65714px 5.65714px 11.3143px rgba(28, 27, 28, 0.04);
+}
+
+.container:hover .image {
+  transform: scale(1.05);
+}
+
+.imageContainer {
+  width: 100%;
+  padding: 0.5em;
+}
+
+.imageWrapper {
+  width: 100%;
+  border-radius: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.image {
+  width: 100%;
+  height: 16em;
+  object-fit: cover;
+  border-radius: 1.5em;
+  transition: transform 300ms;
+}
+
+.details {
+  width: 100%;
+  border-top: 1px solid rgba(28, 27, 28, 0.1);
+  border-bottom: 1px solid rgba(28, 27, 28, 0.1);
+  padding: 0.5em;
+}
+
+.nameAndChainWrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+.tag {
+  width: max-content;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  background: rgba(28, 27, 28, 0.06);
+}
+
+.chain {
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 50%;
+}
+
+.name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-bottom: 1em;
+}
+
+.owner {
+  width: 100%;
+  max-width: 18em;
+  font-size: 0.85rem;
+  color: var(--main-color);
+}
+
+.listing {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0.5em;
+  padding-bottom: 1em;
+}
+
+.btn {
+  padding: 0.5em 3em;
+  border-radius: 2em;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  transition: all 300ms;
+}
+
+.btn:hover {
+  color: var(--default);
+  background: var(--main-color);
+}
+
+.btn.disable {
+  border: 1px solid transparent;
+  background: var(--card-outline);
+  color: white;
+}
+
+.priceLabel {
+  color: #a4a9b6;
+}
+
+.amount .accent {
+  font-weight: 700;
+}
+
+.amount span {
+  color: var(--main-color);
+  font-size: 0.85rem;
+}
+
+@media screen and (max-width: 1200px) {
+  .image {
+    height: 14em;
+  }
+
+  .name,
+  .owner .priceLabel,
+  .counts {
+    font-size: 0.85rem;
+  }
+}

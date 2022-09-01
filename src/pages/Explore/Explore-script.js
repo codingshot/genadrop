@@ -3,6 +3,7 @@ export const mapAttributeToFilter = (data) => {
   data.forEach(({ ipfs_data }) => {
     ipfs_data.properties.forEach((attr) => {
       if (attr.trait_type in attributes) {
+        if (attributes[attr.trait_type].value.includes(attr.value)) return;
         const obj = {};
         const newValue = [...attributes[attr.trait_type].value, attr.value];
         const newRarity = [...attributes[attr.trait_type].rarity, attr.rarity];
@@ -34,4 +35,106 @@ export const groupAttributesByTraitType = (attributes) => {
       }
     });
   return obj;
+};
+
+const filterByListed = (col) => {
+  console.log({ col });
+  return col;
+};
+
+const filterByNOtListed = (col) => {
+  return col;
+};
+
+const filterByOnAuchtion = (col) => {
+  return col;
+};
+
+const sortByDateAscending = (col) => {
+  const collection = col.sort((a, b) => {
+    if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
+    if (typeof a.createdAt === "object") {
+      return a.createdAt.seconds - b.createdAt.seconds;
+    }
+    return a.createdAt - b.createdAt;
+  });
+
+  return collection;
+};
+
+const sortByDateDescending = (col) => {
+  const collection = col.sort((a, b) => {
+    if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
+    if (typeof a.createdAt === "object") {
+      return b.createdAt.seconds - a.createdAt.seconds;
+    }
+    return b.createdAt - a.createdAt;
+  });
+
+  return collection;
+};
+
+const sortByPriceAscending = (col) => {
+  const collection = col.sort((a, b) => Number(a.price) - Number(b.price));
+  return collection;
+};
+
+const sortByPriceDescending = (col) => {
+  const collection = col.sort((a, b) => Number(b.price) - Number(a.price));
+  return collection;
+};
+
+const sortByNameAscending = (col) => {
+  console.log("called");
+  const collection = col.sort((a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+    return -1;
+  });
+  return collection;
+};
+
+const sortByNameDescending = (col) => {
+  console.log("called", col);
+  const collection = col.sort((a, b) => {
+    if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
+    return 1;
+  });
+  return collection;
+};
+
+export const sortBy = ({ value, NFTCollection }) => {
+  switch (value) {
+    case "newest":
+      return sortByDateAscending(NFTCollection);
+
+    case "oldest":
+      return sortByDateDescending(NFTCollection);
+
+    case "highest price":
+      return sortByPriceDescending(NFTCollection);
+
+    case "lowest price":
+      return sortByPriceAscending(NFTCollection);
+
+    case "a - z":
+      return sortByNameAscending(NFTCollection);
+
+    case "z - a":
+      return sortByNameDescending(NFTCollection);
+    default:
+      break;
+  }
+};
+
+export const filterBy = ({ value, NFTCollection }) => {
+  switch (value) {
+    case "listed":
+      return filterByListed(NFTCollection);
+    case "not listed":
+      return filterByNOtListed(NFTCollection);
+    case "on auction":
+      return filterByOnAuchtion(NFTCollection);
+    default:
+      break;
+  }
 };

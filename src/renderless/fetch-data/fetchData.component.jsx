@@ -45,7 +45,6 @@ import { ethers } from "ethers";
 
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
-
   useEffect(() => {
     // Get ALGO Collection
     (async function getALgoCollections() {
@@ -53,6 +52,7 @@ const FetchData = () => {
       dispatch(setCollections(collections));
       if (collections?.length) {
         const result = await getNftCollections({ collections, mainnet, dispatch });
+        dispatch(setAlgoCollections(result));
         dispatch(
           setSearchContainer({
             "Algorand collection": parseAlgoCollection(result),
