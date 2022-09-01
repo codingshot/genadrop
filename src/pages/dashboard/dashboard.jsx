@@ -6,7 +6,13 @@ import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 // import { setNotification } from "../../gen-state/gen.actions";
-import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
+import {
+  fetchUserBoughtNfts,
+  fetchUserCollections,
+  fetchUserCreatedNfts,
+  readUserProfile,
+  readUsers,
+} from "../../utils/firebase";
 // import { celoClient, polygonClient } from "../../utils/graphqlClient";
 // import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
