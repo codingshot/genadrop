@@ -275,7 +275,7 @@ const Dashboard = () => {
     let filteredNFTCollection = collection;
     if (collection) {
       filteredNFTCollection = collection.filter((col) =>
-        col.name.toLowerCase().includes(name ? name.toLowerCase() : "")
+        col.name?.toLowerCase().includes(name ? name.toLowerCase() : "")
       );
     }
     handleSetState({ filteredCollection: filteredNFTCollection });
