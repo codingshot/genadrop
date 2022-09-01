@@ -38,7 +38,7 @@ const LoginModal = () => {
       <div className={classes.card}>
         <CloseIcon onClick={handleClose} className={classes.closeBtn} />
         <div className={classes.heading}>
-          Sign in/Sign up in to continue using <span>Genadrop</span>
+          Sign in to continue using <span>Genadrop</span>
         </div>
         <FolderIcon className={classes.logoHead} />
         <div onClick={!isSignIn ? handleSignIn : () => {}} className={classes.signinBtn}>

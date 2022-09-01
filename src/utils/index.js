@@ -485,15 +485,17 @@ export const getSingleGraphNfts = async (nfts) => {
       }, delay);
     });
   }
-  const responses = await Promise.allSettled(nfts.map((NFT, idx) => fetchGraphNFT(NFT, idx, nfts)));
-  const nftArr = [];
-  // removing rejected responses
-  responses.forEach((element) => {
-    if (element?.status === "fulfilled") {
-      nftArr.push(element.value);
-    }
-  });
-  return nftArr;
+  if (nfts?.length) {
+    const responses = await Promise.allSettled(nfts?.map((NFT, idx) => fetchGraphNFT(NFT, idx, nfts)));
+    const nftArr = [];
+    // removing rejected responses
+    responses.forEach((element) => {
+      if (element?.status === "fulfilled") {
+        nftArr.push(element.value);
+      }
+    });
+    return nftArr;
+  }
 };
 
 export const getSingleNftDetails = async (mainnet, nft) => {

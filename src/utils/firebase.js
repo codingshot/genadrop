@@ -1,7 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
-import { doc, getDoc, query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, query, where, getDocs, onSnapshot, collection } from "firebase/firestore";
 
 // const {
 //   getDatabase,
@@ -219,6 +219,28 @@ async function readUserProfile(userAddress) {
   // doc.data() will be undefined in this case
   return {};
 }
+async function readUsers() {
+  const profileQuerySnapshot = await db.collection("profile").get();
+
+  const nftsQuerySnapshot = await db.collection("nfts").get();
+  const users = [];
+  const nfts = [];
+  try {
+    nftsQuerySnapshot.forEach((docs) => {
+      nfts.push(...Object.values(docs.data()));
+    });
+    profileQuerySnapshot.forEach((docs) => {
+      users.push(...Object.values(docs.data()));
+    });
+    // const response = res.filter((asset) => asset.owner === account);
+    console.log(users);
+    console.log(nfts);
+    return users;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
 
 async function fetchAlgoSingle(mainnet) {
   const querySnapshot = await db.collection("nfts").get();
@@ -353,4 +375,5 @@ export {
   writeUserProfile,
   listNft,
   fetchUserCreatedNfts,
+  readUsers,
 };

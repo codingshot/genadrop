@@ -177,6 +177,9 @@
   display: flex;
   gap: 5px;
 }
+.address > img {
+  max-width: 20px;
+}
 .address > div span {
   color: #4b4b5a;
 }
