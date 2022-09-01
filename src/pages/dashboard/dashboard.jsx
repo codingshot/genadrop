@@ -103,6 +103,7 @@ const Dashboard = () => {
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
           nfts = await fetchUserCreatedNfts(account);
+          nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
           break;
         case "Celo":
           nfts = await getCeloMintedNFTs(address);
@@ -229,7 +230,7 @@ const Dashboard = () => {
     let filtered = null;
     if (filter.name === "a - z") {
       filtered = getCollectionToFilter().sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+        if (a.name?.toLowerCase() > b.name?.toLowerCase()) return 1;
         return -1;
       });
     } else {
