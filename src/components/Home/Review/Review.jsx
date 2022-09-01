@@ -93,12 +93,12 @@ const Review = () => {
         <div className={classes.description}>See what people are saying about GenaDrop.</div>
         <div className={classes.display}>
           <div className={classes.row}>
-            {tweetsData.map((review, idx) => (
-              <a key={idx} href={review.url} target="_blank" rel="norefferrer">
+            {tweetsData.map((review) => (
+              <a key={review.id} href={review.url} target="_blank" rel="noreferrer">
                 <div className={classes.reviewCard}>
                   <div className={classes.review}>{formattedContent(review.text)} </div>
                   <div className={classes.profile}>
-                    <img src={review.author_id.profile_image_url} className={classes.thumbnail} />
+                    <img src={review.author_id.profile_image_url} className={classes.thumbnail} alt={review.url} />
                     <div className={classes.innerContainer}>
                       <div className={classes.name}>{review.author_id.name}</div>
                       <div className={classes.handle}>@{review.author_id.username}</div>
