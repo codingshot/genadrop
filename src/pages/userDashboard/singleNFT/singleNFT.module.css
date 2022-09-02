@@ -184,7 +184,8 @@
 
 .list,
 .bid,
-.sold {
+.sold,
+.listDisabled {
   flex-direction: row;
   margin: 1rem 0.5rem 1rem 0;
   color: white;
@@ -198,6 +199,10 @@
   background-color: var(--main-color);
 }
 
+.listDisabled {
+  background-color: var(--outline-dark);
+  cursor: no-drop;
+}
 .bid {
   border: 1px solid var(--main-color);
   color: var(--main-color);
