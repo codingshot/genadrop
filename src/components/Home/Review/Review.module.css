@@ -16,7 +16,7 @@
   text-align: center;
 }
 
-.heading span {
+.heading .accent {
   color: var(--main-color);
 }
 
