@@ -22,7 +22,7 @@
   color: var(--text-heading);
 }
 
-.heading span {
+.heading .accent {
   color: var(--main-color);
 }
 

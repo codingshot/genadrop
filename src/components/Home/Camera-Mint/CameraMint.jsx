@@ -7,7 +7,7 @@ const CameraMint = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        Mint NFTs with your <span>camera</span>
+        <span>Mint NFTs with your</span> <span className={classes.accent}>camera</span>
       </div>
       <div className={classes.description}>
         Photography NFTs built into our app, the Web3 instagram for multiple blockchains{" "}

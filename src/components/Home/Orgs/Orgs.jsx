@@ -17,7 +17,8 @@ const Orgs = () => (
     <div className={classes.wrapper}>
       <div className={classes.content}>
         <div className={classes.heading}>
-          Backed by the <span>Web3’s</span> <span>Best Orgs</span>
+          <span>Backed by the</span> <span className={classes.accent}>Web3’s</span>{" "}
+          <span className={classes.accent}>Best Orgs</span>
         </div>
         <div className={classes.description}>
           From the leading blockchains, creative groups, and DAOs, GenaDrop is supported by the industry’s best. Want to
