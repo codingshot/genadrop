@@ -20,7 +20,7 @@
   font-weight: 600;
 }
 
-.heading span {
+.heading .accent {
   color: var(--main-color);
 }
 
@@ -91,7 +91,7 @@
     font-size: 2rem;
   }
 
-  .heading span {
+  .heading .accent {
     white-space: nowrap;
   }
 

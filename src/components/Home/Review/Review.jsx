@@ -88,7 +88,7 @@ const Review = () => {
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.heading}>
-          Some people think we’re <span>Pretty Cool.</span>
+          <span>Some people think we’re</span> <span className={classes.accent}>Pretty Cool.</span>
         </div>
         <div className={classes.description}>See what people are saying about GenaDrop.</div>
         <div className={classes.display}>

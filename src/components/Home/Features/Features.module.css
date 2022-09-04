@@ -16,7 +16,7 @@
 
 .heading {
   width: 100%;
-  max-width: 18em;
+  max-width: 20em;
   text-align: center;
   margin-bottom: 0.5em;
   font-size: 3rem;
@@ -25,7 +25,7 @@
   color: var(--text-heading);
 }
 
-.heading span {
+.heading .accent {
   color: var(--main-color);
 }
 

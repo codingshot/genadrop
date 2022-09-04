@@ -33,7 +33,7 @@ const Plans = () => {
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.heading}>
-          Get more out of our <span>Create app</span>
+          <span>Get more out of our</span> <span className={classes.accent}>Create app</span>
         </div>
         <div className={classes.description}>Choose a plan that’s best for your project</div>
         <div className={classes.plans}>

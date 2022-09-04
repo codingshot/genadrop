@@ -25,7 +25,7 @@
   margin-bottom: 1em;
 }
 
-.heading span {
+.heading .accent {
   color: var(--main-color);
 }
 
