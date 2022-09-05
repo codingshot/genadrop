@@ -106,8 +106,8 @@ const SingleNFT = () => {
   }
 
   useEffect(() => {
-    dispatch(setOverlay(true));
     if (Number(nftChainId) !== 4160) return;
+    dispatch(setOverlay(true));
     let nftDetails = null;
     // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
     // if (cacheNftDetails) {

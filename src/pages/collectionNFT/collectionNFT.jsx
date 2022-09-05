@@ -131,13 +131,9 @@ const CollectionNFT = () => {
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
         if (filteredId) {
           const result = await getCeloGraphNft(filteredId[0], collectionName);
-
           const trHistory = await getTransactions(filteredId[0]?.transactions);
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
-
-          trHistory.find((t) => {
-            if (t.type === "Minting") t.price = result[0].price;
-          });
+          console.log(filteredId[0]?.transactions);
           handleSetState({
             nftDetails: result[0],
             collection: collectionData,
@@ -301,7 +297,7 @@ const CollectionNFT = () => {
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
                   {nftDetails && (
                     <p className={classes.tokenValue}>
-                      {parseInt(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain].sybmol}
+                      {Number(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain].sybmol}
                     </p>
                   )}
                   <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>

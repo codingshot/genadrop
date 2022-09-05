@@ -78,7 +78,6 @@ export const getCeloMintedNFTs = async (address) => {
       ? ethers?.utils?.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
       : ethers?.utils?.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
-  console.log(response);
   const celoMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS?.collectionId === filterAddress);
   return celoMintedNfts;
 };
