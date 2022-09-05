@@ -31,6 +31,12 @@ export const GET_GRAPH_COLLECTIONS = gql`
           txDate
           txId
           type
+          from {
+            id
+          }
+          to {
+            id
+          }
           price
         }
       }
@@ -112,7 +118,14 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
         transactions {
           id
           txDate
+          price
           txId
+          to {
+            id
+          }
+          from {
+            id
+          }
           type
         }
       }
@@ -260,6 +273,12 @@ export const GET_GRAPH_NFT = gql`
         id
         txDate
         txId
+        to {
+          id
+        }
+        from {
+          id
+        }
         type
         price
       }
