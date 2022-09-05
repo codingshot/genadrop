@@ -96,9 +96,9 @@ const Create = () => {
 
   return (
     <div className={classes.container}>
-      {/* <SubscriptionNotification /> */}
-      {/* <LoginModal /> */}
-      {/* <CollectionNameModal /> */}
+      <SubscriptionNotification />
+      <LoginModal />
+      <CollectionNameModal />
       <CreateGuide toggleGuide={toggleGuide} setGuide={(e) => handleSetState({ toggleGuide: e })} />
       <div className={classes.details}>
         <div
