@@ -42,6 +42,10 @@ const Menu = ({ NFTCollection, toggleFilter, headerHeight }) => {
     handleSetState({ paginate });
   }, [NFTCollection]);
 
+  useEffect(() => {
+    console.log("changed");
+  }, [NFTCollection]);
+
   return (
     <div className={classes.container}>
       <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>

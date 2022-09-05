@@ -6,7 +6,13 @@ import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 // import { setNotification } from "../../gen-state/gen.actions";
-import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
+import {
+  fetchUserBoughtNfts,
+  fetchUserCollections,
+  fetchUserCreatedNfts,
+  readUserProfile,
+  readUsers,
+} from "../../utils/firebase";
 // import { celoClient, polygonClient } from "../../utils/graphqlClient";
 // import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
@@ -97,6 +103,7 @@ const Dashboard = () => {
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
           nfts = await fetchUserCreatedNfts(account);
+          nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
           break;
         case "Celo":
           nfts = await getCeloMintedNFTs(address);
@@ -223,7 +230,7 @@ const Dashboard = () => {
     let filtered = null;
     if (filter.name === "a - z") {
       filtered = getCollectionToFilter().sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+        if (a.name?.toLowerCase() > b.name?.toLowerCase()) return 1;
         return -1;
       });
     } else {
@@ -269,7 +276,7 @@ const Dashboard = () => {
     let filteredNFTCollection = collection;
     if (collection) {
       filteredNFTCollection = collection.filter((col) =>
-        col.name.toLowerCase().includes(name ? name.toLowerCase() : "")
+        col.name?.toLowerCase().includes(name ? name.toLowerCase() : "")
       );
     }
     handleSetState({ filteredCollection: filteredNFTCollection });

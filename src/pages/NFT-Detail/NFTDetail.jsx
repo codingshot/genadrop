@@ -8,7 +8,6 @@ import Attributes from "./Attributes/Attributes";
 import Deals from "./Deals/Deals";
 import Description from "./Description/Description";
 import Details from "./Details/Details";
-import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
 import Metadata from "./Metadata/Metadata";
 import More from "./More/More";
 import NFT from "./NFT/NFT";
@@ -94,7 +93,6 @@ const NFTDetail = () => {
 
           <div className={classes.historySection}>
             <TransactionHistory nftDetails={nftDetails} />
-            {/* <ExploreTransactionHistory nftDetails={nftDetails} /> */}
             <Metadata nftDetails={nftDetails} />
           </div>
 

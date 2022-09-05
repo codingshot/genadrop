@@ -2,6 +2,13 @@ import classes from "./singleNftCollection.module.css";
 import bannerImg from "../../assets/explore-banner2.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import { useContext, useEffect, useState } from "react";
+
+// import NftCard from "../../components/Marketplace/NftCard/NftCard";
+// import NotFound from "../../components/not-found/notFound";
+// import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+// import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
+// import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+
 import { GenContext } from "../../gen-state/gen.context";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";

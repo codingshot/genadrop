@@ -2,12 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 import { chains } from "./Chains-Script";
 import classes from "./Chains.module.css";
-import { useHistory, useRouteMatch, useLocation } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 const Chains = () => {
   const cardRef = useRef(null);
   const history = useHistory();
-  const location = useLocation();
 
   const { url } = useRouteMatch();
 

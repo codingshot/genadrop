@@ -15,8 +15,8 @@ const Features = () => {
           card.children[0].style.transform = "translateX(0)";
           card.children[1].style.transform = "translateX(0)";
         } else {
-          card.children[0].style.transform = "translateX(-3em)";
-          card.children[1].style.transform = "translateX(3em)";
+          card.children[0].style.transform = "translateX(-6em)";
+          card.children[1].style.transform = "translateX(6em)";
         }
       }
     });
@@ -25,11 +25,8 @@ const Features = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        The All in One No Code Solution <br /> for your NFT Needs
-      </div>
-      <div className={classes.description}>
-        Create, Mint & Sell forward faster with <span>no-code</span> tool that perfectly guide you from NFT Creation to
-        Sale.
+        <span>The All in One</span> <span className={classes.accent}>No Code Solution</span>{" "}
+        <span>for your NFT Needs</span>
       </div>
       <div className={classes.wrapper}>
         {features.map((f, idx) => (

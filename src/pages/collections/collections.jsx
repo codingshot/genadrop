@@ -7,7 +7,7 @@ import { GenContext } from "../../gen-state/gen.context";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
-  const algoCollectionsArr = Object.values(algoCollections);
+  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const [state, setState] = useState({
     collections: [],

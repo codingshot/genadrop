@@ -99,7 +99,7 @@
   background: var(--main-color);
   color: white;
   padding: 1em;
-  border-radius: 0.5em;
+  border-radius: 0.25em;
   transition: all 300ms;
 }
 
@@ -167,7 +167,7 @@
 }
 
 .layer.active {
-  max-height: fit-content;
+  max-height: 10em;
   overflow: auto;
   visibility: visible;
   transform: translateY(4px);

@@ -38,7 +38,6 @@ export const groupAttributesByTraitType = (attributes) => {
 };
 
 const filterByListed = (col) => {
-  console.log({ col });
   return col;
 };
 
@@ -51,7 +50,7 @@ const filterByOnAuchtion = (col) => {
 };
 
 const sortByDateAscending = (col) => {
-  const collection = col.sort((a, b) => {
+  const collection = [...col].sort((a, b) => {
     if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
     if (typeof a.createdAt === "object") {
       return a.createdAt.seconds - b.createdAt.seconds;
@@ -63,7 +62,7 @@ const sortByDateAscending = (col) => {
 };
 
 const sortByDateDescending = (col) => {
-  const collection = col.sort((a, b) => {
+  const collection = [...col].sort((a, b) => {
     if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
     if (typeof a.createdAt === "object") {
       return b.createdAt.seconds - a.createdAt.seconds;
@@ -75,18 +74,17 @@ const sortByDateDescending = (col) => {
 };
 
 const sortByPriceAscending = (col) => {
-  const collection = col.sort((a, b) => Number(a.price) - Number(b.price));
+  const collection = [...col].sort((a, b) => Number(a.price) - Number(b.price));
   return collection;
 };
 
 const sortByPriceDescending = (col) => {
-  const collection = col.sort((a, b) => Number(b.price) - Number(a.price));
+  const collection = [...col].sort((a, b) => Number(b.price) - Number(a.price));
   return collection;
 };
 
 const sortByNameAscending = (col) => {
-  console.log("called");
-  const collection = col.sort((a, b) => {
+  const collection = [...col].sort((a, b) => {
     if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
     return -1;
   });
@@ -94,8 +92,7 @@ const sortByNameAscending = (col) => {
 };
 
 const sortByNameDescending = (col) => {
-  console.log("called", col);
-  const collection = col.sort((a, b) => {
+  const collection = [...col].sort((a, b) => {
     if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
     return 1;
   });

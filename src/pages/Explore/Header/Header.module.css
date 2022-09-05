@@ -207,9 +207,14 @@
   .wrapper {
     background: var(--default);
     gap: 1em;
+    padding: 0.5em;
+    border-radius: 0.5em;
   }
 
-  .innerContainer,
+  .innerContainer {
+    padding: 0 0.5em;
+  }
+
   .innerContainer_2 {
     padding: 0 1em;
   }

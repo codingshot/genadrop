@@ -1,9 +1,9 @@
-import { useHistory, useRouteMatch } from "react-router-dom";
+import React, { useHistory, useRouteMatch } from "react-router-dom";
+import { useContext } from "react";
 import classes from "./mint.module.css";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
-import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
@@ -47,7 +47,7 @@ const Mint = () => {
             Mint your collection downloaded from Genadrop Creat app. These are collections of NFTs with mix and match
             traits in a Zip file.{" "}
           </p>
-          <button onClick={() => handleMint("collection")} className={classes.btn}>
+          <button onClick={() => handleMint("collection")} className={classes.btn} type="button">
             Mint collection
           </button>
         </div>

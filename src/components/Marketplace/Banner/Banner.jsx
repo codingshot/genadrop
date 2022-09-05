@@ -1,13 +1,11 @@
-import React from "react";
 import classes from "./Banner.module.css";
 import bannerImg from "../../../assets/marketplace-banner.png";
-import Chains from "../Chains/Chains";
 import Search from "../../Search/Search";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import Chains from "../Chains/Chains";
 
 const Banner = () => {
   const history = useHistory();
-
   return (
     <div style={{ backgroundImage: `url(${bannerImg})` }} className={classes.container}>
       <div className={classes.wrapper}>

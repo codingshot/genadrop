@@ -152,7 +152,6 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
                               ) : (
                                 <span className={`${classes.statusIcon}`}></span>
                               )}
-
                               <div className={classes.valuesOfAttr}>
                                 <span className={classes.attributeValue}>{capitalize(val)}</span>
                                 <span>

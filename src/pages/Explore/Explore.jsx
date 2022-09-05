@@ -55,7 +55,6 @@ const Explore = () => {
   };
 
   const getHeight = (res) => {
-    console.log({ res });
     handleSetState({ headerHeight: res });
   };
 
@@ -117,14 +116,14 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let result = filterBy({ value: filter.status, NFTCollection });
-    handleSetState({ FilteredCollection: result });
+    let filtered = filterBy({ value: filter.status, NFTCollection });
+    handleSetState({ FilteredCollection: filtered });
   }, [filter.status]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let result = sortBy({ value: filter.sortby, NFTCollection });
-    handleSetState({ FilteredCollection: result });
+    const filtered = sortBy({ value: filter.sortby, NFTCollection });
+    handleSetState({ FilteredCollection: filtered });
   }, [filter.sortby]);
 
   useEffect(() => {
@@ -138,7 +137,7 @@ const Explore = () => {
       )
     );
     handleSetState({ FilteredCollection: filtered });
-    // document.documentElement.scrollTop = headerHeight;
+    document.documentElement.scrollTop = headerHeight;
   }, [filter.attributes]);
 
   return (

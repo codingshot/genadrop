@@ -33,44 +33,6 @@ export const getNetworkID = () => {
   });
 };
 
-export const timeConverter = (UNIX_timestamp) => {
-  var a = new Date(UNIX_timestamp * 1000);
-  var months = [
-    "January",
-    "Febuary",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-  var year = a.getFullYear();
-  var month = months[a.getMonth()];
-  var date = a.getDate();
-  var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = month + " " + date + ", " + year;
-  return time;
-};
-
-export const getDate = (d) => {
-  let newDate = d;
-  let now = new Date();
-  let date = new Date(newDate * 1000);
-  let diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
-  if (diff < 0.04) return parseInt(diff * 24 * 60) + " mins ago";
-  else if (diff < 1) return parseInt(diff * 24) + " hours ago";
-  else if (diff < 31) return parseInt(diff) + " days ago";
-  else if (diff < 356) return parseInt(diff / 30) + " months ago";
-  else return diff / 30 / 12 + " years ago";
-};
-
 export const initializeConnection = (walletProps) => {
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;

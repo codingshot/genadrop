@@ -74,6 +74,7 @@ const Header = ({ collection, getHeight }) => {
   }, []);
 
   if (!collection) return null;
+
   return (
     <div ref={headerRef} className={classes.container}>
       <div style={{ backgroundImage: `url(${bannerImg})` }} className={classes.innerContainer}>
