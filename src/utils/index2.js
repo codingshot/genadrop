@@ -141,10 +141,10 @@ ${i + 1} of ${value.length}`
 // eslint-disable-next-line consistent-return
 export const handleDownload = async (input) => {
   const { value, dispatch, setZip, setNotification, name, currentPlan } = input;
-  if (currentPlan === "free") {
-    dispatch(setToggleUpgradeModal(true));
-    return;
-  }
+  // if (currentPlan === "free") {
+  //   dispatch(setToggleUpgradeModal(true));
+  //   return;
+  // }
   if (!name) {
     return dispatch(
       setNotification({
