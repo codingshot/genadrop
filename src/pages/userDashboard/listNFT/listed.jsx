@@ -95,11 +95,13 @@ const Listed = () => {
       </div>
     );
   }
+  // /marketplace/1of1/1313161555/0x97e9d4c3d547d8ebc46dd32ea9e7f745e5a408e9192177
+  // marketplace/1of1/44787/0x990fbe6231bb75c7782afaf6570a7a5be8fe791218828
+  // marketplace/1of1/80001/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe71122197
+  // marketplace/1of1/4160/95323884
   const shareURL = nftDetails?.collection_name
-    ? `${url}/${nftDetails.Id}`
-    : nftDetails.chain
-    ? `/marketplace`
-    : `/marketplace/1of1/${nftDetails.Id}`;
+    ? `${url}/${nftDetails?.Id}`
+    : `/marketplace/1of1/${nftDetails?.chain}/${nftDetails?.Id}`;
   return (
     <div className={classes.container}>
       <span>Your item is now listed for sale</span>
