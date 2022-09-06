@@ -226,6 +226,10 @@
     width: 100%;
   }
 
+  .navList li {
+    font-weight: normal;
+  }
+
   .navItem {
     width: 100%;
     text-align: center;
