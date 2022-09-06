@@ -274,16 +274,15 @@ const List = () => {
           </div>
         </div>
       </div>
-      {price
-        ? // <div className={classes.feature}>
-          //   <div className={classes.mainDetails}>
-          //     <div className={classes.collectionHeader}>
-          //       <div className={classes.nftId}>Fees</div>
-          //     </div>
-          //   </div>
+      {/* {price ? (
+        <div className={classes.feature}>
+          <div className={classes.mainDetails}>
+            <div className={classes.collectionHeader}>
+              <div className={classes.nftId}>Fees</div>
+            </div>
+          </div>
 
-          {
-            /* <div className={classes.detailContent}>
+          <div className={classes.detailContent}>
             <div className={classes.priceDescription}>
               Listing is Free! At the time of sale, the following fees will be deducted
             </div>
@@ -296,10 +295,11 @@ const List = () => {
             <div className={classes.row}>
               Total <span>17%</span>
             </div>
-          </div> */
-          }
-        : // </div>
-          ""}
+          </div>
+        </div>
+      ) : (
+        ""
+      )} */}
     </div>
   );
 };
