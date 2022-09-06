@@ -105,10 +105,10 @@ const List = () => {
     (async function getAmount() {
       axios
         .get(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId].coinGeckoLabel}&vs_currencies=usd`
+          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId]?.coinGeckoLabel}&vs_currencies=usd`
         )
         .then((res) => {
-          const value = Object.values(res.data)[0].usd;
+          const value = Object.values(res.data)[0]?.usd;
           handleSetState({
             // chainIcon: supportedChains[nftDetails.chain].icon,
             amount: price * value,
@@ -120,7 +120,7 @@ const List = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      if (supportedChains[chainId].chain === "Polygon") {
+      if (supportedChains[chainId]?.chain === "Polygon") {
         const [nft] = await polygonUserData(nftId);
         if (nft === null) {
           return (
@@ -138,7 +138,7 @@ const List = () => {
           isLoading: false,
           image_url: nft?.ipfs_data?.image,
         });
-      } else if (supportedChains[chainId].chain === "Celo") {
+      } else if (supportedChains[chainId]?.chain === "Celo") {
         const [nft] = await celoUserData(nftId);
         if (nft === null) {
           return (
@@ -156,7 +156,7 @@ const List = () => {
           image_url: nft?.ipfs_data?.image,
           isLoading: false,
         });
-      } else if (supportedChains[chainId].chain === "Aurora") {
+      } else if (supportedChains[chainId]?.chain === "Aurora") {
         const [nft] = await auroraUserData(nftId);
         if (nft === null) {
           return (
@@ -256,7 +256,7 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
-                <span className={classes.amount}>{amount.toFixed(2)}</span>
+                <span className={classes.amount}>$ {amount.toFixed(2)}</span>
               </div>
             </section>
           </div>

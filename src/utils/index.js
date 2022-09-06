@@ -423,6 +423,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
+    nftArr.isListed = collection?.isListed;
     nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;

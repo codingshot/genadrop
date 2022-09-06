@@ -288,22 +288,36 @@ const ListSingleNFT = (nft) => {
               </div>
             </div>
             <div className={classes.priceSection}>
-              <span className={classes.title}>Owned by you</span>
+              {nftDetails?.owner === account && <span className={classes.title}>Owned by you</span>}
             </div>
             <div className={classes.btns}>
-              <Link
-                to={
-                  nft.collection_name
-                    ? `${match.url}/${nftDetails.Id}`
-                    : nftDetails.chain
-                    ? `/marketplace/1of1/list/${nftDetails.chain}/${nftId}`
-                    : `/marketplace/1of1/list/${nftDetails.Id}`
-                }
-                className={classes.alignIcon}
-              >
+              <div className={classes.alignIcon}>
                 <img className={classes.iconImg} src={supportedChains[nftDetails?.chain]?.icon} />
-                <button className={classes.list}>List</button>
-              </Link>
+                {nftDetails?.owner === account ? (
+                  <Link
+                    to={
+                      nft.collection_name
+                        ? `${match.url}/${nftDetails.Id}`
+                        : nftDetails.chain
+                        ? `/marketplace/1of1/list/${nftDetails.chain}/${nftId}`
+                        : `/marketplace/1of1/list/${nftDetails.Id}`
+                    }
+                    className={classes.alignIcon}
+                  >
+                    {nftDetails?.isListed ? (
+                      <button className={classes.list}>Re-List</button>
+                    ) : (
+                      <button className={classes.list}>List</button>
+                    )}
+                  </Link>
+                ) : (
+                  <div className={classes.alignIcon}>
+                    <button className={classes.sold} disabled={true}>
+                      Not Listed
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className={classes.feature}>

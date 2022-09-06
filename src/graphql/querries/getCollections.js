@@ -263,6 +263,7 @@ export const GET_GRAPH_NFT = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
