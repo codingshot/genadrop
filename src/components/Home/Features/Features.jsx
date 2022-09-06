@@ -25,7 +25,8 @@ const Features = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        The All in One <span>No Code Solution</span> for your NFT Needs
+        <span>The All in One</span> <span className={classes.accent}>No Code Solution</span>{" "}
+        <span>for your NFT Needs</span>
       </div>
       <div className={classes.wrapper}>
         {features.map((f, idx) => (

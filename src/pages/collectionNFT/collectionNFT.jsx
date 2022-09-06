@@ -131,13 +131,9 @@ const CollectionNFT = () => {
         const filteredId = filteredCollection[0]?.nfts?.filter((col) => col?.id === nftId);
         if (filteredId) {
           const result = await getCeloGraphNft(filteredId[0], collectionName);
-
           const trHistory = await getTransactions(filteredId[0]?.transactions);
           const collectionData = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
-
-          trHistory.find((t) => {
-            if (t.type === "Minting") t.price = result[0].price;
-          });
+          console.log(filteredId[0]?.transactions);
           handleSetState({
             nftDetails: result[0],
             collection: collectionData,
@@ -292,8 +288,8 @@ const CollectionNFT = () => {
                 </svg>
               </div>
             </div>
-            {nftDetails.price == 0 || nftDetails.price === null ? (
-              <div></div>
+            {nftDetails.price === 0 || nftDetails.price === null ? (
+              <div />
             ) : (
               <div className={classes.priceSection}>
                 <span className={classes.title}>Current price</span>
@@ -301,7 +297,7 @@ const CollectionNFT = () => {
                   <img src={supportedChains[nftDetails.chain].icon} alt="" />
                   {nftDetails && (
                     <p className={classes.tokenValue}>
-                      {parseInt(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain].sybmol}
+                      {Number(nftDetails.price).toFixed(2)} {supportedChains[nftDetails.chain].sybmol}
                     </p>
                   )}
                   <span className={classes.usdValue}>(${totalPrice.toFixed(2)})</span>
@@ -314,6 +310,7 @@ const CollectionNFT = () => {
                 <div className={classes.btns}>
                   <button
                     onClick={() => history.push(`/marketplace/1of1/list/${chainId}/${nftDetails.Id}`)}
+                    type="button"
                     className={classes.buy}
                   >
                     List
@@ -321,7 +318,7 @@ const CollectionNFT = () => {
                 </div>
               ) : (
                 <div className={classes.btns}>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
+                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                     Not Listed!
                   </button>
                 </div>
@@ -331,13 +328,13 @@ const CollectionNFT = () => {
                 {nftDetails.sold ? (
                   nftDetails?.isListed ? (
                     <>
-                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                      <button type="button" className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
                         Buy
                       </button>
                     </>
                   ) : (
                     <>
-                      <button className={classes.sold} disabled={nftDetails.sold}>
+                      <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                         SOLD!
                       </button>
                     </>
@@ -345,7 +342,7 @@ const CollectionNFT = () => {
                 ) : (
                   <>
                     {Number(nftDetails.chain) !== 4160 ? (
-                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                      <button type="button" className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
                         <img src={walletIcon} alt="" />
                         Buy now
                       </button>

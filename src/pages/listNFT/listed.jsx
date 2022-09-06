@@ -1,8 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
+import { FacebookShareButton, TwitterShareButton, TelegramShareButton } from "react-share";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { GenContext } from "../../gen-state/gen.context";
+import { getSingleNftDetails } from "../../utils";
 import classes from "./listed.module.css";
 import telegram from "../../assets/blue-telegram.svg";
 import twitterIcon from "../../assets/blue-twitter.svg";
@@ -96,10 +98,18 @@ const Listed = () => {
         </div>
 
         <div className={classes.detailContent}>
-          <img src={twitterIcon} alt="" />
-          <img src={facebookIcon} alt="" />
-          <img src={telegram} alt="" />
-          <img src={linktree} alt="" />
+          <TwitterShareButton url={window.location.href.replace("list", "preview")}>
+            <img src={twitterIcon} alt="Twitter-icon" />
+          </TwitterShareButton>
+          <FacebookShareButton url={window.location.href.replace("list", "preview")}>
+            <img src={facebookIcon} alt="Facebook-icon" />
+          </FacebookShareButton>
+          <TelegramShareButton url={window.location.href.replace("list", "preview")}>
+            <img src={telegram} alt="Telegram-icon" />
+          </TelegramShareButton>
+          <CopyToClipboard text={window.location.href.replace("list", "preview")}>
+            <img src={linktree} alt="CopyT-icon" />
+          </CopyToClipboard>
         </div>
       </div>
       <button type="button" className={classes.view}>

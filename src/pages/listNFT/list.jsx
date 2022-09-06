@@ -1,25 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useRouteMatch, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import { useRouteMatch, Link, useHistory } from "react-router-dom";
-import { GenContext } from "../../gen-state/gen.context";
-import { getUserBoughtNftCollection, getUserGraphNft } from "../../utils";
-import classes from "./list.module.css";
-import { fetchUserBoughtNfts, listNft, writeNft } from "../../utils/firebase";
-import { GET_USER_NFT } from "../../graphql/querries/getCollections";
-import { polygonClient } from "../../utils/graphqlClient";
-import { ethers } from "ethers";
-import algoIcon from "../../assets/icon-algo.svg";
-import { listAuroraNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
-import {
-  auroraUserData,
-  celoUserData,
-  getCeloNFTToList,
-  getPolygonNFTToList,
-  polygonUserData,
-} from "../../renderless/fetch-data/fetchUserGraphData";
-import { setNotification } from "../../gen-state/gen.actions";
-import supportedChains from "../../utils/supportedChains";
 import axios from "axios";
+import classes from "./list.module.css";
+import supportedChains from "../../utils/supportedChains";
+import { GenContext } from "../../gen-state/gen.context";
+import { setNotification } from "../../gen-state/gen.actions";
+import { getUserBoughtNftCollection } from "../../utils";
+import { listAuroraNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
+import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
+import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
+import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
+import avatar from "../../assets/avatar.png";
 
 const List = () => {
   const { account, mainnet, chainId, connector, dispatch } = useContext(GenContext);
@@ -37,19 +29,22 @@ const List = () => {
     chain: "Algo",
     price: "",
     image_url: "",
+    activeTab: "sell",
   });
-  const { nftDetails, isLoading, price, chain, image_url, amount } = state;
+  const { nftDetails, isLoading, price, amount, activeTab } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
   const handlePrice = (event) => {
+    console.log(event.target.value);
     handleSetState({ price: event.target.value });
   };
 
   const listNFT = async () => {
     // eslint-disable-next-line no-alert
     if (!price) return alert("price can't be empty");
+
     const listProps = {
       dispatch,
       account,
@@ -59,56 +54,38 @@ const List = () => {
       price,
       id: nftDetails.tokenID,
     };
+    let listedNFT;
     if (supportedChains[chainId].chain === "Polygon") {
-      const listNft = await listPolygonNft(listProps);
-      if (listNft.error) {
-        dispatch(
-          setNotification({
-            message: "Transaction failed",
-            type: "warning",
-          })
-        );
-      } else {
-        return history.push(`${nftId}/listed`);
-      }
+      listedNFT = await listPolygonNft(listProps);
     } else if (supportedChains[chainId].chain === "Celo") {
-      const listNft = await listCeloNft(listProps);
-      if (listNft.error) {
-        dispatch(
-          setNotification({
-            message: "Transaction failed",
-            type: "warning",
-          })
-        );
-      } else {
-        return history.push(`${nftId}/listed`);
-      }
+      listedNFT = await listCeloNft(listProps);
     } else if (supportedChains[chainId].chain === "Aurora") {
-      const listNft = await listAuroraNft(listProps);
-      if (listNft.error) {
-        dispatch(
-          setNotification({
-            message: "Transaction failed",
-            type: "warning",
-          })
-        );
-      } else {
-        return history.push(`${nftId}/listed`);
-      }
+      listedNFT = await listAuroraNft(listProps);
     } else {
       console.log("RES: ", await listNft(nftDetails.Id, price, account));
-      history.push(`${match.url}/listed`);
+      return history.push(`${match.url}/listed`);
     }
+    if (listedNFT.error) {
+      dispatch(
+        setNotification({
+          message: "Transaction failed",
+          type: "warning",
+        })
+      );
+    } else {
+      return history.push(`${nftId}/listed`);
+    }
+    return listedNFT;
   };
 
   useEffect(() => {
     (async function getAmount() {
       axios
         .get(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId].coinGeckoLabel}&vs_currencies=usd`
+          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId]?.coinGeckoLabel}&vs_currencies=usd`
         )
         .then((res) => {
-          const value = Object.values(res.data)[0].usd;
+          const value = Object.values(res.data)[0]?.usd;
           handleSetState({
             // chainIcon: supportedChains[nftDetails.chain].icon,
             amount: price * value,
@@ -120,75 +97,62 @@ const List = () => {
 
   useEffect(() => {
     (async function getUserCollection() {
-      if (supportedChains[chainId].chain === "Polygon") {
-        const [nft] = await polygonUserData(nftId);
-        if (nft === null) {
-          return (
-            dispatch(
-              setNotification({
-                message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
-                type: "warning",
-              })
-            ),
-            history.goBack()
-          );
-        }
-        handleSetState({
-          nftDetails: nft,
-          isLoading: false,
-          image_url: nft?.ipfs_data?.image,
-        });
-      } else if (supportedChains[chainId].chain === "Celo") {
-        const [nft] = await celoUserData(nftId);
-        if (nft === null) {
-          return (
-            dispatch(
-              setNotification({
-                message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
-                type: "warning",
-              })
-            ),
-            history.goBack()
-          );
-        }
-        handleSetState({
-          nftDetails: nft,
-          image_url: nft?.ipfs_data?.image,
-          isLoading: false,
-        });
-      } else if (supportedChains[chainId].chain === "Aurora") {
-        const [nft] = await auroraUserData(nftId);
-        if (nft === null) {
-          return (
-            dispatch(
-              setNotification({
-                message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
-                type: "warning",
-              })
-            ),
-            history.goBack()
-          );
-        }
-        handleSetState({
-          nftDetails: nft,
-          image_url: nft?.ipfs_data?.image,
-          isLoading: false,
-        });
+      let nft;
+      if (supportedChains[chainId]?.chain === "Polygon") {
+        const [nftData] = await polygonUserData(nftId)[0];
+        nft = nftData;
+      } else if (supportedChains[chainId]?.chain === "Celo") {
+        const [nftData] = await celoUserData(nftId);
+        nft = nftData;
+      } else if (supportedChains[chainId]?.chain === "Aurora") {
+        const [nftData] = await auroraUserData(nftId);
+        nft = nftData;
       } else {
         const userNftCollections = await fetchUserBoughtNfts(account);
         const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
-        const nft = result.filter((NFT) => String(NFT?.Id) === nftId)[0];
-        if (!nft) history.goBack();
-        else {
-          handleSetState({
-            nftDetails: nft,
-            isLoading: false,
-            image_url: nft.image_url,
-          });
-        }
+        const [nftData] = result.filter((NFT) => String(NFT?.Id) === nftId);
+        nft = nftData;
       }
+
+      if (!nft) {
+        return (
+          dispatch(
+            setNotification({
+              message: "Trying to list in a different chain, Please make sure you're connected to the right chain",
+              type: "warning",
+            })
+          ),
+          history.goBack()
+        );
+      }
+      handleSetState({
+        nftDetails: nft,
+        isLoading: false,
+      });
+      return nftDetails;
     })();
   }, []);
+
+  // Get userName
+  async function getUsername(walletAddress) {
+    const data = await readUserProfile(walletAddress);
+    const updateNftDetails = nftDetails;
+    updateNftDetails.username = data.username;
+    handleSetState({
+      nftDetails: updateNftDetails,
+    });
+  }
+
+  useEffect(() => {
+    const creator = nftDetails?.creator;
+    if (creator) {
+      getUsername(creator);
+    }
+  }, [nftDetails?.creator]);
+
+  const breakAddress = (address = "", width = 3) => {
+    return address && `${address.slice(0, width)}...${address.slice(-width)}`;
+  };
 
   if (isLoading) {
     return (
@@ -217,7 +181,15 @@ const List = () => {
       </div>
     );
   }
+  const dropHandler = (event) => {
+    if (activeTab === event) {
+      handleSetState({ activeTab: "" });
+    } else {
+      handleSetState({ activeTab: event });
+    }
+  };
 
+  console.log(nftDetails);
   return (
     <div className={classes.container}>
       <div className={classes.listHeader}>
@@ -225,17 +197,57 @@ const List = () => {
       </div>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
+          <div className={classes.header}>
+            <div className={classes.title}>{nftDetails?.name}</div>
+          </div>
           <img className={classes.nft} src={nftDetails?.image_url} alt="" />
+          <div className={classes.footer}>
+            <div className={classes.account}>
+              <p>Created By</p>
+              <div>
+                <img src={avatar} alt="avatar" />{" "}
+                {nftDetails && nftDetails.username ? nftDetails.username : breakAddress(nftDetails.creator)}
+              </div>
+            </div>
+            {nftDetails?.collection_name && (
+              <div className={classes.account}>
+                <p>Collection</p>
+                <div>{nftDetails.collection_name}</div>
+              </div>
+            )}
+          </div>
         </div>
         <div className={classes.v_subsection2}>
-          {/* PRICE HISTORY */}
-          <div className={classes.feature}>
+          <div className={`${classes.feature} ${activeTab !== "sell" ? classes.disabled : ""}`}>
+            <div
+              className={classes.mainDetails}
+              onClick={() => {
+                dropHandler("sell");
+              }}
+            >
+              <div className={classes.collectionHeader}>
+                <div className={classes.nftId}>Sell Method</div>
+              </div>
+              <DropdownIcon />
+            </div>
+
+            <div className={`${classes.dropdownContent}`}>
+              <button type="button" className={classes.buy} onClick={listNFT}>
+                <div className={classes.btnText}>
+                  <img src="/assets/price-tage.svg" alt="" />
+                  SET PRICE
+                </div>
+                <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
+              </button>
+            </div>
+          </div>
+          <div className={`${classes.feature}`}>
             <div className={classes.mainDetails}>
               <div className={classes.collectionHeader}>
                 <div className={classes.nftId}>Price</div>
               </div>
             </div>
-            <section className={classes.mintOptions}>
+            <section className={`${classes.dropdownContent}`}>
               <div className={classes.priceDescription}>
                 Check the
                 <a href="#" target="_blank">
@@ -260,34 +272,18 @@ const List = () => {
               </div>
             </section>
           </div>
-          <div className={classes.feature}>
-            <div className={classes.mainDetails}>
-              <div className={classes.collectionHeader}>
-                <div className={classes.nftId}>Sell Method</div>
-              </div>
-            </div>
-
-            <div className={classes.btns}>
-              <button type="button" className={classes.buy} onClick={listNFT}>
-                <div className={classes.btnText}>
-                  <img src="/assets/price-tage.svg" alt="" />
-                  SET PRICE
-                </div>
-                <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
-              </button>
-            </div>
-          </div>
         </div>
       </div>
-      {price ? (
-        <div className={classes.feature}>
-          <div className={classes.mainDetails}>
-            <div className={classes.collectionHeader}>
-              <div className={classes.nftId}>Fees</div>
-            </div>
-          </div>
+      {price
+        ? // <div className={classes.feature}>
+          //   <div className={classes.mainDetails}>
+          //     <div className={classes.collectionHeader}>
+          //       <div className={classes.nftId}>Fees</div>
+          //     </div>
+          //   </div>
 
-          <div className={classes.detailContent}>
+          {
+            /* <div className={classes.detailContent}>
             <div className={classes.priceDescription}>
               Listing is Free! At the time of sale, the following fees will be deducted
             </div>
@@ -300,11 +296,10 @@ const List = () => {
             <div className={classes.row}>
               Total <span>17%</span>
             </div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )}
+          </div> */
+          }
+        : // </div>
+          ""}
     </div>
   );
 };
