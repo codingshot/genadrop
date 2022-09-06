@@ -108,7 +108,7 @@ const List = () => {
           `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId]?.coinGeckoLabel}&vs_currencies=usd`
         )
         .then((res) => {
-          const value = Object.values(res.data)[0].usd;
+          const value = Object.values(res.data)[0]?.usd;
           handleSetState({
             // chainIcon: supportedChains[nftDetails.chain].icon,
             amount: price * value,
