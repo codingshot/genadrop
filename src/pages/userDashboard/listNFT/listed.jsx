@@ -95,7 +95,11 @@ const Listed = () => {
       </div>
     );
   }
-
+  const shareURL = nftDetails?.collection_name
+    ? `${url}/${nftDetails.Id}`
+    : nftDetails.chain
+    ? `/marketplace`
+    : `/marketplace/1of1/${nftDetails.Id}`;
   return (
     <div className={classes.container}>
       <span>Your item is now listed for sale</span>
@@ -104,30 +108,21 @@ const Listed = () => {
       <div className={classes.nftId}>
         Share
         <div className={classes.detailContent}>
-          <TwitterShareButton url={window.location.href.replace("list", "preview")}>
+          <TwitterShareButton url={shareURL}>
             <img src={twitterIcon} alt="Twitter-icon" />
           </TwitterShareButton>
-          <FacebookShareButton url={window.location.href.replace("list", "preview")}>
+          <FacebookShareButton url={shareURL}>
             <img src={facebookIcon} alt="Facebook-icon" />
           </FacebookShareButton>
-          <TelegramShareButton url={window.location.href.replace("list", "preview")}>
+          <TelegramShareButton url={shareURL}>
             <img src={telegram} alt="Telegram-icon" />
           </TelegramShareButton>
-          <CopyToClipboard text={window.location.href.replace("list", "preview")}>
+          <CopyToClipboard text={shareURL}>
             <img src={linktree} alt="CopyT-icon" />
           </CopyToClipboard>
         </div>
       </div>
-      <Link
-        to={
-          nftDetails.collection_name
-            ? `${url}/${nftDetails.Id}`
-            : nftDetails.chain
-            ? `/marketplace`
-            : `/marketplace/1of1/${nftDetails.Id}`
-        }
-        className={classes.view}
-      >
+      <Link to={shareURL} className={classes.view}>
         <button type="button" className={classes.viewtext}>
           Go to Marketplace
         </button>
