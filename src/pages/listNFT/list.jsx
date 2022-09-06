@@ -37,7 +37,6 @@ const List = () => {
     setState((states) => ({ ...states, ...payload }));
   };
   const handlePrice = (event) => {
-    console.log(event.target.value);
     handleSetState({ price: event.target.value });
   };
 
@@ -113,8 +112,7 @@ const List = () => {
         const [nftData] = result.filter((NFT) => String(NFT?.Id) === nftId);
         nft = nftData;
       }
-
-      if (!nft) {
+      if (nft === null) {
         return (
           dispatch(
             setNotification({
@@ -125,6 +123,7 @@ const List = () => {
           history.goBack()
         );
       }
+      if (!nft) history.goBack();
       handleSetState({
         nftDetails: nft,
         isLoading: false,
@@ -189,7 +188,6 @@ const List = () => {
     }
   };
 
-  console.log(nftDetails);
   return (
     <div className={classes.container}>
       <div className={classes.listHeader}>
@@ -202,13 +200,15 @@ const List = () => {
           </div>
           <img className={classes.nft} src={nftDetails?.image_url} alt="" />
           <div className={classes.footer}>
-            <div className={classes.account}>
-              <p>Created By</p>
-              <div>
-                <img src={avatar} alt="avatar" />{" "}
-                {nftDetails && nftDetails.username ? nftDetails.username : breakAddress(nftDetails.creator)}
+            {nftDetails?.creator && (
+              <div className={classes.account}>
+                <p>Created By</p>
+                <div>
+                  <img src={avatar} alt="avatar" />{" "}
+                  {nftDetails && nftDetails.username ? nftDetails.username : breakAddress(nftDetails.creator)}
+                </div>
               </div>
-            </div>
+            )}
             {nftDetails?.collection_name && (
               <div className={classes.account}>
                 <p>Collection</p>
