@@ -288,7 +288,7 @@ const ListSingleNFT = (nft) => {
               </div>
             </div>
             <div className={classes.priceSection}>
-              <span className={classes.title}>Owned by you</span>
+              {nftDetails?.owner === account && <span className={classes.title}>Owned by you</span>}
             </div>
             <div className={classes.btns}>
               <div className={classes.alignIcon}>
