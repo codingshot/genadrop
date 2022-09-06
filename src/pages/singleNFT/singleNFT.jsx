@@ -314,7 +314,7 @@ const SingleNFT = () => {
               <span className={classes.price}>
                 <img className={classes.iconImg} src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
-                  {nftDetails.price} {chainSymbol || ""}
+                  {Number(nftDetails?.price).toFixed(2)} {chainSymbol || ""}
                 </p>
                 {nftDetails?.price === 0 ||
                   (nftDetails?.price === null ? (

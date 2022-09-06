@@ -98,7 +98,7 @@ const List = () => {
     (async function getUserCollection() {
       let nft;
       if (supportedChains[chainId]?.chain === "Polygon") {
-        const [nftData] = await polygonUserData(nftId)[0];
+        const [nftData] = await polygonUserData(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Celo") {
         const [nftData] = await celoUserData(nftId);
@@ -268,7 +268,7 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
                 </div>
-                <span className={classes.amount}>{amount.toFixed(2)}</span>
+                <span className={classes.amount}>$ {amount.toFixed(2)}</span>
               </div>
             </section>
           </div>
