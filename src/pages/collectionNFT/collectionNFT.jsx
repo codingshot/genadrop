@@ -288,8 +288,8 @@ const CollectionNFT = () => {
                 </svg>
               </div>
             </div>
-            {nftDetails.price == 0 || nftDetails.price === null ? (
-              <div></div>
+            {nftDetails.price === 0 || nftDetails.price === null ? (
+              <div />
             ) : (
               <div className={classes.priceSection}>
                 <span className={classes.title}>Current price</span>
@@ -310,6 +310,7 @@ const CollectionNFT = () => {
                 <div className={classes.btns}>
                   <button
                     onClick={() => history.push(`/marketplace/1of1/list/${chainId}/${nftDetails.Id}`)}
+                    type="button"
                     className={classes.buy}
                   >
                     List
@@ -317,7 +318,7 @@ const CollectionNFT = () => {
                 </div>
               ) : (
                 <div className={classes.btns}>
-                  <button className={classes.sold} disabled={nftDetails.sold}>
+                  <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                     Not Listed!
                   </button>
                 </div>
@@ -327,13 +328,13 @@ const CollectionNFT = () => {
                 {nftDetails.sold ? (
                   nftDetails?.isListed ? (
                     <>
-                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                      <button type="button" className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
                         Buy
                       </button>
                     </>
                   ) : (
                     <>
-                      <button className={classes.sold} disabled={nftDetails.sold}>
+                      <button type="button" className={classes.sold} disabled={nftDetails.sold}>
                         SOLD!
                       </button>
                     </>
@@ -341,7 +342,7 @@ const CollectionNFT = () => {
                 ) : (
                   <>
                     {Number(nftDetails.chain) !== 4160 ? (
-                      <button className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
+                      <button type="button" className={classes.buy} onClick={() => buyGraphNft(buyProps)}>
                         <img src={walletIcon} alt="" />
                         Buy now
                       </button>

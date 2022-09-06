@@ -46,9 +46,12 @@ function fetchNFT(NFT, mainnet) {
       nftObj.description = NFT.description;
       nftObj.mainnet = NFT.mainnet;
       const { params } = await getAlgoData(mainnet, NFT.id);
+      console.log(params);
+      console.log(NFT);
       const urlIPF = params.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
       nftObj.url = params.url;
       const response = await axios.get(urlIPF);
+      console.log(response);
       nftObj.image_url = response.data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
       nftObj.name = response.data.name;
       nftObj.description = response.data.description;
@@ -388,6 +391,7 @@ export const getCeloGraphNft = async (collection) => {
   try {
     const nftArr = {};
     nftArr.collection_name = collection?.collection?.name;
+    nftArr.creator = collection?.collection?.creator?.id;
     nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
@@ -412,6 +416,8 @@ export const getCeloGraphNft = async (collection) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
+  console.log("xxxc", collection);
+
   const { data } = await axios.get(
     collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
   );
@@ -419,6 +425,7 @@ export const getGraphNft = async (collection, mainnet) => {
   try {
     const nftArr = {};
     nftArr.collection_name = collection?.collection?.name;
+    nftArr.creator = collection?.collection?.creator?.id;
     nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
