@@ -50,13 +50,13 @@ const FeautedNfts = () => {
         <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
           {collections.length ? (
             collections.map((collection, idx) => (
-              <CollectionNftCard useWidth="20em" key={idx} collection={collection} />
+              <CollectionNftCard use_width="20em" key={idx} collection={collection} />
             ))
           ) : !collections ? (
             <NotFound />
           ) : (
             [...new Array(4)].map((_, idx) => (
-              <div className={classes.skeleton} useWidth="20em" key={idx}>
+              <div className={classes.skeleton} use_width="20em" key={idx}>
                 <Skeleton count={1} height={250} />
                 <br />
                 <Skeleton count={1} height={30} />

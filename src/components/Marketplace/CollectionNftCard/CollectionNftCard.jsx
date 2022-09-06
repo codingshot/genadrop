@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-const CollectionNftCard = ({ useWidth, collection }) => {
+const CollectionNftCard = ({ use_width, collection }) => {
   const history = useHistory();
   const [usdValue, setUsdValue] = useState(0);
 
@@ -25,7 +25,7 @@ const CollectionNftCard = ({ useWidth, collection }) => {
 
   return (
     <div
-      style={useWidth ? { width: useWidth } : {}}
+      style={use_width ? { width: use_width } : {}}
       onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? Id : name}`)}
       className={classes.container}
     >

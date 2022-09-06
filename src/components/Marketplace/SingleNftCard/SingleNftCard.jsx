@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useHistory, useRouteMatch } from "react-router-dom";
 
-const SingleNftCard = ({ useWidth, nft, fromDashboard }) => {
+const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
@@ -49,7 +49,7 @@ const SingleNftCard = ({ useWidth, nft, fromDashboard }) => {
   }, []);
 
   return (
-    <div style={useWidth ? { width: useWidth } : {}} onClick={handlePreview} className={classes.container}>
+    <div style={use_width ? { width: use_width } : {}} onClick={handlePreview} className={classes.container}>
       <div className={classes.imageContainer}>
         <div className={classes.imageWrapper}>
           <img className={classes.image} src={image_url} alt="" />

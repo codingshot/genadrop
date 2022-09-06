@@ -91,9 +91,9 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
   useEffect(() => {
     if (move && start) {
       if (wrapperWidth / 2 > start) {
-        handleSetState({ dir: "right" });
-      } else {
         handleSetState({ dir: "left" });
+      } else {
+        handleSetState({ dir: "right" });
       }
       handleSetState({ start: 0, move: false, end: false });
     }
