@@ -10,11 +10,15 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
   const run = useRef(null);
 
   const [state, setState] = useState({
-    wrapperWidth: 0,
+    wrapperWidth: window.innerWidth,
     slideNumberOfCounts: 0,
+    start: 0,
+    move: false,
+    end: false,
+    dir: "",
   });
 
-  const { wrapperWidth, slideNumberOfCounts } = state;
+  const { wrapperWidth, slideNumberOfCounts, start, move, end, dir } = state;
   const [slideActiveCount, setSlideActiveCount] = useState(0);
 
   const handleSetState = (payload) => {
@@ -67,9 +71,47 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
     }
   }, [wrapperWidth, children]);
 
+  useEffect(() => {
+    // touch event for mobile
+    wrapperRef.current.addEventListener("touchstart", (e) => {
+      let event = e.changedTouches ? e.changedTouches[0] : e;
+      let x = event.clientX;
+      handleSetState({ start: x });
+    });
+
+    wrapperRef.current.addEventListener("touchmove", () => {
+      handleSetState({ move: true, end: false });
+    });
+
+    wrapperRef.current.addEventListener("touchend", () => {
+      handleSetState({ end: true });
+    });
+  }, []);
+
+  useEffect(() => {
+    if (move && start) {
+      if (wrapperWidth / 2 > start) {
+        handleSetState({ dir: "right" });
+      } else {
+        handleSetState({ dir: "left" });
+      }
+      handleSetState({ start: 0, move: false, end: false });
+    }
+  }, [end]);
+
+  useEffect(() => {
+    if (!dir) return;
+    if (dir === "right") {
+      handleSlideRight();
+    } else if (dir === "left") {
+      handleSlideLeft();
+    }
+    handleSetState({ dir: "" });
+  }, [dir]);
+
   return (
     <div className={classes.container}>
-      <div ref={wrapperRef} className={classes.wrapper} {...bind()}>
+      <div ref={wrapperRef} className={classes.wrapper}>
         <div style={{ gap }} ref={cardContainerRef} className={classes.cardContainer}>
           {children}
         </div>
