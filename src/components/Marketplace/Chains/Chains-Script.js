@@ -55,12 +55,12 @@ export const chains = [
     bg: "#E1EBF5",
     isComingSoon: true,
   },
-  {
-    name: "Solana",
-    icon: solanaIcon,
-    color: "#FFFFFF",
-    border: "transparent",
-    bg: "#000000",
-    isComingSoon: true,
-  },
+  // {
+  //   name: "Solana",
+  //   icon: solanaIcon,
+  //   color: "#FFFFFF",
+  //   border: "transparent",
+  //   bg: "#000000",
+  //   isComingSoon: true,
+  // },
 ];
