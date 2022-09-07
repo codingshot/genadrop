@@ -5,6 +5,7 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import axios from "axios";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
+import { Helmet } from "react-helmet";
 import { GenContext } from "../../gen-state/gen.context";
 import { buyGraphNft, buyNft } from "../../utils";
 import classes from "./singleNFT.module.css";
@@ -275,6 +276,12 @@ const SingleNFT = () => {
 
   return (
     <div className={classes.container}>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>{`${nftDetails?.name} | GenaDrop`}</title>
+        <meta name="description" content={`NFT, ${nftDetails?.description}, minted on GenaDrop`} />
+        <meta name="image" content={nftDetails?.image_url} />
+      </Helmet>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
           <img className={classes.nft} src={nftDetails.image_url} alt="" />
@@ -335,11 +342,12 @@ const SingleNFT = () => {
                   <button
                     onClick={() => history.push(`/marketplace/1of1/list/${nftDetails?.chain}/${nftDetails.Id}`)}
                     className={classes.buy}
+                    type="button"
                   >
                     List
                   </button>
                 ) : (
-                  <button className={classes.sold} disabled={nftDetails.sold}>
+                  <button className={classes.sold} disabled={nftDetails.sold} type="button">
                     Not Listed!
                   </button>
                 )}
@@ -348,14 +356,19 @@ const SingleNFT = () => {
               <div className={classes.btns}>
                 {nftDetails.sold ? (
                   <>
-                    <button className={classes.sold} disabled={nftDetails.sold}>
+                    <button className={classes.sold} disabled={nftDetails.sold} type="button">
                       SOLD!
                     </button>
                   </>
                 ) : (
                   <>
                     {supportedChains[nftDetails.chain]?.chain !== "Algorand" ? (
-                      <button className={classes.buy} disabled={nftDetails.sold} onClick={() => buyGraphNft(buyProps)}>
+                      <button
+                        className={classes.buy}
+                        disabled={nftDetails.sold}
+                        onClick={() => buyGraphNft(buyProps)}
+                        type="button"
+                      >
                         Buy now
                       </button>
                     ) : (
