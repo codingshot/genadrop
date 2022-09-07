@@ -73,11 +73,6 @@
   background: var(--main-color);
 }
 
-.chain {
-  width: 10em;
-  border: 1px solid red;
-}
-
 .nfts {
   width: 100%;
   display: grid;

@@ -13,7 +13,6 @@ const Menu = ({ NFTCollection, toggleFilter, headerHeight }) => {
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
-    document.documentElement.scrollTop = headerHeight;
   };
 
   const handlePrev = () => {
@@ -25,6 +24,7 @@ const Menu = ({ NFTCollection, toggleFilter, headerHeight }) => {
   const handleNext = () => {
     if (currentPage >= Object.keys(paginate).length) return;
     handleSetState({ currentPage: currentPage + 1 });
+    document.documentElement.scrollTop = headerHeight;
   };
 
   useEffect(() => {

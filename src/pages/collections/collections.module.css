@@ -1,17 +1,14 @@
 .container {
-  border: 1px solid red;
   width: 100%;
   min-height: 100vh;
 }
 
 .wrapper {
-  border: 1px solid red;
   width: 100%;
   padding: 4em 2em;
 }
 
 .nfts {
-  border: 1px solid red;
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
@@ -23,7 +20,6 @@
 
 .heading {
   width: 100%;
-  border: 1px solid red;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -36,7 +32,6 @@
 }
 
 .title {
-  border: 1px solid red;
   text-align: center;
 }
 
@@ -50,7 +45,6 @@
 }
 
 .searchAndFilter {
-  border: 1px solid red;
   width: 100%;
   display: flex;
   align-items: center;
@@ -59,7 +53,6 @@
 }
 
 .search {
-  border: 1px solid red;
   width: 100%;
   max-width: 36em;
   padding: 0.5em 1em;
@@ -68,39 +61,43 @@
   align-items: center;
   justify-content: flex-start;
   gap: 1em;
+  background: var(--default);
+  border: 1px solid var(--card-outline);
 }
 
-.search .placeholder {
-  color: var(--text-placeholder);
-}
-
-.chain {
-  border: 1px solid red;
-  width: 10em;
-}
-
-.filter {
-  border: 1px solid red;
-  width: 10em;
+.search input {
+  width: 100%;
+  outline: none;
+  border: none;
+  color: var(--textinput);
 }
 
 .dateFilter {
-  border: 1px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
   padding: 0.2em;
   border-radius: 2em;
+  border: 1px solid #cacdd5;
 }
 
 .date {
-  border: 1px solid red;
   width: 8em;
   text-align: center;
   border-radius: 2em;
   padding: 0.5em 0;
   font-weight: 600;
+  cursor: pointer;
+}
+
+.date.active {
+  background: #cacdd5;
+  color: var(--default);
+}
+
+.loader {
+  width: 100%;
 }
 
 @media screen and (max-width: 1440px) {
@@ -137,7 +134,7 @@
     max-width: 20em;
   }
 
-  .search .placeholder {
+  .search input {
     font-size: 0.85rem;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -166,7 +163,7 @@
     max-width: 16em;
   }
 
-  .search .placeholder {
+  .search input {
     max-width: 4.5em;
   }
 
@@ -185,11 +182,15 @@
     padding: 3em 1em;
   }
 
+  .searchAndFilter {
+    gap: 1em;
+  }
+
   .search {
     max-width: 6em;
   }
 
-  .search .placeholder {
+  .search input {
     display: none;
   }
 

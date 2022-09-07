@@ -62,6 +62,7 @@
   justify-content: flex-start;
   gap: 1em;
   background: var(--default);
+  border: 1px solid var(--card-outline);
 }
 
 .search input {
@@ -71,36 +72,8 @@
   color: var(--textinput);
 }
 
-.chain {
-  width: max-content;
-}
-
-.filter {
-  width: 10em;
-}
-
-.dateFilter {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
-  padding: 0.2em;
-  border-radius: 2em;
-  border: 1px solid #cacdd5;
-}
-
-.date {
-  width: 8em;
-  text-align: center;
-  border-radius: 2em;
-  padding: 0.5em 0;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.date.active {
-  background: #cacdd5;
-  color: var(--default);
+.loader {
+  width: 100%;
 }
 
 @media screen and (max-width: 1440px) {
@@ -143,10 +116,6 @@
     overflow: hidden;
     white-space: nowrap;
   }
-
-  .date {
-    font-size: 0.85rem;
-  }
 }
 
 @media screen and (max-width: 768px) {
@@ -168,10 +137,6 @@
 
   .search input {
     max-width: 4.5em;
-  }
-
-  .date {
-    font-size: 0.65rem;
   }
 }
 

@@ -72,12 +72,12 @@ function App() {
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/1of1" component={SingleNftCollection} />
+            <Route exact path="/marketplace/collections" component={Collections} />
             {/* <Route exact path="/marketplace/1of1/:nftId" component={SingleNFT} /> */}
             <Route exact path="/marketplace/1of1/:chainId/:nftId" component={NFTDetail} />
             <Route exact path="/marketplace/1of1/preview/:chainId/:nftId" component={ListSingleNFT} />
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId" component={List} />
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId/listed" component={Listed} />
-            <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={NFTDetail} />
             <Route exact path="/me/:userId" component={Dashboard} />

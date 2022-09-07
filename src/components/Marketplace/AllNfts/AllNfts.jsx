@@ -4,18 +4,22 @@ import { useState, useContext, useEffect } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
 import { useHistory } from "react-router-dom";
+import ChainDropdown from "../Chain-dropdown/chainDropdown";
+import { getCollectionsByChain, shuffle } from "../../../pages/Marketplace/Marketplace-script";
 
 const AllNfts = () => {
   const history = useHistory();
   const [state, setState] = useState({
     activeType: "T1",
+    activeChain: "All Chains",
     activeCategory: "All",
+    filteredCollection: [],
     collections: [],
     singles: [],
-    _new: [],
+    newest: [],
   });
 
-  const { activeType, activeCategory, collections, singles, _new } = state;
+  const { activeType, activeChain, activeCategory, collections, singles, newest, filteredCollection } = state;
   const {
     auroraCollections,
     algoCollections,
@@ -25,29 +29,28 @@ const AllNfts = () => {
     singleAuroraNfts,
     singlePolygonNfts,
     singleCeloNfts,
+    mainnet,
   } = useContext(GenContext);
 
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
   const algoCollectionsArr = Object.values(algoCollections);
+  const categories = ["All", "Painting", "Shorts", "Photography", "Illustration", "3D"];
+  const type = {
+    T1: newest,
+    T2: singles,
+    T3: collections,
+  };
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
 
-  const categories = ["All", "Painting", "Shorts", "Photography", "Illustration", "3D"];
-
-  const shuffle = (array) => {
-    for (let i = 0; i < 100; i += 1) {
-      for (let x = array.length - 1; x > 0; x -= 1) {
-        const j = Math.floor(Math.random() * (x + 1));
-        [array[x], array[j]] = [array[j], array[x]];
-      }
-    }
-    return array;
+  const handleChainChange = (chain) => {
+    let result = getCollectionsByChain({ collections: type[activeType], chain, mainnet });
+    handleSetState({ filteredCollection: result, activeChain: chain });
   };
 
   const handleMore = () => {
-    console.log(" clicked ");
     if (activeType === "T2") {
       history.push("/marketplace/1of1");
     } else if (activeType === "T3") {
@@ -65,21 +68,25 @@ const AllNfts = () => {
     let singles = [...singleAlgoNftsArr, ...singleAuroraNfts, ...singlePolygonNfts, ...singleCeloNfts];
     singles = shuffle(singles);
     handleSetState({ singles: singles.slice(0, 16) });
-    console.log({ single: singles[0] });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
 
   useEffect(() => {
-    let _new = [...collections, ...singles];
-    _new = shuffle(_new);
-    _new = _new.sort((a, b) => {
+    let newest = [...collections, ...singles];
+    newest = shuffle(newest);
+    newest = newest.sort((a, b) => {
       if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
       if (typeof a.createdAt === "object") {
         return a.createdAt.seconds - b.createdAt.seconds;
       }
       return a.createdAt - b.createdAt;
     });
-    handleSetState({ _new: _new.slice(0, 16) });
+    handleSetState({ newest: newest.slice(0, 16) });
   }, [singles, collections]);
+
+  useEffect(() => {
+    let result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
+    handleSetState({ filteredCollection: result });
+  }, [activeType, singles, collections, newest]);
 
   return (
     <div className={classes.container}>
@@ -116,17 +123,17 @@ const AllNfts = () => {
               </div>
             ))}
           </div>
-          <div className={classes.chain}>chains</div>
+          <ChainDropdown onChainFilter={handleChainChange} />
         </section>
         <section className={classes.nfts}>
           {activeType === "T1"
-            ? _new.map((el, idx) =>
+            ? filteredCollection.map((el, idx) =>
                 !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
               )
             : activeType === "T2"
-            ? singles.map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
+            ? filteredCollection.map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
             : activeType === "T3"
-            ? collections.map((collection, idx) => <CollectionNftCard key={idx} collection={collection} />)
+            ? filteredCollection.map((collection, idx) => <CollectionNftCard key={idx} collection={collection} />)
             : null}
         </section>
         <div className={classes.btnContainer}>

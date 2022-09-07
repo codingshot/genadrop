@@ -5,7 +5,7 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
-import dropdownIcon from "../../../assets/icon-caret-down.svg";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-chevron-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
 import supportedChains from "../../../utils/supportedChains";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -53,11 +53,7 @@ const ChainDropdown = ({ onChainFilter }) => {
           )}
           <span className={classes.chainName}>{chain}</span>
         </div>
-        <img
-          src={dropdownIcon}
-          alt="dropdown-indicator"
-          className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`}
-        />
+        <DropdownIcon className={`${classes.dropdownIcon} ${toggleChainFilter && classes.active}`} />
       </div>
       <div className={`${classes.dropdown} ${toggleChainFilter && classes.active}`}>
         {[

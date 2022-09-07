@@ -51,7 +51,7 @@ const CollectionNftCard = ({ use_width, collection }) => {
             <span>{usdValue ? `(${usdValue.toFixed(4)}USD)` : "(0 USD)"}</span>
           </div>
         </div>
-        <div className={classes.counts}>{`${nfts.length} NFTs`}</div>
+        <div className={classes.counts}>{`${nfts && nfts.length} NFTs`}</div>
       </div>
     </div>
   );

@@ -1,17 +1,17 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Explore.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import Filter from "./Filter/Filter";
 import Header from "./Header/Header";
-import { filterBy, groupAttributesByTraitType, mapAttributeToFilter, sortBy } from "./Explore-script";
+import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-script";
 import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import { setActiveCollection } from "../../gen-state/gen.actions";
-import supportedChains from "../../utils/supportedChains";
+import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -41,7 +41,7 @@ const Explore = () => {
     headerHeight,
     loadedChain,
   } = state;
-  const { dispatch, mainnet, chainId, algoCollections, auroraCollections, polygonCollections, celoCollections } =
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
     useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -116,13 +116,13 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = filterBy({ value: filter.status, NFTCollection });
+    let filtered = filterBy({ value: filter.status, collections: NFTCollection });
     handleSetState({ FilteredCollection: filtered });
   }, [filter.status]);
 
   useEffect(() => {
     if (!NFTCollection) return;
-    const filtered = sortBy({ value: filter.sortby, NFTCollection });
+    const filtered = sortBy({ value: filter.sortby, collections: NFTCollection });
     handleSetState({ FilteredCollection: filtered });
   }, [filter.sortby]);
 
@@ -139,6 +139,10 @@ const Explore = () => {
     handleSetState({ FilteredCollection: filtered });
     document.documentElement.scrollTop = headerHeight;
   }, [filter.attributes]);
+
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+  }, []);
 
   return (
     <div className={classes.container}>
