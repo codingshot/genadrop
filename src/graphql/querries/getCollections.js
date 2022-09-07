@@ -237,6 +237,12 @@ export const GET_CELO_NFT = gql`
       owner {
         id
       }
+      collection {
+        name
+        creator {
+          id
+        }
+      }
       tokenIPFSPath
       transactions {
         id
@@ -263,10 +269,17 @@ export const GET_GRAPH_NFT = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
         id
+      }
+      collection {
+        name
+        creator {
+          id
+        }
       }
       tokenIPFSPath
       transactions {

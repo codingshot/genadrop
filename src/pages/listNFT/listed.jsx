@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-import { GenContext } from "../../../gen-state/gen.context";
-import { getSingleNftDetails } from "../../../utils";
+import { GenContext } from "../../gen-state/gen.context";
+import { getSingleNftDetails } from "../../utils";
 import classes from "./listed.module.css";
 import telegram from "../../assets/blue-telegram.svg";
 import twitterIcon from "../../assets/blue-twitter.svg";
@@ -96,10 +96,10 @@ const Listed = () => {
         </div>
 
         <div className={classes.detailContent}>
-          <img src={twitterIcon} alt="" />
-          <img src={facebookIcon} alt="" />
-          <img src={telegram} alt="" />
-          <img src={linktree} alt="" />
+          <img src={twitterIcon} alt="Twitter-icon" />
+          <img src={facebookIcon} alt="Facebook-icon" />
+          <img src={telegram} alt="Telegram-icon" />
+          <img src={linktree} alt="CopyT-icon" />
         </div>
       </div>
       <button type="button" className={classes.view}>
