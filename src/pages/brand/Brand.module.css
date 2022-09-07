@@ -1,0 +1,17 @@
+.container {
+  max-width: 1440px;
+  margin: auto;
+  padding: 2em 1rem 0;
+}
+.container * {
+  font-family: "SF Pro Display", sans-serif !important;
+}
+.title {
+  color: #0d99ff;
+  font-weight: 600;
+  font-size: 3.125rem;
+  line-height: 120%;
+}
+.title span {
+  color: var(--text-dark-600);
+}
