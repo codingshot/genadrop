@@ -14,7 +14,7 @@ import {
   shuffle,
   sortBy,
 } from "../Marketplace/Marketplace-script";
-import FilterDropdown from "../../components/Marketplace/Filter-Dropdown/FilterDropdown";
+import FilterDropdown from "../../components/Marketplace/FilterDropdown/FilterDropdown";
 import { useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 

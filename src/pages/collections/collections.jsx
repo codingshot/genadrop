@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import FilterDropdown from "../../components/Marketplace/Filter-Dropdown/FilterDropdown";
+import FilterDropdown from "../../components/Marketplace/FilterDropdown/FilterDropdown";
 import {
   rangeBy,
   sortBy,
