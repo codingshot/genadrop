@@ -2,8 +2,8 @@ import classes from "./CollectionNftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { getFormatedPrice } from "../../../utils";
 
 const CollectionNftCard = ({ use_width, collection }) => {
   const history = useHistory();
@@ -11,16 +11,13 @@ const CollectionNftCard = ({ use_width, collection }) => {
 
   const { Id, image_url, name, description, price, chain, nfts } = collection;
 
-  const getFormatedPrice = async () => {
-    const res = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`
-    );
-    const value = Object.values(res?.data)[0]?.usd;
-    setUsdValue(value * parseInt(price));
+  const getUsdValue = async () => {
+    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+    setUsdValue(Number(value) * Number(price));
   };
 
   useEffect(() => {
-    getFormatedPrice();
+    getUsdValue();
   }, []);
 
   return (
@@ -46,12 +43,12 @@ const CollectionNftCard = ({ use_width, collection }) => {
           <div className={classes.priceLabel}>Floor Price</div>
           <div className={classes.amount}>
             <span className={classes.accent}>
-              {parseInt(price).toFixed(2)} {supportedChains[chain].symbol}
+              {Number(price).toFixed(4)} {supportedChains[chain].symbol}
             </span>{" "}
-            <span>{usdValue ? `(${usdValue.toFixed(4)}USD)` : "(0 USD)"}</span>
+            <span>{`(${usdValue.toFixed(4)}USD)`}</span>
           </div>
         </div>
-        <div className={classes.counts}>{`${nfts && nfts.length} NFTs`}</div>
+        <div className={classes.counts}>{`${nfts ? nfts.length : 0} NFTs`}</div>
       </div>
     </div>
   );

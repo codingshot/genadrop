@@ -6,6 +6,7 @@ import SingleNftCard from "../SingleNftCard/SingleNftCard";
 import { useHistory } from "react-router-dom";
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
 import { getCollectionsByChain, shuffle } from "../../../pages/Marketplace/Marketplace-script";
+import { setActiveCollection } from "../../../gen-state/gen.actions";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -30,6 +31,7 @@ const AllNfts = () => {
     singlePolygonNfts,
     singleCeloNfts,
     mainnet,
+    dispatch,
   } = useContext(GenContext);
 
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
@@ -88,6 +90,10 @@ const AllNfts = () => {
     handleSetState({ filteredCollection: result });
   }, [activeType, singles, collections, newest]);
 
+  useEffect(() => {
+    dispatch(setActiveCollection(null));
+  }, []);
+
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
@@ -117,7 +123,9 @@ const AllNfts = () => {
               <div
                 onClick={() => handleSetState({ activeCategory: category })}
                 key={idx}
-                className={`${classes.category} ${activeCategory === category && classes.active}`}
+                className={`${classes.category} ${
+                  activeCategory !== category ? null : activeCategory === "All" ? classes.active : classes.disable
+                }`}
               >
                 {category}
               </div>

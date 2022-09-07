@@ -61,6 +61,17 @@
   background: rgba(28, 27, 28, 0.06);
 }
 
+._name {
+  max-width: 10em;
+  background: #dbf0ff;
+  font-weight: 600;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 .chain {
   width: 2.5em;
   height: 2.5em;
@@ -91,7 +102,7 @@
 }
 
 .btn {
-  padding: 0.5em 3em;
+  padding: 0.5em 2em;
   border-radius: 2em;
   border: 1px solid var(--main-color);
   color: var(--main-color);
@@ -128,6 +139,7 @@
   }
 
   .name,
+  ._name,
   .owner .priceLabel,
   .counts {
     font-size: 0.85rem;

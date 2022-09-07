@@ -2,22 +2,19 @@ import classes from "./SingleNftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
 import { useHistory, useRouteMatch } from "react-router-dom";
+import { getFormatedPrice } from "../../../utils";
 
-const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
+const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft }) => {
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
 
   const { Id, image_url, name, owner, collection_name, price, chain, sold } = nft;
 
-  const getFormatedPrice = async () => {
-    const res = await axios.get(
-      `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`
-    );
-    const value = Object.values(res?.data)[0]?.usd;
-    setUsdValue(value * parseInt(price));
+  const getUsdValue = async () => {
+    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+    setUsdValue(Number(value) * Number(price));
   };
 
   const breakAddress = (address = "", width = 6) => {
@@ -27,7 +24,11 @@ const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
   const handlePreview = () => {
     if (!fromDashboard) {
       if (collection_name) {
-        history.push(`${match.url}/${Id}`);
+        if (fromDetails) {
+          history.push(`${match.url.split("/").slice(0, -1).join("/")}/${Id}`);
+        } else {
+          history.push(`${match.url}/${Id}`);
+        }
       } else if (chain) {
         history.push(`/marketplace/1of1/${chain}/${Id}`);
       } else {
@@ -35,7 +36,11 @@ const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
       }
     } else {
       if (collection_name) {
-        history.push(`${match.url}/${Id}`);
+        if (fromDetails) {
+          history.push(`${match.url.split("/").slice(0, -1).join("/")}/${Id}`);
+        } else {
+          history.push(`${match.url}/${Id}`);
+        }
       } else if (chain) {
         history.push(`/marketplace/1of1/preview/${chain}/${Id}`);
       } else {
@@ -45,7 +50,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
   };
 
   useEffect(() => {
-    getFormatedPrice();
+    getUsdValue();
   }, []);
 
   return (
@@ -57,7 +62,11 @@ const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
       </div>
       <div className={classes.details}>
         <div className={classes.nameAndChainWrapper}>
-          <div className={classes.tag}>1 of 1</div>
+          {collectionNft ? (
+            <div className={classes._name}>{collectionNft.name}</div>
+          ) : (
+            <div className={classes.tag}>1 of 1</div>
+          )}
           <img className={classes.chain} src={supportedChains[chain].icon} alt="" />
         </div>
         <div className={classes.name}>{name}</div>
@@ -68,9 +77,9 @@ const SingleNftCard = ({ use_width, nft, fromDashboard }) => {
           <div className={classes.priceLabel}>Price</div>
           <div className={classes.amount}>
             <span className={classes.accent}>
-              {parseInt(price).toFixed(2)} {supportedChains[chain].symbol}
+              {Number(price).toFixed(4)} {supportedChains[chain].symbol}
             </span>
-            <span>{usdValue ? `(${usdValue.toFixed(4)}USD)` : "(0 USD)"}</span>
+            <span>{`(${usdValue.toFixed(4)}USD)`}</span>
           </div>
         </div>
         {!sold ? (

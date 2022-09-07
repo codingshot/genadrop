@@ -1,35 +1,47 @@
 .container {
-  border: 1px solid red;
   width: 100%;
-  margin-bottom: 8em;
-  padding: 0 2em;
+  margin-bottom: 4em;
+  padding: 4em 2em;
+  position: relative;
 }
 
 .backBtnContainer {
-  border: 1px solid red;
-  padding: 1em;
+  padding: 0;
   margin-bottom: 2em;
+  margin-top: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  cursor: pointer;
+  display: none;
+}
+
+.backIcon {
+  width: 1em;
+  transition: transform 300ms;
+}
+
+.backBtnContainer:hover .backIcon {
+  transform: translateX(-30%);
 }
 
 .wrapper {
-  border: 1px solid red;
   width: 100%;
   max-width: 72em;
   margin: 0 auto;
 }
 
 .sectionWrapper {
-  border: 1px solid red;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   gap: 2em;
-  margin-bottom: 1em;
+  margin-bottom: 2em;
 }
 
 .nftSection {
   width: 50%;
-  border: 1px solid red;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -38,7 +50,6 @@
 }
 
 .detailSection {
-  border: 1px solid red;
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -48,7 +59,6 @@
 }
 
 .priceHistory {
-  border: 1px solid red;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -56,17 +66,12 @@
 }
 
 .historySection {
-  border: 1px solid red;
   width: 100%;
   display: flex;
   align-items: stretch;
   justify-content: center;
   gap: 2em;
   margin-bottom: 3em;
-}
-
-.moreSection {
-  border: 1px solid red;
 }
 
 @media screen and (max-width: 1200px) {
@@ -82,10 +87,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .container {
-    border: 1px solid blue;
-  }
-
   .wrapper {
     max-width: 64em;
   }
@@ -93,12 +94,16 @@
   .sectionWrapper {
     flex-direction: column;
     align-items: center;
-    border: 2px solid blue;
   }
 
   .detailSection,
   .nftSection {
     width: 100%;
-    border: 4px solid red;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .container {
+    padding: 2em 1em;
   }
 }

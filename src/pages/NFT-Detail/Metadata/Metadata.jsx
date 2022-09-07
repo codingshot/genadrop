@@ -1,10 +1,14 @@
 import classes from "./Metadata.module.css";
 import { CopyBlock, dracula } from "react-code-blocks";
+import { ReactComponent as MetadataIcon } from "../../../assets/icon-metadata.svg";
 
 const Metadata = ({ nftDetails: properties }) => {
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>Metadata</div>
+      <div className={classes.heading}>
+        <MetadataIcon />
+        <div>Metadata</div>
+      </div>
       <div className={classes.content}>
         <CopyBlock
           language="json"

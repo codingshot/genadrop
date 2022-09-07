@@ -14,9 +14,9 @@ import {
   shuffle,
   sortBy,
 } from "../Marketplace/Marketplace-script";
-import FilterDropdown from "../../components/Marketplace/FilterDropdown/FilterDropdown";
 import { useRef } from "react";
 import Skeleton from "react-loading-skeleton";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const SingleNftCollection = () => {
   const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, mainnet } = useContext(GenContext);

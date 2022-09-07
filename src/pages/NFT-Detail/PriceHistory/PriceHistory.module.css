@@ -1,13 +1,24 @@
 .container {
-  border: 1px solid red;
-  height: 16em;
   margin-bottom: 2em;
+  border-radius: 1em;
+  background: #ffffff;
+  border: 2px solid #eeeff2;
+  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
   border-radius: 1em;
 }
 
 .heading {
-  border: 1px solid red;
-  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.75em;
   font-weight: 600;
   font-size: 1.5rem;
+  background: #f5f6f7;
+  border-radius: 14px 14px 0px 0px;
+}
+
+.history {
+  overflow: auto;
 }

@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import FilterDropdown from "../../components/Marketplace/FilterDropdown/FilterDropdown";
 import {
   rangeBy,
   sortBy,
@@ -18,6 +17,7 @@ import {
 import NotFound from "../../components/not-found/notFound";
 import { useRef } from "react";
 import Skeleton from "react-loading-skeleton";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet } = useContext(GenContext);

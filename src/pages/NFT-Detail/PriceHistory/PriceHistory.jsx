@@ -1,10 +1,15 @@
+import Graph from "../../../components/Nft-details/graph/graph";
 import classes from "./PriceHistory.module.css";
+import { ReactComponent as HistoryIcon } from "../../../assets/icon-history.svg";
 
-const PriceHistory = () => {
+const PriceHistory = ({ transactionHistory }) => {
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>PriceHistory</div>
-      <div className={classes.history}></div>
+      <div className={classes.heading}>
+        <HistoryIcon />
+        <div>PriceHistory</div>
+      </div>
+      <div className={classes.history}>{transactionHistory && <Graph details={transactionHistory} />}</div>
     </div>
   );
 };

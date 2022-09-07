@@ -56,7 +56,6 @@
 .card {
   width: 18em;
   flex: 0 0 auto;
-  border: 1px solid red;
   padding: 0.5em;
   padding-bottom: 2em;
   border-radius: 1em;

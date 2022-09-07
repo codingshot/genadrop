@@ -88,7 +88,7 @@ const Explore = () => {
       const allCollection = getAllCollectionChains();
       const filteredCollection = allCollection?.filter((col) => col?.Id === collectionName);
       if (filteredCollection?.length) {
-        const result = await getGraphCollection(filteredCollection[0]?.nfts, filteredCollection[0]);
+        const result = await getGraphCollection(filteredCollection[0].nfts, filteredCollection[0]);
         handleSetState({
           collection: {
             ...filteredCollection[0],

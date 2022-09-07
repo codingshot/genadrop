@@ -3,7 +3,6 @@ import classes from "./Attributes.module.css";
 const Attributes = ({ nftDetails }) => {
   const { properties } = nftDetails;
 
-  console.log({ properties });
   return (
     <div className={classes.container}>
       <div className={classes.heading}>Attributes</div>
@@ -16,7 +15,7 @@ const Attributes = ({ nftDetails }) => {
             </div>
             <div className={classes.rarity}>
               <div className={classes.title}>Rarity</div>
-              <div className={classes.value}>1%</div>
+              <div className={classes.value_}>1%</div>
             </div>
           </div>
         ))}

@@ -43,7 +43,7 @@ export const INITIAL_STATE = {
   singleAuroraNfts: [],
   singleCeloNfts: [],
   singlePolygonNfts: [],
-  activeCollection: [],
+  activeCollection: null,
   notification: {
     message: "",
     type: "", // warning|error|success|default

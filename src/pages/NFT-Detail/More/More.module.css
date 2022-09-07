@@ -1,21 +1,22 @@
 .container {
-  border: 1px solid red;
   margin-bottom: 1em;
 }
 
 .heading {
-  border: 1px solid red;
-  padding: 0.5em;
   font-weight: 600;
   font-size: 1.5rem;
+  margin-bottom: 2em;
 }
 
 .display {
-  border: 1px solid red;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   overflow: auto;
   gap: 2em;
+}
+
+.display > * {
+  flex: 0 0 auto;
 }

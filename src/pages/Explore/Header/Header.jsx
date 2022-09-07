@@ -36,8 +36,8 @@ const Header = ({ collection, getHeight }) => {
   };
 
   const getUsdValue = async () => {
-    let value = await getFormatedPrice(supportedChains[chain].id);
-    handleSetState({ usdValue: value * parseInt(price), UsdVolumeValue: volumeTraded * parseInt(price) });
+    let value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+    handleSetState({ usdValue: Number(value) * Number(price), UsdVolumeValue: Number(volumeTraded) * Number(price) });
   };
 
   const getUser = async () => {
@@ -113,7 +113,7 @@ const Header = ({ collection, getHeight }) => {
               <div className={classes.details}>
                 <div className={classes._1}>FLOOR PRICE</div>
                 <div className={classes._2}>
-                  <span className={classes.accent}>{price}</span>{" "}
+                  <span className={classes.accent}>{Number(price).toFixed(4)}</span>{" "}
                   <span className={classes.accent}>{supportedChains[chain].symbol}</span>{" "}
                   <span>{`$${usdValue.toFixed(4)}`}</span>
                 </div>

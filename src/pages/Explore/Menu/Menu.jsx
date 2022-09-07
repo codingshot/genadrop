@@ -42,15 +42,13 @@ const Menu = ({ NFTCollection, toggleFilter, headerHeight }) => {
     handleSetState({ paginate });
   }, [NFTCollection]);
 
-  useEffect(() => {
-    console.log("changed");
-  }, [NFTCollection]);
-
   return (
     <div className={classes.container}>
       <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
         {Object.keys(paginate).length
-          ? paginate[currentPage].map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
+          ? paginate[currentPage].map((nft, idx) => (
+              <SingleNftCard collectionNft={{ name: NFTCollection[0]?.collection_name }} key={idx} nft={nft} />
+            ))
           : [...new Array(8)]
               .map((_, idx) => idx)
               .map((id) => (

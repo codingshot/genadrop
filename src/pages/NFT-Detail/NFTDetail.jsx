@@ -1,7 +1,5 @@
-import { useContext } from "react";
-import { useState } from "react";
-import { useEffect } from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useContext, useState, useEffect } from "react";
+import { useHistory, useRouteMatch } from "react-router-dom";
 import { setOverlay } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import Attributes from "./Attributes/Attributes";
@@ -11,69 +9,94 @@ import Details from "./Details/Details";
 import Metadata from "./Metadata/Metadata";
 import More from "./More/More";
 import NFT from "./NFT/NFT";
-import { getAlgoNftData } from "./NFTDetail-script";
+import { getAlgoData, getGraphData } from "./NFTDetail-script";
 import classes from "./NFTDetail.module.css";
 import PriceHistory from "./PriceHistory/PriceHistory";
 import TransactionHistory from "./TransactionHistory/TransactionHistory";
+import { ReactComponent as BackIcon } from "../../assets/icon-arrow-left.svg";
+import supportedChains from "../../utils/supportedChains";
 
 const NFTDetail = () => {
   const { params } = useRouteMatch();
+  const match = useRouteMatch();
+  const history = useHistory();
   const [state, setState] = useState({
     nftDetails: null,
+    transactionHistory: null,
+    collection: null,
+    _1of1: null,
   });
 
-  const { nftDetails } = state;
+  const { nftDetails, transactionHistory, collection, _1of1 } = state;
 
   const {
     dispatch,
-    singleAlgoNfts,
-    account,
+    algoCollections,
     activeCollection,
-    connector,
-    mainnet,
+    singleAlgoNfts,
     auroraCollections,
     polygonCollections,
     celoCollections,
-    algoCollections,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    singleCeloNfts,
+    account,
+    connector,
+    mainnet,
     chainId,
   } = useContext(GenContext);
 
-  const algoCollectionsArr = Object.values(algoCollections);
+  const graphProps = {
+    auroraCollections,
+    polygonCollections,
+    celoCollections,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    singleCeloNfts,
+    params,
+  };
+
+  const algoProps = {
+    singleAlgoNfts,
+    algoCollections,
+    activeCollection,
+    params,
+    mainnet,
+  };
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
 
-  const getAlgoNft = async () => {
-    dispatch(setOverlay(true));
-    const nftDetails = await getAlgoNftData({ singleAlgoNfts, algoCollections, params });
-    handleSetState({ nftDetails });
-    dispatch(setOverlay(false));
+  const handleGoBack = () => {
+    history.push(`${match.url.split("/").slice(0, -1).join("/")}`);
   };
 
   useEffect(() => {
-    getAlgoNft();
-    // if (nftDetails) {
-    //   (async function getNftDetails() {
-    //     const tHistory = await readNftTransaction(nftId);
-    //     handleSetState({
-    //       nftDetails,
-    //       isLoading: false,
-    //       transactionHistory: tHistory.reverse(),
-    //       mintedDetails: tHistory.find((e) => e.type == "Minting"),
-    //     });
-    //     dispatch(setOverlay(false));
-    //     document.documentElement.scrollTop = 0;
-    //   })();
-    // }
-  }, [singleAlgoNfts]);
+    let result;
+    const getData = async () => {
+      dispatch(setOverlay(true));
+      if (activeCollection || supportedChains[params.chainId]?.chain === "Algorand") {
+        result = await getAlgoData({ algoProps });
+      } else {
+        console.log("false");
+        result = await getGraphData({ graphProps });
+      }
+      dispatch(setOverlay(false));
+      console.log({ result });
+      handleSetState({ ...result });
+    };
+    getData();
+    document.documentElement.scrollTop = 0;
+  }, [singleAlgoNfts, algoCollections, auroraCollections, polygonCollections, celoCollections, params.nftId]);
 
   return (
     <div className={classes.container}>
-      {nftDetails ? (
+      {nftDetails && collection && _1of1 && transactionHistory ? (
         <div className={classes.wrapper}>
-          <div className={classes.backBtnContainer}>
-            <div className={classes.backBtn}>Back</div>
+          <div onClick={handleGoBack} className={classes.backBtnContainer}>
+            <BackIcon className={classes.backIcon} />
+            <div>Back</div>
           </div>
 
           <div className={classes.sectionWrapper}>
@@ -89,15 +112,15 @@ const NFTDetail = () => {
             </div>
           </div>
 
-          <PriceHistory />
+          <PriceHistory transactionHistory={transactionHistory} />
 
           <div className={classes.historySection}>
-            <TransactionHistory nftDetails={nftDetails} />
+            <TransactionHistory transactionHistory={transactionHistory} />
             <Metadata nftDetails={nftDetails} />
           </div>
 
           <div className={classes.moreSection}>
-            <More />
+            <More params={params} collection={collection} _1of1={_1of1} />
           </div>
         </div>
       ) : null}

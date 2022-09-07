@@ -66,11 +66,16 @@
   border-radius: 2em;
   cursor: pointer;
   color: rgba(28, 27, 28, 0.6);
+  background: var(--default);
 }
 
 .category.active {
   color: var(--default);
   background: var(--main-color);
+}
+
+.category.disable {
+  background: var(--outline);
 }
 
 .nfts {

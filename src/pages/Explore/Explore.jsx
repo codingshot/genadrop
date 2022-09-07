@@ -66,6 +66,7 @@ const Explore = () => {
 
   useEffect(() => {
     (async function getAlgoResult() {
+      dispatch(setActiveCollection(null));
       if (Object.keys(algoCollections).length) {
         const collection = algoCollections[collectionName.trimEnd()];
         if (collection) {
@@ -86,7 +87,7 @@ const Explore = () => {
       const allCollection = getAllCollectionChains();
       const NFTCollection = allCollection?.filter((col) => col?.Id === collectionName);
       if (NFTCollection?.length) {
-        const result = await getGraphCollection(NFTCollection[0]?.nfts, NFTCollection[0]);
+        const result = await getGraphCollection(NFTCollection[0].nfts, NFTCollection[0]);
         handleSetState({
           collection: {
             ...NFTCollection[0],
