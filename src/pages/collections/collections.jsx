@@ -6,9 +6,9 @@ import "react-loading-skeleton/dist/skeleton.css";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import { GenContext } from "../../gen-state/gen.context";
 import NotFound from "../../components/not-found/notFound";
-import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
