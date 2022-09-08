@@ -277,8 +277,8 @@ const SingleNFT = () => {
   return (
     <div className={classes.container}>
       <Helmet>
-        <meta charSet="utf-8" />
         <title>{`${nftDetails?.name} | GenaDrop`}</title>
+        <meta name="title" content={`${nftDetails?.name} | GenaDrop`} />
         <meta name="description" content={`NFT, ${nftDetails?.description}, minted on GenaDrop`} />
         <meta name="image" content={nftDetails?.image_url} />
       </Helmet>
