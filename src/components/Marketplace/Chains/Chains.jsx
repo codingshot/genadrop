@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
-import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
-import { chains } from "./Chains-Script";
-import classes from "./Chains.module.css";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory, useRouteMatch, useLocation } from "react-router-dom";
+import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
+import chains from "./Chains-Script";
+import classes from "./Chains.module.css";
 
 const Chains = () => {
   const cardRef = useRef(null);
