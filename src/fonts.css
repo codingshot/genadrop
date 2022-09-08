@@ -5,7 +5,7 @@
 }
 @font-face {
   font-family: "SF Pro Display";
-  src: url("./fonts/SF-Pro-Display/SF-Pro-Display-Ultralight.otf") format("truetype");
+  src: url("./fonts/SF-Pro-Display/SF-Pro-Display-Ultralight.otf") format("opentype");
   font-weight: 200;
 }
 @font-face {
