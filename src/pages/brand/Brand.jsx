@@ -6,8 +6,7 @@ import {
   accentDarkGray,
   accentLightGray,
   brandcolor,
-  // different font weights
-  fonts,
+  fonts, // different font weights
   logos,
 } from "./Brand-script";
 // assets
@@ -67,7 +66,7 @@ const Brand = () => {
         </div>
         <div className={classes.logoWrapper}>
           {logos.map((logo) => (
-            <div>
+            <div key={logo.title}>
               <p>{logo.title}</p>
               <a href={logo.donwnload} download>
                 {logo.logo}
@@ -86,7 +85,7 @@ const Brand = () => {
         <div className={classes.colorSubHeader}>Brand Color</div>
         <div className={classes.colorPalaett}>
           {brandcolor.map((color) => (
-            <CopyToClipboard text={color} onCopy={onCopyText}>
+            <CopyToClipboard text={color} onCopy={onCopyText} key={color}>
               <div style={{ background: color }}>
                 <p>{color}</p>
                 {!isCopied ? <CopyIcon /> : <CheckSolid />}
@@ -97,7 +96,7 @@ const Brand = () => {
         <div className={classes.colorSubHeader}>Accent Dark Gray</div>
         <div className={`${classes.colorPalaett} ${classes.darkColorPalaett}`}>
           {accentDarkGray.map((color) => (
-            <CopyToClipboard text={color} onCopy={onCopyText}>
+            <CopyToClipboard text={color} onCopy={onCopyText} key={color}>
               <div style={{ background: color }}>
                 <p>{color}</p>
                 {!isCopied ? <CopyIcon /> : <CheckSolid />}
@@ -108,7 +107,7 @@ const Brand = () => {
         <div className={classes.colorSubHeader}>Accent Dark Gray</div>
         <div className={`${classes.colorPalaett} ${classes.whiteColorPalaett}`}>
           {accentLightGray.map((color) => (
-            <CopyToClipboard text={color} onCopy={onCopyText}>
+            <CopyToClipboard text={color} onCopy={onCopyText} key={color}>
               <div style={{ background: color }}>
                 <p>{color}</p>
                 {!isCopied ? <CopyIcon /> : <CheckSolid />}
@@ -134,7 +133,7 @@ const Brand = () => {
         </div>
         <div className={classes.fonts}>
           {fonts.map((font) => (
-            <div>
+            <div key={font.name}>
               <p>{font.name}</p>
               <div style={{ fontWeight: font.font_weight }}> SF Pro Display</div>
             </div>
