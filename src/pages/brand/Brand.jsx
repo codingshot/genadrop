@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import CopyToClipboard from "react-copy-to-clipboard";
 import classes from "./Brand.module.css";
 // color palettes
 import {
@@ -7,15 +8,31 @@ import {
   brandcolor,
   // different font weights
   fonts,
+  logos,
 } from "./Brand-script";
 // assets
 import zipFile from "../../assets/brand/Genadrop-Logos.zip";
 import { ReactComponent as BrandBg } from "../../assets/brand/brand-bg.svg";
-import { ReactComponent as WhiteLogo } from "../../assets/brand/white-logo.svg";
-import { ReactComponent as MainLogo } from "../../assets/brand/main-logo.svg";
-import { ReactComponent as BlackLogo } from "../../assets/brand/black-logo.svg";
+import { ReactComponent as CopyIcon } from "../../assets/copy-solid.svg";
+import { ReactComponent as CheckSolid } from "../../assets/check-solid.svg";
+import { ReactComponent as DownloadArrow } from "../../assets/icon-arrow-down-long.svg";
 
 const Brand = () => {
+  const [state, setState] = useState({
+    isCopied: false,
+  });
+  const { isCopied } = state;
+
+  const handleSetState = (payload) => {
+    setState((states) => ({ ...states, ...payload }));
+  };
+
+  const onCopyText = () => {
+    handleSetState({ isCopied: true });
+    setTimeout(() => {
+      handleSetState({ isCopied: false });
+    }, 500);
+  };
   return (
     <>
       <div className={classes.topBg}>
@@ -49,18 +66,15 @@ const Brand = () => {
           Programmers product design team.
         </div>
         <div className={classes.logoWrapper}>
-          <div>
-            <p>Main Logo</p>
-            <MainLogo />
-          </div>
-          <div>
-            <p>White Logo</p>
-            <WhiteLogo />
-          </div>
-          <div>
-            <p>Black Logo</p>
-            <BlackLogo />
-          </div>
+          {logos.map((logo) => (
+            <div>
+              <p>{logo.title}</p>
+              <a href={logo.donwnload} download>
+                {logo.logo}
+                <DownloadArrow style={{ fill: logo.color }} />
+              </a>
+            </div>
+          ))}
         </div>
         <div className={classes.subHeader}>
           Color Palettes <p />
@@ -72,19 +86,34 @@ const Brand = () => {
         <div className={classes.colorSubHeader}>Brand Color</div>
         <div className={classes.colorPalaett}>
           {brandcolor.map((color) => (
-            <div style={{ background: color }}>{color}</div>
+            <CopyToClipboard text={color} onCopy={onCopyText}>
+              <div style={{ background: color }}>
+                <p>{color}</p>
+                {!isCopied ? <CopyIcon /> : <CheckSolid />}
+              </div>
+            </CopyToClipboard>
           ))}
         </div>
         <div className={classes.colorSubHeader}>Accent Dark Gray</div>
         <div className={`${classes.colorPalaett} ${classes.darkColorPalaett}`}>
           {accentDarkGray.map((color) => (
-            <div style={{ background: color }}>{color}</div>
+            <CopyToClipboard text={color} onCopy={onCopyText}>
+              <div style={{ background: color }}>
+                <p>{color}</p>
+                {!isCopied ? <CopyIcon /> : <CheckSolid />}
+              </div>
+            </CopyToClipboard>
           ))}
         </div>
         <div className={classes.colorSubHeader}>Accent Dark Gray</div>
         <div className={`${classes.colorPalaett} ${classes.whiteColorPalaett}`}>
           {accentLightGray.map((color) => (
-            <div style={{ background: color }}>{color}</div>
+            <CopyToClipboard text={color} onCopy={onCopyText}>
+              <div style={{ background: color }}>
+                <p>{color}</p>
+                {!isCopied ? <CopyIcon /> : <CheckSolid />}
+              </div>
+            </CopyToClipboard>
           ))}
         </div>
         <div className={classes.subHeader}>

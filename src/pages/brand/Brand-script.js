@@ -1,3 +1,8 @@
+import React from "react";
+import whiteLogo, { ReactComponent as WhiteLogo } from "../../assets/brand/white-logo.svg";
+import mainLogo, { ReactComponent as MainLogo } from "../../assets/brand/main-logo.svg";
+import blackLogo, { ReactComponent as BlackLogo } from "../../assets/brand/black-logo.svg";
+
 export const brandcolor = [
   "#0D99FF",
   "#2CA6FF",
@@ -48,5 +53,26 @@ export const fonts = [
   {
     font_weight: "400",
     name: "Regular",
+  },
+];
+
+export const logos = [
+  {
+    logo: <MainLogo />,
+    donwnload: mainLogo,
+    title: "Main Logo",
+    color: "var(--main-color)",
+  },
+  {
+    logo: <WhiteLogo />,
+    donwnload: whiteLogo,
+    title: "White Logo",
+    color: "var(--default)",
+  },
+  {
+    logo: <BlackLogo />,
+    donwnload: blackLogo,
+    title: "Black Logo",
+    color: "black",
   },
 ];
