@@ -48,6 +48,7 @@ const mintCollectionAbi = [
 const mintSingle = [
   "function mint(address to, uint256 id, uint256 amount, string memory uri, bytes memory data) public {}",
   "function setApprovalForAll(address operator, bool approved) public virtual override {}",
+  "function isApprovedForAll(address account, address operator) public view returns (bool)",
 ];
 
 // const marketAi = ['function getMarketItems() public view {}'];
