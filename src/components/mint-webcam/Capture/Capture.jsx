@@ -50,6 +50,7 @@ const Capture = () => {
   const history = useHistory();
 
   const webcamRef = useRef();
+  const webcamFrontRef = useRef();
   const mediaRecorderRef = useRef();
   const webcamWrapper = useRef();
 
@@ -77,6 +78,7 @@ const Capture = () => {
   const [recordedChunks, setRecordedChunks] = useState([]);
   const [capturing, setCapturing] = useState(false);
   const [numberOfCameras, setNumberOfCameras] = useState(0);
+  const [numberOfCamerasFront, setNumberOfCamerasFront] = useState(0);
   const {
     toggle,
     img,
@@ -98,14 +100,14 @@ const Capture = () => {
   };
   const { dispatch } = useContext(GenContext);
   // update the video to fit different screen
-  const isLandscape = height <= width;
-  const ratio = isLandscape ? width / height : height / width;
-  const videoConstraints = {
-    facingMode: webcam,
-    width,
-    height,
-    // ...(ratio && { ratio }),
-  };
+  // const isLandscape = height <= width;
+  // const ratio = isLandscape ? width / height : height / width;
+  // const videoConstraints = {
+  //   facingMode: webcam,
+  //   width,
+  //   height,
+  //   // ...(ratio && { ratio }),
+  // };
   const updateVideoSize = () => {
     const newWidth = webcamWrapper.current?.clientWidth;
     const newHeight = webcamWrapper.current?.clientHeight;
@@ -141,13 +143,13 @@ const Capture = () => {
     console.log(imageSrc);
     handleSetState({ img: imageSrc });
   };
-  const downloadImg = () => {
-    const ImageBase64 = img.split("data:image/png;base64,")[1];
-    const a = document.createElement("a"); // Create <a>
-    a.href = `data:image/png;base64,${ImageBase64}`; // Image Base64 Goes here
-    a.download = "Image.png"; // File name Here
-    a.click(); // Downloaded file
-  };
+  // const downloadImg = () => {
+  //   const ImageBase64 = img.split("data:image/png;base64,")[1];
+  //   const a = document.createElement("a"); // Create <a>
+  //   a.href = `data:image/png;base64,${ImageBase64}`; // Image Base64 Goes here
+  //   a.download = "Image.png"; // File name Here
+  //   a.click(); // Downloaded file
+  // };
   function getFileFromBytes(string64, fileName, type) {
     // const trimmedString = string64.split(",")[1];
     // const imageContent = atob(trimmedString);
@@ -407,33 +409,39 @@ const Capture = () => {
         <div className={classes.videoContainer}>
           <div className={classes.videoWrapper} ref={webcamWrapper}>
             {toggle ? (
-              <Camera
-                ref={webcamRef}
-                aspectRatio="cover"
-                numberOfCamerasCallback={setNumberOfCameras}
-                errorMessages={{
-                  noCameraAccessible:
-                    "No camera device accessible. Please connect your camera or try a different browser.",
-                  permissionDenied: "Permission denied. Please refresh and give camera permission.",
-                  switchCamera:
-                    "It is not possible to switch camera to different one because there is only one video device accessible.",
-                  canvas: "Canvas is not supported.",
-                }}
-              />
+              <>
+                <Camera
+                  ref={webcamRef}
+                  facingMode="environment"
+                  aspectRatio="cover"
+                  numberOfCamerasCallback={setNumberOfCameras}
+                  errorMessages={{
+                    noCameraAccessible:
+                      "No camera device accessible. Please connect your camera or try a different browser.",
+                    permissionDenied: "Permission denied. Please refresh and give camera permission.",
+                    switchCamera:
+                      "It is not possible to switch camera to different one because there is only one video device accessible.",
+                    canvas: "Canvas is not supported.",
+                  }}
+                />
+                <div className={classes.secondCameraWrapper}>
+                  <Camera
+                    ref={webcamFrontRef}
+                    aspectRatio="cover"
+                    facingMode="user"
+                    numberOfCamerasCallback={setNumberOfCamerasFront}
+                    errorMessages={{
+                      noCameraAccessible:
+                        "No camera device accessible. Please connect your camera or try a different browser.",
+                      permissionDenied: "Permission denied. Please refresh and give camera permission.",
+                      switchCamera:
+                        "It is not possible to switch camera to different one because there is only one video device accessible.",
+                      canvas: "Canvas is not supported.",
+                    }}
+                  />
+                </div>
+              </>
             ) : (
-              // <Webcam
-              //   ref={webcamRef}
-              //   audio={false}
-              //   screenshotFormat="image/png"
-              //   style={{
-              //     objectFit: "cover",
-              //   }}
-              //   minScreenshotHeight={videoConstraints.width}
-              //   minScreenshotWidth={videoConstraints.height}
-              //   width={videoConstraints.width}
-              //   height={videoConstraints.height}
-              //   videoConstraints={videoConstraints}
-              // />
               <div className={classes.videoOFF} />
             )}
             <div className={classes.enableContainer}> </div>
