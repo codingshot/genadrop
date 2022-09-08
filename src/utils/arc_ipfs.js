@@ -1350,35 +1350,6 @@ export async function mintToAurora(polyProps) {
   return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
 }
 
-export async function getPolygonNfts(mainnet) {
-  const provider = new ethers.providers.AlchemyProvider("maticmum", process.env.REACT_APP_ALCHEMY_KEY);
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
-  const contract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    wallet
-  );
-  const art = await contract.getMarketItems();
-  return art;
-}
-
-export async function getPolygonUserPurchasedNfts(connector, mainnet) {
-  if (!connector) {
-    return [];
-  }
-  const contract = new ethers.Contract(
-    mainnet
-      ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-      : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
-    marketAbi,
-    connector.getSigner()
-  );
-  const art = await contract.fetchPurchasedNFTs();
-  return art;
-}
-
 export async function purchasePolygonNfts(buyProps) {
   const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
   let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
@@ -1390,8 +1361,16 @@ export async function purchasePolygonNfts(buyProps) {
       })
     );
   }
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const { chainId } = connector._network;
+  let wallet;
+  let chainId;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+    ({ chainId } = provider._network);
+  } else {
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+    ({ chainId } = connector._network);
+  }
   price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
@@ -1416,6 +1395,40 @@ export async function purchasePolygonNfts(buyProps) {
     // Value
     { tokenId, account, price, seller, nftContract }
   );
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const saleTx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      value: price,
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(saleTx);
+      await result.wait();
+      return mainnet ? `https://polygonscan.com/tx/${result.hash}` : `https://mumbai.polygonscan.com/tx/${result.hash}`;
+    } catch (error) {
+      console.log("erooric data", error, error.data);
+      return dispatch(
+        setNotification({
+          message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+          type: "warning",
+        })
+      );
+    }
+  }
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
@@ -1449,8 +1462,16 @@ export async function purchaseAuroraNfts(buyProps) {
       })
     );
   }
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const { chainId } = connector._network;
+  let wallet;
+  let chainId;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+    ({ chainId } = provider._network);
+  } else {
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+    ({ chainId } = connector._network);
+  }
   price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
@@ -1475,6 +1496,40 @@ export async function purchaseAuroraNfts(buyProps) {
     // Value
     { tokenId, account, price, seller, nftContract }
   );
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const saleTx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      value: price,
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(saleTx);
+      await result.wait();
+      return mainnet ? `https://aurorascan.dev/tx/${result.hash}` : `https://testnet.aurorascan.dev/tx/${result.hash}`;
+    } catch (error) {
+      console.log("erooric data", error, error.data);
+      return dispatch(
+        setNotification({
+          message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+          type: "warning",
+        })
+      );
+    }
+  }
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
@@ -1508,8 +1563,16 @@ export async function purchaseCeloNfts(buyProps) {
       })
     );
   }
-  const wallet = await InitiateCeloProvider(mainnet);
-  const { chainId } = connector._network;
+  let wallet;
+  let chainId
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+    ({ chainId } = provider._network);
+  } else {
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+    ({ chainId } = connector._network);
+  }
   price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
@@ -1534,6 +1597,42 @@ export async function purchaseCeloNfts(buyProps) {
     // Value
     { tokenId, account, price, seller, nftContract }
   );
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const saleTx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      value: price,
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(saleTx);
+      await result.wait();
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      console.log("erooric data", error, error.data);
+      return dispatch(
+        setNotification({
+          message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+          type: "warning",
+        })
+      );
+    }
+  }
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
