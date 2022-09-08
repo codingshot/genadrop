@@ -106,8 +106,8 @@ const SingleNFT = () => {
   }
 
   useEffect(() => {
-    dispatch(setOverlay(true));
     if (Number(nftChainId) !== 4160) return;
+    dispatch(setOverlay(true));
     let nftDetails = null;
     // const cacheNftDetails = JSON.parse(window.localStorage.activeAlgoNft);
     // if (cacheNftDetails) {
@@ -314,7 +314,7 @@ const SingleNFT = () => {
               <span className={classes.price}>
                 <img className={classes.iconImg} src={chainIcon} alt="" />
                 <p className={classes.tokenValue}>
-                  {nftDetails.price} {chainSymbol || ""}
+                  {Number(nftDetails?.price).toFixed(2)} {chainSymbol || ""}
                 </p>
                 {nftDetails?.price === 0 ||
                   (nftDetails?.price === null ? (

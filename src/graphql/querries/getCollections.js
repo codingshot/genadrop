@@ -31,6 +31,12 @@ export const GET_GRAPH_COLLECTIONS = gql`
           txDate
           txId
           type
+          from {
+            id
+          }
+          to {
+            id
+          }
           price
         }
       }
@@ -112,7 +118,14 @@ export const GET_ALL_POLYGON_COLLECTIONS = gql`
         transactions {
           id
           txDate
+          price
           txId
+          to {
+            id
+          }
+          from {
+            id
+          }
           type
         }
       }
@@ -224,6 +237,12 @@ export const GET_CELO_NFT = gql`
       owner {
         id
       }
+      collection {
+        name
+        creator {
+          id
+        }
+      }
       tokenIPFSPath
       transactions {
         id
@@ -250,16 +269,29 @@ export const GET_GRAPH_NFT = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
         id
+      }
+      collection {
+        name
+        creator {
+          id
+        }
       }
       tokenIPFSPath
       transactions {
         id
         txDate
         txId
+        to {
+          id
+        }
+        from {
+          id
+        }
         type
         price
       }

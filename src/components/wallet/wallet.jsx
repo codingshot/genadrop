@@ -5,7 +5,6 @@ import { GenContext } from "../../gen-state/gen.context";
 import userIcon from "../../assets/icon-user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
-import { ReactComponent as ChevronIcon } from "../../assets/icon-chevron-down.svg";
 import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
@@ -151,7 +150,7 @@ function ConnectWallet() {
       <div className={classes.network}>
         <div className={classes.dot} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-        <ChevronIcon className={classes.chevronIcon} />
+        <DropdownIcon className={classes.chevronIcon} />
       </div>
       <div className={classes.networkDropdownContainer}>
         <div onClick={handleNetworkClick} className={classes.networkDropdown}>
