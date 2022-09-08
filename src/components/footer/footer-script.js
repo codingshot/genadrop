@@ -94,7 +94,7 @@ export const socialLinks = [
   {
     name: "Linktree",
     icon: linktree,
-    link: "https://linktr.ee/Genadrop",
+    link: "/links",
   },
   {
     name: "Discord",
