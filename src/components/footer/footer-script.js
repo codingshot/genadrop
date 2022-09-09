@@ -10,7 +10,7 @@ import discordIcon from "../../assets/icon-discord.svg";
 import linkedInIcon from "../../assets/icon-linkedin.svg";
 import youTubeIcon from "../../assets/icon-youtube.svg";
 import telegram from "../../assets/telegram.svg";
-import linktree from "../../assets/linktree.svg";
+import links from "../../assets/icon-links.svg";
 
 export const orgs = [
   {
@@ -93,8 +93,8 @@ export const footerLinks = [
 export const socialLinks = [
   {
     name: "Linktree",
-    icon: linktree,
-    link: "https://linktr.ee/Genadrop",
+    icon: links,
+    link: "/links",
   },
   {
     name: "Discord",
