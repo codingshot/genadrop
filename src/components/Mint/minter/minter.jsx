@@ -172,8 +172,6 @@ const Minter = () => {
       handleMint(mintProps).then((url) => {
         dispatch(setOverlay(false));
         if (typeof url === "object") {
-          console.log("======MINTING======Collection======");
-
           handleSetState({
             popupProps: {
               url: url.message,
@@ -202,11 +200,9 @@ const Minter = () => {
       }
 
       dispatch(setOverlay(true));
-      console.log("======MINTING======10f1s======1");
 
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
-        console.log("======MINTING======10f1s======2");
 
         if (typeof url === "object") {
           handleSetState({

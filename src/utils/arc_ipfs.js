@@ -465,6 +465,8 @@ export async function mintSingleToCelo(singleMintProps) {
   try {
     txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
+    console.log("+++++++TXN: ", txn);
+
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet
