@@ -37,7 +37,7 @@ const Details = ({ nftDetails: { owner, chain } }) => {
         <div>0%</div>
       </div>
       <div className={classes.list}>
-        <div>Genadrop Royalty</div>
+        <div>Marketplace Fee</div>
         <div>10%</div>
       </div>
       <div className={`${classes.list} ${classes.total}`}>
