@@ -221,31 +221,29 @@ const Minter = () => {
           if (supportedChains[chainId]?.chain !== "Algorand" && account) {
             address = ethers?.utils?.hexlify(account);
           }
-          (async function getUserNFTs() {
+          let nft = async function getUserNFTs() {
             let nfts;
             switch (supportedChains[chainId]?.chain) {
               case "Algorand":
                 nfts = await fetchUserCreatedNfts(account);
-                nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
+                return await getUserSingleNfts({ mainnet, singleNfts: nfts });
                 break;
               case "Celo":
                 nfts = await getCeloMintedNFTs(address);
+                console.log("Llllll celo", nfts);
+                return nfts;
                 break;
               case "Aurora":
-                nfts = await getAuroraMintedNfts(address);
+                return await getAuroraMintedNfts(address);
                 break;
               case "Polygon":
-                nfts = await getPolygonMintedNFTs(address);
+                return await getPolygonMintedNFTs(address);
                 break;
               default:
                 break;
             }
-
-            handleSetState({
-              createdNfts: [...(nfts || [])],
-            });
-            console.log(createdNfts[createdNfts.length]);
-          })();
+          };
+          console.log("Llllll", nft);
         }
       });
     }
