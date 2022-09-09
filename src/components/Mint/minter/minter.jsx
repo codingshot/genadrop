@@ -209,28 +209,25 @@ const Minter = () => {
         console.log("======MINTING======10f1s======2");
 
         if (typeof url === "object") {
-          console.log("======MINTING======10f1s======");
-          const msg = url.message;
-          const nftId = msg.slice(msg.lastIndexOf("/") + 1, msg.length);
-          history.push(`/marketplace/1of1/preview/${chainId}/${nftId}`);
-
-          // handleSetState({
-          //   popupProps: {
-          //     url: url.message,
-          //     isError: true,
-          //     popup: true,
-          //   },
-          // });
-        } else {
-          console.log("======MINTING======10f1s======3");
-
           handleSetState({
             popupProps: {
-              url,
-              isError: false,
+              url: url.message,
+              isError: true,
               popup: true,
             },
           });
+        } else {
+          console.log("======MINTING======10f1s======3");
+          console.log(url);
+          const nftId = url.slice(url.lastIndexOf("/") + 1, url.length);
+          history.push(`/marketplace/1of1/preview/${chainId}/${nftId}`);
+          // handleSetState({
+          //   popupProps: {
+          //     url,
+          //     isError: false,
+          //     popup: true,
+          //   },
+          // });
         }
       });
     }

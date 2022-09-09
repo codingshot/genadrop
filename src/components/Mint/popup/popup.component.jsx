@@ -11,7 +11,8 @@ const Popup = (props) => {
       {isError ? (
         <ErrorPopup handleSetState={handleSetState} popupProps={popupProps} />
       ) : (
-        <SuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
+        // <SuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
+        ""
       )}
     </div>
   );
