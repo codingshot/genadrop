@@ -222,6 +222,8 @@ const Minter = () => {
           //   },
           // });
         } else {
+          console.log("======MINTING======10f1s======3");
+
           handleSetState({
             popupProps: {
               url,
