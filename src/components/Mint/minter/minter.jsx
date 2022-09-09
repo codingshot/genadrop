@@ -244,7 +244,7 @@ const Minter = () => {
             handleSetState({
               createdNfts: [...(nfts || [])],
             });
-            console.log(createdNfts);
+            console.log(createdNfts[createdNfts.length]);
           })();
         }
       });
