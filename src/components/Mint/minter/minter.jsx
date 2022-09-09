@@ -172,6 +172,8 @@ const Minter = () => {
       handleMint(mintProps).then((url) => {
         dispatch(setOverlay(false));
         if (typeof url === "object") {
+          console.log("======MINTING======Collection======");
+
           handleSetState({
             popupProps: {
               url: url.message,
@@ -203,6 +205,7 @@ const Minter = () => {
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (typeof url === "object") {
+          console.log("======MINTING======10f1s======");
           const msg = url.message;
           const nftId = msg.slice(msg.lastIndexOf("/") + 1, msg.length);
           history.push(`/marketplace/1of1/preview/${chainId}/${nftId}`);
