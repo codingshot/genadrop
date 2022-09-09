@@ -217,7 +217,9 @@ const Minter = () => {
             },
           });
         } else {
-          console.log("======MINTING======10f1s======3");
+          // https://genadrop-hah162zvm-codingshot.vercel.app/marketplace/1of1/preview/80001/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe7111410
+          // https://genadrop-hah162zvm-codingshot.vercel.app/marketplace/1of1/preview/80001/0x56a68841790e0ad377d82a7bc49c2bb742d4e936edb0b34a2dad73459f7fe468
+          // https://genadrop-hah162zvm-codingshot.vercel.app/marketplace/1of1/preview/80001/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe7189117
           console.log(url);
           const nftId = url.slice(url.lastIndexOf("/") + 1, url.length);
           history.push(`/marketplace/1of1/preview/${chainId}/${nftId}`);
