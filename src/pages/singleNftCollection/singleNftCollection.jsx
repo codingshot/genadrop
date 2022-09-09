@@ -67,21 +67,14 @@ const SingleNftCollection = () => {
   };
 
   const handleFilter = ({ type, value }) => {
-    let filterCollection = [];
-    if (activeDate) {
-      filterCollection = filteredCollection;
-    } else {
-      filterCollection = collections;
-    }
-
     if (type === "status") {
-      let result = filterBy({ collections: filterCollection, value, account });
+      let result = filterBy({ collections, value, account });
       handleSetState({ filteredCollection: result });
     } else if (type === "sort") {
-      let result = sortBy({ collections: filterCollection, value });
+      let result = sortBy({ collections, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      let result = rangeBy({ collections: filterCollection, value });
+      let result = rangeBy({ collections, value });
       handleSetState({ filteredCollection: result });
     }
   };
