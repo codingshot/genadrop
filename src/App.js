@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
-
+import "./fonts.css";
 import Preview from "./pages/preview/preview";
 import Explore from "./pages/Explore/Explore";
 import CollectionNFT from "./pages/collectionNFT/collectionNFT";
@@ -45,6 +45,7 @@ import StoreData from "./renderless/store-data/StoreData";
 import FetchData from "./renderless/fetch-data/fetchData.component";
 import Links from "./pages/links/links";
 import SearchResult from "./pages/searchResult/searchResult";
+import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
 
@@ -93,6 +94,7 @@ function App() {
             <Route exact path="/create/session/pricing/failed" component={FailedPlan} />
             <Route exact path="/links" component={Links} />
             <Route exact path="/search" component={SearchResult} />
+            <Route exact path="/brand" component={Brand} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
