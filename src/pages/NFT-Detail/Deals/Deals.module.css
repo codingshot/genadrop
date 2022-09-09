@@ -45,11 +45,21 @@
   border: 1px solid var(--main-color);
   cursor: pointer;
   transition: all 300ms;
+  text-align: center;
 }
 
 .btn:hover {
   background: var(--default);
   color: var(--main-color);
+}
+
+.btn.disable {
+  background: var(--outline-dark);
+  border: 1px solid var(--outline-dark);
+}
+
+.btn.disable:hover {
+  color: var(--outline);
 }
 
 @media screen and (max-width: 1200px) {

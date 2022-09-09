@@ -2,11 +2,20 @@ import classes from "./Deals.module.css";
 import { useState } from "react";
 import { useEffect } from "react";
 import supportedChains from "../../../utils/supportedChains";
-import { getFormatedPrice } from "../../../utils";
+import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold } = nftDetails;
+  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch } = nftDetails;
   const [usdValue, setUsdValue] = useState(0);
+  const buyProps = {
+    dispatch,
+    account,
+    connector,
+    mainnet,
+    nftDetails,
+    history,
+    chainId,
+  };
 
   const getUsdValue = async () => {
     let value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
@@ -27,10 +36,24 @@ const Deals = ({ nftDetails }) => {
           <div className={classes.appx}>{`($${usdValue.toFixed(4)})`}</div>
         </div>
       </div>
-      {sold ? (
-        <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
+      {!price ? (
+        owner === account ? (
+          <div className={classes.btn}>List</div>
+        ) : (
+          <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
+        )
+      ) : !sold || isListed ? (
+        supportedChains[chain]?.chain === "Algorand" ? (
+          <div onClick={() => buyNft(buyProps)} className={classes.btn}>
+            Buy now
+          </div>
+        ) : (
+          <div onClick={() => buyGraphNft(buyProps)} className={classes.btn}>
+            Buy now
+          </div>
+        )
       ) : (
-        <div className={classes.btn}>Buy now</div>
+        <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
       )}
     </div>
   );

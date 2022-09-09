@@ -5,6 +5,24 @@
   position: relative;
 }
 
+.desktop {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
+.mobile {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
 .backBtnContainer {
   padding: 0;
   margin-bottom: 2em;
@@ -28,7 +46,7 @@
 
 .wrapper {
   width: 100%;
-  max-width: 72em;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -37,25 +55,15 @@
   align-items: flex-start;
   justify-content: center;
   gap: 2em;
-  margin-bottom: 2em;
+  margin-bottom: 3em;
 }
 
 .nftSection {
   width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 2em;
 }
 
 .detailSection {
   width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2em;
 }
 
 .priceHistory {
@@ -71,7 +79,7 @@
   align-items: stretch;
   justify-content: center;
   gap: 2em;
-  margin-bottom: 3em;
+  margin-bottom: 4em;
 }
 
 @media screen and (max-width: 1200px) {
@@ -89,6 +97,14 @@
 @media screen and (max-width: 768px) {
   .wrapper {
     max-width: 64em;
+  }
+
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: flex;
   }
 
   .sectionWrapper {

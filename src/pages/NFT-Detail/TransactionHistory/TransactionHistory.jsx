@@ -7,7 +7,9 @@ import { ReactComponent as SalesIcon } from "../../../assets/icon-sales.svg";
 import { ReactComponent as TransferIcon } from "../../../assets/icon-transfer.svg";
 import { ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
 import { ReactComponent as TransactionIcon } from "../../../assets/icon-transaction.svg";
-import Transaction from "./TransactionCard";
+import { ReactComponent as SearchIcon } from "../../../assets/icon-search.svg";
+
+import TransactionCard from "./TransactionCard";
 
 const txIcons = {
   Minting: <MintIcon />,
@@ -16,15 +18,16 @@ const txIcons = {
   Listing: <ListIcon />,
 };
 
-const TransactionHistory = ({ transactionHistory }) => {
+const TransactionHistory = ({ transactionHistory, nftDetails }) => {
   const [state, setState] = useState({
     activeType: "All",
     filterdHistory: [],
     transactionTypes: ["All"],
     transaction: null,
+    searchValue: "",
   });
 
-  const { activeType, filterdHistory, transactionTypes, transaction } = state;
+  const { activeType, filterdHistory, transactionTypes, transaction, searchValue } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -38,6 +41,18 @@ const TransactionHistory = ({ transactionHistory }) => {
     handleSetState({ transaction });
   };
 
+  const handleSearchChange = (e) => {
+    handleSetState({ searchValue: e.target.value });
+  };
+
+  const handleSearch = () => {
+    if (!searchValue) return;
+    const result = transactionHistory.filter(
+      (history) => history.txId == searchValue || history.buyer == searchValue || history.seller == searchValue
+    );
+    handleSetState({ filterdHistory: result });
+  };
+
   useEffect(() => {
     if (activeType === "All") {
       handleSetState({ filterdHistory: transactionHistory });
@@ -45,6 +60,7 @@ const TransactionHistory = ({ transactionHistory }) => {
       const result = transactionHistory.filter((history) => history.type === activeType);
       handleSetState({ filterdHistory: result });
     }
+    handleSetState({ searchValue: "" });
   }, [activeType]);
 
   useEffect(() => {
@@ -55,7 +71,7 @@ const TransactionHistory = ({ transactionHistory }) => {
 
   return (
     <div className={classes.container}>
-      <Transaction txn={transaction} setState={handleSetState} />
+      <TransactionCard txn={transaction} nftDetails={nftDetails} setState={handleSetState} />
       <div className={classes.heading}>
         <TransactionIcon />
         <div>Transaction History</div>
@@ -72,7 +88,13 @@ const TransactionHistory = ({ transactionHistory }) => {
             </div>
           ))}
         </div>
-        <div className={classes.search}>search</div>
+        <div className={classes.search}>
+          <SearchIcon />
+          <input type="text" onChange={handleSearchChange} value={searchValue} placeholder="Search by Address/TxID" />
+          <div onClick={handleSearch} className={classes.searchBtn}>
+            Go
+          </div>
+        </div>
         <div className={classes.listContainer}>
           {filterdHistory &&
             filterdHistory.map((txn, idx) => (

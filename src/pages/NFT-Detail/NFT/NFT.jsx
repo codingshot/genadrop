@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { breakAddress, getCreator } from "../NFTDetail-script";
 import classes from "./NFT.module.css";
 import { ReactComponent as ShareIcon } from "../../../assets/icon-share.svg";
+import Share from "./Share";
 // import { ReactComponent as MoreIcon } from "../../../assets/icon-more.svg";
 
 const NFT = ({ nftDetails }) => {
   const { name, image_url, owner, collection_name } = nftDetails;
   const [creator, setCreator] = useState("");
+  const [share, setShare] = useState(false);
 
   const fetchCreator = async () => {
     const data = await getCreator(owner);
@@ -20,11 +22,12 @@ const NFT = ({ nftDetails }) => {
 
   return (
     <div className={classes.container}>
+      <Share share={share} setShare={setShare} />
       <div className={classes.heading}>
         <div className={classes.nftName}>{name}</div>
         <div className={classes.shareSection}>
           <div className={classes.shareIconContainer}>
-            <ShareIcon className={classes.shareIcon} />
+            <ShareIcon onClick={() => setShare(true)} className={classes.shareIcon} />
           </div>
           {/* <div className={classes.moreIconContainer}>
             <MoreIcon className={classes.moreIcon} />

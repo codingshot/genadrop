@@ -41,6 +41,7 @@
 .shareIcon,
 .moreIcon {
   width: 1em;
+  cursor: pointer;
 }
 
 .details {

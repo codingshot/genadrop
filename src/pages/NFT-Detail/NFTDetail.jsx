@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
-import { setOverlay } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import Attributes from "./Attributes/Attributes";
 import Deals from "./Deals/Deals";
@@ -15,6 +14,7 @@ import PriceHistory from "./PriceHistory/PriceHistory";
 import TransactionHistory from "./TransactionHistory/TransactionHistory";
 import { ReactComponent as BackIcon } from "../../assets/icon-arrow-left.svg";
 import supportedChains from "../../utils/supportedChains";
+import LoadingScreen from "./Loading-Screen/LoadingScreen";
 
 const NFTDetail = () => {
   const { params } = useRouteMatch();
@@ -72,20 +72,17 @@ const NFTDetail = () => {
     history.push(`${match.url.split("/").slice(0, -1).join("/")}`);
   };
 
-  useEffect(() => {
+  const getData = async () => {
     let result;
-    const getData = async () => {
-      dispatch(setOverlay(true));
-      if (activeCollection || supportedChains[params.chainId]?.chain === "Algorand") {
-        result = await getAlgoData({ algoProps });
-      } else {
-        console.log("false");
-        result = await getGraphData({ graphProps });
-      }
-      dispatch(setOverlay(false));
-      console.log({ result });
-      handleSetState({ ...result });
-    };
+    if (activeCollection || supportedChains[params.chainId]?.chain === "Algorand") {
+      result = await getAlgoData({ algoProps });
+    } else {
+      result = await getGraphData({ graphProps });
+    }
+    handleSetState({ ...result });
+  };
+
+  useEffect(() => {
     getData();
     document.documentElement.scrollTop = 0;
   }, [singleAlgoNfts, algoCollections, auroraCollections, polygonCollections, celoCollections, params.nftId]);
@@ -101,21 +98,34 @@ const NFTDetail = () => {
 
           <div className={classes.sectionWrapper}>
             <div className={classes.nftSection}>
-              <NFT nftDetails={nftDetails} />
-              <Details nftDetails={nftDetails} />
+              <div className={classes.desktop}>
+                <NFT nftDetails={nftDetails} />
+                <Details nftDetails={nftDetails} />
+              </div>
+              <div className={classes.mobile}>
+                <NFT nftDetails={nftDetails} />
+                <Deals nftDetails={{ ...nftDetails, account, chainId, mainnet, connector, dispatch }} />
+              </div>
             </div>
 
             <div className={classes.detailSection}>
-              <Deals nftDetails={nftDetails} />
-              <Description nftDetails={nftDetails} />
-              <Attributes nftDetails={nftDetails} />
+              <div className={classes.desktop}>
+                <Deals nftDetails={{ ...nftDetails, account, chainId, mainnet, connector, dispatch }} />
+                <Description nftDetails={nftDetails} />
+                <Attributes nftDetails={nftDetails} />
+              </div>
+              <div className={classes.mobile}>
+                <Description nftDetails={nftDetails} />
+                <Details nftDetails={nftDetails} />
+                <Attributes nftDetails={nftDetails} />
+              </div>
             </div>
           </div>
 
           <PriceHistory transactionHistory={transactionHistory} />
 
           <div className={classes.historySection}>
-            <TransactionHistory transactionHistory={transactionHistory} />
+            <TransactionHistory nftDetails={nftDetails} transactionHistory={transactionHistory} />
             <Metadata nftDetails={nftDetails} />
           </div>
 
@@ -123,7 +133,9 @@ const NFTDetail = () => {
             <More params={params} collection={collection} _1of1={_1of1} />
           </div>
         </div>
-      ) : null}
+      ) : (
+        <LoadingScreen />
+      )}
     </div>
   );
 };

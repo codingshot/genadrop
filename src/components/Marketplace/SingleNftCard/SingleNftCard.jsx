@@ -4,13 +4,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { getFormatedPrice } from "../../../utils";
+import { useContext } from "react";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft }) => {
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
+  const { account } = useContext(GenContext);
 
-  const { Id, image_url, name, owner, collection_name, price, chain, sold } = nft;
+  const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed } = nft;
 
   const getUsdValue = async () => {
     const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
@@ -82,8 +85,18 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
             <span>{`(${usdValue.toFixed(4)}USD)`}</span>
           </div>
         </div>
-        {!sold ? (
-          <div className={classes.btn}>Buy</div>
+        {!price ? (
+          owner === account ? (
+            <div className={classes.btn}>List</div>
+          ) : (
+            <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
+          )
+        ) : !sold || isListed ? (
+          supportedChains[chain]?.chain === "Algorand" ? (
+            <div className={classes.btn}>Buy</div>
+          ) : (
+            <div className={classes.btn}>Buy</div>
+          )
         ) : (
           <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
         )}

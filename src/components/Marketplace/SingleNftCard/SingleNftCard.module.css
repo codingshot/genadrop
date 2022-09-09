@@ -118,6 +118,7 @@
   border: 1px solid transparent;
   background: var(--card-outline);
   color: white;
+  padding: 0.5em 1em;
 }
 
 .priceLabel {

@@ -56,7 +56,34 @@
   margin-bottom: 1em;
   background: #ffffff;
   border: 1px solid #eeeff2;
-  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.search input {
+  font-size: 0.65rem;
+  outline: none;
+  border: none;
+  flex: 1;
+}
+
+.searchBtn {
+  padding: 0.15em 0.75em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--outline);
+  color: gray;
+  border-radius: 2em;
+  cursor: pointer;
+  border: 1px solid var(--card-outline);
+  transition: all 300ms;
+}
+
+.searchBtn:hover {
+  background: var(--outline-dark);
+  color: var(--default);
 }
 
 .listContainer {
@@ -70,17 +97,13 @@
 }
 
 .list:first-child {
-  border-bottom: 1px solid #dde1e6;
+  border-top: 1px solid #dde1e6;
 }
 
 .list {
-  border-top: 1px solid #dde1e6;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.25em;
+  border-bottom: 1px solid #dde1e6;
+  width: max-content;
+  min-width: 100%;
   padding: 1em 0;
 }
 
@@ -100,13 +123,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2em;
+  gap: 1em;
   font-size: 0.75rem;
   cursor: pointer;
 }
 
 .item * {
   white-space: nowrap;
+  text-align: center;
 }
 
 .accent {
@@ -128,21 +152,6 @@
   height: 2.5em;
   border: 0.775px solid #c7ccd1;
   border-radius: 0.25em;
-}
-
-.txnCard {
-  display: none;
-  width: 100%;
-  height: 100vh;
-  background: rgba(255, 0, 0, 0.208);
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-}
-
-.txnCard.active {
-  display: block;
 }
 
 @media screen and (max-width: 768px) {

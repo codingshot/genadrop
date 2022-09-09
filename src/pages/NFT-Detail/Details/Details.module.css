@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 0.5em;
+  gap: 1em;
   border-radius: 1em;
   padding: 1em;
   background: #ffffff;
@@ -28,6 +28,21 @@
 
 .list * {
   color: #525c76;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 300ms;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.value svg {
+  width: 1em;
 }
 
 .total {
