@@ -49,6 +49,8 @@ const Minter = () => {
       isError: null,
       popup: false,
     },
+    collectedNfts: null,
+    createdNfts: null,
   });
   const {
     attributes,
@@ -62,6 +64,8 @@ const Minter = () => {
     previewSelectMode,
     profileSelected,
     popupProps,
+    collectedNfts,
+    createdNfts,
   } = state;
 
   const mintProps = {
@@ -213,19 +217,35 @@ const Minter = () => {
             },
           });
         } else {
-          // https://genadrop-hah162zvm-codingshot.vercel.app/marketplace/1of1/preview/80001/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe7111410
-          // https://genadrop-hah162zvm-codingshot.vercel.app/marketplace/1of1/preview/80001/0x56a68841790e0ad377d82a7bc49c2bb742d4e936edb0b34a2dad73459f7fe468
-          // https://genadrop-hah162zvm-codingshot.vercel.app/marketplace/1of1/preview/80001/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe7189117
-          console.log(url);
-          const nftId = url.slice(url.lastIndexOf("/") + 1, url.length);
-          history.push(`/marketplace/1of1/preview/${chainId}/${nftId}`);
-          // handleSetState({
-          //   popupProps: {
-          //     url,
-          //     isError: false,
-          //     popup: true,
-          //   },
-          // });
+          let address = "";
+          if (supportedChains[chainId]?.chain !== "Algorand" && account) {
+            address = ethers?.utils?.hexlify(account);
+          }
+          (async function getUserNFTs() {
+            let nfts;
+            switch (supportedChains[chainId]?.chain) {
+              case "Algorand":
+                nfts = await fetchUserCreatedNfts(account);
+                nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
+                break;
+              case "Celo":
+                nfts = await getCeloMintedNFTs(address);
+                break;
+              case "Aurora":
+                nfts = await getAuroraMintedNfts(address);
+                break;
+              case "Polygon":
+                nfts = await getPolygonMintedNFTs(address);
+                break;
+              default:
+                break;
+            }
+
+            handleSetState({
+              createdNfts: [...(nfts || [])],
+            });
+            console.log(createdNfts);
+          })();
         }
       });
     }

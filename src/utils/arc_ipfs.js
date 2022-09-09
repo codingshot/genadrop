@@ -481,7 +481,7 @@ export async function mintSingleToCelo(singleMintProps) {
     };
   }
 }
-
+// https://genadrop-pir20m6rm-codingshot.vercel.app/marketplace/1of1/preview/44787/0x990fbe6231bb75c7782afaf6570a7a5be8fe7912137192
 export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
