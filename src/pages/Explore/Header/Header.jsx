@@ -135,7 +135,7 @@ const Header = ({ collection, getHeight }) => {
             <div className={classes.statWrapper}>
               <img src={listIcon} alt="" />
               <div className={classes.details}>
-                <div className={classes._1}>TOTAL LIST COUNT</div>
+                <div className={classes._1}>TOTAL NFT COUNT</div>
                 <div className={classes._2}>
                   <span className={classes.accent}>{nfts.length}</span>
                 </div>

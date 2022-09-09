@@ -73,18 +73,38 @@ const Search = () => {
       {location.pathname === "/search" ? (
         <div className={classes.placeholder}>
           <SearchIcon />
-          <input onChange={hanldeSeachChange} type="text" value={value} placeholder="Search collections, and 1 of 1s" />
+          <input
+            className={classes.mobile}
+            onChange={hanldeSeachChange}
+            type="text"
+            value={value}
+            placeholder="Search..."
+          />
+          <input
+            className={classes.desktop}
+            onChange={hanldeSeachChange}
+            type="text"
+            value={value}
+            placeholder="Search collections, and 1 of 1s"
+          />
         </div>
       ) : (
         <div onClick={handleToggleSearch} className={classes.placeholder}>
           <SearchIcon />
-          <input type="text" value={value} onChange={() => {}} placeholder="Search collections, and 1 of 1s" />
+          <input className={classes.mobile} type="text" value={value} onChange={() => {}} placeholder="Search..." />
+          <input
+            className={classes.desktop}
+            type="text"
+            value={value}
+            onChange={() => {}}
+            placeholder="Search collections, and 1 of 1s"
+          />
         </div>
       )}
       <div onClick={handleCloseSearch} className={classes.dropdownContainer}>
         <div
-          onMouseOut={() => handleSetState({ ignoreSearch: false })}
-          onMouseOver={() => handleSetState({ ignoreSearch: true })}
+          onMouseLeave={() => handleSetState({ ignoreSearch: false })}
+          onMouseEnter={() => handleSetState({ ignoreSearch: true })}
           className={classes.dropdown}
         >
           {toggleSearch && (

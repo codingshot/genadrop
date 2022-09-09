@@ -1,24 +1,31 @@
+import { getFormatedPrice } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 
-const filterByListed = (col) => {
-  return col;
+const filterByListed = (collections, account) => {
+  return collections.filter(({ price, owner }) => !price && owner === account);
 };
 
-const filterByNOtListed = (col) => {
-  return col;
+const filterByNOtListed = (collections, account) => {
+  return collections.filter(({ price, owner }) => !price && owner !== account);
 };
 
-const filterByOnAuchtion = (col) => {
-  return col;
+const filterByOnAuchtion = (collections) => {
+  return collections.filter(({ price, sold }) => price && !sold);
 };
 
 const sortByDateAscending = (col) => {
   const collection = [...col].sort((a, b) => {
-    if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
-    if (typeof a.createdAt === "object") {
-      return a.createdAt.seconds - b.createdAt.seconds;
+    if (a.createdAt && b.createdAt) {
+      if (typeof b.createdAt === "object" && typeof a.createdAt === "object") {
+        return b.createdAt.seconds - a.createdAt.seconds;
+      } else if (typeof b.createdAt !== "object" && typeof a.createdAt !== "object") {
+        return b.createdAt - a.createdAt;
+      } else if (typeof b.createdAt === "object" && typeof a.createdAt !== "object") {
+        return b.createdAt.seconds - a.createdAt;
+      } else if (typeof b.createdAt !== "object" && typeof a.createdAt === "object") {
+        return b.createdAt - a.createdAt.seconds;
+      }
     }
-    return a.createdAt - b.createdAt;
   });
 
   return collection;
@@ -26,11 +33,17 @@ const sortByDateAscending = (col) => {
 
 const sortByDateDescending = (col) => {
   const collection = [...col].sort((a, b) => {
-    if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
-    if (typeof a.createdAt === "object") {
-      return b.createdAt.seconds - a.createdAt.seconds;
+    if (a.createdAt && b.createdAt) {
+      if (typeof a.createdAt === "object" && typeof b.createdAt === "object") {
+        return a.createdAt.seconds - b.createdAt.seconds;
+      } else if (typeof a.createdAt !== "object" && typeof b.createdAt !== "object") {
+        return a.createdAt - b.createdAt;
+      } else if (typeof a.createdAt === "object" && typeof b.createdAt !== "object") {
+        return a.createdAt.seconds - b.createdAt;
+      } else if (typeof a.createdAt !== "object" && typeof b.createdAt === "object") {
+        return a.createdAt - b.createdAt.seconds;
+      }
     }
-    return b.createdAt - a.createdAt;
   });
 
   return collection;
@@ -86,12 +99,12 @@ export const sortBy = ({ value, collections }) => {
   }
 };
 
-export const filterBy = ({ value, collections }) => {
+export const filterBy = ({ value, collections, account }) => {
   switch (value) {
     case "listed":
-      return filterByListed(collections);
+      return filterByListed(collections, account);
     case "not listed":
-      return filterByNOtListed(collections);
+      return filterByNOtListed(collections, account);
     case "on auction":
       return filterByOnAuchtion(collections);
     default:
@@ -99,8 +112,17 @@ export const filterBy = ({ value, collections }) => {
   }
 };
 
-export const rangeBy = ({ value, collections }) => {
-  return collections.filter((col) => Number(col.price) >= value.minPrice && Number(col.price) <= value.maxPrice);
+export const rangeBy = async ({ value, collections }) => {
+  const result = await Promise.all(
+    collections.map(async (col) => {
+      let rate = await getFormatedPrice(supportedChains[col.chain].coinGeckoLabel || supportedChains[col.chain].id);
+      let price = Number(rate) * Number(col.price);
+      console.log(price >= value.minPrice && price <= value.maxPrice);
+      return price >= value.minPrice && price <= value.maxPrice ? col : null;
+    })
+  );
+
+  return result.filter((res) => res);
 };
 
 export const shuffle = (array) => {
@@ -114,13 +136,24 @@ export const shuffle = (array) => {
 };
 
 export const getCollectionsByDate = ({ collections, date }) => {
-  const dateToSecs = date * 60 * 60 * 24;
-  if (dateToSecs > 0) {
-    return collections.filter((c) =>
-      typeof c.createdAt === "object" ? dateToSecs >= c.createdAt.seconds : dateToSecs >= c.createdAt
-    );
-  }
-  return collections;
+  if (date === 0) return collections;
+
+  const getDiff = (createdDate) => {
+    let now = new Date();
+    let cDate = new Date(createdDate * 1000);
+    let diff = (now.getTime() - cDate.getTime()) / (1000 * 3600 * 24);
+
+    if (diff <= date) return true;
+    return false;
+  };
+
+  return collections.filter((c) => {
+    if (typeof c.createdAt === "object") {
+      return getDiff(c.createdAt.seconds);
+    } else {
+      return getDiff(c.createdAt);
+    }
+  });
 };
 
 export const getCollectionsByChain = ({ collections, chain, mainnet }) => {

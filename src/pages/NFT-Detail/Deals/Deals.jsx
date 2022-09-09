@@ -45,11 +45,11 @@ const Deals = ({ nftDetails }) => {
       ) : !sold || isListed ? (
         supportedChains[chain]?.chain === "Algorand" ? (
           <div onClick={() => buyNft(buyProps)} className={classes.btn}>
-            Buy now
+            Buy
           </div>
         ) : (
           <div onClick={() => buyGraphNft(buyProps)} className={classes.btn}>
-            Buy now
+            Buy
           </div>
         )
       ) : (

@@ -1,5 +1,4 @@
 import classes from "./singleNftCollection.module.css";
-import bannerImg from "../../assets/explore-banner2.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import { useContext, useEffect, useState } from "react";
 import NotFound from "../../components/not-found/notFound";
@@ -8,6 +7,7 @@ import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftC
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import {
+  filterBy,
   getCollectionsByChain,
   getCollectionsBySearch,
   rangeBy,
@@ -19,7 +19,8 @@ import Skeleton from "react-loading-skeleton";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const SingleNftCollection = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, mainnet } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, mainnet, account } =
+    useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const mountRef = useRef(null);
@@ -66,11 +67,21 @@ const SingleNftCollection = () => {
   };
 
   const handleFilter = ({ type, value }) => {
-    if (type === "sort") {
-      let result = sortBy({ collections, value });
+    let filterCollection = [];
+    if (activeDate) {
+      filterCollection = filteredCollection;
+    } else {
+      filterCollection = collections;
+    }
+
+    if (type === "status") {
+      let result = filterBy({ collections: filterCollection, value, account });
+      handleSetState({ filteredCollection: result });
+    } else if (type === "sort") {
+      let result = sortBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      let result = rangeBy({ collections, value });
+      let result = rangeBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     }
   };
@@ -108,7 +119,7 @@ const SingleNftCollection = () => {
 
   return (
     <div className={classes.container}>
-      <div style={{ backgroundImage: `url(${bannerImg})` }} className={classes.heading}>
+      <div className={classes.heading}>
         <div className={classes.title}>
           <h1>1 of 1s</h1>
           <p>View all listed 1 of 1s {`(${collections.length} Listed)`}</p>

@@ -1,5 +1,4 @@
 import classes from "./collections.module.css";
-import bannerImg from "../../assets/explore-banner2.svg";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import { useContext, useEffect, useState } from "react";
@@ -20,7 +19,8 @@ import Skeleton from "react-loading-skeleton";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, dispatch } =
+    useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -30,7 +30,7 @@ const Collections = () => {
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
-    activeDate: 0,
+    activeDate: 1,
     searchValue: "",
     notFound: false,
   });
@@ -82,12 +82,18 @@ const Collections = () => {
     handleSetState({ filteredCollection: result });
   };
 
-  const handleFilter = ({ type, value }) => {
+  const handleFilter = async ({ type, value }) => {
+    let filterCollection = [];
+    if (activeDate) {
+      filterCollection = filteredCollection;
+    } else {
+      filterCollection = collections;
+    }
     if (type === "sort") {
-      let result = sortBy({ collections, value });
+      let result = sortBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      let result = rangeBy({ collections, value });
+      let result = await rangeBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     }
   };
@@ -130,7 +136,7 @@ const Collections = () => {
 
   return (
     <div className={classes.container}>
-      <div style={{ backgroundImage: `url(${bannerImg})` }} className={classes.heading}>
+      <div className={classes.heading}>
         <div className={classes.title}>
           <h1>Collections</h1>
           <p>View all listed Collections {`${collections && collections.length} Listed`}</p>

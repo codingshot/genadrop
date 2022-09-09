@@ -20,15 +20,22 @@
 
 .heading {
   width: 100%;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   gap: 3em;
   padding: 6em 2em;
+  background: linear-gradient(
+    259.21deg,
+    #b0e2fe -27.76%,
+    #d8e6fc 1.15%,
+    #fdeafa 26.21%,
+    #e3f2f9 47.43%,
+    #edf5f8 67.57%,
+    #fbeffc 87.77%,
+    #b0e2fe 107.4%
+  );
 }
 
 .title {

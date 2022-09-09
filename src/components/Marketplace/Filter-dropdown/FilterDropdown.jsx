@@ -33,7 +33,7 @@ const FilterDropdown = ({ handleFilter, collection }) => {
 
   const handlePriceChange = (e) => {
     let { name, value } = e.target;
-    value = parseInt(value);
+    value = Number(value);
     handleSetState({ filter: { ...filter, [name]: value >= 0 ? value : "" } });
   };
 
@@ -86,16 +86,16 @@ const FilterDropdown = ({ handleFilter, collection }) => {
             ))}
           </div>
         </Dropdown>
-        <Dropdown title="Price">
+        <Dropdown title="Price (USD)">
           <div className={classes.priceDropdown}>
             <div className={classes.inputContainer}>
               <div className={classes.label}>Min</div>
-              <input type="number" name="minPrice" min="0" value={filter.minPrice} onChange={handlePriceChange} />
+              <input type="number" name="minPrice" value={filter.minPrice} onChange={handlePriceChange} />
             </div>
             <div>to</div>
             <div className={classes.inputContainer}>
               <div className={classes.label}>Max</div>
-              <input type="number" name="maxPrice" min="0" value={filter.maxPrice} onChange={handlePriceChange} />
+              <input type="number" name="maxPrice" value={filter.maxPrice} onChange={handlePriceChange} />
             </div>
           </div>
           <div className={classes.btnContainer}>

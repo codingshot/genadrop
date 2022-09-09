@@ -162,7 +162,7 @@ const Header = ({ collection, getHeight, loadedChain }) => {
           <div className={classes.detailContentWrapper}>
             <img src={listIcon} alt="" />
             <div className={classes.floorPrice}>
-              <div className={classes.floor}>TOTAL LIST COUNT</div>
+              <div className={classes.floor}>TOTAL NFT COUNT</div>
               <div className={classes.price}>{numberOfNfts}</div>
             </div>
           </div>
