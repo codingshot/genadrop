@@ -3,7 +3,8 @@ import auroraIcon from "../assets/icon-aurora.svg";
 import celoIcon from "../assets/icon-celo.svg";
 import polygonIcon from "../assets/icon-polygon.svg";
 import nearIcon from "../assets/icon-near.svg";
-import solanaIcon from "../assets/icon-solana.svg";
+// import solanaIcon from "../assets/icon-solana.svg";
+import avalancheIcon from "../assets/icon-avalanche.svg";
 import { addChain, switchChain } from "./chainConnect";
 
 const supportedChains = {
@@ -143,11 +144,11 @@ const supportedChains = {
     coinGeckoLabel: "",
     comingSoon: true,
   },
-  "add-solana-id": {
-    id: "solana",
-    label: "Solana",
-    chain: "Solana",
-    icon: solanaIcon,
+  "add-avalanche-id": {
+    id: "avalanche",
+    label: "Avalanche",
+    chain: "Avalanche",
+    icon: avalancheIcon,
     livePrice: "",
     symbol: "",
     networkId: null,
@@ -158,11 +159,11 @@ const supportedChains = {
     coinGeckoLabel: "",
     comingSoon: true,
   },
-  "add-solana-t-id": {
-    id: "solana",
-    label: "Solana Testnet",
-    chain: "Solana",
-    icon: solanaIcon,
+  "add-avalanche-t-id": {
+    id: "avalanche",
+    label: "Avalanche Testnet",
+    chain: "Avalanche",
+    icon: avalancheIcon,
     livePrice: "",
     symbol: "",
     networkId: null,
@@ -173,6 +174,36 @@ const supportedChains = {
     coinGeckoLabel: "",
     comingSoon: true,
   },
+  // "add-solana-id": {
+  //   id: "solana",
+  //   label: "Solana",
+  //   chain: "Solana",
+  //   icon: solanaIcon,
+  //   livePrice: "",
+  //   symbol: "",
+  //   networkId: null,
+  //   explorer: "",
+  //   add: null,
+  //   isMainnet: true,
+  //   switch: null,
+  //   coinGeckoLabel: "",
+  //   comingSoon: true,
+  // },
+  // "add-solana-t-id": {
+  //   id: "solana",
+  //   label: "Solana Testnet",
+  //   chain: "Solana",
+  //   icon: solanaIcon,
+  //   livePrice: "",
+  //   symbol: "",
+  //   networkId: null,
+  //   explorer: "",
+  //   add: null,
+  //   isMainnet: false,
+  //   switch: null,
+  //   coinGeckoLabel: "",
+  //   comingSoon: true,
+  // },
 };
 
 export default supportedChains;

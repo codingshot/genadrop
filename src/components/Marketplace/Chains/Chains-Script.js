@@ -3,10 +3,11 @@ import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
 import polygonIcon from "../../../assets/icon-polygon.svg";
 import nearIcon from "../../../assets/icon-near.svg";
-import solanaIcon from "../../../assets/icon-solana.svg";
+import avalancheIcon from "../../../assets/icon-avalanche.svg";
+// import solanaIcon from "../../../assets/icon-solana.svg";
 import allChains from "../../../assets/all-chains.svg";
 
-export const chains = [
+const chains = [
   {
     name: "All Chains",
     icon: allChains,
@@ -56,11 +57,20 @@ export const chains = [
     isComingSoon: true,
   },
   {
-    name: "Solana",
-    icon: solanaIcon,
-    color: "#FFFFFF",
+    name: "Avalanche",
+    icon: avalancheIcon,
+    color: "#ffffff",
     border: "transparent",
-    bg: "#000000",
+    bg: "#E84142",
     isComingSoon: true,
   },
+  // {
+  //   name: "Solana",
+  //   icon: solanaIcon,
+  //   color: "#FFFFFF",
+  //   border: "transparent",
+  //   bg: "#000000",
+  //   isComingSoon: true,
+  // },
 ];
+export default chains;
