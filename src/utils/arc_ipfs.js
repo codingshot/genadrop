@@ -421,13 +421,11 @@ export async function mintSingleToCelo(singleMintProps) {
       data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
       nonce: ethNonce,
     };
-    console.log("+++++++TX: ", tx);
+    console.log("+++++++TX: ", id);
 
     try {
       const result = await signer.sendTransaction(tx);
       await result.wait();
-      console.log("+++++++RESULT: ", result);
-
       dispatch(setLoader(""));
       return mainnet
         ? `https://blockscout.celo.org/tx/${result.hash}`
@@ -445,8 +443,6 @@ export async function mintSingleToCelo(singleMintProps) {
   const asset = await connectAndMint(file, metadata, file.name, 4);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
-  console.log("+++++++ID2: ", id);
-
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
@@ -465,8 +461,6 @@ export async function mintSingleToCelo(singleMintProps) {
   try {
     txn = await contract.mint(account, id, 1, asset.url, "0x");
     await txn.wait();
-    console.log("+++++++TXN: ", txn);
-
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet
@@ -481,7 +475,7 @@ export async function mintSingleToCelo(singleMintProps) {
     };
   }
 }
-// https://genadrop-pir20m6rm-codingshot.vercel.app/marketplace/1of1/preview/44787/0x990fbe6231bb75c7782afaf6570a7a5be8fe7912137192
+
 export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
   const signer = await connector.getSigner();
