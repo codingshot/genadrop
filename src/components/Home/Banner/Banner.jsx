@@ -1,9 +1,8 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import classes from "./Banner.module.css";
 import { ReactComponent as PlayIcon } from "../../../assets/icon-play.svg";
-import { Link } from "react-router-dom";
 import demo from "../../../assets/vid/Demo.mp4";
-import { useEffect } from "react";
 
 const Banner = () => {
   const videoRef = useRef(null);
@@ -24,7 +23,10 @@ const Banner = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <div className={classes.features}>
-          Create<span></span> Mint<span></span> Sell<span></span>
+          Create
+          <span /> Mint
+          <span /> Sell
+          <span />
         </div>
         <div className={classes.description}>The ultimate NO-Code NFT tool Creators and Collectors love</div>
         <div className={classes.more}>Generate and mint your NFT collections or mint a photo with a camera.</div>
@@ -38,8 +40,8 @@ const Banner = () => {
         </div>
       </div>
       <div className={`${classes.demo} ${showOverlayer && classes.active}`}>
-        <video ref={videoRef} preload="auto" src={demo}></video>
-        <div className={classes.overlay}></div>
+        <video ref={videoRef} preload="auto" src={demo} />
+        <div className={classes.overlay} />
         <PlayIcon onClick={handlePlay} className={classes.playIcon} />
       </div>
     </div>
