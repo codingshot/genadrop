@@ -133,7 +133,7 @@ const Listed = () => {
       </div>
       <Link to={marketPlaceURL} className={classes.view}>
         <button type="button" className={classes.viewtext}>
-          Go to Marketplace
+          View NFT
         </button>
       </Link>
     </div>
