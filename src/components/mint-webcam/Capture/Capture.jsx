@@ -412,7 +412,7 @@ const Capture = () => {
               <>
                 <Camera
                   ref={webcamRef}
-                  facingMode="environment"
+                  facingMode="user"
                   aspectRatio="cover"
                   numberOfCamerasCallback={setNumberOfCameras}
                   errorMessages={{
@@ -427,7 +427,7 @@ const Capture = () => {
                 <div className={classes.secondCameraWrapper}>
                   <Camera
                     ref={webcamFrontRef}
-                    aspectRatio="cover"
+                    aspectRatio="environment"
                     facingMode="user"
                     numberOfCamerasCallback={setNumberOfCamerasFront}
                     errorMessages={{

@@ -36,7 +36,8 @@
   height: 100%;
 }
 
-.videoWrapper .secondCameraWrapper > div {
+.videoWrapper .secondCameraWrapper {
+  display: flex;
   width: 20%;
   height: 50%;
 }
