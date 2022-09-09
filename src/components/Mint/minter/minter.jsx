@@ -198,17 +198,22 @@ const Minter = () => {
           })
         );
       }
+
       dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (typeof url === "object") {
-          handleSetState({
-            popupProps: {
-              url: url.message,
-              isError: true,
-              popup: true,
-            },
-          });
+          const msg = url.message;
+          const nftId = msg.slice(msg.lastIndexOf("/") + 1, msg.length);
+          history.push(`/marketplace/1of1/preview/${chainId}/${nftId}`);
+
+          // handleSetState({
+          //   popupProps: {
+          //     url: url.message,
+          //     isError: true,
+          //     popup: true,
+          //   },
+          // });
         } else {
           handleSetState({
             popupProps: {
