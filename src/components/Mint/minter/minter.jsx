@@ -22,6 +22,13 @@ import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
 import { initConnectWallet } from "../../wallet/wallet-script";
+import { fetchUserCreatedNfts } from "../../../utils/firebase";
+import { getUserSingleNfts } from "../../../utils";
+import {
+  getAuroraMintedNfts,
+  getCeloMintedNFTs,
+  getPolygonMintedNFTs,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const Minter = () => {
   const history = useHistory();
