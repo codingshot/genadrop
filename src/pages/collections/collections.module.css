@@ -63,7 +63,7 @@
   width: 100%;
   max-width: 36em;
   padding: 0.5em 1em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -85,14 +85,14 @@
   justify-content: center;
   gap: 1em;
   padding: 0.2em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   border: 1px solid #cacdd5;
 }
 
 .date {
   width: 8em;
   text-align: center;
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.5em 0;
   font-weight: 600;
   cursor: pointer;

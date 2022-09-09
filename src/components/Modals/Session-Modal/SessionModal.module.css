@@ -116,7 +116,7 @@
   align-self: center;
   width: 7em;
   padding: 0.5em 2em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   font-size: 1rem;
   transition: all 300ms;
   cursor: pointer;
@@ -151,7 +151,7 @@
   align-self: center;
   width: 12em;
   padding: 0.5em 2em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);
   font-size: 1rem;

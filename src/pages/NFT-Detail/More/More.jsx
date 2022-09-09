@@ -6,7 +6,7 @@ const More = ({ params, collection, _1of1 }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.heading}>More from this collection</div>
+      <div className={classes.heading}>{collectionName ? "More from this collection" : "Similar NFTs"}</div>
       <div className={classes.display}>
         {collectionName
           ? collection.map((nft, idx) => (

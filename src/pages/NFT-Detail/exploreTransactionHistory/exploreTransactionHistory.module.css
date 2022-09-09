@@ -74,7 +74,7 @@
   margin: 1em 0;
   padding: 0 25px;
   transition: all 300ms;
-  border-radius: 2em;
+  border-radius: 0.7em;
   display: flex;
   flex-direction: row;
   align-items: center;

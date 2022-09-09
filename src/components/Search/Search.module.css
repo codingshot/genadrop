@@ -26,7 +26,7 @@
 }
 
 .placeholder {
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.15em 1em;
   border: 1px solid var(--outline);
   display: flex;

@@ -15,7 +15,7 @@
   justify-content: space-between;
   gap: 0.25em;
   border: 1px solid var(--card-outline);
-  border-radius: 2.5em;
+  border-radius: 0.7em;
   cursor: var(--cursor-pointer);
   height: 100%;
   color: var(--main-color);

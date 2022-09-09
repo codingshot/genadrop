@@ -3,6 +3,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1em;
   padding: 2em 1em;
   border-radius: 1em;
   position: sticky;
@@ -39,7 +41,7 @@
 
 .btn {
   padding: 0.5em 2em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);
   border: 1px solid var(--main-color);

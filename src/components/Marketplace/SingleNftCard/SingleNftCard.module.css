@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  border-radius: 1.5em;
+  border-radius: 0.7em;
   cursor: pointer;
   background: #ffffff;
   border: 1.41429px solid rgba(28, 27, 28, 0.1);
@@ -24,7 +24,7 @@
 
 .imageWrapper {
   width: 100%;
-  border-radius: 1.5em;
+  border-radius: 0.7em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,7 +35,7 @@
   width: 100%;
   height: 16em;
   object-fit: cover;
-  border-radius: 1.5em;
+  border-radius: 0.7em;
   transition: transform 300ms;
 }
 
@@ -103,7 +103,7 @@
 
 .btn {
   padding: 0.5em 2em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   border: 1px solid var(--main-color);
   color: var(--main-color);
   transition: all 300ms;

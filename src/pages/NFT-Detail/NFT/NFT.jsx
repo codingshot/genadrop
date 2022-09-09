@@ -3,6 +3,7 @@ import { breakAddress, getCreator } from "../NFTDetail-script";
 import classes from "./NFT.module.css";
 import { ReactComponent as ShareIcon } from "../../../assets/icon-share.svg";
 import Share from "./Share";
+import { Link } from "react-router-dom";
 // import { ReactComponent as MoreIcon } from "../../../assets/icon-more.svg";
 
 const NFT = ({ nftDetails }) => {
@@ -12,7 +13,6 @@ const NFT = ({ nftDetails }) => {
 
   const fetchCreator = async () => {
     const data = await getCreator(owner);
-    console.log({ data, owner });
     setCreator(data);
   };
 
@@ -49,14 +49,16 @@ const NFT = ({ nftDetails }) => {
                 ) : (
                   <>
                     <div className={classes.placeholder} />
-                    <div className={classes.name}>{breakAddress(owner)}</div>
+                    <Link to={`/me/${owner}`} className={`${classes.name} ${classes.active}`}>
+                      {breakAddress(owner)}
+                    </Link>
                   </>
                 )}
               </div>
             </>
           )}
         </div>
-        {collection_name ? (
+        {collection_name && collection_name != "Genadrop 1 of 1" ? (
           <div className={classes.detail}>
             <div className={classes.title}>Collection</div>
             <div className={classes.name}>{collection_name}</div>
