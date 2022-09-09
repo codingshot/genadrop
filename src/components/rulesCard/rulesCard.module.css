@@ -52,7 +52,7 @@
   cursor: var(--cursor-pointer);
   border: 1px solid red;
   padding: 0.25em 1em;
-  border-radius: 1.5em;
+  border-radius: 0.7em;
   color: red;
   font-size: 0.75rem;
   position: absolute;
@@ -113,7 +113,7 @@
 
 .deleteBtn,
 .closeBtn {
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.65em 2em;
   cursor: var(--cursor-pointer);
   border: 1px solid transparent;

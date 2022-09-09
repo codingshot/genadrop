@@ -64,9 +64,3 @@
 .ctrlBtn_right.active {
   display: flex;
 }
-
-@media screen and (max-width: 480px) {
-  .cardContainer {
-    padding: 1em;
-  }
-}

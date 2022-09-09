@@ -111,7 +111,7 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
 
   return (
     <div className={classes.container}>
-      <div ref={wrapperRef} className={classes.wrapper} {...bind()}>
+      <div ref={wrapperRef} className={classes.wrapper}>
         <div style={{ gap }} ref={cardContainerRef} className={classes.cardContainer}>
           {children}
         </div>

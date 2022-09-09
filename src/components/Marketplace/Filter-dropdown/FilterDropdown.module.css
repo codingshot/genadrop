@@ -1,93 +1,151 @@
-.filterDropdown {
+.container {
   position: relative;
-  width: max-content;
-  min-width: 12em;
   display: flex;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 10;
+  height: 100%;
+}
+
+.wrapper {
+  width: 16em;
+  position: absolute;
+  border-radius: 0.5em;
+  overflow: hidden;
+  top: 3em;
+  background: var(--default);
+  border: 1.5px solid var(--outline);
+  box-shadow: 0px 1.43503px 2.87007px rgba(28, 27, 28, 0.05);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 250ms;
+  transform: translateY(-0.5em);
+}
+
+.wrapper.active {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0em);
+}
+
+.filterBtn {
+  display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: var(--default);
-  z-index: 10;
-}
-
-.filterDropdown span {
-  font-size: 0.85rem;
-}
-
-.filterHeading {
-  width: 100%;
-  cursor: var(--cursor-pointer);
-  background: var(--default);
-  border: 1px solid var(--main-color);
+  gap: 2em;
   padding: 0.5em 1em;
-  z-index: 99;
-  border-radius: 2.5em;
-  transition: all 300ms;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  text-transform: capitalize;
-  gap: 0.5em;
+  border-radius: 0.7em;
+  cursor: pointer;
+  background: var(--default);
+  border: 1px solid var(--card-outline);
 }
 
-.filterHeading:hover {
-  background: var(--card-light);
+.filterBtn:hover {
+  background: var(--btn-close);
 }
 
 .filterHeading {
-  color: var(--main-color);
-}
-
-.filterDetail {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.5em 1em;
+}
+
+.sort,
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   gap: 1em;
 }
 
 .dropdown {
-  width: max-content;
-  min-width: 100%;
-  position: absolute;
-  top: 2.5em;
-  background: var(--default);
-  visibility: hidden;
-  opacity: 0;
-  transition: all 250ms;
+  width: 100%;
   display: flex;
+  align-items: flex-start;
+  justify-content: center;
   flex-direction: column;
-  cursor: var(--cursor-pointer);
-  transform: translateY(-0.5em);
-  text-transform: capitalize;
-  border-radius: 0.5em;
-  overflow: hidden;
-  box-shadow: -9px 13px 18px rgba(93, 134, 194, 0.1), 26px 18px 18px rgba(93, 134, 194, 0.1);
+  gap: 0.5em;
+  padding: 0.75em;
 }
 
-.dropdown.active {
-  visibility: visible;
-  opacity: 1;
-  margin-top: 0.25em;
-  transform: translateY(0em);
+.priceDropdown {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+  padding: 0.5em 0.75em;
 }
 
-.filter {
+.inputContainer input {
+  width: 100%;
+  border: 1px solid #cacdd5;
+  outline: none;
+  border-radius: 0.25em;
+  padding: 0.25em;
+}
+
+.label {
+  font-size: 0.85rem;
+}
+
+.btnContainer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2em;
-  padding: 0.75em 1em;
-  border-bottom: 1px solid var(--outline);
+  gap: 1em;
+  padding: 1em 0.75em;
 }
 
-.filter:hover {
-  background: var(--card-light);
+.btn {
+  padding: 0.5em 0;
+  border-radius: 0.7em;
+  flex: 1;
+  text-align: center;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  transition: all 300ms;
+  cursor: pointer;
 }
 
-.dropdownIcon {
-  transition: all 250ms;
+.btn.apply {
+  background: var(--main-color);
+  color: var(--default);
 }
 
-.dropdownIcon.active {
-  transform: rotate(180deg);
+.btn.apply:hover {
+  background: var(--default);
+  color: var(--main-color);
+  border-color: var(--main-color);
+}
+
+.btn.cancel {
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+}
+
+.btn.cancel:hover {
+  background: var(--main-color);
+  color: var(--default);
+}
+
+@media screen and (max-width: 540px) {
+  .container {
+    justify-content: flex-end;
+  }
+
+  .filterBtn {
+    gap: 0.5em;
+    padding: 0.5em 0.25em;
+  }
+
+  .filterBtn div {
+    font-size: 0.85rem;
+  }
+
+  .filterIcon {
+    width: 1em;
+    height: 1em;
+  }
 }

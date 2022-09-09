@@ -91,7 +91,6 @@ const SearchResult = () => {
             Creators
           </div>
         </div>
-        {/* <FilterDropdown /> */}
         <ChainDropdown onChainFilter={onChainFilter} />
       </div>
       {filteredCollection?.length ? (

@@ -1,107 +1,207 @@
 .container {
-  padding: 1em;
-  padding-top: 2em;
-  padding-bottom: 4em;
-  background: var(--default);
+  width: 100%;
+  min-height: 100vh;
 }
 
-.innerContainer {
+.wrapper {
+  width: 100%;
+  padding: 4em 2em;
+}
+
+.nfts {
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 2em;
-  border-radius: 1em;
-  background: var(--default);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center;
+  gap: 2em;
 }
 
-.header {
+.heading {
   width: 100%;
-  margin-bottom: 1.5em;
-  position: sticky;
-  top: 1.5rem;
-  background: var(--default);
-  z-index: 1;
-  padding-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 3em;
+  padding: 6em 2em;
+  background: linear-gradient(
+    259.21deg,
+    #b0e2fe -27.76%,
+    #d8e6fc 1.15%,
+    #fdeafa 26.21%,
+    #e3f2f9 47.43%,
+    #edf5f8 67.57%,
+    #fbeffc 87.77%,
+    #b0e2fe 107.4%
+  );
 }
 
-.header h1 {
+.title {
+  text-align: center;
+}
+
+.title h1 {
+  font-size: 4rem;
   font-weight: 700;
-  font-size: 1.4rem;
-  margin-bottom: 1em;
+}
+
+.title p {
+  font-size: 1.5rem;
 }
 
 .searchAndFilter {
   width: 100%;
   display: flex;
-  align-items: stretch;
-  justify-content: space-between;
-  gap: 1em;
-  margin-bottom: 0.5em;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
 }
 
-.wrapper {
+.search {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  justify-items: center;
+  max-width: 36em;
+  padding: 0.5em 1em;
+  border-radius: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   gap: 1em;
+  background: var(--default);
+  border: 1px solid var(--card-outline);
 }
 
-.skeleton {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1em;
-  z-index: 0;
-}
-
-.skeleton * {
-  z-index: 0;
-}
-
-.noResult {
+.search input {
   width: 100%;
+  outline: none;
+  border: none;
+  color: var(--textinput);
+}
+
+.dateFilter {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 10em;
-  text-align: center;
-  font-size: 1.2rem;
+  gap: 1em;
+  padding: 0.2em;
+  border-radius: 0.7em;
+  border: 1px solid #cacdd5;
 }
 
-@media screen and (max-width: 1200px) {
-  .wrapper,
-  .skeleton {
+.date {
+  width: 8em;
+  text-align: center;
+  border-radius: 0.7em;
+  padding: 0.5em 0;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.date.active {
+  background: #cacdd5;
+  color: var(--default);
+}
+
+.loader {
+  width: 100%;
+}
+
+@media screen and (max-width: 1440px) {
+  .nfts {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media screen and (max-width: 900px) {
-  .wrapper,
-  .skeleton {
-    grid-template-columns: repeat(2, 1fr);
+@media screen and (max-width: 1200px) {
+  .nfts {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1em;
   }
 
-  .heading h3 {
-    font-size: 1.6rem;
+  .search {
+    max-width: 24em;
   }
 }
 
-@media screen and (max-width: 680px) {
-  .searchAndFilter {
-    flex-direction: column;
-    gap: 0.5em;
+@media screen and (max-width: 900px) {
+  .nfts {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .searchAndFilter > div {
-    width: 100%;
+  .title h1 {
+    font-size: 3rem;
   }
 
-  .wrapper,
-  .skeleton {
+  .title p {
+    font-size: 1.2rem;
+  }
+
+  .search {
+    max-width: 20em;
+  }
+
+  .search input {
+    font-size: 0.85rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .date {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    padding: 4em 1em;
+  }
+
+  .title h1 {
+    font-size: 2rem;
+  }
+
+  .title p {
+    font-size: 1rem;
+  }
+
+  .search {
+    max-width: 16em;
+  }
+
+  .search input {
+    max-width: 4.5em;
+  }
+
+  .date {
+    font-size: 0.65rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .nfts {
     grid-template-columns: repeat(1, 1fr);
   }
 
-  .innerContainer {
+  .heading {
+    gap: 2em;
+    padding: 3em 1em;
+  }
+
+  .searchAndFilter {
+    gap: 1em;
+  }
+
+  .search {
+    max-width: 6em;
+  }
+
+  .search input {
+    display: none;
+  }
+
+  .wrapper {
     padding: 2em 1em;
   }
 }

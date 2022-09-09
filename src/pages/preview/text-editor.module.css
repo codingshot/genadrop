@@ -50,5 +50,5 @@
 }
 
 .editIcon {
-  fill: white;
+  fill: var(--card-bg);
 }

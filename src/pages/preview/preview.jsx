@@ -125,7 +125,6 @@ const Preview = () => {
 
   useEffect(() => {
     if (promptAsset) {
-      console.log({ promptAsset });
       dispatch(deleteAsset(promptAsset));
       dispatch(setMintAmount(mintAmount - 1));
       dispatch(promptDeleteAsset(null));
