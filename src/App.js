@@ -83,7 +83,7 @@ function App() {
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={NFTDetail} />
             <Route exact path="/profile/:chainId/:userId" component={Dashboard} />
             {/* <Route exact path="/me/:userId/:nftId" component={List} /> */}
-            <Route exact path="/me/:userId/settings" component={Profile} />
+            <Route exact path="/profile/settings" component={Profile} />
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />

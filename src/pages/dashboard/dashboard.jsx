@@ -43,7 +43,6 @@ const Dashboard = () => {
   const history = useHistory();
   const { url } = useRouteMatch();
   const { userId, chainId: chainID } = useParams();
-  console.log(chainID);
   const [state, setState] = useState({
     togglePriceFilter: false,
     filter: {
@@ -76,7 +75,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { mainnet } = useContext(GenContext);
+  const { mainnet, account } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -334,9 +333,11 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <Link to={`${url}/profile/settings`}>
-          <div className={classes.editProfile}>Edit Profile</div>
-        </Link>
+        {userId === account && (
+          <Link to="/profile/settings">
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
+        )}
       </div>
 
       <div className={classes.wrapper}>

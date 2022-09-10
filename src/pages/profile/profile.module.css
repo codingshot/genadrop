@@ -170,7 +170,11 @@
 
 .submit,
 .cancel {
-  padding: 0.75em 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 8.5em;
+  height: 3.2em;
   border-radius: 0.7em;
   font-size: 1rem;
   transition: all 300ms;
@@ -294,13 +298,15 @@
 @media screen and (max-width: 480px) {
   .submit,
   .cancel {
-    padding: 0.5em 2em;
     border-radius: 0.5em;
     font-size: 0.85rem;
     transition: all 300ms;
   }
   .banner img {
     height: 7em;
+  }
+  .content {
+    padding: 0 1em;
   }
 }
 
