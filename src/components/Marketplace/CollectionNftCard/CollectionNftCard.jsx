@@ -1,8 +1,7 @@
-import classes from "./CollectionNftCard.module.css";
-import supportedChains from "../../../utils/supportedChains";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import supportedChains from "../../../utils/supportedChains";
+import classes from "./CollectionNftCard.module.css";
 import { getFormatedPrice } from "../../../utils";
 
 const CollectionNftCard = ({ use_width, collection }) => {

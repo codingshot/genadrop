@@ -1,9 +1,9 @@
+import React, { useState, useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
-import { useState, useContext, useEffect } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
-import { useHistory } from "react-router-dom";
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
 import { getCollectionsByChain, shuffle } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
@@ -48,7 +48,7 @@ const AllNfts = () => {
   };
 
   const handleChainChange = (chain) => {
-    let result = getCollectionsByChain({ collections: type[activeType], chain, mainnet });
+    const result = getCollectionsByChain({ collections: type[activeType], chain, mainnet });
     handleSetState({ filteredCollection: result, activeChain: chain });
   };
 
@@ -86,7 +86,7 @@ const AllNfts = () => {
   }, [singles, collections]);
 
   useEffect(() => {
-    let result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
+    const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
     handleSetState({ filteredCollection: result });
   }, [activeType, singles, collections, newest]);
 
