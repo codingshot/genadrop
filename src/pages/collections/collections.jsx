@@ -1,7 +1,8 @@
+import React, { useContext, useEffect, useState, useRef } from "react";
+import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
-import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
@@ -14,8 +15,6 @@ import {
   getCollectionsBySearch,
 } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
-import { useRef } from "react";
-import Skeleton from "react-loading-skeleton";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
@@ -78,7 +77,7 @@ const Collections = () => {
   };
 
   const handleChainChange = (chain) => {
-    let result = getCollectionsByChain({ collections, chain, mainnet });
+    const result = getCollectionsByChain({ collections, chain, mainnet });
     handleSetState({ filteredCollection: result });
   };
 
@@ -90,21 +89,26 @@ const Collections = () => {
       filterCollection = collections;
     }
     if (type === "sort") {
-      let result = sortBy({ collections: filterCollection, value });
+      const result = sortBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      let result = await rangeBy({ collections: filterCollection, value });
+      const result = await rangeBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     }
   };
 
   const handleSearchChange = (e) => {
-    let result = getCollectionsBySearch({ collections, search: e.target.value });
+    const result = getCollectionsBySearch({ collections, search: e.target.value });
     handleSetState({ filteredCollection: result, searchValue: e.target.value });
   };
 
   useEffect(() => {
-    let collections = [...auroraCollections, ...algoCollectionsArr, ...polygonCollections, ...celoCollections];
+    let collections = [
+      ...(auroraCollections || []),
+      ...(algoCollectionsArr || []),
+      ...(polygonCollections || []),
+      ...(celoCollections || []),
+    ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: collections });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
@@ -125,7 +129,7 @@ const Collections = () => {
 
   useEffect(() => {
     if (mountRef.current > 2) {
-      handleSetState({ notFound: Object.keys(paginate).length ? false : true });
+      handleSetState({ notFound: !Object.keys(paginate).length });
     }
     mountRef.current += 1;
   }, [paginate]);
