@@ -75,7 +75,7 @@ const NftCard = ({ nft, listed, chinPrice, use_width, fromDashboard }) => {
                   <img src={supportedChains[chain]?.icon} alt="" />
                   {parseInt(price).toFixed(2)} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>
                   <span className={classes.usdPrice}>
-                    ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} Dollars)
+                    ({chinPrice ? (chinPrice * price).toFixed(2) : totalPrice.toFixed(2)} $)
                   </span>
                 </div>
               )}
