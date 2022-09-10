@@ -18,11 +18,14 @@ const sortByDateAscending = (col) => {
     if (a.createdAt && b.createdAt) {
       if (typeof b.createdAt === "object" && typeof a.createdAt === "object") {
         return b.createdAt.seconds - a.createdAt.seconds;
-      } else if (typeof b.createdAt !== "object" && typeof a.createdAt !== "object") {
+      }
+      if (typeof b.createdAt !== "object" && typeof a.createdAt !== "object") {
         return b.createdAt - a.createdAt;
-      } else if (typeof b.createdAt === "object" && typeof a.createdAt !== "object") {
+      }
+      if (typeof b.createdAt === "object" && typeof a.createdAt !== "object") {
         return b.createdAt.seconds - a.createdAt;
-      } else if (typeof b.createdAt !== "object" && typeof a.createdAt === "object") {
+      }
+      if (typeof b.createdAt !== "object" && typeof a.createdAt === "object") {
         return b.createdAt - a.createdAt.seconds;
       }
     }
@@ -36,11 +39,14 @@ const sortByDateDescending = (col) => {
     if (a.createdAt && b.createdAt) {
       if (typeof a.createdAt === "object" && typeof b.createdAt === "object") {
         return a.createdAt.seconds - b.createdAt.seconds;
-      } else if (typeof a.createdAt !== "object" && typeof b.createdAt !== "object") {
+      }
+      if (typeof a.createdAt !== "object" && typeof b.createdAt !== "object") {
         return a.createdAt - b.createdAt;
-      } else if (typeof a.createdAt === "object" && typeof b.createdAt !== "object") {
+      }
+      if (typeof a.createdAt === "object" && typeof b.createdAt !== "object") {
         return a.createdAt.seconds - b.createdAt;
-      } else if (typeof a.createdAt !== "object" && typeof b.createdAt === "object") {
+      }
+      if (typeof a.createdAt !== "object" && typeof b.createdAt === "object") {
         return a.createdAt - b.createdAt.seconds;
       }
     }
@@ -115,8 +121,8 @@ export const filterBy = ({ value, collections, account }) => {
 export const rangeBy = async ({ value, collections }) => {
   const result = await Promise.all(
     collections.map(async (col) => {
-      let rate = await getFormatedPrice(supportedChains[col.chain].coinGeckoLabel || supportedChains[col.chain].id);
-      let price = Number(rate) * Number(col.price);
+      const rate = await getFormatedPrice(supportedChains[col.chain].coinGeckoLabel || supportedChains[col.chain].id);
+      const price = Number(rate) * Number(col.price);
       console.log(price >= value.minPrice && price <= value.maxPrice);
       return price >= value.minPrice && price <= value.maxPrice ? col : null;
     })
@@ -139,9 +145,9 @@ export const getCollectionsByDate = ({ collections, date }) => {
   if (date === 0) return collections;
 
   const getDiff = (createdDate) => {
-    let now = new Date();
-    let cDate = new Date(createdDate * 1000);
-    let diff = (now.getTime() - cDate.getTime()) / (1000 * 3600 * 24);
+    const now = new Date();
+    const cDate = new Date(createdDate * 1000);
+    const diff = (now.getTime() - cDate.getTime()) / (1000 * 3600 * 24);
 
     if (diff <= date) return true;
     return false;
@@ -150,30 +156,28 @@ export const getCollectionsByDate = ({ collections, date }) => {
   return collections.filter((c) => {
     if (typeof c.createdAt === "object") {
       return getDiff(c.createdAt.seconds);
-    } else {
-      return getDiff(c.createdAt);
     }
+    return getDiff(c.createdAt);
   });
 };
 
 export const getCollectionsByChain = ({ collections, chain, mainnet }) => {
   if (chain === "All Chains") {
     return collections;
-  } else {
-    const mapChainLabelToId = {};
-    const chains = Object.values(supportedChains);
-    chains
-      .filter((chain) => mainnet === chain.isMainnet)
-      .forEach((chain) => {
-        mapChainLabelToId[chain.chain] = chain;
-      });
-    return collections.filter((col) => col.chain === mapChainLabelToId[chain].networkId);
   }
+  const mapChainLabelToId = {};
+  const chains = Object.values(supportedChains);
+  chains
+    .filter((chain) => mainnet === chain.isMainnet)
+    .forEach((chain) => {
+      mapChainLabelToId[chain.chain] = chain;
+    });
+  return collections.filter((col) => col.chain === mapChainLabelToId[chain].networkId);
 };
 
 export const getCollectionsBySearch = ({ collections, search }) => {
   if (!collections.length) return;
-  let value = search.trim().toLocaleLowerCase();
+  const value = search.trim().toLocaleLowerCase();
   return collections.filter(
     (col) => col.name.toLowerCase().includes(value) || col.description.toLowerCase().includes(value)
   );

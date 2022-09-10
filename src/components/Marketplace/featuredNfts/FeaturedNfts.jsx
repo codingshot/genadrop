@@ -35,7 +35,12 @@ const FeautedNfts = () => {
   }
 
   useEffect(() => {
-    let collections = [...auroraCollections, ...algoCollectionsArr, ...polygonCollections, ...celoCollections];
+    let collections = [
+      ...(auroraCollections || []),
+      ...(algoCollectionsArr || []),
+      ...(polygonCollections || []),
+      ...(celoCollections || []),
+    ];
     collections = shuffle(collections);
     handleSetState({ collections });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
