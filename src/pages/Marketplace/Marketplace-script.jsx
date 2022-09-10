@@ -182,3 +182,8 @@ export const getCollectionsBySearch = ({ collections, search }) => {
     (col) => col.name.toLowerCase().includes(value) || col.description.toLowerCase().includes(value)
   );
 };
+
+export const getCollectionsByCategory = ({ collections, category }) => {
+  if (category === "All") return collections;
+  return collections.filter((col) => col.category === category);
+};
