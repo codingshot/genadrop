@@ -54,9 +54,20 @@
 .searchAndFilter {
   width: 100%;
   display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2em;
+}
+
+.filter {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 2em;
+}
+
+.chainMobile {
+  display: none;
 }
 
 .search {
@@ -184,6 +195,24 @@
     grid-template-columns: repeat(1, 1fr);
   }
 
+  .searchAndFilter {
+    gap: 1em;
+  }
+
+  .filter {
+    gap: 1em;
+  }
+
+  .chainMobile {
+    display: block;
+    z-index: 0;
+    margin-top: -1em;
+  }
+
+  .chainDesktop {
+    display: none;
+  }
+
   .heading {
     gap: 2em;
     padding: 3em 1em;
@@ -191,14 +220,6 @@
 
   .searchAndFilter {
     gap: 1em;
-  }
-
-  .search {
-    max-width: 6em;
-  }
-
-  .search input {
-    display: none;
   }
 
   .wrapper {

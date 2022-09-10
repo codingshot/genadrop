@@ -211,13 +211,18 @@ async function readSIngleUserNft(userAddress, assetId) {
 }
 
 async function readUserProfile(userAddress) {
-  const docRef = doc(db, "profile", userAddress);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
+  try {
+    const docRef = doc(db, "profile", userAddress);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return {};
+    }
+  } catch (error) {
+    return {};
   }
   // doc.data() will be undefined in this case
-  return {};
 }
 async function readUsers() {
   const profileQuerySnapshot = await db.collection("profile").get();

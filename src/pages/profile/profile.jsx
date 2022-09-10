@@ -179,7 +179,7 @@ const Profile = () => {
 
             <div className={classes.buttons}>
               <button type="button" onClick={() => handleSave(saveProps)} className={classes.submit}>
-                Save Changes
+                Save
               </button>
               <button type="button" onClick={() => handleCancel(cancelProps)} className={classes.cancel}>
                 Cancel

@@ -118,10 +118,6 @@
 }
 
 @media screen and (max-width: 540px) {
-  .chainDropdown {
-    justify-content: flex-end;
-  }
-
   .selectedChain > div {
     gap: 0.5em;
   }

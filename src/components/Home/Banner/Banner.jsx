@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import classes from "./Banner.module.css";
 import { ReactComponent as PlayIcon } from "../../../assets/icon-play.svg";
 import demo from "../../../assets/vid/Demo.mp4";
+import poster from "../../../assets/poster.png";
 
 const Banner = () => {
   const videoRef = useRef(null);
@@ -40,8 +41,7 @@ const Banner = () => {
         </div>
       </div>
       <div className={`${classes.demo} ${showOverlayer && classes.active}`}>
-        <video ref={videoRef} preload="auto" src={demo} />
-        <div className={classes.overlay} />
+        <video poster={poster} ref={videoRef} preload="auto" src={demo} />
         <PlayIcon onClick={handlePlay} className={classes.playIcon} />
       </div>
     </div>

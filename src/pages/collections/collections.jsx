@@ -155,8 +155,15 @@ const Collections = () => {
               placeholder="Search By collections ,1 of 1s or Users"
             />
           </div>
+          <div className={classes.filter}>
+            <div className={classes.chainDesktop}>
+              <ChainDropdown onChainFilter={handleChainChange} />
+            </div>
+            <FilterDropdown handleFilter={handleFilter} />
+          </div>
+        </div>
+        <div className={classes.chainMobile}>
           <ChainDropdown onChainFilter={handleChainChange} />
-          <FilterDropdown handleFilter={handleFilter} collection />
         </div>
         <div className={classes.dateFilter}>
           <div onClick={() => handleDateSort(1)} className={`${classes.date} ${activeDate === 1 && classes.active}`}>

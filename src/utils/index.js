@@ -234,7 +234,6 @@ export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
 export const getNftCollection = async ({ collection, mainnet }) => {
   const urlIPF = collection.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
   const { data } = await axios.get(urlIPF);
-  console.log({ data });
   function fetchCollectionNFT(id, idx) {
     return new Promise((resolve, reject) => {
       const delay = getDelayTime(idx, data, 60);
