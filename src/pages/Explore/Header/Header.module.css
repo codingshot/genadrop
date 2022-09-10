@@ -53,19 +53,26 @@
   height: 2em;
   border-radius: 50%;
 }
-
-.creator span {
+.creator {
+  display: flex;
+  gap: 0.5em;
+  align-items: baseline;
+}
+.creator p {
   color: #6c757d;
   transition: color 300ms;
 }
-
-.creator span:hover {
-  color: var(--main-color);
+.creator .accent {
+  display: flex;
+  align-items: center;
 }
-
-.creator span * {
+.creator .accent a {
   font-weight: 600;
   color: black;
+  cursor: pointer;
+}
+.creator .accent a:hover {
+  color: var(--main-color);
 }
 
 .socialLinks {

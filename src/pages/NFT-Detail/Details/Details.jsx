@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { chainIdToParams } from "../../../utils/chainConnect";
 import supportedChains from "../../../utils/supportedChains";

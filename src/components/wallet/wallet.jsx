@@ -80,7 +80,7 @@ function ConnectWallet() {
   };
 
   const handleDashboard = () => {
-    history.push(`/profile/${account}`);
+    history.push(`/profile/${chainId}/${account}`);
   };
 
   useEffect(() => {

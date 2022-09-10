@@ -10,7 +10,7 @@ import { GenContext } from "../../../gen-state/gen.context";
 const SuccessPopup = (props) => {
   const clipboardRef = useRef(null);
   const history = useHistory();
-  const { account } = useContext(GenContext);
+  const { account, chainId } = useContext(GenContext);
   const [clipboardState, setClipboardState] = useState("Copy");
 
   const {
@@ -49,7 +49,7 @@ const SuccessPopup = (props) => {
       <div className={classes.actionBtnContainer}>
         <button
           onClick={() => {
-            history.push(`/profile/${account}`);
+            history.push(`/profile/${chainId}/${account}`);
           }}
           type="button"
           className={`${classes.actionBtn} ${classes._1}`}

@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { breakAddress, getCreator } from "../NFTDetail-script";
 import classes from "./NFT.module.css";
 import { ReactComponent as ShareIcon } from "../../../assets/icon-share.svg";
 import Share from "./Share";
-import { Link } from "react-router-dom";
 // import { ReactComponent as MoreIcon } from "../../../assets/icon-more.svg";
 
 const NFT = ({ nftDetails }) => {
@@ -41,24 +41,15 @@ const NFT = ({ nftDetails }) => {
             <>
               <div className={classes.title}>Created by</div>
               <div className={classes.subSection}>
-                {Object.keys(creator).length ? (
-                  <>
-                    <img className={classes.thumbnail} src={image_url} alt="" />
-                    <div className={classes.name}>{breakAddress(owner)}</div>
-                  </>
-                ) : (
-                  <>
-                    <div className={classes.placeholder} />
-                    <Link to={`/me/${owner}`} className={`${classes.name} ${classes.active}`}>
-                      {breakAddress(owner)}
-                    </Link>
-                  </>
-                )}
+                <div className={classes.placeholder} />
+                <Link to={`/profile/${nftDetails?.chain}/${owner}`} className={`${classes.name} ${classes.active}`}>
+                  {breakAddress(owner)}
+                </Link>
               </div>
             </>
           )}
         </div>
-        {collection_name && collection_name != "Genadrop 1 of 1" ? (
+        {collection_name && collection_name !== "Genadrop 1 of 1" ? (
           <div className={classes.detail}>
             <div className={classes.title}>Collection</div>
             <div className={classes.name}>{collection_name}</div>

@@ -587,7 +587,7 @@ export const buyGraphNft = async (buyProps) => {
         })
       );
       setTimeout(() => {
-        history.push(`/profile/${account}`);
+        history.push(`/profile/${chainId}/${account}`);
       }, 3000);
     } else {
       dispatch(setOverlay(false));
@@ -610,7 +610,7 @@ export const buyGraphNft = async (buyProps) => {
         })
       );
       setTimeout(() => {
-        history.push(`/profile/${account}`);
+        history.push(`/profile/${chainId}/${account}`);
         // history.push(`/marketplace`);
       }, 3000);
     } else {
@@ -634,7 +634,7 @@ export const buyGraphNft = async (buyProps) => {
         })
       );
       setTimeout(() => {
-        history.push(`/profile/${account}`);
+        history.push(`/profile/${chainId}/${account}`);
         // history.push(`/marketplace`);
       }, 3000);
     } else {
@@ -688,7 +688,7 @@ export const buyNft = async (buyProps) => {
       })
     );
     setTimeout(() => {
-      history.push(`/profile/${account}`);
+      history.push(`/profile/${chainId}/${account}`);
       // history.push(`/marketplace`);
     }, 3000);
   } else {

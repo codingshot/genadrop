@@ -31,7 +31,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
   };
 
   const handlePreview = () => {
-    if (!userId === account) {
+    if (userId !== account) {
       if (collection_name) {
         if (fromDetails) {
           history.push(`${match.url.split("/").slice(0, -1).join("/")}/${Id}`);

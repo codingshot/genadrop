@@ -42,8 +42,8 @@ const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
   const { url } = useRouteMatch();
-  const { userId } = useParams();
-
+  const { userId, chainId: chainID } = useParams();
+  console.log(chainID);
   const [state, setState] = useState({
     togglePriceFilter: false,
     filter: {
@@ -76,7 +76,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { mainnet, chainId } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -90,12 +90,12 @@ const Dashboard = () => {
   useEffect(() => {
     // Get User Created NFTs
     let address = "";
-    if (supportedChains[chainId]?.chain !== "Algorand" && userId) {
+    if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
       address = ethers?.utils?.hexlify(userId);
     }
     (async function getUserNFTs() {
       let nfts;
-      switch (supportedChains[chainId]?.chain) {
+      switch (supportedChains[chainID]?.chain) {
         case "Algorand":
           nfts = await fetchUserCreatedNfts(userId);
           nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
@@ -124,7 +124,7 @@ const Dashboard = () => {
       let nfts;
       const collectedNFTs = await fetchUserBoughtNfts(userId);
 
-      switch (supportedChains[chainId]?.chain) {
+      switch (supportedChains[chainID]?.chain) {
         case "Algorand":
           nfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNFTs });
           break;
@@ -146,13 +146,13 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       let walletAddress = "";
-      if (supportedChains[chainId]?.chain !== "Algorand" && userId) {
+      if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
         walletAddress = ethers?.utils?.hexlify(userId);
       }
       let collection;
       const collections = await fetchUserCollections(userId);
 
-      switch (supportedChains[chainId]?.chain) {
+      switch (supportedChains[chainID]?.chain) {
         case "Algorand":
           collection = await getUserNftCollections({ collections, mainnet });
           break;
@@ -178,7 +178,7 @@ const Dashboard = () => {
 
       handleSetState({ userDetails: data });
     })();
-  }, [userId, chainId]);
+  }, [userId, chainID]);
 
   // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
@@ -329,7 +329,7 @@ const Dashboard = () => {
             </div>
 
             <div className={classes.address}>
-              <img src={supportedChains[chainId]?.icon} alt="blockchain" />
+              <img src={supportedChains[chainID]?.icon} alt="blockchain" />
               <Copy message={userId} placeholder={breakAddress(userId)} />
             </div>
           </div>
