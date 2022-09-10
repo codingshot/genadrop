@@ -17,7 +17,7 @@ const CollectionNftCard = ({ use_width, collection }) => {
 
   useEffect(() => {
     getUsdValue();
-  }, []);
+  }, [collection]);
 
   return (
     <div

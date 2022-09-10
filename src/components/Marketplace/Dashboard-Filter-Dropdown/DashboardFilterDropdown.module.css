@@ -21,7 +21,7 @@
   border: 1px solid var(--main-color);
   padding: 0.5em 1em;
   z-index: 99;
-  border-radius: 2.5em;
+  border-radius: 0.7em;
   transition: all 300ms;
   display: flex;
   align-items: center;

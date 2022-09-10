@@ -54,7 +54,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
 
   useEffect(() => {
     getUsdValue();
-  }, []);
+  }, [nft]);
 
   return (
     <div style={use_width ? { width: use_width } : {}} onClick={handlePreview} className={classes.container}>

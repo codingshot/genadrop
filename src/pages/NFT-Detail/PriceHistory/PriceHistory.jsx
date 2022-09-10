@@ -7,7 +7,7 @@ const PriceHistory = ({ transactionHistory }) => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <HistoryIcon />
-        <div>PriceHistory</div>
+        <div>Price History</div>
       </div>
       <div className={classes.history}>{transactionHistory && <Graph details={transactionHistory} />}</div>
     </div>
