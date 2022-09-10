@@ -411,8 +411,8 @@ const Dashboard = () => {
             )
           ) : (
             <div className={classes.skeleton}>
-              {[...new Array(5)].map((id) => (
-                <div key={id}>
+              {[...new Array(5)].map((id, idx) => (
+                <div key={idx}>
                   <Skeleton count={1} height={200} />
                   <br />
                   <Skeleton count={1} height={30} />

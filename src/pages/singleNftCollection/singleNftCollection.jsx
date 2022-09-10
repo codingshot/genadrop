@@ -80,7 +80,12 @@ const SingleNftCollection = () => {
   };
 
   useEffect(() => {
-    let collections = [...singleAlgoNftsArr, ...singleAuroraNfts, ...singlePolygonNfts, ...singleCeloNfts];
+    let collections = [
+      ...(singleAlgoNftsArr || []),
+      ...(singleAuroraNfts || []),
+      ...(singlePolygonNfts || []),
+      ...(singleCeloNfts || []),
+    ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: [...collections] });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
@@ -127,8 +132,15 @@ const SingleNftCollection = () => {
               placeholder="Search By collections ,1 of 1s or Users"
             />
           </div>
+          <div className={classes.filter}>
+            <div className={classes.chainDesktop}>
+              <ChainDropdown onChainFilter={handleChainChange} />
+            </div>
+            <FilterDropdown handleFilter={handleFilter} />
+          </div>
+        </div>
+        <div className={classes.chainMobile}>
           <ChainDropdown onChainFilter={handleChainChange} />
-          <FilterDropdown handleFilter={handleFilter} />
         </div>
       </div>
       <div className={classes.wrapper}>

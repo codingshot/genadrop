@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { breakAddress, getCreator } from "../NFTDetail-script";
+import { breakAddress } from "../NFTDetail-script";
 import classes from "./NFT.module.css";
 import { ReactComponent as ShareIcon } from "../../../assets/icon-share.svg";
 import Share from "./Share";
@@ -8,17 +8,7 @@ import Share from "./Share";
 
 const NFT = ({ nftDetails }) => {
   const { name, image_url, owner, collection_name } = nftDetails;
-  const [creator, setCreator] = useState("");
   const [share, setShare] = useState(false);
-
-  const fetchCreator = async () => {
-    const data = await getCreator(owner);
-    setCreator(data);
-  };
-
-  useEffect(() => {
-    fetchCreator();
-  }, []);
 
   return (
     <div className={classes.container}>

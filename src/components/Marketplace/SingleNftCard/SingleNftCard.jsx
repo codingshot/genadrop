@@ -58,7 +58,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
 
   useEffect(() => {
     getUsdValue();
-  }, []);
+  }, [nft]);
 
   const footerPrpops = {
     price,

@@ -41,10 +41,8 @@ export const getGraphData = async ({ graphProps }) => {
   } = graphProps;
 
   if (collectionName) {
-    let graphCollections = null;
-    if (auroraCollections && polygonCollections && celoCollections) {
-      graphCollections = [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
-    }
+    let graphCollections = [];
+    graphCollections = [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
     // filtering to get the unqiue collection
     let collection = graphCollections.find((col) => col.Id === collectionName);
     if (collection) {

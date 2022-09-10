@@ -24,7 +24,7 @@ const Deals = ({ nftDetails }) => {
 
   useEffect(() => {
     getUsdValue();
-  }, []);
+  }, [nftDetails]);
 
   return (
     <div className={classes.container}>

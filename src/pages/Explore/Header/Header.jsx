@@ -60,7 +60,7 @@ const Header = ({ collection, getHeight }) => {
   useEffect(() => {
     getUsdValue();
     getUser();
-  }, []);
+  }, [collection]);
 
   useEffect(() => {
     window.addEventListener("resize", () => {

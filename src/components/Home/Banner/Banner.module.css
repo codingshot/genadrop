@@ -110,18 +110,6 @@
   width: 100%;
 }
 
-.overlay {
-  width: 100%;
-  height: 100%;
-  background: rgba(75, 75, 90, 0.44);
-  position: absolute;
-  display: none;
-}
-
-.demo.active .overlay {
-  display: block;
-}
-
 .playIcon {
   cursor: pointer;
   transition: transform 300ms;

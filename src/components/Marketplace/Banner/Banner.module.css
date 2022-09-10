@@ -1,11 +1,17 @@
 .container {
   width: 100%;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  padding: 2em 2em;
-  padding-bottom: 6em;
-  /* background: linear-gradient(259.21deg, #B0E2FE -27.76%, #D8E6FC 1.15%, #FDEAFA 26.21%, #E3F2F9 47.43%, #EDF5F8 67.57%, #FBEFFC 87.77%, #B0E2FE 107.4%); */
+  padding: 0 2em;
+  padding-top: 2em;
+  margin-bottom: 6em;
+  background: linear-gradient(
+    260.16deg,
+    #b0e2fe -36.8%,
+    #edf5f8 -5.97%,
+    #f0f3fd 20.76%,
+    #caebfd 39.98%,
+    #f0f3fd 73.49%,
+    #e1f1fb 102.83%
+  );
 }
 
 .wrapper {
@@ -91,8 +97,9 @@
 
 @media screen and (max-width: 540px) {
   .container {
-    padding: 2em 1em;
-    padding-bottom: 4em;
+    padding: 0 1em;
+    padding-top: 2em;
+    margin-bottom: 3em;
   }
 
   .heading {
