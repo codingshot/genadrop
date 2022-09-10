@@ -12,7 +12,7 @@ import {
   CollectedView,
 } from "./CardFooter";
 
-const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft }) => {
+const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft, userId }) => {
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
@@ -31,7 +31,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
   };
 
   const handlePreview = () => {
-    if (!fromDashboard) {
+    if (!userId === account) {
       if (collection_name) {
         if (fromDetails) {
           history.push(`${match.url.split("/").slice(0, -1).join("/")}/${Id}`);
@@ -68,6 +68,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
     sold,
     isListed,
     usdValue,
+    userId,
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useLocation, useRouteMatch, useParams } from "react-router-dom";
 import { ethers } from "ethers";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -42,6 +42,7 @@ const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
   const { url } = useRouteMatch();
+  const { userId } = useParams();
 
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -75,7 +76,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { account, mainnet, chainId } = useContext(GenContext);
+  const { mainnet, chainId } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -89,14 +90,14 @@ const Dashboard = () => {
   useEffect(() => {
     // Get User Created NFTs
     let address = "";
-    if (supportedChains[chainId]?.chain !== "Algorand" && account) {
-      address = ethers?.utils?.hexlify(account);
+    if (supportedChains[chainId]?.chain !== "Algorand" && userId) {
+      address = ethers?.utils?.hexlify(userId);
     }
     (async function getUserNFTs() {
       let nfts;
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
-          nfts = await fetchUserCreatedNfts(account);
+          nfts = await fetchUserCreatedNfts(userId);
           nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
           break;
         case "Celo":
@@ -121,7 +122,7 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       let nfts;
-      const collectedNFTs = await fetchUserBoughtNfts(account);
+      const collectedNFTs = await fetchUserBoughtNfts(userId);
 
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
@@ -145,11 +146,11 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       let walletAddress = "";
-      if (supportedChains[chainId]?.chain !== "Algorand" && account) {
-        walletAddress = ethers?.utils?.hexlify(account);
+      if (supportedChains[chainId]?.chain !== "Algorand" && userId) {
+        walletAddress = ethers?.utils?.hexlify(userId);
       }
       let collection;
-      const collections = await fetchUserCollections(account);
+      const collections = await fetchUserCollections(userId);
 
       switch (supportedChains[chainId]?.chain) {
         case "Algorand":
@@ -173,11 +174,11 @@ const Dashboard = () => {
     })();
 
     (async function getUsername() {
-      const data = await readUserProfile(account);
+      const data = await readUserProfile(userId);
 
       handleSetState({ userDetails: data });
     })();
-  }, [account, chainId]);
+  }, [userId, chainId]);
 
   // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
@@ -194,7 +195,7 @@ const Dashboard = () => {
   };
 
   const searchHandler = (value) => {
-    if (!account) return;
+    if (!userId) return;
     if (!filteredCollection) return;
     const params = new URLSearchParams({
       search: value.toLowerCase(),
@@ -209,7 +210,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (!filteredCollection || !account) return;
+    if (!filteredCollection || !userId) return;
     let filtered = null;
     if (filter.price === "low - high") {
       filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price));
@@ -220,7 +221,7 @@ const Dashboard = () => {
   }, [filter.price]);
 
   useEffect(() => {
-    if (!filteredCollection || !account) return;
+    if (!filteredCollection || !userId) return;
     let filtered = null;
     if (filter.name === "a - z") {
       filtered = getCollectionToFilter().sort((a, b) => {
@@ -237,7 +238,7 @@ const Dashboard = () => {
   }, [filter.name]);
 
   useEffect(() => {
-    if (!filteredCollection || !account) return;
+    if (!filteredCollection || !userId) return;
     let filtered = null;
     if (filter.date === "newest - oldest") {
       filtered = getCollectionToFilter().sort((a, b) => {
@@ -260,7 +261,7 @@ const Dashboard = () => {
   }, [filter.date]);
 
   useEffect(() => {
-    if (!account) return;
+    if (!userId) return;
     const collection = getCollectionToFilter();
     const { search } = location;
     const name = new URLSearchParams(search).get("search");
@@ -329,7 +330,7 @@ const Dashboard = () => {
 
             <div className={classes.address}>
               <img src={supportedChains[chainId]?.icon} alt="blockchain" />
-              <Copy message={account} placeholder={breakAddress(account)} />
+              <Copy message={userId} placeholder={breakAddress(userId)} />
             </div>
           </div>
         </div>
@@ -380,7 +381,7 @@ const Dashboard = () => {
             activeDetail === "sale" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="onSale" />
+                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="onSale" userId={userId} />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
@@ -389,13 +390,13 @@ const Dashboard = () => {
                   if (nft.nfts) {
                     return <CollectionNftCard key={nft.Id} collection={nft} fromDashboard />;
                   }
-                  return <SingleNftCard key={nft.Id} nft={nft} listed={false} fromDashboard="onSale" />;
+                  return <SingleNftCard key={nft.Id} nft={nft} listed={false} fromDashboard="onSale" userId={userId} />;
                 })}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="collected" />
+                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="collected" userId={userId} />
                 ))}
               </div>
             ) : (
