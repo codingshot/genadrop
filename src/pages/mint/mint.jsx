@@ -37,6 +37,20 @@ const Mint = () => {
       </header>
 
       <main className={classes.mainWrapper}>
+        <div className={`${classes.card} ${classes._1of1}`}>
+          <div className={classes.imageContainer}>
+            <img src={_1of1Icon} alt="" />
+          </div>
+          <h3 className={classes.title}> Mint 1 of 1 </h3>
+          <p className={classes.description}>
+            {" "}
+            1 of 1 is a unique NFT you are minting individually. This is usually a single image in the format of Png{" "}
+          </p>
+          <button onClick={() => handleMint("1of1")} type="button" className={classes.btn}>
+            Mint 1 of 1
+          </button>
+        </div>
+
         <div className={`${classes.card} ${classes.collection}`}>
           <div className={classes.imageContainer}>
             <img src={collectionIcon} alt="" />
@@ -49,20 +63,6 @@ const Mint = () => {
           </p>
           <button onClick={() => handleMint("collection")} className={classes.btn} type="button">
             Mint collection
-          </button>
-        </div>
-
-        <div className={`${classes.card} ${classes._1of1}`}>
-          <div className={classes.imageContainer}>
-            <img src={_1of1Icon} alt="" />
-          </div>
-          <h3 className={classes.title}> Mint 1 of 1 </h3>
-          <p className={classes.description}>
-            {" "}
-            1 of 1 is a unique NFT you are minting individually. This is usually a single image in the format of Png{" "}
-          </p>
-          <button onClick={() => handleMint("1of1")} type="button" className={classes.btn}>
-            Mint 1 of 1
           </button>
         </div>
       </main>

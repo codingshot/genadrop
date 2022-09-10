@@ -68,7 +68,7 @@
   align-items: flex-start;
   justify-content: center;
   background: rgba(75, 75, 90, 0.74);
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   z-index: 20;
