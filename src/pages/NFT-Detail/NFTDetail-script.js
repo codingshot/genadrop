@@ -76,7 +76,8 @@ export const getGraphData = async ({ graphProps }) => {
           collection: [],
           _1of1: singleCeloNfts,
         };
-      } else if (supportedChains[Number(chainId)]?.chain === "Aurora") {
+      }
+      if (supportedChains[Number(chainId)]?.chain === "Aurora") {
         const [auroraData, trHistory] = await auroraUserData(nftId);
         // if (!auroraData) return;
         return {
@@ -85,7 +86,8 @@ export const getGraphData = async ({ graphProps }) => {
           transactionHistory: trHistory,
           _1of1: singleAuroraNfts,
         };
-      } else if (supportedChains[Number(chainId)]?.chain === "Polygon") {
+      }
+      if (supportedChains[Number(chainId)]?.chain === "Polygon") {
         const [polygonData, trHistory] = await polygonUserData(nftId);
         // if (!polygonData) return history.goBack();
         return {
@@ -117,12 +119,12 @@ export const getFormatedTxDate = (txDate) => {
   } else {
     newDate = txDate;
   }
-  let now = new Date();
-  let date = new Date(newDate * 1000);
-  let diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
-  if (diff < 0.04) return parseInt(diff * 24 * 60) + " mins ago";
-  else if (diff < 1) return parseInt(diff * 24) + " hours ago";
-  else if (diff < 31) return parseInt(diff) + " days ago";
-  else if (diff < 356) return parseInt(diff / 30) + " months ago";
-  else return diff / 30 / 12 + " years ago";
+  const now = new Date();
+  const date = new Date(newDate * 1000);
+  const diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
+  if (diff < 0.04) return `${parseInt(diff * 24 * 60)} mins ago`;
+  if (diff < 1) return `${parseInt(diff * 24)} hours ago`;
+  if (diff < 31) return `${parseInt(diff)} days ago`;
+  if (diff < 356) return `${parseInt(diff / 30)} months ago`;
+  return `${diff / 30 / 12} years ago`;
 };

@@ -1,18 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useLocation, useRouteMatch, useParams } from "react-router-dom";
 import { ethers } from "ethers";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 // import { setNotification } from "../../gen-state/gen.actions";
-import {
-  fetchUserBoughtNfts,
-  fetchUserCollections,
-  fetchUserCreatedNfts,
-  readUserProfile,
-  readUsers,
-} from "../../utils/firebase";
+import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
 // import { celoClient, polygonClient } from "../../utils/graphqlClient";
 // import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
@@ -31,8 +25,8 @@ import Copy from "../../components/copy/copy";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 // components
-import NftCard from "../../components/Marketplace/NftCard/NftCard";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
+import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
+import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import NotFound from "../../components/not-found/notFound";
 import DashboardFilterDropdown from "../../components/Marketplace/Dashboard-Filter-Dropdown/DashboardFilterDropdown";
@@ -48,7 +42,7 @@ const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
   const { url } = useRouteMatch();
-
+  const { userId, chainId: chainID } = useParams();
   const [state, setState] = useState({
     togglePriceFilter: false,
     filter: {
@@ -81,7 +75,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { account, mainnet, chainId } = useContext(GenContext);
+  const { mainnet, account } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -95,14 +89,14 @@ const Dashboard = () => {
   useEffect(() => {
     // Get User Created NFTs
     let address = "";
-    if (supportedChains[chainId]?.chain !== "Algorand" && account) {
-      address = ethers?.utils?.hexlify(account);
+    if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
+      address = ethers?.utils?.hexlify(userId);
     }
     (async function getUserNFTs() {
       let nfts;
-      switch (supportedChains[chainId]?.chain) {
+      switch (supportedChains[chainID]?.chain) {
         case "Algorand":
-          nfts = await fetchUserCreatedNfts(account);
+          nfts = await fetchUserCreatedNfts(userId);
           nfts = await getUserSingleNfts({ mainnet, singleNfts: nfts });
           break;
         case "Celo":
@@ -127,9 +121,9 @@ const Dashboard = () => {
     (async function getUserCollectedNfts() {
       // get collected nfts from the same fetch result
       let nfts;
-      const collectedNFTs = await fetchUserBoughtNfts(account);
+      const collectedNFTs = await fetchUserBoughtNfts(userId);
 
-      switch (supportedChains[chainId]?.chain) {
+      switch (supportedChains[chainID]?.chain) {
         case "Algorand":
           nfts = await getUserSingleNfts({ mainnet, singleNfts: collectedNFTs });
           break;
@@ -151,13 +145,13 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       let walletAddress = "";
-      if (supportedChains[chainId]?.chain !== "Algorand" && account) {
-        walletAddress = ethers?.utils?.hexlify(account);
+      if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
+        walletAddress = ethers?.utils?.hexlify(userId);
       }
       let collection;
-      const collections = await fetchUserCollections(account);
+      const collections = await fetchUserCollections(userId);
 
-      switch (supportedChains[chainId]?.chain) {
+      switch (supportedChains[chainID]?.chain) {
         case "Algorand":
           collection = await getUserNftCollections({ collections, mainnet });
           break;
@@ -179,11 +173,11 @@ const Dashboard = () => {
     })();
 
     (async function getUsername() {
-      const data = await readUserProfile(account);
+      const data = await readUserProfile(userId);
 
       handleSetState({ userDetails: data });
     })();
-  }, [account, chainId]);
+  }, [userId, chainID]);
 
   // eslint-disable-next-line consistent-return
   const getCollectionToFilter = () => {
@@ -200,7 +194,7 @@ const Dashboard = () => {
   };
 
   const searchHandler = (value) => {
-    if (!account) return;
+    if (!userId) return;
     if (!filteredCollection) return;
     const params = new URLSearchParams({
       search: value.toLowerCase(),
@@ -215,7 +209,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (!filteredCollection || !account) return;
+    if (!filteredCollection || !userId) return;
     let filtered = null;
     if (filter.price === "low - high") {
       filtered = getCollectionToFilter().sort((a, b) => Number(a.price) - Number(b.price));
@@ -226,7 +220,7 @@ const Dashboard = () => {
   }, [filter.price]);
 
   useEffect(() => {
-    if (!filteredCollection || !account) return;
+    if (!filteredCollection || !userId) return;
     let filtered = null;
     if (filter.name === "a - z") {
       filtered = getCollectionToFilter().sort((a, b) => {
@@ -243,7 +237,7 @@ const Dashboard = () => {
   }, [filter.name]);
 
   useEffect(() => {
-    if (!filteredCollection || !account) return;
+    if (!filteredCollection || !userId) return;
     let filtered = null;
     if (filter.date === "newest - oldest") {
       filtered = getCollectionToFilter().sort((a, b) => {
@@ -266,7 +260,7 @@ const Dashboard = () => {
   }, [filter.date]);
 
   useEffect(() => {
-    if (!account) return;
+    if (!userId) return;
     const collection = getCollectionToFilter();
     const { search } = location;
     const name = new URLSearchParams(search).get("search");
@@ -334,14 +328,16 @@ const Dashboard = () => {
             </div>
 
             <div className={classes.address}>
-              <img src={supportedChains[chainId]?.icon} alt="blockchain" />
-              <Copy message={account} placeholder={breakAddress(account)} />
+              <img src={supportedChains[chainID]?.icon} alt="blockchain" />
+              <Copy message={userId} placeholder={breakAddress(userId)} />
             </div>
           </div>
         </div>
-        <Link to={`${url}/profile/settings`}>
-          <div className={classes.editProfile}>Edit Profile</div>
-        </Link>
+        {userId === account && (
+          <Link to="/profile/settings">
+            <div className={classes.editProfile}>Edit Profile</div>
+          </Link>
+        )}
       </div>
 
       <div className={classes.wrapper}>
@@ -386,22 +382,22 @@ const Dashboard = () => {
             activeDetail === "sale" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <NftCard key={nft.Id} nft={nft} fromDashboard />
+                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="onSale" userId={userId} />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => {
                   if (nft.nfts) {
-                    return <CollectionsCard key={nft.Id} collection={nft} fromDashboard />;
+                    return <CollectionNftCard key={nft.Id} collection={nft} fromDashboard />;
                   }
-                  return <NftCard key={nft.Id} nft={nft} listed={false} fromDashboard />;
+                  return <SingleNftCard key={nft.Id} nft={nft} listed={false} fromDashboard="onSale" userId={userId} />;
                 })}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <NftCard key={nft.Id} nft={nft} fromDashboard />
+                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="collected" userId={userId} />
                 ))}
               </div>
             ) : (

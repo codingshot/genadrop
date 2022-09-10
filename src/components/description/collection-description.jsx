@@ -26,7 +26,7 @@ const CollectionDescription = () => {
   } = useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
-    selectInputValue: 0.5,
+    selectInputValue: 1,
     amountInputValue: "",
   });
   const { selectInputValue, amountInputValue } = state;

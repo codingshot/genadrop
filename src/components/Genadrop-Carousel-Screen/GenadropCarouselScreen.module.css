@@ -2,11 +2,11 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .wrapper {
-  width: auto;
+  width: 100%;
   max-width: 1440px;
   margin: 0 auto;
   position: relative;

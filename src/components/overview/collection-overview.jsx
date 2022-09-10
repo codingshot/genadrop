@@ -51,13 +51,20 @@ const CollectionOverview = () => {
   };
 
   const handleRules = () => {
-    if (!rule.length) return;
+    if (!rule.length) {
+      return dispatch(
+        setNotification({
+          message: "You don't have any conflicts rules.",
+          type: "warning",
+        })
+      );
+    }
     handleSetState({ showRule: true });
   };
 
   const handleAddRule = () => {
     if (preview.length === 1) {
-      for (let layer of layers) {
+      for (const layer of layers) {
         if (layer.id === preview[0].layerId) {
           if (layer.traitsAmount === 1) {
             dispatch(
