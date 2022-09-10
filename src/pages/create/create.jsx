@@ -25,7 +25,7 @@ import { ReactComponent as LoadingIcon } from "../../assets/icon-loading.svg";
 import ProgressBar from "./Progress-Bar/ProgressBar";
 import { useRef } from "react";
 import { handleSampleLayers } from "../../components/menu/collection-menu-script";
-import LoginModal from "../../components/Modals/Login-Modal/LoginModal";
+// import LoginModal from "../../components/Modals/Login-Modal/LoginModal";
 import { signInWithGoogle } from "../../components/google-auth/googleAuth.script";
 
 const Create = () => {
@@ -97,7 +97,7 @@ const Create = () => {
   return (
     <div className={classes.container}>
       <SubscriptionNotification />
-      <LoginModal />
+      {/* <LoginModal /> */}
       <CollectionNameModal />
       <CreateGuide toggleGuide={toggleGuide} setGuide={(e) => handleSetState({ toggleGuide: e })} />
       <div className={classes.details}>
