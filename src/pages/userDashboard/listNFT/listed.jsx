@@ -102,6 +102,13 @@ const Listed = () => {
           nftDetails?.chain === 4160 ? nftDetails?.collection_name : nftDetails?.collection_contract
         }/${nftDetails?.Id}`
       : `${baseURL}/marketplace/1of1/${nftDetails?.chain}/${nftDetails?.Id}`;
+
+  const marketPlaceURL =
+    nftDetails?.collection_name !== "Genadrop 1 of 1"
+      ? `/marketplace/collections/${
+          nftDetails?.chain === 4160 ? nftDetails?.collection_name : nftDetails?.collection_contract
+        }/${nftDetails?.Id}`
+      : `/marketplace/1of1/${nftDetails?.chain}/${nftDetails?.Id}`;
   return (
     <div className={classes.container}>
       <span>Your item is now listed for sale</span>
@@ -124,9 +131,9 @@ const Listed = () => {
           </CopyToClipboard>
         </div>
       </div>
-      <Link to={shareURL} className={classes.view}>
+      <Link to={marketPlaceURL} className={classes.view}>
         <button type="button" className={classes.viewtext}>
-          Go to Marketplace
+          View NFT
         </button>
       </Link>
     </div>

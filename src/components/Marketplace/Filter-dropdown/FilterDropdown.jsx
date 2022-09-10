@@ -1,73 +1,112 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import classes from "./FilterDropdown.module.css";
-import dropdownIcon from "../../../assets/icon-caret-down.svg";
+import Dropdown from "../../../pages/Explore/Dropdown/Dropdown";
+import RadioButton from "../../../pages/Explore/Radio-Button/RadioButton";
+import { ReactComponent as FilterIcon } from "../../../assets/icon-filter2.svg";
 
-const FilterDropdown = ({ onFilter }) => {
+const FilterDropdown = ({ handleFilter, collection }) => {
   const [state, setState] = useState({
-    togglePriceFilter: false,
-    activeFilter: {
-      name: "price",
-      label: ["low - high", "high - low"],
+    toggleFilter: false,
+    filter: {
+      status: "not listed",
+      sortby: "newest",
+      minPrice: "",
+      maxPrice: "",
     },
-
-    filterObj: [
-      {
-        name: "price",
-        label: ["low - high", "high - low"],
-      },
-      {
-        name: "name",
-        label: ["a - z", "z - a"],
-      },
-      {
-        name: "date",
-        label: ["newest - oldest", "oldest - newest"],
-      },
-    ],
   });
 
-  const { activeFilter, filterObj, togglePriceFilter } = state;
+  const { filter, toggleFilter } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const handleFilter = (filterProp) => {
-    handleSetState({ activeFilter: filterProp });
-    const newFilterObj = filterObj.map((filter) => {
-      if (filter.name === filterProp.name) {
-        const newLabel = [...filter.label];
-        const tmp = newLabel[0];
-        newLabel[0] = newLabel[1];
-        newLabel[1] = tmp;
-        return { name: filter.name, label: newLabel };
-      }
-      return filter;
-    });
-    handleSetState({ filterObj: newFilterObj });
-    onFilter({ name: filterProp.name, label: filterProp.label[0] });
+  const handleStatus = (value) => {
+    handleSetState({ filter: { ...filter, status: value } });
+    handleFilter({ type: "status", value });
   };
 
-  useEffect(() => {
-    handleFilter(activeFilter);
-  }, []);
+  const handleSort = (value) => {
+    handleSetState({ filter: { ...filter, sortby: value } });
+    handleFilter({ type: "sort", value });
+  };
+
+  const handlePriceChange = (e) => {
+    let { name, value } = e.target;
+    value = Number(value);
+    handleSetState({ filter: { ...filter, [name]: value >= 0 ? value : "" } });
+  };
+
+  const handleApply = () => {
+    if (filter.maxPrice < filter.minPrice) return;
+    handleFilter({
+      type: "range",
+      value: { minPrice: filter.minPrice, maxPrice: filter.maxPrice },
+    });
+    handleSetState({ filter: { ...filter, minPrice: 0, maxPrice: 0 } });
+  };
+
+  const handleCancel = () => {
+    handleSetState({ filter: { ...filter, minPrice: 0, maxPrice: 0 }, toggleFilter: false });
+  };
+
+  const statusFilter = ["listed", "not listed", "on auction"];
+  const sortFilter = ["newest", "oldest", "highest price", "lowest price", "a - z", "z - a"];
 
   return (
-    <div onClick={() => handleSetState({ togglePriceFilter: !togglePriceFilter })} className={classes.filterDropdown}>
-      <div className={classes.filterHeading}>
-        <div>{activeFilter.name}</div>
-        <div className={classes.filterDetail}>
-          <span>{activeFilter.label[0]}</span>
-          <img src={dropdownIcon} alt="" className={`${classes.dropdownIcon} ${togglePriceFilter && classes.active}`} />
-        </div>
+    <div className={classes.container}>
+      <div onClick={() => handleSetState({ toggleFilter: !toggleFilter })} className={classes.filterBtn}>
+        <FilterIcon className={classes.filterIcon} />
+        <div>Filters</div>
       </div>
-      <div className={`${classes.dropdown} ${togglePriceFilter && classes.active}`}>
-        {filterObj.map((filter, idx) => (
-          <div key={idx} onClick={() => handleFilter(filter)} className={classes.filter}>
-            <div>{filter.name}</div>
-            <div>{filter.label[0]}</div>
+      <div className={`${classes.wrapper} ${toggleFilter && classes.active}`}>
+        <div className={classes.filterHeading}>
+          <FilterIcon />
+          <div>Filters</div>
+        </div>
+        {!collection && (
+          <Dropdown title="Status">
+            <div className={classes.dropdown}>
+              {statusFilter.map((status, idx) => (
+                <div key={idx} className={classes.status}>
+                  <RadioButton onClick={() => handleStatus(status)} active={status === filter.status} />
+                  <div>{status}</div>
+                </div>
+              ))}
+            </div>
+          </Dropdown>
+        )}
+        <Dropdown title="Sort by">
+          <div className={classes.dropdown}>
+            {sortFilter.map((sort, idx) => (
+              <div key={idx} className={classes.sort}>
+                <RadioButton onClick={() => handleSort(sort)} active={sort === filter.sortby} />
+                <div>{sort}</div>
+              </div>
+            ))}
           </div>
-        ))}
+        </Dropdown>
+        <Dropdown title="Price (USD)">
+          <div className={classes.priceDropdown}>
+            <div className={classes.inputContainer}>
+              <div className={classes.label}>Min</div>
+              <input type="number" name="minPrice" value={filter.minPrice} onChange={handlePriceChange} />
+            </div>
+            <div>to</div>
+            <div className={classes.inputContainer}>
+              <div className={classes.label}>Max</div>
+              <input type="number" name="maxPrice" value={filter.maxPrice} onChange={handlePriceChange} />
+            </div>
+          </div>
+          <div className={classes.btnContainer}>
+            <div onClick={handleApply} className={`${classes.btn} ${classes.apply}`}>
+              Apply
+            </div>
+            <div onClick={handleCancel} className={`${classes.btn} ${classes.cancel}`}>
+              Cancel
+            </div>
+          </div>
+        </Dropdown>
       </div>
     </div>
   );

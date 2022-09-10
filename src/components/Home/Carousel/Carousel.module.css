@@ -1,6 +1,5 @@
 .card {
   width: 21.5em;
-  border: 1px solid black;
   flex: 0 0 auto;
 }
 
@@ -14,7 +13,6 @@
 }
 
 .card .name {
-  border: 1px solid red;
   width: 100%;
   text-align: center;
 }

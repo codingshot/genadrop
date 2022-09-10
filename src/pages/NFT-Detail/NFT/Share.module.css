@@ -1,0 +1,53 @@
+.container {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+  display: none;
+  padding: 1em;
+}
+
+.container.active {
+  display: flex;
+}
+
+.wrapper {
+  width: 26em;
+  background: var(--default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  padding: 2em 3em;
+  border-radius: 1em;
+  border: 2px solid var(--outline);
+  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content input {
+  width: 100%;
+}
+
+.shareContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.shareIcon {
+  width: 2em;
+  height: 2em;
+}

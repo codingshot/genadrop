@@ -1,8 +1,13 @@
+.container {
+  width: 100%;
+}
+
 .menu {
   width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1em;
+  margin-bottom: 2em;
 }
 
 .menu.resize {
@@ -11,6 +16,38 @@
 
 .loader {
   z-index: 0;
+}
+
+.control {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1em;
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
+  padding: 0.25em;
+}
+
+.pageControl {
+  padding: 0.5em 1em;
+  border-radius: 0.25em;
+  background: var(--main-color);
+  color: var(--default);
+  cursor: var(--cursor-pointer);
+  transition: all 300ms;
+}
+
+.pageControl:hover {
+  outline: 2px solid var(--main-hovered);
+}
+
+.pageCount {
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 @media screen and (max-width: 1200px) {
@@ -43,5 +80,6 @@
   .menu,
   .menu.resize {
     grid-template-columns: repeat(1, 1fr);
+    justify-items: center;
   }
 }

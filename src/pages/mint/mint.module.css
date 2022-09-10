@@ -121,7 +121,7 @@
   width: 10em;
   padding: 0.5em 0;
   font-size: 1rem;
-  border-radius: 2em;
+  border-radius: 0.7em;
   border: 2px solid var(--main-color);
   transition: all 300ms;
   color: var(--main-color);

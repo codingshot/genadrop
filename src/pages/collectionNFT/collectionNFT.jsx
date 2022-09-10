@@ -4,6 +4,7 @@ import axios from "axios";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { Helmet } from "react-helmet";
 import DropItem from "../../components/Nft-details/dropItem/dropItem";
 import classes from "./collectionNFT.module.css";
 import Search from "../../components/Nft-details/history/search";
@@ -237,6 +238,12 @@ const CollectionNFT = () => {
 
   return (
     <div className={classes.container}>
+      <Helmet>
+        <title>{`${nftDetails?.name} | GenaDrop`}</title>
+        <meta name="title" content={`${nftDetails?.name} | GenaDrop`} />
+        <meta name="description" content={`NFT, ${nftDetails?.description}, minted on GenaDrop`} />
+        <meta name="image" content={nftDetails?.image_url} />
+      </Helmet>
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
           <img className={classes.nft} src={nftDetails.image_url} alt="" />

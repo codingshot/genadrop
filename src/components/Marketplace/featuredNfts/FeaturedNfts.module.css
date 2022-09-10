@@ -1,0 +1,48 @@
+.container {
+  width: 100%;
+  background: linear-gradient(89.73deg, rgba(253, 240, 251, 0.11) 6.08%, rgba(204, 234, 251, 0.11) 99.94%),
+    linear-gradient(180deg, #fef1fc 0%, rgba(254, 241, 252, 0) 100%);
+  margin-bottom: 6em;
+  padding: 0 2em;
+  /* border: 1px solid red; */
+  margin-top: -8em;
+  padding-top: 8em;
+}
+
+.heading {
+  font-weight: 500;
+  font-size: 3rem;
+  color: #000000;
+  margin-bottom: 0.5em;
+}
+
+.headingContainer,
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 900px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .heading {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .container {
+    padding: 0 1em;
+    padding-top: 8em;
+    margin-bottom: 4em;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+}

@@ -1,5 +1,6 @@
 .chart {
-  height: 220px;
+  height: auto;
+  max-height: 20em;
 }
 
 .nodata {

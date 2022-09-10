@@ -25,7 +25,7 @@
 .showRuleBtn {
   width: 7.5em;
   height: 2.5em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   font-size: 0.85rem;
   cursor: var(--cursor-pointer);
   transition: all 300ms;

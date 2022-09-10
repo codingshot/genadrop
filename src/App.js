@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import "./App.css";
-
+import "./fonts.css";
 import Preview from "./pages/preview/preview";
 import Explore from "./pages/Explore/Explore";
 import CollectionNFT from "./pages/collectionNFT/collectionNFT";
@@ -45,7 +45,9 @@ import StoreData from "./renderless/store-data/StoreData";
 import FetchData from "./renderless/fetch-data/fetchData.component";
 import Links from "./pages/links/links";
 import SearchResult from "./pages/searchResult/searchResult";
+import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
+import NFTDetail from "./pages/NFT-Detail/NFTDetail";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -71,14 +73,14 @@ function App() {
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/1of1" component={SingleNftCollection} />
+            <Route exact path="/marketplace/collections" component={Collections} />
             {/* <Route exact path="/marketplace/1of1/:nftId" component={SingleNFT} /> */}
-            <Route exact path="/marketplace/1of1/:chainId/:nftId" component={SingleNFT} />
+            <Route exact path="/marketplace/1of1/:chainId/:nftId" component={NFTDetail} />
             <Route exact path="/marketplace/1of1/preview/:chainId/:nftId" component={ListSingleNFT} />
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId" component={List} />
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId/listed" component={Listed} />
-            <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
-            <Route exact path="/marketplace/collections/:collectionName/:nftId" component={CollectionNFT} />
+            <Route exact path="/marketplace/collections/:collectionName/:nftId" component={NFTDetail} />
             <Route exact path="/me/:userId" component={Dashboard} />
             {/* <Route exact path="/me/:userId/:nftId" component={List} /> */}
             <Route exact path="/me/:userId/profile/settings" component={Profile} />
@@ -92,6 +94,7 @@ function App() {
             <Route exact path="/create/session/pricing/failed" component={FailedPlan} />
             <Route exact path="/links" component={Links} />
             <Route exact path="/search" component={SearchResult} />
+            <Route exact path="/brand" component={Brand} />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>

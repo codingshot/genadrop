@@ -47,7 +47,7 @@
   border: 1px solid var(--main-color);
   color: var(--main-color);
   padding: 0.25em 1em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   transition: all 300ms;
   cursor: pointer;
   position: relative;
@@ -102,7 +102,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.25em 0.25em;
   padding-right: 0.75em;
   transition: all 300ms;

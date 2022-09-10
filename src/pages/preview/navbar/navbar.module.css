@@ -27,7 +27,7 @@
   justify-content: center;
   gap: 1em;
   padding: 0.5em 1em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--default);
   cursor: var(--cursor-pointer);
   border: 1px solid var(--main-color);

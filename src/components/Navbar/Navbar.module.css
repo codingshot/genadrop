@@ -235,7 +235,7 @@
     text-align: center;
     font-weight: 700;
     border: 1px solid var(--outline);
-    border-radius: 2em;
+    border-radius: 0.7em;
   }
 
   .navItem:hover {

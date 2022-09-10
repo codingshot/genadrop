@@ -26,9 +26,13 @@
 }
 
 .placeholder {
-  border-radius: 2em;
-  padding: 0.15em;
+  border-radius: 0.7em;
+  padding: 0.15em 1em;
   border: 1px solid var(--outline);
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
 }
 
 .container.active .placeholder {
@@ -50,7 +54,11 @@
 }
 
 .placeholder input {
-  padding: 0.25em 1.5em;
+  padding: 0.25em;
+}
+
+.placeholder input.mobile {
+  display: none;
 }
 
 .dropdownContainer {
@@ -211,5 +219,13 @@
   .type_m {
     display: inline-flex;
     font-size: 0.75rem;
+  }
+
+  .placeholder input.desktop {
+    display: none;
+  }
+
+  .placeholder input.mobile {
+    display: block;
   }
 }

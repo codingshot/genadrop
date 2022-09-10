@@ -35,7 +35,7 @@ import NftCard from "../../components/Marketplace/NftCard/NftCard";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import NotFound from "../../components/not-found/notFound";
-import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import DashboardFilterDropdown from "../../components/Marketplace/Dashboard-Filter-Dropdown/DashboardFilterDropdown";
 import Pagination from "../../components/pagination/Pagination";
 // assets
 import avatar from "../../assets/avatar.png";
@@ -379,7 +379,7 @@ const Dashboard = () => {
         <section className={classes.main}>
           <div className={classes.searchAndFilter}>
             <SearchBar onSearch={(value) => searchHandler(value)} />
-            <FilterDropdown onFilter={handleFilterDropdown} />
+            <DashboardFilterDropdown onFilter={handleFilterDropdown} />
           </div>
 
           {filteredCollection?.length > 0 ? (

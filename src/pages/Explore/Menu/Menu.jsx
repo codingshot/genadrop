@@ -1,38 +1,75 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
-import axios from "axios";
-import NftCard from "../../../components/Marketplace/NftCard/NftCard";
+import SingleNftCard from "../../../components/Marketplace/SingleNftCard/SingleNftCard";
 import classes from "./Menu.module.css";
-import supportedChains from "../../../utils/supportedChains";
 
-const Menu = ({ NFTCollection, loadedChain, toggleFilter, chain }) => {
-  const [chinPrice, setChainPrice] = useState(0);
+const Menu = ({ NFTCollection, toggleFilter, headerHeight }) => {
+  const [state, setState] = useState({
+    currentPage: 1,
+    paginate: {},
+  });
+
+  const { currentPage, paginate } = state;
+
+  const handleSetState = (payload) => {
+    setState((state) => ({ ...state, ...payload }));
+  };
+
+  const handlePrev = () => {
+    if (currentPage <= 1) return;
+    handleSetState({ currentPage: currentPage - 1 });
+    document.documentElement.scrollTop = headerHeight;
+  };
+
+  const handleNext = () => {
+    if (currentPage >= Object.keys(paginate).length) return;
+    handleSetState({ currentPage: currentPage + 1 });
+    document.documentElement.scrollTop = headerHeight;
+  };
+
   useEffect(() => {
-    if (chain) {
-      axios
-        .get(`https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chain].id}&vs_currencies=usd`)
-        .then((res) => {
-          const value = Object.values(res.data)[0].usd;
-          setChainPrice(value);
-        });
+    if (!NFTCollection) return;
+    const countPerPage = 12;
+    const numberOfPages = Math.ceil(NFTCollection.length / countPerPage);
+    let startIndex = 0;
+    let endIndex = startIndex + countPerPage;
+    const paginate = {};
+    for (let i = 1; i <= numberOfPages; i += 1) {
+      paginate[i] = NFTCollection.slice(startIndex, endIndex);
+      startIndex = endIndex;
+      endIndex = startIndex + countPerPage;
     }
-  }, [chain]);
+    handleSetState({ paginate });
+  }, [NFTCollection]);
 
   return (
-    <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
-      {NFTCollection
-        ? NFTCollection.map((nft, idx) => (
-            <NftCard chinPrice={chinPrice} key={nft.Id} nft={nft} listed index={idx} loadedChain={loadedChain} />
-          ))
-        : [...new Array(8)]
-            .map((_, idx) => idx)
-            .map((id) => (
-              <div className={classes.loader} key={id}>
-                <Skeleton count={1} height={200} />
-                <br />
-                <Skeleton count={1} height={40} />
-              </div>
-            ))}
+    <div className={classes.container}>
+      <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
+        {Object.keys(paginate).length
+          ? paginate[currentPage].map((nft, idx) => (
+              <SingleNftCard collectionNft={{ name: NFTCollection[0]?.collection_name }} key={idx} nft={nft} />
+            ))
+          : [...new Array(8)]
+              .map((_, idx) => idx)
+              .map((id) => (
+                <div className={classes.loader} key={id}>
+                  <Skeleton count={1} height={200} />
+                  <br />
+                  <Skeleton count={1} height={40} />
+                </div>
+              ))}
+      </div>
+      <div className={classes.control}>
+        <div onClick={handlePrev} className={classes.pageControl}>
+          prev
+        </div>
+        <div className={classes.pageCount}>
+          {currentPage} of {Object.keys(paginate).length}
+        </div>
+        <div onClick={handleNext} className={classes.pageControl}>
+          next
+        </div>
+      </div>
     </div>
   );
 };
