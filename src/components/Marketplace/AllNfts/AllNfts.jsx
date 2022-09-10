@@ -7,6 +7,7 @@ import SingleNftCard from "../SingleNftCard/SingleNftCard";
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
 import { getCollectionsByChain, shuffle } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
+import NotFound from "../../not-found/notFound";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -144,15 +145,17 @@ const AllNfts = () => {
           <ChainDropdown onChainFilter={handleChainChange} />
         </section>
         <section className={classes.nfts}>
-          {activeType === "T1"
-            ? filteredCollection.map((el, idx) =>
-                !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
-              )
-            : activeType === "T2"
-            ? filteredCollection.map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
-            : activeType === "T3"
-            ? filteredCollection.map((collection, idx) => <CollectionNftCard key={idx} collection={collection} />)
-            : null}
+          {activeType === "T1" ? (
+            filteredCollection.map((el, idx) =>
+              !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
+            )
+          ) : activeType === "T2" ? (
+            filteredCollection.map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
+          ) : activeType === "T3" ? (
+            filteredCollection.map((collection, idx) => <CollectionNftCard key={idx} collection={collection} />)
+          ) : (
+            <NotFound />
+          )}
         </section>
         <div className={classes.btnContainer}>
           {activeType !== "T1" ? (

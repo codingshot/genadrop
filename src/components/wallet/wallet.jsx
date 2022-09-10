@@ -148,7 +148,7 @@ function ConnectWallet() {
   const changeNetwork = (
     <div className={classes.networkContainer}>
       <div className={classes.network}>
-        <div className={classes.dot} />{" "}
+        <div className={`${classes.dot} ${network === "mainnet" && classes.mainnet}`} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
         <DropdownIcon className={classes.chevronIcon} />
       </div>
