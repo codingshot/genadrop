@@ -61,13 +61,23 @@ const AllNfts = () => {
   };
 
   useEffect(() => {
-    let collections = [...auroraCollections, ...algoCollectionsArr, ...polygonCollections, ...celoCollections];
+    let collections = [
+      ...(auroraCollections || []),
+      ...(algoCollectionsArr || []),
+      ...(polygonCollections || []),
+      ...(celoCollections || []),
+    ];
     collections = shuffle(collections);
     handleSetState({ collections: collections.slice(0, 16) });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
-    let singles = [...singleAlgoNftsArr, ...singleAuroraNfts, ...singlePolygonNfts, ...singleCeloNfts];
+    let singles = [
+      ...(singleAlgoNftsArr || []),
+      ...(singleAuroraNfts || []),
+      ...(singlePolygonNfts || []),
+      ...(singleCeloNfts || []),
+    ];
     singles = shuffle(singles);
     handleSetState({ singles: singles.slice(0, 16) });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
