@@ -39,7 +39,7 @@ export const initializeConnection = (walletProps) => {
 
   if (window.localStorage.walletconnect) {
     let newRpc = null;
-    let storedProvider = JSON.parse(window.localStorage.walletconnect);
+    const storedProvider = JSON.parse(window.localStorage.walletconnect);
     if (storedProvider.chainId === 4160) {
       newRpc = {
         4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
@@ -107,7 +107,7 @@ export const setNetworkType = ({ dispatch, handleSetState }) => {
 };
 
 export const connectWithQRCode = async ({ walletConnectProvider, dispatch, supportedChains }) => {
-  let proposedChain = Object.keys(walletConnectProvider.rpc)[0];
+  const proposedChain = Object.keys(walletConnectProvider.rpc)[0];
   try {
     await walletConnectProvider.enable();
     if (proposedChain !== String(walletConnectProvider.chainId)) {
@@ -220,9 +220,9 @@ export const updateAccount = async (walletProps) => {
   const { dispatch, walletConnectProvider, mainnet } = walletProps;
   const { ethereum } = window;
   let [accounts] = await ethereum.request({
-    method: "eth_accounts", //eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
+    method: "eth_accounts", // eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
   });
-  let networkId = await ethereum.request({ method: "net_version" });
+  const networkId = await ethereum.request({ method: "net_version" });
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
   const getEnv = supportedChains[networkId] ? mainnet === supportedChains[networkId].isMainnet : false;
   if (!getEnv) {
@@ -268,7 +268,7 @@ export const disconnectWallet = async ({ walletConnectProvider, dispatch, histor
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
   handleSetState({ toggleDropdown: false });
-  if (pathname.includes("/me")) {
+  if (pathname.includes("/profile")) {
     history.push("/marketplace");
   }
   dispatch(setAccount(null));

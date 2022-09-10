@@ -78,9 +78,9 @@ function App() {
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId/listed" component={Listed} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
             <Route exact path="/marketplace/collections/:collectionName/:nftId" component={NFTDetail} />
-            <Route exact path="/me/:userId" component={Dashboard} />
+            <Route exact path="/profile/:chainId/:userId" component={Dashboard} />
             {/* <Route exact path="/me/:userId/:nftId" component={List} /> */}
-            <Route exact path="/me/:userId/profile/settings" component={Profile} />
+            <Route exact path="/profile/settings" component={Profile} />
             <Route exact path="/docs" component={docsEmbed} />
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />

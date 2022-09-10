@@ -1,3 +1,5 @@
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import classes from "./Header.module.css";
 import bannerImg from "../../../assets/explore-banner2.svg";
 import listIcon from "../../../assets/icon-list.svg";
@@ -5,7 +7,6 @@ import stackIcon from "../../../assets/icon-stack.svg";
 import tradeIcon from "../../../assets/icon-trade.svg";
 import supportedChains from "../../../utils/supportedChains";
 import { getFormatedPrice } from "../../../utils";
-import { useEffect, useRef, useState } from "react";
 import { readUserProfile } from "../../../utils/firebase";
 import Copy from "../../../components/copy/copy";
 import { breakAddress } from "../../../components/wallet/wallet-script";
@@ -36,21 +37,21 @@ const Header = ({ collection, getHeight }) => {
   };
 
   const getUsdValue = async () => {
-    let value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     handleSetState({ usdValue: Number(value) * Number(price), UsdVolumeValue: Number(volumeTraded) * Number(price) });
   };
 
   const getUser = async () => {
     const user = await readUserProfile(owner);
     const links = [];
-    let link = {};
+    const link = {};
     if (user.twitter) {
       link.url = `https://twitter.com/${user.twitter}`;
-      link.icon = linkIcons["twitter"];
+      link.icon = linkIcons.twitter;
       links.push(link);
     } else if (links.discord) {
       link.url = `https://discord.com/users/${user.discord}`;
-      link.icon = linkIcons["discord"];
+      link.icon = linkIcons.discord;
       links.push(link);
     }
     handleSetState({ user, links });
@@ -87,10 +88,11 @@ const Header = ({ collection, getHeight }) => {
                 <img className={classes.chain} src={supportedChains[chain].icon} alt="" />
               </div>
               <div className={classes.creator}>
-                <span>Created by</span>
-                <span className={classes.accent}>
-                  <Copy message={owner} placeholder={(user && user.username) || breakAddress(owner)} />
-                </span>
+                <p>Created by</p>
+                <div className={classes.accent}>
+                  <Link to={`/profile/${chain}/${owner}`}> {(user && user.username) || breakAddress(owner)}</Link>{" "}
+                  <Copy message={owner} />
+                </div>
               </div>
             </div>
 

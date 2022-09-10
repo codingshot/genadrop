@@ -1,6 +1,7 @@
+import React, { useContext, useEffect, useState, useRef } from "react";
+import Skeleton from "react-loading-skeleton";
 import classes from "./singleNftCollection.module.css";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
-import { useContext, useEffect, useState } from "react";
 import NotFound from "../../components/not-found/notFound";
 import { GenContext } from "../../gen-state/gen.context";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
@@ -14,8 +15,7 @@ import {
   shuffle,
   sortBy,
 } from "../Marketplace/Marketplace-script";
-import { useRef } from "react";
-import Skeleton from "react-loading-skeleton";
+
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const SingleNftCollection = () => {
@@ -57,24 +57,24 @@ const SingleNftCollection = () => {
   };
 
   const handleSearchChange = (e) => {
-    let result = getCollectionsBySearch({ collections, search: e.target.value });
+    const result = getCollectionsBySearch({ collections, search: e.target.value });
     handleSetState({ filteredCollection: result, searchValue: e.target.value });
   };
 
   const handleChainChange = (chain) => {
-    let result = getCollectionsByChain({ collections, chain, mainnet });
+    const result = getCollectionsByChain({ collections, chain, mainnet });
     handleSetState({ filteredCollection: result });
   };
 
   const handleFilter = ({ type, value }) => {
     if (type === "status") {
-      let result = filterBy({ collections, value, account });
+      const result = filterBy({ collections, value, account });
       handleSetState({ filteredCollection: result });
     } else if (type === "sort") {
-      let result = sortBy({ collections, value });
+      const result = sortBy({ collections, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      let result = rangeBy({ collections, value });
+      const result = rangeBy({ collections, value });
       handleSetState({ filteredCollection: result });
     }
   };
@@ -106,7 +106,7 @@ const SingleNftCollection = () => {
 
   useEffect(() => {
     if (mountRef.current > 2) {
-      handleSetState({ notFound: Object.keys(paginate).length ? false : true });
+      handleSetState({ notFound: !Object.keys(paginate).length });
     }
     mountRef.current += 1;
   }, [paginate]);
