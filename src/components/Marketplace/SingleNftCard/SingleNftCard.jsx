@@ -1,11 +1,16 @@
-import classes from "./SingleNftCard.module.css";
-import supportedChains from "../../../utils/supportedChains";
-import { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { getFormatedPrice } from "../../../utils";
-import { useContext } from "react";
+import supportedChains from "../../../utils/supportedChains";
+import classes from "./SingleNftCard.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
+import {
+  // marketplace differnt card footer
+  MarketplaceView,
+  // dashboard differnt card footer
+  OnSalveView,
+  CollectedView,
+} from "./CardFooter";
 
 const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft }) => {
   const history = useHistory();
@@ -22,6 +27,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
 
   const breakAddress = (address = "", width = 6) => {
     if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
+    return address;
   };
 
   const handlePreview = () => {
@@ -37,24 +43,32 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
       } else {
         history.push(`/marketplace/1of1/${Id}`);
       }
-    } else {
-      if (collection_name) {
-        if (fromDetails) {
-          history.push(`${match.url.split("/").slice(0, -1).join("/")}/${Id}`);
-        } else {
-          history.push(`${match.url}/${Id}`);
-        }
-      } else if (chain) {
-        history.push(`/marketplace/1of1/preview/${chain}/${Id}`);
+    } else if (collection_name) {
+      if (fromDetails) {
+        history.push(`${match.url.split("/").slice(0, -1).join("/")}/${Id}`);
       } else {
-        history.push(`/marketplace/1of1/preview/${Id}`);
+        history.push(`${match.url}/${Id}`);
       }
+    } else if (chain) {
+      history.push(`/marketplace/1of1/preview/${chain}/${Id}`);
+    } else {
+      history.push(`/marketplace/1of1/preview/${Id}`);
     }
   };
 
   useEffect(() => {
     getUsdValue();
   }, []);
+
+  const footerPrpops = {
+    price,
+    chain,
+    account,
+    owner,
+    sold,
+    isListed,
+    usdValue,
+  };
 
   return (
     <div style={use_width ? { width: use_width } : {}} onClick={handlePreview} className={classes.container}>
@@ -75,32 +89,15 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
         <div className={classes.name}>{name}</div>
         <div className={classes.owner}>{breakAddress(owner)}</div>
       </div>
-      <div className={classes.listing}>
-        <div className={classes.floorPrice}>
-          <div className={classes.priceLabel}>Price</div>
-          <div className={classes.amount}>
-            <span className={classes.accent}>
-              {Number(price).toFixed(4)} {supportedChains[chain].symbol}
-            </span>
-            <span>{`(${usdValue.toFixed(4)}USD)`}</span>
-          </div>
-        </div>
-        {!price ? (
-          owner === account ? (
-            <div className={classes.btn}>List</div>
-          ) : (
-            <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
-          )
-        ) : !sold || isListed ? (
-          supportedChains[chain]?.chain === "Algorand" ? (
-            <div className={classes.btn}>Buy</div>
-          ) : (
-            <div className={classes.btn}>Buy</div>
-          )
-        ) : (
-          <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
-        )}
-      </div>
+      {!fromDashboard ? (
+        <MarketplaceView footerPrpops={footerPrpops} />
+      ) : fromDashboard === "onSale" ? (
+        <OnSalveView footerPrpops={footerPrpops} />
+      ) : fromDashboard === "collected" ? (
+        <CollectedView footerPrpops={footerPrpops} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

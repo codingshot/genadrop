@@ -4,6 +4,11 @@ import supportedChains from "../../../utils/supportedChains";
 import classes from "./CollectionNftCard.module.css";
 import { getFormatedPrice } from "../../../utils";
 
+const formattedNumber = (number, decimals = 2) => {
+  const input = number?.toFixed(decimals);
+  return parseFloat(input);
+};
+
 const CollectionNftCard = ({ use_width, collection }) => {
   const history = useHistory();
   const [usdValue, setUsdValue] = useState(0);
@@ -42,9 +47,9 @@ const CollectionNftCard = ({ use_width, collection }) => {
           <div className={classes.priceLabel}>Floor Price</div>
           <div className={classes.amount}>
             <span className={classes.accent}>
-              {Number(price).toFixed(4)} {supportedChains[chain].symbol}
+              {formattedNumber(Number(price), 4)} {supportedChains[chain].symbol}
             </span>{" "}
-            <span>{`(${usdValue.toFixed(4)}USD)`}</span>
+            <span>{`(${formattedNumber(usdValue, 4)}USD)`}</span>
           </div>
         </div>
         <div className={classes.counts}>{`${nfts ? nfts.length : 0} NFTs`}</div>

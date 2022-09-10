@@ -6,13 +6,7 @@ import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 // import { setNotification } from "../../gen-state/gen.actions";
-import {
-  fetchUserBoughtNfts,
-  fetchUserCollections,
-  fetchUserCreatedNfts,
-  readUserProfile,
-  readUsers,
-} from "../../utils/firebase";
+import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
 // import { celoClient, polygonClient } from "../../utils/graphqlClient";
 // import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
@@ -31,8 +25,8 @@ import Copy from "../../components/copy/copy";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 // components
-import NftCard from "../../components/Marketplace/NftCard/NftCard";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
+import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
+import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import NotFound from "../../components/not-found/notFound";
 import DashboardFilterDropdown from "../../components/Marketplace/Dashboard-Filter-Dropdown/DashboardFilterDropdown";
@@ -386,22 +380,22 @@ const Dashboard = () => {
             activeDetail === "sale" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <NftCard key={nft.Id} nft={nft} fromDashboard />
+                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="onSale" />
                 ))}
               </div>
             ) : activeDetail === "created" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => {
                   if (nft.nfts) {
-                    return <CollectionsCard key={nft.Id} collection={nft} fromDashboard />;
+                    return <CollectionNftCard key={nft.Id} collection={nft} fromDashboard />;
                   }
-                  return <NftCard key={nft.Id} nft={nft} listed={false} fromDashboard />;
+                  return <SingleNftCard key={nft.Id} nft={nft} listed={false} fromDashboard="onSale" />;
                 })}
               </div>
             ) : activeDetail === "collected" ? (
               <div className={classes.overview}>
                 {filteredCollection.slice(pageVisited, pageVisited + perPage).map((nft) => (
-                  <NftCard key={nft.Id} nft={nft} fromDashboard />
+                  <SingleNftCard key={nft.Id} nft={nft} fromDashboard="collected" />
                 ))}
               </div>
             ) : (
