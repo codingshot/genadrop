@@ -1,7 +1,8 @@
+import React from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./Banner.module.css";
 import bannerImg from "../../../assets/marketplace-banner.png";
 import Search from "../../Search/Search";
-import { useHistory } from "react-router-dom";
 import Chains from "../Chains/Chains";
 
 const Banner = () => {
