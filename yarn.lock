@@ -3727,19 +3727,24 @@
   dependencies:
     antlr4ts "^0.5.0-alpha.4"
 
-"@splidejs/react-splide@^0.7.10":
-  version "0.7.10"
-  resolved "https://registry.yarnpkg.com/@splidejs/react-splide/-/react-splide-0.7.10.tgz#2602f5044e43f7773af6abc735da199e9f5ff4a0"
-  integrity sha512-W83LCjbx0DTKCCCZGV9zTTnl80CDA7LOOg41rOpQ8NXuTBsDVAhqlQ8+bAvvBiclPbAgSi/dMMDkknA19Guq+A==
+"@splidejs/react-splide@0.7.5":
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/@splidejs/react-splide/-/react-splide-0.7.5.tgz#d645fbcb075f01468b7b8838d423f64c375e88a1"
+  integrity sha512-vsUyKE5GuXbj+zevI44PMh2MquEsmO28J9ififmoJHVZ3TF7WFcygLz5q9AFPUJvDjJngoPiM3S8b1WwvFxaFw==
   dependencies:
-    "@splidejs/splide" "^4.0.17"
+    "@splidejs/splide" "^4.0.1"
 
-"@splidejs/splide-extension-auto-scroll@^0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@splidejs/splide-extension-auto-scroll/-/splide-extension-auto-scroll-0.5.3.tgz#3d3f61229b27fae7923dba62bcd13f6e1b798410"
-  integrity sha512-vPJ8Tn4uebnHa6scBcIypW154HTDenkazX9Nw8T1na44n7OtLoz40R4RoirteV7taPWW7w7ZZPCiEpi2ReYFAQ==
+"@splidejs/splide-extension-auto-scroll@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@splidejs/splide-extension-auto-scroll/-/splide-extension-auto-scroll-0.4.2.tgz#a1bdf4e986789d6edd7351ecbd2f634cda74d2a6"
+  integrity sha512-kIKRhs1Gj5a6xKEi/h/7i/G20+kJgpfzvU3nPyLrAUYdK3Q3w8kxJ4DgeMJHzlF5iachnPUe2zXdWMhZHCHYfg==
 
-"@splidejs/splide@^4.0.17":
+"@splidejs/splide@4.0.7":
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/@splidejs/splide/-/splide-4.0.7.tgz#f442b7c5fc99df472c6f989787e1fb331cf177c6"
+  integrity sha512-aJAOGJN2lwjwou3mxQofc3uhe+RXpw9in0WfysFX7AMT/mj7wSqoetfm41s7J8jU6FJ3ZWaLYgSJIpBAQ5wyqw==
+
+"@splidejs/splide@^4.0.1":
   version "4.0.17"
   resolved "https://registry.yarnpkg.com/@splidejs/splide/-/splide-4.0.17.tgz#7e6576d4643f496c0f00b589da1f47cab0ae8c77"
   integrity sha512-k67vDY0+hl7Qi+I+juOF+DO1KuRw+4RfV5x5SlIVrK60DmMzQvp2j9CqDzixUw3jDDoEaPTGY4BKy5SZSiFf1Q==
