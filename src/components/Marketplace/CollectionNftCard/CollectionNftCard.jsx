@@ -49,7 +49,7 @@ const CollectionNftCard = ({ use_width, collection }) => {
             <span className={classes.accent}>
               {formattedNumber(Number(price), 4)} {supportedChains[chain].symbol}
             </span>{" "}
-            <span>{`(${formattedNumber(usdValue, 4)}$)`}</span>
+            <span>{`($${formattedNumber(usdValue, 4)})`}</span>
           </div>
         </div>
         <div className={classes.counts}>{`${nfts ? nfts.length : 0} NFTs`}</div>
