@@ -17,7 +17,7 @@ export const MarketplaceView = ({ footerPrpops }) => {
           <span className={classes.accent}>
             {formattedNumber(Number(price), 4)} {supportedChains[chain].symbol}
           </span>
-          <span>{`(${formattedNumber(usdValue, 4)}$)`}</span>
+          <span>{`($${formattedNumber(usdValue, 4)})`}</span>
         </div>
       </div>
       {!price ? (
@@ -52,7 +52,7 @@ export const OnSalveView = ({ footerPrpops }) => {
           <p className={classes.accent}>
             {formattedNumber(Number(price))} <span>{supportedChains[chain].symbol}</span>
           </p>
-          <div>{`(${formattedNumber(usdValue)}$)`}</div>
+          <div>{`($${formattedNumber(usdValue)})`}</div>
         </div>
       </div>
     </div>
