@@ -37,9 +37,15 @@ const Search = () => {
     handleSetState({ value: "", suggestions: null, toggleSearch: false });
   };
 
-  const handleSearch = (searchType) => {
+  const suggestionURL = (suggestion) => {
+    return suggestion?.type !== "1of1"
+      ? `/marketplace/collections/${suggestion?.chain === 4160 ? suggestion?.name : suggestion?.Id}`
+      : `/marketplace/1of1/${suggestion?.chain}/${suggestion?.Id}`;
+  };
+
+  const handleSearch = (suggestion) => {
     handleSetState({ value: "", suggestions: null, toggleSearch: false });
-    history.push(`/marketplace/${searchType}${`?search=${value}`}`);
+    history.push(suggestionURL(suggestion));
   };
 
   const hanldeAllResults = (keyword = value) => {
@@ -68,6 +74,7 @@ const Search = () => {
       </span>
     );
   }
+
   return (
     <div className={`${classes.container} ${toggleSearch && classes.active}`}>
       {location.pathname === "/search" ? (
@@ -134,16 +141,18 @@ const Search = () => {
           )}
           <div className={classes.suggestions}>
             {suggestions && suggestions.length ? (
-              suggestions.map(({ image_url, type, name, description, chain }, idx) => (
-                <div onClick={() => handleSearch(type)} key={idx} className={classes.suggestion}>
-                  <img className={classes.image} src={image_url} alt="" />
+              suggestions.map((suggestion) => (
+                <div onClick={() => handleSearch(suggestion)} key={suggestion.Id} className={classes.suggestion}>
+                  <img className={classes.image} src={suggestion.image_url} alt="" />
                   <div className={classes.content}>
-                    <div className={classes.name}>{getHighlightedText(name, value)}</div>
-                    <div className={classes.description}>{getHighlightedText(description, value)}</div>
-                    <div className={classes.type_m}>{type}</div>
+                    <div className={classes.name}>{getHighlightedText(suggestion.name, value)}</div>
+                    <div className={classes.description}>
+                      {getHighlightedText(suggestion.description.slice(0, 40), value)}...
+                    </div>
+                    <div className={classes.type_m}>{suggestion.type}</div>
                   </div>
-                  <div className={classes.type}>{type}</div>
-                  <img className={classes.chain} src={supportedChains[chain]?.icon} alt="" />
+                  <div className={classes.type}>{suggestion.type}</div>
+                  <img className={classes.chain} src={supportedChains[suggestion.chain]?.icon} alt="" />
                 </div>
               ))
             ) : suggestions ? (
