@@ -185,5 +185,16 @@ export const getCollectionsBySearch = ({ collections, search }) => {
 
 export const getCollectionsByCategory = ({ collections, category }) => {
   if (category === "All") return collections;
-  return collections.filter((col) => col.category === category);
+
+  let singleNFTs = collections.filter((col) => !col.nfts);
+
+  singleNFTs = singleNFTs.filter((col) => {
+    let categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;
+
+    categoryCheck = categoryCheck?.filter((property) => {
+      return property.trait_type === "Category" && property.value === category;
+    });
+    return categoryCheck.length;
+  });
+  return [...singleNFTs];
 };
