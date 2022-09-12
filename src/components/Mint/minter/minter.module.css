@@ -324,7 +324,6 @@ div.showPreview > span {
 }
 
 .inputWrapper button:hover {
-  cursor: var(--cursor-hover);
   color: var(--main-hovered);
 }
 

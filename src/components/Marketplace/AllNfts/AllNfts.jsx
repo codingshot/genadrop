@@ -106,13 +106,14 @@ const AllNfts = () => {
   }, [activeType, singles, collections, newest]);
 
   useEffect(() => {
-    const result = getCollectionsByCategory({ collections: type[activeType], category: activeCategory });
-    handleSetState({ filteredCollection: result || [] });
-  }, [activeCategory]);
-
-  useEffect(() => {
     dispatch(setActiveCollection(null));
   }, []);
+
+  const categoryFilter = (category) => {
+    handleSetState({ activeCategory: category });
+    const result = getCollectionsByCategory({ collections: type[activeType], category });
+    handleSetState({ filteredCollection: result || [] });
+  };
 
   return (
     <div className={classes.container}>
@@ -141,7 +142,7 @@ const AllNfts = () => {
           <div className={classes.categories}>
             {categories.map((category, idx) => (
               <div
-                onClick={() => handleSetState({ activeCategory: category })}
+                onClick={() => categoryFilter(category)}
                 key={idx}
                 className={`${classes.category} ${activeCategory === category && classes.active}`}
               >

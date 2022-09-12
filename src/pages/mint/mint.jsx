@@ -26,7 +26,7 @@ const Mint = () => {
         <h1 className={classes.heading}>Mint Your NFTs</h1>
         <p className={classes.description}>
           With Genadrop simplified minting, you can mint your NFts as fast as your fingers can go. <br />
-          Simply choose your mint type, either a <span>Collection mint</span> or <span>1 of 1 mint</span>, and upload a
+          Simply choose your mint type, either a <span>1 of 1 mint </span> or <span>Collection mint</span>, and upload a
           file to <br />
           mint to any of our supported blockchains!
         </p>
