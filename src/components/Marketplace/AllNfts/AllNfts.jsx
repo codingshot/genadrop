@@ -41,7 +41,7 @@ const AllNfts = () => {
 
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
   const algoCollectionsArr = Object.values(algoCollections);
-  const categories = ["All", "Photograpy", "Shorts"];
+  const categories = ["All", "Photography", "Shorts"];
   const type = {
     T1: newest,
     T2: singles,
@@ -73,7 +73,7 @@ const AllNfts = () => {
       ...(celoCollections || []),
     ];
     collections = shuffle(collections);
-    handleSetState({ collections: collections.slice(0, 16) });
+    handleSetState({ collections });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const AllNfts = () => {
       ...(singleCeloNfts || []),
     ];
     singles = shuffle(singles);
-    handleSetState({ singles: singles.slice(0, 16) });
+    handleSetState({ singles });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
 
   useEffect(() => {
@@ -103,7 +103,7 @@ const AllNfts = () => {
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
     handleSetState({ filteredCollection: result || [] });
-  }, [activeType, singles, collections, newest]);
+  }, [singles, collections, newest]);
 
   useEffect(() => {
     dispatch(setActiveCollection(null));
@@ -115,24 +115,33 @@ const AllNfts = () => {
     handleSetState({ filteredCollection: result || [] });
   };
 
+  const haandleTabActive = (active) => {
+    handleSetState({
+      activeType: active,
+    });
+    let result = getCollectionsByChain({ collections: type[active], chain: activeChain, mainnet });
+    result = getCollectionsByCategory({ collections: result, category: activeCategory });
+    handleSetState({ filteredCollection: result || [] });
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
         <div className={classes.types}>
           <div
-            onClick={() => handleSetState({ activeType: "T1" })}
+            onClick={() => haandleTabActive("T1")}
             className={`${classes.type}  ${activeType === "T1" && classes.active}`}
           >
             New
           </div>
           <div
-            onClick={() => handleSetState({ activeType: "T2" })}
+            onClick={() => haandleTabActive("T2")}
             className={`${classes.type}  ${activeType === "T2" && classes.active}`}
           >
             1 of 1s
           </div>
           <div
-            onClick={() => handleSetState({ activeType: "T3" })}
+            onClick={() => haandleTabActive("T3")}
             className={`${classes.type}  ${activeType === "T3" && classes.active}`}
           >
             Top Collections
@@ -155,13 +164,17 @@ const AllNfts = () => {
         {filteredCollection.length ? (
           <section className={classes.nfts}>
             {activeType === "T1" ? (
-              filteredCollection.map((el, idx) =>
-                !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
-              )
+              filteredCollection
+                .slice(0, 16)
+                .map((el, idx) =>
+                  !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
+                )
             ) : activeType === "T2" ? (
-              filteredCollection.map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
+              filteredCollection.slice(0, 16).map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
             ) : activeType === "T3" ? (
-              filteredCollection.map((collection, idx) => <CollectionNftCard key={idx} collection={collection} />)
+              filteredCollection
+                .slice(0, 16)
+                .map((collection, idx) => <CollectionNftCard key={idx} collection={collection} />)
             ) : (
               <NotFound />
             )}

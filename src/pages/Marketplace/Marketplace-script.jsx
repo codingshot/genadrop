@@ -184,18 +184,17 @@ export const getCollectionsBySearch = ({ collections, search }) => {
 };
 
 export const getCollectionsByCategory = ({ collections, category }) => {
-  console.log(collections);
   if (category === "All") return collections;
-  let singleNFTs = [];
-  const collecteios = [];
-  collections.filter((col) => (!col.nfts ? singleNFTs.push(col) : collecteios.push(col)));
-  console.log(singleNFTs);
+
+  let singleNFTs = collections.filter((col) => !col.nfts);
 
   singleNFTs = singleNFTs.filter((col) => {
-    const categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;
+    let categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;
 
-    return categoryCheck?.filter((property) => property.trait_type === "trait_type" && property.value === category)
-      ?.length;
+    categoryCheck = categoryCheck?.filter((property) => {
+      return property.trait_type === "Category" && property.value === category;
+    });
+    return categoryCheck.length;
   });
   return [...singleNFTs];
 };
