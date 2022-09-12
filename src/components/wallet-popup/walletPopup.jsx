@@ -1,8 +1,8 @@
+import React, { useContext, useEffect, useState } from "react";
 import classes from "./walletPopup.module.css";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
-import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
@@ -14,8 +14,8 @@ const WalletPopup = ({ handleSetState }) => {
   const [activeChain, setActiveChain] = useState(null);
   const [showMetamask, setMetamask] = useState(true);
 
-  let connectOptions = [];
-  for (let key in supportedChains) {
+  const connectOptions = [];
+  for (const key in supportedChains) {
     if (key !== "4160") {
       connectOptions.push(supportedChains[key]);
     }
@@ -81,6 +81,20 @@ const WalletPopup = ({ handleSetState }) => {
               ? "Connect with one of our available wallet providers."
               : "Select any of our supported blockchain to connect your wallet."}{" "}
           </p>
+          {!showConnectionMethods && (
+            <div className={classes.networkSwitch}>
+              You&apos;re viewing data from the {mainnet ? "main" : "test"} network.
+              <br /> Go to{" "}
+              <a
+                href={mainnet ? "https://genadrop-staging.vercel.app/" : "https://www.genadrop.com/"}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {mainnet ? "genadrop-staging.vercel.app" : "genadrop.com"}
+              </a>{" "}
+              to switch to {!mainnet ? "main" : "test"} network
+            </div>
+          )}
         </div>
 
         <div className={classes.wrapper}>
