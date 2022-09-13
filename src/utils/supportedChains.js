@@ -114,7 +114,7 @@ const supportedChains = {
     switch: switchChain,
     coinGeckoLabel: "ethereum",
   },
-  "add-near-id": {
+  "near-mainnet": {
     id: "near",
     label: "Near",
     chain: "Near",
@@ -129,20 +129,19 @@ const supportedChains = {
     coinGeckoLabel: "",
     comingSoon: true,
   },
-  "add-near-t-id": {
+  "near-testnet": {
     id: "near",
     label: "Near Testnet",
     chain: "Near",
     icon: nearIcon,
     livePrice: "",
     symbol: "",
-    networkId: null,
-    explorer: "",
+    networkId: "near-testnet",
+    explorer: "https://rpc.testnet.near.org",
     add: null,
     isMainnet: false,
     switch: null,
     coinGeckoLabel: "",
-    comingSoon: true,
   },
   "add-avalanche-id": {
     id: "avalanche",

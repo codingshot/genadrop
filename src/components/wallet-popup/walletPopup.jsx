@@ -6,6 +6,9 @@ import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import { GenContext } from "../../gen-state/gen.context";
 import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
+import * as nearAPI from "near-api-js";
+import "regenerator-runtime";
+import getConfig from "./nearConfig";
 
 const WalletPopup = ({ handleSetState }) => {
   const { dispatch, mainnet, connectFromMint } = useContext(GenContext);
@@ -22,9 +25,22 @@ const WalletPopup = ({ handleSetState }) => {
   }
   connectOptions.unshift(supportedChains[4160]);
 
-  const handleChain = (chainId, isComingSoon = undefined) => {
+  const handleChain = async (chainId, isComingSoon = undefined) => {
     if (isComingSoon) return;
-    if (chainId === 4160) {
+    if (chainId === "near-testnet") {
+      // NEAR Connect
+      const nearConfig = getConfig("testnet");
+      const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+      const near = await nearAPI.connect({ keyStore, ...nearConfig });
+      const walletConnection = new nearAPI.WalletConnection(near);
+
+      walletConnection.requestSignIn("slim_dev.testnet");
+      if (walletConnection.getAccountId()) {
+        console.log(walletConnection.getAccountId());
+      }
+      return;
+    }
+    if (chainId === 4160 || chainId === "near-testnet") {
       setMetamask(false);
     } else {
       setMetamask(true);
@@ -101,7 +117,7 @@ const WalletPopup = ({ handleSetState }) => {
           <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
-              .filter((_, idx) => showMoreOptions || idx <= 3)
+              .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div
                   onClick={() => handleChain(chain.networkId, chain.comingSoon)}
