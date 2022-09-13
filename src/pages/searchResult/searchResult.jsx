@@ -5,6 +5,8 @@ import classes from "./searchResult.module.css";
 import handleSuggestions from "../../components/Search/Search-script";
 import { GenContext } from "../../gen-state/gen.context";
 import Pagination from "../../components/pagination/Pagination";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import { rangeBy, sortBy } from "../Marketplace/Marketplace-script";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
@@ -46,6 +48,22 @@ const SearchResult = () => {
       }
       return null;
     });
+  };
+
+  // Filter
+  const handleFilter = async ({ type, value }) => {
+    console.log(type);
+    if (type === "sort") {
+      console.log(filteredCollection);
+      const result = sortBy({ collections: suggestions, value });
+
+      handleSetState({ filteredCollection: result });
+    } else if (type === "range") {
+      console.log(filteredCollection);
+
+      const result = await rangeBy({ collections: suggestions, value });
+      handleSetState({ filteredCollection: result });
+    }
   };
 
   // pagination
@@ -91,6 +109,7 @@ const SearchResult = () => {
             Creators
           </div>
         </div>
+        <FilterDropdown handleFilter={handleFilter} />
         <ChainDropdown onChainFilter={onChainFilter} />
       </div>
       {filteredCollection?.length ? (
