@@ -78,7 +78,19 @@ const CollectionToSingleMinter = () => {
       handleSetState({ fileName: zipObg.name, zip: zipObg.file, file: null, metadata: null });
       handleZipFile({ uploadedFile: zipObg.file, handleSetState });
     } else {
-      handleSetState({ fileName: zipObg.name, file: [zipObg.file], metadata: null, zip: null });
+      const category = zipObg.file.type === "image/png" ? "Photography" : "Shorts";
+      console.log(zipObg.file.type);
+      handleSetState({
+        fileName: zipObg.name,
+        file: [zipObg.file],
+        metadata: {
+          attributes: [
+            { trait_type: "File Type", value: zipObg.file.type },
+            { trait_type: "Category", value: category },
+          ],
+        },
+        zip: null,
+      });
     }
     dispatch(setZip({}));
   };

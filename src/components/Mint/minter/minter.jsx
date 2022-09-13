@@ -34,7 +34,7 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
+    attributes: metadata?.attributes ? metadata?.attributes : [],
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     chain: null,
@@ -91,23 +91,19 @@ const Minter = () => {
     metadata: {
       name: fileName,
       description,
-      attributes: Object.values(attributes),
+      attributes,
     },
     fileName,
     mainnet,
     chain: chain?.chain,
   };
-
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
   const handleAddAttribute = () => {
     handleSetState({
-      attributes: {
-        ...attributes,
-        [Date.now()]: { trait_type: "", value: "" },
-      },
+      attributes: [...attributes, { trait_type: "", value: "" }],
     });
   };
 
@@ -310,7 +306,7 @@ const Minter = () => {
                     Title <span className={classes.required}>*</span>
                   </label>
                   <input
-                    style={metadata ? { pointerEvents: "none" } : {}}
+                    style={zip ? { pointerEvents: "none" } : {}}
                     type="text"
                     value={fileName}
                     onChange={(event) => handleSetState({ fileName: event.target.value })}
@@ -335,7 +331,7 @@ const Minter = () => {
 
                 <div className={classes.inputWrapper}>
                   <label>Attributes</label>
-                  {!metadata ? (
+                  {!zip ? (
                     <>
                       <div className={classes.attributes}>
                         {Object.keys(attributes).map((key, index) => (

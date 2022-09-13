@@ -230,7 +230,19 @@
 .connectionMethod p {
   font-size: 0.85rem;
 }
-
+.networkSwitch {
+  font-size: 0.75rem;
+  background: var(--card-info);
+  padding: 0.5em 1rem;
+  margin-top: 0.5em;
+  text-align: left;
+}
+.networkSwitch a {
+  color: var(--main-color);
+}
+.networkSwitch a:hover {
+  text-decoration: underline;
+}
 @media screen and (max-width: 768px) {
   .heading h4 {
     font-size: 0.85rem;
