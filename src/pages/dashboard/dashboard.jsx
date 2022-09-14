@@ -75,7 +75,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { mainnet, account } = useContext(GenContext);
+  const { mainnet, account, connector, chainId } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -88,6 +88,7 @@ const Dashboard = () => {
   // return null;
   useEffect(() => {
     // Get User Created NFTs
+    console.log("condicondi", connector, chainId)
     let address = "";
     if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
       address = ethers?.utils?.hexlify(userId);

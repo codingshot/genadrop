@@ -114,20 +114,19 @@ const supportedChains = {
     switch: switchChain,
     coinGeckoLabel: "ethereum",
   },
-  "near-mainnet": {
+  1111: {
     id: "near",
     label: "Near",
     chain: "Near",
     icon: nearIcon,
     livePrice: "",
     symbol: "",
-    networkId: null,
+    networkId: 1111,
     explorer: "",
     add: null,
-    isMainnet: true,
+    isMainnet: process.env.REACT_APP_ENV_STAGING === "false",
     switch: null,
     coinGeckoLabel: "",
-    comingSoon: true,
   },
   "near-testnet": {
     id: "near",

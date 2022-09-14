@@ -34,6 +34,7 @@ export const getNetworkID = () => {
 };
 
 export const initializeConnection = (walletProps) => {
+  console.log("Let me shut, I'm Here!", walletProps);
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;
 
@@ -61,6 +62,7 @@ export const initializeConnection = (walletProps) => {
       rpc,
     });
     handleSetState({ walletConnectProvider });
+  } else if (window.localStorage.undefined_wallet_auth_key) {
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
     const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
@@ -69,6 +71,7 @@ export const initializeConnection = (walletProps) => {
     // Subscribe to accounts change
     ethereum.on("accountsChanged", function (accounts) {
       WS.updateAccount(walletProps);
+      console.log("connective change", connector)
     });
 
     // Subscribe to chainId change
@@ -168,6 +171,7 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
+  console.log("asiere", walletProps)
   dispatch(setToggleWalletPopup(true));
 };
 
