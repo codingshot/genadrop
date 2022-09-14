@@ -183,7 +183,10 @@ const Capture = () => {
     reader.readAsDataURL(file);
     reader.onload = function () {
       axios
-        .post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result, duration: videoDuration / 100 })
+        .post("https://video-to-gif-converter.herokuapp.com/test", {
+          url: reader.result,
+          duration: videoDuration / 100,
+        })
         .then((res) => {
           const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
           handleSetState({ gif: gifFile, currenFile: gifFile });
