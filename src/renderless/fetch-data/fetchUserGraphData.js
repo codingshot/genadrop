@@ -1,4 +1,6 @@
 import { ethers } from "ethers";
+import { gql } from "@apollo/client";
+
 import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_CELO_NFT,
@@ -12,6 +14,7 @@ import {
   getCeloGraphNft,
   getGraphCollection,
   getGraphCollections,
+  getGraphTransactionHistory,
   getGraphNft,
   getNearNft,
   getNearSingleGraphNfts,
@@ -180,4 +183,88 @@ export const celoUserData = async (address) => {
   }
   const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
   return [celoResult[0], transactionHistory];
+};
+
+export const celoCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await celoClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
+};
+
+export const polygonCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await polygonClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
+};
+
+export const auroraCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await auroraClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
 };

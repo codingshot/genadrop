@@ -12,6 +12,8 @@ import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import { setActiveCollection } from "../../gen-state/gen.actions";
 import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
+import Items from "./items/items";
+import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -29,6 +31,8 @@ const Explore = () => {
       status: "not listed",
       sortby: "newest",
     },
+    activeType: "T1",
+    collectionId: null,
   });
   const {
     toggleFilter,
@@ -40,9 +44,12 @@ const Explore = () => {
     FilteredCollection,
     headerHeight,
     loadedChain,
+    activeType,
+    collectionId,
   } = state;
-  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
-    useContext(GenContext);
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } = useContext(
+    GenContext
+  );
 
   const { collectionName } = useParams();
 
@@ -94,6 +101,8 @@ const Explore = () => {
             owner: NFTCollection[0]?.owner,
             price: result[0]?.collectionPrice,
           },
+          collectionId: NFTCollection[0]?.Id,
+
           NFTCollection: result,
           loadedChain: result[0]?.chain,
         });
@@ -145,6 +154,11 @@ const Explore = () => {
     document.documentElement.scrollTop = 0;
   }, []);
 
+  const handleTabActive = (active) => {
+    handleSetState({
+      activeType: active,
+    });
+  };
   return (
     <div className={classes.container}>
       {collection ? (
@@ -158,43 +172,26 @@ const Explore = () => {
       ) : null}
 
       <div className={classes.displayContainer}>
-        <div className={classes.section}></div>
-        <div className={classes.displayWrapper}>
-          <Filter
-            handleFilter={handleFilter}
-            filterToDelete={filterToDelete}
-            attributes={attributes}
-            toggleFilter={toggleFilter}
-            handleExploreSetState={(prop) => handleSetState({ ...prop })}
-          />
-          <main className={classes.main}>
-            <div className={classes.searchContainer}>
-              <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
-            </div>
-
-            <div className={classes.filterDisplay}>
-              {filter?.attributes &&
-                filter.attributes.map((f, idx) => (
-                  <div key={idx} className={classes.filteredItem}>
-                    <span>{f.trait_type}</span>:<span>{f.value}</span>
-                    <CloseIcon onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon} />
-                  </div>
-                ))}
-              {filter?.attributes && filter.attributes.length ? (
-                <div onClick={() => handleSetState({ filterToDelete: [] })} className={classes.clearFilter}>
-                  clear all
-                </div>
-              ) : null}
-            </div>
-            <Menu
-              headerHeight={headerHeight}
-              NFTCollection={FilteredCollection}
-              loadedChain={loadedChain}
-              chain={algoCollections[collectionName.trimEnd()]?.chain}
-              toggleFilter={toggleFilter}
-            />
-          </main>
+        <div className={classes.types}>
+          <div
+            onClick={() => handleTabActive("T1")}
+            className={`${classes.type}  ${activeType === "T1" && classes.active}`}
+          >
+            Items
+          </div>
+          <div
+            onClick={() => handleTabActive("T2")}
+            className={`${classes.type}  ${activeType === "T2" && classes.active}`}
+          >
+            Activity
+          </div>
         </div>
+        <div className={classes.section}></div>
+        {activeType === "T1" ? (
+          <Items handleSetState={handleSetState} state={state} collectionName={collectionName} />
+        ) : (
+          <ExploreTransactionHistory collectionId={collectionId} chain={NFTCollection[0]?.chain} />
+        )}
       </div>
     </div>
   );
