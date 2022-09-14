@@ -26,6 +26,8 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
     selected: "all",
     transactionData: [],
     isAlgoChain: false,
+    searchValue: "",
+    filterdHistory: [],
     explorer:
       process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
   });
@@ -36,7 +38,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
     Listing: <ListIcon />,
   };
 
-  const { selected, explorer, transactionData, isAlgoChain } = state;
+  const { selected, explorer, transactionData, searchValue, filterdHistory, isAlgoChain } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -71,6 +73,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
         case "all":
           handleSetState({
             transactionData: data,
+            filterdHistory: data,
           });
           break;
         case "mints":
@@ -101,6 +104,23 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
     })();
   }, [collectionId, selected, chain]);
 
+  const handleSearch = (e) => {
+    handleSetState({ searchValue: e.target.value });
+    if (!searchValue) {
+      return handleSetState({ filterdHistory: transactionData });
+    }
+
+    const result = transactionData.filter(
+      (history) =>
+        history?.type.includes(searchValue) ||
+        history.from?.includes(searchValue) ||
+        history.to?.includes(searchValue) ||
+        history.date.includes(searchValue)
+    );
+
+    console.log(result);
+    handleSetState({ filterdHistory: result });
+  };
   return (
     <div className={classes.container}>
       <div className={classes.header}>
@@ -151,13 +171,13 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
 
         <div className={classes.searchInput}>
           <img src={searchIcon} alt="" srcset="" />
-          <input type="text" placeholder="Search" />
+          <input type="text" placeholder="Search" value={searchValue} onChange={handleSearch} />
         </div>
         {isAlgoChain ? (
           <div className={classes.commingSoon}>coming soon</div>
         ) : (
           <div className={classes.transactionContainer}>
-            {transactionData?.map((data) => {
+            {filterdHistory?.map((data) => {
               return (
                 <div className={classes.transaction}>
                   <div className={classes.status}>
