@@ -1,6 +1,5 @@
-import { ethers } from "ethers";
 import { gql } from "@apollo/client";
-
+import { ethers } from "ethers";
 import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_CELO_NFT,
@@ -12,8 +11,8 @@ import {
   getCeloGraphNft,
   getGraphCollection,
   getGraphCollections,
-  getGraphTransactionHistory,
   getGraphNft,
+  getGraphTransactionHistory,
   getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
@@ -30,9 +29,11 @@ export const polygonUserData = async (address) => {
   if (polygonData?.nft !== null) {
     polygonResult = await getGraphNft(polygonData?.nft);
     trHistory = await getTransactions(polygonData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = polygonResult[0].price;
+    });
   }
-  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
-  return [polygonResult[0], transactionHistory];
+  return [polygonResult[0], trHistory];
 };
 
 export const getPolygonNFTToList = async (address, nftId) => {
@@ -79,6 +80,7 @@ export const getCeloMintedNFTs = async (address) => {
       ? ethers?.utils?.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
       : ethers?.utils?.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  console.log(response);
   const celoMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS?.collectionId === filterAddress);
   return celoMintedNfts;
 };
@@ -141,9 +143,11 @@ export const auroraUserData = async (address) => {
   if (auroraData?.nft !== null) {
     auroraResult = await getGraphNft(auroraData?.nft);
     trHistory = await getTransactions(auroraData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = auroraResult[0].price;
+    });
   }
-  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
-  return [auroraResult[0], transactionHistory];
+  return [auroraResult[0], trHistory];
 };
 
 export const celoUserData = async (address) => {
@@ -154,9 +158,11 @@ export const celoUserData = async (address) => {
   if (celoData?.nft !== null) {
     celoResult = await getCeloGraphNft(celoData?.nft);
     trHistory = await getTransactions(celoData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = celoResult[0].price;
+    });
   }
-  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
-  return [celoResult[0], transactionHistory];
+  return [celoResult[0], trHistory];
 };
 
 export const celoCollectionTransactions = async (id) => {
