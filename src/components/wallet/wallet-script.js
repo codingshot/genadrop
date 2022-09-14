@@ -1,4 +1,5 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import * as nearAPI from "near-api-js";
 import { ethers } from "ethers";
 import {
   setNotification,
@@ -15,6 +16,7 @@ import { chainIdToParams } from "../../utils/chainConnect";
 import blankImage from "../../assets/blank.png";
 import supportedChains from "../../utils/supportedChains";
 import * as WS from "./wallet-script";
+import getConfig from "../wallet-popup/nearConfig";
 
 export const breakAddress = (address = "", width = 6) => {
   if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -33,7 +35,7 @@ export const getNetworkID = () => {
   });
 };
 
-export const initializeConnection = (walletProps) => {
+export const initializeConnection = async (walletProps) => {
   console.log("Let me shut, I'm Here!", walletProps);
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;
@@ -57,12 +59,49 @@ export const initializeConnection = (walletProps) => {
     dispatch(setConnector(walletConnectProvider));
     handleSetState({ overrideWalletConnect: true });
     handleSetState({ walletConnectProvider });
+    walletConnectProvider.on("accountsChanged", (accounts) => {
+      dispatch(setAccount(accounts[0]));
+      // dispatch(setChainId(walletConnectProvider.chainId));
+    });
+  
+    // Subscribe to chainId change
+    walletConnectProvider.on("chainChanged", (chainId) => {
+      dispatch(setChainId(chainId));
+    });
+  
+    // Subscribe to session disconnection
+    walletConnectProvider.on("disconnect", (code, reason) => {
+      WS.disconnectWallet(walletProps);
+    });
   } else if (rpc) {
     walletConnectProvider = new WalletConnectProvider({
       rpc,
     });
     handleSetState({ walletConnectProvider });
-  } else if (window.localStorage.undefined_wallet_auth_key) {
+    walletConnectProvider.on("accountsChanged", (accounts) => {
+      dispatch(setAccount(accounts[0]));
+      // dispatch(setChainId(walletConnectProvider.chainId));
+    });
+
+    // Subscribe to chainId change
+    walletConnectProvider.on("chainChanged", (chainId) => {
+      dispatch(setChainId(chainId));
+    });
+
+    // Subscribe to session disconnection
+    walletConnectProvider.on("disconnect", (code, reason) => {
+      WS.disconnectWallet(walletProps);
+    });
+  } else if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
+    const nearConfig = getConfig("testnet");
+    const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+    const near = await nearAPI.connect({ keyStore, ...nearConfig });
+    const walletConnection = new nearAPI.WalletConnection(near);
+    const account = await walletConnection.getAccountId();
+    dispatch(setChainId(Number(1111)));
+    dispatch(setAccount(account));
+    dispatch(setProposedChain(1111));
+    dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
     const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
@@ -88,20 +127,6 @@ export const initializeConnection = (walletProps) => {
   }
 
   // Subscribe to accounts change
-  walletConnectProvider.on("accountsChanged", (accounts) => {
-    dispatch(setAccount(accounts[0]));
-    // dispatch(setChainId(walletConnectProvider.chainId));
-  });
-
-  // Subscribe to chainId change
-  walletConnectProvider.on("chainChanged", (chainId) => {
-    dispatch(setChainId(chainId));
-  });
-
-  // Subscribe to session disconnection
-  walletConnectProvider.on("disconnect", (code, reason) => {
-    WS.disconnectWallet(walletProps);
-  });
 };
 
 export const setNetworkType = ({ dispatch, handleSetState }) => {
@@ -228,6 +253,8 @@ export const updateAccount = async (walletProps) => {
   });
   const networkId = await ethereum.request({ method: "net_version" });
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
+  window.localStorage.removeItem("undefined_wallet_auth_key");
+  window.localStorage.removeItem("nearWallet");
   const getEnv = supportedChains[networkId] ? mainnet === supportedChains[networkId].isMainnet : false;
   if (!getEnv) {
     WS.disconnectWallet(walletProps);

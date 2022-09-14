@@ -55,21 +55,24 @@ const WalletPopup = ({ handleSetState }) => {
       const near = await nearAPI.connect({ keyStore, ...nearConfig });
       const walletConnection = new nearAPI.WalletConnection(near);
       console.log("wallet object", walletConnection, walletConnection.isSignedIn())
+      window.localStorage.removeItem("walletconnect");
       if (!walletConnection.isSignedIn()) {
+        window.localStorage.setItem("nearConnection", true);
+        console.log("not signe din, signing in......");
         await walletConnection.requestSignIn("slim_dev.testnet");
       }
-      const account = await walletConnection.getAccountId();
-      dispatch(setChainId(Number(1111)));
-      dispatch(setAccount(account));
-      dispatch(setConnector(walletConnection));
-      setActiveChain(chainId);
-      handleProposedChain();
-      dispatch(
-        setNotification({
-          message: `Your site is connected to ${supportedChains[1111].label}`,
-          type: "success",
-        })
-      );
+      // const account = await walletConnection.getAccountId();
+      // dispatch(setChainId(Number(1111)));
+      // dispatch(setAccount(account));
+      // dispatch(setConnector(walletConnection));
+      // setActiveChain(chainId);
+      // handleProposedChain();
+      // dispatch(
+      //   setNotification({
+      //     message: `Your site is connected to ${supportedChains[1111].label}`,
+      //     type: "success",
+      //   })
+      // );
       return;
     }
     setActiveChain(chainId);
