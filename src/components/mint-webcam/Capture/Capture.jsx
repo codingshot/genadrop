@@ -187,7 +187,7 @@ const Capture = () => {
     // reader.readAsDataURL(file);
     // reader.onload = function () {
     axios
-      .post("https://video-to-gif-converter.herokuapp.com/gif", {
+      .post("https://phantaminum.pythonanywhere.com/gif", {
         urls: imgList,
         duration: videoDuration / 200,
       })
