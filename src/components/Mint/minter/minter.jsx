@@ -8,6 +8,7 @@ import {
   setOverlay,
   setNotification,
   setMinter,
+  setToggleWalletPopup,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
@@ -25,8 +26,8 @@ import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = () => {
   const history = useHistory();
-  const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
-
+  const { dispatch, connector, account, chainId, mainnet, minter, connectFromMint } = useContext(GenContext);
+  console.log(connectFromMint);
   if (!minter) {
     history.push("/mint");
     return null;
@@ -220,6 +221,7 @@ const Minter = () => {
 
   const handleConnectFromMint = (props) => {
     handleSetState({ toggleDropdown: false });
+    dispatch(setToggleWalletPopup(true));
     dispatch(
       setConnectFromMint({
         chainId: props.networkId,
