@@ -59,7 +59,7 @@ const WalletPopup = ({ handleSetState }) => {
       if (!walletConnection.isSignedIn()) {
         window.localStorage.setItem("nearConnection", true);
         console.log("not signe din, signing in......");
-        await walletConnection.requestSignIn("slim_dev.testnet");
+        await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
       }
       // const account = await walletConnection.getAccountId();
       // dispatch(setChainId(Number(1111)));

@@ -7,6 +7,7 @@ import {
   mintToAurora,
   mintSingleToCelo,
   mintSingleToAurora,
+  mintSingleToNear,
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
@@ -68,6 +69,8 @@ export const handleSingleMint = async (args) => {
       url = await mintSingleToPoly({ ...args });
     } else if (chain.toLowerCase() === "aurora") {
       url = await mintSingleToAurora({ ...args });
+    } else if (chain.toLowerCase() === "near") {
+      url = await mintSingleToNear({ ...args });
     } else {
       dispatch(
         setNotification({

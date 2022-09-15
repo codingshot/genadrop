@@ -31,6 +31,7 @@
     "apollo-link": "^1.2.14",
     "apollo-upload-client": "^17.0.0",
     "axios": "^0.24.0",
+    "bn.js": "^5.2.1",
     "bs58": "^4.0.1",
     "canvas": "^2.8.0",
     "chart.js": "^3.7.1",
