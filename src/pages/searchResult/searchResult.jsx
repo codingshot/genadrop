@@ -2,9 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./searchResult.module.css";
-import handleSuggestions from "../../components/Search/Search-script";
 import { GenContext } from "../../gen-state/gen.context";
+import handleSuggestions from "../../components/Search/Search-script";
 import Pagination from "../../components/pagination/Pagination";
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import { rangeBy, sortBy } from "../Marketplace/Marketplace-script";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
 import NftCard from "../../components/Marketplace/NftCard/NftCard";
@@ -48,16 +50,33 @@ const SearchResult = () => {
     });
   };
 
-  // pagination
-  const perPage = 12;
-  const pageVisited = pageNumber * perPage;
-
-  useEffect(() => {
+  // Filter
+  const chainFilter = () => {
     const collection = suggestions
       ?.filter((result) => result.type === type || type === "all")
       .filter((result) => result.chain?.toString() === chainID || chainID === "all");
     handleSetState({ filteredCollection: collection });
+  };
+
+  const handleFilter = async ({ type: filterType, value }) => {
+    if (filterType === "sort") {
+      const result = sortBy({ collections: filteredCollection, value });
+      handleSetState({ filteredCollection: result });
+    } else if (filterType === "range") {
+      const result = await rangeBy({ collections: filteredCollection, value });
+      handleSetState({ filteredCollection: result });
+    } else if (filterType === "cancel") {
+      chainFilter();
+    }
+  };
+
+  useEffect(() => {
+    chainFilter();
   }, [type, chainID, suggestions]);
+
+  // pagination
+  const perPage = 12;
+  const pageVisited = pageNumber * perPage;
   return (
     <div className={classes.container}>
       <div className={classes.title}>
@@ -84,13 +103,14 @@ const SearchResult = () => {
           >
             Collections
           </div>
-          <div
+          {/* <div
             className={type === "creators" ? classes.active : ""}
             onClick={() => handleSetState({ type: "creators", pageNumber: 0 })}
           >
             Creators
-          </div>
+          </div> */}
         </div>
+        <FilterDropdown handleFilter={handleFilter} />
         <ChainDropdown onChainFilter={onChainFilter} />
       </div>
       {filteredCollection?.length ? (

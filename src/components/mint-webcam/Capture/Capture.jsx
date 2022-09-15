@@ -52,6 +52,8 @@ const Capture = () => {
   const webcamRef = useRef();
   const mediaRecorderRef = useRef();
   const webcamWrapper = useRef();
+  // const canvasRef = useRef();
+  const videoRef = useRef();
 
   const [state, setState] = useState({
     toggle: false,
@@ -72,6 +74,7 @@ const Capture = () => {
     webcamCurrentType: "picture",
     trackRecord: false,
     videoDuration: 0,
+    imgList: [],
   });
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -91,6 +94,7 @@ const Capture = () => {
     webcamCurrentType,
     trackRecord,
     videoDuration,
+    imgList,
   } = state;
 
   const handleSetState = (payload) => {
@@ -179,40 +183,43 @@ const Capture = () => {
     handleSetState({
       gifGenrating: true,
     });
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      axios
-        .post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result, duration: videoDuration / 100 })
-        .then((res) => {
-          const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
-          handleSetState({ gif: gifFile, currenFile: gifFile });
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = function () {
+    axios
+      .post("https://phantaminum.pythonanywhere.com/gif", {
+        urls: imgList,
+        duration: videoDuration / 200,
+      })
+      .then((res) => {
+        const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
+        handleSetState({ gif: gifFile, currenFile: gifFile });
 
-          dispatch(setLoader(""));
-          dispatch(
-            setNotification({
-              message: "GIF generated successfully",
-              type: "success",
-            })
-          );
-          handleSetState({
-            gifGenrating: false,
-          });
-          return res.data.data;
-        })
-        .catch(() => {
-          dispatch(setLoader(""));
-          dispatch(
-            setNotification({
-              message: `Something Went Wrong, Please Try Again`,
-              type: "error",
-            })
-          );
+        dispatch(setLoader(""));
+        dispatch(
+          setNotification({
+            message: "GIF generated successfully",
+            type: "success",
+          })
+        );
+        handleSetState({
+          gifGenrating: false,
         });
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
+        return res.data.data;
+      })
+      .catch(() => {
+        dispatch(setLoader(""));
+        dispatch(
+          setNotification({
+            message: `Something Went Wrong, Please Try Again`,
+            type: "error",
+          })
+        );
+      });
+    // };
+    // reader.onerror = function (error) {
+    //   console.log("Error: ", error);
+    // };
   }
 
   // stopwatch, set to 8 sec
@@ -233,6 +240,9 @@ const Capture = () => {
       event.returnValue = false;
       start();
       setCapturing(true);
+      handleSetState({
+        imgList: [],
+      });
       const stream = webcamRef.current.getStream();
       try {
         mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "video/webm" });
@@ -287,6 +297,29 @@ const Capture = () => {
     });
     handleStopCaptureClick();
   };
+  // const startCapture = () => {
+  //   start();
+  //   console.log("start");
+  //   // while (seconds < 500) {
+  //   // const imageSrc = webcamRef.current.takePhoto();
+  //   console.log(seconds);
+  //   // handleSetState({
+  //   //   imgList: [...imgList, imageSrc],
+  //   // });
+  //   // }
+  //   if (seconds) stop();
+  // };
+
+  useEffect(() => {
+    if (seconds !== 0 && webcamRef.current) {
+      const imageSrc = webcamRef.current.takePhoto();
+      const time = seconds;
+      handleSetState({
+        imgList: [...imgList, imageSrc],
+        videoDuration: time,
+      });
+    }
+  }, [seconds]);
 
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
@@ -332,7 +365,7 @@ const Capture = () => {
 
     history.push("/mint/1of1");
   };
-
+  console.log(seconds);
   // file type switch
   // useEffect(() => {
   //   if (activeFile === "gif") {
@@ -347,6 +380,35 @@ const Capture = () => {
   //     });
   //   }
   // }, [activeFile]);
+
+  // const capture = () => {
+  //   const v = videoRef.current;
+  //   const { duration } = v;
+  //   const totalSecond = parseInt(duration, 10);
+  //   Array(totalSecond + 1)
+  //     .fill(null)
+  //     .forEach((_, index) => {
+  //       setTimeout(() => {
+  //         v.currentTime = index;
+  //         const canvasRef = document.createElement("canvas");
+  //         canvasRef.width = videoRef.current.videoWidth;
+  //         canvasRef.height = videoRef.current.videoHeight;
+  //         canvasRef
+  //           .getContext("2d")
+  //           .drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
+  //         const newCanvas = document.createElement("canvas");
+  //         const newCtx = newCanvas.getContext("2d");
+  //         newCtx.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
+  //         console.log("dataUrl", newCanvas.toDataURL());
+  //       }, index * 1000);
+  //     });
+
+  // canvasRef.current.toBlob((blob) => {
+  //   const img = new Image();
+  //   img.setAttribute('crossorigin', 'anonymous');
+  //   img.src = window.URL.createObjectUrl(blob);
+  // })
+  // };
   return (
     <div className={`${classes.container}`}>
       <WebcamEnable toggle={toggle} getVideo={getVideo} />
@@ -370,7 +432,8 @@ const Capture = () => {
           {gif ? (
             <img className={`${classes.cameraShot}`} src={URL.createObjectURL(gif)} alt="camera-shot" />
           ) : video ? (
-            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} loop />
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} ref={videoRef} loop />
           ) : (
             <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
           )}
