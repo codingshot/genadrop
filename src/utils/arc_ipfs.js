@@ -67,7 +67,7 @@ const pinFileToIPFS = async (pinataApiIFPSKey, pinataSecretApiKey, file, metadat
   const data = new FormData();
   data.append("file", file);
 
-  console.log("the link to the ", url)
+  console.log("the link to the ", url);
 
   data.append("pinataMetadata", metadata);
   data.append("pinataOptions", option);
@@ -127,7 +127,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     cidVersion: 0,
   });
 
-  console.log("la cost", pinataMetadata)
+  console.log("la cost", pinataMetadata);
 
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
   console.log("resultant", resultFile);
@@ -140,7 +140,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   metadata.image_integrity = `${integrity.base64}`;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
 
-  console.log("olympus", metadata)
+  console.log("olympus", metadata);
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, {
     pinataMetadata: { name: asset.name },
@@ -338,7 +338,7 @@ export async function mintSingleToNear(nearMintProps) {
     });
     const res = await contract.nft_mint(
       {
-        token_id: `${Math.floor(Math.random() * 1000)}`,
+        token_id: `${Date.now()}`,
         metadata: {
           title: metadata.name,
           description: metadata.description,

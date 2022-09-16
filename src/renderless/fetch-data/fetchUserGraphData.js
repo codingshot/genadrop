@@ -3,6 +3,8 @@ import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_CELO_NFT,
   GET_GRAPH_NFT,
+  GET_NEAR_NFT,
+  GET_NEAR_USER_NFT,
   GET_USER_COLLECTIONS,
   GET_USER_NFT,
 } from "../../graphql/querries/getCollections";
@@ -11,11 +13,13 @@ import {
   getGraphCollection,
   getGraphCollections,
   getGraphNft,
+  getNearNft,
+  getNearSingleGraphNfts,
   getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
 } from "../../utils";
-import { auroraClient, celoClient, polygonClient } from "../../utils/graphqlClient";
+import { auroraClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
   const { data: polygonData, error: polygonError } = await polygonClient
@@ -30,6 +34,19 @@ export const polygonUserData = async (address) => {
   }
   const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
   return [polygonResult[0], transactionHistory];
+};
+
+export const nearUserData = async (address) => {
+  const { data: nearData, error: nearError } = await nearClient.query(GET_NEAR_NFT, { id: address }).toPromise();
+  if (nearError) return;
+  let trHistory;
+  let nearResult = [];
+  if (nearData?.nft !== null) {
+    nearResult = await getNearNft(nearData?.nft);
+    trHistory = await getTransactions(nearData?.nft?.transactions);
+  }
+  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
+  return [nearResult[0], transactionHistory];
 };
 
 export const getPolygonNFTToList = async (address, nftId) => {
@@ -58,6 +75,15 @@ export const getPolygonMintedNFTs = async (address) => {
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
   const polygonMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS?.collectionId === filterAddress);
   return polygonMintedNfts;
+};
+
+export const getNearMintedNfts = async (address) => {
+  const { data: nearData, error: nearError } = await nearClient.query(GET_NEAR_USER_NFT, { id: address }).toPromise();
+  if (nearError) return;
+
+  const response = await getNearSingleGraphNfts(nearData?.user?.nfts, address);
+  const nearMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true);
+  return nearMintedNfts;
 };
 
 export const getCeloNFTToList = async (address, nftId) => {

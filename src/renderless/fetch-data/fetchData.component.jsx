@@ -13,6 +13,7 @@ import {
   setCeloCollections,
   setCeloSingleNft,
   setSearchContainer,
+  setNearSingleNft,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -20,6 +21,7 @@ import {
   getSingleNfts,
   getSingleGraphNfts,
   getCeloGraphCollections,
+  fetchNearSingleNfts,
 } from "../../utils";
 import {
   GET_GRAPH_COLLECTIONS,
@@ -28,8 +30,9 @@ import {
   GET_POLYGON_SINGLE_NFTS,
   GET_CELO_SINGLE_NFT,
   GET_CELO_GRAPH_COLLECITONS,
+  GET_NEAR_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
-import { celoClient, graphQLClient, graphQLClientPolygon } from "../../utils/graphqlClient";
+import { celoClient, graphQLClient, graphQLClientPolygon, nearClient } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   parseAlgoCollection,
@@ -275,6 +278,24 @@ const FetchData = () => {
         dispatch(setCeloCollections(null));
       }
       return null;
+    })();
+
+    (async function getNearSingleNfts() {
+      const { data, error } = await nearClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await fetchNearSingleNfts(data?.nfts);
+      if (result) {
+        dispatch(setNearSingleNft(result));
+      } else {
+        dispatch(setNearSingleNft(null));
+      }
     })();
   }, [mainnet]);
 

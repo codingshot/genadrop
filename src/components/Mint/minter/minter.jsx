@@ -197,7 +197,9 @@ const Minter = () => {
       dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
-        if (typeof url === "object") {
+        if (singleMintProps.chain.toLowerCase() === "near") {
+          return;
+        } else if (typeof url === "object") {
           handleSetState({
             popupProps: {
               url: url.message,

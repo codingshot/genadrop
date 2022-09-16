@@ -41,7 +41,6 @@ const WalletPopup = ({ handleSetState }) => {
   };
 
   const handleChain = async (chainId, isComingSoon = undefined) => {
-    console.log("chainsaw", chainId)
     if (isComingSoon) return;
     if (chainId === 4160 || chainId === 1111) {
       setMetamask(false);
@@ -54,7 +53,6 @@ const WalletPopup = ({ handleSetState }) => {
       const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
       const near = await nearAPI.connect({ keyStore, ...nearConfig });
       const walletConnection = new nearAPI.WalletConnection(near);
-      console.log("wallet object", walletConnection, walletConnection.isSignedIn())
       window.localStorage.removeItem("walletconnect");
       if (!walletConnection.isSignedIn()) {
         window.localStorage.setItem("nearConnection", true);

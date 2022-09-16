@@ -21,7 +21,12 @@ import { readNftTransaction } from "../../../utils/firebase";
 import algoLogo from "../../../assets/icon-algo.svg";
 import { setNotification } from "../../../gen-state/gen.actions";
 import supportedChains from "../../../utils/supportedChains";
-import { auroraUserData, celoUserData, polygonUserData } from "../../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraUserData,
+  celoUserData,
+  nearUserData,
+  polygonUserData,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const ListSingleNFT = (nft) => {
   const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
@@ -151,6 +156,14 @@ const ListSingleNFT = (nft) => {
           if (!celoData) return history.goBack();
           handleSetState({
             nftDetails: celoData,
+            isLoading: false,
+            transactionHistory: trHistory,
+          });
+        } else if (supportedChains[Number(nftChainId)].chain === "Near") {
+          const [nearData, trHistory] = await nearUserData(nftId);
+          if (!nearData) return history.goBack();
+          handleSetState({
+            nftDetails: nearData,
             isLoading: false,
             transactionHistory: trHistory,
           });
