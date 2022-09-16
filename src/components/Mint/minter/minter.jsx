@@ -35,7 +35,9 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: metadata?.attributes ? metadata?.attributes : [],
+    attributes: metadata?.attributes
+      ? metadata?.attributes
+      : { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     chain: null,
@@ -92,7 +94,7 @@ const Minter = () => {
     metadata: {
       name: fileName,
       description,
-      attributes,
+      attributes: Object.values(attributes),
     },
     fileName,
     mainnet,
@@ -104,7 +106,10 @@ const Minter = () => {
 
   const handleAddAttribute = () => {
     handleSetState({
-      attributes: [...attributes, { trait_type: "", value: "" }],
+      attributes: {
+        ...attributes,
+        [Date.now()]: { trait_type: "", value: "" },
+      },
     });
   };
 
