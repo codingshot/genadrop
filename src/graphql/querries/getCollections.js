@@ -452,6 +452,12 @@ export const GET_NEAR_NFT = gql`
         txId
         type
         price
+        to {
+          id
+        }
+        from {
+          id
+        }
       }
     }
   }

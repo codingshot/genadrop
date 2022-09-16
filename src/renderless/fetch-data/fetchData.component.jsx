@@ -41,6 +41,7 @@ import {
   parseAuroraSingle,
   parseCeloCollection,
   parseCeloSingle,
+  parseNearSingle,
   parsePolygonCollection,
   parsePolygonSingle,
 } from "./fetchData-script";
@@ -293,6 +294,11 @@ const FetchData = () => {
       const result = await fetchNearSingleNfts(data?.nfts);
       if (result) {
         dispatch(setNearSingleNft(result));
+        dispatch(
+          setSearchContainer({
+            "Near 1of1": parseNearSingle(result),
+          })
+        );
       } else {
         dispatch(setNearSingleNft(null));
       }

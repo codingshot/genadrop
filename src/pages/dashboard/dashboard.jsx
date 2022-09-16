@@ -86,6 +86,11 @@ const Dashboard = () => {
     return address && `${address.slice(0, width)}...${address.slice(-width)}`;
   };
 
+  useEffect(() => {
+    const queryString = window.location.search;
+    console.log(queryString.split("search=")[1]);
+  }, [window.location.search]);
+
   // return null;
   useEffect(() => {
     // Get User Created NFTs
