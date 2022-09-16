@@ -67,8 +67,6 @@ const pinFileToIPFS = async (pinataApiIFPSKey, pinataSecretApiKey, file, metadat
   const data = new FormData();
   data.append("file", file);
 
-  console.log("the link to the ", url);
-
   data.append("pinataMetadata", metadata);
   data.append("pinataOptions", option);
   return axios
@@ -110,7 +108,6 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 
 const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   const fileCat = nftFile.type.split("/")[0];
-  console.log("file lpa", fileCat, nftFileName, asset);
   const nftFileNameSplit = nftFileName.split(".");
   const fileExt = nftFileNameSplit[1];
 
@@ -127,10 +124,8 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     cidVersion: 0,
   });
 
-  console.log("la cost", pinataMetadata);
 
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
-  console.log("resultant", resultFile);
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
   metadata.properties = [...asset.attributes];
@@ -139,8 +134,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   metadata.image = `ipfs://${resultFile.IpfsHash}`;
   metadata.image_integrity = `${integrity.base64}`;
   metadata.image_mimetype = `${fileCat}/${fileExt}`;
-
-  console.log("olympus", metadata);
 
   const resultMeta = await pinata.pinJSONToIPFS(metadata, {
     pinataMetadata: { name: asset.name },
@@ -322,12 +315,10 @@ export async function mintSingleToAlgo(algoMintProps) {
 export async function mintSingleToNear(nearMintProps) {
   const { file, metadata, account, connector, dispatch, price, mainnet } = nearMintProps;
   // initAlgoClients(mainnet);
-  console.log(metadata);
   if (connector._near) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
     const asset = await connectAndMint(file, metadata, file.name, 4);
-    console.log("get data here", asset);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     const contract = await new Contract(connector.account(), "genadrop-test.mpadev.testnet", {
@@ -337,7 +328,7 @@ export async function mintSingleToNear(nearMintProps) {
       changeMethods: ["nft_mint", "new_default_meta"],
     });
     const res = await contract.nft_mint({
-      callbackUrl: "http://localhost:3000/profile/1111/0xprometheus.testnet",
+      callbackUrl: `http://localhost:3000/profile/1111/${account}`,
       args: {
         token_id: `${Date.now()}`,
         metadata: {
@@ -351,7 +342,6 @@ export async function mintSingleToNear(nearMintProps) {
       gas: 300000000000000, // attached GAS (optional)
       amount: new BN("1000000000000000000000000"),
     });
-    console.log("after redirect??", res);
     return "https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet";
     // try {
     //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
