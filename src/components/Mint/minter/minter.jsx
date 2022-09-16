@@ -26,8 +26,7 @@ import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = () => {
   const history = useHistory();
-  const { dispatch, connector, account, chainId, mainnet, minter, connectFromMint } = useContext(GenContext);
-  console.log(connectFromMint);
+  const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
   if (!minter) {
     history.push("/mint");
     return null;
