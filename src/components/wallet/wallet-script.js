@@ -110,7 +110,6 @@ export const initializeConnection = async (walletProps) => {
     // Subscribe to accounts change
     ethereum.on("accountsChanged", function (accounts) {
       WS.updateAccount(walletProps);
-      console.log("connective change", connector)
     });
 
     // Subscribe to chainId change

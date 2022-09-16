@@ -336,8 +336,9 @@ export async function mintSingleToNear(nearMintProps) {
       // Change methods can modify the state. But you don't receive the returned value when called.
       changeMethods: ["nft_mint", "new_default_meta"],
     });
-    const res = await contract.nft_mint(
-      {
+    const res = await contract.nft_mint({
+      callbackUrl: "http://localhost:3000/profile/1111/0xprometheus.testnet",
+      args: {
         token_id: `${Date.now()}`,
         metadata: {
           title: metadata.name,
@@ -347,9 +348,9 @@ export async function mintSingleToNear(nearMintProps) {
         },
         receiver_id: account,
       },
-      300000000000000, // attached GAS (optional)
-      new BN("1000000000000000000000000")
-    );
+      gas: 300000000000000, // attached GAS (optional)
+      amount: new BN("1000000000000000000000000"),
+    });
     console.log("after redirect??", res);
     return "https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet";
     // try {
