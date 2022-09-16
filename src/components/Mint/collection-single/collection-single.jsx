@@ -84,10 +84,10 @@ const CollectionToSingleMinter = () => {
         fileName: zipObg.name,
         file: [zipObg.file],
         metadata: {
-          attributes: [
-            { trait_type: "File Type", value: zipObg.file.type },
-            { trait_type: "Category", value: category },
-          ],
+          attributes: {
+            0: { trait_type: "File Type", value: zipObg.file.type },
+            1: { trait_type: "Category", value: category },
+          },
         },
         zip: null,
       });
