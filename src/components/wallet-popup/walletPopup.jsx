@@ -59,6 +59,11 @@ const WalletPopup = ({ handleSetState }) => {
         console.log("not signe din, signing in......");
         await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
       }
+      const account = await walletConnection.getAccountId();
+      dispatch(setChainId(Number(1111)));
+      dispatch(setAccount(account));
+      dispatch(setProposedChain(1111));
+      dispatch(setConnector(walletConnection));
       // const account = await walletConnection.getAccountId();
       // dispatch(setChainId(Number(1111)));
       // dispatch(setAccount(account));
