@@ -124,7 +124,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     cidVersion: 0,
   });
 
-
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
@@ -321,6 +320,11 @@ export async function mintSingleToNear(nearMintProps) {
     const asset = await connectAndMint(file, metadata, file.name, 4);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
+
+    // const link =
+    //   process.env.REACT_APP_ENV_STAGING === "true"
+    //     ? "localhost:3001" || "genadrop-staging.vercel.app"
+    //     : "www.genadrop.com" || "www.genadrop.io";
     const contract = await new Contract(connector.account(), "genadrop-test.mpadev.testnet", {
       // View methods are read only. They don't modify the state, but usually return some value.
       viewMethods: ["check_token"],
@@ -328,7 +332,7 @@ export async function mintSingleToNear(nearMintProps) {
       changeMethods: ["nft_mint", "new_default_meta"],
     });
     const res = await contract.nft_mint({
-      callbackUrl: `http://localhost:3000/profile/1111/${account}`,
+      callbackUrl: `http://localhost:3001/profile/1111/${account}`,
       args: {
         token_id: `${Date.now()}`,
         metadata: {

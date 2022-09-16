@@ -38,6 +38,8 @@ import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
 import { ReactComponent as Twitter } from "../../assets/icon-twitter-blue.svg";
 import { ReactComponent as Discord } from "../../assets/icon-discord-blue.svg";
 import { ReactComponent as Instagram } from "../../assets/icon-instagram-blue.svg";
+import { NearErrorPop, NearSuccessPopup } from "../../components/Mint/popup/nearMintPopup";
+import SuccessPopup from "../../components/Mint/popup/success-popup.component";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -58,9 +60,15 @@ const Dashboard = () => {
     myCollections: null,
     filteredCollection: null,
     userDetails: null,
+    errorMessage: false,
     onSale: null,
     paginatePage: "",
     pageNumber: 0,
+    popupProps: {
+      isError: false,
+      Popup: false,
+      url: "",
+    },
   });
 
   const {
@@ -70,6 +78,7 @@ const Dashboard = () => {
     createdNfts,
     collectedNfts,
     filteredCollection,
+    popupProps,
     userDetails,
     onSale,
     paginatePage,
@@ -85,11 +94,31 @@ const Dashboard = () => {
   const breakAddress = (address = "", width = 6) => {
     return address && `${address.slice(0, width)}...${address.slice(-width)}`;
   };
-
   useEffect(() => {
-    const queryString = window.location.search;
-    console.log(queryString.split("search=")[1]);
-  }, [window.location.search]);
+    let queryString;
+    queryString = window.location.search;
+    if (queryString.includes("errorMessage")) {
+      console.log("query");
+      handleSetState({
+        popupProps: {
+          isError: true,
+          Popup: true,
+          url: "rrrr",
+        },
+      });
+    }
+
+    if (queryString.includes("transactionHashes")) {
+      console.log(queryString.split("=")[1]);
+      handleSetState({
+        popupProps: {
+          isError: false,
+          Popup: true,
+          url: queryString.split("=")[1],
+        },
+      });
+    }
+  }, []);
 
   // return null;
   useEffect(() => {
@@ -291,6 +320,11 @@ const Dashboard = () => {
 
   return (
     <div className={classes.container}>
+      {popupProps.isError && <NearErrorPop handleSetState={handleSetState} popupProps={popupProps} />}
+      {!popupProps.isError && popupProps.Popup && (
+        <NearSuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
+      )}
+
       {/* change background to dynamic */}
       <div className={classes.bannerContainer}>{/* <img src={bg} alt="" className={classes.banner} /> */}</div>
       <div className={classes.bannerWrapper}>
