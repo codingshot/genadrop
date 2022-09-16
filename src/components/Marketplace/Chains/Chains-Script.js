@@ -54,7 +54,7 @@ const chains = [
     color: "#000000",
     border: "transparent",
     bg: "#E1EBF5",
-    isComingSoon: true,
+    isComingSoon: false,
   },
   {
     name: "Avalanche",

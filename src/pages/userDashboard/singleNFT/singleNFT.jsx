@@ -176,6 +176,10 @@ const ListSingleNFT = (nft) => {
   }, []);
 
   useEffect(() => {
+    console.log(supportedChains[nftDetails?.chain]?.chain);
+  }, [nftDetails]);
+
+  useEffect(() => {
     const pair = supportedChains[nftDetails?.chain]?.id;
     if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
@@ -269,7 +273,6 @@ const ListSingleNFT = (nft) => {
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
           <img className={classes.nft} src={nftDetails.image_url} alt="" />
-
           <div className={classes.feature}>
             <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
@@ -306,7 +309,7 @@ const ListSingleNFT = (nft) => {
             <div className={classes.btns}>
               <div className={classes.alignIcon}>
                 <img className={classes.iconImg} src={supportedChains[nftDetails?.chain]?.icon} />
-                {nftDetails?.owner === account ? (
+                {nftDetails?.owner === account && supportedChains[nftDetails?.chain]?.chain !== "Near" ? (
                   <Link
                     to={
                       nft.collection_name

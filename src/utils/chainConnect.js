@@ -43,7 +43,9 @@ export const chainIdToParams = {
     blockExplorerUrls: ["https://baklava-blockscout.celo-testnet.org/"],
     iconUrls: ["future"],
   },
-
+  1111: {
+    blockExplorerUrls: ["https://explorer.testnet.near.org/?query="],
+  },
   1313161554: {
     chainId: "0x4e454152",
     chainName: "Aurora",

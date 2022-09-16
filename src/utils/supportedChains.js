@@ -122,7 +122,7 @@ const supportedChains = {
     livePrice: "",
     symbol: "",
     networkId: 1111,
-    explorer: "",
+    explorer: "https://rpc.testnet.near.org",
     add: null,
     isMainnet: process.env.REACT_APP_ENV_STAGING === "false",
     switch: null,
