@@ -4,11 +4,12 @@ import classes from "./Share.module.css";
 import { ReactComponent as TwitterIcon } from "../../../assets/twitter.svg";
 import { ReactComponent as FacebookIcon } from "../../../assets/facebook.svg";
 import { ReactComponent as WhatsappIcon } from "../../../assets/whatsapp.svg";
+import copied from "../../../assets/copied.svg";
+
 import Copy from "../../../components/copy/copy";
 
 const Share = ({ share, setShare }) => {
   const [click, setClick] = useState(true);
-
   const handleClose = () => {
     if (click) {
       setShare(false);
@@ -19,9 +20,11 @@ const Share = ({ share, setShare }) => {
     <div onClick={handleClose} className={`${classes.container} ${share && classes.active}`}>
       <div onMouseEnter={() => setClick(false)} onMouseLeave={() => setClick(true)} className={classes.wrapper}>
         <div className={classes.content}>
-          <input disabled type="text" value={window.location.href} />
+          <input className={classes.text} disabled type="text" value={window.location.href} />
+
           <Copy message={window.location.href} placeholder={""} />
         </div>
+
         <div className={classes.shareContent}>
           <TwitterShareButton url={window.location.href}>
             <TwitterIcon className={classes.shareIcon} />
