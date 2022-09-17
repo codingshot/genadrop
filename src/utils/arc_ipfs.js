@@ -127,6 +127,9 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
+  if (!Array.isArray(asset.attributes)) {
+    asset.attributes = Array(asset.attributes);
+  }
   metadata.properties = [...asset.attributes];
   metadata.name = asset.name;
   metadata.description = asset.description;
@@ -332,7 +335,7 @@ export async function mintSingleToNear(nearMintProps) {
       changeMethods: ["nft_mint", "new_default_meta"],
     });
     const res = await contract.nft_mint({
-      callbackUrl: `http://localhost:3001/profile/1111/${account}`,
+      callbackUrl: `http://localhost:3000/profile/1111/${account}`,
       args: {
         token_id: `${Date.now()}`,
         metadata: {
