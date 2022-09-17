@@ -332,7 +332,7 @@ export async function mintSingleToNear(nearMintProps) {
       changeMethods: ["nft_mint", "new_default_meta"],
     });
     const res = await contract.nft_mint({
-      callbackUrl: `http://localhost:3000/profile/1111/${account}`,
+      callbackUrl: `http://localhost:3000/mint/1of1`,
       args: {
         token_id: `${Date.now()}`,
         metadata: {

@@ -1,10 +1,12 @@
 import errorIcon from "../../../assets/icon-error_2.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import classes from "./popup.module.css";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import successIcon from "../../../assets/icon-success_2.svg";
 import linkIconAccent from "../../../assets/icon-link-accent.svg";
 import linkIconWhite from "../../../assets/icon-link-white.svg";
+import { useHistory } from "react-router-dom";
+import { GenContext } from "../../../gen-state/gen.context";
 
 export const NearErrorPop = (props) => {
   const { handleSetState, popupProps } = props;
@@ -42,6 +44,8 @@ export const NearErrorPop = (props) => {
 export const NearSuccessPopup = (props) => {
   const clipboardRef = useRef(null);
   const [clipboardState, setClipboardState] = useState("Copy");
+  const history = useHistory();
+  const { account, chainId } = useContext(GenContext);
 
   const {
     handleSetState,
@@ -67,6 +71,7 @@ export const NearSuccessPopup = (props) => {
         Popup: false,
       },
     });
+    window.location.search = "";
   };
   return (
     <div className={`${classes.container} ${true && classes.active}`}>
@@ -77,8 +82,14 @@ export const NearSuccessPopup = (props) => {
         </div>
         <h3 className={`${classes.heading} ${classes.success}`}>Mint Successful</h3>
         <div className={classes.actionBtnContainer}>
-          <button onClick={handleResetPopup} type="button" className={`${classes.actionBtn} ${classes._1}`}>
-            Close
+          <button
+            onClick={() => {
+              history.push(`/profile/${chainId}/${account}`);
+            }}
+            type="button"
+            className={`${classes.actionBtn} ${classes._1}`}
+          >
+            Go to Dashboard
           </button>
           <button className={`${classes.actionBtn} ${classes._2}`} type="button">
             <a href={`https://explorer.testnet.near.org/?query=${url}`} target="_blank" rel="noreferrer">

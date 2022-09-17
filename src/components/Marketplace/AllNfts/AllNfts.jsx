@@ -34,6 +34,7 @@ const AllNfts = () => {
     singleAlgoNfts,
     singleAuroraNfts,
     singlePolygonNfts,
+    singleNearNfts,
     singleCeloNfts,
     mainnet,
     dispatch,
@@ -82,10 +83,11 @@ const AllNfts = () => {
       ...(singleAuroraNfts || []),
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
+      ...(singleNearNfts || []),
     ];
     singles = shuffle(singles);
     handleSetState({ singles });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
+  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   useEffect(() => {
     let newest = [...collections, ...singles];
