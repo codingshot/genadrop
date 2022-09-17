@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import classes from "./copy.module.css";
 import copyIcon from "../../assets/icon-copy.svg";
+import { ReactComponent as Check } from "../../assets/check-solid.svg";
 
 const Copy = ({ message, placeholder }) => {
   const [copied, setCopy] = useState(false);
@@ -27,7 +28,7 @@ const Copy = ({ message, placeholder }) => {
       onClick={() => handleCopy({ navigator, copy: copyRef.current })}
     >
       <span>{placeholder}</span>
-      {show ? "✅" : <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />}
+      {show ? <Check /> : <img src={copyIcon} alt="" className={`${classes.copyIcon} ${copied && classes.active}`} />}
       <input style={{ display: "none" }} ref={copyRef} type="text" defaultValue={message} />
     </div>
   );

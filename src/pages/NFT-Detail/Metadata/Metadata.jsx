@@ -1,7 +1,7 @@
-import classes from "./Metadata.module.css";
 import { CopyBlock, dracula } from "react-code-blocks";
-import { ReactComponent as MetadataIcon } from "../../../assets/icon-metadata.svg";
 import { useContext } from "react";
+import classes from "./Metadata.module.css";
+import { ReactComponent as MetadataIcon } from "../../../assets/icon-metadata.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setNotification } from "../../../gen-state/gen.actions";
 
