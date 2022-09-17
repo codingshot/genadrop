@@ -1,0 +1,83 @@
+ {img || gif || video ? (
+        <div className={classes.cameraWrapper}>
+          <div
+            onClick={() => {
+              handleSetState({
+                img: "",
+                gif: "",
+                video: "",
+                activeFile: "gif",
+              });
+            }}
+            className={classes.retake}
+          >
+            <ArrowLeft />
+          </div>
+
+          {gif ? (
+            <img className={`${classes.cameraShot}`} src={URL.createObjectURL(gif)} alt="camera-shot" />
+          ) : video ? (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} ref={videoRef} loop />
+          ) : (
+            <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
+          )}
+          <div className={classes.imgBtn}>
+            <div className={`${classes.mintBtn} ${gifGenrating && classes.disabled}`} onClick={continueToMint}>
+              Continue
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className={classes.videoContainer}>
+          <div className={classes.videoWrapper} ref={webcamWrapper}>
+            {toggle ? (
+              <Camera
+                ref={webcamRef}
+                aspectRatio="cover"
+                numberOfCamerasCallback={setNumberOfCameras}
+                errorMessages={{
+                  noCameraAccessible:
+                    "No camera device accessible. Please connect your camera or try a different browser.",
+                  permissionDenied: "Permission denied. Please refresh and give camera permission.",
+                  switchCamera:
+                    "It is not possible to switch camera to different one because there is only one video device accessible.",
+                  canvas: "Canvas is not supported.",
+                }}
+              />
+            ) : (
+              <div className={classes.videoOFF} />
+            )}
+            <div className={classes.enableContainer}> </div>
+          </div>
+          <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
+            <CloseIcon />
+          </div>
+          <div className={classes.btnWrapper}>
+            {webcamCurrentType !== "picture" ? (
+              <div onClick={updpateMainBtn} className={classes.holdBtn}>
+                <IconCapture />
+              </div>
+            ) : (
+              <div onClick={updpateMainBtn} className={classes.holdBtn}>
+                <RecordBtn seconds={seconds} />
+              </div>
+            )}
+            {webcamCurrentType === "picture" ? (
+              <div
+                onClick={() => takePicture(webcamRef, handleSetState)}
+                className={`${classes.captureBtn} ${classes.active}`}
+              >
+                <IconCapture />
+              </div>
+            ) : (
+              <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
+                <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
+              </div>
+            )}
+            <div className={classes.uploadBtn}>
+              <CameraSwitch onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)} />
+            </div>
+          </div>
+        </div>
+      )}

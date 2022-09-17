@@ -1,0 +1,292 @@
+.videoOFF {
+  width: 100%;
+  height: 100%;
+  background: rgba(75, 75, 90, 0.74);
+  object-fit: cover;
+}
+.videoOFF.disabled {
+  display: none;
+}
+.videoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.videoWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: fit-content;
+  width: 100%;
+  height: calc(100vh - 5rem);
+}
+.videoWrapper > div:first-child {
+  width: 100%;
+  height: 100%;
+}
+.frontCamera > div:first-child {
+  position: fixed;
+  width: 30%;
+  height: 25%;
+  border-radius: 1rem;
+  border: 2px solid var(--main-color);
+  top: 1rem;
+  left: 1rem;
+  overflow: hidden;
+}
+.cameraWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: fit-content;
+  height: calc(100vh - 5rem);
+}
+
+.cameraShot {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  object-fit: contain;
+  border: 4px solid #ffffff;
+  box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
+  /* margin-top: 1.25em; */
+}
+video.cameraShot {
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
+.inActive {
+  height: 0 !important;
+  border: none;
+}
+.btnWrapper {
+  position: absolute;
+  bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgb(15 29 64 / 60%);
+  padding: 0rem 2rem;
+  height: 6rem;
+  width: 20em;
+  border-radius: 16px;
+}
+.btnWrapper > div {
+  cursor: var(--cursor-pointer);
+  transition: background 0.2s ease-in-out;
+}
+
+.holdBtn {
+  position: absolute;
+  top: 50%;
+  left: 2rem;
+  transform: translateY(-50%);
+  display: flex;
+  height: fit-content;
+}
+.holdBtn > svg {
+  height: 50px;
+  width: 50px;
+}
+.holdBtn.active {
+  position: initial;
+  /* padding: 1.5rem; */
+  transform: inherit;
+}
+.captureBtn {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.captureBtn svg {
+  height: 64px;
+  width: 64px;
+}
+.captureBtn svg circle {
+  transition: all 0.2s ease-in-out;
+}
+.captureBtn:hover svg circle {
+  fill: var(--main-color);
+}
+.uploadBtn {
+  position: absolute;
+  /* display: none; */
+  right: 2rem;
+  align-items: center;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.btnWrapper .uploadBtn svg {
+  width: 50px;
+}
+.btnWrapper .uploadBtn:hover svg path {
+  fill: #d9d9d9;
+}
+.btnWrapper .RecordBtnWrapper:hover {
+  color: #d9d9d9;
+}
+.coninue {
+  color: var(--default);
+}
+.btn {
+  padding: 1.2em 1em;
+  border-radius: 50px;
+  text-align: center;
+  width: 10em;
+  background-color: var(--main-color);
+  font-size: 1rem;
+  color: var(--default);
+}
+.btn:hover {
+  transform: scale(1.05);
+}
+.retake {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  cursor: var(--cursor-pointer);
+  font-weight: 500;
+  font-size: 1.25rem;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1;
+  background: rgb(101 110 133 / 75%);
+  padding: 8px;
+  border-radius: 50%;
+}
+.retake svg {
+  transition: all 0.2s ease;
+}
+.retake svg path {
+  fill: white;
+}
+.retake:hover svg {
+  transform: translateX(-6px);
+}
+.none {
+  display: none !important;
+}
+.imgBtn {
+  display: flex;
+  position: absolute;
+  bottom: 1.5rem;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.typeSelcet {
+  display: grid;
+  max-width: 15rem;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+.mintBtn {
+  background: var(--main-color);
+  color: #ffffff;
+  border-radius: 39px;
+  font-size: 1em;
+  max-width: 15rem;
+  width: 100%;
+  padding: 0.675rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.799296px;
+  cursor: var(--cursor-pointer);
+  transition: background 0.2s ease-in-out;
+  border: 1px solid var(--main-color);
+}
+.mintBtn.disabled {
+  background: var(--outline-dark);
+  color: white !important;
+  pointer-events: none;
+  border-color: var(--outline-dark);
+}
+.imgBtn .mintBtn:hover {
+  background: var(--default);
+  color: var(--main-color);
+}
+.closeBtn {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: rgb(15 29 64 / 60%);
+  width: 2rem;
+  height: 2rem;
+  padding: 2px;
+  display: flex;
+  border-radius: 50%;
+  cursor: var(--cursor-pointer);
+  padding: 8px;
+}
+.closeBtn svg {
+  width: 100%;
+  height: 100%;
+}
+.closeBtn svg path {
+  fill: var(--default);
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.loader p {
+  color: #3a9dec;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-top: 1em;
+}
+.loader div {
+  margin: auto;
+}
+@media screen and (max-width: 768px) {
+  .uploadBtn {
+    display: flex;
+  }
+}
+@media screen and (max-width: 480px) {
+  .btnWrapper {
+    bottom: 0rem;
+    width: 100%;
+    height: 7rem;
+    border-radius: 0;
+  }
+  .videoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    z-index: 1000;
+    background: white;
+  }
+  .cameraWrapper {
+    background: white;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    z-index: 1000;
+  }
+  .videoWrapper {
+    height: 100vh;
+    background: white;
+  }
+  .videoWrapper video {
+    height: 100%;
+  }
+  .cameraShot {
+    border: none;
+  }
+}

@@ -1,12 +1,13 @@
 import React, { useRef, useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLongPress } from "use-long-press";
-import { Camera } from "./Camera";
+import { Camera } from "../Camera";
 import classes from "./Capture.module.css";
 import useTimer from "./useTimer";
 import WebcamEnable from "../webcam-enable/webcamEnable";
 import RecordBtn from "./RecordBtn";
 import { getFileFromBase64, takePicture, switchCameraToRear, updateVideoSize, generateGif } from "./Capture-script";
+import DoubleWebcam from "../DoubleWebcam/DoubleWebcam";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
@@ -28,6 +29,7 @@ const Capture = () => {
     toggle: false,
     // each type file
     img: "",
+    faceImg: "",
     gif: "",
     video: "",
     // current file to mint
@@ -44,6 +46,7 @@ const Capture = () => {
     trackRecord: false,
     videoDuration: 0,
     imgList: [],
+    loaderToggle: false,
   });
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -61,6 +64,8 @@ const Capture = () => {
     webcamCurrentType,
     videoDuration,
     imgList,
+    faceImg,
+    loaderToggle,
   } = state;
 
   const handleSetState = (payload) => {
@@ -204,6 +209,7 @@ const Capture = () => {
     history.push("/mint/1of1");
   };
 
+  const doubleCameraProps = { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle };
   return (
     <div className={`${classes.container}`}>
       <WebcamEnable
@@ -214,90 +220,7 @@ const Capture = () => {
           })
         }
       />
-
-      {img || gif || video ? (
-        <div className={classes.cameraWrapper}>
-          <div
-            onClick={() => {
-              handleSetState({
-                img: "",
-                gif: "",
-                video: "",
-                activeFile: "mp4",
-              });
-            }}
-            className={classes.retake}
-          >
-            <ArrowLeft />
-          </div>
-
-          {gif ? (
-            <img className={`${classes.cameraShot}`} src={URL.createObjectURL(gif)} alt="camera-shot" />
-          ) : video ? (
-            // eslint-disable-next-line jsx-a11y/media-has-caption
-            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} ref={videoRef} loop />
-          ) : (
-            <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
-          )}
-          <div className={classes.imgBtn}>
-            <div className={`${classes.mintBtn} ${gifGenrating && classes.disabled}`} onClick={continueToMint}>
-              Continue
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className={classes.videoContainer}>
-          <div className={classes.videoWrapper} ref={webcamWrapper}>
-            {toggle ? (
-              <Camera
-                ref={webcamRef}
-                aspectRatio="cover"
-                numberOfCamerasCallback={setNumberOfCameras}
-                errorMessages={{
-                  noCameraAccessible:
-                    "No camera device accessible. Please connect your camera or try a different browser.",
-                  permissionDenied: "Permission denied. Please refresh and give camera permission.",
-                  switchCamera:
-                    "It is not possible to switch camera to different one because there is only one video device accessible.",
-                  canvas: "Canvas is not supported.",
-                }}
-              />
-            ) : (
-              <div className={classes.videoOFF} />
-            )}
-            <div className={classes.enableContainer}> </div>
-          </div>
-          <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
-            <CloseIcon />
-          </div>
-          <div className={classes.btnWrapper}>
-            {webcamCurrentType !== "picture" ? (
-              <div onClick={updpateMainBtn} className={classes.holdBtn}>
-                <IconCapture />
-              </div>
-            ) : (
-              <div onClick={updpateMainBtn} className={classes.holdBtn}>
-                <RecordBtn seconds={seconds} />
-              </div>
-            )}
-            {webcamCurrentType === "picture" ? (
-              <div
-                onClick={() => takePicture(webcamRef, handleSetState)}
-                className={`${classes.captureBtn} ${classes.active}`}
-              >
-                <IconCapture />
-              </div>
-            ) : (
-              <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
-                <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
-              </div>
-            )}
-            <div className={classes.uploadBtn}>
-              <CameraSwitch onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)} />
-            </div>
-          </div>
-        </div>
-      )}
+      <DoubleWebcam doubleCameraProps={doubleCameraProps} />
     </div>
   );
 };
