@@ -1,6 +1,7 @@
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./SessionModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useContext, useState } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import {
   addRule,
@@ -13,7 +14,6 @@ import {
   setUpgradePlan,
 } from "../../../gen-state/gen.actions";
 import { fetchUserSession } from "../../../renderless/store-data/StoreData.script";
-import { useHistory } from "react-router-dom";
 
 const SessionModal = () => {
   const history = useHistory();

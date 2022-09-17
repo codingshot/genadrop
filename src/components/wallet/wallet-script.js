@@ -162,7 +162,7 @@ export const connectWithQRCode = async ({ walletConnectProvider, dispatch, suppo
 export const connectWithMetamask = async (walletProps) => {
   const { dispatch, walletConnectProvider, supportedChains, proposedChain } = walletProps;
   let res;
-  res = await supportedChains[proposedChain].switch(proposedChain);
+  res = await supportedChains[proposedChain]?.switch(proposedChain);
   if (!res) {
     await WS.disconnectWalletConnectProvider(walletConnectProvider);
     const activeChain = await WS.getNetworkID();
