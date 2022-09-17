@@ -17,7 +17,7 @@ const chainIcon = {
   celo: celoIcon,
 };
 
-const ChainDropdown = ({ onChainFilter }) => {
+const ChainDropdown = ({ onChainFilter, data }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
     chain: "All Chains",
@@ -37,6 +37,12 @@ const ChainDropdown = ({ onChainFilter }) => {
       handleSetState({ chain: name });
     }
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      onChainFilter(chain);
+    }
+  }, [data]);
 
   const chainHandler = (name) => {
     onChainFilter(name);

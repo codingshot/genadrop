@@ -31,9 +31,10 @@ const FQA = () => {
       answer: `
         - Algorand
         - Polygon
-        - Celo (Coming Soon)
-        - Aurora - NEAR's EVM (Coming Soon)
-        - Near (Coming Soon)`,
+        - Celo
+        - Aurora
+        - Near (Coming Soon)
+        - Avalanche (Coming Soon)`,
     },
     {
       id: "5",
