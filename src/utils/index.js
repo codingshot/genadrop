@@ -365,7 +365,9 @@ export const getUserGraphNft = async (collections, address) => {
   function fetchUserNfts(collection) {
     const fetch = async (resolve, reject) => {
       try {
-        const { data } = await axios.get(collection.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+        const { data } = await axios.get(
+          collection.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+        );
         const nftObj = {};
         // nftObj.collection_name = collection?.owner.collections[0]?.name;
         nftObj.owner = address;
@@ -381,7 +383,7 @@ export const getUserGraphNft = async (collections, address) => {
         nftObj.contractAddress = collection?.id?.split(collection?.tokenID)[0];
         nftObj.collection_contract = collection?.id?.split(collection?.tokenID)[0];
         nftObj.name = data?.name;
-        nftObj.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftObj.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
         resolve(nftObj);
       } catch (error) {
         console.log(error);
@@ -469,7 +471,9 @@ export const getGraphNft = async (collection, mainnet) => {
 };
 
 export const getNearNft = async (collection, mainnet) => {
-  const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+  const { data } = await axios.get(
+    collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+  );
   const nftObj = [];
   try {
     const nftArr = {};
@@ -481,7 +485,7 @@ export const getNearNft = async (collection, mainnet) => {
     nftArr.owner = collection?.owner?.id;
     nftArr.isListed = collection?.isListed;
     nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
-    nftArr.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
@@ -562,14 +566,16 @@ export const getNearSingleGraphNfts = async (nfts) => {
       setTimeout(async () => {
         try {
           const nftObj = {};
-          const { data } = await axios.get(NFT.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+          const { data } = await axios.get(
+            NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+          );
           nftObj.Id = NFT?.id;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
-          nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+          nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           nftObj.collectionId = NFT?.collection?.id;
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
@@ -606,14 +612,16 @@ export const fetchNearSingleNfts = async (nfts) => {
       setTimeout(async () => {
         try {
           const nftObj = {};
-          const { data } = await axios.get(NFT.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+          const { data } = await axios.get(
+            NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+          );
           nftObj.Id = NFT?.id;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
-          nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+          nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           nftObj.collectionId = NFT?.collection?.id;
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;

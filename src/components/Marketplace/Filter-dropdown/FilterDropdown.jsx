@@ -48,6 +48,7 @@ const FilterDropdown = ({ handleFilter, collection }) => {
 
   const handleCancel = () => {
     handleSetState({ filter: { ...filter, minPrice: 0, maxPrice: 0 }, toggleFilter: false });
+    handleFilter({ type: "cancel" });
   };
 
   const statusFilter = ["listed", "not listed", "on auction"];

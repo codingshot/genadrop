@@ -162,7 +162,7 @@ var Camera = React.forwardRef(function (_a, ref) {
             context.drawImage(player.current, sX, sY, sW, sH, 0, 0, sW, sH);
             // context.drawImage(player.current, 0, 0, sW, sH);
           }
-          var imgData = canvas.current.toDataURL("image/jpeg");
+          var imgData = canvas.current.toDataURL("image/jpeg", 0.2);
           return imgData;
         } else {
           throw new Error(errorMessages.canvas);
