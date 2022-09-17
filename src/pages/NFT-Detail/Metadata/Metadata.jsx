@@ -1,4 +1,4 @@
-import { CopyBlock, dracula } from "react-code-blocks";
+import React, { CopyBlock, dracula } from "react-code-blocks";
 import { useContext } from "react";
 import classes from "./Metadata.module.css";
 import { ReactComponent as MetadataIcon } from "../../../assets/icon-metadata.svg";

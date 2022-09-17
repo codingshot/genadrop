@@ -1,11 +1,9 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FacebookShareButton, TwitterShareButton, WhatsappShareButton } from "react-share";
 import classes from "./Share.module.css";
 import { ReactComponent as TwitterIcon } from "../../../assets/twitter.svg";
 import { ReactComponent as FacebookIcon } from "../../../assets/facebook.svg";
 import { ReactComponent as WhatsappIcon } from "../../../assets/whatsapp.svg";
-import copied from "../../../assets/copied.svg";
-
 import Copy from "../../../components/copy/copy";
 
 const Share = ({ share, setShare }) => {
@@ -22,7 +20,7 @@ const Share = ({ share, setShare }) => {
         <div className={classes.content}>
           <input className={classes.text} disabled type="text" value={window.location.href} />
 
-          <Copy message={window.location.href} placeholder={""} />
+          <Copy message={window.location.href} placeholder="" />
         </div>
 
         <div className={classes.shareContent}>
