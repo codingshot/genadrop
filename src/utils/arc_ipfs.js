@@ -4,10 +4,20 @@ import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import JSZip from "jszip";
 import { ethers } from "ethers";
-import { setLoader, setNotification } from "../gen-state/gen.actions";
+import { setAuroraSingleNfts, setLoader, setNotification } from "../gen-state/gen.actions";
+
+import { NFTStorage, File } from "nft.storage";
+//import { NFTStorage } from 'nft.storage';
+//const { NFTStorage } = require('nft.storage')
+//import File from "nft.storage/src/platform.web";
+
+import mime from 'mime'
 
 const algosdk = require("algosdk");
 const bs58 = require("bs58");
+
+// NFT STORAGE API KEY (PLEASE ENTER IN .env FILE THE API KEY FROM NFT.STORAGE)
+const NFT_STORAGE_KEY = process.env.REACT_APP_NFT_STORAGE_API_KEY;
 
 const pinataApiKey = process.env.REACT_APP_PINATA_API_KEY;
 const pinataApiSecret = process.env.REACT_APP_PINATA_SECRET_KEY;
@@ -146,7 +156,51 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   };
 };
 
+
+const uploadToIpfsNftStorage = async (nftFile, nftFileName, asset) => {
+  const fileCat = nftFile.type.split("/")[0];
+
+  const nftFileNameSplit = nftFileName.split(".");
+  const fileExt = nftFileNameSplit[1];
+
+  const kvProperties = {
+    url: nftFileNameSplit[0],
+    mimetype: `${fileCat}/${fileExt}`,
+  };
+  const pinataMetadata = JSON.stringify({
+    name: asset.name,
+    keyvalues: kvProperties,
+  });
+
+  const pinataOptions = JSON.stringify({
+    cidVersion: 0,
+  });
+
+  const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
+
+  const metadata = config.arc3MetadataJSON;
+  const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
+  metadata.properties = [...asset.attributes];
+  metadata.name = asset.name;
+  metadata.description = asset.description;
+  metadata.image = `ipfs://${resultFile.IpfsHash}`;
+  metadata.image_integrity = `${integrity.base64}`;
+  metadata.image_mimetype = `${fileCat}/${fileExt}`;
+
+  const resultMeta = await pinata.pinJSONToIPFS(metadata, {
+    pinataMetadata: { name: asset.name },
+  });
+  const jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash);
+  return {
+    name: asset.name,
+    url: `ipfs://${resultMeta.IpfsHash}`,
+    metadata: jsonIntegrity.buffer,
+    integrity: jsonIntegrity.base64,
+  };
+};
+
 export const connectAndMint = async (file, metadata, imgName, retryTimes) => {
+  
   try {
     await pinata.testAuthentication();
     return await uploadToIpfs(file, imgName, metadata);
@@ -159,6 +213,32 @@ export const connectAndMint = async (file, metadata, imgName, retryTimes) => {
     return connectAndMint(file, metadata, imgName, retryTimes - 1);
   }
 };
+
+
+export const connectAndMintNftStorage = async (file, metadata, imgName, retryTimes) => {
+ 
+    
+  let metadataJSON =  JSON.stringify(metadata)
+
+  try{
+    // return await uploadToIpfs(file, imgName, metadata);
+     const nftstorage = new NFTStorage({ token: NFT_STORAGE_KEY });
+    return nftstorage.store({
+      image : file,
+      name : imgName,
+      description : metadataJSON,
+  })
+  
+  }catch(error){
+    console.error(error);
+    if (retryTimes === 1) {
+      alert("network error while uploading file");
+      throw error;
+    }
+    return connectAndMintNftStorage(file, metadata, imgName, retryTimes - 1);
+  }
+};
+
 
 async function createAsset(asset, account) {
   const params = await algodTxnClient.getTransactionParams().do();
@@ -472,6 +552,119 @@ export async function mintSingleToCelo(singleMintProps) {
     };
   }
 }
+
+// My test function
+
+export async function mintSingleToCeloNFTSTORAGE(singleMintProps) {
+  //destructuring the data from singleMintProps
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  
+  
+  
+    // THIS IS A WALLET CONNECT PROTOCOL
+   if (connector.isWalletConnect) { 
+
+    // Will make a new provider from Web3Provider
+    const provider = new ethers.providers.Web3Provider(connector);
+
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, file.name, dispatch);
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    dispatch(setLoader("minting 1 of 1"));
+
+    
+    const contract = new ethers.Contract(
+      mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+      mintSingle,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS
+        : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+    
+  }
+
+
+
+  // There is only ever up to one account in MetaMask exposed . We are taking user account
+  const signer = await connector.getSigner();
+
+  // seting loading
+  dispatch(setLoader("uploading 1 of 1"));
+  
+  // THE MAIN FUNCTION FOR STORING ON IPFS
+
+  const asset = await connectAndMintNftStorage(file, metadata, file.name, 4);
+  
+
+  const CID = asset.ipnft.toLocaleString();
+  
+
+  dispatch(setLoader("minting 1 of 1"));
+  const contract = new ethers.Contract(
+    mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+    mintSingle,
+    signer
+  );
+  // const wallet = await InitiateCeloProvider(mainnet);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
+  let txn;
+  try {
+
+    // IMPORTANT !!!
+    // This is a place where we need to Generate CID into a unique uint value
+
+    txn = await contract.mint(account, CID, 1, asset.url, "0x");
+    console.log("TNX: " + txn)
+    await txn.wait();
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    dispatch(setLoader(""));
+    return mainnet
+      ? `https://celo-testnet.org/tx/${txn.hash}`
+      : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "something went wrong! please check your connected network and try again.",
+    };
+  }
+
+  
+}
+
+
 
 export async function mintSingleToAurora(singleMintProps) {
   const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
