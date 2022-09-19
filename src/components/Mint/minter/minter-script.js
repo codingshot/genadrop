@@ -7,6 +7,7 @@ import {
   mintToAurora,
   mintSingleToCelo,
   mintSingleToAurora,
+  mintSingleToCeloNFTSTORAGE
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
@@ -63,7 +64,7 @@ export const handleSingleMint = async (args) => {
     if (chain.toLowerCase() === "algorand") {
       url = await mintSingleToAlgo({ ...args });
     } else if (chain.toLowerCase() === "celo") {
-      url = await mintSingleToCelo({ ...args });
+      url = await mintSingleToCelo({ ...args }); // here will put my new function. My last was  url = await mintSingleToCeloNFTSTORAGE({ ...args });
     } else if (chain.toLowerCase() === "polygon") {
       url = await mintSingleToPoly({ ...args });
     } else if (chain.toLowerCase() === "aurora") {
