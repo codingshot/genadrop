@@ -140,7 +140,6 @@ const CollectionToSingleMinter = () => {
       <>
         <Link to="/mint" className={classes.goBack}>
           <BackIcon className={classes.backIcon} />
-          <span>Back to Mint</span>
         </Link>
         <header className={classes.headingWrapper}>
           {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
