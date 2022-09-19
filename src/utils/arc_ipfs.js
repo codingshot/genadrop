@@ -333,6 +333,7 @@ export async function mintSingleToNear(nearMintProps) {
     const res = wallet.signAndSendTransaction({
       signerId: accountId,
       receiverId: contractId,
+      callbackUrl: `http://${window.location.host}/mint/1of1`,
       actions: [
         {
           type: "FunctionCall",
@@ -343,7 +344,7 @@ export async function mintSingleToNear(nearMintProps) {
               metadata: {
                 title: metadata.name,
                 description: metadata.description,
-                media: `https://ipfs.io/ipfs/${asset}`,
+                media: `https://ipfs.io/ipfs/${asset.media}`,
                 reference: asset.url,
               },
               receiver_id: accountId,
