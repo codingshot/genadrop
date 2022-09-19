@@ -16,7 +16,17 @@ import {
 import supportedChains from "../../utils/supportedChains";
 import "regenerator-runtime";
 import getConfig from "./nearConfig";
-import { initializeConnection } from "../wallet/wallet-script";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import "@near-wallet-selector/modal-ui/styles.css";
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
+import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import { setupLedger } from "@near-wallet-selector/ledger";
+import { setupModal } from "@near-wallet-selector/modal-ui";
+import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
+import { setupSender } from "@near-wallet-selector/sender";
 
 const WalletPopup = ({ handleSetState }) => {
   const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
@@ -50,20 +60,45 @@ const WalletPopup = ({ handleSetState }) => {
     if (chainId === 1111) {
       // NEAR Connect
       const nearConfig = getConfig("testnet");
-      const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
-      const near = await nearAPI.connect({ keyStore, ...nearConfig });
-      const walletConnection = new nearAPI.WalletConnection(near);
-      window.localStorage.removeItem("walletconnect");
-      if (!walletConnection.isSignedIn()) {
-        window.localStorage.setItem("nearConnection", true);
-        console.log("not signe din, signing in......");
-        await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
+      const walletSelector = await setupWalletSelector({
+        network: nearConfig,
+        modules: [
+          setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+          setupLedger({ iconUrl: LedgerIconUrl }),
+          setupNightlyConnect({
+            iconUrl: NightlyIconUrl,
+          }),
+          setupSender({ iconUrl: SenderIconUrl }),
+        ],
+      });
+
+      const isSignedIn = walletSelector.isSignedIn();
+      if (isSignedIn) {
+        dispatch(setChainId(1111));
+        dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
+        dispatch(setProposedChain(1111));
+        dispatch(setConnector(walletSelector.wallet()));
       }
-      const account = await walletConnection.getAccountId();
-      dispatch(setChainId(Number(1111)));
-      dispatch(setAccount(account));
-      dispatch(setProposedChain(1111));
-      dispatch(setConnector(walletConnection));
+      const description = "Please select a wallet to sign in.";
+      const modal = setupModal(walletSelector, { contractId: "genadrop-test.mpadev.testnet", description });
+      modal.show();
+      dispatch(setToggleWalletPopup(false));
+      handleProposedChain();
+
+      // const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+      // const near = await nearAPI.connect({ keyStore, ...nearConfig });
+      // const walletConnection = new nearAPI.WalletConnection(near);
+      // window.localStorage.removeItem("walletconnect");
+      // if (!walletConnection.isSignedIn()) {
+      //   window.localStorage.setItem("nearConnection", true);
+      //   console.log("not signe din, signing in......");
+      //   await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
+      // }
+      // const account = await walletConnection.getAccountId();
+      // dispatch(setChainId(Number(1111)));
+      // dispatch(setAccount(account));
+      // dispatch(setProposedChain(1111));
+      // dispatch(setConnector(walletConnection));
       // const account = await walletConnection.getAccountId();
       // dispatch(setChainId(Number(1111)));
       // dispatch(setAccount(account));

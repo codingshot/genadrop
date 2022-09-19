@@ -128,6 +128,12 @@ export const initializeConnection = async (walletProps) => {
       dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
       dispatch(setProposedChain(1111));
       dispatch(setConnector(await walletSelector.wallet()));
+      dispatch(
+        setNotification({
+          message: `Your site is connected to ${supportedChains[1111].label}`,
+          type: "success",
+        })
+      );
     }
     return;
     // const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
