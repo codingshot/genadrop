@@ -3,9 +3,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
+import { Link, useRouteMatch } from "react-router-dom";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch } = nftDetails;
+  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id } = nftDetails;
+  const {
+    params: { chainId: nftChainId, nftId },
+  } = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
   const buyProps = {
     dispatch,
@@ -38,7 +42,13 @@ const Deals = ({ nftDetails }) => {
       </div>
       {!price ? (
         owner === account ? (
-          <div className={classes.btn}>List</div>
+          <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
+            {isListed ? (
+              <button className={classes.btn}>Re-List</button>
+            ) : (
+              <button className={classes.btn}>List</button>
+            )}
+          </Link>
         ) : (
           <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
         )

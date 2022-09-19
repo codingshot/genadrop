@@ -50,9 +50,9 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
         history.push(`${match.url}/${Id}`);
       }
     } else if (chain) {
-      history.push(`/marketplace/1of1/preview/${chain}/${Id}`);
+      history.push(`/marketplace/1of1/${chain}/${Id}`);
     } else {
-      history.push(`/marketplace/1of1/preview/${Id}`);
+      history.push(`/marketplace/1of1/${Id}`);
     }
   };
 
