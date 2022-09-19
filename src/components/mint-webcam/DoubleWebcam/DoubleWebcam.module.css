@@ -258,6 +258,10 @@ video.cameraShot {
 .loader div {
   margin: auto;
 }
+.combineImgs {
+  display: flex;
+  height: fit-content;
+}
 
 @media screen and (max-width: 768px) {
   .uploadBtn {

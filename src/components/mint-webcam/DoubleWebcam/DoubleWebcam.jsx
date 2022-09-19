@@ -1,9 +1,9 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import * as htmlToImage from "html-to-image";
+import { toBlob } from "html-to-image";
 import { Camera } from "../Camera";
 import classes from "./DoubleWebcam.module.css";
-import { switchCameraToRear, getFileFromBase64 } from "../Capture/Capture-script";
+import { switchCameraToRear } from "../Capture/Capture-script";
 import Hypnosis from "../Hypnosis-Loader/Hypnosis";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
@@ -14,7 +14,10 @@ import { GenContext } from "../../../gen-state/gen.context";
 import { setZip } from "../../../gen-state/gen.actions";
 
 const DoubleWebcam = ({ doubleCameraProps }) => {
+  const imgContainer = useRef();
+
   const history = useHistory();
+
   const { dispatch } = useContext(GenContext);
 
   const { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle } = doubleCameraProps;
@@ -41,24 +44,32 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
     }
   }, [img]);
 
-  const continueToMint = (image) => {
-    const name = "Image";
-    const result = getFileFromBase64(image, name, "image/png");
+  // const continueToMint = (image) => {
+  //   const name = "Image";
+  //   const result = getFileFromBase64(image, name, "image/png");
 
-    dispatch(
-      setZip({
-        name,
-        file: result,
-      })
-    );
+  //   dispatch(
+  //     setZip({
+  //       name,
+  //       file: result,
+  //     })
+  //   );
 
-    history.push("/mint/1of1");
-  };
+  //   history.push("/mint/1of1");
+  // };
 
   const clickHandler = () => {
-    htmlToImage.toPng(document.getElementById("double-images")).then(function (dataUrl) {
-      // continueToMint(dataUrl);
-      continueToMint(dataUrl);
+    toBlob(imgContainer.current, { cacheBust: true }).then(function (blob) {
+      const fileName = "Image";
+      const file = new File([blob], fileName, { lastModified: new Date().getTime(), type: "image/jpg" });
+      dispatch(
+        setZip({
+          fileName,
+          file,
+        })
+      );
+
+      history.push("/mint/1of1");
     });
   };
   return img && faceImg ? (
@@ -77,7 +88,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       >
         <ArrowLeft />
       </div>
-      <div id="double-images">
+      <div ref={imgContainer} className={classes.combineImgs}>
         <img src={faceImg} className={classes.faceImg} alt="" />
         <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
       </div>
