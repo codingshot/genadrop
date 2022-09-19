@@ -1,18 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import * as htmlToImage from "html-to-image";
 import { Camera } from "../Camera";
 import classes from "./DoubleWebcam.module.css";
-import { switchCameraToRear } from "../Capture/Capture-script";
+import { switchCameraToRear, getFileFromBase64 } from "../Capture/Capture-script";
 import Hypnosis from "../Hypnosis-Loader/Hypnosis";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
 import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
+import { GenContext } from "../../../gen-state/gen.context";
+import { setZip } from "../../../gen-state/gen.actions";
 
 const DoubleWebcam = ({ doubleCameraProps }) => {
   const history = useHistory();
+  const { dispatch } = useContext(GenContext);
 
   const { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle } = doubleCameraProps;
 
@@ -24,7 +27,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
   };
 
   useEffect(() => {
-    if (img) {
+    if (img && webcamRef.current) {
       handleSetState({
         loaderToggle: true,
       });
@@ -34,10 +37,30 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
         });
         const imageSrc = webcamRef.current.takePhoto();
         handleSetState({ faceImg: imageSrc });
-      }, 2000);
+      }, 3000);
     }
   }, [img]);
 
+  const continueToMint = (image) => {
+    const name = "Image";
+    const result = getFileFromBase64(image, name, "image/png");
+
+    dispatch(
+      setZip({
+        name,
+        file: result,
+      })
+    );
+
+    history.push("/mint/1of1");
+  };
+
+  const clickHandler = () => {
+    htmlToImage.toPng(document.getElementById("double-images")).then(function (dataUrl) {
+      // continueToMint(dataUrl);
+      continueToMint(dataUrl);
+    });
+  };
   return img && faceImg ? (
     <div className={classes.cameraWrapper}>
       <div
@@ -54,11 +77,14 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       >
         <ArrowLeft />
       </div>
-
-      <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
-      <img src={faceImg} classNam={classes.frontImage} alt="" />
+      <div id="double-images">
+        <img src={faceImg} className={classes.faceImg} alt="" />
+        <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
+      </div>
       <div className={classes.imgBtn}>
-        <div className={`${classes.mintBtn} `}>Continue</div>
+        <div className={`${classes.mintBtn} `} onClick={clickHandler}>
+          Continue
+        </div>
       </div>
     </div>
   ) : (

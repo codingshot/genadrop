@@ -95,6 +95,16 @@ video.cameraShot {
   /* padding: 1.5rem; */
   transform: inherit;
 }
+.faceImg {
+  position: fixed;
+  width: 30%;
+  height: 25%;
+  border-radius: 1rem;
+  border: 2px solid var(--main-color);
+  top: 1rem;
+  left: 1rem;
+  overflow: hidden;
+}
 .captureBtn {
   height: 100%;
   display: flex;
@@ -248,16 +258,7 @@ video.cameraShot {
 .loader div {
   margin: auto;
 }
-.frontImage {
-  position: fixed;
-  width: 30%;
-  height: 25%;
-  border-radius: 1rem;
-  border: 2px solid var(--main-color);
-  top: 1rem;
-  left: 1rem;
-  overflow: hidden;
-}
+
 @media screen and (max-width: 768px) {
   .uploadBtn {
     display: flex;

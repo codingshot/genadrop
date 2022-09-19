@@ -209,7 +209,7 @@ const Capture = () => {
     history.push("/mint/1of1");
   };
 
-  const doubleCameraProps = { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle };
+  const doubleCameraProps = { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle, continueToMint };
   return (
     <div className={`${classes.container}`}>
       <WebcamEnable
