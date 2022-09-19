@@ -317,6 +317,11 @@ export async function mintSingleToAlgo(algoMintProps) {
 export async function mintSingleToNear(nearMintProps) {
   const { file, metadata, account, connector, dispatch, price, mainnet } = nearMintProps;
   // initAlgoClients(mainnet);
+  const {
+    contract: { contractId },
+    accounts,
+  } = window.selector.store.getState();
+  const { accountId } = accounts[0];
   if (connector._near) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
