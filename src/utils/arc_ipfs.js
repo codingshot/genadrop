@@ -325,12 +325,12 @@ export async function mintSingleToNear(nearMintProps) {
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    // const asset = await connectAndMint(file, metadata, file.name, 4);
+    const asset = await connectAndMint(file, metadata, file.name, 4);
     // notification: asset uploaded, minting in progress
-    // dispatch(setLoader("asset uploaded, minting in progress"));
+    dispatch(setLoader("asset uploaded, minting in progress"));
     const wallet = await window.selector.wallet();
 
-    return wallet.signAndSendTransaction({
+    const res = wallet.signAndSendTransaction({
       signerId: accountId,
       receiverId: contractId,
       actions: [
@@ -343,18 +343,17 @@ export async function mintSingleToNear(nearMintProps) {
               metadata: {
                 title: metadata.name,
                 description: metadata.description,
-                media: `https://ipfs.io/ipfs/wegeg`,
-                // reference: asset.url,
+                media: `https://ipfs.io/ipfs/${asset}`,
+                reference: asset.url,
               },
               receiver_id: accountId,
             },
             gas: 300000000000000,
-            amount: new BN("1000000000000000000000000"),
+            deposit: new BN("1000000000000000000000000"),
           },
         },
       ],
     });
-    console.log("...response...", res);
     return res;
     // try {
     //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
