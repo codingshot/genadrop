@@ -17,6 +17,18 @@ import blankImage from "../../assets/blank.png";
 import supportedChains from "../../utils/supportedChains";
 import * as WS from "./wallet-script";
 import getConfig from "../wallet-popup/nearConfig";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import "@near-wallet-selector/modal-ui/styles.css";
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import { setupLedger } from "@near-wallet-selector/ledger";
+import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
+import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
+import { setupSender } from "@near-wallet-selector/sender";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+import MeateoIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 
 export const breakAddress = (address = "", width = 6) => {
   if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -63,12 +75,12 @@ export const initializeConnection = async (walletProps) => {
       dispatch(setAccount(accounts[0]));
       // dispatch(setChainId(walletConnectProvider.chainId));
     });
-  
+
     // Subscribe to chainId change
     walletConnectProvider.on("chainChanged", (chainId) => {
       dispatch(setChainId(chainId));
     });
-  
+
     // Subscribe to session disconnection
     walletConnectProvider.on("disconnect", (code, reason) => {
       WS.disconnectWallet(walletProps);
@@ -92,16 +104,40 @@ export const initializeConnection = async (walletProps) => {
     walletConnectProvider.on("disconnect", (code, reason) => {
       WS.disconnectWallet(walletProps);
     });
-  } else if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
+  } else if (window.localStorage.near_app_wallet_auth_key || window.localStorage.nearConnection) {
     const nearConfig = getConfig("testnet");
-    const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
-    const near = await nearAPI.connect({ keyStore, ...nearConfig });
-    const walletConnection = new nearAPI.WalletConnection(near);
-    const account = await walletConnection.getAccountId();
-    dispatch(setChainId(Number(1111)));
-    dispatch(setAccount(account));
-    dispatch(setProposedChain(1111));
-    dispatch(setConnector(walletConnection));
+    const walletSelector = await setupWalletSelector({
+      network: nearConfig,
+      modules: [
+        setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+        setupLedger({ iconUrl: LedgerIconUrl }),
+        setupNightlyConnect({
+          iconUrl: NightlyIconUrl,
+        }),
+        setupSender({ iconUrl: SenderIconUrl }),
+        setupMeteorWallet({ iconUrl: MeateoIconUrl }),
+      ],
+    });
+
+    const isSignedIn = walletSelector.isSignedIn();
+
+    window.selector = walletSelector;
+
+    if (isSignedIn) {
+      dispatch(setChainId(1111));
+      dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
+      dispatch(setProposedChain(1111));
+      dispatch(setConnector(await walletSelector.wallet()));
+    }
+    return;
+    // const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+    // const near = await nearAPI.connect({ keyStore, ...nearConfig });
+    // const walletConnection = new nearAPI.WalletConnection(near);
+    // const account = await walletConnection.getAccountId();
+    // dispatch(setChainId(Number(1111)));
+    // dispatch(setAccount(account));
+    // dispatch(setProposedChain(1111));
+    // dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
     const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
@@ -195,7 +231,7 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
-  console.log("asiere", walletProps)
+  console.log("asiere", walletProps);
   dispatch(setToggleWalletPopup(true));
 };
 
