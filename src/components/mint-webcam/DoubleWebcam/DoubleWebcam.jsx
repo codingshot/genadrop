@@ -37,7 +37,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
         });
         const imageSrc = webcamRef.current.takePhoto();
         handleSetState({ faceImg: imageSrc });
-      }, 3000);
+      }, 5000);
     }
   }, [img]);
 
@@ -82,7 +82,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
         <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
       </div>
       <div className={classes.imgBtn}>
-        <div className={`${classes.mintBtn} `} onClick={clickHandler}>
+        <div className={`${classes.mintBtn}`} onClick={clickHandler}>
           Continue
         </div>
       </div>
@@ -93,6 +93,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
         {toggle && (
           <Camera
             className={img ? classes.frontCamera : ""}
+            facingMode="environment"
             ref={webcamRef}
             aspectRatio="cover"
             errorMessages={{
@@ -126,7 +127,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           <IconCapture />
         </div>
 
-        <div className={classes.uploadBtn}>
+        <div className={classes.uploadBtn} onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)}>
           <CameraSwitch />
         </div>
       </div>

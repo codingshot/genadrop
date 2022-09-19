@@ -96,7 +96,7 @@ video.cameraShot {
   transform: inherit;
 }
 .faceImg {
-  position: fixed;
+  position: absolute;
   width: 30%;
   height: 25%;
   border-radius: 1rem;
