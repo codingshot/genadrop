@@ -33,7 +33,6 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           loaderToggle: false,
         });
         const imageSrc = webcamRef.current.takePhoto();
-
         handleSetState({ faceImg: imageSrc });
       }, 2000);
     }
