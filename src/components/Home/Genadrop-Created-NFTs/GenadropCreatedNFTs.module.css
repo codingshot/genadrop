@@ -54,6 +54,7 @@
 }
 
 .card {
+  height: 20em;
   width: 18em;
   flex: 0 0 auto;
   padding: 0.5em;
@@ -62,7 +63,11 @@
   border: 1px solid var(--outline);
 }
 
-.card img {
+.imgContainer {
+  height: 17em;
+}
+.imgContainer img {
+  height: 100%;
   width: 100%;
   transition: transform 300ms;
   margin-bottom: 0.5em;
@@ -71,12 +76,14 @@
 
 .card:hover img {
   transform: scale(1.01);
+  cursor: pointer;
 }
 
 .card .name {
   width: 100%;
   text-align: center;
   font-size: 1.2rem;
+  margin-top: 0.5em;
 }
 
 @media screen and (max-width: 1200px) {
