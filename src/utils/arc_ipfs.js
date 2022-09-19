@@ -322,39 +322,40 @@ export async function mintSingleToNear(nearMintProps) {
     accounts,
   } = window.selector.store.getState();
   const { accountId } = accounts[0];
-  if (connector._near) {
+  if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, 4);
+    // const asset = await connectAndMint(file, metadata, file.name, 4);
     // notification: asset uploaded, minting in progress
-    dispatch(setLoader("asset uploaded, minting in progress"));
+    // dispatch(setLoader("asset uploaded, minting in progress"));
+    const wallet = await window.selector.wallet();
 
-    // const link =
-    //   process.env.REACT_APP_ENV_STAGING === "true"
-    //     ? "localhost:3001" || "genadrop-staging.vercel.app"
-    //     : "www.genadrop.com" || "www.genadrop.io";
-    const contract = await new Contract(connector.account(), "genadrop-test.mpadev.testnet", {
-      // View methods are read only. They don't modify the state, but usually return some value.
-      viewMethods: ["check_token"],
-      // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: ["nft_mint", "new_default_meta"],
-    });
-    const res = await contract.nft_mint({
-      callbackUrl: `http://${window.location.host}/mint/1of1`,
-      args: {
-        token_id: `${Date.now()}`,
-        metadata: {
-          title: metadata.name,
-          description: metadata.description,
-          media: `https://ipfs.io/ipfs/${asset.media}`,
-          reference: asset.url,
+    return wallet.signAndSendTransaction({
+      signerId: accountId,
+      receiverId: contractId,
+      actions: [
+        {
+          type: "FunctionCall",
+          params: {
+            methodName: "nft_mint",
+            args: {
+              token_id: `${Date.now()}`,
+              metadata: {
+                title: metadata.name,
+                description: metadata.description,
+                media: `https://ipfs.io/ipfs/wegeg`,
+                // reference: asset.url,
+              },
+              receiver_id: accountId,
+            },
+            gas: 300000000000000,
+            amount: new BN("1000000000000000000000000"),
+          },
         },
-        receiver_id: account,
-      },
-      gas: 300000000000000, // attached GAS (optional)
-      amount: new BN("1000000000000000000000000"),
+      ],
     });
-    return "https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet";
+    console.log("...response...", res);
+    return res;
     // try {
     //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
     //   await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
