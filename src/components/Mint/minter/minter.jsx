@@ -222,6 +222,101 @@ const Minter = () => {
     }
   };
 
+  // set MINT NFT
+  const setMintNFTSTORAGE = () => {
+    if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
+
+    //
+
+    console.log("WE are in setMintNFTSTORAGE");
+
+    if (!chainId) {
+      return dispatch(
+        setNotification({
+          message: "connect your wallet and try again",
+          type: "warning",
+        })
+      );
+    }
+
+    //
+    console.log("file.length " + file.length);
+    
+
+    if (file.length > 1) {
+      if (!mintProps.description) {
+        return dispatch(
+          setNotification({
+            message: "fill in the required fields",
+            type: "warning",
+          })
+        );
+      }
+   
+      dispatch(setOverlay(true));
+      handleMint(mintProps).then((url) => {
+        dispatch(setOverlay(false));
+        if (typeof url === "object") {
+          handleSetState({
+            popupProps: {
+              url: url.message,
+              isError: true,
+              popup: true,
+            },
+          });
+        } else {
+          handleSetState({
+            popupProps: {
+              url,
+              isError: false,
+              popup: true,
+            },
+          });
+        }
+      });
+    } else {
+      
+      
+
+      if (!singleMintProps.fileName || !description) {
+        return dispatch(
+          setNotification({
+            message: "fill out the missing fields",
+            type: "warning",
+          })
+        );
+      }
+      dispatch(setOverlay(true));
+
+      console.log("typeof url " + typeof url);
+      console.log("singleMintProps " + singleMintProps);
+
+      handleSingleMint(singleMintProps).then((url) => {
+        dispatch(setOverlay(false));
+        if (typeof url === "object") {
+          handleSetState({
+            popupProps: {
+              url: url.message,
+              isError: true,
+              popup: true,
+            },
+          });
+        } else {
+
+          handleSetState({
+            popupProps: {
+              url,
+              isError: false,
+              popup: true,
+            },
+          });
+        }
+      });
+    }
+
+
+  };
+
   const handleConnectFromMint = (props) => {
     handleSetState({ toggleDropdown: false });
     dispatch(
