@@ -4,7 +4,9 @@ import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import JSZip from "jszip";
 import { ethers } from "ethers";
+import { Contract } from "near-api-js";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+const BN = require("bn.js");
 
 const algosdk = require("algosdk");
 const bs58 = require("bs58");
@@ -106,7 +108,6 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 
 const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   const fileCat = nftFile.type.split("/")[0];
-
   const nftFileNameSplit = nftFileName.split(".");
   const fileExt = nftFileNameSplit[1];
 
@@ -124,9 +125,11 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   });
 
   const resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
-
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
+  if (!Array.isArray(asset.attributes)) {
+    asset.attributes = Array(asset.attributes);
+  }
   metadata.properties = [...asset.attributes];
   metadata.name = asset.name;
   metadata.description = asset.description;
@@ -143,6 +146,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
     url: `ipfs://${resultMeta.IpfsHash}`,
     metadata: jsonIntegrity.buffer,
     integrity: jsonIntegrity.base64,
+    media: resultFile.IpfsHash,
   };
 };
 
@@ -307,6 +311,59 @@ export async function mintSingleToAlgo(algoMintProps) {
   }
   return {
     message: "Connect to alogrand network on your wallet or select a different network",
+  };
+}
+
+export async function mintSingleToNear(nearMintProps) {
+  const { file, metadata, account, connector, dispatch, price, mainnet } = nearMintProps;
+  // initAlgoClients(mainnet);
+  if (connector._near) {
+    dispatch(setLoader("uploading to ipfs"));
+    // notification: uploading to ipfs
+    const asset = await connectAndMint(file, metadata, file.name, 4);
+    // notification: asset uploaded, minting in progress
+    dispatch(setLoader("asset uploaded, minting in progress"));
+
+    // const link =
+    //   process.env.REACT_APP_ENV_STAGING === "true"
+    //     ? "localhost:3001" || "genadrop-staging.vercel.app"
+    //     : "www.genadrop.com" || "www.genadrop.io";
+    const contract = await new Contract(connector.account(), "genadrop-test.mpadev.testnet", {
+      // View methods are read only. They don't modify the state, but usually return some value.
+      viewMethods: ["check_token"],
+      // Change methods can modify the state. But you don't receive the returned value when called.
+      changeMethods: ["nft_mint", "new_default_meta"],
+    });
+    const res = await contract.nft_mint({
+      callbackUrl: `http://${window.location.host}/mint/1of1`,
+      args: {
+        token_id: `${Date.now()}`,
+        metadata: {
+          title: metadata.name,
+          description: metadata.description,
+          media: `https://ipfs.io/ipfs/${asset.media}`,
+          reference: asset.url,
+        },
+        receiver_id: account,
+      },
+      gas: 300000000000000, // attached GAS (optional)
+      amount: new BN("1000000000000000000000000"),
+    });
+    return "https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet";
+    // try {
+    //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
+    //   await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
+    //   // notification: asset minted
+    //   return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
+    // } catch (error) {
+    //   console.log(error.message);
+    //   return {
+    //     message: `${error.message}`,
+    //   };
+    // }
+  }
+  return {
+    message: "Connect to Near network on your wallet or select a different network",
   };
 }
 

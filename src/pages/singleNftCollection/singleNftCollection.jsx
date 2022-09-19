@@ -19,7 +19,7 @@ import {
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const SingleNftCollection = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, mainnet, account } =
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts, mainnet, account } =
     useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
@@ -80,15 +80,20 @@ const SingleNftCollection = () => {
   };
 
   useEffect(() => {
+    console.log(singleNearNfts);
+  }, [singleNearNfts]);
+
+  useEffect(() => {
     let collections = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
+      ...(singleNearNfts || []),
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: [...collections] });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
+  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   useEffect(() => {
     const countPerPage = 20;
