@@ -8,6 +8,7 @@ import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselC
 import { Link, useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
 import { shuffle } from "../../../pages/Marketplace/Marketplace-script";
+import Skeleton from "react-loading-skeleton";
 
 const cardArr = [
   {
@@ -78,18 +79,43 @@ const GenadropCreatedNFTs = () => {
       <Link to="/create">
         <div className={classes.btn}>Create Now</div>
       </Link>
-      <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
-        {singles.map((card, id) => (
-          <div onClick={() => handlePreview(card.chain, card.Id)}>
-            <div key={id} ref={cardRef} className={classes.card}>
-              <div className={classes.imgContainer}>
-                <img src={card?.image_url} alt="" />
-              </div>
-              <div className={classes.name}>{card?.name}</div>
-            </div>
+      {singles.length == 0 ? (
+        <div className={classes.loader}>
+          <div className={classes.load}>
+            <Skeleton count={1} height={220} />
+            <br />
+            <Skeleton count={1} height={40} />
           </div>
-        ))}
-      </GenadropCarouselCard>
+          <div className={classes.load}>
+            <Skeleton count={1} height={220} />
+            <br />
+            <Skeleton count={1} height={40} />
+          </div>
+          <div className={classes.load}>
+            <Skeleton count={1} height={220} />
+            <br />
+            <Skeleton count={1} height={40} />
+          </div>
+          <div className={classes.load}>
+            <Skeleton count={1} height={220} />
+            <br />
+            <Skeleton count={1} height={40} />
+          </div>
+        </div>
+      ) : (
+        <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
+          {singles.map((card, id) => (
+            <div onClick={() => handlePreview(card.chain, card.Id)}>
+              <div key={id} ref={cardRef} className={classes.card}>
+                <div className={classes.imgContainer}>
+                  <img src={card?.image_url} alt="" />
+                </div>
+                <div className={classes.name}>{card?.name}</div>
+              </div>
+            </div>
+          ))}
+        </GenadropCarouselCard>
+      )}
     </div>
   );
 };

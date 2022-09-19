@@ -11,7 +11,17 @@
 .container * {
   transition: max-width 300ms;
 }
-
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  white-space: nowrap;
+}
+.load {
+  width: 30%;
+  max-width: 25em;
+}
 .heading {
   width: 100%;
   text-align: center;
