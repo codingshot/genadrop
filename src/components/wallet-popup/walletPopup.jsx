@@ -85,33 +85,13 @@ const WalletPopup = ({ handleSetState }) => {
       dispatch(setToggleWalletPopup(false));
       handleProposedChain();
 
-      // const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
-      // const near = await nearAPI.connect({ keyStore, ...nearConfig });
-      // const walletConnection = new nearAPI.WalletConnection(near);
-      // window.localStorage.removeItem("walletconnect");
-      // if (!walletConnection.isSignedIn()) {
-      //   window.localStorage.setItem("nearConnection", true);
-      //   console.log("not signe din, signing in......");
-      //   await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
-      // }
-      // const account = await walletConnection.getAccountId();
-      // dispatch(setChainId(Number(1111)));
-      // dispatch(setAccount(account));
-      // dispatch(setProposedChain(1111));
-      // dispatch(setConnector(walletConnection));
-      // const account = await walletConnection.getAccountId();
-      // dispatch(setChainId(Number(1111)));
-      // dispatch(setAccount(account));
-      // dispatch(setConnector(walletConnection));
-      // setActiveChain(chainId);
-      // handleProposedChain();
-      // dispatch(
-      //   setNotification({
-      //     message: `Your site is connected to ${supportedChains[1111].label}`,
-      //     type: "success",
-      //   })
-      // );
       return;
+    } else {
+      console.log(window.selector);
+      if (window.selector) {
+        const nearLogout = await window.selector.wallet();
+        nearLogout.signOut();
+      }
     }
     setActiveChain(chainId);
     setConnectionMethods(true);

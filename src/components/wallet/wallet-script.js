@@ -48,7 +48,6 @@ export const getNetworkID = () => {
 };
 
 export const initializeConnection = async (walletProps) => {
-  window.localStorage.removeItem("nearConnection");
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;
 
@@ -146,7 +145,7 @@ export const initializeConnection = async (walletProps) => {
     // dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
-    window.localStorage.removeItem("nearConnection");
+
     const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
     dispatch(setConnector(ethereumProvider));
     const { ethereum } = window;
@@ -207,7 +206,6 @@ export const connectWithMetamask = async (walletProps) => {
   let res;
   res = await supportedChains[proposedChain]?.switch(proposedChain);
   if (!res) {
-    window.localStorage.removeItem("nearConnection");
     await WS.disconnectWalletConnectProvider(walletConnectProvider);
     const activeChain = await WS.getNetworkID();
     if (activeChain === proposedChain) {
@@ -247,7 +245,6 @@ export const connectWallet = async (walletProps) => {
   const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
   if (connectionMethod === "metamask") {
     if (window?.ethereum !== undefined) {
-      window.localStorage.removeItem("nearConnection");
       await WS.connectWithMetamask(walletProps);
       const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
       dispatch(setConnector(ethereumProvider));
@@ -262,7 +259,6 @@ export const connectWallet = async (walletProps) => {
       dispatch(setClipboard("https://metamask.io/"));
     }
   } else if (connectionMethod === "walletConnect") {
-    window.localStorage.removeItem("nearConnection");
     walletProviderRef.current = 2;
     if (proposedChain === 4160) {
       handleSetState({
