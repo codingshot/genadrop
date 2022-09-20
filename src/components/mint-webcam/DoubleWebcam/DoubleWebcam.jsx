@@ -5,7 +5,7 @@ import mergeImages from "merge-images";
 import { Canvg } from "canvg";
 import { Camera } from "../Camera";
 import classes from "./DoubleWebcam.module.css";
-import { switchCameraToRear, continueToMint } from "../Capture/Capture-script";
+import { switchCameraToRear, getFileFromBase64 } from "../Capture/Capture-script";
 import Hypnosis from "../Hypnosis-Loader/Hypnosis";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
@@ -92,7 +92,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           canvas.height = image.height;
           canvas.getContext("2d").drawImage(image, 0, 0);
           // canvas.toBlob("image/png", 1); // about toBlob function: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
-          console.log(canvas.toDataURL("image/png"));
+          continueToMint(canvas.toDataURL("image/png"));
         };
       });
     } catch (err) {
