@@ -1,9 +1,11 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { toBlob } from "html-to-image";
+import { toSvg } from "html-to-image";
+import mergeImages from "merge-images";
+import { Canvg } from "canvg";
 import { Camera } from "../Camera";
 import classes from "./DoubleWebcam.module.css";
-import { switchCameraToRear } from "../Capture/Capture-script";
+import { switchCameraToRear, continueToMint } from "../Capture/Capture-script";
 import Hypnosis from "../Hypnosis-Loader/Hypnosis";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
@@ -11,10 +13,12 @@ import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.sv
 import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { GenContext } from "../../../gen-state/gen.context";
-import { setZip } from "../../../gen-state/gen.actions";
+import { setZip, setNotification } from "../../../gen-state/gen.actions";
 
 const DoubleWebcam = ({ doubleCameraProps }) => {
   const imgContainer = useRef();
+  const frontCamera = useRef();
+  const rearCamera = useRef();
 
   const history = useHistory();
 
@@ -44,33 +48,62 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
     }
   }, [img]);
 
-  // const continueToMint = (image) => {
-  //   const name = "Image";
-  //   const result = getFileFromBase64(image, name, "image/png");
+  const continueToMint = (image) => {
+    const name = "Image";
+    const result = getFileFromBase64(image, name, "image/png");
 
-  //   dispatch(
-  //     setZip({
-  //       name,
-  //       file: result,
-  //     })
-  //   );
+    dispatch(
+      setZip({
+        name,
+        file: result,
+      })
+    );
 
-  //   history.push("/mint/1of1");
+    history.push("/mint/1of1");
+  };
+  // const covertSvgtoPng = (svg) => {
+  //   const canvas = document.createElement("canvas");
+  //   const ctx = canvas.getContext("2d");
+
+  //   // Read the SVG string using the fromString method
+  //   // of Canvg
+  //   const v = Canvg.fromString(ctx, svg);
+
+  //   // Start drawing the SVG on the canvas
+  //   v.start();
+
+  //   // Convert the Canvas to an image
+  //   const img = canvas.toDataURL("img/png");
+  //   return img;
   // };
 
   const clickHandler = () => {
-    toBlob(imgContainer.current, { cacheBust: true }).then(function (blob) {
-      const fileName = "Image";
-      const file = new File([blob], fileName, { lastModified: new Date().getTime(), type: "image/jpg" });
+    try {
+      // mergeImages([
+      //   { src: img, x: 0, y: 0 },
+      //   { src: faceImg, x: 32, y: 0 },
+      // ]).then((b64) => console.log(b64));
+      toSvg(imgContainer.current, { cacheBust: true }).then(function (svg) {
+        const image = new Image();
+        image.src = svg;
+        const canvas = document.createElement("canvas");
+        image.onload = function () {
+          canvas.width = image.width;
+          canvas.height = image.height;
+          canvas.getContext("2d").drawImage(image, 0, 0);
+          // canvas.toBlob("image/png", 1); // about toBlob function: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
+          console.log(canvas.toDataURL("image/png"));
+        };
+      });
+    } catch (err) {
       dispatch(
-        setZip({
-          fileName,
-          file,
+        setNotification({
+          message: err,
+          type: "warning",
         })
       );
-
-      history.push("/mint/1of1");
-    });
+      console.log(err);
+    }
   };
   return img && faceImg ? (
     <div className={classes.cameraWrapper}>
@@ -89,8 +122,8 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
         <ArrowLeft />
       </div>
       <div ref={imgContainer} className={classes.combineImgs}>
-        <img src={faceImg} className={classes.faceImg} alt="" />
-        <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
+        <img src={faceImg} className={classes.faceImg} alt="camera-shot" ref={frontCamera} />
+        <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" ref={rearCamera} />
       </div>
       <div className={classes.imgBtn}>
         <div className={`${classes.mintBtn}`} onClick={clickHandler}>
