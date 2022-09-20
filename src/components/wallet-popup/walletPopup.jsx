@@ -18,10 +18,10 @@ import getConfig from "./nearConfig";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import "@near-wallet-selector/modal-ui/styles.css";
-// import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
-// import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
-// import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
-// import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
+import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
 import { setupLedger } from "@near-wallet-selector/ledger";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
@@ -62,7 +62,12 @@ const WalletPopup = ({ handleSetState }) => {
       const walletSelector = await setupWalletSelector({
         network: nearConfig,
         modules: [
-          setupMyNearWallet({ iconUrl: "https://near.org/wp-content/uploads/2020/09/cropped-favicon-192x192.png" }),
+          setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+          setupLedger({ iconUrl: LedgerIconUrl }),
+          setupNightlyConnect({
+            iconUrl: NightlyIconUrl,
+          }),
+          setupSender({ iconUrl: SenderIconUrl }),
         ],
       });
 
