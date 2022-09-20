@@ -78,7 +78,7 @@ const WalletPopup = ({ handleSetState }) => {
         dispatch(setProposedChain(1111));
         dispatch(setConnector(walletSelector.wallet()));
       }
-      const description = "Please select a wallet to sign in.";
+      const description = "Please select a wallet to sign in..";
       const modal = setupModal(walletSelector, { contractId: "genadrop-test.mpadev.testnet", description });
       modal.show();
       dispatch(setToggleWalletPopup(false));
