@@ -13,7 +13,7 @@ import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.sv
 import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { GenContext } from "../../../gen-state/gen.context";
-import { setZip, setNotification } from "../../../gen-state/gen.actions";
+import { setZip, setNotification, setLoader } from "../../../gen-state/gen.actions";
 
 const DoubleWebcam = ({ doubleCameraProps }) => {
   const imgContainer = useRef();
@@ -83,6 +83,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       //   { src: img, x: 0, y: 0 },
       //   { src: faceImg, x: 32, y: 0 },
       // ]).then((b64) => console.log(b64));
+      dispatch(setLoader(`Loading`));
       toSvg(imgContainer.current, { cacheBust: true }).then(function (svg) {
         const image = new Image();
         image.src = svg;
@@ -91,8 +92,8 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           canvas.width = image.width;
           canvas.height = image.height;
           canvas.getContext("2d").drawImage(image, 0, 0);
-          // canvas.toBlob("image/png", 1); // about toBlob function: https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
           continueToMint(canvas.toDataURL("image/png"));
+          dispatch(setLoader(``));
         };
       });
     } catch (err) {
