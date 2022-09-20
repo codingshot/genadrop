@@ -18,8 +18,9 @@ import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, dispatch } =
-    useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, dispatch } = useContext(
+    GenContext
+  );
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -69,9 +70,12 @@ const Collections = () => {
     let result;
     if (date === activeDate) {
       result = getCollectionsByDate({ collections, date: 0 });
+      console.log("1", result);
       handleSetState({ activeDate: 0, filteredCollection: result });
     } else {
       result = getCollectionsByDate({ collections, date });
+      console.log("2", result);
+
       handleSetState({ activeDate: date, filteredCollection: result });
     }
   };
@@ -143,7 +147,7 @@ const Collections = () => {
       <div className={classes.heading}>
         <div className={classes.title}>
           <h1>Collections</h1>
-          <p>View all listed Collections {`${collections && collections.length} Listed`}</p>
+          <p>View all listed Collections ({`${collections && collections.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
           <div className={classes.search}>
