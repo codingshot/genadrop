@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import * as nearAPI from "near-api-js";
 import classes from "./walletPopup.module.css";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";

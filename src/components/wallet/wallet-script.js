@@ -1,5 +1,4 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import * as nearAPI from "near-api-js";
 import { ethers } from "ethers";
 import {
   setNotification,
