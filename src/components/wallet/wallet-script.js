@@ -63,12 +63,12 @@ export const initializeConnection = async (walletProps) => {
       dispatch(setAccount(accounts[0]));
       // dispatch(setChainId(walletConnectProvider.chainId));
     });
-  
+
     // Subscribe to chainId change
     walletConnectProvider.on("chainChanged", (chainId) => {
       dispatch(setChainId(chainId));
     });
-  
+
     // Subscribe to session disconnection
     walletConnectProvider.on("disconnect", (code, reason) => {
       WS.disconnectWallet(walletProps);
@@ -195,7 +195,7 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
-  console.log("asiere", walletProps)
+  console.log("asiere", walletProps);
   dispatch(setToggleWalletPopup(true));
 };
 
