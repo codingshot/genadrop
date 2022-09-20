@@ -17,7 +17,6 @@ import "regenerator-runtime";
 import getConfig from "./nearConfig";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import "@near-wallet-selector/modal-ui/styles.css";
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
 import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
 import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";

@@ -18,7 +18,6 @@ import * as WS from "./wallet-script";
 import getConfig from "../wallet-popup/nearConfig";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import "@near-wallet-selector/modal-ui/styles.css";
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
 import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
