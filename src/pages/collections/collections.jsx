@@ -30,9 +30,10 @@ const Collections = () => {
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
-    activeDate: 1,
+    activeDate: 0,
     searchValue: "",
     notFound: false,
+    searchChain: "All Chains",
   });
 
   const {
@@ -44,6 +45,7 @@ const Collections = () => {
     currentPageValue,
     filteredCollection,
     notFound,
+    searchChain,
   } = state;
 
   const handleSetState = (payload) => {
@@ -68,12 +70,15 @@ const Collections = () => {
 
   const handleDateSort = (date) => {
     let result;
+
+    let tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
+
     if (date === activeDate) {
-      result = getCollectionsByDate({ collections, date: 0 });
+      result = getCollectionsByDate({ collections: tempCollection, date: 0 });
       console.log("1", result);
       handleSetState({ activeDate: 0, filteredCollection: result });
     } else {
-      result = getCollectionsByDate({ collections, date });
+      result = getCollectionsByDate({ collections: tempCollection, date });
       console.log("2", result);
 
       handleSetState({ activeDate: date, filteredCollection: result });
@@ -81,8 +86,10 @@ const Collections = () => {
   };
 
   const handleChainChange = (chain) => {
-    const result = getCollectionsByChain({ collections, chain, mainnet });
-    handleSetState({ filteredCollection: result });
+    let tempCollection = getCollectionsByDate({ collections, date: activeDate });
+
+    const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
+    handleSetState({ filteredCollection: result, searchChain: chain });
   };
 
   const handleFilter = async ({ type, value }) => {
@@ -115,6 +122,7 @@ const Collections = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: collections });
+    console.log("Filtered: ", filteredCollection);
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
@@ -178,6 +186,9 @@ const Collections = () => {
           </div>
           <div onClick={() => handleDateSort(30)} className={`${classes.date} ${activeDate === 30 && classes.active}`}>
             30 Days
+          </div>
+          <div onClick={() => handleDateSort(0)} className={`${classes.date} ${activeDate === 0 && classes.active}`}>
+            All
           </div>
         </div>
       </div>
