@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 import classes from "./GenadropCreatedNFTs.module.css";
 import NFT1 from "../../../assets/nft-1.png";
 import NFT2 from "../../../assets/nft-2.png";
 import NFT3 from "../../../assets/nft-3.png";
 import NFT4 from "../../../assets/nft-4.png";
 import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
-import { Link, useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
 import { shuffle } from "../../../pages/Marketplace/Marketplace-script";
-import Skeleton from "react-loading-skeleton";
 
 const cardArr = [
   {
@@ -59,7 +59,7 @@ const GenadropCreatedNFTs = () => {
       ...(singleCeloNfts || []),
     ];
     singles = shuffle(singles);
-    console.log(singles.slice(0, 4));
+
     handleSetState({ singles: singles.slice(0, 4) });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
 
@@ -103,18 +103,16 @@ const GenadropCreatedNFTs = () => {
           </div>
         </div>
       ) : (
-        <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
+        <div className={classes.cardGrid}>
           {singles.map((card, id) => (
-            <div onClick={() => handlePreview(card.chain, card.Id)}>
-              <div key={id} ref={cardRef} className={classes.card}>
-                <div className={classes.imgContainer}>
-                  <img src={card?.image_url} alt="" />
-                </div>
-                <div className={classes.name}>{card?.name}</div>
+            <div onClick={() => handlePreview(card.chain, card.Id)} key={id} className={classes.card}>
+              <div className={classes.imgContainer}>
+                <img src={card?.image_url} alt="" />
               </div>
+              <div className={classes.name}>{card?.name}</div>
             </div>
           ))}
-        </GenadropCarouselCard>
+        </div>
       )}
     </div>
   );
