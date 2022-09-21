@@ -64,8 +64,7 @@
 }
 
 .cardGrid {
-  display: grid;
-  grid-template-columns: repeat(4, auto);
+  display: flex;
   grid-gap: 0.6em;
 }
 
