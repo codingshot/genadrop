@@ -120,6 +120,9 @@
   justify-content: center;
   gap: 0.5em;
 }
+.orgs a img {
+  max-height: 22px;
+}
 
 .orgs > * {
   display: flex;

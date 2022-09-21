@@ -11,7 +11,7 @@ import List from "./pages/listNFT/list";
 import Profile from "./pages/profile/profile";
 import SingleNftCollection from "./pages/singleNftCollection/singleNftCollection";
 import Artist from "./pages/artist/artist";
-import ListSingleNFT from "./pages/userDashboard/singleNFT/singleNFT";
+
 import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 import Prompt from "./components/delete-prompt/prompt";
@@ -73,7 +73,7 @@ function App() {
             <Route exact path="/marketplace/1of1" component={SingleNftCollection} />
             <Route exact path="/marketplace/collections" component={Collections} />
             <Route exact path="/marketplace/1of1/:chainId/:nftId" component={NFTDetail} />
-            <Route exact path="/marketplace/1of1/preview/:chainId/:nftId" component={ListSingleNFT} />
+
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId" component={List} />
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId/listed" component={Listed} />
             <Route exact path="/marketplace/collections/:collectionName" component={Explore} />
