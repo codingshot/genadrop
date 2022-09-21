@@ -92,13 +92,13 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
     const img2 = new Image();
 
     img1.onload = function () {
-      canvas.width = img1.width;
-      canvas.height = img1.height;
+      canvas.width = rearCamera.current.clientWidth;
+      canvas.height = rearCamera.current.clientHeight;
       img2.src = faceImg;
     };
     img2.onload = function () {
       // drawImage(image, dx, dy, dWidth, dHeight)
-      context.drawImage(img1, 0, 0);
+      context.drawImage(img1, 0, 0, rearCamera.current.clientWidth, rearCamera.current.clientHeight);
       context.drawImage(img2, 16, 16, frontCamera.current.clientWidth, frontCamera.current.clientHeight);
       continueToMint(canvas.toDataURL());
     };
