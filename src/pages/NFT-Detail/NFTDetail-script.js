@@ -1,7 +1,12 @@
 import { readNftTransaction, readUserProfile } from "../../utils/firebase";
 // import axios from "axios";
 import { getCeloGraphNft, getGraphCollection, getTransactions } from "../../utils";
-import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraUserData,
+  celoUserData,
+  nearUserData,
+  polygonUserData,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 import supportedChains from "../../utils/supportedChains";
 
 export const getAlgoData = async ({ algoProps }) => {
@@ -34,6 +39,7 @@ export const getGraphData = async ({ graphProps }) => {
     auroraCollections,
     polygonCollections,
     celoCollections,
+    singleNearNfts,
     singleAuroraNfts,
     singlePolygonNfts,
     singleCeloNfts,
@@ -95,6 +101,15 @@ export const getGraphData = async ({ graphProps }) => {
           collection: [],
           transactionHistory: trHistory,
           _1of1: singlePolygonNfts,
+        };
+      }
+      if (supportedChains[Number(chainId)]?.chain === "Near") {
+        const [nearResult, trHistory] = await nearUserData(nftId);
+        return {
+          nftDetails: nearResult,
+          collection: [],
+          transactionHistory: trHistory,
+          _1of1: singleNearNfts,
         };
       }
     } catch (error) {

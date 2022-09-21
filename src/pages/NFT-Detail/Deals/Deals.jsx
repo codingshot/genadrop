@@ -41,7 +41,7 @@ const Deals = ({ nftDetails }) => {
         </div>
       </div>
       {!price ? (
-        owner === account ? (
+        owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
               <button className={classes.btn}>Re-List</button>

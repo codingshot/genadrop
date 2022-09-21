@@ -192,6 +192,11 @@ export const setCeloSingleNft = (nfts) => ({
   payload: nfts,
 });
 
+export const setNearSingleNft = (nfts) => ({
+  type: genActionTypes.SET_NEAR_SINGLE_NFTS,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,

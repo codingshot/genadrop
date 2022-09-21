@@ -26,8 +26,7 @@ import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = () => {
   const history = useHistory();
-  const { dispatch, connector, account, chainId, mainnet, minter, connectFromMint } = useContext(GenContext);
-  console.log(connectFromMint);
+  const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
   if (!minter) {
     history.push("/mint");
     return null;
@@ -203,7 +202,9 @@ const Minter = () => {
       dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
-        if (typeof url === "object") {
+        if (singleMintProps.chain.toLowerCase() === "near") {
+          return;
+        } else if (typeof url === "object") {
           handleSetState({
             popupProps: {
               url: url.message,

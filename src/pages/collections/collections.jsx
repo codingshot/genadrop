@@ -18,9 +18,7 @@ import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, dispatch } = useContext(
-    GenContext
-  );
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -52,6 +50,7 @@ const Collections = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  // Pagination
   const handlePrev = () => {
     if (currentPage <= 1) return;
     handleSetState({ currentPage: currentPage - 1 });
@@ -68,6 +67,7 @@ const Collections = () => {
     document.documentElement.scrollTop = 0;
   };
 
+  // Date Filter
   const handleDateSort = (date) => {
     let result;
 
@@ -85,6 +85,7 @@ const Collections = () => {
     }
   };
 
+  // Chain Filter
   const handleChainChange = (chain) => {
     let tempCollection = getCollectionsByDate({ collections, date: activeDate });
 
@@ -108,6 +109,7 @@ const Collections = () => {
     }
   };
 
+  // Search
   const handleSearchChange = (e) => {
     const result = getCollectionsBySearch({ collections, search: e.target.value });
     handleSetState({ filteredCollection: result, searchValue: e.target.value });
@@ -169,7 +171,7 @@ const Collections = () => {
           </div>
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
-              <ChainDropdown onChainFilter={handleChainChange} />
+              <ChainDropdown onChainFilter={handleChainChange} data={collections} />
             </div>
             <FilterDropdown handleFilter={handleFilter} />
           </div>

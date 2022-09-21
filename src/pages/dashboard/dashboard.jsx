@@ -16,6 +16,7 @@ import {
   getCeloCollectedNFTs,
   getCeloMintedNFTs,
   getCeloUserCollections,
+  getNearMintedNfts,
   getPolygonCollectedNFTs,
   getPolygonMintedNFTs,
   getPolygonUserCollections,
@@ -57,6 +58,7 @@ const Dashboard = () => {
     myCollections: null,
     filteredCollection: null,
     userDetails: null,
+    errorMessage: false,
     onSale: null,
     paginatePage: "",
     pageNumber: 0,
@@ -75,7 +77,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { mainnet, account } = useContext(GenContext);
+  const { mainnet, account, connector, chainId } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -89,7 +91,7 @@ const Dashboard = () => {
   useEffect(() => {
     // Get User Created NFTs
     let address = "";
-    if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
+    if (supportedChains[chainID]?.chain !== "Algorand" && supportedChains[chainID]?.chain !== "Near" && userId) {
       address = ethers?.utils?.hexlify(userId);
     }
     (async function getUserNFTs() {
@@ -107,6 +109,9 @@ const Dashboard = () => {
           break;
         case "Polygon":
           nfts = await getPolygonMintedNFTs(address);
+          break;
+        case "Near":
+          nfts = await getNearMintedNfts(userId);
           break;
         default:
           break;
@@ -145,7 +150,7 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       let walletAddress = "";
-      if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
+      if (supportedChains[chainID]?.chain !== "Algorand" && supportedChains[chainID]?.chain !== "Near" && userId) {
         walletAddress = ethers?.utils?.hexlify(userId);
       }
       let collection;
