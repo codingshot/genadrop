@@ -77,25 +77,54 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
   //   return img;
   // };
 
+  function loadImage(src) {
+    const image = new Image();
+    image.onload = function () {
+      image.src = src;
+    };
+    image.src = src;
+    return image;
+  }
+  const combineImage = () => {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    const img1 = new Image();
+    const img2 = new Image();
+
+    img1.onload = function () {
+      canvas.width = img1.width;
+      canvas.height = img1.height;
+      img2.src = faceImg;
+    };
+    img2.onload = function () {
+      // drawImage(image, dx, dy, dWidth, dHeight)
+      context.drawImage(img1, 0, 0);
+      context.drawImage(img2, 16, 16, frontCamera.current.clientWidth, frontCamera.current.clientHeight);
+      continueToMint(canvas.toDataURL());
+    };
+
+    img1.src = img;
+  };
   const clickHandler = () => {
     try {
       // mergeImages([
       //   { src: img, x: 0, y: 0 },
       //   { src: faceImg, x: 32, y: 0 },
       // ]).then((b64) => console.log(b64));
-      dispatch(setLoader(`Loading`));
-      toSvg(imgContainer.current, { cacheBust: true }).then(function (svg) {
-        const image = new Image();
-        image.src = svg;
-        const canvas = document.createElement("canvas");
-        image.onload = function () {
-          canvas.width = image.width;
-          canvas.height = image.height;
-          canvas.getContext("2d").drawImage(image, 0, 0);
-          continueToMint(canvas.toDataURL("image/png"));
-          dispatch(setLoader(``));
-        };
-      });
+      // dispatch(setLoader(`Loading`));
+      // toSvg(imgContainer.current, { cacheBust: true }).then(function (svg) {
+      // const image = new Image();
+      // image.src = svg;
+      // const canvas = document.createElement("canvas");
+      // image.onload = function () {
+      //   canvas.width = image.width;
+      //   canvas.height = image.height;
+      //   canvas.getContext("2d").drawImage(image, 0, 0);
+      //   continueToMint(canvas.toDataURL("image/png"));
+      //   dispatch(setLoader(``));
+      // };
+      // });
+      combineImage();
     } catch (err) {
       dispatch(
         setNotification({
