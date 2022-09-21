@@ -108,3 +108,7 @@ export const auroraClient = createClient({
       ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
       : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
 });
+
+export const nearClient = createClient({
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet",
+});

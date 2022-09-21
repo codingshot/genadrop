@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { chainIdToParams } from "../../../utils/chainConnect";
@@ -16,7 +17,11 @@ const TransactionCard = ({ txn, nftDetails, setState }) => {
     if (supportedChains[nftDetails.chain]?.chain === "Algorand") {
       window.open(`${algoexplorer}${type}/${id}`);
     } else {
-      window.open(`${chainIdToParams[nftDetails.chain]?.blockExplorerUrls}${type}/${id}`);
+      if (supportedChains[nftDetails?.chain]?.chain === "Near") {
+        window.open(`${chainIdToParams[nftDetails.chain]?.blockExplorerUrls}${id}`);
+      } else {
+        window.open(`${chainIdToParams[nftDetails.chain]?.blockExplorerUrls}${type}/${id}`);
+      }
     }
   };
 
@@ -34,6 +39,7 @@ const TransactionCard = ({ txn, nftDetails, setState }) => {
         <div className={classes.details}>
           <div className={classes.list}>
             <div className={classes.key}>Transaction ID</div>
+
             <div onClick={() => handleExplorer(txn.txId, "tx")} className={`${classes.value} ${classes.link}`}>
               {txn.txId ? breakAddress(txn.txId) : "--"}
             </div>

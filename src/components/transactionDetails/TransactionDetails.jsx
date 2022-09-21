@@ -25,7 +25,8 @@ const Transaction = (data) => {
     if (chainIdToParams[data?.chain]) {
       handleSetState({ explorer: chainIdToParams[data.chain].blockExplorerUrls });
     }
-  });
+  }, [data]);
+
   const wrapperRef = useRef(null);
 
   function useOutsideAlerter(ref) {
@@ -86,9 +87,15 @@ const Transaction = (data) => {
                         Copy
                       </span>
                     </CopyToClipboard>
-                    <a href={explorer + "tx/" + data.data.txId} target="_blank">
-                      <span className={classes.explore}>Go to Explorer</span>
-                    </a>
+                    {supportedChains[data?.chain]?.chain === "Near" ? (
+                      <a href={explorer + data.data.txId} target="_blank">
+                        <span className={classes.explore}>Go to Explorer</span>
+                      </a>
+                    ) : (
+                      <a href={explorer + "tx/" + data.data.txId} target="_blank">
+                        <span className={classes.explore}>Go to Explorer</span>
+                      </a>
+                    )}
                   </div>
                 )
               ) : (
