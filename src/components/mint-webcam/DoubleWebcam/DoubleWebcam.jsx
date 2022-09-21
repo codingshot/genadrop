@@ -1,8 +1,5 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { toSvg } from "html-to-image";
-import mergeImages from "merge-images";
-import { Canvg } from "canvg";
 import { Camera } from "../Camera";
 import classes from "./DoubleWebcam.module.css";
 import { switchCameraToRear, getFileFromBase64 } from "../Capture/Capture-script";
@@ -61,30 +58,57 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
 
     history.push("/mint/1of1");
   };
-  // const covertSvgtoPng = (svg) => {
-  //   const canvas = document.createElement("canvas");
-  //   const ctx = canvas.getContext("2d");
+  // function roundedImage(ctx, x, y, width, height, radius) {
+  //   ctx.beginPath();
+  //   ctx.moveTo(x + radius, y);
+  //   ctx.lineTo(x + width - radius, y);
+  //   ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+  //   ctx.lineTo(x + width, y + height - radius);
+  //   ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+  //   ctx.lineTo(x + radius, y + height);
+  //   ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+  //   ctx.lineTo(x, y + radius);
+  //   ctx.quadraticCurveTo(x, y, x + radius, y);
+  //   ctx.closePath();
+  // }
 
-  //   // Read the SVG string using the fromString method
-  //   // of Canvg
-  //   const v = Canvg.fromString(ctx, svg);
+  // const imageSrc = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/157293/i1.jpg";
 
-  //   // Start drawing the SVG on the canvas
-  //   v.start();
+  // document.addEventListener("DOMContentLoaded", () => {
+  //   // round corner canvas' reference
+  //   const roundCornerCanvas = document.getElementById("round-corner");
+  //   const roundCornerCtx = roundCornerCanvas.getContext("2d");
 
-  //   // Convert the Canvas to an image
-  //   const img = canvas.toDataURL("img/png");
-  //   return img;
-  // };
+  //   // circle canvas' reference
+  //   const circleCanvas = document.getElementById("circle");
+  //   const circleCtx = circleCanvas.getContext("2d");
 
-  function loadImage(src) {
-    const image = new Image();
-    image.onload = function () {
-      image.src = src;
-    };
-    image.src = src;
-    return image;
-  }
+  //   const img = new Image();
+
+  //   img.onload = function () {
+  //     // draw image with round corner
+  //     roundCornerCtx.save();
+  //     roundedImage(roundCornerCtx, 20, 20, 260, 260, 10);
+  //     roundCornerCtx.strokeStyle = "#2465D3";
+  //     roundCornerCtx.stroke();
+  //     roundCornerCtx.clip();
+  //     roundCornerCtx.drawImage(img, 20, 20, 260, 260);
+  //     roundCornerCtx.restore();
+
+  //     // draw image with circle shape clip
+  //     circleCtx.save();
+  //     circleCtx.beginPath();
+  //     circleCtx.arc(150, 150, 130, 0, Math.PI * 2, false);
+  //     circleCtx.strokeStyle = "#2465D3";
+  //     circleCtx.stroke();
+  //     circleCtx.clip();
+  //     circleCtx.drawImage(img, 0, 0, 300, 300);
+  //     circleCtx.restore();
+  //   };
+
+  //   img.src = imageSrc;
+  // });
+
   const combineImage = () => {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
@@ -107,23 +131,6 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
   };
   const clickHandler = () => {
     try {
-      // mergeImages([
-      //   { src: img, x: 0, y: 0 },
-      //   { src: faceImg, x: 32, y: 0 },
-      // ]).then((b64) => console.log(b64));
-      // dispatch(setLoader(`Loading`));
-      // toSvg(imgContainer.current, { cacheBust: true }).then(function (svg) {
-      // const image = new Image();
-      // image.src = svg;
-      // const canvas = document.createElement("canvas");
-      // image.onload = function () {
-      //   canvas.width = image.width;
-      //   canvas.height = image.height;
-      //   canvas.getContext("2d").drawImage(image, 0, 0);
-      //   continueToMint(canvas.toDataURL("image/png"));
-      //   dispatch(setLoader(``));
-      // };
-      // });
       combineImage();
     } catch (err) {
       dispatch(
