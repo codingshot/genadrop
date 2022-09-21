@@ -211,16 +211,7 @@ video.cameraShot {
   transition: background 0.2s ease-in-out;
   border: 1px solid var(--main-color);
 }
-.mintBtn.disabled {
-  background: var(--outline-dark);
-  color: white !important;
-  pointer-events: none;
-  border-color: var(--outline-dark);
-}
-.imgBtn .mintBtn:hover {
-  background: var(--default);
-  color: var(--main-color);
-}
+
 .closeBtn {
   position: absolute;
   top: 2rem;
