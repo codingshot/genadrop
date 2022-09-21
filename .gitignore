@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/.openzeppelin
 
 # testing
 /coverage
@@ -25,3 +26,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+out/
+remnant/
+.vscode
+.idea

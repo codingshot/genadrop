@@ -109,6 +109,10 @@
   font-weight: bold;
 }
 
+.priceImg {
+  width: 25px;
+}
+
 .price img {
   transform: translateY(20%);
   margin-right: 10px;
@@ -124,6 +128,6 @@
   padding: 0.5em 1.5em;
   background: var(--main-color);
   color: white;
-  border-radius: 2em;
+  border-radius: 0.7em;
   font-size: 0.85rem;
 }

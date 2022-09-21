@@ -2,7 +2,10 @@ import { createClient, dedupExchange, cacheExchange, fetchExchange, makeOperatio
 import { authExchange } from "@urql/exchange-auth";
 
 export const graphQLClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
   exchanges: [
     dedupExchange,
     cacheExchange,
@@ -20,7 +23,10 @@ export const graphQLClient = createClient({
           case "aurora": {
             const context = {
               ...operation.context,
-              url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
+              url:
+                process.env.REACT_APP_ENV_STAGING === "true"
+                  ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
+                  : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
               fetchOptions: {
                 ...options,
               },
@@ -40,7 +46,10 @@ export const graphQLClient = createClient({
 });
 
 export const graphQLClientPolygon = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
   exchanges: [
     dedupExchange,
     cacheExchange,
@@ -94,5 +103,12 @@ export const celoClient = createClient({
 });
 
 export const auroraClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-aurora-testnet",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
+});
+
+export const nearClient = createClient({
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet",
 });

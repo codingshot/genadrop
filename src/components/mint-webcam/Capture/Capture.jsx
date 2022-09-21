@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext, useEffect, useCallback } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLongPress } from "use-long-press";
 import axios from "axios";
@@ -52,6 +52,8 @@ const Capture = () => {
   const webcamRef = useRef();
   const mediaRecorderRef = useRef();
   const webcamWrapper = useRef();
+  // const canvasRef = useRef();
+  const videoRef = useRef();
 
   const [state, setState] = useState({
     toggle: false,
@@ -71,6 +73,8 @@ const Capture = () => {
     gifGenrating: false,
     webcamCurrentType: "picture",
     trackRecord: false,
+    videoDuration: 0,
+    imgList: [],
   });
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
@@ -89,6 +93,8 @@ const Capture = () => {
     gifGenrating,
     webcamCurrentType,
     trackRecord,
+    videoDuration,
+    imgList,
   } = state;
 
   const handleSetState = (payload) => {
@@ -136,6 +142,7 @@ const Capture = () => {
   // Picture Handler
   const takePicture = () => {
     const imageSrc = webcamRef.current.takePhoto();
+    console.log(imageSrc);
     handleSetState({ img: imageSrc });
   };
   const downloadImg = () => {
@@ -168,6 +175,53 @@ const Capture = () => {
     const blob = new Blob([buffer], { type });
     return new File([blob], fileName, { lastModified: new Date().getTime(), type });
   }
+
+  // Genrate GIF
+  async function getBase64(file) {
+    // console.log(duration);
+    dispatch(setLoader("Generating GIF"));
+    handleSetState({
+      gifGenrating: true,
+    });
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    // reader.onload = function () {
+    axios
+      .post("https://phantaminum.pythonanywhere.com/gif", {
+        urls: imgList,
+        duration: videoDuration / 200,
+      })
+      .then((res) => {
+        const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
+        handleSetState({ gif: gifFile, currenFile: gifFile });
+
+        dispatch(setLoader(""));
+        dispatch(
+          setNotification({
+            message: "GIF generated successfully",
+            type: "success",
+          })
+        );
+        handleSetState({
+          gifGenrating: false,
+        });
+        return res.data.data;
+      })
+      .catch(() => {
+        dispatch(setLoader(""));
+        dispatch(
+          setNotification({
+            message: `Something Went Wrong, Please Try Again`,
+            type: "error",
+          })
+        );
+      });
+    // };
+    // reader.onerror = function (error) {
+    //   console.log("Error: ", error);
+    // };
+  }
+
   // stopwatch, set to 8 sec
   const { seconds, start, stop } = useTimer();
 
@@ -186,6 +240,9 @@ const Capture = () => {
       event.returnValue = false;
       start();
       setCapturing(true);
+      handleSetState({
+        imgList: [],
+      });
       const stream = webcamRef.current.getStream();
       try {
         mediaRecorderRef.current = new MediaRecorder(stream, { mimeType: "video/webm" });
@@ -208,54 +265,6 @@ const Capture = () => {
     [webcamRef, setCapturing, mediaRecorderRef]
   );
 
-  // Genrate GIF
-  function getBase64(file) {
-    dispatch(setLoader("Generating GIF"));
-    handleSetState({
-      gifGenrating: true,
-    });
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function () {
-      console.log(reader.result);
-      axios.post("https://video-to-gif-converter.herokuapp.com/", { url: reader.result }).then((res) => {
-        console.log(res.data.data);
-        const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");
-        handleSetState({ gif: gifFile, currenFile: gifFile });
-
-        dispatch(setLoader(""));
-        dispatch(
-          setNotification({
-            message: "GIF generated successfully",
-            type: "success",
-          })
-        );
-        handleSetState({
-          gifGenrating: false,
-        });
-        return res.data.data;
-      });
-    };
-    reader.onerror = function (error) {
-      console.log("Error: ", error);
-    };
-  }
-
-  // file type switch
-  // useEffect(() => {
-  //   if (activeFile === "gif") {
-  //     if (gif) {
-  //       handleSetState({ currenFile: gif });
-  //     } else {
-  //       getBase64(currenFile);s
-  //     }
-  //   } else if (activeFile === "mp4") {
-  //     handleSetState({
-  //       currenFile: video,
-  //     });
-  //   }
-  // }, [activeFile]);
-
   const handleDownload = React.useCallback(() => {
     if (recordedChunks.length) {
       const type = "video/mp4";
@@ -274,38 +283,47 @@ const Capture = () => {
       handleDownload();
     }
   }, [recordedChunks]);
+
   const handleStopCaptureClick = React.useCallback(() => {
     stop();
     mediaRecorderRef.current.stop();
     setCapturing(false);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
-  const callback = useCallback(() => {
+  const callback = () => {
+    const time = seconds;
+    handleSetState({
+      videoDuration: time,
+    });
     handleStopCaptureClick();
-  }, []);
-
-  // const startRecord = () => {
-  //   if (!trackRecord) {
-  //     handleStartCaptureClick();
-  //     handleSetState({
-  //       trackRecord: !trackRecord,
-  //     });
-  //   } else {
-  //     handleStopCaptureClick();
-  //     handleSetState({
-  //       trackRecord: !trackRecord,
-  //     });
-  //   }
+  };
+  // const startCapture = () => {
+  //   start();
+  //   console.log("start");
+  //   // while (seconds < 500) {
+  //   // const imageSrc = webcamRef.current.takePhoto();
+  //   console.log(seconds);
+  //   // handleSetState({
+  //   //   imgList: [...imgList, imageSrc],
+  //   // });
+  //   // }
+  //   if (seconds) stop();
   // };
 
-  // useEffect(() => {
-  //   if (seconds === 500 && trackRecord) {
-  //     startRecord();
-  //   }
-  // }, [seconds]);
+  useEffect(() => {
+    if (seconds !== 0 && webcamRef.current) {
+      const imageSrc = webcamRef.current.takePhoto();
+      const time = seconds;
+      handleSetState({
+        imgList: [...imgList, imageSrc],
+        videoDuration: time,
+      });
+    }
+  }, [seconds]);
+
   const bind = useLongPress(callback, {
     onStart: handleStartCaptureClick,
-    onCancel: handleStopCaptureClick,
+    onCancel: callback,
     threshold: 5000,
     captureEvent: true,
     cancelOnMovement: false,
@@ -328,15 +346,15 @@ const Capture = () => {
     let name;
     let file;
     if (img) {
-      name = "Image.png";
+      name = "Image";
       const result = getFileFromBase64(img, name, "image/png");
       file = result;
     } else if (activeFile === "gif") {
       file = currenFile;
-      name = "Short.gif";
+      name = "Short";
     } else {
       file = currenFile;
-      name = "video.mp4";
+      name = "video";
     }
     dispatch(
       setZip({
@@ -347,16 +365,56 @@ const Capture = () => {
 
     history.push("/mint/1of1");
   };
+  console.log(seconds);
+  // file type switch
+  // useEffect(() => {
+  //   if (activeFile === "gif") {
+  //     if (gif) {
+  //       handleSetState({ currenFile: gif });
+  //     } else {
+  //       getBase64(currenFile);s
+  //     }
+  //   } else if (activeFile === "mp4") {
+  //     handleSetState({
+  //       currenFile: video,
+  //     });
+  //   }
+  // }, [activeFile]);
 
+  // const capture = () => {
+  //   const v = videoRef.current;
+  //   const { duration } = v;
+  //   const totalSecond = parseInt(duration, 10);
+  //   Array(totalSecond + 1)
+  //     .fill(null)
+  //     .forEach((_, index) => {
+  //       setTimeout(() => {
+  //         v.currentTime = index;
+  //         const canvasRef = document.createElement("canvas");
+  //         canvasRef.width = videoRef.current.videoWidth;
+  //         canvasRef.height = videoRef.current.videoHeight;
+  //         canvasRef
+  //           .getContext("2d")
+  //           .drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
+  //         const newCanvas = document.createElement("canvas");
+  //         const newCtx = newCanvas.getContext("2d");
+  //         newCtx.drawImage(videoRef.current, 0, 0, videoRef.current.videoWidth, videoRef.current.videoHeight);
+  //         console.log("dataUrl", newCanvas.toDataURL());
+  //       }, index * 1000);
+  //     });
+
+  // canvasRef.current.toBlob((blob) => {
+  //   const img = new Image();
+  //   img.setAttribute('crossorigin', 'anonymous');
+  //   img.src = window.URL.createObjectUrl(blob);
+  // })
+  // };
   return (
     <div className={`${classes.container}`}>
       <WebcamEnable toggle={toggle} getVideo={getVideo} />
 
       {img || gif || video ? (
-        <div
-          className={classes.cameraWrapper}
-          // className={(!img || !gif) && classes.none}
-        >
+        <div className={classes.cameraWrapper}>
           <div
             onClick={() => {
               handleSetState({
@@ -374,7 +432,8 @@ const Capture = () => {
           {gif ? (
             <img className={`${classes.cameraShot}`} src={URL.createObjectURL(gif)} alt="camera-shot" />
           ) : video ? (
-            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} loop />
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} ref={videoRef} loop />
           ) : (
             <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
           )}

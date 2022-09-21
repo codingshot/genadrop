@@ -1,6 +1,6 @@
 .container table {
-  border: 1px solid #f3f4f7;
-  width: 97%;
+  border: 1px solid #e5e8eb;
+  width: 98%;
   margin: 0.5rem;
   border-collapse: separate;
   border-spacing: 0;
@@ -10,14 +10,14 @@
   font-size: 12px;
 }
 
-th {
+.table tr:first-child {
   font-size: 10px;
-  background-color: #f3f4f7;
+  background-color: #e5e8eb;
 }
 
 td,
 th {
-  border-top: 1px solid #f3f4f7;
+  border-top: 1px solid #e5e8eb;
   text-align: center;
   padding: 10px;
 }

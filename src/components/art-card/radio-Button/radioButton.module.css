@@ -1,0 +1,25 @@
+.container {
+  border: 2px solid var(--outline-dark);
+  width: 1.2em;
+  height: 1.2em;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container.active {
+  border-color: var(--main-color);
+}
+
+.dot {
+  display: none;
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  background: var(--main-color);
+}
+
+.container.active .dot {
+  display: block;
+}

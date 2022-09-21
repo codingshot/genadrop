@@ -1,17 +1,19 @@
 .sidebar {
-  border-right: 1px solid var(--outline);
+  border: 1px solid var(--card-outline);
   width: 100%;
   max-width: 20em;
   position: sticky;
   top: 5em;
-  border-top-left-radius: 1em;
-  border-bottom-left-radius: 1em;
 }
 
 .sideOverflowWrapper {
   width: 100%;
   height: calc(100vh - 5.5em);
   overflow: auto;
+}
+
+.label {
+  font-size: 12px;
 }
 
 .filterHeading {
@@ -21,6 +23,7 @@
   padding: 1em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
+  border-bottom: 1px solid var(--card-outline);
 }
 
 .filterHeading:hover {
@@ -43,6 +46,16 @@
   height: 1em;
 }
 
+.sort,
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  padding: 0.5em 1em;
+  text-transform: capitalize;
+}
+
 .attributeFilter .title {
   display: flex;
   align-items: center;
@@ -51,46 +64,6 @@
   padding: 1em;
   border-bottom: 2px solid var(--outline);
   border-top: 2px solid var(--outline);
-}
-
-.statusFilter {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em;
-  padding-bottom: 1.5em;
-}
-
-.toggleButton {
-  background: var(--text-placeholder);
-  display: inline-block;
-  width: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border-radius: 0.75em;
-  cursor: var(--cursor-pointer);
-  padding: 2px;
-  border: 1px solid transparent;
-  transition: all 300ms;
-}
-
-.toggleButton.active {
-  background: var(--main-lighter);
-  border: 1px solid var(--main-lighter);
-}
-
-.toggleButton.active .toggle {
-  transform: translateX(23px);
-  background: var(--main-color);
-}
-
-.toggleButton .toggle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  transition: all 300ms;
-  background: var(--default);
 }
 
 .priceFilter {
@@ -159,9 +132,15 @@
   align-items: center;
   justify-content: space-between;
   cursor: var(--cursor-pointer);
-  padding: 1em;
+  padding: 0.5em;
   border-radius: 0.25em;
   border: 1px solid var(--outline);
+}
+
+.attributeName {
+  max-width: 10em;
+  overflow: auto;
+  white-space: nowrap;
 }
 
 .layerIcon {
@@ -194,18 +173,6 @@
   transform: translateY(4px);
 }
 
-.layer > div {
-  border: 1px solid white;
-  padding: 0.5em 0.25em;
-  background: var(--main-lightest);
-  border-radius: 0.25em;
-}
-
-.layer > div:hover {
-  background: var(--outline);
-  cursor: var(--cursor-hover);
-}
-
 .value {
   cursor: var(--cursor-pointer);
   overflow: auto;
@@ -214,18 +181,33 @@
   align-items: center;
   justify-content: flex-start;
   gap: 0.5em;
+  padding: 0.25em;
+  border-radius: 0.25em;
+}
+
+.value:hover {
+  background: var(--outline);
+  cursor: pointer;
 }
 
 .statusIcon {
-  width: 16px;
-  height: 16px;
+  width: 1.4em;
+  height: 1.2em;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.15em;
+  border-radius: 0.2em;
   background: var(--default);
-  color: var(--outline-dark);
-  border: 1px solid var(--outline-dark);
+  border: 1px solid var(--card-outline);
+}
+
+.statusIcon.active {
+  background: var(--main-color);
+  border: 1px solid var(--main-color);
+}
+
+.markIcon {
+  fill: var(--default);
 }
 
 .sidebar2 {
@@ -246,10 +228,16 @@
   padding: 1em;
   transition: all 300ms;
 }
+
 .valuesOfAttr {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.attributeValue {
+  width: 7em;
+  overflow: auto;
 }
 
 .sidebar2 img:hover {

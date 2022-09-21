@@ -1,14 +1,5 @@
 import React, { useContext, useEffect, useRef } from "react";
-import {
-  setImageQuality,
-  setOverlay,
-  setMintAmount,
-  setNftLayers,
-  setNotification,
-  setLoader,
-  setToggleUpgradeModal,
-  setLayerAction,
-} from "../../gen-state/gen.actions";
+import { setImageQuality, setOverlay, setMintAmount, setToggleUpgradeModal } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
@@ -17,7 +8,7 @@ import CollectionPreview from "../preview/collection-preview";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
-import { handleGenerate, packLayers } from "./collection-description-script";
+import { handleGenerate } from "./collection-description-script";
 import { plans } from "../../pages/Pricing/Pricing.script";
 
 const CollectionDescription = () => {
@@ -32,12 +23,10 @@ const CollectionDescription = () => {
     collectionName,
     imageQuality,
     currentPlan,
-    preNftLayers,
-    layerAction,
   } = useContext(GenContext);
   const canvasRef = useRef(null);
   const [state, setState] = useState({
-    selectInputValue: 0.5,
+    selectInputValue: 1,
     amountInputValue: "",
   });
   const { selectInputValue, amountInputValue } = state;
@@ -78,25 +67,8 @@ const CollectionDescription = () => {
 
   useEffect(() => {
     dispatch(setOverlay(false));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (combinations) {
-      dispatch(setMintAmount(combinations - rule.length ? parseInt(combinations - rule.length) : 0));
-    }
-  }, [combinations]);
-
-  useEffect(() => {
-    if (layerAction.type === "loadPreNftLayers") {
-      console.log("called preNftLayers");
-      packLayers({ ...generateProps, preNftLayers });
-      dispatch(
-        setLayerAction({
-          type: "",
-        })
-      );
-    }
-  }, [preNftLayers, layerAction]);
+    handleSetState({ amountInputValue: mintAmount });
+  }, []);
 
   const ripple = window.sessionStorage.ripple;
 
@@ -115,10 +87,10 @@ const CollectionDescription = () => {
       <div className={classes.combinations_amount}>
         <div className={classes.combinations}>
           <div className={classes.title}>
-            <span>Possible Combinations</span>
+            <span>Combinations</span>
             {/* <GenadropToolTip content={"The maximum number of arts the uploaded assets can generate"} fill="#3d3d3d" /> */}
           </div>
-          <div className={classes.count}>{combinations - rule.length}</div>
+          <div className={classes.count}>{combinations}</div>
         </div>
 
         <div className={classes.amount}>

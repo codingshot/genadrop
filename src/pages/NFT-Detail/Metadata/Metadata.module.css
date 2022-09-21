@@ -1,0 +1,32 @@
+.container {
+  width: 50%;
+}
+
+.heading {
+  font-weight: 600;
+  font-size: 1.5rem;
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  background: #f5f6f7;
+  border-radius: 10px 10px 0px 0px;
+}
+
+.content {
+  height: 32em;
+  overflow: auto;
+  background-color: #282a36;
+}
+
+.content * {
+  color: var(--text-placehoder);
+  font-size: 0.8rem;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: none;
+  }
+}

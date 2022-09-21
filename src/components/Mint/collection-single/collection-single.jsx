@@ -11,6 +11,7 @@ import Minter from "../minter/minter";
 import line from "../../../assets/icon-line.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setMinter, setZip } from "../../../gen-state/gen.actions";
+import { NearErrorPop, NearSuccessPopup } from "../popup/nearMintPopup";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
@@ -31,9 +32,14 @@ const CollectionToSingleMinter = () => {
     fileName: "",
     metadata: null,
     zip: null,
+    popupProps: {
+      isError: false,
+      Popup: false,
+      url: "",
+    },
   });
 
-  const { mintType, loading1, loading2, acceptedFileType, file, fileName, metadata, zip } = state;
+  const { mintType, loading1, loading2, acceptedFileType, file, fileName, metadata, zip, popupProps } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -54,6 +60,27 @@ const CollectionToSingleMinter = () => {
   const handleImageLoading2 = () => {
     handleSetState({ loading2: true });
   };
+
+  useEffect(() => {
+    const search = new URL(document.location).searchParams;
+    if (search.get("errorCode")) {
+      handleSetState({
+        popupProps: {
+          isError: true,
+          Popup: true,
+        },
+      });
+    }
+    if (search.get("transactionHashes")) {
+      handleSetState({
+        popupProps: {
+          isError: false,
+          Popup: true,
+          url: search.get("transactionHashes"),
+        },
+      });
+    }
+  }, []);
 
   const handleFileChange = (event) => {
     handleSetState({ fileName: "", file: null, metadata: null, zip: null });
@@ -78,7 +105,19 @@ const CollectionToSingleMinter = () => {
       handleSetState({ fileName: zipObg.name, zip: zipObg.file, file: null, metadata: null });
       handleZipFile({ uploadedFile: zipObg.file, handleSetState });
     } else {
-      handleSetState({ fileName: zipObg.name, file: [zipObg.file], metadata: null, zip: null });
+      const category = zipObg.file.type === "image/png" ? "Photography" : "Shorts";
+      console.log(zipObg.file.type);
+      handleSetState({
+        fileName: zipObg.name,
+        file: [zipObg.file],
+        metadata: {
+          attributes: {
+            0: { trait_type: "File Type", value: zipObg.file.type },
+            1: { trait_type: "Category", value: category },
+          },
+        },
+        zip: null,
+      });
     }
     dispatch(setZip({}));
   };
@@ -124,7 +163,10 @@ const CollectionToSingleMinter = () => {
   return (
     <div ref={dragRef} className={classes.container}>
       {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
-
+      {popupProps.isError && <NearErrorPop handleSetState={handleSetState} popupProps={popupProps} />}
+      {!popupProps.isError && popupProps.Popup && (
+        <NearSuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
+      )}
       <>
         <Link to="/mint" className={classes.goBack}>
           <BackIcon className={classes.backIcon} />

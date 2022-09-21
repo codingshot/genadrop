@@ -1,8 +1,7 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
-import { doc, getDoc } from "firebase/firestore";
-import { query, where, getDocs } from "firebase/firestore";
+import { doc, getDoc, query, where, getDocs, onSnapshot, collection } from "firebase/firestore";
 
 // const {
 //   getDatabase,
@@ -122,7 +121,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
 
 async function writeUserProfile(userObj, user) {
   try {
-    let lendy = await db
+    const lendy = await db
       .collection("profile")
       .doc(`${user}`)
       .set(
@@ -212,13 +211,40 @@ async function readSIngleUserNft(userAddress, assetId) {
 }
 
 async function readUserProfile(userAddress) {
-  const docRef = doc(db, "profile", userAddress);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data();
+  try {
+    const docRef = doc(db, "profile", userAddress);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      return {};
+    }
+  } catch (error) {
+    return {};
   }
   // doc.data() will be undefined in this case
-  return {};
+}
+async function readUsers() {
+  const profileQuerySnapshot = await db.collection("profile").get();
+
+  const nftsQuerySnapshot = await db.collection("nfts").get();
+  const users = [];
+  const nfts = [];
+  try {
+    nftsQuerySnapshot.forEach((docs) => {
+      nfts.push(...Object.values(docs.data()));
+    });
+    profileQuerySnapshot.forEach((docs) => {
+      users.push(...Object.values(docs.data()));
+    });
+    // const response = res.filter((asset) => asset.owner === account);
+    console.log(users);
+    console.log(nfts);
+    return users;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
 }
 
 async function fetchAlgoSingle(mainnet) {
@@ -354,4 +380,5 @@ export {
   writeUserProfile,
   listNft,
   fetchUserCreatedNfts,
+  readUsers,
 };

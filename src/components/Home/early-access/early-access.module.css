@@ -1,58 +1,77 @@
 .container {
   width: 100%;
-  padding: 0 1em;
+  padding: 0em 4em;
   margin-bottom: 6em;
 }
 
 .wrapper {
-  background: var(--main-lightest);
-  color: var(--main-color);
-  border-radius: 10px;
+  width: 100%;
+  max-width: max-content;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.625rem 1.8rem;
-  width: fit-content;
-  margin: auto;
+  padding: 1.5em;
+  gap: 1em;
+  margin: 0 auto;
+  color: var(--main-color);
+  background: #f2f7ff;
 }
 
-.wrapper div svg {
-  margin-right: 0.5rem;
-  min-width: 26px;
+.wrapper p {
+  font-size: 1.5rem;
+  color: var(--text-sub-heading);
 }
-.wrapper a svg {
-  margin-left: 1.25rem;
-  transition: 0.2s ease-in;
+
+.wrapper svg {
+  width: 1.5em;
+  transition: 300ms;
+  fill: var(--text-sub-heading);
 }
-.wrapper a svg:hover {
-  transform: translate(6px, 0px);
+
+.wrapper:hover svg:last-child {
+  transform: translateX(25%);
 }
-.wrapper div {
-  width: 100%;
-  align-items: center;
-  display: flex;
-}
-.wrapper div p {
-  margin: auto;
-  font-family: "Roboto", sans-serif;
-  font-weight: 400;
-  font-size: 1.25em;
-}
-.hidden {
-  display: none;
-}
-.wrapper a {
-  display: flex;
-  align-items: center;
-}
-@media screen and (max-width: 988px) {
-  .wrapper div p {
-    font-size: 16px;
+
+@media screen and (max-width: 1200px) {
+  .container {
+    padding: 0 2em;
+  }
+
+  .wrapper p {
+    font-size: 1.2rem;
+  }
+
+  .wrapper svg {
+    width: 1.2em;
   }
 }
 
 @media screen and (max-width: 900px) {
-  .wrapper {
+  .container {
+    padding: 0 2em;
+  }
+
+  .wrapper p {
+    font-size: 1.2rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .container {
+    padding: 0 1em;
     margin-bottom: 4em;
+  }
+
+  .wrapper {
+    padding: 0.5em;
+  }
+
+  .wrapper svg {
+    width: 3em;
+    transition: 300ms;
+  }
+
+  .wrapper p {
+    font-size: 1rem;
   }
 }

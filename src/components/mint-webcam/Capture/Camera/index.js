@@ -153,14 +153,16 @@ var Camera = React.forwardRef(function (_a, ref) {
           canvas.current.width = sW;
           canvas.current.height = sH;
           var context = canvas.current.getContext("2d");
-
-          context.translate(canvas.current.width, 0);
-          context.scale(-1, 1);
+          if (currentFacingMode === "user") {
+            context.translate(canvas.current.width, 0);
+            context.scale(-1, 1);
+          }
 
           if (context && ((_k = player) === null || _k === void 0 ? void 0 : _k.current)) {
             context.drawImage(player.current, sX, sY, sW, sH, 0, 0, sW, sH);
+            // context.drawImage(player.current, 0, 0, sW, sH);
           }
-          var imgData = canvas.current.toDataURL("image/jpeg");
+          var imgData = canvas.current.toDataURL("image/jpeg", 0.2);
           return imgData;
         } else {
           throw new Error(errorMessages.canvas);

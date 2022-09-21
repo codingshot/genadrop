@@ -14,7 +14,6 @@ import {
   setLayers,
   setNftLayers,
   setOverlay,
-  setPreNftLayers,
   setSession,
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
@@ -29,10 +28,9 @@ import { handleResetCreate } from "../../utils";
 const Session = () => {
   const history = useHistory();
   const [dropdownId, setDropdown] = useState(-1);
-  const [noResult, toggleNotResult] = useState(null);
+  const [noResult, toggleNoResult] = useState(null);
 
-  const { dispatch, currentUser, sessions, isUser, currentPlan } = useContext(GenContext);
-
+  const { dispatch, currentUser, sessions, currentPlan } = useContext(GenContext);
   const handleLoad = async (sessionId, plan) => {
     console.log("fetch starts");
     handleResetCreate({ dispatch });
@@ -42,7 +40,6 @@ const Session = () => {
       dispatch(setCurrentPlan(plan));
       dispatch(setLayers(res.layers));
       dispatch(setNftLayers(res.nftLayers));
-      dispatch(setPreNftLayers(res.preNftLayers));
       dispatch(setCollectionName(res.collectionName));
       dispatch(addRule(res.rules));
       dispatch(setCurrentSession(sessionId));
@@ -51,10 +48,10 @@ const Session = () => {
           type: "loadPreNftLayers",
         })
       );
+      dispatch(setOverlay(false));
+      console.log("fetch ends");
       history.push("/create");
     }
-    dispatch(setOverlay(false));
-    console.log("fetch ends");
   };
 
   const handleDelete = async (sessionId) => {
@@ -64,10 +61,9 @@ const Session = () => {
     const sessions = await fetchSession({ currentUser });
     dispatch(setSession(sessions));
     if (!sessions.length) {
-      toggleNotResult("true");
-      dispatch(setCurrentPlan("free"));
+      toggleNoResult("true");
+      // dispatch(setCurrentPlan("free"));
       if (currentPlan !== "free") {
-        console.log("reset");
         handleResetCreate({ dispatch });
       }
     }
@@ -80,10 +76,10 @@ const Session = () => {
     history.push("/create/session/pricing");
   };
 
-  const handleUpgrade = () => {
-    dispatch(setUpgradePlan(true));
-    history.push("/create/session/pricing");
-  };
+  // const handleUpgrade = () => {
+  //   dispatch(setUpgradePlan(true));
+  //   history.push("/create/session/pricing");
+  // };
 
   const handleDropdown = (id) => {
     if (id === dropdownId) return setDropdown(-1);
@@ -97,10 +93,10 @@ const Session = () => {
         const sessions = await fetchSession({ currentUser });
         dispatch(setOverlay(false));
         if (sessions.length) {
-          toggleNotResult("false");
+          toggleNoResult("false");
           dispatch(setSession(sessions));
         } else {
-          toggleNotResult("true");
+          toggleNoResult("true");
         }
       } catch (error) {
         console.log(error);
@@ -110,10 +106,11 @@ const Session = () => {
   }, [currentUser]);
 
   useEffect(() => {
-    if (isUser === "true") return;
+    if (currentUser) return;
     getCurrentUser({ dispatch });
   }, []);
 
+  // return null
   return (
     <div className={classes.container}>
       <div onClick={() => history.goBack()} className={classes.backBtnContainer}>
@@ -161,7 +158,7 @@ const Session = () => {
                       <div className={`${classes.sessionDropdown} ${dropdownId === idx && classes.active}`}>
                         <div className={classes.cost}>
                           <div className={classes.title}>cost per session</div>
-                          {/* <div className={classes.amount}>${plans[session.currentPlan].price}</div> */}
+                          <div className={classes.amount}>${plans[session.currentPlan].price}</div>
                         </div>
                         <div className={classes.services}>
                           {plans[session.currentPlan].services.map(({ name, available }, idx) => (
@@ -175,9 +172,9 @@ const Session = () => {
                             </div>
                           ))}
                         </div>
-                        <div className={classes.upgradeBtnContainer}>
+                        {/* <div className={classes.upgradeBtnContainer}>
                           <button onClick={handleUpgrade}>Upgrade plan</button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   ))}

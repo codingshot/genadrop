@@ -8,6 +8,7 @@ import {
   setOverlay,
   setNotification,
   setMinter,
+  setToggleWalletPopup,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
@@ -26,7 +27,6 @@ import { initConnectWallet } from "../../wallet/wallet-script";
 const Minter = () => {
   const history = useHistory();
   const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
-
   if (!minter) {
     history.push("/mint");
     return null;
@@ -34,13 +34,13 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
+    attributes: metadata?.attributes
+      ? metadata?.attributes
+      : { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
-    price: "",
     chain: null,
     preview: false,
-    dollarPrice: 0,
     collectionProfile: "",
     toggleGuide: false,
     toggleDropdown: false,
@@ -56,10 +56,8 @@ const Minter = () => {
     attributes,
     fileName,
     description,
-    price,
     chain,
     preview,
-    dollarPrice,
     collectionProfile,
     toggleGuide,
     toggleDropdown,
@@ -79,10 +77,8 @@ const Minter = () => {
     connector,
     file: zip,
     fileName,
-    price,
     mainnet,
     chain: chain?.chain,
-    dollarPrice,
   };
 
   const singleMintProps = {
@@ -100,23 +96,11 @@ const Minter = () => {
       attributes: Object.values(attributes),
     },
     fileName,
-    price,
     mainnet,
     chain: chain?.chain,
-    dollarPrice,
   };
-
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
-  };
-
-  const getUintByChain = {
-    algorand: "Algo",
-    celo: "CGLD",
-    polygon: "Matic",
-    "polygon testnet": "Matic",
-    "aurora testnet": "ETH",
-    aurora: "ETH",
   };
 
   const handleAddAttribute = () => {
@@ -157,10 +141,6 @@ const Minter = () => {
     history.push("/mint");
   };
 
-  const handlePrice = (event) => {
-    handleSetState({ price: event.target.value > 0 ? event.target.value : "" });
-  };
-
   const handleSetFileState = () => {
     console.log("handleSetFileState");
   };
@@ -180,19 +160,11 @@ const Minter = () => {
         })
       );
     }
-    if (!parseInt(price)) {
-      return dispatch(
-        setNotification({
-          message: "enter a valid price",
-          type: "warning",
-        })
-      );
-    }
     if (file.length > 1) {
       if (!mintProps.description) {
         return dispatch(
           setNotification({
-            message: "fill out the required fields",
+            message: "fill in the required fields",
             type: "warning",
           })
         );
@@ -230,7 +202,9 @@ const Minter = () => {
       dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
-        if (typeof url === "object") {
+        if (singleMintProps.chain.toLowerCase() === "near") {
+          return;
+        } else if (typeof url === "object") {
           handleSetState({
             popupProps: {
               url: url.message,
@@ -253,6 +227,7 @@ const Minter = () => {
 
   const handleConnectFromMint = (props) => {
     handleSetState({ toggleDropdown: false });
+    dispatch(setToggleWalletPopup(true));
     dispatch(
       setConnectFromMint({
         chainId: props.networkId,
@@ -263,19 +238,10 @@ const Minter = () => {
 
   useEffect(() => {
     if (chainId) {
-      const c = supportedChains[chainId];
-      handleSetState({ chain: c });
-      if (c.symbol === "AURORA") {
-        axios.get("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd").then((res) => {
-          handleSetState({ dollarPrice: price * res.data.ethereum.usd });
-        });
-      } else {
-        axios.get(`https://api.coinbase.com/v2/prices/${c.symbol}-USD/spot`).then((res) => {
-          handleSetState({ dollarPrice: price * res.data.data.amount });
-        });
-      }
+      handleSetState({ chain: supportedChains[chainId] });
     }
-  }, [price, chainId]);
+  }, [chainId]);
+
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -348,7 +314,7 @@ const Minter = () => {
                     Title <span className={classes.required}>*</span>
                   </label>
                   <input
-                    style={metadata ? { pointerEvents: "none" } : {}}
+                    style={zip ? { pointerEvents: "none" } : {}}
                     type="text"
                     value={fileName}
                     onChange={(event) => handleSetState({ fileName: event.target.value })}
@@ -373,7 +339,7 @@ const Minter = () => {
 
                 <div className={classes.inputWrapper}>
                   <label>Attributes</label>
-                  {!metadata ? (
+                  {!zip ? (
                     <>
                       <div className={classes.attributes}>
                         {Object.keys(attributes).map((key, index) => (
@@ -469,20 +435,6 @@ const Minter = () => {
                         </div>
                       ))}
                   </div>
-
-                  <br />
-                  <label>
-                    List Price ({getUintByChain[chain?.label.toLowerCase()]}){" "}
-                    <span className={classes.required}>*</span>
-                  </label>
-                  {chainId ? (
-                    <div className={classes.price}>
-                      <input type="number" min="0" value={price} onChange={handlePrice} />
-                      <span>{dollarPrice.toFixed(4)} USD</span>
-                    </div>
-                  ) : (
-                    <span className={classes.warn}>Connect wallet to add price</span>
-                  )}
                 </div>
               </section>
 

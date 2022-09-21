@@ -3,13 +3,16 @@
 
 pragma solidity ^0.8.0;
 
-import "./openzeppelin/IERC1155.sol";
-import "./openzeppelin/IERC1155Receiver.sol";
-import "./openzeppelin/IERC1155MetadataURI.sol";
-import "./openzeppelin/Address.sol";
-import "./openzeppelin/ERC165.sol";
-import "./openzeppelin/Context.sol";
-import "./openzeppelin/Strings.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/common/ERC2981Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/IERC1155ReceiverUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC1155/extensions/IERC1155MetadataURIUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
+
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
 /**
  * @dev Implementation of the basic standard multi-token.
@@ -18,15 +21,21 @@ import "./openzeppelin/Strings.sol";
  *
  * _Available since v3.1._
  */
-contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
-    using Address for address;
-    using Strings for uint;
-    
+contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeable, ERC2981Upgradeable, IERC1155Upgradeable, IERC1155MetadataURIUpgradeable {
+    using AddressUpgradeable for address;
+    using StringsUpgradeable for uint;
     string private _name;
     string private _symbol;
     address private _owner;
 
     event CollectionInit(address collectionAddress, address indexed collectionOwner, string collectionName);
+
+    event TransferBatch(
+        address indexed operator,
+        address indexed from,
+        address indexed to,
+        uint256[] ids
+    );
 
     // Mapping from token ID to account balances
     mapping(uint256 => mapping(address => uint256)) private _balances;
@@ -48,14 +57,18 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
      * use msg.sender as deployer
 
      */
-    constructor(string memory name_, string memory symbol_, address deployer) {
+
+
+    function initialize(string memory name_, string memory symbol_, address deployer) initializer public{
         _owner = deployer;
         _name = name_;
         _symbol = symbol_;
         emit CollectionInit(address(this), deployer, _name);
-
     }
     
+    function _authorizeUpgrade(address newImplementation) internal onlyOwner override{
+        // can add required upgrade access control here
+    }
     /**
      * @dev Returns the address of the current owner.
      */
@@ -140,10 +153,10 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165, IERC165) returns (bool) {
+    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165Upgradeable, ERC2981Upgradeable, IERC165Upgradeable) returns (bool) {
         return
-            interfaceId == type(IERC1155).interfaceId ||
-            interfaceId == type(IERC1155MetadataURI).interfaceId ||
+            interfaceId == type(IERC1155Upgradeable).interfaceId ||
+            interfaceId == type(IERC1155MetadataURIUpgradeable).interfaceId ||
             super.supportsInterface(interfaceId);
     }
 
@@ -511,8 +524,8 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
         bytes memory data
     ) private {
         if (to.isContract()) {
-            try IERC1155Receiver(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
-                if (response != IERC1155Receiver.onERC1155Received.selector) {
+            try IERC1155ReceiverUpgradeable(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
+                if (response != IERC1155ReceiverUpgradeable.onERC1155Received.selector) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
             } catch Error(string memory reason) {
@@ -532,10 +545,10 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
         bytes memory data
     ) private {
         if (to.isContract()) {
-            try IERC1155Receiver(to).onERC1155BatchReceived(operator, from, ids, amounts, data) returns (
+            try IERC1155ReceiverUpgradeable(to).onERC1155BatchReceived(operator, from, ids, amounts, data) returns (
                 bytes4 response
             ) {
-                if (response != IERC1155Receiver.onERC1155BatchReceived.selector) {
+                if (response != IERC1155ReceiverUpgradeable.onERC1155BatchReceived.selector) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
             } catch Error(string memory reason) {
@@ -552,4 +565,27 @@ contract NftMinter is Context, ERC165, IERC1155, IERC1155MetadataURI {
 
         return array;
     }
+
+    function setDefaultRoyalty(address receiver, uint96 feeNumerator) public onlyOwner{
+        _setDefaultRoyalty(receiver, feeNumerator);
+    }
+
+    function deleteDefaultRoyalty() public onlyOwner {
+        _deleteDefaultRoyalty();
+    }
+
+
+    function setTokenRoyalty(
+        uint256 tokenId,
+        address receiver,
+        uint96 feeNumerator
+    ) public onlyOwner {
+        _setTokenRoyalty(tokenId, receiver, feeNumerator);
+    }
+
+    function resetTokenRoyalty(uint256 tokenId) public onlyOwner {
+        _resetTokenRoyalty(tokenId);
+    }
+
+    uint256[47] private __gap;
 }

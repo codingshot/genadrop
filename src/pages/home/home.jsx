@@ -5,23 +5,25 @@ import Review from "../../components/Home/Review/Review";
 import FAQ from "../../components/Home/FAQ/FAQ";
 import Orgs from "../../components/Home/Orgs/Orgs";
 import classes from "./home.module.css";
-import Docs from "../../components/Home/Docs/Docs";
 import GenadropCreatedNFTs from "../../components/Home/Genadrop-Created-NFTs/GenadropCreatedNFTs";
 import CameraMint from "../../components/Home/Camera-Mint/CameraMint";
-import JoinDiscord from "../../components/Home/Join-Discord/JoinDiscord";
 import EarlyAccess from "../../components/Home/early-access/early-access";
+import Plans from "../../components/Home/Plans/Plans";
+import JoinDiscord from "../../components/Home/Join-Discord/JoinDiscord";
+import Media from "../../components/Media/Media";
 
 const Home = () => (
   <div className={classes.container}>
     <Banner />
-    <EarlyAccess />
     <Orgs />
-    <GenadropCreatedNFTs />
+    <EarlyAccess />
     <CameraMint />
     <Features />
-    <Docs />
+    <Plans />
+    <GenadropCreatedNFTs />
     <Review />
     <JoinDiscord />
+    <Media />
     <FAQ />
   </div>
 );

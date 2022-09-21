@@ -7,10 +7,11 @@ import {
   mintToAurora,
   mintSingleToCelo,
   mintSingleToAurora,
+  mintSingleToNear,
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
-  const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
+  const { account, chain, dispatch, setNotification, setLoader } = args;
   if (!account) {
     return dispatch(
       setNotification({
@@ -68,6 +69,8 @@ export const handleSingleMint = async (args) => {
       url = await mintSingleToPoly({ ...args });
     } else if (chain.toLowerCase() === "aurora") {
       url = await mintSingleToAurora({ ...args });
+    } else if (chain.toLowerCase() === "near") {
+      url = await mintSingleToNear({ ...args });
     } else {
       dispatch(
         setNotification({
@@ -77,6 +80,7 @@ export const handleSingleMint = async (args) => {
       );
     }
     dispatch(setLoader(""));
+    console.log("__________________this is the final url________________", url);
     return url;
   } catch (error) {
     console.error("error: ==========>", error);

@@ -102,8 +102,9 @@ li {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: sans-serif !important;
+  font-family: sans-serif;
   color: var(--text-heading);
+  line-height: 1.5em;
 }
 
 a {
@@ -115,6 +116,7 @@ a {
 .App {
   width: 100%;
   cursor: var(--cursor-default);
+  position: relative;
 }
 
 .App * {

@@ -21,7 +21,12 @@ import { readNftTransaction } from "../../../utils/firebase";
 import algoLogo from "../../../assets/icon-algo.svg";
 import { setNotification } from "../../../gen-state/gen.actions";
 import supportedChains from "../../../utils/supportedChains";
-import { auroraUserData, celoUserData, polygonUserData } from "../../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraUserData,
+  celoUserData,
+  nearUserData,
+  polygonUserData,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const ListSingleNFT = (nft) => {
   const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
@@ -107,7 +112,7 @@ const ListSingleNFT = (nft) => {
 
   useEffect(() => {
     if (Number(nftChainId) !== 4160) return;
-    let nftDetails = singleAlgoNfts[nftId];
+    const nftDetails = singleAlgoNfts[nftId];
     if (nftDetails) {
       // window.localStorage.activeAlgoNft = JSON.stringify(nftDetails);
       (async function getNftDetails() {
@@ -125,12 +130,12 @@ const ListSingleNFT = (nft) => {
   }, [singleAlgoNfts]);
 
   useEffect(() => {
-    if (Number(nftChainId) === 4160) return;
+    if (supportedChains[Number(nftChainId)].chain === "Algorand") return;
     (async function getNftDetails() {
       try {
         // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
 
-        if (Number(nftChainId) === 80001 || Number(nftChainId) === 137) {
+        if (supportedChains[Number(nftChainId)].chain === "Polygon") {
           const [polygonData, trHistory] = await polygonUserData(nftId);
           if (!polygonData) return history.goBack();
           handleSetState({
@@ -138,7 +143,7 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === supportedChains[nftChainId].networkId) {
+        } else if (supportedChains[Number(nftChainId)].chain === "Aurora") {
           const [auroraData, trHistory] = await auroraUserData(nftId);
           if (!auroraData) return history.goBack();
           handleSetState({
@@ -146,11 +151,19 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
-        } else if (Number(nftChainId) === 44787 || Number(nftChainId) === 42220) {
+        } else if (supportedChains[Number(nftChainId)].chain === "Celo") {
           const [celoData, trHistory] = await celoUserData(nftId);
           if (!celoData) return history.goBack();
           handleSetState({
             nftDetails: celoData,
+            isLoading: false,
+            transactionHistory: trHistory,
+          });
+        } else if (supportedChains[Number(nftChainId)].chain === "Near") {
+          const [nearData, trHistory] = await nearUserData(nftId);
+          if (!nearData) return history.goBack();
+          handleSetState({
+            nftDetails: nearData,
             isLoading: false,
             transactionHistory: trHistory,
           });
@@ -163,10 +176,14 @@ const ListSingleNFT = (nft) => {
   }, []);
 
   useEffect(() => {
-    const pair = supportedChains[nftDetails?.chain]?.coinGeckoLabel;
+    console.log(supportedChains[nftDetails?.chain]?.chain);
+  }, [nftDetails]);
+
+  useEffect(() => {
+    const pair = supportedChains[nftDetails?.chain]?.id;
     if (Number(nftChainId) !== 4160 && pair) {
       axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        let value = Object.values(res.data)[0].usd;
+        const value = Object.values(res.data)[0]?.usd;
         handleSetState({
           chainIcon: supportedChains[nftDetails.chain].icon,
           algoPrice: value,
@@ -256,7 +273,6 @@ const ListSingleNFT = (nft) => {
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
           <img className={classes.nft} src={nftDetails.image_url} alt="" />
-
           <div className={classes.feature}>
             <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
@@ -288,22 +304,36 @@ const ListSingleNFT = (nft) => {
               </div>
             </div>
             <div className={classes.priceSection}>
-              <span className={classes.title}>Owned by you</span>
+              {nftDetails?.owner === account && <span className={classes.title}>Owned by you</span>}
             </div>
             <div className={classes.btns}>
-              <Link
-                to={
-                  nft.collection_name
-                    ? `${match.url}/${nftDetails.Id}`
-                    : nftDetails.chain
-                    ? `/marketplace/single-mint/list/${nftDetails.chain}/${nftId}`
-                    : `/marketplace/single-mint/list/${nftDetails.Id}`
-                }
-                className={classes.alignIcon}
-              >
-                <img src={supportedChains[nftDetails?.chain]?.icon} />
-                <button className={classes.list}>List</button>
-              </Link>
+              <div className={classes.alignIcon}>
+                <img className={classes.iconImg} src={supportedChains[nftDetails?.chain]?.icon} />
+                {nftDetails?.owner === account && supportedChains[nftDetails?.chain]?.chain !== "Near" ? (
+                  <Link
+                    to={
+                      nft.collection_name
+                        ? `${match.url}/${nftDetails.Id}`
+                        : nftDetails.chain
+                        ? `/marketplace/1of1/list/${nftDetails.chain}/${nftId}`
+                        : `/marketplace/1of1/list/${nftDetails.Id}`
+                    }
+                    className={classes.alignIcon}
+                  >
+                    {nftDetails?.isListed ? (
+                      <button className={classes.list}>Re-List</button>
+                    ) : (
+                      <button className={classes.list}>List</button>
+                    )}
+                  </Link>
+                ) : (
+                  <div className={classes.alignIcon}>
+                    <button className={classes.sold} disabled={true}>
+                      Not Listed
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className={classes.feature}>

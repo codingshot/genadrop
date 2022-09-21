@@ -16,13 +16,11 @@ span {
 }
 
 tr img {
-  width: 15px;
-  /* margin-right: 10px; */
-}
-.icon {
   border-radius: 50%;
+  padding: 0.2em;
+  width: 1.7em;
+  margin-right: 5px;
   background-color: rgba(0, 153, 135, 0.12);
-  padding: 8px;
 }
 
 .transaction:hover {

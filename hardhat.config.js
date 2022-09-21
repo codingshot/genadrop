@@ -1,12 +1,50 @@
 /* hardhat.config.js */
 require("@nomiclabs/hardhat-waffle");
+require("dotenv").config();
+require("@openzeppelin/hardhat-upgrades");
+// require("hardhat-contract-sizer");
+// require("solidity-coverage");
+// require("hardhat-gas-reporter");
 
+console.log("ololo", process.env.REACT_APP_CeloTest_URL);
 module.exports = {
-  defaultNetwork: "hardhat",
   networks: {
-    hardhat: {
-      chainId: 1337,
+    mumbai: {
+      url: process.env.REACT_APP_MUMBAI_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
     },
+    celoTestnet: {
+      url: process.env.REACT_APP_CeloTest_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+    },
+    AuroraTestnet: {
+      url: process.env.REACT_APP_AuroraTest_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+    },
+    polygon: {
+      url: process.env.REACT_APP_POLYGON_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+    },
+    celo: {
+      url: process.env.REACT_APP_CELO_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+    },
+    aurora: {
+      url: process.env.REACT_APP_AURORA_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+      chainId: 1313161554,
+    },
+    hardhat: {
+      forking: {
+        // Using Alchemy
+        url: "process.env.ALCHEMY",
+      },
+    },
+    // mainnet: {
+    //   chainId: 1,
+    //   url: process.env.PROD_ALCHEMY_KEY,
+    //   accounts: [process.env.PRIVATE_KEY],
+    // },
   },
   solidity: {
     version: "0.8.4",
@@ -16,5 +54,8 @@ module.exports = {
         runs: 200,
       },
     },
+  },
+  mocha: {
+    timeout: 70000,
   },
 };

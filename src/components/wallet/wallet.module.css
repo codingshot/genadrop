@@ -25,7 +25,7 @@
   width: 100%;
   max-width: 12em;
   padding: 0.5em 1.5em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   cursor: var(--cursor-pointer);
   color: var(--default);
   background: var(--main-color);
@@ -55,7 +55,7 @@
   background: var(--default);
   transition: all 150ms;
   padding: 0.25em 0.25em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.25em 0.5em;
   background: var(--main-color);
 }
@@ -172,6 +172,10 @@
   height: 8px;
   border-radius: 50%;
   background: #f1b56e;
+}
+
+.network .dot.mainnet {
+  background: #6be26b;
 }
 
 .dropdownContainer {

@@ -5,23 +5,24 @@ import NFT2 from "../../../assets/nft-2.png";
 import NFT3 from "../../../assets/nft-3.png";
 import NFT4 from "../../../assets/nft-4.png";
 import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
+import { Link } from "react-router-dom";
 
 const cardArr = [
   {
     NFT: NFT1,
-    name: "Minority x H.E.R",
+    name: "#Her_1046",
   },
   {
     NFT: NFT2,
-    name: "Minority Drop",
+    name: "#Lad_2378",
   },
   {
     NFT: NFT3,
-    name: "Minority x H.E.R",
+    name: "#vase_175",
   },
   {
     NFT: NFT4,
-    name: "Minority x H.E.R",
+    name: "#Nat_002",
   },
 ];
 
@@ -46,9 +47,12 @@ const GenadropCreatedNFTs = () => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        NFTs created with <span>Genadrop</span>
+        <span>NFTs created with</span> <span className={classes.accent}>Genadrop</span>
       </div>
-      <div className={classes.description}>Browse notable NFTs created with Genadrop NFT Creator</div>
+      <div className={classes.description}>Notable NFTs that were easily created with GenaDrop</div>
+      <Link to="/create">
+        <div className={classes.btn}>Create Now</div>
+      </Link>
       <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
         {cardArr.map((card, id) => (
           <div key={id} ref={cardRef} className={classes.card}>

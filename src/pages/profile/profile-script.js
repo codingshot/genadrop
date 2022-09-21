@@ -3,7 +3,7 @@ import { writeUserProfile } from "../../utils/firebase";
 import * as PS from "./profile-script";
 
 export const handleValidate = (state) => {
-  const discordRegex = /^.{3,32}#[0-9]{4}$/;
+  const discordRegex = /^[0-9]{18}$/;
   const twitterRegex = /^[A-Za-z0-9_]{1,15}$/;
   const instagramRegex = /^(?:[\w][\.]{0,1})*[\w]/;
   const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -40,14 +40,14 @@ export const handleValidate = (state) => {
 };
 
 export const getValidName = (name) => {
-  let first = name.charAt(0).toUpperCase();
-  let rest = name.substring(1);
+  const first = name.charAt(0).toUpperCase();
+  const rest = name.substring(1);
   return `is${first + rest}`;
 };
 
 export const handleSave = async ({ account, state, dispatch, handleSetValidation, history }) => {
   const validate = PS.handleValidate(state);
-  let isValid = Object.values(validate).every((i) => i === true);
+  const isValid = Object.values(validate).every((i) => i === true);
   if (isValid) {
     dispatch(setLoader("saving..."));
     const res = await writeUserProfile(state, account);
@@ -85,6 +85,8 @@ export const handleInputChange = ({ event, handleSetState, handleSetValidation }
     value = value.split("https://twitter.com/")[1];
   } else if (name === "instagram") {
     value = value.split("https://www.instagram.com/")[1];
+  } else if (name === "discord") {
+    value = value.split("https://discord.com/users/")[1];
   }
   if (!value) value = "";
   handleSetState({ [name]: value });
