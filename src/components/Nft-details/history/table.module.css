@@ -26,6 +26,8 @@ th {
 th:first-child {
   text-align: left;
   padding-left: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 @media screen and (max-width: 768px) {

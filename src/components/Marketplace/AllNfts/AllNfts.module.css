@@ -160,7 +160,7 @@
   .types {
     gap: 0.5em;
     margin-bottom: 1.6em;
-    justify-content: center;
+    /* justify-content: center; */
   }
 
   .type {

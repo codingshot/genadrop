@@ -2,7 +2,8 @@ import { getFormatedPrice } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 
 const filterByListed = (collections, account) => {
-  return collections.filter(({ price, owner }) => !price && owner === account);
+  return collections.filter(({ price, sold }) => price && !sold);
+  // return collections.filter(({ price, owner }) => !price && owner === account);
 };
 
 const filterByNOtListed = (collections, account) => {
@@ -172,7 +173,7 @@ export const getCollectionsByChain = ({ collections, chain, mainnet }) => {
     .forEach((chain) => {
       mapChainLabelToId[chain.chain] = chain;
     });
-  return collections.filter((col) => col.chain === mapChainLabelToId[chain].networkId);
+  return collections.filter((col) => col.chain === mapChainLabelToId[chain]?.networkId);
 };
 
 export const getCollectionsBySearch = ({ collections, search }) => {

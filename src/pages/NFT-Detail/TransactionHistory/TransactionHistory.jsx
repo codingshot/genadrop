@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { breakAddress, getFormatedTxDate } from "../NFTDetail-script";
 import classes from "./TransactionHistory.module.css";
 import { ReactComponent as TxIcon } from "../../../assets/icon-tx.svg";
 import { ReactComponent as MintIcon } from "../../../assets/icon-mint.svg";
 import { ReactComponent as SalesIcon } from "../../../assets/icon-sales.svg";
-import { ReactComponent as TransferIcon } from "../../../assets/icon-transfer.svg";
-import { ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
+import { ReactComponent as TransferIcon, ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
 import { ReactComponent as TransactionIcon } from "../../../assets/icon-transaction.svg";
 import { ReactComponent as SearchIcon } from "../../../assets/icon-search.svg";
 

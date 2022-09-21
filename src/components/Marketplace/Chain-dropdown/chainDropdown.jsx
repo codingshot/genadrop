@@ -5,6 +5,7 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
+import nearIcon from "../../../assets/icon-near.svg";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-chevron-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
 import supportedChains from "../../../utils/supportedChains";
@@ -14,10 +15,11 @@ const chainIcon = {
   polygon: polygonIcon,
   algorand: algoIcon,
   aurora: auroraIcon,
+  near: nearIcon,
   celo: celoIcon,
 };
 
-const ChainDropdown = ({ onChainFilter }) => {
+const ChainDropdown = ({ onChainFilter, data }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
     chain: "All Chains",
@@ -37,6 +39,12 @@ const ChainDropdown = ({ onChainFilter }) => {
       handleSetState({ chain: name });
     }
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      onChainFilter(chain);
+    }
+  }, [data]);
 
   const chainHandler = (name) => {
     onChainFilter(name);

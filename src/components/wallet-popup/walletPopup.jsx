@@ -1,14 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
+import * as nearAPI from "near-api-js";
 import classes from "./walletPopup.module.css";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import { GenContext } from "../../gen-state/gen.context";
-import { setProposedChain, setToggleWalletPopup } from "../../gen-state/gen.actions";
+import {
+  setProposedChain,
+  setToggleWalletPopup,
+  setAccount,
+  setChainId,
+  setNotification,
+  setConnector,
+} from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
+import "regenerator-runtime";
+import getConfig from "./nearConfig";
+import { initializeConnection } from "../wallet/wallet-script";
 
 const WalletPopup = ({ handleSetState }) => {
-  const { dispatch, mainnet, connectFromMint } = useContext(GenContext);
+  const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [showConnectionMethods, setConnectionMethods] = useState(false);
   const [activeChain, setActiveChain] = useState(null);
@@ -22,25 +33,58 @@ const WalletPopup = ({ handleSetState }) => {
   }
   connectOptions.unshift(supportedChains[4160]);
 
-  const handleChain = (chainId, isComingSoon = undefined) => {
-    if (isComingSoon) return;
-    if (chainId === 4160) {
-      setMetamask(false);
-    } else {
-      setMetamask(true);
-    }
-    setActiveChain(chainId);
-    setConnectionMethods(true);
-  };
-
   const handleProposedChain = async () => {
+    console.log(connector);
     dispatch(setProposedChain(activeChain));
     dispatch(setToggleWalletPopup(false));
     setConnectionMethods(false);
   };
 
+  const handleChain = async (chainId, isComingSoon = undefined) => {
+    if (isComingSoon) return;
+    if (chainId === 4160 || chainId === 1111) {
+      setMetamask(false);
+    } else {
+      setMetamask(true);
+    }
+    if (chainId === 1111) {
+      // NEAR Connect
+      const nearConfig = getConfig("testnet");
+      const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+      const near = await nearAPI.connect({ keyStore, ...nearConfig });
+      const walletConnection = new nearAPI.WalletConnection(near);
+      window.localStorage.removeItem("walletconnect");
+      if (!walletConnection.isSignedIn()) {
+        window.localStorage.setItem("nearConnection", true);
+        console.log("not signe din, signing in......");
+        await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
+      }
+      const account = await walletConnection.getAccountId();
+      dispatch(setChainId(Number(1111)));
+      dispatch(setAccount(account));
+      dispatch(setProposedChain(1111));
+      dispatch(setConnector(walletConnection));
+      // const account = await walletConnection.getAccountId();
+      // dispatch(setChainId(Number(1111)));
+      // dispatch(setAccount(account));
+      // dispatch(setConnector(walletConnection));
+      // setActiveChain(chainId);
+      // handleProposedChain();
+      // dispatch(
+      //   setNotification({
+      //     message: `Your site is connected to ${supportedChains[1111].label}`,
+      //     type: "success",
+      //   })
+      // );
+      return;
+    }
+    setActiveChain(chainId);
+    setConnectionMethods(true);
+  };
+
   const handleMetamask = async () => {
     handleSetState({ connectionMethod: "metamask" });
+    // initializeConnection({ dispatch, handleSetState, activeChain, mainnet });
     handleProposedChain();
   };
 
@@ -101,10 +145,13 @@ const WalletPopup = ({ handleSetState }) => {
           <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
-              .filter((_, idx) => showMoreOptions || idx <= 3)
+              .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div
-                  onClick={() => handleChain(chain.networkId, chain.comingSoon)}
+                  onClick={async () => {
+                    console.log("break them chains", chain);
+                    await handleChain(chain.networkId, chain.comingSoon);
+                  }}
                   key={idx}
                   className={`${classes.chain} ${chain.comingSoon && classes.comingSoon}`}
                 >

@@ -8,6 +8,7 @@ import {
   setOverlay,
   setNotification,
   setMinter,
+  setToggleWalletPopup,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
@@ -26,7 +27,6 @@ import { initConnectWallet } from "../../wallet/wallet-script";
 const Minter = () => {
   const history = useHistory();
   const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
-
   if (!minter) {
     history.push("/mint");
     return null;
@@ -34,7 +34,9 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: metadata?.attributes ? metadata?.attributes : [],
+    attributes: metadata?.attributes
+      ? metadata?.attributes
+      : { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     chain: null,
@@ -91,7 +93,7 @@ const Minter = () => {
     metadata: {
       name: fileName,
       description,
-      attributes,
+      attributes: Object.values(attributes),
     },
     fileName,
     mainnet,
@@ -103,7 +105,10 @@ const Minter = () => {
 
   const handleAddAttribute = () => {
     handleSetState({
-      attributes: [...attributes, { trait_type: "", value: "" }],
+      attributes: {
+        ...attributes,
+        [Date.now()]: { trait_type: "", value: "" },
+      },
     });
   };
 
@@ -197,7 +202,9 @@ const Minter = () => {
       dispatch(setOverlay(true));
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
-        if (typeof url === "object") {
+        if (singleMintProps.chain.toLowerCase() === "near") {
+          return;
+        } else if (typeof url === "object") {
           handleSetState({
             popupProps: {
               url: url.message,
@@ -220,6 +227,7 @@ const Minter = () => {
 
   const handleConnectFromMint = (props) => {
     handleSetState({ toggleDropdown: false });
+    dispatch(setToggleWalletPopup(true));
     dispatch(
       setConnectFromMint({
         chainId: props.networkId,

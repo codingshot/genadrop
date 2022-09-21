@@ -30,6 +30,12 @@ export const parseCeloCollection = (result) => {
     type: "collections",
   }));
 };
+export const parseNearSingle = (result) => {
+  return result.map((val) => ({
+    ...val,
+    type: "1of1",
+  }));
+};
 export const parseCeloSingle = (result) => {
   return result.map((val) => ({
     ...val,
