@@ -79,17 +79,17 @@ const WalletPopup = ({ handleSetState }) => {
         dispatch(setChainId(1111));
         dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
         dispatch(setProposedChain(1111));
-        dispatch(setConnector(walletSelector.wallet()));
+        dispatch(setConnector(await walletSelector.wallet()));
       }
       const description = "Please select a wallet to sign in..";
       const modal = setupModal(walletSelector, { contractId: "genadrop-test.mpadev.testnet", description });
       modal.show();
+
       dispatch(setToggleWalletPopup(false));
       handleProposedChain();
 
       return;
     } else {
-      console.log(window.selector);
       if (window.selector) {
         const nearLogout = await window.selector.wallet();
         nearLogout.signOut();

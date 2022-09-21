@@ -71,8 +71,12 @@ function ConnectWallet() {
     }, 850);
   };
 
-  const handleDisconnet = () => {
+  const handleDisconnet = async () => {
     disconnectWallet(walletProps);
+    if (window.localStorage.near_app_wallet_auth_key) {
+      const nearLogout = await window?.selector?.wallet();
+      nearLogout.signOut();
+    }
   };
 
   const handleNetworkClick = () => {

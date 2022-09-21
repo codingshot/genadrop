@@ -48,8 +48,8 @@ export const getNetworkID = () => {
 
 export const initializeConnection = async (walletProps) => {
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
+  const search = new URL(document.location).searchParams;
   let walletConnectProvider = null;
-
   if (window.localStorage.walletconnect) {
     let newRpc = null;
     const storedProvider = JSON.parse(window.localStorage.walletconnect);
@@ -102,8 +102,9 @@ export const initializeConnection = async (walletProps) => {
     walletConnectProvider.on("disconnect", (code, reason) => {
       WS.disconnectWallet(walletProps);
     });
-  } else if (window.localStorage.near_app_wallet_auth_key || window.localStorage.nearConnection) {
+  } else if (window.localStorage.near_app_wallet_auth_key || search.get("account_id")) {
     const nearConfig = getConfig("testnet");
+
     const walletSelector = await setupWalletSelector({
       network: nearConfig,
       modules: [
@@ -118,14 +119,14 @@ export const initializeConnection = async (walletProps) => {
     });
 
     const isSignedIn = walletSelector.isSignedIn();
-
+    console.log(isSignedIn);
     window.selector = walletSelector;
 
     if (isSignedIn) {
       dispatch(setChainId(1111));
       dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
       dispatch(setProposedChain(1111));
-      dispatch(setConnector(await walletSelector.wallet()));
+      dispatch(setConnector(walletSelector.wallet()));
       dispatch(
         setNotification({
           message: `Your site is connected to ${supportedChains[1111].label}`,
