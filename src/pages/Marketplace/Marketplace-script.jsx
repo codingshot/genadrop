@@ -2,7 +2,8 @@ import { getFormatedPrice } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 
 const filterByListed = (collections, account) => {
-  return collections.filter(({ price, owner }) => !price && owner === account);
+  return collections.filter(({ price, sold }) => price && !sold);
+  // return collections.filter(({ price, owner }) => !price && owner === account);
 };
 
 const filterByNOtListed = (collections, account) => {
