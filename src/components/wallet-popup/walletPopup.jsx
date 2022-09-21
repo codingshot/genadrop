@@ -21,9 +21,12 @@ import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-w
 import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
 import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import MeateoIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import { setupLedger } from "@near-wallet-selector/ledger";
 import { setupModal } from "@near-wallet-selector/modal-ui";
+import "@near-wallet-selector/modal-ui/styles.css";
 import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
 
 const WalletPopup = ({ handleSetState }) => {
@@ -67,6 +70,7 @@ const WalletPopup = ({ handleSetState }) => {
             iconUrl: NightlyIconUrl,
           }),
           setupSender({ iconUrl: SenderIconUrl }),
+          setupMeteorWallet({ iconUrl: MeateoIconUrl }),
         ],
       });
 

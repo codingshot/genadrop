@@ -22,6 +22,7 @@ import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-w
 import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
 import { setupLedger } from "@near-wallet-selector/ledger";
+import "@near-wallet-selector/modal-ui/styles.css";
 import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
 import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
 import { setupSender } from "@near-wallet-selector/sender";
