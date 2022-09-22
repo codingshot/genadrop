@@ -6,12 +6,6 @@
   position: relative;
   max-width: 1280px;
 }
-/* .container * {
-  user-select: none;
-  -webkit-user-select: none; 
-  -webkit-touch-callout: none; 
-} 
-*/
 
 .inActive {
   height: 0 !important;
@@ -25,8 +19,6 @@
   height: 50px;
   background: white;
   border-radius: 50%;
-  display: flex;
-  /* padding: 8px; */
   transition: outline 300ms;
   position: relative;
 }
