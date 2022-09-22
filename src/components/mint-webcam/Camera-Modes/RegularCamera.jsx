@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useLongPress } from "use-long-press";
 import { Camera } from "../Camera";
-import classes from "./RegularCamera.module.css";
+import classes from "./Camera.module.css";
 import {
   getFileFromBase64,
   takePicture,
@@ -12,6 +12,7 @@ import {
 } from "../Capture/Capture-script";
 import useTimer from "../Capture/useTimer";
 import RecordBtn from "../Capture/RecordBtn";
+import Tooltip from "../Tooltip/Tooltip";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
@@ -283,6 +284,7 @@ const RegularCamera = ({ regularCameraProps }) => {
           </div>
         ) : (
           <div {...bind()} className={classes.mainBtn}>
+            {!seconds && <Tooltip />}
             <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
             <p>{webcamCurrentType}</p>
           </div>

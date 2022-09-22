@@ -184,7 +184,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
 }
 .mainBtn > p {
   color: var(--main-color);
@@ -193,6 +192,7 @@
   font-weight: 500;
   border: 1px solid var(--main-color);
   border-radius: 100px;
+  margin-top: 0.5rem;
 }
 .captureBtn {
   width: 50px;
@@ -300,8 +300,6 @@
   position: absolute;
   width: 30%;
   height: 25%;
-  border-radius: 1rem;
-  border: 2px solid var(--main-color);
   top: 1rem;
   left: 1rem;
   overflow: hidden;

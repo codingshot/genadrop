@@ -2,8 +2,8 @@ import React, { useRef, useState } from "react";
 
 import classes from "./Capture.module.css";
 import WebcamEnable from "../webcam-enable/webcamEnable";
-import DoubleWebcam from "../DoubleWebcam/DoubleWebcam";
-import RegularCamera from "../Regular-Camera/RegularCamera";
+import DoubleWebcam from "../Camera-Modes/DoubleWebcam";
+import RegularCamera from "../Camera-Modes/RegularCamera";
 // mode switch icons
 import { ReactComponent as IconVideo } from "../../../assets/icon-video.svg";
 import { ReactComponent as IconDoubleTake } from "../../../assets/icon-dual-camera.svg";

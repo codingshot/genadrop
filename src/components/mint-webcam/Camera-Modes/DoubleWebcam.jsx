@@ -1,8 +1,8 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { Camera } from "../Camera";
-import classes from "../Regular-Camera/RegularCamera.module.css";
+import classes from "./Camera.module.css";
 import { switchCameraToRear, getFileFromBase64 } from "../Capture/Capture-script";
+import { Camera } from "../Camera";
 import Hypnosis from "../Hypnosis-Loader/Hypnosis";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
@@ -181,32 +181,34 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       <div className={classes.sideSwitch} onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)}>
         <CameraSwitch />
       </div>
-      <div className={classes.btnWrapper}>
-        {/* switch mode button */}
-        <div
-          onClick={() => switchMode(displayedModes[0].text)}
-          className={classes.switchBtn}
-          key={displayedModes[0].id}
-        >
-          {displayedModes[0].icon}
-          <p>{displayedModes[0].text}</p>
-        </div>
-        {/* main button */}
-        <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
-          <IconCapture className={classes.captureBtn} />
-          <p>Doubletake</p>
-        </div>
+      {!img && (
+        <div className={classes.btnWrapper}>
+          {/* switch mode button */}
+          <div
+            onClick={() => switchMode(displayedModes[0].text)}
+            className={classes.switchBtn}
+            key={displayedModes[0].id}
+          >
+            {displayedModes[0].icon}
+            <p>{displayedModes[0].text}</p>
+          </div>
+          {/* main button */}
+          <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
+            <IconCapture className={classes.captureBtn} />
+            <p>Doubletake</p>
+          </div>
 
-        {/* switch mode button */}
-        <div
-          onClick={() => switchMode(displayedModes[1].text)}
-          className={classes.switchBtn}
-          key={displayedModes[1].id}
-        >
-          {displayedModes[1].icon}
-          <p>{displayedModes[1].text}</p>
+          {/* switch mode button */}
+          <div
+            onClick={() => switchMode(displayedModes[1].text)}
+            className={classes.switchBtn}
+            key={displayedModes[1].id}
+          >
+            {displayedModes[1].icon}
+            <p>{displayedModes[1].text}</p>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
