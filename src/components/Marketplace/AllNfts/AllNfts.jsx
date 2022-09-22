@@ -42,7 +42,7 @@ const AllNfts = () => {
 
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
   const algoCollectionsArr = Object.values(algoCollections);
-  const categories = ["All", "Photography", "Shorts"];
+  const categories = ["All", "Photography", "Shorts", "BeReal"];
   const type = {
     T1: newest,
     T2: singles,
