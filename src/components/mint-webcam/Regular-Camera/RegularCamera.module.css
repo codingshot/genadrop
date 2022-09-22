@@ -3,7 +3,8 @@
   flex-direction: column;
   position: relative;
   width: fit-content;
-  height: calc(100vh - 5rem);
+  min-height: calc(100vh - 5rem);
+  align-items: center;
 }
 .retake {
   display: flex;
@@ -31,35 +32,37 @@
 }
 
 .cameraShot {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  height: calc(100vh - 11rem);
+}
+.cameraShot img {
   width: 100%;
   height: 100%;
-  background: #ffffff;
   object-fit: contain;
-  border: 4px solid #ffffff;
   box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
-  /* margin-top: 1.25em; */
 }
-video.cameraShot {
+.cameraShot video {
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
   transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg); /* Safari and Chrome */
   -moz-transform: rotateY(180deg); /* Firefox */
 }
 .imgBtn {
   display: flex;
-  position: absolute;
   bottom: 1.5rem;
   width: 100%;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 2rem;
+  margin-top: 2rem;
 }
-.imgBtn .mintBtn:hover {
-  background: var(--default);
-  color: var(--main-color);
-}
-.mintBtn {
-  background: var(--main-color);
-  color: #ffffff;
+.imgBtn > div,
+.imgBtn > p {
   border-radius: 39px;
   font-size: 1em;
   max-width: 15rem;
@@ -72,12 +75,23 @@ video.cameraShot {
   cursor: var(--cursor-pointer);
   transition: background 0.2s ease-in-out;
   border: 1px solid var(--main-color);
+  box-shadow: 0px 4px 7px -1px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
 }
-.mintBtn.disabled {
-  background: var(--outline-dark);
-  color: white !important;
-  pointer-events: none;
-  border-color: var(--outline-dark);
+.imgBtn > div {
+  background: var(--main-color);
+  color: var(--default);
+}
+.imgBtn > p {
+  color: var(--main-color);
+}
+.imgBtn div:hover {
+  background: var(--default);
+  color: var(--main-color);
+}
+.imgBtn p:hover {
+  background: var(--main-color);
+  color: var(--default);
 }
 .videoContainer {
   display: flex;
@@ -112,33 +126,46 @@ video.cameraShot {
   transform: translate(-50%, -50%);
   width: 100%;
 }
-.closeBtn {
+.closeBtn,
+.sideSwitch {
   position: absolute;
+  z-index: 2;
   top: 2rem;
-  right: 2rem;
-  background: rgb(15 29 64 / 60%);
-  width: 2rem;
-  height: 2rem;
-  padding: 2px;
+  width: 2.3rem;
+  height: 2.3rem;
   display: flex;
   border-radius: 50%;
   cursor: var(--cursor-pointer);
-  padding: 8px;
+  padding: 0.6rem;
+  background: #656e85;
+  transition: box-shadow 200ms ease;
 }
-.closeBtn svg {
+.closeBtn {
+  left: 2rem;
+}
+.sideSwitch {
+  right: 2rem;
+}
+.closeBtn svg,
+.sideSwitch svg {
   width: 100%;
   height: 100%;
+  transition: all 300ms ease;
 }
 .closeBtn svg path {
   fill: var(--default);
 }
+.closeBtn:hover svg {
+  transform: rotate(180deg);
+}
+
 .btnWrapper {
   position: absolute;
   bottom: 1rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  background: rgb(15 29 64 / 60%);
+  background: rgb(0 0 0 / 60%);
   padding: 0rem 2rem;
   height: 6rem;
   width: 20em;
@@ -148,80 +175,61 @@ video.cameraShot {
   cursor: var(--cursor-pointer);
   transition: background 0.2s ease-in-out;
 }
-.btnWrapper .uploadBtn svg {
-  width: 50px;
-}
-.btnWrapper .uploadBtn:hover svg path {
-  fill: #d9d9d9;
-}
-.btnWrapper .RecordBtnWrapper:hover {
-  color: #d9d9d9;
-}
-.holdBtn {
+
+.mainBtn {
   position: absolute;
   top: 50%;
-  left: 2rem;
-  transform: translateY(-50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  height: fit-content;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
-.holdBtn > svg {
-  height: 50px;
-  width: 50px;
-}
-.holdBtn.active {
-  position: initial;
-  /* padding: 1.5rem; */
-  transform: inherit;
-}
-.holdBtn.active .RecordBtnWrapper {
-  width: 64px;
-  height: 64px;
-}
-.holdBtn.active .recordBtn {
-  width: 40px;
-  height: 40px;
-}
-.holdBtn.recording .recordBtn {
-  width: 30px;
-  height: 30px;
-  border-radius: unset;
+.mainBtn > p {
+  color: var(--main-color);
+  font-size: 0.75rem;
+  padding: 0.1em 1em;
+  font-weight: 500;
+  border: 1px solid var(--main-color);
+  border-radius: 100px;
 }
 .captureBtn {
-  height: 100%;
-  display: flex;
-  align-items: center;
+  width: 50px;
+  height: 50px;
 }
-.captureBtn svg {
-  height: 64px;
-  width: 64px;
-}
-.captureBtn svg circle {
+.captureBtn circle {
   transition: all 0.2s ease-in-out;
 }
-.captureBtn:hover svg circle {
+.captureBtn:hover circle {
   fill: var(--main-color);
 }
-.uploadBtn {
-  position: absolute;
-  /* display: none; */
-  right: 2rem;
+.captureBtn:hover circle:last-child {
+  stroke: var(--default);
+}
+.switchBtn {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  top: 50%;
-  transform: translateY(-50%);
+  gap: 0.3rem;
+  margin-top: 1rem;
 }
-.switch2imgs {
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  display: none;
+.switchBtn svg {
+  height: 20px;
+  width: 20px;
 }
-.switch2imgs svg {
-  width: 50px;
-  height: auto;
+.switchBtn p {
+  color: var(--default);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
-.switch2imgs svg path {
-  fill: white;
+.overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(75, 75, 90, 0.79);
+  z-index: 20;
+  top: 0;
 }
 @media screen and (max-width: 480px) {
   .cameraWrapper {
@@ -231,7 +239,20 @@ video.cameraShot {
     height: 100vh;
     top: 0;
     z-index: 1000;
+    min-height: calc(100vh - 5rem);
   }
+  .cameraShot {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+  }
+  .cameraShot img,
+  .cameraShot video {
+    position: absolute;
+    height: 100%;
+    width: auto;
+  }
+
   .videoContainer {
     display: flex;
     flex-direction: column;
@@ -254,9 +275,70 @@ video.cameraShot {
     bottom: 0rem;
     width: 100%;
     height: 7rem;
-    border-radius: 0;
   }
   .switch2imgs {
     display: block;
   }
+  .imgBtn {
+    position: absolute;
+    flex-direction: column;
+  }
+  .imgBtn p,
+  .imgBtn div {
+    max-width: 90%;
+    padding: 1em;
+  }
+  .imgBtn p {
+    backdrop-filter: blur(23px);
+    background: rgba(255, 255, 255, 0.67);
+    border-color: var(--default);
+  }
+}
+
+/* ------------------------------------- Double Camera ------------------------------------- */
+.frontCamera > div:first-child {
+  position: absolute;
+  width: 30%;
+  height: 25%;
+  border-radius: 1rem;
+  border: 2px solid var(--main-color);
+  top: 1rem;
+  left: 1rem;
+  overflow: hidden;
+}
+.cameraShot .faceImg {
+  position: absolute;
+  width: 30%;
+  height: 25%;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  overflow: hidden;
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.loader p {
+  color: #3a9dec;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-top: 1em;
+}
+.loader div {
+  margin: auto;
+}
+.combineImgs {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.rearImg {
+  width: 100%;
+  height: 100%;
+  position: initial;
 }
