@@ -68,7 +68,6 @@
   width: 2em;
   height: 2em;
   border-radius: 50%;
-  background: var(--outline);
 }
 
 .thumbnail {

@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import classes from "./tableRow.module.css";
 import saleIcon from "../../../assets/sale-icon.png";
-import transferIcon from "../../../assets/mint-icon.png";
 import mintIcon from "../../../assets/mint-icon.png";
 import Transaction from "../../transactionDetails/TransactionDetails";
 import { readUserProfile } from "../../../utils/firebase";
@@ -37,20 +36,20 @@ const TableRow = (data) => {
       });
     })();
   }, []);
-  const icons = [saleIcon, transferIcon, mintIcon];
+  const icons = [saleIcon, mintIcon, mintIcon];
   const getDate = () => {
     let newDate = data.date.seconds;
     if (!newDate) {
       newDate = data.date;
     }
-    let now = new Date();
-    let date = new Date(newDate * 1000);
-    let diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
-    if (diff < 0.04) return parseInt(diff * 24 * 60) + " mins ago";
-    else if (diff < 1) return parseInt(diff * 24) + " hours ago";
-    else if (diff < 31) return parseInt(diff) + " days ago";
-    else if (diff < 356) return parseInt(diff / 30) + " months ago";
-    else return diff / 30 / 12 + " years ago";
+    const now = new Date();
+    const date = new Date(newDate * 1000);
+    const diff = (now.getTime() - date.getTime()) / (1000 * 3600 * 24);
+    if (diff < 0.04) return `${parseInt(diff * 24 * 60)} mins ago`;
+    if (diff < 1) return `${parseInt(diff * 24)} hours ago`;
+    if (diff < 31) return `${parseInt(diff)} days ago`;
+    if (diff < 356) return `${parseInt(diff / 30)} months ago`;
+    return `${diff / 30 / 12} years ago`;
   };
 
   const icon = () => {
@@ -120,8 +119,8 @@ const TableRow = (data) => {
         <td>{!data.txId ? "--" : breakAddress(data.txId)}</td>
         <td>{getDate(data.date)}</td>
         <td>{!data.price ? "--" : data.price}</td>
-        <td>{to ? to : breakAddress(data.to)}</td>
-        <td>{from ? from : breakAddress(data.from)}</td>
+        <td>{to || breakAddress(data.to)}</td>
+        <td>{from || breakAddress(data.from)}</td>
       </tr>
     </>
   );

@@ -4,7 +4,6 @@ import classes from "./More.module.css";
 
 const More = ({ params, collection, _1of1 }) => {
   const { collectionName } = params;
-  console.log("Collection name: ", collectionName);
   return (
     <div className={classes.container}>
       <div className={classes.heading}>{collectionName ? "More from this collection" : "Similar NFTs"}</div>
