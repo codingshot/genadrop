@@ -15,9 +15,8 @@ import RecordBtn from "../Capture/RecordBtn";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
-import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { ReactComponent as DualCam } from "../../../assets/dual-cam.svg";
+// Context
 import { GenContext } from "../../../gen-state/gen.context";
 import { setZip } from "../../../gen-state/gen.actions";
 
@@ -51,6 +50,7 @@ const RegularCamera = ({ regularCameraProps }) => {
     webcamCurrentType,
     currenFile,
     activeFile,
+    displayedModes,
   } = regularCameraProps;
 
   // Record Handles
@@ -143,37 +143,42 @@ const RegularCamera = ({ regularCameraProps }) => {
     detect: "both",
   });
 
-  const updpateMainBtn = () => {
-    if (webcamCurrentType === "picture") {
+  const updpateMainBtn = (type) => {
+    // picture record
+    if (type === "Doubletake") {
       handleSetState({
-        webcamCurrentType: "record",
-      });
-    } else {
-      handleSetState({
-        webcamCurrentType: "picture",
+        dualCam: true,
       });
     }
+    handleSetState({
+      webcamCurrentType: type,
+    });
   };
 
   // proceed with the generated file to the mint page
   const continueToMint = () => {
     let name;
     let file;
+    let type;
     if (img) {
       name = "Image";
       const result = getFileFromBase64(img, name, "image/png");
       file = result;
+      type = "Photography";
     } else if (activeFile === "gif") {
       file = currenFile;
       name = "Short";
+      type = "Shorts";
     } else {
       file = currenFile;
       name = "video";
+      type = "Shorts";
     }
     dispatch(
       setZip({
         name,
         file,
+        type,
       })
     );
 
@@ -188,34 +193,49 @@ const RegularCamera = ({ regularCameraProps }) => {
 
   useEffect(() => {}, [webcamRef, capturing]);
 
+  // detect mobile device or a desktop
+  const details = navigator?.userAgent;
+
+  /* regular expression 
+  containing some mobile devices keywords 
+  to search it in details string */
+  const regexp = /android|iphone|kindle|ipad/i;
+
+  const isMobileDevice = regexp.test(details);
+
   return img || gif || video ? (
     <div className={classes.cameraWrapper}>
-      <div
-        onClick={() => {
-          handleSetState({
-            img: "",
-            gif: "",
-            video: "",
-            activeFile: "gif",
-          });
-        }}
-        className={classes.retake}
-      >
-        <ArrowLeft />
+      {gifGenrating && <div className={classes.overlay} />}
+      <div className={classes.cameraShot}>
+        <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
+          <CloseIcon />
+        </div>
+        {gif ? (
+          <img src={URL.createObjectURL(gif)} alt="camera-shot" />
+        ) : video ? (
+          // eslint-disable-next-line jsx-a11y/media-has-caption
+          <video src={URL.createObjectURL(video)} autoPlay ref={videoRef} loop />
+        ) : (
+          <img src={img} alt="camera-shot" />
+        )}
       </div>
-
-      {gif ? (
-        <img className={`${classes.cameraShot}`} src={URL.createObjectURL(gif)} alt="camera-shot" />
-      ) : video ? (
-        // eslint-disable-next-line jsx-a11y/media-has-caption
-        <video src={URL.createObjectURL(video)} autoPlay className={`${classes.cameraShot}`} ref={videoRef} loop />
-      ) : (
-        <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" />
-      )}
       <div className={classes.imgBtn}>
-        <div className={`${classes.mintBtn} ${gifGenrating && classes.disabled}`} onClick={continueToMint}>
+        <div className={classes.mintBtn} onClick={continueToMint}>
           Continue
         </div>
+        <p
+          className={classes.mintBtn}
+          onClick={() => {
+            handleSetState({
+              img: "",
+              gif: "",
+              video: "",
+              activeFile: "gif",
+            });
+          }}
+        >
+          Retake
+        </p>
       </div>
     </div>
   ) : (
@@ -236,45 +256,48 @@ const RegularCamera = ({ regularCameraProps }) => {
         ) : (
           <div className={classes.videoOFF} />
         )}{" "}
-        <div className={classes.switch2imgs}>
-          <DualCam
-            onClick={() =>
-              handleSetState({
-                dualCam: true,
-              })
-            }
-          />
-        </div>
-        {/* <div className={classes.enableContainer}> </div> */}
       </div>
       <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
         <CloseIcon />
       </div>
-      <div className={classes.btnWrapper}>
-        {webcamCurrentType !== "picture" ? (
-          <div onClick={updpateMainBtn} className={classes.holdBtn}>
-            <IconCapture />
-          </div>
-        ) : (
-          <div onClick={updpateMainBtn} className={classes.holdBtn}>
-            <RecordBtn seconds={seconds} />
-          </div>
-        )}
-        {webcamCurrentType === "picture" ? (
-          <div
-            onClick={() => takePicture(webcamRef, handleSetState)}
-            className={`${classes.captureBtn} ${classes.active}`}
-          >
-            <IconCapture />
-          </div>
-        ) : (
-          <div {...bind()} className={`${classes.holdBtn} ${classes.active}`}>
-            <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
-          </div>
-        )}
-        <div className={classes.uploadBtn}>
-          <CameraSwitch onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)} />
+      {isMobileDevice && (
+        <div className={classes.sideSwitch} onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)}>
+          <CameraSwitch />
         </div>
+      )}
+      <div className={classes.btnWrapper}>
+        {/* switch mode button */}
+        <div
+          onClick={() => updpateMainBtn(displayedModes[0].text)}
+          className={classes.switchBtn}
+          key={displayedModes[0].id}
+        >
+          {displayedModes[0].icon}
+          <p>{displayedModes[0].text}</p>
+        </div>
+        {/* main button */}
+        {webcamCurrentType === "Photo" ? (
+          <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
+            <IconCapture className={classes.captureBtn} />
+            <p>{webcamCurrentType}</p>
+          </div>
+        ) : (
+          <div {...bind()} className={classes.mainBtn}>
+            <RecordBtn seconds={seconds} webcamCurrentType={webcamCurrentType} />
+            <p>{webcamCurrentType}</p>
+          </div>
+        )}
+        {/* switch mode button */}
+        {isMobileDevice && (
+          <div
+            onClick={() => updpateMainBtn(displayedModes[1].text)}
+            className={classes.switchBtn}
+            key={displayedModes[1].id}
+          >
+            {displayedModes[1].icon}
+            <p>{displayedModes[1].text}</p>
+          </div>
+        )}
       </div>
     </div>
   );
