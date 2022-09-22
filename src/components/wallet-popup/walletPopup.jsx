@@ -120,7 +120,7 @@ const WalletPopup = ({ handleSetState }) => {
     if (!connectFromMint.chainId) return;
     dispatch(setToggleWalletPopup(true));
     handleChain(connectFromMint.chainId, connectFromMint.isComingSoon);
-  }, [connectFromMint, window.selector]);
+  }, [connectFromMint]);
 
   return (
     <div className={classes.container}>
