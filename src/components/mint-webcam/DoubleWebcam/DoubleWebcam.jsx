@@ -1,16 +1,16 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Camera } from "../Camera";
-import classes from "./DoubleWebcam.module.css";
+import classes from "../Regular-Camera/RegularCamera.module.css";
 import { switchCameraToRear, getFileFromBase64 } from "../Capture/Capture-script";
 import Hypnosis from "../Hypnosis-Loader/Hypnosis";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
-import { ReactComponent as ArrowLeft } from "../../../assets/arrow-left-stretched.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
+// Context
 import { GenContext } from "../../../gen-state/gen.context";
-import { setZip, setNotification, setLoader } from "../../../gen-state/gen.actions";
+import { setZip } from "../../../gen-state/gen.actions";
 
 const DoubleWebcam = ({ doubleCameraProps }) => {
   const imgContainer = useRef();
@@ -21,7 +21,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
 
   const { dispatch } = useContext(GenContext);
 
-  const { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle } = doubleCameraProps;
+  const { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle, displayedModes } = doubleCameraProps;
 
   const takePicture = () => {
     const imageSrc = webcamRef.current.takePhoto();
@@ -30,34 +30,6 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
     switchCameraToRear(webcam, handleSetState, webcamRef);
   };
 
-  useEffect(() => {
-    if (img && webcamRef.current) {
-      handleSetState({
-        loaderToggle: true,
-      });
-      setTimeout(() => {
-        handleSetState({
-          loaderToggle: false,
-        });
-        const imageSrc = webcamRef.current.takePhoto();
-        handleSetState({ faceImg: imageSrc });
-      }, 5000);
-    }
-  }, [img]);
-
-  const continueToMint = (image) => {
-    const name = "Image";
-    const result = getFileFromBase64(image, name, "image/png");
-
-    dispatch(
-      setZip({
-        name,
-        file: result,
-      })
-    );
-
-    history.push("/mint/1of1");
-  };
   // function roundedImage(ctx, x, y, width, height, radius) {
   //   ctx.beginPath();
   //   ctx.moveTo(x + radius, y);
@@ -72,42 +44,52 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
   //   ctx.closePath();
   // }
 
-  // const imageSrc = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/157293/i1.jpg";
+  useEffect(() => {
+    if (img && webcamRef.current) {
+      handleSetState({
+        loaderToggle: true,
+      });
+      setTimeout(() => {
+        handleSetState({
+          loaderToggle: false,
+        });
+        const imageSrc = webcamRef.current.takePhoto();
+        // round corner canvas' reference
+        // const roundCornerCanvas = document.createElement("canvas");
+        // const roundCornerCtx = roundCornerCanvas.getContext("2d");
 
-  // document.addEventListener("DOMContentLoaded", () => {
-  //   // round corner canvas' reference
-  //   const roundCornerCanvas = document.getElementById("round-corner");
-  //   const roundCornerCtx = roundCornerCanvas.getContext("2d");
+        // const image = new Image();
+        // image.src = imageSrc;
+        // image.onload = function () {
+        //   // draw image with round corner
+        //   roundCornerCtx.save();
+        //   roundedImage(roundCornerCtx, 0, 0, webcamRef.current.clientWidth, webcamRef.current.height, 15);
+        //   roundCornerCtx.strokeStyle = "#2465D3";
+        //   roundCornerCtx.stroke();
+        //   roundCornerCtx.clip();
+        //   roundCornerCtx.drawImage(image, 20, 20, 260, 260);
+        //   roundCornerCtx.restore();
+        //   console.log(roundCornerCanvas.toDataURL());
+        // };
+        handleSetState({ faceImg: imageSrc });
+      }, 5000);
+    }
+  }, [img]);
 
-  //   // circle canvas' reference
-  //   const circleCanvas = document.getElementById("circle");
-  //   const circleCtx = circleCanvas.getContext("2d");
+  const continueToMint = (image) => {
+    const name = "Image";
+    const result = getFileFromBase64(image, name, "image/png");
 
-  //   const img = new Image();
+    dispatch(
+      setZip({
+        name,
+        file: result,
+        type: "BeReal",
+      })
+    );
 
-  //   img.onload = function () {
-  //     // draw image with round corner
-  //     roundCornerCtx.save();
-  //     roundedImage(roundCornerCtx, 20, 20, 260, 260, 10);
-  //     roundCornerCtx.strokeStyle = "#2465D3";
-  //     roundCornerCtx.stroke();
-  //     roundCornerCtx.clip();
-  //     roundCornerCtx.drawImage(img, 20, 20, 260, 260);
-  //     roundCornerCtx.restore();
-
-  //     // draw image with circle shape clip
-  //     circleCtx.save();
-  //     circleCtx.beginPath();
-  //     circleCtx.arc(150, 150, 130, 0, Math.PI * 2, false);
-  //     circleCtx.strokeStyle = "#2465D3";
-  //     circleCtx.stroke();
-  //     circleCtx.clip();
-  //     circleCtx.drawImage(img, 0, 0, 300, 300);
-  //     circleCtx.restore();
-  //   };
-
-  //   img.src = imageSrc;
-  // });
+    history.push("/mint/1of1");
+  };
 
   const combineImage = () => {
     const canvas = document.createElement("canvas");
@@ -121,7 +103,6 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       img2.src = faceImg;
     };
     img2.onload = function () {
-      // drawImage(image, dx, dy, dWidth, dHeight)
       context.drawImage(img1, 0, 0, rearCamera.current.clientWidth, rearCamera.current.clientHeight);
       context.drawImage(img2, 16, 16, frontCamera.current.clientWidth, frontCamera.current.clientHeight);
       continueToMint(canvas.toDataURL());
@@ -129,43 +110,41 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
 
     img1.src = img;
   };
-  const clickHandler = () => {
-    try {
-      combineImage();
-    } catch (err) {
-      dispatch(
-        setNotification({
-          message: err,
-          type: "warning",
-        })
-      );
-      console.log(err);
-    }
-  };
+
+  const switchMode = (type) =>
+    handleSetState({
+      dualCam: false,
+      webcamCurrentType: type,
+    });
+
   return img && faceImg ? (
     <div className={classes.cameraWrapper}>
-      <div
-        onClick={() => {
-          handleSetState({
-            img: "",
-            faceImg: "",
-            gif: "",
-            video: "",
-            activeFile: "gif",
-          });
-        }}
-        className={classes.retake}
-      >
-        <ArrowLeft />
-      </div>
-      <div ref={imgContainer} className={classes.combineImgs}>
+      <div ref={imgContainer} className={classes.cameraShot}>
+        <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
+          <CloseIcon />
+        </div>
+
         <img src={faceImg} className={classes.faceImg} alt="camera-shot" ref={frontCamera} />
-        <img className={`${classes.cameraShot}`} src={img} alt="camera-shot" ref={rearCamera} />
+        <img className={classes.rearImg} src={img} alt="camera-shot" ref={rearCamera} />
       </div>
       <div className={classes.imgBtn}>
-        <div className={`${classes.mintBtn}`} onClick={clickHandler}>
+        <div className={classes.mintBtn} onClick={combineImage}>
           Continue
         </div>
+        <p
+          className={classes.mintBtn}
+          onClick={() => {
+            handleSetState({
+              img: "",
+              faceImg: "",
+              gif: "",
+              video: "",
+              activeFile: "gif",
+            });
+          }}
+        >
+          Retake
+        </p>
       </div>
     </div>
   ) : (
@@ -173,7 +152,6 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       <div className={`${classes.videoWrapper} ${img ? classes.frontCamera : ""}`}>
         {toggle && (
           <Camera
-            className={img ? classes.frontCamera : ""}
             facingMode="environment"
             ref={webcamRef}
             aspectRatio="cover"
@@ -194,22 +172,39 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
             <p>Don't move and keep smiling</p>
           </div>
         )}
-
+        {img && <img className={classes.rearImg} src={img} alt="camera-shot" ref={rearCamera} />}
         <div className={`${classes.videoOFF} ${toggle ? classes.disabled : ""}`} />
       </div>
       <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
         <CloseIcon />
       </div>
+      <div className={classes.sideSwitch} onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)}>
+        <CameraSwitch />
+      </div>
       <div className={classes.btnWrapper}>
+        {/* switch mode button */}
         <div
-          onClick={() => takePicture(webcamRef, handleSetState)}
-          className={`${classes.captureBtn} ${classes.active}`}
+          onClick={() => switchMode(displayedModes[0].text)}
+          className={classes.switchBtn}
+          key={displayedModes[0].id}
         >
-          <IconCapture />
+          {displayedModes[0].icon}
+          <p>{displayedModes[0].text}</p>
+        </div>
+        {/* main button */}
+        <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
+          <IconCapture className={classes.captureBtn} />
+          <p>Doubletake</p>
         </div>
 
-        <div className={classes.uploadBtn} onClick={() => switchCameraToRear(webcam, handleSetState, webcamRef)}>
-          <CameraSwitch />
+        {/* switch mode button */}
+        <div
+          onClick={() => switchMode(displayedModes[1].text)}
+          className={classes.switchBtn}
+          key={displayedModes[1].id}
+        >
+          {displayedModes[1].icon}
+          <p>{displayedModes[1].text}</p>
         </div>
       </div>
     </div>
