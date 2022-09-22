@@ -75,7 +75,7 @@ const supportedChains = {
   },
   1111: {
     id: "near",
-    label: "Near",
+    label: "Near Testnet",
     chain: "Near",
     icon: nearIcon,
     livePrice: "",

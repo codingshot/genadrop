@@ -3428,6 +3428,13 @@
   dependencies:
     rxjs "^7.5.5"
 
+"@near-wallet-selector/core@7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.0.3.tgz#bf2df9f4709f47c9afc7a4bc56261f2d624d5d73"
+  integrity sha512-bggK3+axEpC1tu5+XJi9djEmVSNCCYF7nQkHje3NuBqD/0tfK4UmRn5+g95fs3Kxbi8fp6lh9eRWBtX3EnBSZQ==
+  dependencies:
+    rxjs "^7.5.5"
+
 "@near-wallet-selector/default-wallets@^7.0.2":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/default-wallets/-/default-wallets-7.0.2.tgz#e7a46107b559f426f34f57eb54615e7b13219ff6"
@@ -3449,13 +3456,13 @@
     bn.js "^5.2.0"
     is-mobile "^3.1.1"
 
-"@near-wallet-selector/math-wallet@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/math-wallet/-/math-wallet-7.0.2.tgz#2d9e1e3e8623c4bf07133ba76991e7ca666b0b74"
-  integrity sha512-KtbBQ6YfEwBHaQKiPQvJBDatNT8TGeVBTVlE9AFMnlaqnBKSMQkP47ZtSG0MzD0LzZvnTnAvEjEXeStU/T84TQ==
+"@near-wallet-selector/math-wallet@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/math-wallet/-/math-wallet-7.0.3.tgz#08d31a8e37f23302c66abbfb9e11d2f01e255787"
+  integrity sha512-Ou2cxghzCdKhsaApGlcfAWS1t4XxQh6ChWyu8nKrM9R31cJx11qnMU189Tffqk4o5Va4Xl04lBAzoquqi0rSag==
   dependencies:
-    "@near-wallet-selector/core" "7.0.2"
-    "@near-wallet-selector/wallet-utils" "7.0.2"
+    "@near-wallet-selector/core" "7.0.3"
+    "@near-wallet-selector/wallet-utils" "7.0.3"
     is-mobile "^3.1.1"
 
 "@near-wallet-selector/meteor-wallet@^7.0.2":
@@ -3492,22 +3499,13 @@
     "@near-wallet-selector/core" "7.0.2"
     "@near-wallet-selector/my-near-wallet" "7.0.2"
 
-"@near-wallet-selector/nightly-connect@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/nightly-connect/-/nightly-connect-7.0.2.tgz#bacbc041dc677ad36b0873088abcaea054cd5995"
-  integrity sha512-HzuZB9Cf8xEsovvlaDQnWRhp58oy7N/PV9uFi+Z9QZvsIMtF+xUvqxvfo63YicGfM6rBMAw5976OgdJve4kTvg==
+"@near-wallet-selector/nightly@^7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/nightly/-/nightly-7.0.3.tgz#a2ff463b94d2b565af9f4dbeb87101e769285fe7"
+  integrity sha512-dGGg8/C8iM/OvlCGiiBZuR0/x1Z9YZ5uIWIJPOgyzlSjF1HvPD/Dw6055mrMPHwX/Mr5gC5sl7EaAltfnDCEng==
   dependencies:
-    "@near-wallet-selector/core" "7.0.2"
-    "@near-wallet-selector/wallet-utils" "7.0.2"
-    "@nightlylabs/connect-near" "0.0.13"
-
-"@near-wallet-selector/nightly@^7.0.2":
-  version "7.0.2"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/nightly/-/nightly-7.0.2.tgz#e836db5d283d1ebfbf99562c225f29411f343699"
-  integrity sha512-qvIttnddD3oGi2gPR8dCSMXv3OQFdF8d3FqfaJy3MpsQNWXX8B09IOnuDl3RMo1/0qGcpfIDD/XPhXm89Nm3Kw==
-  dependencies:
-    "@near-wallet-selector/core" "7.0.2"
-    "@near-wallet-selector/wallet-utils" "7.0.2"
+    "@near-wallet-selector/core" "7.0.3"
+    "@near-wallet-selector/wallet-utils" "7.0.3"
     is-mobile "^3.1.1"
 
 "@near-wallet-selector/sender@^7.0.2":
@@ -3537,24 +3535,13 @@
     "@near-wallet-selector/core" "7.0.2"
     bn.js "^5.2.0"
 
-"@nightlylabs/connect-near@0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@nightlylabs/connect-near/-/connect-near-0.0.13.tgz#f3742c79ad4bd88919a0b186e45720b13046f5a4"
-  integrity sha512-6xlBJaWqjE1EgVgbgIZv8rxJpxvtdtFy87A9r7l2L+yCYKa/+7ZwrPlThTxy1phGbouS493WjgDs0M/j1/If1g==
+"@near-wallet-selector/wallet-utils@7.0.3":
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.0.3.tgz#4cc9ddc064dd88ed5c93588197c9a24702a12f74"
+  integrity sha512-ghkaqTkO4xmTLaBQSPoWciSMExIjav5fKalvyG+VNLfCrkRLglczdOk4J5mM5ozaQSi6iknGaSiVaX0wkMdkEw==
   dependencies:
-    "@nightlylabs/qr-code" "1.0.21"
-    isomorphic-localstorage "0.0.8"
-    isomorphic-ws "^4.0.1"
-    near-api-js "^0.45.1"
-    uuid "^8.3.2"
-    ws "^8.8.0"
-
-"@nightlylabs/qr-code@1.0.21":
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/@nightlylabs/qr-code/-/qr-code-1.0.21.tgz#c35db8befeac81e4c3afa57688c8c65eb1ada150"
-  integrity sha512-W4gOXG8SDQMYX+MLBUWFSZbiTjApY8CW+z0Lu8MZUqW5IwtyGHjZ2GgkwLo/3A9peIWiXrF/2a93E7cCCouzgw==
-  dependencies:
-    qrcode-generator "^1.4.3"
+    "@near-wallet-selector/core" "7.0.3"
+    bn.js "^5.2.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -14743,18 +14730,6 @@ isobject@^3.0.0, isobject@^3.0.1:
   resolved "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
-isomorphic-localstorage@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/isomorphic-localstorage/-/isomorphic-localstorage-0.0.8.tgz#2479e6e600ef27cce90ed11c14e309c97a605d93"
-  integrity sha512-ejzdUagHWEV/vaxazMt8oIzEIP83SrMsp4gT3fj379pJ6iw2gss0K8rcexTM7vwlopLzA/b9vNwQ7fyf67UuLA==
-  dependencies:
-    node-localstorage "^2.2.1"
-
-isomorphic-ws@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz#55fd4cd6c5e6491e76dc125938dd863f5cd4f2dc"
-  integrity sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==
-
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.npmjs.org/isstream/-/isstream-0.1.2.tgz"
@@ -17937,23 +17912,6 @@ near-api-js@^0.44.2:
     text-encoding-utf-8 "^1.0.2"
     tweetnacl "^1.0.1"
 
-near-api-js@^0.45.1:
-  version "0.45.1"
-  resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-0.45.1.tgz#0f0a4b378758a2f1b32555399d7356da73d0ef27"
-  integrity sha512-QyPO/vjvMFlcMO1DCpsqzmnSqPIyHsjK1Qi4B5ZR1cJCIWMkqugDF/TDf8FVQ85pmlcYeYwfiTqKanKz+3IG0A==
-  dependencies:
-    bn.js "5.2.0"
-    borsh "^0.7.0"
-    bs58 "^4.0.0"
-    depd "^2.0.0"
-    error-polyfill "^0.1.3"
-    http-errors "^1.7.2"
-    js-sha256 "^0.9.0"
-    mustache "^4.0.0"
-    node-fetch "^2.6.1"
-    text-encoding-utf-8 "^1.0.2"
-    tweetnacl "^1.0.1"
-
 near-api-js@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/near-api-js/-/near-api-js-1.0.0.tgz#7aebc8e538071114ed242e6cce3b8fa956267691"
@@ -18122,13 +18080,6 @@ node-libs-browser@^2.2.1:
     url "^0.11.0"
     util "^0.11.0"
     vm-browserify "^1.0.1"
-
-node-localstorage@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/node-localstorage/-/node-localstorage-2.2.1.tgz#869723550a4883e426cb391d2df0b563a51c7c1c"
-  integrity sha512-vv8fJuOUCCvSPjDjBLlMqYMHob4aGjkmrkaE42/mZr0VT+ZAU10jRF8oTnX9+pgU9/vYJ8P7YT3Vd6ajkmzSCw==
-  dependencies:
-    write-file-atomic "^1.1.4"
 
 node-modules-regexp@^1.0.0:
   version "1.0.0"
@@ -20501,11 +20452,6 @@ q@^1.1.2:
   resolved "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qrcode-generator@^1.4.3:
-  version "1.4.4"
-  resolved "https://registry.yarnpkg.com/qrcode-generator/-/qrcode-generator-1.4.4.tgz#63f771224854759329a99048806a53ed278740e7"
-  integrity sha512-HM7yY8O2ilqhmULxGMpcHSF1EhJJ9yBj8gvDEuZ6M+KGJ0YY2hKpnXvRD+hZPLrDVck3ExIGhmPtSdcjC+guuw==
-
 qrcode@1.4.4:
   version "1.4.4"
   resolved "https://registry.npmjs.org/qrcode/-/qrcode-1.4.4.tgz"
@@ -22440,11 +22386,6 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
-
-slide@^1.1.5:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
-  integrity sha512-NwrtjCg+lZoqhFU8fOwl4ay2ei8PaqCBOUV3/ektPY9trO1yQ1oXEfmHAhKArUVUr/hOHvy5f6AdP17dCM0zMw==
 
 smart-buffer@^4.2.0:
   version "4.2.0"
@@ -25678,15 +25619,6 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-write-file-atomic@^1.1.4:
-  version "1.3.4"
-  resolved "https://registry.yarnpkg.com/write-file-atomic/-/write-file-atomic-1.3.4.tgz#f807a4f0b1d9e913ae7a48112e6cc3af1991b45f"
-  integrity sha512-SdrHoC/yVBPpV0Xq/mUZQIpW2sWXAShb/V4pomcJXh92RuaO+f3UTWItiR3Px+pLnV2PvC2/bfn5cwr5X6Vfxw==
-  dependencies:
-    graceful-fs "^4.1.11"
-    imurmurhash "^0.1.4"
-    slide "^1.1.5"
-
 write-file-atomic@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npmjs.org/write-file-atomic/-/write-file-atomic-3.0.3.tgz"
@@ -25760,11 +25692,6 @@ ws@^7.5.1:
   version "7.5.9"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
   integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
-
-ws@^8.8.0:
-  version "8.8.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.8.1.tgz#5dbad0feb7ade8ecc99b830c1d77c913d4955ff0"
-  integrity sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==
 
 ws@~8.2.3:
   version "8.2.3"

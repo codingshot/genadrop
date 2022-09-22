@@ -73,10 +73,6 @@ function ConnectWallet() {
 
   const handleDisconnet = async () => {
     disconnectWallet(walletProps);
-    if (window.localStorage.near_app_wallet_auth_key) {
-      const nearLogout = await window?.selector?.wallet();
-      nearLogout.signOut();
-    }
   };
 
   const handleNetworkClick = () => {
@@ -108,7 +104,7 @@ function ConnectWallet() {
 
   useEffect(() => {
     initializeConnection(walletProps);
-  }, [rpc]);
+  }, [rpc, window.selector]);
 
   const dropdown = (
     <div className={classes.dropdownContainer}>

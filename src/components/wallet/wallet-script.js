@@ -17,17 +17,17 @@ import supportedChains from "../../utils/supportedChains";
 import * as WS from "./wallet-script";
 import getConfig from "../wallet-popup/nearConfig";
 import { setupWalletSelector } from "@near-wallet-selector/core";
-import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
-import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
+import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import NightlyIconUrl from "@near-wallet-selector/nightly/assets/nightly.png";
+import MathIconUrl from "@near-wallet-selector/math-wallet/assets/math-wallet-icon.png";
+import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
 import { setupLedger } from "@near-wallet-selector/ledger";
 import "@near-wallet-selector/modal-ui/styles.css";
-import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
-import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
 import { setupSender } from "@near-wallet-selector/sender";
-import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
-import MeateoIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
+import { setupNightly } from "@near-wallet-selector/nightly";
+import { setupMathWallet } from "@near-wallet-selector/math-wallet";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 
 export const breakAddress = (address = "", width = 6) => {
   if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -102,27 +102,29 @@ export const initializeConnection = async (walletProps) => {
     walletConnectProvider.on("disconnect", (code, reason) => {
       WS.disconnectWallet(walletProps);
     });
-  } else if (window.localStorage.near_app_wallet_auth_key || search.get("account_id")) {
+  } else if (
+    window.localStorage.near_app_wallet_auth_key ||
+    search.get("account_id") ||
+    window.localStorage.getItem("near_wallet") === "connected_to_near"
+  ) {
     const nearConfig = getConfig("testnet");
 
     const walletSelector = await setupWalletSelector({
       network: nearConfig,
       modules: [
-        setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+        setupNearWallet({ iconUrl: NearIconUrl }),
         setupLedger({ iconUrl: LedgerIconUrl }),
-        setupNightlyConnect({
-          iconUrl: NightlyIconUrl,
-        }),
         setupSender({ iconUrl: SenderIconUrl }),
-        setupMeteorWallet({ iconUrl: MeateoIconUrl }),
+        setupMathWallet({ iconUrl: MathIconUrl }),
+        setupNightly({ iconUrl: NightlyIconUrl }),
       ],
     });
 
     const isSignedIn = walletSelector.isSignedIn();
-    console.log(isSignedIn);
     window.selector = walletSelector;
-
+    console.log(isSignedIn);
     if (isSignedIn) {
+      window.localStorage.setItem("near_wallet", "connected_to_near");
       dispatch(setChainId(1111));
       dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
       dispatch(setProposedChain(1111));
@@ -135,14 +137,6 @@ export const initializeConnection = async (walletProps) => {
       );
     }
     return;
-    // const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
-    // const near = await nearAPI.connect({ keyStore, ...nearConfig });
-    // const walletConnection = new nearAPI.WalletConnection(near);
-    // const account = await walletConnection.getAccountId();
-    // dispatch(setChainId(Number(1111)));
-    // dispatch(setAccount(account));
-    // dispatch(setProposedChain(1111));
-    // dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
 
@@ -237,7 +231,6 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
-  console.log("asiere", walletProps);
   dispatch(setToggleWalletPopup(true));
 };
 
@@ -339,6 +332,11 @@ export const disconnectWallet = async ({ walletConnectProvider, dispatch, histor
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
+  if (localStorage.getItem("near_wallet") === "connected_to_near") {
+    const nearLogout = await window?.selector?.wallet();
+    nearLogout.signOut();
+    window.localStorage.removeItem("near_wallet");
+  }
   handleSetState({ toggleDropdown: false });
   if (pathname.includes("/profile")) {
     history.push("/marketplace");

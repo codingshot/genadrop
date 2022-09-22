@@ -16,18 +16,19 @@ import supportedChains from "../../utils/supportedChains";
 import "regenerator-runtime";
 import getConfig from "./nearConfig";
 import { setupWalletSelector } from "@near-wallet-selector/core";
-import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+
 import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
-import NightlyIconUrl from "@near-wallet-selector/nightly-connect/assets/nightly-connect.png";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
-import MeateoIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
+import NightlyIconUrl from "@near-wallet-selector/nightly/assets/nightly.png";
+import MathIconUrl from "@near-wallet-selector/math-wallet/assets/math-wallet-icon.png";
+import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
 import { setupLedger } from "@near-wallet-selector/ledger";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import "@near-wallet-selector/modal-ui/styles.css";
-import { setupNightlyConnect } from "@near-wallet-selector/nightly-connect";
-import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
+import { setupNightly } from "@near-wallet-selector/nightly";
+import { setupMathWallet } from "@near-wallet-selector/math-wallet";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 
 const WalletPopup = ({ handleSetState }) => {
   const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
@@ -45,7 +46,6 @@ const WalletPopup = ({ handleSetState }) => {
   connectOptions.unshift(supportedChains[4160]);
 
   const handleProposedChain = async () => {
-    console.log(connector);
     dispatch(setProposedChain(activeChain));
     dispatch(setToggleWalletPopup(false));
     setConnectionMethods(false);
@@ -57,6 +57,7 @@ const WalletPopup = ({ handleSetState }) => {
       setMetamask(false);
     } else {
       setMetamask(true);
+      window.localStorage.removeItem("near_wallet");
     }
     if (chainId === 1111) {
       // NEAR Connect
@@ -64,26 +65,26 @@ const WalletPopup = ({ handleSetState }) => {
       const walletSelector = await setupWalletSelector({
         network: nearConfig,
         modules: [
-          setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+          setupNearWallet({ iconUrl: NearIconUrl }),
           setupLedger({ iconUrl: LedgerIconUrl }),
-          setupNightlyConnect({
-            iconUrl: NightlyIconUrl,
-          }),
           setupSender({ iconUrl: SenderIconUrl }),
-          setupMeteorWallet({ iconUrl: MeateoIconUrl }),
+          setupMathWallet({ iconUrl: MathIconUrl }),
+          setupNightly({ iconUrl: NightlyIconUrl }),
         ],
       });
-
-      const isSignedIn = walletSelector.isSignedIn();
-      if (isSignedIn) {
-        dispatch(setChainId(1111));
-        dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
-        dispatch(setProposedChain(1111));
-        dispatch(setConnector(await walletSelector.wallet()));
-      }
       const description = "Please select a wallet to sign in..";
       const modal = setupModal(walletSelector, { contractId: "genadrop-test.mpadev.testnet", description });
       modal.show();
+
+      const isSignedIn = walletSelector.isSignedIn();
+      window.selector = walletSelector;
+      if (isSignedIn) {
+        window.localStorage.setItem("near_wallet", "connected_to_near");
+        dispatch(setChainId(1111));
+        dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
+        dispatch(setProposedChain(1111));
+        dispatch(setConnector(walletSelector.wallet()));
+      }
 
       dispatch(setToggleWalletPopup(false));
       handleProposedChain();
@@ -119,7 +120,7 @@ const WalletPopup = ({ handleSetState }) => {
     if (!connectFromMint.chainId) return;
     dispatch(setToggleWalletPopup(true));
     handleChain(connectFromMint.chainId, connectFromMint.isComingSoon);
-  }, [connectFromMint]);
+  }, [connectFromMint, window.selector]);
 
   return (
     <div className={classes.container}>
