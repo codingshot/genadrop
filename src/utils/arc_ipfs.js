@@ -305,7 +305,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     } catch (error) {
       console.log(error.message);
       return {
-        message: `${error.message}`,
+        message: `${"insufficient balance/Min balance not enough to hold assets"}`,
       };
     }
   }
@@ -810,7 +810,7 @@ export async function mintToAlgo(algoProps) {
     } catch (error) {
       console.log(error);
       return {
-        message: `${error.message}`,
+        message: `${"insufficient balance/Min balance not enough to hold assets"}`,
       };
     }
   }
