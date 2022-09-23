@@ -195,7 +195,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           {/* main button */}
           <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
             <IconCapture className={classes.captureBtn} />
-            <p>Doubletake</p>
+            <p>BeReal</p>
           </div>
 
           {/* switch mode button */}
