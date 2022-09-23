@@ -22,7 +22,6 @@ import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
-import { ReactComponent as GreenTickIcon } from "../../../assets/icon-green-tick.svg";
 import { initConnectWallet } from "../../wallet/wallet-script";
 
 const Minter = () => {
@@ -52,9 +51,6 @@ const Minter = () => {
       isError: null,
       popup: false,
     },
-    showReceiverAddress: false,
-    receiverAddress: "",
-    goodReceiverAddress: false,
   });
   const {
     attributes,
@@ -68,9 +64,6 @@ const Minter = () => {
     previewSelectMode,
     profileSelected,
     popupProps,
-    showReceiverAddress,
-    receiverAddress,
-    goodReceiverAddress,
   } = state;
 
   const mintProps = {
@@ -79,7 +72,6 @@ const Minter = () => {
     setNotification,
     setClipboard,
     description,
-    receiverAddress,
     account,
     chainId,
     connector,
@@ -94,7 +86,6 @@ const Minter = () => {
     setLoader,
     setNotification,
     setClipboard,
-    receiverAddress,
     account,
     chainId,
     connector,
@@ -169,21 +160,6 @@ const Minter = () => {
         })
       );
     }
-    if (showReceiverAddress && receiverAddress.length < 42) {
-      return dispatch(
-        setNotification({
-          message: "Invalid receiver address ",
-          type: "warning",
-        })
-      );
-    }
-    if (receiverAddress.length >= 42 && showReceiverAddress) {
-      mintProps.receiverAddress = receiverAddress;
-      singleMintProps.receiverAddress = receiverAddress;
-    } else {
-      mintProps.receiverAddress = account;
-      singleMintProps.receiverAddress = account;
-    }
     if (file.length > 1) {
       if (!mintProps.description) {
         return dispatch(
@@ -227,6 +203,7 @@ const Minter = () => {
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (singleMintProps.chain.toLowerCase() === "near") {
+          return;
         } else if (typeof url === "object") {
           handleSetState({
             popupProps: {
@@ -265,14 +242,6 @@ const Minter = () => {
     }
   }, [chainId]);
 
-  const handleReceiverAddress = (e) => {
-    handleSetState({ receiverAddress: e.target.value });
-    if (e.target.value.length >= 42) {
-      handleSetState({ goodReceiverAddress: true });
-    } else {
-      handleSetState({ goodReceiverAddress: false });
-    }
-  };
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -431,42 +400,6 @@ const Minter = () => {
                     </div>
                   </>
                 )}
-
-                <div className={classes.inputWrapper}>
-                  <div className={classes.toggleTitle}>
-                    <div className={classes.category}>
-                      Non Tranferable NFT{" "}
-                      <GenadropToolTip
-                        content="This NFT will be minted to receiver address and cannot be moved afterward"
-                        fill="#0d99ff"
-                      />
-                    </div>
-                    <div className={classes.toggler}>
-                      <label className={classes.switch}>
-                        <input
-                          type="checkbox"
-                          onClick={() => handleSetState({ showReceiverAddress: !showReceiverAddress })}
-                        />
-                        <span className={classes.slider} />
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className={showReceiverAddress ? classes.receiverAddress : classes.noDisplay}>
-                    <label>Receiver Address</label>
-
-                    <div className={classes.inputContainer}>
-                      <input
-                        style={zip ? { pointerEvents: "none" } : {}}
-                        type="text"
-                        value={receiverAddress}
-                        placeholder={account}
-                        onChange={(event) => handleReceiverAddress(event)}
-                      />
-                      {goodReceiverAddress ? <GreenTickIcon /> : ""}
-                    </div>
-                  </div>
-                </div>
               </section>
 
               <section className={classes.mintOptions}>
