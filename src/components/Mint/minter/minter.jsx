@@ -464,19 +464,3 @@ const Minter = () => {
 };
 
 export default Minter;
-
-{
-  /* <button
-onClick={() => {
-  console.log('clicked');
-  dispatch(
-    setConnectFromMint({
-      chainId: 1313161555,
-      isComingSoon: false,
-    })
-  );
-}}
->
-test
-</button> */
-}

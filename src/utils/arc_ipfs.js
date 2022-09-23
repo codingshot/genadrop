@@ -305,7 +305,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     } catch (error) {
       console.log(error.message);
       return {
-        message: `${error.message}`,
+        message: `${"insufficient balance/Min balance not enough to hold assets"}`,
       };
     }
   }
@@ -808,9 +808,9 @@ export async function mintToAlgo(algoProps) {
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
-      console.log(error);
+      console.log("===> ", error);
       return {
-        message: `${error.message}`,
+        message: `${"insufficient balance/Min balance not enough to hold assets"}`,
       };
     }
   }
