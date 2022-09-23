@@ -6,6 +6,7 @@ import JSZip from "jszip";
 import { ethers } from "ethers";
 import { Contract } from "near-api-js";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+
 const BN = require("bn.js");
 
 const algosdk = require("algosdk");
@@ -774,7 +775,18 @@ export async function initializeContract(contractProps) {
 }
 
 export async function mintToAlgo(algoProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = algoProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    setLoader,
+    mainnet,
+    receiverAddress,
+  } = algoProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps }, true);
@@ -804,7 +816,17 @@ export async function mintToAlgo(algoProps) {
         pinataMetadata: { name: "collection" },
       });
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-      await write.writeUserData(account, collectionUrl, fileName, assetID, price || 0, description, mainnet, txId);
+      console.log("RECEIVER: ", receiverAddress);
+      await write.writeUserData(
+        receiverAddress,
+        collectionUrl,
+        fileName,
+        assetID,
+        price || 0,
+        description,
+        mainnet,
+        txId
+      );
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {

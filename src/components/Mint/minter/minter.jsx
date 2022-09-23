@@ -79,7 +79,8 @@ const Minter = () => {
     setNotification,
     setClipboard,
     description,
-    account: receiverAddress || account,
+    receiverAddress,
+    account,
     chainId,
     connector,
     file: zip,
@@ -93,7 +94,8 @@ const Minter = () => {
     setLoader,
     setNotification,
     setClipboard,
-    account: receiverAddress || account,
+    receiverAddress,
+    account,
     chainId,
     connector,
     file: file[0],
@@ -167,13 +169,20 @@ const Minter = () => {
         })
       );
     }
-    if (showReceiverAddress && receiverAddress && receiverAddress.length < 42) {
+    if (showReceiverAddress && receiverAddress.length < 42) {
       return dispatch(
         setNotification({
           message: "Invalid receiver address ",
           type: "warning",
         })
       );
+    }
+    if (receiverAddress.length >= 42 && showReceiverAddress) {
+      mintProps.receiverAddress = receiverAddress;
+      singleMintProps.receiverAddress = receiverAddress;
+    } else {
+      mintProps.receiverAddress = account;
+      singleMintProps.receiverAddress = account;
     }
     if (file.length > 1) {
       if (!mintProps.description) {
