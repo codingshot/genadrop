@@ -817,16 +817,7 @@ export async function mintToAlgo(algoProps) {
       });
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
       console.log("RECEIVER: ", receiverAddress);
-      await write.writeUserData(
-        receiverAddress,
-        collectionUrl,
-        fileName,
-        assetID,
-        price || 0,
-        description,
-        mainnet,
-        txId
-      );
+      await write.writeUserData(account, collectionUrl, fileName, assetID, price || 0, description, mainnet, txId);
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
