@@ -1,0 +1,342 @@
+.cameraWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: fit-content;
+  min-height: calc(100vh - 5rem);
+  align-items: center;
+}
+.retake {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+  cursor: var(--cursor-pointer);
+  font-weight: 500;
+  font-size: 1.25rem;
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 1;
+  background: rgb(101 110 133 / 75%);
+  padding: 8px;
+  border-radius: 50%;
+}
+.retake svg {
+  transition: all 0.2s ease;
+}
+.retake svg path {
+  fill: white;
+}
+.retake:hover svg {
+  transform: translateX(-6px);
+}
+
+.cameraShot {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: fit-content;
+  height: calc(100vh - 11rem);
+}
+.cameraShot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
+}
+.cameraShot video {
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg); /* Safari and Chrome */
+  -moz-transform: rotateY(180deg); /* Firefox */
+}
+.imgBtn {
+  display: flex;
+  bottom: 1.5rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.imgBtn > div,
+.imgBtn > p {
+  border-radius: 39px;
+  font-size: 1em;
+  max-width: 15rem;
+  width: 100%;
+  padding: 0.675rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.799296px;
+  cursor: var(--cursor-pointer);
+  transition: background 0.2s ease-in-out;
+  border: 1px solid var(--main-color);
+  box-shadow: 0px 4px 7px -1px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+}
+.imgBtn > div {
+  background: var(--main-color);
+  color: var(--default);
+}
+.imgBtn > p {
+  color: var(--main-color);
+}
+.imgBtn div:hover {
+  background: var(--default);
+  color: var(--main-color);
+}
+.imgBtn p:hover {
+  background: var(--main-color);
+  color: var(--default);
+}
+.videoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.videoWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: fit-content;
+  width: 100%;
+  height: calc(100vh - 5rem);
+}
+.videoWrapper div:first-child {
+  width: 100%;
+  height: 100%;
+}
+
+.videoOFF {
+  width: 100%;
+  height: 100%;
+  background: rgba(75, 75, 90, 0.74);
+  object-fit: cover;
+}
+
+.enableContainer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.closeBtn,
+.sideSwitch {
+  position: absolute;
+  z-index: 2;
+  top: 2rem;
+  width: 2.3rem;
+  height: 2.3rem;
+  display: flex;
+  border-radius: 50%;
+  cursor: var(--cursor-pointer);
+  padding: 0.6rem;
+  background: #656e85;
+  transition: box-shadow 200ms ease;
+}
+.closeBtn {
+  left: 2rem;
+}
+.sideSwitch {
+  right: 2rem;
+}
+.closeBtn svg,
+.sideSwitch svg {
+  width: 100%;
+  height: 100%;
+  transition: all 300ms ease;
+}
+.closeBtn svg path {
+  fill: var(--default);
+}
+.closeBtn:hover svg {
+  transform: rotate(180deg);
+}
+
+.btnWrapper {
+  position: absolute;
+  bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(0 0 0 / 60%);
+  padding: 0rem 2rem;
+  height: 6rem;
+  width: 20em;
+  border-radius: 16px;
+}
+.btnWrapper > div {
+  cursor: var(--cursor-pointer);
+  transition: background 0.2s ease-in-out;
+}
+
+.mainBtn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.mainBtn > p {
+  color: var(--main-color);
+  font-size: 0.75rem;
+  padding: 0.1em 1em;
+  font-weight: 500;
+  border: 1px solid var(--main-color);
+  border-radius: 100px;
+  margin-top: 0.5rem;
+}
+.captureBtn {
+  width: 50px;
+  height: 50px;
+}
+.captureBtn circle {
+  transition: all 0.2s ease-in-out;
+}
+.captureBtn:hover circle {
+  fill: var(--main-color);
+}
+.captureBtn:hover circle:last-child {
+  stroke: var(--default);
+}
+.switchBtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1rem;
+}
+.switchBtn svg {
+  height: 20px;
+  width: 20px;
+}
+.switchBtn p {
+  color: var(--default);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(75, 75, 90, 0.79);
+  z-index: 20;
+  top: 0;
+}
+@media screen and (max-width: 480px) {
+  .cameraWrapper {
+    background: white;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    z-index: 1000;
+    min-height: calc(100vh - 5rem);
+  }
+  .cameraShot {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+  }
+  .cameraShot img,
+  .cameraShot video {
+    position: absolute;
+    height: 100%;
+    width: auto;
+  }
+
+  .videoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    z-index: 1000;
+    background: white;
+  }
+  .videoWrapper {
+    height: 100vh;
+    background: white;
+  }
+  .videoWrapper video {
+    height: 100%;
+  }
+  .btnWrapper {
+    bottom: 0rem;
+    width: 100%;
+    height: 7rem;
+  }
+  .switch2imgs {
+    display: block;
+  }
+  .imgBtn {
+    position: absolute;
+    flex-direction: column;
+  }
+  .imgBtn p,
+  .imgBtn div {
+    max-width: 90%;
+    padding: 1em;
+  }
+  .imgBtn p {
+    backdrop-filter: blur(23px);
+    background: rgba(255, 255, 255, 0.67);
+    border-color: var(--default);
+  }
+}
+
+/* ------------------------------------- Double Camera ------------------------------------- */
+.frontCamera > div:first-child {
+  position: absolute;
+  width: 30%;
+  height: 25%;
+  top: 1rem;
+  left: 1rem;
+  overflow: hidden;
+}
+.cameraShot .faceImg {
+  position: absolute;
+  width: 30%;
+  height: 25%;
+  top: 1rem;
+  left: 1rem;
+  z-index: 1;
+  overflow: hidden;
+}
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+.loader p {
+  color: #3a9dec;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-align: center;
+  margin-top: 1em;
+}
+.loader div {
+  margin: auto;
+}
+.combineImgs {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.rearImg {
+  width: 100%;
+  height: 100%;
+  position: initial;
+}
