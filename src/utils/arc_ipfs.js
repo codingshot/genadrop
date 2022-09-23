@@ -453,7 +453,7 @@ async function InitiateCeloProvider(mainnet) {
 }
 
 export async function mintSingleToCelo(singleMintProps) {
-  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -475,7 +475,7 @@ export async function mintSingleToCelo(singleMintProps) {
         : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      data: contract.interface.encodeFunctionData("mint", [receiverAddress, id, 1, asset.url, "0x"]),
       nonce: ethNonce,
     };
     try {
@@ -514,7 +514,7 @@ export async function mintSingleToCelo(singleMintProps) {
   // );
   let txn;
   try {
-    txn = await contract.mint(account, id, 1, asset.url, "0x");
+    txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
     await txn.wait();
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -775,7 +775,18 @@ export async function initializeContract(contractProps) {
 }
 
 export async function mintToAlgo(algoProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = algoProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    setLoader,
+    receiverAddress,
+    mainnet,
+  } = algoProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps }, true);
@@ -805,7 +816,16 @@ export async function mintToAlgo(algoProps) {
         pinataMetadata: { name: "collection" },
       });
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-      await write.writeUserData(account, collectionUrl, fileName, assetID, price || 0, description, mainnet, txId);
+      await write.writeUserData(
+        receiverAddress,
+        collectionUrl,
+        fileName,
+        assetID,
+        price || 0,
+        description,
+        mainnet,
+        txId
+      );
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
@@ -819,7 +839,18 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    setLoader,
+    mainnet,
+    receiverAddress,
+  } = celoProps;
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -860,7 +891,7 @@ export async function mintToCelo(celoProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      data: contract.interface.encodeFunctionData("mintBatch", [receiverAddress, ids, uris]),
       nonce: ethNonce,
     };
     try {
@@ -885,7 +916,7 @@ export async function mintToCelo(celoProps) {
     }
   }
   try {
-    tx = await contract.mintBatch(account, ids, uris);
+    tx = await contract.mintBatch(receiverAddress, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
