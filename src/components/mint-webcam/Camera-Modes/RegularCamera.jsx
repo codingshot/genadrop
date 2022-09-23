@@ -146,7 +146,7 @@ const RegularCamera = ({ regularCameraProps }) => {
 
   const updpateMainBtn = (type) => {
     // picture record
-    if (type === "Doubletake") {
+    if (type === "BeReal") {
       handleSetState({
         dualCam: true,
       });

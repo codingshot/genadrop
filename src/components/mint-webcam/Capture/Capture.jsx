@@ -71,7 +71,7 @@ const Capture = () => {
     },
     {
       id: 3,
-      text: "Doubletake",
+      text: "BeReal",
       icon: <IconDoubleTake />,
     },
   ];
