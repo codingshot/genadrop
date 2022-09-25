@@ -63,6 +63,11 @@ export const NearSuccessPopup = (props) => {
     }, 650);
   };
 
+  const nearExplorerUrl =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? `https://explorer.testnet.near.org/?query=${url}`
+      : `https://explorer.near.org/?query=${url}`;
+
   const handleResetPopup = () => {
     handleSetState({
       popupProps: {
@@ -92,7 +97,7 @@ export const NearSuccessPopup = (props) => {
             Go to Dashboard
           </button>
           <button className={`${classes.actionBtn} ${classes._2}`} type="button">
-            <a href={`https://explorer.testnet.near.org/?query=${url}`} target="_blank" rel="noreferrer">
+            <a href={nearExplorerUrl} target="_blank" rel="noreferrer">
               Block Explorer
             </a>
             <div className={classes.iconContainer}>
@@ -103,7 +108,7 @@ export const NearSuccessPopup = (props) => {
         </div>
         <div className={classes.detailsContainer}>
           <div className={classes.tag}>Share</div>
-          <div className={classes.url}>{url}</div>
+          <div className={classes.url}>{nearExplorerUrl}</div>
           <button
             onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
             className={classes.copyBtn}
@@ -111,7 +116,7 @@ export const NearSuccessPopup = (props) => {
           >
             {clipboardState}
           </button>
-          <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={url} />
+          <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={nearExplorerUrl} />
         </div>
       </div>
     </div>

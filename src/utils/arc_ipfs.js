@@ -323,21 +323,14 @@ export async function mintSingleToNear(nearMintProps) {
     const asset = await connectAndMint(file, metadata, file.name, 4);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
-
-    // const link =
-    //   process.env.REACT_APP_ENV_STAGING === "true"
-    //     ? "localhost:3001" || "genadrop-staging.vercel.app"
-    //     : "www.genadrop.com" || "www.genadrop.io";
-    const contract = await new Contract(
-      connector.account(),
-      process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.0xprometheus.near",
-      {
-        // View methods are read only. They don't modify the state, but usually return some value.
-        viewMethods: ["check_token"],
-        // Change methods can modify the state. But you don't receive the returned value when called.
-        changeMethods: ["nft_mint", "new_default_meta"],
-      }
-    );
+    const contractName =
+      process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.0xprometheus.near";
+    const contract = await new Contract(connector.account(), contractName, {
+      // View methods are read only. They don't modify the state, but usually return some value.
+      viewMethods: ["check_token"],
+      // Change methods can modify the state. But you don't receive the returned value when called.
+      changeMethods: ["nft_mint", "new_default_meta"],
+    });
     const res = await contract.nft_mint({
       callbackUrl: `http://${window.location.host}/mint/1of1`,
       args: {
