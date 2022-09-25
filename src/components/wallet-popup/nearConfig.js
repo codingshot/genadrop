@@ -4,7 +4,7 @@ const MARKET_CONTRACT_NAME = process.env.MARKET_CONTRACT_NAME;
 function getConfig(env) {
   switch (env) {
     case "production":
-    case "near-mainnet":
+    case "mainnet":
       return {
         networkId: "mainnet",
         nodeUrl: "https://rpc.mainnet.near.org",

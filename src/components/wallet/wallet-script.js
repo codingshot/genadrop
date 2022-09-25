@@ -98,9 +98,10 @@ export const initializeConnection = async (walletProps) => {
     const near = await nearAPI.connect({ keyStore, ...nearConfig });
     const walletConnection = new nearAPI.WalletConnection(near);
     const account = await walletConnection.getAccountId();
-    dispatch(setChainId(Number(1111)));
+    const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
+    dispatch(setChainId(Number(connectedChain)));
     dispatch(setAccount(account));
-    dispatch(setProposedChain(1111));
+    dispatch(setProposedChain(connectedChain));
     dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
