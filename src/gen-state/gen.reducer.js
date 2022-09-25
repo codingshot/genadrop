@@ -19,7 +19,6 @@ export const INITIAL_STATE = {
   layers: [],
   preview: [],
   nftLayers: [],
-  preNftLayers: [],
   combinations: 0,
   mintAmount: 0,
   outputFormat: "ipfs",
@@ -43,8 +42,9 @@ export const INITIAL_STATE = {
   celoCollections: [],
   singleAuroraNfts: [],
   singleCeloNfts: [],
+  singleNearNfts: [],
   singlePolygonNfts: [],
-  activeCollection: [],
+  activeCollection: null,
   notification: {
     message: "",
     type: "", // warning|error|success|default
@@ -72,23 +72,24 @@ export const INITIAL_STATE = {
     value: {},
   },
   layerAction: {
-    type: "", // add| delete|order|rename,
+    type: "", // add|delete|order|rename,
   },
   sessionId: "",
   sessions: [],
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
-  isUser: "", // true|false|null,
   currentPlan: "free", // free|noobs|geeks|ogs
   upgradePlan: false,
   actionProgress: {
     totalCount: 0,
     resetCount: true,
   },
-  isUser: "", // true false null,
   currentPlan: "free",
+  proposedPlan: "",
   minter: "",
   toggleUpgradeModal: "",
+  searchContainer: null,
+  isUser: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -172,11 +173,6 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         mintAmount: action.payload,
-      };
-    case genActionTypes.SET_PRE_NFT_LAYERS:
-      return {
-        ...state,
-        preNftLayers: action.payload,
       };
     case genActionTypes.SET_NFT_LAYERS:
       return {
@@ -320,6 +316,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         singlePolygonNfts: action.payload,
       };
+    case genActionTypes.SET_NEAR_SINGLE_NFTS:
+      return {
+        ...state,
+        singleNearNfts: action.payload,
+      };
     case genActionTypes.SET_NOTIFICATION:
       return {
         ...state,
@@ -430,15 +431,15 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         toggleCollectionNameModal: action.payload,
       };
-    case genActionTypes.SET_IS_USER:
-      return {
-        ...state,
-        isUser: action.payload,
-      };
     case genActionTypes.SET_CURRENT_PLAN:
       return {
         ...state,
         currentPlan: action.payload,
+      };
+    case genActionTypes.SET_PROPOSED_PLAN:
+      return {
+        ...state,
+        proposedPlan: action.payload,
       };
     case genActionTypes.SET_UPGRADE_PLAN:
       return {
@@ -459,6 +460,16 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         toggleUpgradeModal: action.payload,
+      };
+    case genActionTypes.SET_SEARCH_cONTAINER:
+      return {
+        ...state,
+        searchContainer: { ...state.searchContainer, ...action.payload },
+      };
+    case genActionTypes.SET_IS_USER:
+      return {
+        ...state,
+        isUser: action.payload,
       };
     default:
       return state;

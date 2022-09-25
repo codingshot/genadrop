@@ -1,0 +1,104 @@
+.container {
+  width: 100%;
+  padding: 1em;
+  background: #ffffff;
+  border: 2px solid #cacdd5;
+  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
+  border-radius: 0.7em;
+}
+
+.container > img {
+  width: 100%;
+  max-width: 36em;
+  object-fit: cover;
+  border-radius: 0.7em;
+}
+
+.heading {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5em 0;
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.shareSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.moreIconContainer,
+.shareIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shareIcon,
+.moreIcon {
+  width: 1em;
+  cursor: pointer;
+}
+
+.details {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 1em 0;
+  gap: 4em;
+}
+
+.title {
+  margin-bottom: 0.5em;
+  font-size: 0.85rem;
+  color: var(--main-color);
+}
+
+.subSection {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+
+.placeholder {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+}
+
+.thumbnail {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+}
+
+.name {
+  font-weight: 600;
+  transition: all 300ms;
+}
+
+.name.active:hover {
+  color: var(--main-color);
+}
+
+@media screen and (max-width: 1200px) {
+  .details {
+    gap: 2em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .details {
+    gap: 1em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container > img {
+    max-width: 100%;
+  }
+}

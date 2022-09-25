@@ -1,5 +1,6 @@
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./UpgradeModal.module.css";
-import { useContext } from "react";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setToggleUpgradeModal, setUpgradePlan } from "../../../gen-state/gen.actions";
@@ -9,18 +10,19 @@ import { ReactComponent as UpgradeIcon } from "../../../assets/icon-upgrade.svg"
 import { plans } from "../../../pages/Pricing/Pricing.script";
 
 const UpgradeModal = () => {
+  const history = useHistory();
   const { toggleUpgradeModal, dispatch, currentPlan } = useContext(GenContext);
   const planState = [<FailureIcon />, <SuccessIcon />];
 
   const mapPlanToState = (plan, state) => {
-    let states = {
+    const states = {
       free: 0,
-      noobs: 1,
-      geeks: 2,
-      ogs: 3,
+      hobby: 1,
+      pro: 2,
+      agency: 3,
     };
 
-    let currentState = states[plan];
+    const currentState = states[plan];
     if (currentState < states[state]) return true;
     return false;
   };
@@ -31,6 +33,7 @@ const UpgradeModal = () => {
 
   const handleUpgrade = () => {
     dispatch(setUpgradePlan(true));
+    handleClose();
     history.push("/create/session/pricing");
   };
 
@@ -62,7 +65,9 @@ const UpgradeModal = () => {
               </div>
             ))}
           </div>
-          <button onClick={handleUpgrade}>Upgrade</button>
+          <button onClick={handleUpgrade} type="button">
+            Upgrade
+          </button>
         </div>
       </div>
     </div>

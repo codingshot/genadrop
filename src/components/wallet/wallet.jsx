@@ -5,7 +5,6 @@ import { GenContext } from "../../gen-state/gen.context";
 import userIcon from "../../assets/icon-user.svg";
 import switchIcon from "../../assets/icon-switch.svg";
 import copyIcon from "../../assets/icon-copy.svg";
-import { ReactComponent as ChevronIcon } from "../../assets/icon-chevron-down.svg";
 import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
@@ -81,7 +80,7 @@ function ConnectWallet() {
   };
 
   const handleDashboard = () => {
-    history.push(`/me/${account}`);
+    history.push(`/profile/${chainId}/${account}`);
   };
 
   useEffect(() => {
@@ -149,9 +148,9 @@ function ConnectWallet() {
   const changeNetwork = (
     <div className={classes.networkContainer}>
       <div className={classes.network}>
-        <div className={classes.dot} />{" "}
+        <div className={`${classes.dot} ${network === "mainnet" && classes.mainnet}`} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-        <ChevronIcon className={classes.chevronIcon} />
+        <DropdownIcon className={classes.chevronIcon} />
       </div>
       <div className={classes.networkDropdownContainer}>
         <div onClick={handleNetworkClick} className={classes.networkDropdown}>
@@ -164,7 +163,7 @@ function ConnectWallet() {
   return (
     <>
       <div className={`${classes.popupContainer} ${toggleWalletPopup && classes.active}`}>
-        <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />
+        {toggleWalletPopup && <WalletPopup isMetamask={isMetamask} handleSetState={handleSetState} />}
       </div>
       {account ? (
         <div className={classes.container}>

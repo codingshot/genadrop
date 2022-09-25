@@ -23,7 +23,7 @@ import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
 import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 
 const LayerOrders = ({ isCreateModal }) => {
-  const { layers, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
+  const { layers, rule, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,
     inputValue: "",
@@ -98,8 +98,8 @@ const LayerOrders = ({ isCreateModal }) => {
   }, [promptLayer]);
 
   useEffect(() => {
-    dispatch(setCombinations(getCombinations(layers)));
-  }, [layers]);
+    dispatch(setCombinations(getCombinations({ layers, rule, dispatch })));
+  }, [layers, rule]);
 
   useEffect(() => {
     handleSetState({ inputValue: collectionName });
@@ -120,7 +120,7 @@ const LayerOrders = ({ isCreateModal }) => {
               />
             </form>
           ) : (
-            <div>{collectionName}</div>
+            <label>{collectionName}</label>
           )}
 
           <div className={classes.editBtn}>

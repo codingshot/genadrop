@@ -14,6 +14,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  /* user-select: none; */
+  /* pointer-events: none; */
 }
 
 .cardContainer {
@@ -21,7 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  transition: transform 650ms;
+  transition: transform 650ms !important;
   padding: 1em 0;
 }
 

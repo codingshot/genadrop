@@ -5,54 +5,41 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  padding: 0 1em;
+  padding: 0 2em;
   overflow: hidden;
-}
-
-.container * {
-  transition: all 850ms;
-}
-
-.heading {
-  width: 100%;
-  text-align: center;
-  margin-bottom: 0.5em;
-  font-size: 2.5rem;
-  font-weight: 500;
-  margin-bottom: 1em;
-  color: var(--text-heading);
-}
-
-.heading span {
-  color: var(--main-color);
-}
-
-.description {
-  text-align: center;
-  width: 100%;
-  max-width: 36em;
-  margin: 0 auto;
-  margin-bottom: 3em;
-  font-size: 1.2rem;
-  color: var(--text-sub-heading);
 }
 
 .wrapper {
   width: 100%;
-  max-width: 1280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 6em;
+  max-width: 1440px;
+}
+
+.heading {
+  width: 100%;
+  max-width: 20em;
+  text-align: center;
+  margin-bottom: 0.5em;
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 1em;
+  color: var(--text-heading);
+}
+
+.heading .accent {
+  color: var(--main-color);
 }
 
 .featureContainer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   gap: 6em;
+  margin-bottom: 6em;
+}
+
+.featureContainer:last-child {
+  margin-bottom: 0;
 }
 
 .featureContainer.not {
@@ -60,13 +47,14 @@
 }
 
 .content {
-  flex: 1;
   display: flex;
+  width: 100%;
+  max-width: 42em;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 2em;
-  transition: all 650ms;
+  gap: 1em;
+  transition: transform 1250ms;
 }
 
 .content > * {
@@ -76,88 +64,110 @@
 
 .fHeading {
   color: var(--text-sub-heading);
+  font-size: 1.2rem;
 }
 
 .fTitle {
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 2rem;
   color: var(--text-heading);
 }
 
 .fDescription {
   color: var(--text-sub-heading);
+  font-size: 1.2rem;
 }
 
 .fLink {
   width: max-content;
   color: var(--main-color);
   font-weight: 600;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
   gap: 1em;
   cursor: var(--cursor-pointer);
 }
 
-.fLink img {
-  transition: all 300ms;
+.fLink div {
+  color: var(--main-color);
 }
 
-.fLink:hover img {
+.fLink svg {
+  transition: transform 300ms;
+  fill: var(--text-sub-heading);
+  fill: var(--main-color);
+}
+
+.fLink:hover svg {
   transform: translateX(1em);
 }
 
 .image {
   width: 100%;
-  max-width: 42em;
-  transition: all 650ms;
+  max-width: 36em;
+  transition: transform 1650ms;
 }
 
-@media screen and (max-width: 1280px) {
-  .wrapper {
-    gap: 4em;
+@media screen and (max-width: 1200px) {
+  .heading {
+    font-size: 2.5rem;
   }
-  .featureContainer {
-    gap: 2em;
+
+  .fLink,
+  .fDescription,
+  .fHeading {
+    font-size: 1.2rem;
+  }
+  .fTitle {
+    font-size: 1.5rem;
+  }
+
+  .image {
+    max-width: 28em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .heading {
+    font-size: 2rem;
   }
 
   .image {
     max-width: 36em;
   }
-}
 
-@media screen and (max-width: 1200px) {
-  .heading {
-    font-size: calc(1rem + 2vmin);
-  }
-
-  .description {
-    font-size: 1rem;
-  }
-}
-
-@media screen and (max-width: 1000px) {
-  .image {
-    max-width: 32em;
-  }
-}
-
-@media screen and (max-width: 900px) {
-  .container {
-    margin-bottom: 4em;
-  }
-
-  .wrapper {
-    gap: 3em;
+  .content {
+    max-width: 100%;
   }
 
   .featureContainer.not,
   .featureContainer {
     flex-direction: column-reverse;
+    gap: 2em;
   }
 }
 
 @media screen and (max-width: 540px) {
-  .wrapper {
-    gap: 2em;
+  .container {
+    padding: 0 1em;
+    margin-bottom: 4em;
+  }
+
+  .content {
+    animation-delay: 300ms;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+
+  .fLink,
+  .fDescription,
+  .fHeading {
+    font-size: 1rem;
+  }
+  .fTitle {
+    font-size: 1.2rem;
   }
 }

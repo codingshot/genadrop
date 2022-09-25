@@ -3,6 +3,7 @@ export const mapAttributeToFilter = (data) => {
   data.forEach(({ ipfs_data }) => {
     ipfs_data.properties.forEach((attr) => {
       if (attr.trait_type in attributes) {
+        if (attributes[attr.trait_type].value.includes(attr.value)) return;
         const obj = {};
         const newValue = [...attributes[attr.trait_type].value, attr.value];
         const newRarity = [...attributes[attr.trait_type].rarity, attr.rarity];

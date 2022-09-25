@@ -1,4 +1,5 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import * as nearAPI from "near-api-js";
 import { ethers } from "ethers";
 import {
   setNotification,
@@ -15,6 +16,7 @@ import { chainIdToParams } from "../../utils/chainConnect";
 import blankImage from "../../assets/blank.png";
 import supportedChains from "../../utils/supportedChains";
 import * as WS from "./wallet-script";
+import getConfig from "../wallet-popup/nearConfig";
 
 export const breakAddress = (address = "", width = 6) => {
   if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -33,13 +35,14 @@ export const getNetworkID = () => {
   });
 };
 
-export const initializeConnection = (walletProps) => {
+export const initializeConnection = async (walletProps) => {
+  console.log("Let me shut, I'm Here!", walletProps);
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;
 
   if (window.localStorage.walletconnect) {
     let newRpc = null;
-    let storedProvider = JSON.parse(window.localStorage.walletconnect);
+    const storedProvider = JSON.parse(window.localStorage.walletconnect);
     if (storedProvider.chainId === 4160) {
       newRpc = {
         4160: mainnet ? "https://node.algoexplorerapi.io" : "https://node.testnet.algoexplorerapi.io",
@@ -56,11 +59,49 @@ export const initializeConnection = (walletProps) => {
     dispatch(setConnector(walletConnectProvider));
     handleSetState({ overrideWalletConnect: true });
     handleSetState({ walletConnectProvider });
+    walletConnectProvider.on("accountsChanged", (accounts) => {
+      dispatch(setAccount(accounts[0]));
+      // dispatch(setChainId(walletConnectProvider.chainId));
+    });
+
+    // Subscribe to chainId change
+    walletConnectProvider.on("chainChanged", (chainId) => {
+      dispatch(setChainId(chainId));
+    });
+
+    // Subscribe to session disconnection
+    walletConnectProvider.on("disconnect", (code, reason) => {
+      WS.disconnectWallet(walletProps);
+    });
   } else if (rpc) {
     walletConnectProvider = new WalletConnectProvider({
       rpc,
     });
     handleSetState({ walletConnectProvider });
+    walletConnectProvider.on("accountsChanged", (accounts) => {
+      dispatch(setAccount(accounts[0]));
+      // dispatch(setChainId(walletConnectProvider.chainId));
+    });
+
+    // Subscribe to chainId change
+    walletConnectProvider.on("chainChanged", (chainId) => {
+      dispatch(setChainId(chainId));
+    });
+
+    // Subscribe to session disconnection
+    walletConnectProvider.on("disconnect", (code, reason) => {
+      WS.disconnectWallet(walletProps);
+    });
+  } else if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
+    const nearConfig = getConfig("testnet");
+    const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
+    const near = await nearAPI.connect({ keyStore, ...nearConfig });
+    const walletConnection = new nearAPI.WalletConnection(near);
+    const account = await walletConnection.getAccountId();
+    dispatch(setChainId(Number(1111)));
+    dispatch(setAccount(account));
+    dispatch(setProposedChain(1111));
+    dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
     const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
@@ -85,20 +126,6 @@ export const initializeConnection = (walletProps) => {
   }
 
   // Subscribe to accounts change
-  walletConnectProvider.on("accountsChanged", (accounts) => {
-    dispatch(setAccount(accounts[0]));
-    // dispatch(setChainId(walletConnectProvider.chainId));
-  });
-
-  // Subscribe to chainId change
-  walletConnectProvider.on("chainChanged", (chainId) => {
-    dispatch(setChainId(chainId));
-  });
-
-  // Subscribe to session disconnection
-  walletConnectProvider.on("disconnect", (code, reason) => {
-    WS.disconnectWallet(walletProps);
-  });
 };
 
 export const setNetworkType = ({ dispatch, handleSetState }) => {
@@ -107,19 +134,18 @@ export const setNetworkType = ({ dispatch, handleSetState }) => {
 };
 
 export const connectWithQRCode = async ({ walletConnectProvider, dispatch, supportedChains }) => {
-  let proposedChain = Object.keys(walletConnectProvider.rpc)[0];
+  const proposedChain = Object.keys(walletConnectProvider.rpc)[0];
   try {
     await walletConnectProvider.enable();
-    console.log("opopoo", proposedChain);
-    // if (proposedChain !== String(walletConnectProvider.chainId)) {
-    //   walletConnectProvider.disconnect();
-    //   setTimeout(() => {
-    //     alert(
-    //       `Invalid connection! Please ensure that ${supportedChains[proposedChain].label} network is selected on your scanning wallet`
-    //     );
-    //     window.location.reload();
-    //   }, 100);
-    // }
+    if (proposedChain !== String(walletConnectProvider.chainId)) {
+      walletConnectProvider.disconnect();
+      setTimeout(() => {
+        alert(
+          `Invalid connection! Please ensure that ${supportedChains[proposedChain].label} network is selected on your scanning wallet`
+        );
+        window.location.reload();
+      }, 100);
+    }
     dispatch(setConnector(walletConnectProvider));
   } catch (error) {
     console.log("error: ", error);
@@ -136,7 +162,7 @@ export const connectWithQRCode = async ({ walletConnectProvider, dispatch, suppo
 export const connectWithMetamask = async (walletProps) => {
   const { dispatch, walletConnectProvider, supportedChains, proposedChain } = walletProps;
   let res;
-  res = await supportedChains[proposedChain].switch(proposedChain);
+  res = await supportedChains[proposedChain]?.switch(proposedChain);
   if (!res) {
     await WS.disconnectWalletConnectProvider(walletConnectProvider);
     const activeChain = await WS.getNetworkID();
@@ -169,6 +195,7 @@ export const connectWithMetamask = async (walletProps) => {
 
 export const initConnectWallet = (walletProps) => {
   const { dispatch } = walletProps;
+  console.log("asiere", walletProps);
   dispatch(setToggleWalletPopup(true));
 };
 
@@ -221,10 +248,12 @@ export const updateAccount = async (walletProps) => {
   const { dispatch, walletConnectProvider, mainnet } = walletProps;
   const { ethereum } = window;
   let [accounts] = await ethereum.request({
-    method: "eth_accounts", //eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
+    method: "eth_accounts", // eth_accounts should not allow metamask to popup on page load //eth_requestAccounts
   });
-  let networkId = await ethereum.request({ method: "net_version" });
+  const networkId = await ethereum.request({ method: "net_version" });
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
+  window.localStorage.removeItem("undefined_wallet_auth_key");
+  window.localStorage.removeItem("nearWallet");
   const getEnv = supportedChains[networkId] ? mainnet === supportedChains[networkId].isMainnet : false;
   if (!getEnv) {
     WS.disconnectWallet(walletProps);
@@ -266,11 +295,11 @@ export const updateAccount = async (walletProps) => {
 
 export const disconnectWallet = async ({ walletConnectProvider, dispatch, history, pathname, handleSetState }) => {
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  dispatch(setAccount(null));
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
   handleSetState({ toggleDropdown: false });
-  if (pathname.includes("/me")) {
+  if (pathname.includes("/profile")) {
     history.push("/marketplace");
   }
+  dispatch(setAccount(null));
 };

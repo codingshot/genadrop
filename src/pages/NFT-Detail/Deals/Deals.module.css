@@ -1,0 +1,77 @@
+.container {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1em;
+  padding: 2em 1em;
+  border-radius: 1em;
+  position: sticky;
+  top: 3.5em;
+  background: var(--default);
+}
+
+.chainIcon {
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+}
+
+.title {
+  margin-bottom: 0.5em;
+  color: var(--text-placeholder);
+}
+
+.priceSection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+}
+
+.price {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.appx {
+  color: var(--text-placeholder);
+}
+
+.btn {
+  padding: 0.5em 2em;
+  border-radius: 0.7em;
+  background: var(--main-color);
+  color: var(--default);
+  border: 1px solid var(--main-color);
+  cursor: pointer;
+  transition: all 300ms;
+  text-align: center;
+}
+
+.btn:hover {
+  background: var(--default);
+  color: var(--main-color);
+}
+
+.btn.disable {
+  background: var(--outline-dark);
+  border: 1px solid var(--outline-dark);
+}
+
+.btn.disable:hover {
+  color: var(--outline);
+}
+
+@media screen and (max-width: 1200px) {
+  .btn {
+    padding: 0.5em 1.5em;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .container {
+    top: 3em;
+  }
+}

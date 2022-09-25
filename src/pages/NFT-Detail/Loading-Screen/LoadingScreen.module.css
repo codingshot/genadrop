@@ -1,0 +1,32 @@
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.top {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2em;
+  margin-bottom: 6em;
+}
+
+.left {
+  width: 100%;
+}
+
+.right {
+  width: 100%;
+}
+
+.bottom {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  .top {
+    flex-direction: column;
+  }
+}

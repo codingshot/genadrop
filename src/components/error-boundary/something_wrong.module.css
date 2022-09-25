@@ -51,7 +51,7 @@
   transition: 0.4s;
   margin-right: 20px;
   font-weight: 600;
-  border-radius: 100px;
+  border-radius: 0.7em;
 }
 
 .go-back:hover {
@@ -73,7 +73,7 @@
   align-items: center;
   border: 1px solid var(--main-color);
   font-weight: 600;
-  border-radius: 100px;
+  border-radius: 0.7em;
 }
 .go-back img {
   width: 25px;

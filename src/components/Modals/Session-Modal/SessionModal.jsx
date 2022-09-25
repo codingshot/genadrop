@@ -1,6 +1,7 @@
+import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./SessionModal.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useContext, useState } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import {
   addRule,
@@ -9,11 +10,10 @@ import {
   setCurrentSession,
   setLayers,
   setNftLayers,
-  setPreNftLayers,
   setToggleSessionModal,
+  setUpgradePlan,
 } from "../../../gen-state/gen.actions";
 import { fetchUserSession } from "../../../renderless/store-data/StoreData.script";
-import { useHistory } from "react-router-dom";
 
 const SessionModal = () => {
   const history = useHistory();
@@ -25,7 +25,6 @@ const SessionModal = () => {
     console.log("fetch starts");
     setLoading(true);
     const res = await fetchUserSession({ currentUser, sessionId });
-    console.log({ res: res.rules });
     if (res) {
       dispatch(setCurrentPlan(currentPlan));
       dispatch(setLayers(res.layers));
@@ -33,7 +32,6 @@ const SessionModal = () => {
       dispatch(setCollectionName(res.collectionName));
       dispatch(setCurrentSession(sessionId));
       dispatch(addRule(res.rules));
-      dispatch(setPreNftLayers(res.preNftLayers));
       dispatch(setToggleSessionModal(false));
     }
     setLoading(false);
@@ -41,6 +39,7 @@ const SessionModal = () => {
   };
 
   const handleCreate = () => {
+    dispatch(setUpgradePlan(false));
     history.push("/create/session/pricing");
     handleClose();
   };

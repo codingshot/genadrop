@@ -2,7 +2,7 @@ import algorandIcon from "../../assets/footer-icon-algorand.svg";
 import pinataIcon from "../../assets/footer-icon-pinata.svg";
 import celoIcon from "../../assets/footer-icon-celo.svg";
 import polygonIcon from "../../assets/footer-icon-polygon.svg";
-import solanaIcon from "../../assets/footer-icon-solana.svg";
+import avalancheIcon from "../../assets/footer-icon-avalanche.svg";
 import nearIcon from "../../assets/footer-icon-near.svg";
 import auroraIcon from "../../assets/footer-icon-aurora.svg";
 import twitterIcon from "../../assets/icon-twitter.svg";
@@ -10,7 +10,7 @@ import discordIcon from "../../assets/icon-discord.svg";
 import linkedInIcon from "../../assets/icon-linkedin.svg";
 import youTubeIcon from "../../assets/icon-youtube.svg";
 import telegram from "../../assets/telegram.svg";
-import linktree from "../../assets/linktree.svg";
+import links from "../../assets/icon-links.svg";
 
 export const orgs = [
   {
@@ -34,9 +34,9 @@ export const orgs = [
     link: "https://polygon.technology/",
   },
   {
-    name: "Solana",
-    icon: solanaIcon,
-    link: "https://solana.com/",
+    name: "Avalanche",
+    icon: avalancheIcon,
+    link: "https://www.avax.network/",
   },
   {
     name: "Near",
@@ -93,8 +93,8 @@ export const footerLinks = [
 export const socialLinks = [
   {
     name: "Linktree",
-    icon: linktree,
-    link: "https://linktr.ee/Genadrop",
+    icon: links,
+    link: "/links",
   },
   {
     name: "Discord",

@@ -4,7 +4,6 @@ import {
   setNftLayers,
   setNotification,
   setLoader,
-  setPreNftLayers,
   setLayerAction,
 } from "../../gen-state/gen.actions";
 import { getDefaultName, handleImage } from "../../utils";
@@ -70,7 +69,7 @@ export const createUniqueLayer = async (props) => {
   const newAttributes = [];
   let uniqueIndex = 0;
 
-  const mintCallback = (resolve) => {
+  const uniqueLayerCallback = (resolve) => {
     setTimeout(() => {
       dispatch(
         setLoader(
@@ -102,7 +101,7 @@ removing ${uniqueIndex} duplicates`
   };
 
   for (let i = 0; i < mintAmount + uniqueIndex; i += 1) {
-    await new Promise(mintCallback);
+    await new Promise(uniqueLayerCallback);
   }
 
   newAttributes.forEach((attr, id) => {
@@ -168,7 +167,7 @@ export const handleGenerate = async (generateProps) => {
   if (mintAmount <= 0 || !mintAmount) {
     return dispatch(
       setNotification({
-        message: "Set the number to generate",
+        message: "Set amount to generate",
         type: "warning",
       })
     );
@@ -181,7 +180,7 @@ export const handleGenerate = async (generateProps) => {
       })
     );
   }
-  if (mintAmount > combinations - rule.length) {
+  if (mintAmount > combinations) {
     return dispatch(
       setNotification({
         message: "Cannot generate more than the possible combinations",
@@ -210,16 +209,6 @@ export const handleGenerate = async (generateProps) => {
     imageQuality,
   });
 
-  (function unpackLayers() {
-    const preNftLayers = uniqueLayers.map(({ attributes, ...otherLayerProps }) => {
-      const newAttributes = attributes.map(({ image, ...otherAttrProps }) => {
-        return { image: "", ...otherAttrProps };
-      });
-      return { attributes: newAttributes, ...otherLayerProps };
-    });
-    dispatch(setPreNftLayers(preNftLayers));
-  })();
-
   dispatch(setCurrentDnaLayers(dnaLayers));
   dispatch(setNftLayers(parseLayers({ uniqueLayers, arts })));
   dispatch(
@@ -235,23 +224,4 @@ export const handleGenerate = async (generateProps) => {
   );
   var endTime = performance.now();
   console.log(`Call to generate collection took ${(endTime - startTime) / 1000} seconds`);
-};
-
-export const packLayers = async (generateProps) => {
-  const { dispatch, preNftLayers, canvasRef, imageQuality, layers } = generateProps;
-  let startTime = performance.now();
-  const arts = await generateArt({
-    dispatch,
-    setLoader,
-    layers: preNftLayers,
-    canvas: canvasRef.current,
-    image: getFirstLayerWithTrait(layers).traits[0].image,
-    imageQuality,
-  });
-
-  const nftLayers = parseLayers({ uniqueLayers: preNftLayers, arts });
-  var endTime = performance.now();
-  console.log(`Call to generate preNftLayers took ${(endTime - startTime) / 1000} seconds`);
-  dispatch(setPreNftLayers([]));
-  // dispatch(setNftLayers(nftLayers));
 };

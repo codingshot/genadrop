@@ -1,9 +1,9 @@
-import { useHistory, useRouteMatch } from "react-router-dom";
+import React, { useHistory, useRouteMatch } from "react-router-dom";
+import { useContext } from "react";
 import classes from "./mint.module.css";
 import collectionIcon from "../../assets/icon-collection.svg";
 import _1of1Icon from "../../assets/icon-1of1.svg";
 import shieldIcon from "../../assets/icon-shield-check.svg";
-import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 
 const Mint = () => {
@@ -26,7 +26,7 @@ const Mint = () => {
         <h1 className={classes.heading}>Mint Your NFTs</h1>
         <p className={classes.description}>
           With Genadrop simplified minting, you can mint your NFts as fast as your fingers can go. <br />
-          Simply choose your mint type, either a <span>Collection mint</span> or <span>1 of 1 mint</span>, and upload a
+          Simply choose your mint type, either a <span>1 of 1 mint </span> or <span>Collection mint</span>, and upload a
           file to <br />
           mint to any of our supported blockchains!
         </p>
@@ -37,21 +37,6 @@ const Mint = () => {
       </header>
 
       <main className={classes.mainWrapper}>
-        <div className={`${classes.card} ${classes.collection}`}>
-          <div className={classes.imageContainer}>
-            <img src={collectionIcon} alt="" />
-          </div>
-          <h3 className={classes.title}> Mint a collection</h3>
-          <p className={classes.description}>
-            {" "}
-            Mint your collection downloaded from Genadrop Creat app. These are collections of NFTs with mix and match
-            traits in a Zip file.{" "}
-          </p>
-          <button onClick={() => handleMint("collection")} className={classes.btn}>
-            Mint collection
-          </button>
-        </div>
-
         <div className={`${classes.card} ${classes._1of1}`}>
           <div className={classes.imageContainer}>
             <img src={_1of1Icon} alt="" />
@@ -63,6 +48,21 @@ const Mint = () => {
           </p>
           <button onClick={() => handleMint("1of1")} type="button" className={classes.btn}>
             Mint 1 of 1
+          </button>
+        </div>
+
+        <div className={`${classes.card} ${classes.collection}`}>
+          <div className={classes.imageContainer}>
+            <img src={collectionIcon} alt="" />
+          </div>
+          <h3 className={classes.title}> Mint a collection</h3>
+          <p className={classes.description}>
+            {" "}
+            Mint your collection downloaded from Genadrop Creat app. These are collections of NFTs with mix and match
+            traits in a Zip file.{" "}
+          </p>
+          <button onClick={() => handleMint("collection")} className={classes.btn} type="button">
+            Mint collection
           </button>
         </div>
       </main>

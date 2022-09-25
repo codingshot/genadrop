@@ -86,7 +86,6 @@
 .detailContent img:hover {
   transform: scale(1.05);
   transition: all 0.2s ease-in-out;
-  cursor: var(--cursor-pointer);
 }
 
 .view:hover {
@@ -175,4 +174,5 @@
 .detailContent img {
   width: 50px;
   margin-right: 24px;
+  cursor: var(--cursor-pointer);
 }

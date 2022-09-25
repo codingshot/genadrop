@@ -78,11 +78,6 @@ export const setNftLayers = (layers) => ({
   payload: layers,
 });
 
-export const setPreNftLayers = (layers) => ({
-  type: genActionTypes.SET_PRE_NFT_LAYERS,
-  payload: layers,
-});
-
 export const setCombinations = (val) => ({
   type: genActionTypes.SET_COMBINATIONS,
   payload: val,
@@ -194,6 +189,11 @@ export const setCeloCollections = (collections) => ({
 
 export const setCeloSingleNft = (nfts) => ({
   type: genActionTypes.SET_CELO_SINGLE_NFT,
+  payload: nfts,
+});
+
+export const setNearSingleNft = (nfts) => ({
+  type: genActionTypes.SET_NEAR_SINGLE_NFTS,
   payload: nfts,
 });
 
@@ -331,13 +331,13 @@ export const setToggleCollectionNameModal = (state) => ({
   payload: state,
 });
 
-export const setIsUser = (state) => ({
-  type: genActionTypes.SET_IS_USER,
-  payload: state,
-});
-
 export const setCurrentPlan = (plan) => ({
   type: genActionTypes.SET_CURRENT_PLAN,
+  payload: plan,
+});
+
+export const setProposedPlan = (plan) => ({
+  type: genActionTypes.SET_PROPOSED_PLAN,
   payload: plan,
 });
 
@@ -358,5 +358,15 @@ export const setMinter = (minter) => ({
 
 export const setToggleUpgradeModal = (state) => ({
   type: genActionTypes.TOGGLE_UPGRADE_MODAL,
+  payload: state,
+});
+
+export const setSearchContainer = (val) => ({
+  type: genActionTypes.SET_SEARCH_cONTAINER,
+  payload: val,
+});
+
+export const setIsUser = (state) => ({
+  type: genActionTypes.SET_IS_USER,
   payload: state,
 });

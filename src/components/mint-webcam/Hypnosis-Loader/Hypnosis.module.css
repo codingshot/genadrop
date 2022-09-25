@@ -1,0 +1,27 @@
+.container {
+  position: relative;
+}
+.container div {
+  border: 3px solid transparent;
+  border-top-color: var(--main-color);
+  border-right-color: var(--main-color);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0);
+}
+.animate {
+  animation: spin linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+.firstPartAniamte {
+  animation: spin linear reverse infinite;
+}
+.secondPartAniamte {
+  animation: spin linear infinite;
+}

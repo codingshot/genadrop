@@ -14,15 +14,16 @@ span {
   display: inline-flex;
   width: calc(76% - 10.2em);
 }
-
-tr img {
-  width: 15px;
-  /* margin-right: 10px; */
+.transaction span {
+  display: inline-block;
+  width: fit-content;
+  align-items: center;
 }
-.icon {
+.transaction img {
   border-radius: 50%;
-  background-color: rgba(0, 153, 135, 0.12);
-  padding: 8px;
+  padding: 0.2em;
+  width: 1.7em;
+  margin-right: 5px;
 }
 
 .transaction:hover {

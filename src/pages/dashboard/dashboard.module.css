@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  margin-bottom: 6em;
   background: var(--default);
 }
 
@@ -35,7 +36,8 @@
   width: 100%;
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: flex-start;
+  border-bottom: 1px solid #b2c5d0;
   flex-wrap: wrap;
   gap: 2em;
 }
@@ -45,24 +47,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4em;
+  gap: 0.625em;
   padding: 0.75em 1em;
-  border-radius: 0.5em;
-  background: var(--default);
   cursor: var(--cursor-pointer);
-  color: var(--main-color);
-  transition: all 100ms;
-  border: 1px solid var(--main-color);
+  transition: all 300ms;
+  border-bottom: 5px solid transparent;
+  margin-bottom: -3px;
 }
 
 .detail:hover {
-  box-shadow: var(--shadow-light);
+  /* box-shadow: var(--shadow-light); */
+  border-color: var(--main-color);
 }
 
 .detail p {
   font-size: 1.2rem;
   transition: all 100ms;
-  color: var(--main-color);
+  color: #4b4b5a;
   white-space: nowrap;
 }
 
@@ -74,26 +75,25 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--main-light);
-  color: var(--default);
+  background: #e9f2ff;
+  color: #6c757d;
   font-weight: bold;
   transition: all 100ms;
 }
 
 .detail.active {
-  background: var(--main-color);
-  color: var(--default);
+  color: var(--main-color);
+  border-color: var(--main-color);
 }
 
 .detail.active p {
-  font-size: 1.2rem;
   transition: all 100ms;
-  color: var(--default);
+  color: var(--main-color);
 }
 
 .detail.active span {
-  background: var(--default);
-  color: var(--main-color);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .bannerContainer {
@@ -102,49 +102,108 @@
   justify-content: center;
   align-items: center;
   position: relative;
+  background: url("../../assets/bg.png");
+  height: 25vw;
+  min-height: 10rem;
+  background-size: cover;
 }
 
 .banner {
   width: 100%;
 }
-
-.imageContainer {
-  width: 10%;
-  border-radius: 50%;
-  position: absolute;
-  bottom: -1em;
-  object-fit: cover;
+.bannerWrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  display: flex;
+  padding: 0 2rem;
+  margin-top: -4rem;
+  margin-bottom: 4rem;
+  position: relative;
 }
-
+.bannerWrapper > div {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.bannerWrapper > a {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.imageContainer {
+  border-radius: 50%;
+  object-fit: cover;
+  max-width: 12.5rem;
+  max-height: 12.5rem;
+  min-width: 6rem;
+  border: 5px solid #eeeff2;
+}
+.profileHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  gap: 1.5rem;
+  padding-left: 1rem;
+  padding-bottom: 1.5rem;
+}
+.profileDetail {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+.social {
+  display: flex;
+}
+.social a {
+  display: flex;
+  align-items: center;
+}
 .socialIcon {
-  width: 2rem;
-  height: 2rem;
+  width: 100%;
+  height: 70%;
   margin-right: 5px;
 }
-
+.socialIcon path {
+  transition: 300ms ease;
+}
+.socialIcon:hover path {
+  fill: var(--main-hovered);
+}
+.address {
+  padding: 0.25em 0.5em;
+  background: #e9f2ff;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+}
+.address > img {
+  max-width: 20px;
+}
+.address > div span {
+  color: #4b4b5a;
+}
 .editProfile {
   border: 1px solid var(--main-color);
-  background: var(--main-lightest);
-  color: var(--main-color);
-  padding: 0.5em 0.5em;
+  background: var(--default);
+  color: #000;
+  padding: 0.5em 2em;
   border-radius: 0.5em;
   transition: all 300ms;
-  margin-bottom: 1em;
+  height: fit-content;
 }
 
 .editProfile:hover {
-  box-shadow: var(--shadow-light);
+  background: var(--main-color);
+  color: var(--default);
 }
 
 .main {
   padding: 2em;
-  border-radius: 1em;
-  background: var(--default);
-  box-shadow: var(--shadow-light);
 }
 
 .username {
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-weight: 600;
 }
 
@@ -163,15 +222,33 @@
   max-width: 1440px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   gap: 1em;
 }
-
+.overview > a {
+  display: flex;
+  width: 100%;
+}
+.overview > a > div {
+  height: 100%;
+  width: 100%;
+  min-height: 28rem;
+}
 .skeleton {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1em;
+}
+
+.noResult {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10em;
+  text-align: center;
+  font-size: 1.2rem;
 }
 
 @media screen and (max-width: 1280px) {
@@ -220,11 +297,28 @@
     min-height: 2em;
   }
 }
-
+@media screen and (max-width: 768px) {
+  .bannerWrapper {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .bannerWrapper > a {
+    margin: unset;
+  }
+}
+@media screen and (max-width: 768px) {
+  .detail {
+    gap: 1em;
+  }
+}
 @media screen and (max-width: 480px) {
+  .container {
+    margin-bottom: 4em;
+  }
+
   .searchAndFilter {
     flex-direction: column;
-    gap: 0.5em;
+    gap: 1rem;
   }
 
   .searchAndFilter > div {
@@ -239,14 +333,23 @@
   .details {
     gap: 1em;
   }
+  .detail p {
+    font-size: 0.75rem;
+  }
+  .detail {
+    gap: 0.5rem;
+  }
+  .details {
+    gap: 0.75rem;
+  }
+  .main {
+    padding: 1rem;
+  }
 }
-
-.noResult {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 10em;
-  text-align: center;
-  font-size: 1.2rem;
+@media screen and (max-width: 400px) {
+  .imageContainer {
+    max-width: 10rem;
+    max-height: 10rem;
+    margin-bottom: 1rem;
+  }
 }

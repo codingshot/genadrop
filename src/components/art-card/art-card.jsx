@@ -9,11 +9,10 @@ import {
 } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./art-card.module.css";
-import checkActiveIcon from "../../assets/icon-check-active.svg";
-import checkIcon from "../../assets/icon-check.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
 import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
+import RadioButton from "./radio-Button/radioButton";
 
 const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index }) => {
   const [state, setState] = useState({
@@ -33,6 +32,13 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
   };
 
   const handleAddPreview = (name, imageFile) => {
+    for (let p of preview) {
+      if (JSON.stringify(p) === JSON.stringify({ layerId, layerTitle, imageName: name, imageFile })) {
+        dispatch(removePreview({ layerId, layerTitle, imageName: name }));
+        setActiveCard(-1);
+        return;
+      }
+    }
     dispatch(addPreview({ layerId, layerTitle, imageName: name, imageFile }));
     setActiveCard(index);
   };
@@ -110,13 +116,13 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
     <div className={`${classes.container} ${activeCard === index ? classes.active : classes.inActive}`}>
       <div className={classes.action}>
         {!isRule ? (
-          <i />
-        ) : activeCard === index ? (
-          <img src={checkActiveIcon} alt="" />
+          <CloseIcon onClick={handleRemove} className={classes.closeIcon} />
         ) : (
-          <img src={checkIcon} alt="" onClick={() => handleAddPreview(traitTitle, image)} />
+          <RadioButton
+            active={activeCard === index ? true : false}
+            onClick={() => handleAddPreview(traitTitle, image)}
+          />
         )}
-        <CloseIcon onClick={handleRemove} className={classes.closeIcon} />
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>
         <img className={classes.image} src={URL.createObjectURL(image)} alt="avatar" />

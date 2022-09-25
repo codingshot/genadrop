@@ -1,0 +1,45 @@
+.container {
+  width: 100%;
+  padding: 0 2em;
+  margin-bottom: 4em;
+  background: linear-gradient(180deg, #e4f1fb 0%, rgba(217, 217, 217, 0) 100%);
+  padding-top: 8em;
+  margin-top: -4em;
+}
+
+.heading {
+  font-weight: 500;
+  font-size: 3rem;
+  color: #000000;
+}
+
+.headingContainer,
+.wrapper {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 900px) {
+  .heading {
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .heading {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .container {
+    padding: 0 1em;
+    padding-top: 4em;
+    margin-top: -6em;
+  }
+
+  .heading {
+    font-size: 1.5rem;
+  }
+}
