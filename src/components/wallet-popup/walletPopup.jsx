@@ -58,7 +58,7 @@ const WalletPopup = ({ handleSetState }) => {
       if (!walletConnection.isSignedIn()) {
         window.localStorage.setItem("nearConnection", true);
         await walletConnection.requestSignIn(
-          process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.0xprometheus.near"
+          process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.nftgen.near"
         );
       }
       window.selector = walletConnection;

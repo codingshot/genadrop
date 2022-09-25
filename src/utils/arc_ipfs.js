@@ -324,7 +324,7 @@ export async function mintSingleToNear(nearMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     const contractName =
-      process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.0xprometheus.near";
+      process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.nftgen.near";
     const contract = await new Contract(connector.account(), contractName, {
       // View methods are read only. They don't modify the state, but usually return some value.
       viewMethods: ["check_token"],
