@@ -3421,14 +3421,14 @@
     multiformats "^9.4.1"
     murmurhash3js-revisited "^3.0.0"
 
-"@near-wallet-selector/core@7.0.2", "@near-wallet-selector/core@^7.0.2":
+"@near-wallet-selector/core@7.0.2":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.0.2.tgz#0646e73628a5b4625c97a776090ac9f15aca547b"
   integrity sha512-JaHYjc6YOf2OPq5I13Yps4dLcXL8g8C0q3gIyWTaT5hc7WDQEOxCL1laxFSkSGwz6b1+jpQ1jak/bo6zU3a6Qw==
   dependencies:
     rxjs "^7.5.5"
 
-"@near-wallet-selector/core@7.0.3":
+"@near-wallet-selector/core@7.0.3", "@near-wallet-selector/core@^7.0.3":
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.0.3.tgz#bf2df9f4709f47c9afc7a4bc56261f2d624d5d73"
   integrity sha512-bggK3+axEpC1tu5+XJi9djEmVSNCCYF7nQkHje3NuBqD/0tfK4UmRn5+g95fs3Kxbi8fp6lh9eRWBtX3EnBSZQ==
