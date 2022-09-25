@@ -328,12 +328,16 @@ export async function mintSingleToNear(nearMintProps) {
     //   process.env.REACT_APP_ENV_STAGING === "true"
     //     ? "localhost:3001" || "genadrop-staging.vercel.app"
     //     : "www.genadrop.com" || "www.genadrop.io";
-    const contract = await new Contract(connector.account(), "genadrop-test.mpadev.testnet", {
-      // View methods are read only. They don't modify the state, but usually return some value.
-      viewMethods: ["check_token"],
-      // Change methods can modify the state. But you don't receive the returned value when called.
-      changeMethods: ["nft_mint", "new_default_meta"],
-    });
+    const contract = await new Contract(
+      connector.account(),
+      process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.0xprometheus.near",
+      {
+        // View methods are read only. They don't modify the state, but usually return some value.
+        viewMethods: ["check_token"],
+        // Change methods can modify the state. But you don't receive the returned value when called.
+        changeMethods: ["nft_mint", "new_default_meta"],
+      }
+    );
     const res = await contract.nft_mint({
       callbackUrl: `http://${window.location.host}/mint/1of1`,
       args: {
@@ -347,7 +351,7 @@ export async function mintSingleToNear(nearMintProps) {
         receiver_id: account,
       },
       gas: 300000000000000, // attached GAS (optional)
-      amount: new BN("1000000000000000000000000"),
+      amount: new BN("1000"),
     });
     return "https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet";
     // try {

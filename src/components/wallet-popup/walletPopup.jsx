@@ -57,7 +57,9 @@ const WalletPopup = ({ handleSetState }) => {
       if (!walletConnection.isSignedIn()) {
         window.localStorage.setItem("nearConnection", true);
         console.log("not signe din, signing in......");
-        await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
+        await walletConnection.requestSignIn(
+          process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.0xprometheus.near"
+        );
       }
       const account = await walletConnection.getAccountId();
       dispatch(setChainId(Number(1111)));
