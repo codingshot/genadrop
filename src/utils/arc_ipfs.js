@@ -351,7 +351,7 @@ export async function mintSingleToNear(nearMintProps) {
         receiver_id: account,
       },
       gas: 300000000000000, // attached GAS (optional)
-      amount: new BN("1000"),
+      amount: new BN("10000000000000000000000"),
     });
     return "https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet";
     // try {
