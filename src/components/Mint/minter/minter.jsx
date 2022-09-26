@@ -203,7 +203,6 @@ const Minter = () => {
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (singleMintProps.chain.toLowerCase() === "near") {
-          return;
         } else if (typeof url === "object") {
           handleSetState({
             popupProps: {
@@ -425,7 +424,13 @@ const Minter = () => {
                       .filter((chainE) => mainnet === chainE.isMainnet)
                       .map((chainE, idx) => (
                         <div
-                          onClick={() => (!chainE.comingSoon ? handleConnectFromMint(chainE) : {})}
+                          onClick={() => {
+                            console.log(chainE.networkId);
+                            console.log(chainId);
+                            return !chainE.comingSoon && chainE.networkId !== chainId
+                              ? handleConnectFromMint(chainE)
+                              : handleSetState({ toggleDropdown: !toggleDropdown });
+                          }}
                           className={`${classes.chain} ${chainE.comingSoon && classes.disable}`}
                           key={idx}
                           value={chainE.label}
