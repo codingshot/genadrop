@@ -48,9 +48,7 @@ const SuccessPopup = (props) => {
       <h3 className={`${classes.heading} ${classes.success}`}>Mint Successful</h3>
       <div className={classes.actionBtnContainer}>
         <button
-          onClick={() => {
-            history.push(`/profile/${chainId}/${account}`);
-          }}
+          onClick={() => history.push(`/profile/${chainId}/${account}?tab=created`)}
           type="button"
           className={`${classes.actionBtn} ${classes._1}`}
         >

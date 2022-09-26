@@ -293,6 +293,25 @@ const Dashboard = () => {
       window.open(`${chainIdToParams[chainID]?.blockExplorerUrls}address/${userId}`);
     }
   };
+  const params = new URLSearchParams(location.search);
+
+  const activeSwitch = (active) => {
+    params.set("tab", active);
+    history.push({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
+    handleSetState({ activeDetail: active });
+  };
+
+  useEffect(() => {
+    const active = params.get("tab");
+    if (active) {
+      handleSetState({ activeDetail: active });
+    } else {
+      activeSwitch(activeDetail);
+    }
+  });
 
   return (
     <div className={classes.container}>
@@ -359,21 +378,21 @@ const Dashboard = () => {
         <section className={classes.header}>
           <div className={classes.details}>
             <div
-              onClick={() => handleSetState({ activeDetail: "sale" })}
+              onClick={() => activeSwitch("sale")}
               className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
             >
               <p>On sale</p>
               <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
             </div>
             <div
-              onClick={() => handleSetState({ activeDetail: "collected" })}
+              onClick={() => activeSwitch("collected")}
               className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
               <p>Collected</p>
               <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
             </div>
             <div
-              onClick={() => handleSetState({ activeDetail: "created" })}
+              onClick={() => activeSwitch("created")}
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created</p>
