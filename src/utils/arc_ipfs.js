@@ -289,7 +289,7 @@ async function signTx(connector, txns, dispatch) {
   return { assetID: assetIds, txId: TxIds };
 }
 export async function mintSingleToAlgo(algoMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet } = algoMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = algoMintProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
@@ -300,7 +300,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     dispatch(setLoader("asset uploaded, minting in progress"));
     try {
       const { assetID, txId } = await signTx(connector, [txn], dispatch);
-      await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
+      await write.writeNft(receiverAddress, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
       // notification: asset minted
       return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
     } catch (error) {
@@ -316,7 +316,7 @@ export async function mintSingleToAlgo(algoMintProps) {
 }
 
 export async function mintSingleToNear(nearMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet } = nearMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = nearMintProps;
   // initAlgoClients(mainnet);
   if (connector._near) {
     dispatch(setLoader("uploading to ipfs"));
@@ -369,7 +369,7 @@ export async function mintSingleToNear(nearMintProps) {
 }
 
 export async function mintSingleToPoly(singleMintProps) {
-  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -391,7 +391,7 @@ export async function mintSingleToPoly(singleMintProps) {
         : process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      data: contract.interface.encodeFunctionData("mint", [receiverAddress, id, 1, asset.url, "0x"]),
       nonce: ethNonce,
     };
     try {
@@ -428,7 +428,7 @@ export async function mintSingleToPoly(singleMintProps) {
   // );
   let txn;
   try {
-    txn = await contract.mint(account, id, 1, asset.url, "0x");
+    txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
     await txn.wait();
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -532,7 +532,7 @@ export async function mintSingleToCelo(singleMintProps) {
 }
 
 export async function mintSingleToAurora(singleMintProps) {
-  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name, 4);
@@ -556,7 +556,7 @@ export async function mintSingleToAurora(singleMintProps) {
   //   wallet
   // );
   try {
-    const txn = await contract.mint(account, id, 1, asset.url, "0x");
+    const txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
     await txn.wait();
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
