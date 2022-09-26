@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useRouteMatch, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { ethers } from "ethers";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-// import { setNotification } from "../../gen-state/gen.actions";
 import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
-// import { celoClient, polygonClient } from "../../utils/graphqlClient";
-// import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
@@ -22,9 +19,9 @@ import {
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 // utils
-import Copy from "../../components/copy/copy";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
+import { chainIdToParams } from "../../utils/chainConnect";
 // components
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
@@ -38,11 +35,11 @@ import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
 import { ReactComponent as Twitter } from "../../assets/icon-twitter-blue.svg";
 import { ReactComponent as Discord } from "../../assets/icon-discord-blue.svg";
 import { ReactComponent as Instagram } from "../../assets/icon-instagram-blue.svg";
+import { ReactComponent as LinkIcon } from "../../assets/icon-link.svg";
 
 const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
-  const { url } = useRouteMatch();
   const { userId, chainId: chainID } = useParams();
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -77,7 +74,7 @@ const Dashboard = () => {
     pageNumber,
   } = state;
 
-  const { mainnet, account, connector, chainId } = useContext(GenContext);
+  const { mainnet, account } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -285,6 +282,18 @@ const Dashboard = () => {
   const perPage = 12;
   const pageVisited = pageNumber * perPage;
 
+  const algoexplorer = mainnet ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/";
+
+  const handleExplorer = () => {
+    if (supportedChains[chainID]?.chain === "Algorand") {
+      window.open(`${algoexplorer}address/${userId}`);
+    } else if (supportedChains[chainID]?.chain === "Near") {
+      window.open(`${chainIdToParams[chainID]?.blockExplorerUrls}${userId}`);
+    } else {
+      window.open(`${chainIdToParams[chainID]?.blockExplorerUrls}address/${userId}`);
+    }
+  };
+
   return (
     <div className={classes.container}>
       {/* change background to dynamic */}
@@ -334,7 +343,8 @@ const Dashboard = () => {
 
             <div className={classes.address}>
               <img src={supportedChains[chainID]?.icon} alt="blockchain" />
-              <Copy message={userId} placeholder={breakAddress(userId)} />
+              <div>{userId.length > 25 ? breakAddress(userId) : userId}</div>
+              <LinkIcon onClick={handleExplorer} />
             </div>
           </div>
         </div>
