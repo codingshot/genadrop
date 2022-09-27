@@ -1,3 +1,4 @@
+import React from "react";
 import ErrorPopup from "./error-popup.component";
 import classes from "./popup.module.css";
 import SuccessPopup from "./success-popup.component";

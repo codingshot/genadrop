@@ -99,7 +99,7 @@ function App() {
       <Footer />
       <Overlay />
       <Notification />
-      {/* <SwitchWalletNotification /> */}
+      <SwitchWalletNotification />
       <Clipboard />
       <Loader />
       <Prompt />

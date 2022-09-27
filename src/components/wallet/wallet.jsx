@@ -135,7 +135,7 @@ function ConnectWallet() {
       <div className={classes.connected}>
         <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
         <div className={classes.address}>
-          <span>{breakAddress(account)}</span>
+          <span>{account.length > 15 ? breakAddress(account) : account}</span>
         </div>
         <div className={classes.dropdownIconContainer}>
           <DropdownIcon className={classes.dropdownIcon} />
