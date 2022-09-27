@@ -350,7 +350,7 @@ export async function mintSingleToNear(nearMintProps) {
               receiver_id: accountId,
             },
             gas: 300000000000000,
-            deposit: new BN("1000000000000000000000000"),
+            deposit: new BN("10000000000000000000000"),
           },
         },
       ],
