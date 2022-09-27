@@ -93,7 +93,8 @@ export const initializeConnection = async (walletProps) => {
       WS.disconnectWallet(walletProps);
     });
   } else if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
-    const nearConfig = getConfig("testnet");
+    const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+    const nearConfig = getConfig(`${network}`);
     const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
     const near = await nearAPI.connect({ keyStore, ...nearConfig });
     const walletConnection = new nearAPI.WalletConnection(near);
