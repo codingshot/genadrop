@@ -93,14 +93,16 @@ export const initializeConnection = async (walletProps) => {
       WS.disconnectWallet(walletProps);
     });
   } else if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
-    const nearConfig = getConfig("testnet");
+    const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+    const nearConfig = getConfig(`${network}`);
     const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
     const near = await nearAPI.connect({ keyStore, ...nearConfig });
     const walletConnection = new nearAPI.WalletConnection(near);
     const account = await walletConnection.getAccountId();
-    dispatch(setChainId(Number(1111)));
+    const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
+    dispatch(setChainId(Number(connectedChain)));
     dispatch(setAccount(account));
-    dispatch(setProposedChain(1111));
+    dispatch(setProposedChain(connectedChain));
     dispatch(setConnector(walletConnection));
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);

@@ -46,6 +46,9 @@ export const chainIdToParams = {
   1111: {
     blockExplorerUrls: ["https://explorer.testnet.near.org/?query="],
   },
+  1112: {
+    blockExplorerUrls: ["https://explorer.near.org/?query="],
+  },
   1313161554: {
     chainId: "0x4e454152",
     chainName: "Aurora",

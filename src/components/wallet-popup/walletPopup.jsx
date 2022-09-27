@@ -42,27 +42,30 @@ const WalletPopup = ({ handleSetState }) => {
 
   const handleChain = async (chainId, isComingSoon = undefined) => {
     if (isComingSoon) return;
-    if (chainId === 4160 || chainId === 1111) {
+    if (chainId === 4160 || supportedChains[chainId]?.chain === "Near") {
       setMetamask(false);
     } else {
       setMetamask(true);
     }
-    if (chainId === 1111) {
+    if (supportedChains[chainId]?.chain === "Near") {
       // NEAR Connect
-      const nearConfig = getConfig("testnet");
+      const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+      const nearConfig = getConfig(`${network}`);
       const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
       const near = await nearAPI.connect({ keyStore, ...nearConfig });
       const walletConnection = new nearAPI.WalletConnection(near);
       window.localStorage.removeItem("walletconnect");
       if (!walletConnection.isSignedIn()) {
         window.localStorage.setItem("nearConnection", true);
-        console.log("not signe din, signing in......");
-        await walletConnection.requestSignIn("genadrop-test.mpadev.testnet");
+        await walletConnection.requestSignIn(
+          process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.nftgen.near"
+        );
       }
+      window.selector = walletConnection;
       const account = await walletConnection.getAccountId();
-      dispatch(setChainId(Number(1111)));
+      dispatch(setChainId(Number(chainId)));
       dispatch(setAccount(account));
-      dispatch(setProposedChain(1111));
+      dispatch(setProposedChain(chainId));
       dispatch(setConnector(walletConnection));
       // const account = await walletConnection.getAccountId();
       // dispatch(setChainId(Number(1111)));
