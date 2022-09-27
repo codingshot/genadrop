@@ -122,12 +122,13 @@ export const initializeConnection = async (walletProps) => {
 
     const isSignedIn = walletSelector.isSignedIn();
     window.selector = walletSelector;
+    const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
     console.log(isSignedIn);
     if (isSignedIn) {
       window.localStorage.setItem("near_wallet", "connected_to_near");
-      dispatch(setChainId(1111));
+      dispatch(setChainId(connectedChain));
       dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
-      dispatch(setProposedChain(1111));
+      dispatch(setProposedChain(connectedChain));
       dispatch(setConnector(walletSelector.wallet()));
       dispatch(
         setNotification({

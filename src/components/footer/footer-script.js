@@ -69,7 +69,6 @@ export const footerLinks = [
         id: "1",
       },
       { name: "MPA", link: "https://www.minorityprogrammers.org", id: "2" },
-      { name: "HERDrop", link: "https://www.herdrop.com", id: "3" },
     ],
   },
   {

@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { ReactComponent as InfoIcon } from "../../assets/tooltip.svg";
 import classes from "./GenadropTooltip.module.css";
@@ -32,7 +32,7 @@ const GenadropToolTip = ({ content, fill = "#3d3d3d" }) => {
 
   return (
     <div onMouseOut={() => setMouseOver(false)} onMouseOver={() => setMouseOver(true)} className={classes.container}>
-      <InfoIcon style={{ fill: fill }} />
+      <InfoIcon style={{ fill }} />
       <div ref={cardRef} className={classes.card}>
         {content}
       </div>

@@ -53,15 +53,16 @@ const WalletPopup = ({ handleSetState }) => {
 
   const handleChain = async (chainId, isComingSoon = undefined) => {
     if (isComingSoon) return;
-    if (chainId === 4160 || chainId === 1111) {
+    if (chainId === 4160 || supportedChains[chainId]?.chain === "Near") {
       setMetamask(false);
     } else {
       setMetamask(true);
       window.localStorage.removeItem("near_wallet");
     }
-    if (chainId === 1111) {
+    if (supportedChains[chainId]?.chain === "Near") {
       // NEAR Connect
-      const nearConfig = getConfig("testnet");
+      const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+      const nearConfig = getConfig(`${network}`);
       const walletSelector = await setupWalletSelector({
         network: nearConfig,
         modules: [
@@ -73,7 +74,9 @@ const WalletPopup = ({ handleSetState }) => {
         ],
       });
       const description = "Please select a wallet to sign in..";
-      const modal = setupModal(walletSelector, { contractId: "genadrop-test.mpadev.testnet", description });
+      const contract =
+        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.nftgen.near";
+      const modal = setupModal(walletSelector, { contractId: contract, description });
       modal.show();
 
       const isSignedIn = walletSelector.isSignedIn();

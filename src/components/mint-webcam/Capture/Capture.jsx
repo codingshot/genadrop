@@ -2,8 +2,12 @@ import React, { useRef, useState } from "react";
 
 import classes from "./Capture.module.css";
 import WebcamEnable from "../webcam-enable/webcamEnable";
-import DoubleWebcam from "../DoubleWebcam/DoubleWebcam";
-import RegularCamera from "../Regular-Camera/RegularCamera";
+import DoubleWebcam from "../Camera-Modes/DoubleWebcam";
+import RegularCamera from "../Camera-Modes/RegularCamera";
+// mode switch icons
+import { ReactComponent as IconVideo } from "../../../assets/icon-video.svg";
+import { ReactComponent as IconDoubleTake } from "../../../assets/icon-dual-camera.svg";
+import { ReactComponent as IconCamera } from "../../../assets/icon-camera-switch.svg";
 
 const Capture = () => {
   const webcamRef = useRef();
@@ -25,7 +29,7 @@ const Capture = () => {
     height: "100%",
     // genrate GIF loading status
     gifGenrating: false,
-    webcamCurrentType: "picture",
+    webcamCurrentType: "Photo",
     trackRecord: false,
     videoDuration: 0,
     imgList: [],
@@ -54,7 +58,27 @@ const Capture = () => {
     setState((state) => ({ ...state, ...payload }));
   };
 
-  const doubleCameraProps = { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle };
+  const modeSwitchList = [
+    {
+      id: 1,
+      text: "Video",
+      icon: <IconVideo />,
+    },
+    {
+      id: 2,
+      text: "Photo",
+      icon: <IconCamera />,
+    },
+    {
+      id: 3,
+      text: "BeReal",
+      icon: <IconDoubleTake />,
+    },
+  ];
+
+  const displayedModes = modeSwitchList.filter((mode) => mode.text !== webcamCurrentType);
+
+  const doubleCameraProps = { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle, displayedModes };
   const regularCameraProps = {
     img,
     imgList,
@@ -69,6 +93,7 @@ const Capture = () => {
     webcamCurrentType,
     currenFile,
     activeFile,
+    displayedModes,
   };
   return (
     <div className={`${classes.container}`}>
