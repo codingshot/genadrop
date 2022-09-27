@@ -110,10 +110,11 @@ export const auroraClient = createClient({
 });
 
 export const nearClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet",
-  // process.env.REACT_APP_ENV_STAGING === "true"
-  //   ? "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet"
-  //   : "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet",
 });
 
 // "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet"
+// "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet",
