@@ -362,7 +362,7 @@ const Dashboard = () => {
 
             <div className={classes.address}>
               <img src={supportedChains[chainID]?.icon} alt="blockchain" />
-              <div>{userId.length > 25 ? breakAddress(userId) : userId}</div>
+              <div>{userId?.length > 25 ? breakAddress(userId) : userId}</div>
               <LinkIcon onClick={handleExplorer} />
             </div>
           </div>
