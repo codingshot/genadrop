@@ -945,7 +945,18 @@ export async function mintToCelo(celoProps) {
 }
 
 export async function mintToPoly(polyProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    receiverAddress,
+    setLoader,
+    mainnet,
+  } = polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -988,7 +999,7 @@ export async function mintToPoly(polyProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      data: contract.interface.encodeFunctionData("mintBatch", [receiverAddress, ids, uris]),
       nonce: ethNonce,
     };
     try {
@@ -1011,7 +1022,7 @@ export async function mintToPoly(polyProps) {
     }
   }
   try {
-    tx = await contract.mintBatch(account, ids, uris);
+    tx = await contract.mintBatch(receiverAddress, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
