@@ -219,7 +219,7 @@ export const getSingleNfts = async ({ mainnet, singleNfts, dispatch }) => {
 };
 
 export const getUserSingleNfts = async ({ mainnet, singleNfts }) => {
-  const _1of1 = singleNfts.filter((s) => !s.collection);
+  const _1of1 = singleNfts?.filter((s) => !s.collection);
   const responses = await Promise.allSettled(_1of1?.map((NFT) => fetchNFT(NFT, mainnet)));
   const nftArr = [];
   // // removing rejected responses
