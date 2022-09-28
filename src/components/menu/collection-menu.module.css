@@ -118,3 +118,9 @@
 .btnContainer .addBlank:hover {
   border: 2px solid var(--main-color);
 }
+
+@media screen and (max-width: 768px) {
+  .uploadText {
+    font-size: 0.8em;
+  }
+}
