@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
 import {
   setClipboard,
@@ -227,7 +226,11 @@ const Minter = () => {
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (singleMintProps.chain.toLowerCase() === "near") {
-        } else if (typeof url === "object") {
+
+          return {};
+        }
+        if (typeof url === "object") {
+
           handleSetState({
             popupProps: {
               url: url.message,
@@ -492,9 +495,13 @@ const Minter = () => {
                       .filter((chainE) => mainnet === chainE.isMainnet)
                       .map((chainE, idx) => (
                         <div
-                          onClick={() => (!chainE.comingSoon ? handleConnectFromMint(chainE) : {})}
+                          onClick={() =>
+                            !chainE.comingSoon && chainE.networkId !== chainId
+                              ? handleConnectFromMint(chainE)
+                              : handleSetState({ toggleDropdown: !toggleDropdown })
+                          }
                           className={`${classes.chain} ${chainE.comingSoon && classes.disable}`}
-                          key={idx}
+                          key={chainE.id}
                           value={chainE.label}
                         >
                           <img src={chainE.icon} alt="" />
