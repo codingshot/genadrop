@@ -36,6 +36,12 @@ const FeautedNfts = () => {
     return array;
   }
 
+  const featturedNFTs = [
+    "genadrop-contract.nftgen.near1664333582736",
+    "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
+    "genadrop-contract.nftgen.near1664317298336",
+  ];
+
   useEffect(() => {
     let collections = [
       ...(auroraCollections || []),
@@ -44,10 +50,8 @@ const FeautedNfts = () => {
       ...(celoCollections || []),
     ];
     collections = shuffle(collections);
-    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter(
-      (nft) =>
-        nft.Id === "genadrop-contract.nftgen.near1664317298336" ||
-        nft.Id === "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138"
+    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
+      featturedNFTs.includes(nft.Id)
     );
     handleSetState({ collections: [...featuredNFT1, ...collections] });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections, singleNearNfts, singleCeloNfts]);
