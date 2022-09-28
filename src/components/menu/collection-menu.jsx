@@ -68,7 +68,7 @@ const CollectionMenu = ({ layer }) => {
             <div onClick={() => fileRef.current.click()} className={classes.uploadCard}>
               <AddCircularIcon />
               <div>Upload images</div>
-              <div>(Image/png, max file size: 2MB per image)</div>
+              <div className={classes.uploadText}>(Image/png, max file size: 2MB per image)</div>
               <button className={classes.uploadBtn}>
                 <UploadIcon className={classes.uploadIcon} /> Browse Files
               </button>
