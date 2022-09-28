@@ -7,9 +7,11 @@ import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
+import SingleNftCard from "../SingleNftCard/SingleNftCard";
 
 const FeautedNfts = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, singleNearNfts, singleCeloNfts } =
+    useContext(GenContext);
 
   const algoCollectionsArr = Object.values(algoCollections);
 
@@ -42,9 +44,13 @@ const FeautedNfts = () => {
       ...(celoCollections || []),
     ];
     collections = shuffle(collections);
-    handleSetState({ collections });
-  }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
-
+    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter(
+      (nft) =>
+        nft.Id === "genadrop-contract.nftgen.near1664317298336" ||
+        nft.Id === "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138"
+    );
+    handleSetState({ collections: [...featuredNFT1, ...collections] });
+  }, [auroraCollections, algoCollections, polygonCollections, celoCollections, singleNearNfts, singleCeloNfts]);
   return (
     <div className={classes.container}>
       <div className={classes.headingContainer}>
@@ -54,9 +60,13 @@ const FeautedNfts = () => {
       <div className={`${classes.wrapper}`}>
         <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
           {collections.length ? (
-            collections.map((collection, idx) => (
-              <CollectionNftCard use_width="20em" key={idx} collection={collection} />
-            ))
+            collections.map((collection) => {
+              return collection.nfts ? (
+                <CollectionNftCard use_width="20em" key={collection.Id} collection={collection} />
+              ) : (
+                <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />
+              );
+            })
           ) : !collections ? (
             <NotFound />
           ) : (
