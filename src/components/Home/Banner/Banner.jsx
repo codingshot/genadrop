@@ -33,7 +33,7 @@ const Banner = () => {
         <div className={classes.more}>Generate and mint your NFT collections or mint a photo with a camera.</div>
         <div className={classes.btnContainer}>
           <Link to="/create">
-            <div className={classes.btn_1}>Create</div>
+            <div className={classes.btn_1}>Mint</div>
           </Link>
           <Link to="/marketplace">
             <div className={classes.btn_2}>Explore</div>
