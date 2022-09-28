@@ -2,32 +2,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./GenadropCreatedNFTs.module.css";
-import NFT1 from "../../../assets/nft-1.png";
-import NFT2 from "../../../assets/nft-2.png";
-import NFT3 from "../../../assets/nft-3.png";
-import NFT4 from "../../../assets/nft-4.png";
-import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import { shuffle } from "../../../pages/Marketplace/Marketplace-script";
-
-const cardArr = [
-  {
-    NFT: NFT1,
-    name: "#Her_1046",
-  },
-  {
-    NFT: NFT2,
-    name: "#Lad_2378",
-  },
-  {
-    NFT: NFT3,
-    name: "#vase_175",
-  },
-  {
-    NFT: NFT4,
-    name: "#Nat_002",
-  },
-];
 
 const GenadropCreatedNFTs = () => {
   const cardRef = useRef(null);
@@ -37,9 +13,10 @@ const GenadropCreatedNFTs = () => {
     singles: [],
   });
 
-  const { cardWidth, singles } = state;
+  const { singles } = state;
   useEffect(() => {}, []);
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts } = useContext(GenContext);
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts } =
+    useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const handleSetState = (payload) => {
@@ -51,6 +28,9 @@ const GenadropCreatedNFTs = () => {
     handleSetState({ cardWidth });
   }, []);
   const history = useHistory();
+
+  const featturedNFTs = ["genadrop-contract.nftgen.near1664317298336"];
+
   useEffect(() => {
     let singles = [
       ...(singleAlgoNftsArr || []),
@@ -58,10 +38,13 @@ const GenadropCreatedNFTs = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
     ];
+    singles = singles.filter((nft) => !featturedNFTs.includes(nft.Id));
     singles = shuffle(singles);
-
-    handleSetState({ singles: singles.slice(0, 4) });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts]);
+    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
+      featturedNFTs.includes(nft.Id)
+    );
+    handleSetState({ singles: [...featuredNFT1, ...singles.slice(0, 3)] });
+  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   const handlePreview = (chain, Id) => {
     if (chain) {
