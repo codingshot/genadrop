@@ -102,7 +102,7 @@ li {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: sans-serif;
+  font-family: "SF Pro Display", sans-serif;
   color: var(--text-heading);
   line-height: 1.5em;
 }
@@ -132,11 +132,6 @@ a {
   z-index: 20;
   position: sticky;
   top: 0;
-}
-
-* {
-  font-display: fallback;
-  font-family: "Poppins", sans-serif;
 }
 
 /* width */
