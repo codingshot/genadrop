@@ -49,6 +49,7 @@ const FeautedNfts = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
     ];
+    nfts = nfts.filter((nft) => !featturedNFTs.includes(nft.Id));
     nfts = shuffle(nfts);
     const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
       featturedNFTs.includes(nft.Id)
