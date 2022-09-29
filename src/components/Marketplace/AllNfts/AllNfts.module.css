@@ -54,6 +54,7 @@
   justify-content: flex-start;
   gap: 1em;
   overflow: auto;
+  max-width: 900px;
 }
 
 .category {
