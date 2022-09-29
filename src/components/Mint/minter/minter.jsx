@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 import {
   setClipboard,
   setConnectFromMint,
@@ -22,7 +23,9 @@ import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import supportedChains from "../../../utils/supportedChains";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
 import { ReactComponent as GreenTickIcon } from "../../../assets/icon-green-tick.svg";
+import VibesLogo from "../../../assets/proof-of-vibes.png";
 import { initConnectWallet } from "../../wallet/wallet-script";
+import SliderInput from "./SliderInput";
 
 const Minter = () => {
   const history = useHistory();
@@ -34,9 +37,8 @@ const Minter = () => {
 
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: metadata?.attributes
-      ? metadata?.attributes
-      : { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
+    attributes: file.length > 1 ? {} : { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
+    category: metadata?.attributes ? metadata?.attributes[1].value : "",
     fileName: fName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     chain: null,
@@ -44,6 +46,8 @@ const Minter = () => {
     collectionProfile: "",
     toggleGuide: false,
     toggleDropdown: false,
+    toggleCategory: false,
+    toggleType: false,
     previewSelectMode: false,
     profileSelected: false,
     popupProps: {
@@ -54,6 +58,13 @@ const Minter = () => {
     showReceiverAddress: false,
     receiverAddress: "",
     goodReceiverAddress: false,
+    showLocation: false,
+    vibeProps: {
+      friendliness: 0,
+      energy: 0,
+      density: 0,
+    },
+    stick_type: "",
   });
   const {
     attributes,
@@ -70,6 +81,12 @@ const Minter = () => {
     showReceiverAddress,
     receiverAddress,
     goodReceiverAddress,
+    category,
+    toggleCategory,
+    showLocation,
+    vibeProps,
+    toggleType,
+    stick_type,
   } = state;
 
   const mintProps = {
@@ -110,7 +127,6 @@ const Minter = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-
   const handleAddAttribute = () => {
     handleSetState({
       attributes: {
@@ -222,7 +238,35 @@ const Minter = () => {
           })
         );
       }
+      if (category) {
+        singleMintProps.metadata.attributes.push({
+          trait_type: "Category",
+          value: category,
+        });
+        if (category === "Sesh") {
+          singleMintProps.metadata.attributes.push({
+            trait_type: "smoking stick",
+            value: stick_type,
+          });
+        } else if (category === "Vibe") {
+          singleMintProps.metadata.attributes.push(
+            {
+              trait_type: "friendliness",
+              value: vibeProps.friendliness,
+            },
+            {
+              trait_type: "energy",
+              value: vibeProps.energy,
+            },
+            {
+              trait_type: "density",
+              value: vibeProps.density,
+            }
+          );
+        }
+      }
       dispatch(setOverlay(true));
+
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (singleMintProps.chain.toLowerCase() === "near") {
@@ -274,6 +318,74 @@ const Minter = () => {
       handleSetState({ goodReceiverAddress: false });
     }
   };
+  // select category
+  const categories = ["Vibe", "Sesh", "Photography", "Painting", "Illustration", "3D"];
+  const stick_types = ["blunt", "joint", "spliff", "hashish", "bong", "cigarette", "cigar"];
+
+  // get current location
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+  function success(pos) {
+    const crd = pos.coords;
+    const lat = crd.latitude;
+    const lon = crd.longitude;
+    const API_KEY = "994462fe818ec2383a1f5e5da2a2455b";
+    const API_URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+    if (lat && lon) {
+      if (category === "Sesh") {
+        axios
+          .get(API_URL)
+          .then((data) => {
+            const country = data?.data[0]?.country;
+            const city = data?.data[0]?.name;
+            const address = `${country}/${city}`;
+            handleSetState({
+              attributes: {
+                ...attributes,
+                location: { trait_type: "location", value: address },
+              },
+            });
+          })
+          .catch((err) => console.log(err));
+      } else {
+        handleSetState({
+          attributes: {
+            ...attributes,
+            location: { trait_type: "location", value: `${lon},${lat}` },
+          },
+        });
+      }
+    }
+  }
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+
+    handleSetState({
+      showLocation: false,
+    });
+    return dispatch(
+      setNotification({
+        message: "Location access denied",
+        type: "error",
+      })
+    );
+  }
+
+  const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
+  useEffect(() => {
+    if (showLocation) {
+      getLocation();
+    } else {
+      const new_attr = attributes;
+      delete new_attr.location;
+      handleSetState({
+        attributes: new_attr,
+      });
+    }
+  }, [showLocation, category]);
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -307,6 +419,7 @@ const Minter = () => {
                 ) : (
                   <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                 )}
+                {category === "Vibe" && <img src={VibesLogo} className={classes.overlayImage} alt="proof-of-vibes" />}
               </div>
 
               <div className={classes.assetInfo}>
@@ -369,6 +482,105 @@ const Minter = () => {
                   />
                 </div>
 
+                {file.length === 1 && (
+                  <div className={classes.inputWrapper}>
+                    <label>Category</label>
+                    <div
+                      onClick={() => {
+                        if (!metadata?.attributes[1]?.value) {
+                          handleSetState({
+                            toggleCategory: !toggleCategory,
+                          });
+                        }
+                      }}
+                      className={`${classes.chain} ${classes.active}`}
+                    >
+                      {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
+                      {!metadata?.attributes[1]?.value && <DropdownIcon className={classes.dropdownIcon} />}
+                    </div>
+                    <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
+                      {categories.map((nftCategory) => (
+                        <div
+                          className={`${classes.chain} `}
+                          key={nftCategory}
+                          onClick={() => handleSetState({ category: nftCategory, toggleCategory: false })}
+                        >
+                          {nftCategory}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {category === "Sesh" && (
+                  <div className={classes.inputWrapper}>
+                    <label>Stick Type</label>
+                    <div
+                      onClick={() => {
+                        handleSetState({
+                          toggleType: !toggleType,
+                        });
+                      }}
+                      className={`${classes.chain} ${classes.active}`}
+                    >
+                      {stick_type ? <div className={classes.chainLabel}>{stick_type}</div> : <span>Select</span>}
+                      <DropdownIcon className={classes.dropdownIcon} />
+                    </div>
+                    <div className={`${classes.chainDropdown} ${toggleType && classes.active}`}>
+                      {stick_types.map((type) => (
+                        <div
+                          className={`${classes.chain} `}
+                          key={type}
+                          onClick={() => handleSetState({ stick_type: type, toggleType: false })}
+                        >
+                          {type}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {category === "Vibe" && (
+                  <div className={classes.inputWrapper}>
+                    <label>Friendliness</label>
+                    <SliderInput
+                      MAX={10}
+                      value={vibeProps.friendliness}
+                      handleChange={(e) => {
+                        const friendliness = e.target.value;
+                        const newProps = vibeProps;
+                        newProps.friendliness = friendliness;
+                        handleSetState({
+                          vibeProps: newProps,
+                        });
+                      }}
+                    />
+                    <label>Energy</label>
+                    <SliderInput
+                      MAX={10}
+                      value={vibeProps.energy}
+                      handleChange={(e) => {
+                        const energy = e.target.value;
+                        const newProps = vibeProps;
+                        newProps.energy = energy;
+                        handleSetState({
+                          vibeProps: newProps,
+                        });
+                      }}
+                    />
+                    <label>Density</label>
+                    <SliderInput
+                      MAX={10}
+                      value={vibeProps.density}
+                      handleChange={(e) => {
+                        const density = e.target.value;
+                        const newProps = vibeProps;
+                        newProps.density = density;
+                        handleSetState({
+                          vibeProps: newProps,
+                        });
+                      }}
+                    />
+                  </div>
+                )}
                 <div className={classes.inputWrapper}>
                   <label>Attributes</label>
                   {!zip ? (
@@ -431,6 +643,20 @@ const Minter = () => {
                       </div>
                     </div>
                   </>
+                )}
+
+                {(category === "Vibe" || category === "Sesh") && file.length === 1 && (
+                  <div className={classes.inputWrapper}>
+                    <div className={classes.toggleTitle}>
+                      <div className={classes.category}>Enable Location</div>
+                      <div className={classes.toggler} onClick={() => handleSetState({ showLocation: !showLocation })}>
+                        <label className={classes.switch}>
+                          <div className={`${classes.locationSlider} ${showLocation ? classes.active : ""}`} />
+                          <span className={classes.slider} />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
                 )}
 
                 <div className={classes.inputWrapper}>

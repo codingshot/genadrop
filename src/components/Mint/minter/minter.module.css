@@ -600,6 +600,17 @@ div.showPreview > span {
   transition: opacity 1s ease-out;
 }
 
+.overlayImage {
+  position: absolute;
+  bottom: -5%;
+  right: -5%;
+  width: 20%;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: var(--shadow-light);
+  transform: rotate(20deg);
+}
+
 @media screen and (max-width: 768px) {
   .container {
     padding: 2em 0.5em;
@@ -715,4 +726,14 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+.locationSlider.active + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.locationSlider.active + .slider {
+  box-shadow: 0 0 1px #2196f3;
+  background-color: #2196f3;
 }
