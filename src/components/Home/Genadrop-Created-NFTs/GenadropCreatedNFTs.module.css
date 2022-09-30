@@ -84,6 +84,7 @@
 .imgContainer img {
   height: 100%;
   width: 100%;
+  object-fit: cover;
   transition: transform 300ms;
   margin-bottom: 0.5em;
   border-radius: 1em;
