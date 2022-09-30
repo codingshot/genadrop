@@ -69,7 +69,7 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
-      ) : account === owner ? (
+      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
         <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
           <div className={`${classes.btn}`}>List</div>
         </Link>
