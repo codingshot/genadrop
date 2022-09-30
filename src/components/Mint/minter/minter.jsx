@@ -319,7 +319,7 @@ const Minter = () => {
     }
   };
   // select category
-  const categories = ["Vibe", "Sesh", "Photography", "Painting", "Illustration", "3D"];
+  let categories = ["Sesh", "Photography", "Painting", "Illustration", "3D"];
   const stick_types = ["blunt", "joint", "spliff", "hashish", "bong", "cigarette", "cigar"];
 
   // get current location
@@ -345,7 +345,7 @@ const Minter = () => {
             handleSetState({
               attributes: {
                 ...attributes,
-                location: { trait_type: "location", value: address },
+                location: { trait_type: "chapter", value: address },
               },
             });
           })
@@ -386,6 +386,9 @@ const Minter = () => {
       });
     }
   }, [showLocation, category]);
+
+  const isVibe = metadata?.attributes ? metadata?.attributes[1].value === "Photography" : false;
+  if (isVibe) categories = ["Vibe", "Photography"];
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -487,7 +490,7 @@ const Minter = () => {
                     <label>Category</label>
                     <div
                       onClick={() => {
-                        if (!metadata?.attributes[1]?.value) {
+                        if (!metadata?.attributes[1]?.value || isVibe) {
                           handleSetState({
                             toggleCategory: !toggleCategory,
                           });
@@ -496,7 +499,7 @@ const Minter = () => {
                       className={`${classes.chain} ${classes.active}`}
                     >
                       {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
-                      {!metadata?.attributes[1]?.value && <DropdownIcon className={classes.dropdownIcon} />}
+                      {(!metadata?.attributes || isVibe) && <DropdownIcon className={classes.dropdownIcon} />}
                     </div>
                     <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
                       {categories.map((nftCategory) => (
@@ -586,12 +589,12 @@ const Minter = () => {
                   {!zip ? (
                     <>
                       <div className={classes.attributes}>
-                        {Object.keys(attributes).map((key, index) => (
+                        {Object.keys(attributes).map((key) => (
                           <Attribute
-                            key={index}
+                            key={key}
                             attribute={attributes[key]}
                             id={key}
-                            index={index}
+                            index={key}
                             removeAttribute={handleRemoveAttribute}
                             changeAttribute={handleChangeAttribute}
                           />

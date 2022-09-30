@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400&family=Roboto:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Raleway&display=swap");
 
 :root {
   --btn-open: 0px 3.03px 3.03px rgba(0, 0, 0, 0.2);
@@ -102,7 +103,7 @@ li {
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: sans-serif;
+  font-family: "SF Pro Display", sans-serif;
   color: var(--text-heading);
   line-height: 1.5em;
 }
@@ -132,11 +133,6 @@ a {
   z-index: 20;
   position: sticky;
   top: 0;
-}
-
-* {
-  font-display: fallback;
-  font-family: "Poppins", sans-serif;
 }
 
 /* width */
