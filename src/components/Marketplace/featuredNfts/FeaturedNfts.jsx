@@ -49,6 +49,7 @@ const FeautedNfts = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
     ];
+
     nfts = nfts.filter((nft) => !featturedNFTs.includes(nft.Id));
     nfts = shuffle(nfts);
     const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
@@ -65,6 +66,7 @@ const FeautedNfts = () => {
       <div className={`${classes.wrapper}`}>
         <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
           {NFTs.length ? (
+
             NFTs.map((collection) => <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />)
           ) : !NFTs ? (
             <NotFound />
