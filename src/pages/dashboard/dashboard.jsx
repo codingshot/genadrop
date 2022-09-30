@@ -311,7 +311,7 @@ const Dashboard = () => {
     } else {
       activeSwitch(activeDetail);
     }
-  });
+  }, []);
 
   return (
     <div className={classes.container}>
