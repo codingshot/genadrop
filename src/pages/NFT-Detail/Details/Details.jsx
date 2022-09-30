@@ -32,10 +32,10 @@ const Details = ({ nftDetails: { owner, chain } }) => {
         <div>Minted</div>
         <div>date</div>
       </div> */}
-      <div className={classes.list}>
+      {/* <div className={classes.list}>
         <div>Creator Royalty</div>
         <div>0%</div>
-      </div>
+      </div> */}
       <div className={classes.list}>
         <div>Marketplace Fee</div>
         <div>10%</div>

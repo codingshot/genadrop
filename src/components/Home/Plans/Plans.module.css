@@ -144,6 +144,7 @@
 .planIcon {
   width: 100%;
   max-width: 46vw;
+  height: auto;
 }
 
 .planIcon.render {
