@@ -39,6 +39,7 @@ const FeautedNfts = () => {
     "genadrop-contract.nftgen.near1664333582736",
     "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
     "genadrop-contract.nftgen.near1664317298336",
+    "genadrop-contract.nftgen.near1664562603103",
   ];
 
   useEffect(() => {
@@ -66,7 +67,6 @@ const FeautedNfts = () => {
       <div className={`${classes.wrapper}`}>
         <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
           {NFTs.length ? (
-
             NFTs.map((collection) => <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />)
           ) : !NFTs ? (
             <NotFound />
