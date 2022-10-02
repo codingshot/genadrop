@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
@@ -9,6 +9,7 @@ const Deals = ({ nftDetails }) => {
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
+  const history = useHistory();
   const [usdValue, setUsdValue] = useState(0);
   const buyProps = {
     dispatch,
@@ -26,7 +27,6 @@ const Deals = ({ nftDetails }) => {
   };
 
   useEffect(() => {
-    console.log(nftDetails);
     getUsdValue();
   }, [nftDetails]);
   return (
@@ -39,21 +39,27 @@ const Deals = ({ nftDetails }) => {
           <div className={classes.appx}>{`($${usdValue.toFixed(4)})`}</div>
         </div>
       </div>
-      {!price ? (
+      {isListed ? (
         owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
-              <button className={classes.btn}>Re-List</button>
+              <button className={`${classes.btn} ${classes.disable}`} disabled={true}>
+                Re-List
+              </button>
             ) : (
               <button className={classes.btn}>List</button>
             )}
           </Link>
         ) : (
-          <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
+          <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+            Not Listed
+          </div>
         )
-      ) : owner === account ? (
-        <div className={`${classes.btn} ${classes.disable}`}>Listed</div>
-      ) : !sold || isListed ? (
+      ) : owner === account && isListed ? (
+        <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+          Listed
+        </div>
+      ) : !sold && isListed ? (
         supportedChains[chain]?.chain === "Algorand" ? (
           <div onClick={() => buyNft(buyProps)} className={classes.btn}>
             Buy
@@ -63,8 +69,18 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
+      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
+        <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
+          <div className={`${classes.btn}`}>List</div>
+        </Link>
+      ) : price ? (
+        <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+          Sold
+        </div>
       ) : (
-        <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
+        <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+          Not Listed
+        </div>
       )}
     </div>
   );
