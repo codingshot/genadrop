@@ -34,6 +34,16 @@ const FeautedNfts = () => {
     return array;
   }
 
+  const featuredNFTs =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? []
+      : [
+          "genadrop-contract.nftgen.near1664333582736",
+          "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
+          "genadrop-contract.nftgen.near1664317298336",
+          "genadrop-contract.nftgen.near1664562603103",
+        ];
+
   useEffect(() => {
     let nfts = [
       ...(algoNFTs || []),
@@ -42,10 +52,14 @@ const FeautedNfts = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
     ];
-    nfts = shuffle(nfts);
-    handleSetState({ NFTs: nfts });
-  }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts]);
 
+    nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
+    nfts = shuffle(nfts);
+    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
+      featuredNFTs.includes(nft.Id)
+    );
+    handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
+  }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts]);
   return (
     <div className={classes.container}>
       <div className={classes.headingContainer}>
@@ -55,7 +69,7 @@ const FeautedNfts = () => {
       <div className={`${classes.wrapper}`}>
         <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
           {NFTs.length ? (
-            NFTs.map((nft) => <SingleNftCard use_width="20em" key={nft.Id} nft={nft} />)
+            NFTs.map((collection) => <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />)
           ) : !NFTs ? (
             <NotFound />
           ) : (
