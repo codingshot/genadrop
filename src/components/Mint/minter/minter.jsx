@@ -33,37 +33,7 @@ const Minter = () => {
   const [minter, setMinterObj] = useState(minterFile);
   // save file progress
   const loadedMinter = JSON.parse(sessionStorage.getItem("minter"));
-  useEffect(() => {
-    if (minter) {
-      Promise.all(Array.prototype.map.call(minter.file, getBase64))
-        .then((urls) => {
-          const newMinters = { ...minter };
-          console.log(newMinters);
-          newMinters.file = urls;
-          sessionStorage.setItem("minter", JSON.stringify(newMinters));
-        })
-        .catch((error) => {
-          console.log(error);
-          // ...handle/report error...
-        });
-    } else {
-      console.log(minter);
-      if (!loadedMinter) {
-        return history.push("/mint");
-      }
-      const files = loadedMinter.file.map((base64file) => {
-        return getFileFromBase64(base64file.url, base64file.name);
-      });
-      loadedMinter.file = files;
-      console.log(loadedMinter);
-      setMinterObj(loadedMinter);
-    }
-    return null;
-  }, []);
   const { file, fileName: fName, metadata, zip } = minter;
-  console.log(minter);
-  console.log(file?.length);
-  console.log(fName);
   const [state, setState] = useState({
     attributes: file?.length === 1 ? { [Date.now()]: { trait_type: "File Type", value: file[0]?.type } } : {},
     category: metadata?.attributes ? metadata?.attributes[1].value : "",
@@ -117,8 +87,6 @@ const Minter = () => {
     toggleType,
     stick_type,
   } = state;
-  console.log(fileName);
-  console.log(minter?.fileName);
 
   const mintProps = {
     dispatch,
@@ -158,6 +126,46 @@ const Minter = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
+  useEffect(() => {
+    if (minter) {
+      Promise.all(Array.prototype.map.call(minter.file, getBase64))
+        .then((urls) => {
+          const newMinters = { ...minter, description, fileName, category, attributes, vibeProps, stick_type };
+          newMinters.file = urls;
+
+          sessionStorage.setItem("minter", JSON.stringify(newMinters));
+        })
+        .catch((error) => {
+          console.log(error);
+          // ...handle/report error...
+        });
+    } else {
+      if (!loadedMinter) {
+        return history.push("/mint");
+      }
+      const files = loadedMinter.file.map((base64file) => {
+        return getFileFromBase64(base64file.url, base64file.name);
+      });
+      loadedMinter.file = files;
+      setMinterObj(loadedMinter);
+      handleSetState({
+        description: loadedMinter.description,
+        fileName: loadedMinter.fileName,
+        category: loadedMinter.category,
+        attributes: loadedMinter.attributes,
+        vibeProps: loadedMinter.vibeProps,
+        stick_type: loadedMinter.stick_type,
+      });
+    }
+    return null;
+  }, [chain]);
+
+  useEffect(() => {
+    handleSetState({
+      attributes: loadedMinter.attributes,
+    });
+  }, [file]);
 
   const handleAddAttribute = () => {
     handleSetState({
@@ -252,7 +260,7 @@ const Minter = () => {
             },
           });
         } else {
-          localStorage.removeItem("minter");
+          sessionStorage.removeItem("minter");
           handleSetState({
             popupProps: {
               url,
@@ -314,7 +322,7 @@ const Minter = () => {
             },
           });
         } else {
-          localStorage.removeItem("minter");
+          sessionStorage.removeItem("minter");
           handleSetState({
             popupProps: {
               url,
@@ -423,6 +431,7 @@ const Minter = () => {
 
   const isVibe = metadata?.attributes ? metadata?.attributes[1].value === "Photography" : false;
   if (isVibe) categories = ["Vibe", "Photography"];
+
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />

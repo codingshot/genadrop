@@ -104,7 +104,7 @@ export function getBase64(file) {
 }
 
 export function getFileFromBase64(string64, fileName) {
-  const type = string64.split(",")[0];
+  const type = string64.split(",")[0]?.replace(";base64", "")?.replace("data:", "");
   const trimmedString = string64.split(",")[1];
   const imageContent = atob(trimmedString);
   const buffer = new ArrayBuffer(imageContent.length);
