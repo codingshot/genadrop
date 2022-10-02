@@ -29,7 +29,8 @@ const GenadropCreatedNFTs = () => {
   }, []);
   const history = useHistory();
 
-  const featturedNFTs = ["genadrop-contract.nftgen.near1664317298336"];
+  const featturedNFTs =
+    process.env.REACT_APP_ENV_STAGING === "true" ? [] : ["genadrop-contract.nftgen.near1664317298336"];
 
   useEffect(() => {
     let singles = [
@@ -43,7 +44,7 @@ const GenadropCreatedNFTs = () => {
     const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
       featturedNFTs.includes(nft.Id)
     );
-    handleSetState({ singles: [...featuredNFT1, ...singles.slice(0, 3)] });
+    handleSetState({ singles: [...featuredNFT1, ...singles.slice(0, 4 - featturedNFTs.length)] });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   const handlePreview = (chain, Id) => {

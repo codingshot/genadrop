@@ -6,7 +6,6 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
-import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
 
 const FeautedNfts = () => {
@@ -35,12 +34,16 @@ const FeautedNfts = () => {
     return array;
   }
 
-  const featturedNFTs = [
-    "genadrop-contract.nftgen.near1664333582736",
-    "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
-    "genadrop-contract.nftgen.near1664317298336",
-    "genadrop-contract.nftgen.near1664562603103",
-  ];
+  const featuredNFTs =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? []
+      : [
+          "genadrop-contract.nftgen.near1664333582736",
+          "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
+          "genadrop-contract.nftgen.near1664317298336",
+          "genadrop-contract.nftgen.near1664562603103",
+        ];
+
 
   useEffect(() => {
     let nfts = [
@@ -51,10 +54,10 @@ const FeautedNfts = () => {
       ...(singleCeloNfts || []),
     ];
 
-    nfts = nfts.filter((nft) => !featturedNFTs.includes(nft.Id));
+    nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
     nfts = shuffle(nfts);
     const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
-      featturedNFTs.includes(nft.Id)
+      featuredNFTs.includes(nft.Id)
     );
     handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
   }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts]);

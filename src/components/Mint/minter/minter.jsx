@@ -12,7 +12,7 @@ import {
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Attribute from "../Attribute/Attribute";
-import { handleMint, handleSingleMint } from "./minter-script";
+import { handleMint, handleSingleMint, getBase64, getFileFromBase64 } from "./minter-script";
 import classes from "./minter.module.css";
 import CollectionPreview from "../collection-preview/collectionPreview";
 import rightArrow from "../../../assets/icon-arrow-right.svg";
@@ -29,17 +29,15 @@ import SliderInput from "./SliderInput";
 
 const Minter = () => {
   const history = useHistory();
-  const { dispatch, connector, account, chainId, mainnet, minter } = useContext(GenContext);
-  if (!minter) {
-    history.push("/mint");
-    return null;
-  }
-
+  const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
+  const [minter, setMinterObj] = useState(minterFile);
+  // save file progress
+  const loadedMinter = JSON.parse(sessionStorage.getItem("minter"));
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: file.length > 1 ? {} : { [Date.now()]: { trait_type: "File Type", value: file[0].type } },
+    attributes: file?.length === 1 ? { [Date.now()]: { trait_type: "File Type", value: file[0]?.type } } : {},
     category: metadata?.attributes ? metadata?.attributes[1].value : "",
-    fileName: fName,
+    fileName: minter?.fileName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     chain: null,
     preview: false,
@@ -66,6 +64,7 @@ const Minter = () => {
     },
     stick_type: "",
   });
+
   const {
     attributes,
     fileName,
@@ -114,7 +113,7 @@ const Minter = () => {
     account,
     chainId,
     connector,
-    file: file[0],
+    file: file ? file[0] : {},
     metadata: {
       name: fileName,
       description,
@@ -127,6 +126,47 @@ const Minter = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
+  useEffect(() => {
+    if (minter) {
+      Promise.all(Array.prototype.map.call(minter.file, getBase64))
+        .then((urls) => {
+          const newMinters = { ...minter, description, fileName, category, attributes, vibeProps, stick_type };
+          newMinters.file = urls;
+
+          sessionStorage.setItem("minter", JSON.stringify(newMinters));
+        })
+        .catch((error) => {
+          console.log(error);
+          // ...handle/report error...
+        });
+    } else {
+      if (!loadedMinter) {
+        return history.push("/mint");
+      }
+      const files = loadedMinter.file.map((base64file) => {
+        return getFileFromBase64(base64file.url, base64file.name);
+      });
+      loadedMinter.file = files;
+      setMinterObj(loadedMinter);
+      handleSetState({
+        description: loadedMinter.description,
+        fileName: loadedMinter.fileName,
+        category: loadedMinter.category,
+        attributes: loadedMinter.attributes,
+        vibeProps: loadedMinter.vibeProps,
+        stick_type: loadedMinter.stick_type,
+      });
+    }
+    return null;
+  }, [chain]);
+
+  useEffect(() => {
+    handleSetState({
+      attributes: loadedMinter.attributes,
+    });
+  }, [file]);
+
   const handleAddAttribute = () => {
     handleSetState({
       attributes: {
@@ -199,7 +239,7 @@ const Minter = () => {
       mintProps.receiverAddress = account;
       singleMintProps.receiverAddress = account;
     }
-    if (file.length > 1) {
+    if (file?.length > 1) {
       if (!mintProps.description) {
         return dispatch(
           setNotification({
@@ -220,6 +260,7 @@ const Minter = () => {
             },
           });
         } else {
+          sessionStorage.removeItem("minter");
           handleSetState({
             popupProps: {
               url,
@@ -281,6 +322,7 @@ const Minter = () => {
             },
           });
         } else {
+          sessionStorage.removeItem("minter");
           handleSetState({
             popupProps: {
               url,
@@ -389,6 +431,7 @@ const Minter = () => {
 
   const isVibe = metadata?.attributes ? metadata?.attributes[1].value === "Photography" : false;
   if (isVibe) categories = ["Vibe", "Photography"];
+
   return (
     <div className={classes.container}>
       <Popup handleSetState={handleSetState} popupProps={popupProps} />
@@ -406,22 +449,23 @@ const Minter = () => {
         <div className={classes.wrapper}>
           <div>
             <section className={classes.assetContainer}>
-              <div className={`${classes.imageContainers} ${file.length > 1 && classes._}`}>
-                {file.length > 1 ? (
-                  file
-                    .filter((_, idx) => idx < 3)
-                    .map((f, idx) => (
-                      <div
-                        key={idx}
-                        style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
-                        className={classes.imageContainer}
-                      />
-                    ))
-                ) : file[0].type === "video/mp4" ? (
-                  <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
-                ) : (
-                  <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
-                )}
+              <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
+                {file &&
+                  (file?.length > 1 ? (
+                    file
+                      .filter((_, idx) => idx < 3)
+                      .map((f, idx) => (
+                        <div
+                          key={idx}
+                          style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
+                          className={classes.imageContainer}
+                        />
+                      ))
+                  ) : file[0].type === "video/mp4" ? (
+                    <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
+                  ) : (
+                    <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
+                  ))}
                 {category === "Vibe" && <img src={VibesLogo} className={classes.overlayImage} alt="proof-of-vibes" />}
               </div>
 
@@ -431,15 +475,15 @@ const Minter = () => {
                     <span>{fName}</span>
                   </div>
                   <div>
-                    <span>Number of assets:</span> <p>{file.length}</p>
+                    <span>Number of assets:</span> <p>{file?.length}</p>
                   </div>
                   {chainId === 4160 && (
                     <div className={classes.priceTooltip}>
-                      <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file.length * 0.1} ALGO</p>
+                      <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file?.length * 0.1} ALGO</p>
                       <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#0d99ff" />
                     </div>
                   )}
-                  {file.length > 1 ? (
+                  {file?.length > 1 ? (
                     <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
                       <span>view all assets</span>
                       <img src={rightArrow} alt="" />
@@ -452,7 +496,7 @@ const Minter = () => {
               </div>
             </section>
             <div className={classes.mintForm}>
-              <div className={classes.heading}>{file.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
+              <div className={classes.heading}>{file?.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
 
               <section className={classes.details}>
                 <div className={classes.category}>Asset Details</div>
@@ -485,7 +529,7 @@ const Minter = () => {
                   />
                 </div>
 
-                {file.length === 1 && (
+                {file?.length === 1 && (
                   <div className={classes.inputWrapper}>
                     <label>Category</label>
                     <div
@@ -625,7 +669,7 @@ const Minter = () => {
                     </div>
                   )}
                 </div>
-                {file.length > 1 && (
+                {file?.length > 1 && (
                   <>
                     <div className={`${classes.inputWrapper} ${classes.dropInputWrapper}`}>
                       <label>
@@ -648,7 +692,7 @@ const Minter = () => {
                   </>
                 )}
 
-                {(category === "Vibe" || category === "Sesh") && file.length === 1 && (
+                {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
                   <div className={classes.inputWrapper}>
                     <div className={classes.toggleTitle}>
                       <div className={classes.category}>Enable Location</div>
