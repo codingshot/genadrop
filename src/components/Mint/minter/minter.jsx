@@ -701,7 +701,7 @@ const Minter = () => {
                 )}
 
                 <div className={classes.inputWrapper}>
-                  <div className={classes.toggleTitle}>
+                  <div className={`${classes.toggleTitle} ${classes.hide}`}>
                     <div className={classes.category}>
                       Non Tranferable NFT{" "}
                       <GenadropToolTip
@@ -720,7 +720,7 @@ const Minter = () => {
                     </div>
                   </div>
 
-                  <div className={showReceiverAddress ? classes.receiverAddress : classes.noDisplay}>
+                  <div className={classes.receiverAddress}>
                     <label>Receiver Address</label>
 
                     <div className={classes.inputContainer}>
