@@ -571,6 +571,17 @@ div.showPreview > span {
   display: flex;
   justify-content: space-between;
 }
+.toggleTitle.hide {
+  opacity: 0.5;
+  filter: alpha(opacity = 60);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+  pointer-events: none;
+}
 .inputContainer {
   display: flex;
   align-items: center;
