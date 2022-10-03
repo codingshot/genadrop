@@ -21,7 +21,7 @@
 }
 
 .section {
-  border: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
   margin-bottom: 2em;
 }
 
@@ -35,7 +35,6 @@
   align-items: center;
   justify-content: flex-start;
   gap: 3em;
-  /* margin-bottom: 3em; */
 }
 
 .type {
@@ -47,9 +46,13 @@
   border-radius: 0.4em 0.4em 0 0;
   white-space: nowrap;
   cursor: pointer;
-  color: #0f1d40;
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
 }
-
+.type img {
+  margin-right: 0.5em;
+}
 .type:hover {
   color: var(--text-sub-heading);
 }
@@ -133,6 +136,10 @@
 
   .displayWrapper {
     flex-direction: column;
+  }
+
+  .type img {
+    width: 2em;
   }
 }
 

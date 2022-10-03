@@ -11,8 +11,7 @@ import supportedChains from "../../../utils/supportedChains";
 
 import { ReactComponent as MintIcon } from "../../../assets/icon-mint.svg";
 import { ReactComponent as SalesIcon } from "../../../assets/icon-sales.svg";
-import { ReactComponent as TransferIcon } from "../../../assets/icon-transfer.svg";
-import { ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
+import { ReactComponent as TransferIcon, ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
 import { ReactComponent as TransactionIcon } from "../../../assets/icon-transaction.svg";
 
 import {
@@ -62,7 +61,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
           break;
         case "Polygon":
           data = await polygonCollectionTransactions(collectionId);
-          console.log("DATA: ", data);
+
           break;
         default:
           handleSetState({ isAlgoChain: true });
@@ -79,25 +78,33 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
         case "mints":
           const minting = data.filter((data) => data.type === "Minting");
           handleSetState({
-            transactionData: minting,
+            filterdHistory: minting,
           });
+
           break;
         case "transfers":
           const transfers = data.filter((data) => data.type === "Transfers");
           handleSetState({
-            transactionData: transfers,
+            filterdHistory: transfers,
           });
+
           break;
         case "sales":
           const sales = data.filter((data) => data.type === "Sale");
           handleSetState({
-            transactionData: sales,
+            filterdHistory: sales,
           });
           break;
         case "listings":
           const listing = data.filter((data) => data.type === "Listing");
           handleSetState({
-            transactionData: listing,
+            filterdHistory: listing,
+          });
+          break;
+        default:
+          handleSetState({
+            transactionData: data,
+            filterdHistory: data,
           });
           break;
       }
@@ -106,19 +113,18 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
 
   const handleSearch = (e) => {
     handleSetState({ searchValue: e.target.value });
-    if (!searchValue) {
+    if (!e.target.value) {
       return handleSetState({ filterdHistory: transactionData });
     }
 
     const result = transactionData.filter(
       (history) =>
-        history?.type.includes(searchValue) ||
-        history.from?.includes(searchValue) ||
-        history.to?.includes(searchValue) ||
-        history.date.includes(searchValue)
+        history?.type.includes(e.target.value) ||
+        history.from?.includes(e.target.value) ||
+        history.to?.includes(e.target.value) ||
+        history.date.includes(e.target.value)
     );
 
-    console.log(result);
     handleSetState({ filterdHistory: result });
   };
   return (
@@ -170,7 +176,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
         </div>
 
         <div className={classes.searchInput}>
-          <img src={searchIcon} alt="" srcset="" />
+          <img src={searchIcon} alt="" srcSet="" />
           <input type="text" placeholder="Search" value={searchValue} onChange={handleSearch} />
         </div>
         {isAlgoChain ? (
@@ -198,7 +204,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
                       <span className={classes.date}>{data.date}</span>
                     </div>
                     <div className={classes.export}>
-                      <a href={explorer + "tx/" + data?.id} target="_blank">
+                      <a href={`${explorer}tx/${data?.id}`} target="_blank" rel="noreferrer">
                         <img src={exportIcon} alt="" />
                       </a>
                     </div>

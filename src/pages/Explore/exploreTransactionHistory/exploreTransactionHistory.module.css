@@ -6,6 +6,8 @@
   min-height: 37.5em;
   max-height: 70em;
   overflow-y: scroll;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .wrapper {
@@ -36,7 +38,7 @@
 .option,
 .active,
 .disabled {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   background-color: var(--header-bg);
   padding: 0.5em 1em;
@@ -106,7 +108,7 @@
   border-radius: 30px;
   margin-top: 1em;
   color: var(--text-dark-700);
-  font-size: 10px;
+  font-size: 12px;
   display: flex;
   align-items: center;
 }
@@ -153,16 +155,10 @@
 @media screen and (max-width: 1000px) {
   .option,
   .disabled {
-    font-size: 0.3em;
-    padding: 1em 2em;
+    font-size: 14px;
+    padding: 0.5em 1em;
     display: flex;
     align-items: center;
-  }
-
-  .value,
-  .label,
-  .date {
-    font-size: 0.2em;
   }
 
   .export img {
@@ -179,6 +175,20 @@
 @media screen and (max-width: 768px) {
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  .date,
+  .value {
+    font-size: 12px;
+  }
+
+  .label {
+    font-size: 10px;
+  }
+
+  .export img {
+    width: 1em;
+    padding: 0.1em;
   }
 }
 

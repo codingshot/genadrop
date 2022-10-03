@@ -9,6 +9,8 @@ import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-scri
 import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import listIcon from "../../assets/icon-items.svg";
+import activityIcon from "../../assets/icon-activity.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import { setActiveCollection } from "../../gen-state/gen.actions";
 import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
@@ -126,7 +128,7 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    let filtered = filterBy({ value: filter.status, collections: NFTCollection });
+    const filtered = filterBy({ value: filter.status, collections: NFTCollection });
     handleSetState({ FilteredCollection: filtered });
   }, [filter.status]);
 
@@ -172,21 +174,25 @@ const Explore = () => {
       ) : null}
 
       <div className={classes.displayContainer}>
-        <div className={classes.types}>
-          <div
-            onClick={() => handleTabActive("T1")}
-            className={`${classes.type}  ${activeType === "T1" && classes.active}`}
-          >
-            Items
-          </div>
-          <div
-            onClick={() => handleTabActive("T2")}
-            className={`${classes.type}  ${activeType === "T2" && classes.active}`}
-          >
-            Activity
+        <div className={`${classes.displayWrapper} ${classes.section}`}>
+          <div className={classes.types}>
+            <div
+              onClick={() => handleTabActive("T1")}
+              className={`${classes.type}  ${activeType === "T1" && classes.active}`}
+            >
+              <img src={listIcon} alt="" />
+              Items
+            </div>
+            <div
+              onClick={() => handleTabActive("T2")}
+              className={`${classes.type}  ${activeType === "T2" && classes.active}`}
+            >
+              <img src={activityIcon} alt="" />
+              Activity
+            </div>
           </div>
         </div>
-        <div className={classes.section}></div>
+
         {activeType === "T1" ? (
           <Items handleSetState={handleSetState} state={state} collectionName={collectionName} />
         ) : (

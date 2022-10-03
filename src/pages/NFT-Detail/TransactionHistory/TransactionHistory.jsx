@@ -4,8 +4,7 @@ import classes from "./TransactionHistory.module.css";
 import { ReactComponent as TxIcon } from "../../../assets/icon-tx.svg";
 import { ReactComponent as MintIcon } from "../../../assets/icon-mint.svg";
 import { ReactComponent as SalesIcon } from "../../../assets/icon-sales.svg";
-import { ReactComponent as TransferIcon } from "../../../assets/icon-transfer.svg";
-import { ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
+import { ReactComponent as TransferIcon, ReactComponent as ListIcon } from "../../../assets/icon-transfer.svg";
 import { ReactComponent as TransactionIcon } from "../../../assets/icon-transaction.svg";
 import { ReactComponent as SearchIcon } from "../../../assets/icon-search.svg";
 
@@ -47,14 +46,14 @@ const TransactionHistory = ({ transactionHistory, nftDetails }) => {
 
   const handleSearch = (e) => {
     handleSetState({ searchValue: e.target.value });
-    if (!searchValue) return handleSetState({ filterdHistory: transactionHistory });
+    if (!e.target.value) return handleSetState({ filterdHistory: transactionHistory });
 
     const result = transactionHistory.filter(
       (history) =>
-        history?.txId.includes(searchValue) ||
-        history.buyer?.includes(searchValue) ||
-        history.seller?.includes(searchValue) ||
-        getFormatedTxDate(history.txDate).includes(searchValue)
+        history?.txId.includes(e.target.value) ||
+        history.buyer?.includes(e.target.value) ||
+        history.seller?.includes(e.target.value) ||
+        getFormatedTxDate(history.txDate).includes(e.target.value)
     );
 
     handleSetState({ filterdHistory: result });
