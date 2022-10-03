@@ -66,7 +66,7 @@ function App() {
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
-            <Route exact path="/mint/camera" component={Camera} />
+            <Route exact path={["/mint/camera", "/mint/vibe"]} component={Camera} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />

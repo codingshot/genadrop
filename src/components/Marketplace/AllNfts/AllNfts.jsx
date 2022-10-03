@@ -99,7 +99,7 @@ const AllNfts = () => {
       }
       return a.createdAt - b.createdAt;
     });
-    handleSetState({ newest: newest.slice(0, 16) });
+    handleSetState({ newest });
   }, [singles, collections]);
 
   useEffect(() => {
