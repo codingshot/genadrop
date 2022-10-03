@@ -175,6 +175,10 @@ const RegularCamera = ({ regularCameraProps }) => {
       name = "video";
       type = "Shorts";
     }
+    const pathname = history.location?.pathname.replace("/mint/", "");
+    if (pathname === "vibe") {
+      type = "Vibe";
+    }
     dispatch(
       setZip({
         name,

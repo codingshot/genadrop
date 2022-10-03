@@ -161,12 +161,6 @@ const Minter = () => {
     return null;
   }, [chain]);
 
-  useEffect(() => {
-    handleSetState({
-      attributes: loadedMinter.attributes,
-    });
-  }, [file]);
-
   const handleAddAttribute = () => {
     handleSetState({
       attributes: {
