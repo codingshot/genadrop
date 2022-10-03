@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import classes from "./exploreTransactionHistory.module.css";
 
-import transferIcon from "../../../assets/icon-transfer.svg";
+import exportIcon from "../../../assets/icon-export.svg";
 import searchIcon from "../../../assets/icon-search.svg";
 
 import { chainIdToParams } from "../../../utils/chainConnect";
@@ -60,6 +60,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
           break;
         case "Polygon":
           data = await polygonCollectionTransactions(collectionId);
+          console.log("DATA: ", data);
           break;
         default:
           handleSetState({ isAlgoChain: true });
