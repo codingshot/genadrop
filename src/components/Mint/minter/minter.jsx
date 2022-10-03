@@ -61,6 +61,7 @@ const Minter = () => {
       friendliness: 0,
       energy: 0,
       density: 0,
+      diversity: 0,
     },
     stick_type: "",
   });
@@ -296,6 +297,10 @@ const Minter = () => {
             {
               trait_type: "density",
               value: vibeProps.density,
+            },
+            {
+              trait_type: "diversity",
+              value: vibeProps.diversity,
             }
           );
         }
@@ -615,6 +620,19 @@ const Minter = () => {
                         const density = e.target.value;
                         const newProps = vibeProps;
                         newProps.density = density;
+                        handleSetState({
+                          vibeProps: newProps,
+                        });
+                      }}
+                    />
+                    <label>Diversity</label>
+                    <SliderInput
+                      MAX={10}
+                      value={vibeProps.diversity}
+                      handleChange={(e) => {
+                        const diversity = e.target.value;
+                        const newProps = vibeProps;
+                        newProps.diversity = diversity;
                         handleSetState({
                           vibeProps: newProps,
                         });
