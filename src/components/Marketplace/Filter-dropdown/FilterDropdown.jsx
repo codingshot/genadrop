@@ -48,9 +48,10 @@ const FilterDropdown = ({ handleFilter, collection }) => {
 
   const handleCancel = () => {
     handleSetState({ filter: { ...filter, minPrice: 0, maxPrice: 0 }, toggleFilter: false });
+    handleFilter({ type: "cancel" });
   };
 
-  const statusFilter = ["listed", "not listed", "on auction"];
+  const statusFilter = ["listed", "not listed"];
   const sortFilter = ["newest", "oldest", "highest price", "lowest price", "a - z", "z - a"];
 
   return (
@@ -68,8 +69,8 @@ const FilterDropdown = ({ handleFilter, collection }) => {
           <Dropdown title="Status">
             <div className={classes.dropdown}>
               {statusFilter.map((status, idx) => (
-                <div key={idx} className={classes.status}>
-                  <RadioButton onClick={() => handleStatus(status)} active={status === filter.status} />
+                <div key={idx} className={classes.status} onClick={() => handleStatus(status)}>
+                  <RadioButton active={status === filter.status} />
                   <div>{status}</div>
                 </div>
               ))}

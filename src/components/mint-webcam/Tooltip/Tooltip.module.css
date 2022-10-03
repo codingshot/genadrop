@@ -1,0 +1,50 @@
+.container {
+  width: 100%;
+  width: max-content;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container svg {
+  width: 1em;
+  height: 1em;
+  border: 1px solid var(--main-color);
+  border-radius: 50%;
+  cursor: var(--cursor-pointer);
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  top: -0.5em;
+  transform: translateY(-100%);
+  border-top: 0.6em solid var(--main-color);
+  border-right: 0.4em solid transparent;
+  border-left: 0.4em solid transparent;
+}
+
+.card {
+  width: max-content;
+  padding: 0.5em;
+  padding-bottom: 1em;
+  text-align: center;
+  position: absolute;
+  top: -1.25em;
+  font-size: 0.75rem;
+  background: var(--main-color);
+  color: var(--default);
+  transform: translateX(0) translateY(-100%);
+  z-index: 10000;
+  border-radius: 9px;
+  max-width: 10em;
+}
+@media screen and (max-width: 480px) {
+  .card {
+    top: -2em;
+  }
+  .container::before {
+    top: -1em;
+  }
+}

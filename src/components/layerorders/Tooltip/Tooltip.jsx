@@ -1,12 +1,8 @@
+import React, { useState } from "react";
 import classes from "./Tooltip.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useContext } from "react";
-import { GenContext } from "../../../gen-state/gen.context";
-import { handleAddSampleLayers } from "../../../utils";
-import { useState } from "react";
 
 const Tooltip = ({ isModal }) => {
-  const { dispatch } = useContext(GenContext);
   const [showTip, setTip] = useState(false);
 
   const handleClose = () => {
@@ -15,7 +11,6 @@ const Tooltip = ({ isModal }) => {
   };
 
   const handleSamples = () => {
-    handleAddSampleLayers({ dispatch });
     handleClose();
   };
 
@@ -28,7 +23,9 @@ const Tooltip = ({ isModal }) => {
         <div className={classes.title}>Add layers for your arts using this button.</div>
         <div className={classes.wrapper}>
           <p>Or see how it work?</p>
-          <button onClick={handleSamples}>Try our samples</button>
+          <button onClick={handleSamples} type="button">
+            Try our samples
+          </button>
         </div>
       </div>
     </div>

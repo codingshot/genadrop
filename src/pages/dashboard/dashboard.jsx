@@ -1,14 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useHistory, useLocation, useRouteMatch, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { ethers } from "ethers";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-// import { setNotification } from "../../gen-state/gen.actions";
 import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
-// import { celoClient, polygonClient } from "../../utils/graphqlClient";
-// import { GET_USER_NFT } from "../../graphql/querries/getCollections";
 import {
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
@@ -16,14 +13,15 @@ import {
   getCeloCollectedNFTs,
   getCeloMintedNFTs,
   getCeloUserCollections,
+  getNearMintedNfts,
   getPolygonCollectedNFTs,
   getPolygonMintedNFTs,
   getPolygonUserCollections,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 // utils
-import Copy from "../../components/copy/copy";
 import { getUserNftCollections, getUserSingleNfts } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
+import { chainIdToParams } from "../../utils/chainConnect";
 // components
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
@@ -37,11 +35,11 @@ import { ReactComponent as Youtube } from "../../assets/icon-youtube-green.svg";
 import { ReactComponent as Twitter } from "../../assets/icon-twitter-blue.svg";
 import { ReactComponent as Discord } from "../../assets/icon-discord-blue.svg";
 import { ReactComponent as Instagram } from "../../assets/icon-instagram-blue.svg";
+import { ReactComponent as LinkIcon } from "../../assets/icon-link.svg";
 
 const Dashboard = () => {
   const location = useLocation();
   const history = useHistory();
-  const { url } = useRouteMatch();
   const { userId, chainId: chainID } = useParams();
   const [state, setState] = useState({
     togglePriceFilter: false,
@@ -57,6 +55,7 @@ const Dashboard = () => {
     myCollections: null,
     filteredCollection: null,
     userDetails: null,
+    errorMessage: false,
     onSale: null,
     paginatePage: "",
     pageNumber: 0,
@@ -89,7 +88,7 @@ const Dashboard = () => {
   useEffect(() => {
     // Get User Created NFTs
     let address = "";
-    if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
+    if (supportedChains[chainID]?.chain !== "Algorand" && supportedChains[chainID]?.chain !== "Near" && userId) {
       address = ethers?.utils?.hexlify(userId);
     }
     (async function getUserNFTs() {
@@ -107,6 +106,9 @@ const Dashboard = () => {
           break;
         case "Polygon":
           nfts = await getPolygonMintedNFTs(address);
+          break;
+        case "Near":
+          nfts = await getNearMintedNfts(userId);
           break;
         default:
           break;
@@ -145,7 +147,7 @@ const Dashboard = () => {
     // Get User created Collections
     (async function getCreatedCollections() {
       let walletAddress = "";
-      if (supportedChains[chainID]?.chain !== "Algorand" && userId) {
+      if (supportedChains[chainID]?.chain !== "Algorand" && supportedChains[chainID]?.chain !== "Near" && userId) {
         walletAddress = ethers?.utils?.hexlify(userId);
       }
       let collection;
@@ -280,6 +282,37 @@ const Dashboard = () => {
   const perPage = 12;
   const pageVisited = pageNumber * perPage;
 
+  const algoexplorer = mainnet ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/";
+
+  const handleExplorer = () => {
+    if (supportedChains[chainID]?.chain === "Algorand") {
+      window.open(`${algoexplorer}address/${userId}`);
+    } else if (supportedChains[chainID]?.chain === "Near") {
+      window.open(`${chainIdToParams[chainID]?.blockExplorerUrls}${userId}`);
+    } else {
+      window.open(`${chainIdToParams[chainID]?.blockExplorerUrls}address/${userId}`);
+    }
+  };
+  const params = new URLSearchParams(location.search);
+
+  const activeSwitch = (active) => {
+    params.set("tab", active);
+    history.push({
+      pathname: location.pathname,
+      search: params.toString(),
+    });
+    handleSetState({ activeDetail: active });
+  };
+
+  useEffect(() => {
+    const active = params.get("tab");
+    if (active) {
+      handleSetState({ activeDetail: active });
+    } else {
+      activeSwitch(activeDetail);
+    }
+  }, []);
+
   return (
     <div className={classes.container}>
       {/* change background to dynamic */}
@@ -329,7 +362,8 @@ const Dashboard = () => {
 
             <div className={classes.address}>
               <img src={supportedChains[chainID]?.icon} alt="blockchain" />
-              <Copy message={userId} placeholder={breakAddress(userId)} />
+              <div>{userId?.length > 25 ? breakAddress(userId) : userId}</div>
+              <LinkIcon onClick={handleExplorer} />
             </div>
           </div>
         </div>
@@ -344,21 +378,21 @@ const Dashboard = () => {
         <section className={classes.header}>
           <div className={classes.details}>
             <div
-              onClick={() => handleSetState({ activeDetail: "sale" })}
+              onClick={() => activeSwitch("sale")}
               className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
             >
               <p>On sale</p>
               <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
             </div>
             <div
-              onClick={() => handleSetState({ activeDetail: "collected" })}
+              onClick={() => activeSwitch("collected")}
               className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
             >
               <p>Collected</p>
               <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
             </div>
             <div
-              onClick={() => handleSetState({ activeDetail: "created" })}
+              onClick={() => activeSwitch("created")}
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
               <p>Created</p>

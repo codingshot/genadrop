@@ -2,7 +2,7 @@ import algorandIcon from "../../assets/footer-icon-algorand.svg";
 import pinataIcon from "../../assets/footer-icon-pinata.svg";
 import celoIcon from "../../assets/footer-icon-celo.svg";
 import polygonIcon from "../../assets/footer-icon-polygon.svg";
-import solanaIcon from "../../assets/footer-icon-solana.svg";
+import avalancheIcon from "../../assets/footer-icon-avalanche.svg";
 import nearIcon from "../../assets/footer-icon-near.svg";
 import auroraIcon from "../../assets/footer-icon-aurora.svg";
 import twitterIcon from "../../assets/icon-twitter.svg";
@@ -34,9 +34,9 @@ export const orgs = [
     link: "https://polygon.technology/",
   },
   {
-    name: "Solana",
-    icon: solanaIcon,
-    link: "https://solana.com/",
+    name: "Avalanche",
+    icon: avalancheIcon,
+    link: "https://www.avax.network/",
   },
   {
     name: "Near",
@@ -69,7 +69,6 @@ export const footerLinks = [
         id: "1",
       },
       { name: "MPA", link: "https://www.minorityprogrammers.org", id: "2" },
-      { name: "HERDrop", link: "https://www.herdrop.com", id: "3" },
     ],
   },
   {

@@ -50,9 +50,11 @@
 .categories {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   justify-content: flex-start;
   gap: 1em;
   overflow: auto;
+  max-width: 900px;
 }
 
 .category {
@@ -149,7 +151,7 @@
   }
 
   .filter {
-    flex-direction: column;
+    flex-wrap: wrap;
     align-items: center;
   }
 
@@ -160,7 +162,7 @@
   .types {
     gap: 0.5em;
     margin-bottom: 1.6em;
-    justify-content: center;
+    /* justify-content: center; */
   }
 
   .type {

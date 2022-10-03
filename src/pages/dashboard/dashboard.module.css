@@ -175,7 +175,18 @@
   background: #e9f2ff;
   border-radius: 5px;
   display: flex;
+  align-items: center;
   gap: 5px;
+}
+.address svg {
+  height: 1rem;
+  cursor: pointer;
+}
+.address svg path {
+  transition: all 200ms ease;
+}
+.address svg:hover path:first-child {
+  transform: translate(2px, -2px);
 }
 .address > img {
   max-width: 20px;

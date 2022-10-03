@@ -4,6 +4,8 @@ import { breakAddress } from "../NFTDetail-script";
 import classes from "./NFT.module.css";
 import { ReactComponent as ShareIcon } from "../../../assets/icon-share.svg";
 import Share from "./Share";
+import avatar from "../../../assets/avatar.png";
+
 // import { ReactComponent as MoreIcon } from "../../../assets/icon-more.svg";
 
 const NFT = ({ nftDetails }) => {
@@ -31,7 +33,8 @@ const NFT = ({ nftDetails }) => {
             <>
               <div className={classes.title}>Created by</div>
               <div className={classes.subSection}>
-                <div className={classes.placeholder} />
+                <img src={avatar} alt="" className={classes.placeholder} />
+
                 <Link to={`/profile/${nftDetails?.chain}/${owner}`} className={`${classes.name} ${classes.active}`}>
                   {breakAddress(owner)}
                 </Link>

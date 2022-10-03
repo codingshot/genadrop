@@ -135,7 +135,7 @@ function ConnectWallet() {
       <div className={classes.connected}>
         <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
         <div className={classes.address}>
-          <span>{breakAddress(account)}</span>
+          <span>{account?.length > 15 ? breakAddress(account) : account}</span>
         </div>
         <div className={classes.dropdownIconContainer}>
           <DropdownIcon className={classes.dropdownIcon} />
@@ -150,12 +150,6 @@ function ConnectWallet() {
       <div className={classes.network}>
         <div className={`${classes.dot} ${network === "mainnet" && classes.mainnet}`} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-        <DropdownIcon className={classes.chevronIcon} />
-      </div>
-      <div className={classes.networkDropdownContainer}>
-        <div onClick={handleNetworkClick} className={classes.networkDropdown}>
-          {network === "mainnet" ? "Switch to testnet" : "Switch to mainnet"}
-        </div>
       </div>
     </div>
   );

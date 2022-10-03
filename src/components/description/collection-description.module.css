@@ -138,7 +138,7 @@
 
 .generateBtn {
   flex: 1;
-  border-radius: 3em;
+  border-radius: 12px;
   padding: 0.75em;
   text-align: center;
   background: var(--main-disable);

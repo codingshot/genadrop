@@ -37,7 +37,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
     Listing: <ListIcon />,
   };
 
-  const { selected, explorer, transactionData, searchValue, filterdHistory, isAlgoChain } = state;
+  const { selected, explorer, transactionData, isAlgoChain } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -61,7 +61,6 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
           break;
         case "Polygon":
           data = await polygonCollectionTransactions(collectionId);
-
           break;
         default:
           handleSetState({ isAlgoChain: true });
@@ -117,7 +116,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
       return handleSetState({ filterdHistory: transactionData });
     }
 
-    const result = transactionData.filter(
+    const result = filterdHistory.filter(
       (history) =>
         history?.type.includes(e.target.value) ||
         history.from?.includes(e.target.value) ||

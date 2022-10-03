@@ -6,7 +6,8 @@ import { breakAddress } from "../NFTDetail-script";
 import { ReactComponent as LinkIcon } from "../../../assets/icon-link.svg";
 import classes from "./Details.module.css";
 
-const Details = ({ nftDetails: { owner, chain } }) => {
+const Details = ({ nftDetails }) => {
+  const { owner, chain, isListed } = nftDetails;
   const { mainnet } = useContext(GenContext);
   const algoexplorer = mainnet ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/";
 
@@ -32,18 +33,22 @@ const Details = ({ nftDetails: { owner, chain } }) => {
         <div>Minted</div>
         <div>date</div>
       </div> */}
-      <div className={classes.list}>
+      {/* <div className={classes.list}>
         <div>Creator Royalty</div>
         <div>0%</div>
-      </div>
-      <div className={classes.list}>
-        <div>Marketplace Fee</div>
-        <div>10%</div>
-      </div>
-      <div className={`${classes.list} ${classes.total}`}>
-        <div>Total</div>
-        <div>10%</div>
-      </div>
+      </div> */}
+      {isListed && (
+        <>
+          <div className={classes.list}>
+            <div>Marketplace Fee</div>
+            <div>10%</div>
+          </div>
+          <div className={`${classes.list} ${classes.total}`}>
+            <div>Total</div>
+            <div>10%</div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

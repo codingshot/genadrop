@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { breakAddress, getFormatedTxDate } from "../NFTDetail-script";
 import classes from "./TransactionHistory.module.css";
 import { ReactComponent as TxIcon } from "../../../assets/icon-tx.svg";
@@ -48,7 +48,7 @@ const TransactionHistory = ({ transactionHistory, nftDetails }) => {
     handleSetState({ searchValue: e.target.value });
     if (!e.target.value) return handleSetState({ filterdHistory: transactionHistory });
 
-    const result = transactionHistory.filter(
+    const result = filterdHistory.filter(
       (history) =>
         history?.txId.includes(e.target.value) ||
         history.buyer?.includes(e.target.value) ||

@@ -18,8 +18,7 @@ import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, dispatch } =
-    useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -29,9 +28,10 @@ const Collections = () => {
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
-    activeDate: 1,
+    activeDate: 0,
     searchValue: "",
     notFound: false,
+    searchChain: "All Chains",
   });
 
   const {
@@ -43,12 +43,14 @@ const Collections = () => {
     currentPageValue,
     filteredCollection,
     notFound,
+    searchChain,
   } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  // Pagination
   const handlePrev = () => {
     if (currentPage <= 1) return;
     handleSetState({ currentPage: currentPage - 1 });
@@ -65,20 +67,30 @@ const Collections = () => {
     document.documentElement.scrollTop = 0;
   };
 
+  // Date Filter
   const handleDateSort = (date) => {
     let result;
+
+    let tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
+
     if (date === activeDate) {
-      result = getCollectionsByDate({ collections, date: 0 });
+      result = getCollectionsByDate({ collections: tempCollection, date: 0 });
+      console.log("1", result);
       handleSetState({ activeDate: 0, filteredCollection: result });
     } else {
-      result = getCollectionsByDate({ collections, date });
+      result = getCollectionsByDate({ collections: tempCollection, date });
+      console.log("2", result);
+
       handleSetState({ activeDate: date, filteredCollection: result });
     }
   };
 
+  // Chain Filter
   const handleChainChange = (chain) => {
-    const result = getCollectionsByChain({ collections, chain, mainnet });
-    handleSetState({ filteredCollection: result });
+    let tempCollection = getCollectionsByDate({ collections, date: activeDate });
+
+    const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
+    handleSetState({ filteredCollection: result, searchChain: chain });
   };
 
   const handleFilter = async ({ type, value }) => {
@@ -97,6 +109,7 @@ const Collections = () => {
     }
   };
 
+  // Search
   const handleSearchChange = (e) => {
     const result = getCollectionsBySearch({ collections, search: e.target.value });
     handleSetState({ filteredCollection: result, searchValue: e.target.value });
@@ -111,6 +124,7 @@ const Collections = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: collections });
+    console.log("Filtered: ", filteredCollection);
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
@@ -143,7 +157,7 @@ const Collections = () => {
       <div className={classes.heading}>
         <div className={classes.title}>
           <h1>Collections</h1>
-          <p>View all listed Collections {`${collections && collections.length} Listed`}</p>
+          <p>View all listed Collections ({`${collections && collections.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
           <div className={classes.search}>
@@ -157,7 +171,7 @@ const Collections = () => {
           </div>
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
-              <ChainDropdown onChainFilter={handleChainChange} />
+              <ChainDropdown onChainFilter={handleChainChange} data={collections} />
             </div>
             <FilterDropdown handleFilter={handleFilter} />
           </div>
@@ -174,6 +188,9 @@ const Collections = () => {
           </div>
           <div onClick={() => handleDateSort(30)} className={`${classes.date} ${activeDate === 30 && classes.active}`}>
             30 Days
+          </div>
+          <div onClick={() => handleDateSort(0)} className={`${classes.date} ${activeDate === 0 && classes.active}`}>
+            All
           </div>
         </div>
       </div>

@@ -108,3 +108,13 @@ export const auroraClient = createClient({
       ? "https://api.thegraph.com/subgraphs/name/prometheo/aurora-genadrop-dev?"
       : "https://api.thegraph.com/subgraphs/name/prometheo/aurora-mainnet",
 });
+
+export const nearClient = createClient({
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet",
+});
+
+// "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet"
+// "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet",
