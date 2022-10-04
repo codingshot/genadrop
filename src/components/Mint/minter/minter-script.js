@@ -1,3 +1,4 @@
+import { async } from "regenerator-runtime";
 import {
   mintSingleToAlgo,
   mintSingleToPoly,
@@ -90,3 +91,27 @@ export const handleSingleMint = async (args) => {
     };
   }
 };
+
+export function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onerror = reject;
+    fr.onload = () => {
+      resolve({ name: file.name, url: fr.result });
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+export function getFileFromBase64(string64, fileName) {
+  const type = string64.split(",")[0]?.replace(";base64", "")?.replace("data:", "");
+  const trimmedString = string64.split(",")[1];
+  const imageContent = atob(trimmedString);
+  const buffer = new ArrayBuffer(imageContent.length);
+  const view = new Uint8Array(buffer);
+  for (let n = 0; n < imageContent.length; n += 1) {
+    view[n] = imageContent.charCodeAt(n);
+  }
+  const blob = new Blob([buffer], { type });
+  return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+}

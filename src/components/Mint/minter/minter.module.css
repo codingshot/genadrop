@@ -571,6 +571,17 @@ div.showPreview > span {
   display: flex;
   justify-content: space-between;
 }
+.toggleTitle.hide {
+  opacity: 0.5;
+  filter: alpha(opacity = 60);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+  pointer-events: none;
+}
 .inputContainer {
   display: flex;
   align-items: center;
@@ -598,6 +609,17 @@ div.showPreview > span {
 .noDisplay {
   display: none;
   transition: opacity 1s ease-out;
+}
+
+.overlayImage {
+  position: absolute;
+  bottom: -5%;
+  right: -5%;
+  width: 20%;
+  height: auto;
+  border-radius: 50%;
+  box-shadow: var(--shadow-light);
+  transform: rotate(20deg);
 }
 
 @media screen and (max-width: 768px) {
@@ -715,4 +737,14 @@ input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
+}
+
+.locationSlider.active + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.locationSlider.active + .slider {
+  box-shadow: 0 0 1px #2196f3;
+  background-color: #2196f3;
 }
