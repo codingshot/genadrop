@@ -88,7 +88,9 @@ function getFileFromBase64(string64, fileName, type) {
   const blob = new Blob([buffer], { type });
   return new File([blob], fileName, { lastModified: new Date().getTime(), type });
 }
-
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 export {
   getFileFromBytes,
   getFileFromBase64,
@@ -97,6 +99,7 @@ export {
   switchCameraToRear,
   updateVideoSize,
   generateGif,
+  capitalizeFirstLetter,
 };
 
 // Video functions
