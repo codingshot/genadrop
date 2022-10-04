@@ -228,14 +228,14 @@ const Minter = () => {
     } else if (showReceiverAddress && receiverAddress.endsWith(".near") && mainnet === false) {
       return dispatch(
         setNotification({
-          message: "Invalid receiver address, You're on Testnet Network",
+          message: "Invalid receiver address, You're currently on Testnet Network",
           type: "warning",
         })
       );
     } else if (showReceiverAddress && receiverAddress.endsWith(".testnet") && mainnet) {
       return dispatch(
         setNotification({
-          message: "Invalid receiver address, you're currently on a testnet",
+          message: "Invalid receiver address, you're currently on Mainnet Network",
           type: "warning",
         })
       );
