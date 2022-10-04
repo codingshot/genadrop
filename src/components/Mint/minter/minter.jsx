@@ -168,15 +168,28 @@ const Minter = () => {
         })
       );
     }
-    if (showReceiverAddress && receiverAddress.length < 42) {
+    if (showReceiverAddress && receiverAddress.length < 42 && supportedChains[chainId].chain !== "Near") {
       return dispatch(
         setNotification({
-          message: "Invalid receiver address ",
+          message: "Invalid receiver address",
           type: "warning",
         })
       );
-    }
-    if (receiverAddress.length >= 42 && showReceiverAddress) {
+    } else if (showReceiverAddress && receiverAddress.endsWith(".near") && mainnet === false) {
+      return dispatch(
+        setNotification({
+          message: "Invalid receiver address, You're on Testnet Network",
+          type: "warning",
+        })
+      );
+    } else if (showReceiverAddress && receiverAddress.endsWith(".testnet") && mainnet) {
+      return dispatch(
+        setNotification({
+          message: "Invalid receiver address, you're currently on a testnet",
+          type: "warning",
+        })
+      );
+    } else if (receiverAddress.length >= 10 && showReceiverAddress) {
       mintProps.receiverAddress = receiverAddress;
       singleMintProps.receiverAddress = receiverAddress;
     } else {
@@ -226,11 +239,9 @@ const Minter = () => {
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (singleMintProps.chain.toLowerCase() === "near") {
-
           return {};
         }
         if (typeof url === "object") {
-
           handleSetState({
             popupProps: {
               url: url.message,
@@ -270,7 +281,11 @@ const Minter = () => {
 
   const handleReceiverAddress = (e) => {
     handleSetState({ receiverAddress: e.target.value });
-    if (e.target.value.length >= 42) {
+    if (
+      e.target.value.length >= 42 ||
+      (e.target.value.endsWith(".near") && mainnet) ||
+      (e.target.value.endsWith(".testnet") && !mainnet)
+    ) {
       handleSetState({ goodReceiverAddress: true });
     } else {
       handleSetState({ goodReceiverAddress: false });
