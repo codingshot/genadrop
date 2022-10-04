@@ -1,5 +1,5 @@
 .container {
-  padding: 2em 1em 6em;
+  padding: 2em 2em 6em;
   max-width: 908px;
   width: 100%;
   display: flex;
@@ -17,6 +17,7 @@
   font-size: 1.25rem;
   color: #000000;
   margin-bottom: 3.2em;
+  text-align: center;
 }
 .cardDeck {
   display: grid;
@@ -39,6 +40,7 @@
   padding: 3.5rem 1rem;
   width: 100%;
   cursor: pointer;
+  text-align: center;
 }
 .extra {
   display: flex;
@@ -115,4 +117,32 @@
 }
 .moreBTN svg path {
   fill: var(--main-color);
+}
+@media screen and (max-width: 650px) {
+  .cardDeck {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+}
+@media screen and (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  .description {
+    font-size: 15px;
+  }
+  .card {
+    padding: 1.25rem 1rem;
+  }
+  .cardTitle {
+    font-size: 0.75rem;
+  }
+  .cardDescription {
+    font-size: 0.5rem;
+  }
+  .icon {
+    width: 57px;
+    height: 57px;
+    padding: 8px;
+  }
 }

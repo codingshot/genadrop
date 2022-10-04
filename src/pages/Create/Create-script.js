@@ -12,36 +12,43 @@ const cards = [
     title: "Collection",
     description: "Import arts into layers",
     icon: <Collection />,
+    url: "/mint/collection",
   },
   {
     title: "Digital Art",
     description: "Upload an image and mint",
     icon: <Art />,
+    url: "/mint/1of1",
   },
   {
     title: "Photo",
     description: "Take a photo and mint",
     icon: <Photo />,
+    url: "/mint/camera",
   },
   {
     title: "Shorts",
     description: "Take short video and mint",
     icon: <Shorts />,
+    url: "/mint/camera",
   },
   {
     title: "Bereal",
     description: "Take a photo and selfie and mint",
     icon: <BeReal />,
+    url: "/mint/camera",
   },
   {
     title: "Propf Of Vibes",
     description: "Mint your favorite moments on chain.",
     icon: <Vibes />,
+    url: "/mint/vibe",
   },
   {
     title: "Proof Of Sesh",
     description: "Scan your stick for proof",
     icon: <Sesh />,
+    url: "/mint/sesh",
   },
 ];
 export default cards;
