@@ -13,6 +13,7 @@ import {
 import useTimer from "../Capture/useTimer";
 import RecordBtn from "../Capture/RecordBtn";
 import Tooltip from "../Tooltip/Tooltip";
+import StickType from "../../stick-type/StickType";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
@@ -52,7 +53,10 @@ const RegularCamera = ({ regularCameraProps }) => {
     currenFile,
     activeFile,
     displayedModes,
+    attributes,
   } = regularCameraProps;
+
+  const pathname = history.location?.pathname.replace("/mint/", "");
 
   // Record Handles
   const handleDataAvailable = React.useCallback(
@@ -175,7 +179,6 @@ const RegularCamera = ({ regularCameraProps }) => {
       name = "video";
       type = "Shorts";
     }
-    const pathname = history.location?.pathname.replace("/mint/", "");
     if (pathname === "vibe") {
       type = "Vibe";
     }
@@ -224,18 +227,27 @@ const RegularCamera = ({ regularCameraProps }) => {
           <img src={img} alt="camera-shot" />
         )}
       </div>
+      {/* select smoking stick for proof of sesh */}
+      {!attributes.smoking_stick && pathname === "sesh" && (
+        <StickType handleSetState={handleSetState} attributes={attributes} />
+      )}
+      {/*  */}
       <div className={classes.imgBtn}>
-        <div className={classes.mintBtn} onClick={continueToMint}>
+        <div className={classes.mintBtn} onClick={continueToMint} attributes={attributes}>
           Continue
         </div>
         <p
           className={classes.mintBtn}
           onClick={() => {
+            const clearAttributes = {
+              location: attributes.location,
+            };
             handleSetState({
               img: "",
               gif: "",
               video: "",
               activeFile: "gif",
+              attributes: clearAttributes,
             });
           }}
         >

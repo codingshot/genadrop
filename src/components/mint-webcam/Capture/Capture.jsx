@@ -91,7 +91,17 @@ const Capture = () => {
 
   const displayedModes = modeSwitchList.filter((mode) => mode.text !== webcamCurrentType);
 
-  const doubleCameraProps = { img, faceImg, toggle, webcamRef, handleSetState, webcam, loaderToggle, displayedModes };
+  const doubleCameraProps = {
+    img,
+    faceImg,
+    toggle,
+    webcamRef,
+    handleSetState,
+    webcam,
+    loaderToggle,
+    displayedModes,
+    attributes,
+  };
   const regularCameraProps = {
     img,
     imgList,
@@ -107,6 +117,7 @@ const Capture = () => {
     currenFile,
     activeFile,
     displayedModes,
+    attributes,
   };
 
   // get current location
