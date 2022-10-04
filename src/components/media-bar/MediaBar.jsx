@@ -9,7 +9,7 @@ const MediaBar = ({ MediaLogos }) => {
     <Splide
       options={{
         type: "loop",
-        gap: "1rem",
+        gap: "2rem",
         drag: "free",
         arrows: false,
         pagination: false,
