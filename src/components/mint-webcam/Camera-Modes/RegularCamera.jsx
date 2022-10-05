@@ -279,7 +279,7 @@ const RegularCamera = ({ regularCameraProps }) => {
           <div className={classes.videoOFF} />
         )}{" "}
       </div>
-      <div className={classes.closeBtn} onClick={() => history.push("/mint/create")}>
+      <div className={classes.closeBtn} onClick={() => history.push("/create")}>
         <CloseIcon />
       </div>
       {isMobileDevice && (
