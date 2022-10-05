@@ -95,7 +95,15 @@ const CollectionToSingleMinter = () => {
       handleSetState({ zip: uploadedFile, fileName: uploadedFileName });
       handleZipFile({ uploadedFile, handleSetState });
     } else {
-      handleSetState({ file: [uploadedFile], fileName: uploadedFileName });
+      handleSetState({
+        file: [uploadedFile],
+        fileName: uploadedFileName,
+        metadata: {
+          attributes: {
+            0: { trait_type: "File Type", value: uploadedFile.type },
+          },
+        },
+      });
     }
   };
 
@@ -111,8 +119,11 @@ const CollectionToSingleMinter = () => {
         metadata: {
           attributes: {
             0: { trait_type: "File Type", value: zipObg.file.type },
-            1: { trait_type: "Category", value: zipObg.type },
+            ...(zipObg.attributes?.location && { 2: zipObg.attributes?.location }),
           },
+          category: zipObg.type,
+          smoking_stick: zipObg.attributes?.smoking_stick,
+          location: zipObg.attributes?.location,
         },
         zip: null,
       });
@@ -166,7 +177,7 @@ const CollectionToSingleMinter = () => {
         <NearSuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
       )}
       <>
-        <Link to="/mint" className={classes.goBack}>
+        <Link to="/create" className={classes.goBack}>
           <BackIcon className={classes.backIcon} />
         </Link>
         <header className={classes.headingWrapper}>
@@ -182,7 +193,7 @@ const CollectionToSingleMinter = () => {
           </p>
         </header>
 
-        <div className={classes.mintSwitch}>
+        {/* <div className={classes.mintSwitch}>
           <button
             type="button"
             className={`${params.mintId === "collection" && classes.active}`}
@@ -193,7 +204,7 @@ const CollectionToSingleMinter = () => {
           <button type="button" className={`${params.mintId === "1of1" && classes.active}`} onClick={handle1of1Click}>
             1 of 1
           </button>
-        </div>
+        </div> */}
 
         {mintType === "collection" ? (
           <div className={`${classes.card} ${classes[params.mintId]} drop-area`}>
@@ -219,7 +230,7 @@ const CollectionToSingleMinter = () => {
             {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
             <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
             <h3 className={classes.title}> Mint 1 of 1 </h3>
-            <Link className={classes.takePic} to="/mint/camera">
+            {/* <Link className={classes.takePic} to="/mint/camera">
               <div>
                 <CameraIcon />
               </div>
@@ -229,7 +240,7 @@ const CollectionToSingleMinter = () => {
               <div>Take photo / video & mint straight away</div>
               <p>Record video and turn it into a GIF</p>
             </div>
-            <div>or</div>
+            <div>or</div> */}
             <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
               Browse files
             </button>
