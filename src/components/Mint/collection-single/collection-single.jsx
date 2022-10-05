@@ -95,7 +95,15 @@ const CollectionToSingleMinter = () => {
       handleSetState({ zip: uploadedFile, fileName: uploadedFileName });
       handleZipFile({ uploadedFile, handleSetState });
     } else {
-      handleSetState({ file: [uploadedFile], fileName: uploadedFileName });
+      handleSetState({
+        file: [uploadedFile],
+        fileName: uploadedFileName,
+        metadata: {
+          attributes: {
+            0: { trait_type: "File Type", value: uploadedFile.type },
+          },
+        },
+      });
     }
   };
 
