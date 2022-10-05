@@ -1,11 +1,10 @@
+import { useEffect, useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./Pricing.module.css";
 import { plans } from "./Pricing.script";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
-import { useEffect, useState } from "react";
 import PricingModal from "../../components/Modals/Pricing-Modal/PricingModal";
-import { useHistory } from "react-router-dom";
-import { useContext } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import { setProposedPlan } from "../../gen-state/gen.actions";
 import { handleResetCreate } from "../../utils";
@@ -37,19 +36,19 @@ const Pricing = () => {
     } else {
       handleResetCreate({ dispatch });
       // dispatch(setCurrentPlan(plan));
-      history.push("/create");
+      history.push("/create/collection");
     }
   };
 
   const mapCurrentPlanToLevel = (plan, level) => {
-    let levels = {
+    const levels = {
       free: 0,
       hobby: 1,
       pro: 2,
       agency: 3,
     };
 
-    let currentLevel = levels[plan];
+    const currentLevel = levels[plan];
     if (currentLevel >= levels[level]) return true;
     return false;
   };
@@ -60,7 +59,7 @@ const Pricing = () => {
 
   useEffect(() => {
     if (!collectionName) {
-      return history.push("/create");
+      return history.push("/create/collection");
     }
     document.documentElement.scrollTop = 200;
   }, []);
@@ -95,7 +94,10 @@ const Pricing = () => {
                 ))}
               </div>
               {upgradePlan && currentPlan === plan.type ? (
-                <div onClick={() => history.push("/create")} className={`${classes.subscribeBtn} ${classes.disabled}`}>
+                <div
+                  onClick={() => history.push("/create/collection")}
+                  className={`${classes.subscribeBtn} ${classes.disabled}`}
+                >
                   Current Plan
                 </div>
               ) : upgradePlan && mapCurrentPlanToLevel(currentPlan, plan.type) ? (
