@@ -168,7 +168,7 @@ const Capture = () => {
         type: "error",
       })
     );
-    history.push("/mint/create");
+    history.push("/create");
   }
 
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
