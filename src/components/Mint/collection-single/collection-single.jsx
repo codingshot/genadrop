@@ -169,7 +169,7 @@ const CollectionToSingleMinter = () => {
         <NearSuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
       )}
       <>
-        <Link to="/mint" className={classes.goBack}>
+        <Link to="/create" className={classes.goBack}>
           <BackIcon className={classes.backIcon} />
         </Link>
         <header className={classes.headingWrapper}>

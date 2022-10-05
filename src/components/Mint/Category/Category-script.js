@@ -28,7 +28,7 @@ const cards = [
     description: "Import arts into layers",
     icon: <Collection />,
     value: "collection",
-    url: "/mint/collection",
+    url: "/collection",
   },
   {
     title: "Propf Of Vibes",

@@ -12,7 +12,7 @@ const cards = [
     title: "Collection",
     description: "Import arts into layers",
     icon: <Collection />,
-    url: "/mint/collection",
+    url: "/collection",
   },
   {
     title: "Digital Art",

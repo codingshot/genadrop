@@ -740,7 +740,8 @@ div.showPreview > span {
     height: 12em;
   }
   .grid {
-    grid-template-columns: 100%;
+    display: flex;
+    flex-direction: column-reverse;
     gap: 2rem;
   }
 }
