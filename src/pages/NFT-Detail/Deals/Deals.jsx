@@ -6,7 +6,20 @@ import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 import openseaIcon from "../../../assets/icon-opensea.svg";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id } = nftDetails;
+  const {
+    price,
+    chain,
+    sold,
+    isListed,
+    owner,
+    account,
+    chainId,
+    mainnet,
+    connector,
+    dispatch,
+    Id,
+    collection_name,
+  } = nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -27,7 +40,7 @@ const Deals = ({ nftDetails }) => {
   };
 
   useEffect(() => {
-    console.log(nftChainId);
+    console.log(nftDetails);
 
     getUsdValue();
   }, [nftDetails]);
@@ -85,15 +98,29 @@ const Deals = ({ nftDetails }) => {
         </div>
       )}
       <div className={classes.sea}>
-        {supportedChains[nftChainId].label === "Polygon" ? (
-          <a href={`https://opensea.io/assets/matic/0x3243cd574e9d51ad012c7fa4957e8037beb8792f/${nftDetails.tokenID}`}>
+        {supportedChains[chain]?.label === "Polygon" ? (
+          <a
+            href={`https://opensea.io/assets/matic/${
+              collection_name === "Genadrop 1 of 1"
+                ? "0x3243cd574e9d51ad012c7fa4957e8037beb8792f"
+                : "0x3243cd574e9d51ad012c7fa4957e8037beb8792f"
+            }/${nftDetails.tokenID}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             <div className={classes.opensea}>
               <img src={openseaIcon} alt="" /> View Listing on Opensea
             </div>
           </a>
-        ) : supportedChains[nftChainId].label === "Polygon Testnet" ? (
+        ) : supportedChains[chain]?.label === "Polygon Testnet" ? (
           <a
-            href={`https://testnets.opensea.io/assets/mumbai/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe71/${nftDetails.tokenID}`}
+            href={`https://testnets.opensea.io/assets/mumbai/${
+              collection_name === "Genadrop 1 of 1"
+                ? "0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe71"
+                : "0x2b90d1ceb58d6848c07e7e1ef474bf3641efa539"
+            }/${nftDetails.tokenID}`}
+            target="_blank"
+            rel="noreferrer"
           >
             <div className={classes.opensea}>
               <img src={openseaIcon} alt="" /> View Listing on Opensea

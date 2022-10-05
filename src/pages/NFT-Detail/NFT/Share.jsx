@@ -17,22 +17,20 @@ const Share = ({ share, setShare }) => {
   return (
     <div onClick={handleClose} className={`${classes.container} ${share && classes.active}`}>
       <div onMouseEnter={() => setClick(false)} onMouseLeave={() => setClick(true)} className={classes.wrapper}>
-        <div className={classes.content}>
-          <input className={classes.text} disabled type="text" value={window.location.href} />
-
-          <Copy message={window.location.href} placeholder="" />
-        </div>
-
         <div className={classes.shareContent}>
-          <TwitterShareButton url={window.location.href}>
-            <TwitterIcon className={classes.shareIcon} />
+          <div className={classes.point}>
+            <Copy message={window.location.href} placeholder="" />
+            <span>Copy to clipboard</span>
+          </div>
+          <TwitterShareButton url={window.location.href} className={classes.point}>
+            <TwitterIcon className={classes.shareIcon} /> <span>Share on Twitter</span>
           </TwitterShareButton>
-          <FacebookShareButton url={window.location.href}>
-            <FacebookIcon className={classes.shareIcon} />
-          </FacebookShareButton>
-          <WhatsappShareButton url={window.location.href}>
-            <WhatsappIcon className={classes.shareIcon} />
+          <WhatsappShareButton url={window.location.href} className={classes.point}>
+            <WhatsappIcon className={classes.shareIcon} /> <span>Share on Whatsapp</span>
           </WhatsappShareButton>
+          <FacebookShareButton url={window.location.href} className={classes.point}>
+            <FacebookIcon className={classes.shareIcon} /> <span>Share on Facebook</span>
+          </FacebookShareButton>
         </div>
       </div>
     </div>

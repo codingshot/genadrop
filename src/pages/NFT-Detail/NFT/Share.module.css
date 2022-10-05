@@ -16,7 +16,7 @@
 }
 
 .wrapper {
-  width: 26em;
+  width: fit-content;
   background: var(--default);
   display: flex;
   flex-direction: column;
@@ -45,6 +45,7 @@
   align-items: center;
   justify-content: center;
   gap: 1em;
+  flex-direction: column;
 }
 
 .shareIcon {
@@ -54,4 +55,9 @@
 
 .text {
   max-width: 20em;
+}
+
+.point {
+  display: flex;
+  align-items: center;
 }
