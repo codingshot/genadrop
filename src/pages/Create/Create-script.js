@@ -39,7 +39,7 @@ const cards = [
     url: "/mint/camera",
   },
   {
-    title: "Propf Of Vibes",
+    title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
     icon: <Vibes />,
     url: "/mint/vibe",
