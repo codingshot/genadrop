@@ -681,6 +681,9 @@ div.showPreview > span {
 .headerIcon .seshIcon path {
   fill: var(--default);
 }
+.headerIcon .photoIcon path {
+  fill: var(--default);
+}
 @media screen and (max-width: 1038px) {
   .grid {
     display: grid;

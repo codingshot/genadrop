@@ -27,54 +27,88 @@
   margin: auto;
   width: 100%;
 }
-.card {
-  background: var(--default);
-  border: 1px solid #e5e8eb;
-  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.05);
-  border-radius: 20px;
+.typeCard {
   display: flex;
   flex-direction: column;
+  padding: 1rem;
   align-items: center;
-  justify-content: center;
-  padding: 3.5rem 1rem;
-  width: 100%;
+  border: 1px solid;
+  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.05);
+  border-radius: 20px;
+  background: var(--default);
+  border: 1px solid #e5ecfb;
+  min-height: 243px;
   cursor: pointer;
-  text-align: center;
 }
-
-.card:hover {
+.typeCard:hover {
   border-color: var(--main-color);
-  box-shadow: 26px 18px 18px rgb(93 134 194 / 16%);
 }
-.icon {
-  border-radius: 50%;
-  padding: 12px;
-  margin-bottom: 10px;
-  display: flex;
-  width: 6.5rem;
-  height: 6.5rem;
+.typeCard:hover .content {
+  background: var(--main-color);
+}
+.typeCard:hover .cardTitle,
+.typeCard:hover .cardDesc {
+  color: var(--default);
 }
 
-.card:hover .icon svg path {
+.typeCard:hover .icon svg path {
   stroke: var(--main-color);
 }
-.card:nth-child(3):hover .icon svg path {
+.typeCard:nth-child(3):hover .icon svg path {
   fill: var(--main-color);
 }
-.card:nth-child(2):hover .icon svg path:last-child {
+.typeCard:nth-child(2):hover .icon svg path:last-child {
   fill: var(--main-color);
 }
-.icon svg {
+.icon {
   height: 100%;
+  display: flex;
+  align-items: center;
+}
+.content {
+  display: flex;
+  align-items: center;
+  background: #f3f6fc;
+  border-radius: 11px;
+  padding: 9px 7px 9px 1rem;
+  gap: 1rem;
   width: 100%;
 }
-.cardTitle {
-  font-weight: 500;
-  color: var(--main-color);
+.typeIcon {
+  background: var(--default);
+  border-radius: 10px;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.cardDescription {
-  font-size: 0.875rem;
-  color: #263238;
+.typeIcon svg path {
+  fill: var(--text-light);
+}
+.typeCard:last-child .typeIcon svg path {
+  fill: var(--default);
+  stroke: var(--text-light);
+}
+.typeCard:hover .typeIcon svg path {
+  fill: var(--main-color);
+}
+.typeCard:last-child:hover .typeIcon svg path {
+  stroke: var(--main-color);
+  fill: var(--default);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 52px);
+}
+.cardTitle {
+  font-size: 14px;
+  color: var(--text-heading);
+}
+.cardDesc {
+  font-size: 10px;
+  color: #959ca3;
 }
 .moreBTN {
   color: var(--main-color);
@@ -101,6 +135,12 @@
   }
 }
 @media screen and (max-width: 480px) {
+  .cardDeck {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .typeCard {
+    min-height: auto;
+  }
   .title {
     font-size: 2rem;
   }
@@ -117,8 +157,8 @@
     font-size: 0.5rem;
   }
   .icon {
-    width: 57px;
-    height: 57px;
-    padding: 8px;
+    width: 80px;
+    height: 80px;
+    padding: 1rem;
   }
 }

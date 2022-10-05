@@ -40,7 +40,7 @@ const cards = [
   {
     title: "Photo",
     description: "Take a photo and mint",
-    icon: <Photo />,
+    icon: <Photo className={classes.photoIcon} />,
     value: "Photography",
     url: "/mint/camera",
   },

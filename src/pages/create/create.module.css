@@ -50,7 +50,7 @@
   justify-content: center;
   max-height: 0;
   overflow: hidden;
-  transition: all 700ms ease;
+  transition: all 200ms ease;
 }
 .extra.active {
   max-height: 20rem;
