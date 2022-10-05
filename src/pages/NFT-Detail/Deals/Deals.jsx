@@ -3,6 +3,7 @@ import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
+import openseaIcon from "../../../assets/icon-opensea.svg";
 
 const Deals = ({ nftDetails }) => {
   const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id } = nftDetails;
@@ -20,13 +21,14 @@ const Deals = ({ nftDetails }) => {
     history,
     chainId,
   };
-
   const getUsdValue = async () => {
     const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     setUsdValue(Number(value) * Number(price));
   };
 
   useEffect(() => {
+    console.log(nftChainId);
+
     getUsdValue();
   }, [nftDetails]);
   return (
@@ -43,7 +45,7 @@ const Deals = ({ nftDetails }) => {
         owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
-              <button className={`${classes.btn} ${classes.disable}`} disabled={true}>
+              <button className={`${classes.btn} ${classes.disable}`} disabled>
                 Re-List
               </button>
             ) : (
@@ -51,12 +53,12 @@ const Deals = ({ nftDetails }) => {
             )}
           </Link>
         ) : (
-          <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+          <div className={`${classes.btn} ${classes.disable}`} disabled>
             Not Listed
           </div>
         )
       ) : owner === account && isListed ? (
-        <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+        <div className={`${classes.btn} ${classes.disable}`} disabled>
           Listed
         </div>
       ) : !sold && isListed ? (
@@ -74,14 +76,33 @@ const Deals = ({ nftDetails }) => {
           <div className={`${classes.btn}`}>List</div>
         </Link>
       ) : price ? (
-        <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+        <div className={`${classes.btn} ${classes.disable}`} disabled>
           Sold
         </div>
       ) : (
-        <div className={`${classes.btn} ${classes.disable}`} disabled={true}>
+        <div className={`${classes.btn} ${classes.disable}`} disabled>
           Not Listed
         </div>
       )}
+      <div className={classes.sea}>
+        {supportedChains[nftChainId].label === "Polygon" ? (
+          <a href={`https://opensea.io/assets/matic/0x3243cd574e9d51ad012c7fa4957e8037beb8792f/${nftDetails.tokenID}`}>
+            <div className={classes.opensea}>
+              <img src={openseaIcon} alt="" /> View Listing on Opensea
+            </div>
+          </a>
+        ) : supportedChains[nftChainId].label === "Polygon Testnet" ? (
+          <a
+            href={`https://testnets.opensea.io/assets/mumbai/0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe71/${nftDetails.tokenID}`}
+          >
+            <div className={classes.opensea}>
+              <img src={openseaIcon} alt="" /> View Listing on Opensea
+            </div>
+          </a>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };
