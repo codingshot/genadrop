@@ -1,6 +1,28 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import classes from "./minter.module.css";
+// utils
+import { handleMint, handleSingleMint, getBase64, getFileFromBase64 } from "./minter-script";
+import { initConnectWallet } from "../../wallet/wallet-script";
+import supportedChains from "../../../utils/supportedChains";
+import cards from "../Category/Category-script";
+// assets
+import rightArrow from "../../../assets/icon-arrow-right.svg";
+import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
+import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
+import { ReactComponent as GreenTickIcon } from "../../../assets/icon-green-tick.svg";
+import { ReactComponent as BorderIcon } from "../../../assets/create/border-icon.svg";
+import { ReactComponent as VibesLogo } from "../../../assets/proof-of-vibes.svg";
+// components
+import CollectionPreview from "../collection-preview/collectionPreview";
+import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
+import Popup from "../popup/popup.component";
+import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
+import SliderInput from "./SliderInput";
+import Category from "../Category/Category";
+import Attribute from "../Attribute/Attribute";
+// react context
 import {
   setClipboard,
   setConnectFromMint,
@@ -11,21 +33,6 @@ import {
   setToggleWalletPopup,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
-import Attribute from "../Attribute/Attribute";
-import { handleMint, handleSingleMint, getBase64, getFileFromBase64 } from "./minter-script";
-import classes from "./minter.module.css";
-import CollectionPreview from "../collection-preview/collectionPreview";
-import rightArrow from "../../../assets/icon-arrow-right.svg";
-import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
-import Popup from "../popup/popup.component";
-import { ReactComponent as PlusIcon } from "../../../assets/icon-plus.svg";
-import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
-import supportedChains from "../../../utils/supportedChains";
-import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.svg";
-import { ReactComponent as GreenTickIcon } from "../../../assets/icon-green-tick.svg";
-import VibesLogo from "../../../assets/proof-of-vibes.png";
-import { initConnectWallet } from "../../wallet/wallet-script";
-import SliderInput from "./SliderInput";
 
 const Minter = () => {
   const history = useHistory();
@@ -35,8 +42,8 @@ const Minter = () => {
   const loadedMinter = JSON.parse(sessionStorage.getItem("minter"));
   const { file, fileName: fName, metadata, zip } = minter;
   const [state, setState] = useState({
-    attributes: file?.length === 1 ? { [Date.now()]: { trait_type: "File Type", value: file[0]?.type } } : {},
-    category: metadata?.attributes ? metadata?.attributes[1].value : "",
+    attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
+    category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
     description: metadata?.length === 1 ? metadata[0].description : "",
     chain: null,
@@ -61,10 +68,10 @@ const Minter = () => {
       friendliness: 0,
       energy: 0,
       density: 0,
+      diversity: 0,
     },
-    stick_type: "",
+    stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
   });
-
   const {
     attributes,
     fileName,
@@ -87,7 +94,7 @@ const Minter = () => {
     toggleType,
     stick_type,
   } = state;
-
+  console.log(attributes);
   const mintProps = {
     dispatch,
     setLoader,
@@ -142,7 +149,7 @@ const Minter = () => {
         });
     } else {
       if (!loadedMinter) {
-        return history.push("/mint");
+        return history.push("/create");
       }
       const files = loadedMinter.file.map((base64file) => {
         return getFileFromBase64(base64file.url, base64file.name);
@@ -196,7 +203,7 @@ const Minter = () => {
 
   const handleCancel = () => {
     dispatch(setMinter(null));
-    history.push("/mint");
+    history.push("/create");
   };
 
   const handleSetFileState = () => {
@@ -204,7 +211,7 @@ const Minter = () => {
   };
 
   const changeFile = () => {
-    history.push(`/mint/${minter.mintType}`);
+    history.push(`/create`);
   };
 
   const setMint = () => {
@@ -296,6 +303,10 @@ const Minter = () => {
             {
               trait_type: "density",
               value: vibeProps.density,
+            },
+            {
+              trait_type: "diversity",
+              value: vibeProps.diversity,
             }
           );
         }
@@ -356,7 +367,7 @@ const Minter = () => {
   };
   // select category
   let categories = ["Sesh", "Photography", "Painting", "Illustration", "3D"];
-  const stick_types = ["blunt", "joint", "spliff", "hashish", "bong", "cigarette", "cigar"];
+  const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
 
   // get current location
   const options = {
@@ -409,7 +420,7 @@ const Minter = () => {
       })
     );
   }
-
+  console.log(metadata);
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
   useEffect(() => {
     if (showLocation) {
@@ -423,8 +434,23 @@ const Minter = () => {
     }
   }, [showLocation, category]);
 
-  const isVibe = metadata?.attributes ? metadata?.attributes[1].value === "Photography" : false;
+  const isVibe = metadata?.category ? metadata?.category === "Photography" : false;
   if (isVibe) categories = ["Vibe", "Photography"];
+
+  const getActivetitle = () => {
+    const header = cards.filter(
+      (card) =>
+        card.value === category ||
+        (card.value === "collection" && file?.length > 1) ||
+        (card.value === "Art" && file?.length === 1 && !category)
+    )[0];
+    return (
+      <div className={classes.headerText}>
+        <div className={classes.headerIcon}>{header?.icon}</div>
+        {header?.title}
+      </div>
+    );
+  };
 
   return (
     <div className={classes.container}>
@@ -441,350 +467,391 @@ const Minter = () => {
         />
       ) : (
         <div className={classes.wrapper}>
-          <div>
-            <section className={classes.assetContainer}>
-              <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
-                {file &&
-                  (file?.length > 1 ? (
-                    file
-                      .filter((_, idx) => idx < 3)
-                      .map((f, idx) => (
-                        <div
-                          key={idx}
-                          style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
-                          className={classes.imageContainer}
-                        />
-                      ))
-                  ) : file[0].type === "video/mp4" ? (
-                    <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
-                  ) : (
-                    <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
-                  ))}
-                {category === "Vibe" && <img src={VibesLogo} className={classes.overlayImage} alt="proof-of-vibes" />}
-              </div>
-
-              <div className={classes.assetInfo}>
-                <div className={classes.innerAssetInfo}>
-                  <div className={classes.assetInfoTitle}>
-                    <span>{fName}</span>
-                  </div>
-                  <div>
-                    <span>Number of assets:</span> <p>{file?.length}</p>
-                  </div>
-                  {chainId === 4160 && (
-                    <div className={classes.priceTooltip}>
-                      <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file?.length * 0.1} ALGO</p>
-                      <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#0d99ff" />
-                    </div>
-                  )}
-                  {file?.length > 1 ? (
-                    <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
-                      <span>view all assets</span>
-                      <img src={rightArrow} alt="" />
-                    </div>
-                  ) : null}
-                </div>
-                <button onClick={changeFile} type="button">
-                  Change asset
-                </button>
-              </div>
-            </section>
-            <div className={classes.mintForm}>
-              <div className={classes.heading}>{file?.length > 1 ? "Mint a collection" : "Mint 1 of 1"}</div>
-
-              <section className={classes.details}>
-                <div className={classes.category}>Asset Details</div>
-                <div className={classes.inputWrapper}>
-                  <label>
-                    {" "}
-                    Title <span className={classes.required}>*</span>
-                  </label>
-                  <input
-                    style={zip ? { pointerEvents: "none" } : {}}
-                    type="text"
-                    value={fileName}
-                    onChange={(event) => handleSetState({ fileName: event.target.value })}
-                  />
-                </div>
-
-                <div className={classes.inputWrapper}>
-                  <label>
-                    Description <span className={classes.required}>*</span>{" "}
-                    <GenadropToolTip
-                      content="This description will be visible on your collection page"
-                      fill="#0d99ff"
-                    />
-                  </label>
-                  <textarea
-                    style={metadata?.length === 1 ? { pointerEvents: "none" } : {}}
-                    rows="5"
-                    value={description}
-                    onChange={(event) => handleSetState({ description: event.target.value })}
-                  />
-                </div>
-
-                {file?.length === 1 && (
-                  <div className={classes.inputWrapper}>
-                    <label>Category</label>
-                    <div
-                      onClick={() => {
-                        if (!metadata?.attributes[1]?.value || isVibe) {
-                          handleSetState({
-                            toggleCategory: !toggleCategory,
-                          });
-                        }
-                      }}
-                      className={`${classes.chain} ${classes.active}`}
-                    >
-                      {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
-                      {(!metadata?.attributes || isVibe) && <DropdownIcon className={classes.dropdownIcon} />}
-                    </div>
-                    <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
-                      {categories.map((nftCategory) => (
-                        <div
-                          className={`${classes.chain} `}
-                          key={nftCategory}
-                          onClick={() => handleSetState({ category: nftCategory, toggleCategory: false })}
-                        >
-                          {nftCategory}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {category === "Sesh" && (
-                  <div className={classes.inputWrapper}>
-                    <label>Stick Type</label>
-                    <div
-                      onClick={() => {
-                        handleSetState({
-                          toggleType: !toggleType,
-                        });
-                      }}
-                      className={`${classes.chain} ${classes.active}`}
-                    >
-                      {stick_type ? <div className={classes.chainLabel}>{stick_type}</div> : <span>Select</span>}
-                      <DropdownIcon className={classes.dropdownIcon} />
-                    </div>
-                    <div className={`${classes.chainDropdown} ${toggleType && classes.active}`}>
-                      {stick_types.map((type) => (
-                        <div
-                          className={`${classes.chain} `}
-                          key={type}
-                          onClick={() => handleSetState({ stick_type: type, toggleType: false })}
-                        >
-                          {type}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {category === "Vibe" && (
-                  <div className={classes.inputWrapper}>
-                    <label>Friendliness</label>
-                    <SliderInput
-                      MAX={10}
-                      value={vibeProps.friendliness}
-                      handleChange={(e) => {
-                        const friendliness = e.target.value;
-                        const newProps = vibeProps;
-                        newProps.friendliness = friendliness;
-                        handleSetState({
-                          vibeProps: newProps,
-                        });
-                      }}
-                    />
-                    <label>Energy</label>
-                    <SliderInput
-                      MAX={10}
-                      value={vibeProps.energy}
-                      handleChange={(e) => {
-                        const energy = e.target.value;
-                        const newProps = vibeProps;
-                        newProps.energy = energy;
-                        handleSetState({
-                          vibeProps: newProps,
-                        });
-                      }}
-                    />
-                    <label>Density</label>
-                    <SliderInput
-                      MAX={10}
-                      value={vibeProps.density}
-                      handleChange={(e) => {
-                        const density = e.target.value;
-                        const newProps = vibeProps;
-                        newProps.density = density;
-                        handleSetState({
-                          vibeProps: newProps,
-                        });
-                      }}
-                    />
-                  </div>
-                )}
-                <div className={classes.inputWrapper}>
-                  <label>Attributes</label>
-                  {!zip ? (
-                    <>
-                      <div className={classes.attributes}>
-                        {Object.keys(attributes).map((key) => (
-                          <Attribute
-                            key={key}
-                            attribute={attributes[key]}
-                            id={key}
-                            index={key}
-                            removeAttribute={handleRemoveAttribute}
-                            changeAttribute={handleChangeAttribute}
+          <div className={classes.headerTitle}>Create</div>
+          {file?.length > 1 ? (
+            <div className={classes.headerDescription}>
+              Upload a{" "}
+              <span>
+                collection
+                <BorderIcon />
+              </span>{" "}
+              to create NFTs on any of our <br />
+              supported blockchains super fast!
+            </div>
+          ) : (
+            <div className={classes.headerDescription}>
+              Upload an{" "}
+              <span>
+                image
+                <BorderIcon />
+              </span>{" "}
+              to create a proof of sesh NFTs <br />
+              on any of our supported blockchains super fast!
+            </div>
+          )}
+          <div className={classes.grid}>
+            <Category handleSetState={handleSetState} category={category} file={file} />
+            <div className={classes.mintSection}>
+              <section className={classes.assetContainer}>
+                <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
+                  {file &&
+                    (file?.length > 1 ? (
+                      file
+                        .filter((_, idx) => idx < 3)
+                        .map((f, idx) => (
+                          <div
+                            key={idx}
+                            style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
+                            className={classes.imageContainer}
                           />
-                        ))}
+                        ))
+                    ) : file[0].type === "video/mp4" ? (
+                      <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
+                    ) : (
+                      <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
+                    ))}
+                  {category === "Vibe" && <VibesLogo className={classes.overlayImage} />}
+                </div>
+
+                <div className={classes.assetInfo}>
+                  <div className={classes.innerAssetInfo}>
+                    <div className={classes.assetInfoTitle}>
+                      <span>{fName}</span>
+                    </div>
+                    <div>
+                      <span>Number of assets:</span> <p>{file?.length}</p>
+                    </div>
+                    {chainId === 4160 && (
+                      <div className={classes.priceTooltip}>
+                        <span>Mint Price:</span> <p className={classes.assetInfoMintPrice}>{file?.length * 0.1} ALGO</p>
+                        <GenadropToolTip content="Mint price is 0.01 per NFT" fill="#0d99ff" />
                       </div>
-                      <button type="button" onClick={handleAddAttribute}>
-                        + Add Attribute
-                      </button>
-                    </>
-                  ) : metadata.length === 1 ? (
-                    <>
-                      {metadata[0].attributes.map((attr, idx) => (
-                        <div className={classes.attribute} key={idx}>
-                          <div>{attr.trait_type}</div>
-                          <div>{attr.value}</div>
-                        </div>
-                      ))}
-                    </>
-                  ) : (
-                    <div className={classes.metadata}>
-                      <div>Number of assets: {metadata.length}</div>
-                      <div className={classes.trait_type}>
-                        Trait_types:
-                        {metadata[0]?.attributes.map(({ trait_type }, idx) => (
-                          <span key={idx}>{trait_type} </span>
+                    )}
+                    {file?.length > 1 ? (
+                      <div onClick={() => handleSetState({ preview: true })} className={classes.showPreview}>
+                        <span>view all assets</span>
+                        <img src={rightArrow} alt="" />
+                      </div>
+                    ) : null}
+                  </div>
+                  <button onClick={changeFile} type="button">
+                    Change asset
+                  </button>
+                </div>
+              </section>
+              <div className={classes.mintForm}>
+                <div className={classes.heading}> {getActivetitle()}</div>
+
+                <section className={classes.details}>
+                  <div className={classes.category}>Asset Details</div>
+                  <div className={classes.inputWrapper}>
+                    <label>
+                      {" "}
+                      Title <span className={classes.required}>*</span>
+                    </label>
+                    <input
+                      style={zip ? { pointerEvents: "none" } : {}}
+                      type="text"
+                      value={fileName}
+                      onChange={(event) => handleSetState({ fileName: event.target.value })}
+                    />
+                  </div>
+
+                  {category === "Vibe" && (
+                    <div className={classes.inputWrapper}>
+                      <label>Friendliness</label>
+                      <SliderInput
+                        MAX={10}
+                        value={vibeProps.friendliness}
+                        handleChange={(e) => {
+                          const friendliness = e.target.value;
+                          const newProps = vibeProps;
+                          newProps.friendliness = friendliness;
+                          handleSetState({
+                            vibeProps: newProps,
+                          });
+                        }}
+                      />
+                      <label>Energy</label>
+                      <SliderInput
+                        MAX={10}
+                        value={vibeProps.energy}
+                        handleChange={(e) => {
+                          const energy = e.target.value;
+                          const newProps = vibeProps;
+                          newProps.energy = energy;
+                          handleSetState({
+                            vibeProps: newProps,
+                          });
+                        }}
+                      />
+                      <label>Density</label>
+                      <SliderInput
+                        MAX={10}
+                        value={vibeProps.density}
+                        handleChange={(e) => {
+                          const density = e.target.value;
+                          const newProps = vibeProps;
+                          newProps.density = density;
+                          handleSetState({
+                            vibeProps: newProps,
+                          });
+                        }}
+                      />
+                      <label>Diversity</label>
+                      <SliderInput
+                        MAX={10}
+                        value={vibeProps.diversity}
+                        handleChange={(e) => {
+                          const diversity = e.target.value;
+                          const newProps = vibeProps;
+                          newProps.diversity = diversity;
+                          handleSetState({
+                            vibeProps: newProps,
+                          });
+                        }}
+                      />
+                    </div>
+                  )}
+
+                  <div className={classes.inputWrapper}>
+                    <label>
+                      Description <span className={classes.required}>*</span>{" "}
+                      <GenadropToolTip
+                        content="This description will be visible on your collection page"
+                        fill="#0d99ff"
+                      />
+                    </label>
+                    <textarea
+                      style={metadata?.length === 1 ? { pointerEvents: "none" } : {}}
+                      rows="5"
+                      value={description}
+                      onChange={(event) => handleSetState({ description: event.target.value })}
+                    />
+                  </div>
+
+                  {file?.length === 1 && (
+                    <div className={classes.inputWrapper}>
+                      <label>Category</label>
+                      <div
+                        onClick={() => {
+                          if (!metadata?.category) {
+                            handleSetState({
+                              toggleCategory: !toggleCategory,
+                            });
+                          }
+                        }}
+                        className={`${classes.chain} ${classes.active}`}
+                      >
+                        {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
+                        {!metadata?.attributes && <DropdownIcon className={classes.dropdownIcon} />}
+                      </div>
+                      <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
+                        {categories.map((nftCategory) => (
+                          <div
+                            className={`${classes.chain} `}
+                            key={nftCategory}
+                            onClick={() => handleSetState({ category: nftCategory, toggleCategory: false })}
+                          >
+                            {nftCategory}
+                          </div>
                         ))}
                       </div>
                     </div>
                   )}
-                </div>
-                {file?.length > 1 && (
-                  <>
-                    <div className={`${classes.inputWrapper} ${classes.dropInputWrapper}`}>
-                      <label>
-                        Collection photo
-                        <GenadropToolTip content="This image will be used as collection logo" fill="#0d99ff" />
-                      </label>
-                    </div>
-                    <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
-                      <div onClick={() => handleSetState({ toggleGuide: true })}>
-                        {profileSelected ? (
-                          <img src={URL.createObjectURL(file[0])} alt="" />
-                        ) : (
-                          <div className={classes.selectImg}>
-                            <PlusIcon />
-                            <p>Add photo</p>
+                  {category === "Sesh" && (
+                    <div className={classes.inputWrapper}>
+                      <label>Stick Type</label>
+                      <div
+                        onClick={() => {
+                          handleSetState({
+                            toggleType: !toggleType,
+                          });
+                        }}
+                        className={`${classes.chain} ${classes.active}`}
+                      >
+                        {stick_type ? <div className={classes.chainLabel}>{stick_type}</div> : <span>Select</span>}
+                        <DropdownIcon className={classes.dropdownIcon} />
+                      </div>
+                      <div className={`${classes.chainDropdown} ${toggleType && classes.active}`}>
+                        {stick_types.map((type) => (
+                          <div
+                            className={`${classes.chain} `}
+                            key={type}
+                            onClick={() => handleSetState({ stick_type: type, toggleType: false })}
+                          >
+                            {type}
                           </div>
-                        )}
+                        ))}
                       </div>
                     </div>
-                  </>
-                )}
+                  )}
 
-                {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
                   <div className={classes.inputWrapper}>
-                    <div className={classes.toggleTitle}>
-                      <div className={classes.category}>Enable Location</div>
-                      <div className={classes.toggler} onClick={() => handleSetState({ showLocation: !showLocation })}>
+                    <label>Attributes</label>
+                    {!zip ? (
+                      <>
+                        <div className={classes.attributes}>
+                          {Object.keys(attributes).map((key) => (
+                            <Attribute
+                              key={key}
+                              attribute={attributes[key]}
+                              id={key}
+                              index={key}
+                              removeAttribute={handleRemoveAttribute}
+                              changeAttribute={handleChangeAttribute}
+                            />
+                          ))}
+                        </div>
+                        <button type="button" onClick={handleAddAttribute}>
+                          + Add Attribute
+                        </button>
+                      </>
+                    ) : metadata.length === 1 ? (
+                      <>
+                        {metadata[0].attributes.map((attr, idx) => (
+                          <div className={classes.attribute} key={idx}>
+                            <div>{attr.trait_type}</div>
+                            <div>{attr.value}</div>
+                          </div>
+                        ))}
+                      </>
+                    ) : (
+                      <div className={classes.metadata}>
+                        <div>Number of assets: {metadata.length}</div>
+                        <div className={classes.trait_type}>
+                          Trait_types:
+                          {metadata[0]?.attributes.map(({ trait_type }, idx) => (
+                            <span key={idx}>{trait_type} </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {file?.length > 1 && (
+                    <>
+                      <div className={`${classes.inputWrapper} ${classes.dropInputWrapper}`}>
+                        <label>
+                          Collection photo
+                          <GenadropToolTip content="This image will be used as collection logo" fill="#0d99ff" />
+                        </label>
+                      </div>
+                      <div className={`${classes.dropWrapper} ${collectionProfile && classes.dropWrapperSeleted}`}>
+                        <div onClick={() => handleSetState({ toggleGuide: true })}>
+                          {profileSelected ? (
+                            <img src={URL.createObjectURL(file[0])} alt="" />
+                          ) : (
+                            <div className={classes.selectImg}>
+                              <PlusIcon />
+                              <p>Add photo</p>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  )}
+
+                  {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
+                    <div className={classes.inputWrapper}>
+                      <div className={classes.toggleTitle}>
+                        <div className={classes.receiverAddress}>
+                          <label>Location</label>
+
+                          <div className={classes.inputContainer}>
+                            <input type="text" value={metadata?.location?.value} disabled />
+                            {goodReceiverAddress ? <GreenTickIcon /> : ""}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className={classes.inputWrapper}>
+                    <div className={`${classes.toggleTitle} ${classes.hide}`}>
+                      <div className={classes.category}>
+                        Non Tranferable NFT{" "}
+                        <GenadropToolTip
+                          content="This NFT will be minted to receiver address and cannot be moved afterward"
+                          fill="#0d99ff"
+                        />
+                      </div>
+                      <div className={classes.toggler}>
                         <label className={classes.switch}>
-                          <div className={`${classes.locationSlider} ${showLocation ? classes.active : ""}`} />
+                          <input
+                            type="checkbox"
+                            onClick={() => handleSetState({ showReceiverAddress: !showReceiverAddress })}
+                          />
                           <span className={classes.slider} />
                         </label>
                       </div>
                     </div>
-                  </div>
-                )}
 
-                <div className={classes.inputWrapper}>
-                  <div className={`${classes.toggleTitle} ${classes.hide}`}>
-                    <div className={classes.category}>
-                      Non Tranferable NFT{" "}
-                      <GenadropToolTip
-                        content="This NFT will be minted to receiver address and cannot be moved afterward"
-                        fill="#0d99ff"
-                      />
-                    </div>
-                    <div className={classes.toggler}>
-                      <label className={classes.switch}>
+                    <div className={classes.receiverAddress}>
+                      <label>Receiver Address</label>
+
+                      <div className={classes.inputContainer}>
                         <input
-                          type="checkbox"
-                          onClick={() => handleSetState({ showReceiverAddress: !showReceiverAddress })}
+                          style={zip ? { pointerEvents: "none" } : {}}
+                          type="text"
+                          value={receiverAddress}
+                          placeholder={account}
+                          onChange={(event) => handleReceiverAddress(event)}
                         />
-                        <span className={classes.slider} />
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className={classes.receiverAddress}>
-                    <label>Receiver Address</label>
-
-                    <div className={classes.inputContainer}>
-                      <input
-                        style={zip ? { pointerEvents: "none" } : {}}
-                        type="text"
-                        value={receiverAddress}
-                        placeholder={account}
-                        onChange={(event) => handleReceiverAddress(event)}
-                      />
-                      {goodReceiverAddress ? <GreenTickIcon /> : ""}
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section className={classes.mintOptions}>
-                <div className={classes.category}>Set Mint Options</div>
-                <div className={classes.inputWrapper}>
-                  <label>Blockchain</label>
-                  <div
-                    onClick={() => handleSetState({ toggleDropdown: !toggleDropdown })}
-                    className={`${classes.chain} ${classes.active}`}
-                  >
-                    {chainId ? (
-                      <div className={classes.chainLabel}>
-                        <img src={supportedChains[chainId].icon} alt="" />
-                        {chain?.label}
+                        {goodReceiverAddress ? <GreenTickIcon /> : ""}
                       </div>
-                    ) : (
-                      <span>Select Chain</span>
-                    )}
-                    <DropdownIcon className={classes.dropdownIcon} />
+                    </div>
                   </div>
-                  <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
-                    {Object.values(supportedChains)
-                      .filter((chainE) => mainnet === chainE.isMainnet)
-                      .map((chainE, idx) => (
-                        <div
-                          onClick={() =>
-                            !chainE.comingSoon && chainE.networkId !== chainId
-                              ? handleConnectFromMint(chainE)
-                              : handleSetState({ toggleDropdown: !toggleDropdown })
-                          }
-                          className={`${classes.chain} ${chainE.comingSoon && classes.disable}`}
-                          key={chainE.id}
-                          value={chainE.label}
-                        >
-                          <img src={chainE.icon} alt="" />
-                          {chainE.label}
-                        </div>
-                      ))}
-                  </div>
-                </div>
-              </section>
+                </section>
 
-              <section className={classes.mintButtonWrapper}>
-                <button type="button" onClick={setMint} className={classes.mintBtn}>
-                  Mint
-                </button>
-                <button type="button" onClick={handleCancel} className={classes.cancelBtn}>
-                  Cancel
-                </button>
-              </section>
+                <section className={classes.mintOptions}>
+                  <div className={classes.category}>Set Mint Options</div>
+                  <div className={classes.inputWrapper}>
+                    <label>Blockchain</label>
+                    <div
+                      onClick={() => handleSetState({ toggleDropdown: !toggleDropdown })}
+                      className={`${classes.chain} ${classes.active}`}
+                    >
+                      {chainId ? (
+                        <div className={classes.chainLabel}>
+                          <img src={supportedChains[chainId].icon} alt="" />
+                          {chain?.label}
+                        </div>
+                      ) : (
+                        <span>Select Chain</span>
+                      )}
+                      <DropdownIcon className={classes.dropdownIcon} />
+                    </div>
+                    <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
+                      {Object.values(supportedChains)
+                        .filter((chainE) => mainnet === chainE.isMainnet)
+                        .map((chainE, idx) => (
+                          <div
+                            onClick={() =>
+                              !chainE.comingSoon && chainE.networkId !== chainId
+                                ? handleConnectFromMint(chainE)
+                                : handleSetState({ toggleDropdown: !toggleDropdown })
+                            }
+                            className={`${classes.chain} ${chainE.comingSoon && classes.disable}`}
+                            key={chainE.id}
+                            value={chainE.label}
+                          >
+                            <img src={chainE.icon} alt="" />
+                            {chainE.label}
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </section>
+
+                <section className={classes.mintButtonWrapper}>
+                  <button type="button" onClick={setMint} className={classes.mintBtn}>
+                    Mint
+                  </button>
+                  <button type="button" onClick={handleCancel} className={classes.cancelBtn}>
+                    Cancel
+                  </button>
+                </section>
+              </div>
             </div>
           </div>
         </div>

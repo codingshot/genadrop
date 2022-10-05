@@ -9,18 +9,25 @@ const MediaBar = ({ MediaLogos }) => {
     <Splide
       options={{
         type: "loop",
-        gap: "1rem",
+        gap: "2rem",
         drag: "free",
         arrows: false,
         pagination: false,
-        perPage: 3,
+        perPage: 6,
+        autoWidth: true,
         autoScroll: {
           pauseOnHover: true,
           pauseOnFocus: false,
-          rewind: false,
-          speed: 1,
+          rewind: true,
+          speed: 0.6,
         },
         breakpoints: {
+          1200: {
+            perPage: 5,
+          },
+          900: {
+            perPage: 4,
+          },
           600: {
             perPage: 2,
           },
