@@ -59,6 +59,7 @@
 .extra .card {
   width: calc(100% / 3);
 }
+
 .extra .card:hover .icon svg path {
   fill: var(--default);
 }
@@ -122,6 +123,12 @@
   .cardDeck {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
+  }
+  .extra {
+    width: calc(100% - 27px);
+  }
+  .extra .card {
+    width: calc(100% / 2);
   }
 }
 @media screen and (max-width: 480px) {
