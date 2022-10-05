@@ -9,6 +9,8 @@ import {
   switchCameraToRear,
   updateVideoSize,
   generateGif,
+  capitalizeFirstLetter,
+  isEmpty,
 } from "../Capture/Capture-script";
 import useTimer from "../Capture/useTimer";
 import RecordBtn from "../Capture/RecordBtn";
@@ -57,6 +59,7 @@ const RegularCamera = ({ regularCameraProps }) => {
   } = regularCameraProps;
 
   const pathname = history.location?.pathname.replace("/mint/", "");
+  const onlyCamera = pathname === "sesh" || pathname === "vibe";
 
   // Record Handles
   const handleDataAvailable = React.useCallback(
@@ -179,14 +182,16 @@ const RegularCamera = ({ regularCameraProps }) => {
       name = "video";
       type = "Shorts";
     }
-    if (pathname === "vibe") {
-      type = "Vibe";
+    if (onlyCamera) {
+      type = capitalizeFirstLetter(pathname);
     }
+
     dispatch(
       setZip({
         name,
         file,
         type,
+        ...(!isEmpty(attributes) && { attributes }),
       })
     );
 
@@ -274,7 +279,7 @@ const RegularCamera = ({ regularCameraProps }) => {
           <div className={classes.videoOFF} />
         )}{" "}
       </div>
-      <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
+      <div className={classes.closeBtn} onClick={() => history.push("/mint/create")}>
         <CloseIcon />
       </div>
       {isMobileDevice && (
@@ -292,6 +297,7 @@ const RegularCamera = ({ regularCameraProps }) => {
           {displayedModes[0].icon}
           <p>{displayedModes[0].text}</p>
         </div>
+
         {/* main button */}
         {webcamCurrentType === "Photo" ? (
           <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>

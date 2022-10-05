@@ -27,17 +27,6 @@ const Navbar = () => {
           </div>
         </Link>
 
-        <Link to="/mint">
-          <div
-            onClick={() => setActiveNav("mint")}
-            className={`${classes.navItem} ${activeNav === "mint" && classes.active}`}
-          >
-            {/* <img src={mintIcon} alt="icon" /> */}
-            <p>mint</p>
-            <div className={classes.effect} />
-          </div>
-        </Link>
-
         <Link to="/explore">
           <div
             onClick={() => setActiveNav("explore")}

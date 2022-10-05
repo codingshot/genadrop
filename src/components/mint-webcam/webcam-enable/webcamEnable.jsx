@@ -22,7 +22,7 @@ const WebcamEnable = ({ toggle, pathname, enableAccess }) => {
           </div>
 
           <div className={classes.wrapper}>
-            <a onClick={() => history.push("/mint/create")}>Don’t allow</a>
+            <a onClick={() => history.push("/create")}>Don’t allow</a>
             <div type="button" onClick={() => enableAccess()}>
               Allow access
             </div>

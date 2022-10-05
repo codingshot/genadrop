@@ -91,6 +91,9 @@ function getFileFromBase64(string64, fileName, type) {
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
 export {
   getFileFromBytes,
   getFileFromBase64,
@@ -100,6 +103,7 @@ export {
   updateVideoSize,
   generateGif,
   capitalizeFirstLetter,
+  isEmpty,
 };
 
 // Video functions
