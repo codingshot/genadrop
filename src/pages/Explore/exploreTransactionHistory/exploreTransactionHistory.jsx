@@ -37,7 +37,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
     Listing: <ListIcon />,
   };
 
-  const { selected, explorer, transactionData, isAlgoChain } = state;
+  const { selected, explorer, transactionData, isAlgoChain, searchValue, filterdHistory } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
