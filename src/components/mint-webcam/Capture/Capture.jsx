@@ -38,12 +38,12 @@ const Capture = () => {
     height: "100%",
     // genrate GIF loading status
     gifGenrating: false,
-    webcamCurrentType: "Photo",
+    webcamCurrentType: pathname === "video" ? "Video" : "Photo",
     trackRecord: false,
     videoDuration: 0,
     imgList: [],
     loaderToggle: false,
-    dualCam: false,
+    dualCam: pathname === "bereal",
     attributes: {},
     category: pathname,
   });
