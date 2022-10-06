@@ -186,7 +186,6 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
               return (
                 <div className={classes.transaction}>
                   <div className={classes.status}>
-                    {/* <img src={} alt="" /> */}
                     {txIcons[data?.type]}
                     {data?.type}
                   </div>
