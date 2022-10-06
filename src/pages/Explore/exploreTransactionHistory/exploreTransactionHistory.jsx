@@ -19,6 +19,7 @@ import {
   celoCollectionTransactions,
   polygonCollectionTransactions,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
+import NotFound from "../../../components/not-found/notFound";
 
 const ExploreTransactionHistory = ({ collectionId, chain }) => {
   const [state, setState] = useState({
@@ -180,7 +181,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
         </div>
         {isAlgoChain ? (
           <div className={classes.commingSoon}>coming soon</div>
-        ) : (
+        ) : filterdHistory.length > 0 ? (
           <div className={classes.transactionContainer}>
             {filterdHistory?.map((data) => {
               return (
@@ -211,6 +212,8 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
               );
             })}
           </div>
+        ) : (
+          <NotFound />
         )}
       </div>
     </div>
