@@ -60,9 +60,9 @@ const Minter = () => {
       isError: null,
       popup: false,
     },
-    showReceiverAddress: false,
+    mintToMyAddress: true,
     receiverAddress: "",
-    goodReceiverAddress: false,
+    goodReceiverAddress: true,
     showLocation: false,
     vibeProps: {
       friendliness: 0,
@@ -84,7 +84,7 @@ const Minter = () => {
     previewSelectMode,
     profileSelected,
     popupProps,
-    showReceiverAddress,
+    mintToMyAddress,
     receiverAddress,
     goodReceiverAddress,
     category,
@@ -94,7 +94,7 @@ const Minter = () => {
     toggleType,
     stick_type,
   } = state;
-  console.log(attributes);
+
   const mintProps = {
     dispatch,
     setLoader,
@@ -225,7 +225,7 @@ const Minter = () => {
         })
       );
     }
-    if (showReceiverAddress && receiverAddress.length < 42) {
+    if (!mintToMyAddress && receiverAddress.length < 42) {
       return dispatch(
         setNotification({
           message: "Invalid receiver address ",
@@ -233,9 +233,10 @@ const Minter = () => {
         })
       );
     }
-    if (receiverAddress.length >= 42 && showReceiverAddress) {
+    if (receiverAddress.length >= 42 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
       singleMintProps.receiverAddress = receiverAddress;
+      console.log("Mint to another", receiverAddress);
     } else {
       mintProps.receiverAddress = account;
       singleMintProps.receiverAddress = account;
@@ -450,6 +451,13 @@ const Minter = () => {
         {header?.title}
       </div>
     );
+  };
+
+  const handleCheck = () => {
+    const mintToMe = !mintToMyAddress;
+    handleSetState({ mintToMyAddress: mintToMe });
+    if (!mintToMe) handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
+    else handleSetState({ goodReceiverAddress: true });
   };
 
   return (
@@ -765,21 +773,18 @@ const Minter = () => {
                     </div>
                   )}
 
-                  <div className={`${classes.inputWrapper} ${classes.hide}`}>
+                  <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
-                        Non Tranferable NFT{" "}
+                        Mint To Your Address{" "}
                         <GenadropToolTip
-                          content="This NFT will be minted to receiver address and cannot be moved afterward"
+                          content="Click toggle button to mint to another address. This can't be reversed."
                           fill="#0d99ff"
                         />
                       </div>
                       <div className={classes.toggler}>
                         <label className={classes.switch}>
-                          <input
-                            type="checkbox"
-                            onClick={() => handleSetState({ showReceiverAddress: !showReceiverAddress })}
-                          />
+                          <input type="checkbox" onClick={() => handleCheck()} defaultChecked />
                           <span className={classes.slider} />
                         </label>
                       </div>
@@ -792,11 +797,12 @@ const Minter = () => {
                         <input
                           style={zip ? { pointerEvents: "none" } : {}}
                           type="text"
-                          value={receiverAddress}
-                          placeholder={account}
+                          value={mintToMyAddress ? account : receiverAddress}
+                          placeholder={account === "" ? "Please connect your wallet" : account}
                           onChange={(event) => handleReceiverAddress(event)}
+                          disabled={!!mintToMyAddress}
                         />
-                        {goodReceiverAddress ? <GreenTickIcon /> : ""}
+                        {goodReceiverAddress && account !== "" ? <GreenTickIcon /> : ""}
                       </div>
                     </div>
                   </div>
