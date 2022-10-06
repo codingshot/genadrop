@@ -48,7 +48,7 @@ const AllNfts = () => {
     "Sesh",
     "Photography",
     "Shorts",
-    "BeReal",
+    "Doubletake",
     "Digital Graphic",
     "Painting",
     "Illustration",
