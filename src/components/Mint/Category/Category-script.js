@@ -6,15 +6,15 @@ import { ReactComponent as Photo } from "../../../assets/create/photo-icon.svg";
 import { ReactComponent as Sesh } from "../../../assets/create/sesh-icon.svg";
 import { ReactComponent as Shorts } from "../../../assets/create/shorts-icon.svg";
 import { ReactComponent as Art } from "../../../assets/create/art-icon.svg";
-import { ReactComponent as BeReal } from "../../../assets/create/bereal-icon.svg";
+import { ReactComponent as Doubletake } from "../../../assets/create/bereal-icon.svg";
 
 const cards = [
   {
-    title: "BeReal",
+    title: "Doubletake",
     description: "Take a photo and selfie and mint",
-    icon: <BeReal />,
-    value: "BeReal",
-    url: "/mint/bereal",
+    icon: <Doubletake />,
+    value: "Doubletake",
+    url: "/mint/doubletake",
   },
   {
     title: "Digital Art",

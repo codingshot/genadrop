@@ -47,12 +47,12 @@ const Capture = () => {
     height: "100%",
     // genrate GIF loading status
     gifGenrating: false,
-    webcamCurrentType: pathname === "video" ? "Video" : pathname === "bereal" ? "BeReal" : "Photo",
+    webcamCurrentType: pathname === "video" ? "Video" : pathname === "doubletake" ? "Doubletake" : "Photo",
     trackRecord: false,
     videoDuration: 0,
     imgList: [],
     loaderToggle: false,
-    dualCam: pathname === "bereal" && isMobileDevice,
+    dualCam: pathname === "doubletake" && isMobileDevice,
     attributes: {},
     category: pathname,
   });
@@ -93,7 +93,7 @@ const Capture = () => {
     },
     {
       id: 3,
-      text: "BeReal",
+      text: "Doubletake",
       icon: <IconDoubleTake />,
     },
   ];
