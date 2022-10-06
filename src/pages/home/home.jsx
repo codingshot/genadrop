@@ -24,9 +24,9 @@ const Home = () => (
     <GenadropCreatedNFTs />
     <Review />
     <JoinDiscord />
-    <Media />
     <Partners />
     <FAQ />
+    <Media />
   </div>
 );
 

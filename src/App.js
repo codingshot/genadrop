@@ -70,7 +70,7 @@ function App() {
             <Route exact path="/mint" component={Mint} />
             <Route
               exact
-              path={["/mint/camera", "/mint/vibe", "/mint/sesh", "/mint/bereal", "/mint/video"]}
+              path={["/mint/camera", "/mint/vibe", "/mint/sesh", "/mint/doubletake", "/mint/video"]}
               component={Camera}
             />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
