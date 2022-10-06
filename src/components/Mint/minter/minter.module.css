@@ -618,7 +618,7 @@ div.showPreview > span {
   display: flex;
   justify-content: space-between;
 }
-.toggleTitle.hide {
+.inputWrapper.hide {
   opacity: 0.5;
   filter: alpha(opacity = 60);
   -webkit-filter: grayscale(100%);

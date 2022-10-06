@@ -759,15 +759,14 @@ const Minter = () => {
 
                           <div className={classes.inputContainer}>
                             <input type="text" value={metadata?.location?.value} disabled />
-                            {goodReceiverAddress ? <GreenTickIcon /> : ""}
                           </div>
                         </div>
                       </div>
                     </div>
                   )}
 
-                  <div className={classes.inputWrapper}>
-                    <div className={`${classes.toggleTitle} ${classes.hide}`}>
+                  <div className={`${classes.inputWrapper} ${classes.hide}`}>
+                    <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
                         Non Tranferable NFT{" "}
                         <GenadropToolTip
