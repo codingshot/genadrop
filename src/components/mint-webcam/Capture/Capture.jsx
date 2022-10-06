@@ -21,6 +21,15 @@ const Capture = () => {
 
   const { dispatch } = useContext(GenContext);
 
+  /* regular expression 
+  containing some mobile devices keywords 
+  to search it in details string */
+  const details = navigator?.userAgent;
+
+  const regexp = /android|iphone|kindle|ipad/i;
+
+  const isMobileDevice = regexp.test(details);
+
   const [state, setState] = useState({
     toggle: false,
     // each type file
@@ -38,12 +47,12 @@ const Capture = () => {
     height: "100%",
     // genrate GIF loading status
     gifGenrating: false,
-    webcamCurrentType: pathname === "video" ? "Video" : "Photo",
+    webcamCurrentType: pathname === "video" ? "Video" : pathname === "bereal" ? "BeReal" : "Photo",
     trackRecord: false,
     videoDuration: 0,
     imgList: [],
     loaderToggle: false,
-    dualCam: pathname === "bereal",
+    dualCam: pathname === "bereal" && isMobileDevice,
     attributes: {},
     category: pathname,
   });
@@ -182,6 +191,7 @@ const Capture = () => {
       });
     }
   };
+
   return (
     <div className={`${classes.container}`}>
       <WebcamEnable toggle={toggle} pathname={pathname} enableAccess={enableAccess} />
