@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./Pricing.module.css";
 import { plans } from "./Pricing.script";
@@ -74,7 +74,7 @@ const Pricing = () => {
 
       <div className={classes.cardMenu}>
         {Object.values(plans).map((plan, idx) => (
-          <div key={idx} className={classes.wrapper}>
+          <div key={idx} className={`${classes.wrapper} ${plan.mostPopular ? classes.active : ""}`}>
             {plan.mostPopular && <div className={classes.mark}>Most Popular</div>}
             <div className={classes.card}>
               <div className={classes.type}>{plan.type}</div>
