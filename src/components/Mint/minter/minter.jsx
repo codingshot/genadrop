@@ -366,7 +366,7 @@ const Minter = () => {
     }
   };
   // select category
-  let categories = ["Sesh", "Photography", "Painting", "Illustration", "3D"];
+  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic"];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
 
   // get current location
@@ -433,9 +433,6 @@ const Minter = () => {
       });
     }
   }, [showLocation, category]);
-
-  const isVibe = metadata?.category ? metadata?.category === "Photography" : false;
-  if (isVibe) categories = ["Vibe", "Photography"];
 
   const getActivetitle = () => {
     const header = cards.filter(
@@ -644,7 +641,7 @@ const Minter = () => {
                         className={`${classes.chain} ${classes.active}`}
                       >
                         {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
-                        {!metadata?.attributes && <DropdownIcon className={classes.dropdownIcon} />}
+                        {!metadata?.category && <DropdownIcon className={classes.dropdownIcon} />}
                       </div>
                       <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
                         {categories.map((nftCategory) => (
@@ -823,7 +820,7 @@ const Minter = () => {
                     <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
                       {Object.values(supportedChains)
                         .filter((chainE) => mainnet === chainE.isMainnet)
-                        .map((chainE, idx) => (
+                        .map((chainE) => (
                           <div
                             onClick={() =>
                               !chainE.comingSoon && chainE.networkId !== chainId
