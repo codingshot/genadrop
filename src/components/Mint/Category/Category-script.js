@@ -14,7 +14,7 @@ const cards = [
     description: "Take a photo and selfie and mint",
     icon: <BeReal />,
     value: "BeReal",
-    url: "/mint/camera",
+    url: "/mint/bereal",
   },
   {
     title: "Digital Art",
@@ -56,7 +56,7 @@ const cards = [
     description: "Take short video and mint",
     icon: <Shorts />,
     value: "Shorts",
-    url: "/mint/camera",
+    url: "/mint/video",
   },
 ];
 export default cards;

@@ -30,13 +30,13 @@ const cards = [
     title: "Shorts",
     description: "Take short video and mint",
     icon: <Shorts />,
-    url: "/mint/camera",
+    url: "/mint/video",
   },
   {
     title: "Bereal",
     description: "Take a photo and selfie and mint",
     icon: <BeReal />,
-    url: "/mint/camera",
+    url: "/mint/bereal",
   },
   {
     title: "Proof Of Vibes",
