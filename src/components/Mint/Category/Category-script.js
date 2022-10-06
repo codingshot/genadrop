@@ -14,7 +14,7 @@ const cards = [
     description: "Take a photo and selfie and mint",
     icon: <BeReal />,
     value: "BeReal",
-    url: "/mint/camera",
+    url: "/mint/bereal",
   },
   {
     title: "Digital Art",
@@ -31,7 +31,7 @@ const cards = [
     url: "/collection",
   },
   {
-    title: "Propf Of Vibes",
+    title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
     icon: <Vibes className={classes.vibeIcon} />,
     value: "Vibe",
@@ -40,7 +40,7 @@ const cards = [
   {
     title: "Photo",
     description: "Take a photo and mint",
-    icon: <Photo />,
+    icon: <Photo className={classes.photoIcon} />,
     value: "Photography",
     url: "/mint/camera",
   },
@@ -56,7 +56,7 @@ const cards = [
     description: "Take short video and mint",
     icon: <Shorts />,
     value: "Shorts",
-    url: "/mint/camera",
+    url: "/mint/video",
   },
 ];
 export default cards;

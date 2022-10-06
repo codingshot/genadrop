@@ -25,7 +25,6 @@ const Banner = () => {
       <div className={classes.heading}>
         <div className={classes.features}>Create.&nbsp;Mint.&nbsp;Sell.</div>
         <div className={classes.description}>The ultimate NO-Code NFT tool Creators and Collectors love</div>
-        <div className={classes.more}>Generate and mint your NFT collections or mint a photo with a camera.</div>
         <div className={classes.btnContainer}>
           <Link to="/create">
             <div className={classes.btn_1}>Mint</div>

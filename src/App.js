@@ -44,7 +44,7 @@ import SearchResult from "./pages/searchResult/searchResult";
 import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
-import Create from "./pages/create/create";
+import Create from "./pages/Create/create";
 import CollectionOptions from "./pages/collection-options/CollectionOptions";
 
 function App() {
@@ -68,7 +68,11 @@ function App() {
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
-            <Route exact path={["/mint/camera", "/mint/vibe", "/mint/sesh"]} component={Camera} />
+            <Route
+              exact
+              path={["/mint/camera", "/mint/vibe", "/mint/sesh", "/mint/bereal", "/mint/video"]}
+              component={Camera}
+            />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />

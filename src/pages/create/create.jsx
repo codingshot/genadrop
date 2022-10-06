@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import classes from "./create.module.css";
+import classes from "./Create.module.css";
 import cards from "./Create-script";
 import { ReactComponent as DownArrow } from "../../assets/down-arrow.svg";
 
