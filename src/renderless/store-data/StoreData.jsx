@@ -59,7 +59,7 @@ const StoreData = () => {
     } else if (type === "order") {
       saveLayers({ currentUser, sessionId, layers: newLayers });
     }
-    if (location.pathname === "/create" && type !== "rule") {
+    if (location.pathname === "/create/collection" && type !== "rule") {
       dispatch(setNftLayers([]));
     }
     resetLayerAction();
@@ -107,14 +107,14 @@ const StoreData = () => {
   useEffect(() => {
     const { type } = layerAction;
     if (type !== "rule") return;
-    let newRules = rule.map((r) => {
-      let iRule = r.map(({ imageFile, ...ir }) => {
+    const newRules = rule.map((r) => {
+      const iRule = r.map(({ imageFile, ...ir }) => {
         return { imageFile: "", ...ir };
       });
       return iRule;
     });
 
-    let strRules = JSON.stringify(newRules);
+    const strRules = JSON.stringify(newRules);
     saveRules({ currentUser, sessionId, rules: strRules });
     resetLayerAction();
   }, [layerAction, currentUser, sessionId, rule]);

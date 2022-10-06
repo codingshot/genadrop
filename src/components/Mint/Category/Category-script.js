@@ -31,7 +31,7 @@ const cards = [
     url: "/collection",
   },
   {
-    title: "Propf Of Vibes",
+    title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
     icon: <Vibes className={classes.vibeIcon} />,
     value: "Vibe",
