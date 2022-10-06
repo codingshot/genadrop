@@ -193,4 +193,10 @@
 }
 
 @media screen and (max-width: 480px) {
+  .option {
+    height: 2.5em;
+  }
+  .active {
+    color: var(--default);
+  }
 }
