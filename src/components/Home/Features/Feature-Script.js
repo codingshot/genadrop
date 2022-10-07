@@ -15,7 +15,7 @@ const features = [
   {
     heading: "MINT",
     link: "Go to Mint",
-    url: "/mint",
+    url: "/create",
     image: mintImage,
     title: "You do not need to know all the technical terms before minting your NFTs.",
     description:

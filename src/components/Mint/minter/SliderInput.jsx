@@ -19,7 +19,7 @@ const SliderInput = ({ MAX, value, handleChange }) => {
         onChange={handleChange}
         value={value}
       />
-      <div>{value}</div>
+      {/* <div>{value}</div> */}
     </div>
   );
 };
