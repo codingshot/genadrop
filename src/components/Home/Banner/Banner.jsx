@@ -27,7 +27,7 @@ const Banner = () => {
         <div className={classes.description}>The ultimate NO-Code NFT tool Creators and Collectors love</div>
         <div className={classes.btnContainer}>
           <Link to="/create">
-            <div className={classes.btn_1}>Mint</div>
+            <div className={classes.btn_1}>Create</div>
           </Link>
           <Link to="/marketplace">
             <div className={classes.btn_2}>Explore</div>
