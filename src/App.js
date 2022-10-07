@@ -46,6 +46,7 @@ import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
 import Create from "./pages/Create/Create";
 import CollectionOptions from "./pages/collection-options/CollectionOptions";
+import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -78,6 +79,7 @@ function App() {
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/1of1" component={SingleNftCollection} />
             <Route exact path="/marketplace/collections" component={Collections} />
+            <Route exact path="/marketplace/all" component={MarketplaceAll} />
             <Route exact path="/marketplace/1of1/:chainId/:nftId" component={NFTDetail} />
 
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId" component={List} />
