@@ -1,4 +1,4 @@
-const handleSuggestions = async ({ handleSetState, searchContainer, value }) => {
+const handleSuggestions = async ({ handleSetState, searchContext, value }) => {
   let newSearch = [];
   let oldSearch = [];
   value = value.trim().toLowerCase();
@@ -10,9 +10,9 @@ const handleSuggestions = async ({ handleSetState, searchContainer, value }) => 
     return;
   }
 
-  Object.keys(searchContainer).forEach(async (chain) => {
+  Object.keys(searchContext).forEach(async (chain) => {
     const search = new Promise((resolve) => {
-      const result = searchContainer[chain].filter(
+      const result = searchContext[chain].filter(
         (el) => el.name.toLowerCase().includes(value) || el.description.toLowerCase().includes(value)
       );
       resolve(result);
