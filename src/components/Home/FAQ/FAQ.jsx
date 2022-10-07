@@ -17,7 +17,7 @@ const FQA = () => {
       id: "1",
       question: "What NFTs can I create?",
       answer:
-        "You can create and generate the art for PFP NFTs, take photos, shorts, bereal photos, or upload a file. Filter through the marketplace to see today!",
+        "You can create and generate the art for PFP NFTs, take photos, shorts, doubletake photos, or upload a file. Filter through the marketplace to see today!",
     },
     {
       id: "2",

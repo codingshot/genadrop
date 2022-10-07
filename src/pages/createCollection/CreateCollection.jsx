@@ -26,7 +26,7 @@ import { handleSampleLayers } from "../../components/menu/collection-menu-script
 // import LoginModal from "../../components/Modals/Login-Modal/LoginModal";
 import { signInWithGoogle } from "../../components/google-auth/googleAuth.script";
 
-const Create = () => {
+const CreateCollection = () => {
   const collectionNameRef = useRef();
   const history = useHistory();
 
@@ -160,4 +160,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default CreateCollection;

@@ -45,12 +45,7 @@ const Navbar = () => {
                 <div className={classes.line} />
               </div>
             </Link>
-            <Link onClick={() => handleSetState({ dropdown: false })} to="/mint">
-              <div className={`${classes.navItem} ${pathname.includes("/mint") && classes.active}`}>
-                <li>mint</li>
-                <div className={classes.line} />
-              </div>
-            </Link>
+
             <Link onClick={() => handleSetState({ dropdown: false })} to="/marketplace">
               <div className={`${classes.navItem} ${pathname.includes("/marketplace") && classes.active}`}>
                 <li>explore</li>

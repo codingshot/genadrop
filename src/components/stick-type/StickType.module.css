@@ -1,0 +1,222 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 10000;
+}
+.popupWrapper {
+  width: 100%;
+  height: 100%;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  padding: 1em 1em;
+  flex-direction: column;
+  position: relative;
+}
+
+.card {
+  margin: auto;
+  width: 100%;
+  max-width: 1088px;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding-left: 3em;
+  padding-right: 3em;
+  padding-top: 4.875rem;
+  padding-bottom: 7rem;
+  gap: 1em;
+  border-radius: 1em;
+  box-shadow: 0px 4.6387px 18.5548px rgba(207, 207, 207, 0.25);
+  animation: show 300ms alternate;
+  background: var(--card-lighter);
+}
+
+@keyframes show {
+  from {
+    transform: scale(0.95);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 1em;
+  color: black;
+}
+.heading svg {
+  margin: 1em 0;
+}
+.heading h3 {
+  font-weight: 700;
+  font-size: 48px;
+  color: #0f1d40;
+  margin-bottom: 0.5em;
+}
+
+.heading p {
+  font-size: 1.125rem;
+  line-height: 1.25rem;
+  letter-spacing: -0.339701px;
+  margin-top: 1em;
+}
+
+.iconContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.closeIcon {
+  padding: 0.25em;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 300ms;
+  fill: var(--icon-color);
+}
+
+.closeIcon:hover {
+  background: var(--main-lightest);
+}
+
+.wrapper {
+  margin-top: 3rem;
+  width: 100%;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.deactive {
+  display: none;
+}
+.typeCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  align-items: center;
+  border: 1px solid;
+  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.05);
+  border-radius: 20px;
+  background: var(--default);
+  border: 1px solid #e5ecfb;
+  min-height: 243px;
+  cursor: pointer;
+}
+.typeCard:hover {
+  border-color: var(--main-color);
+}
+.typeCard:hover .content {
+  background: var(--main-color);
+}
+.typeCard:hover .title,
+.typeCard:hover .cardDesc {
+  color: var(--default);
+}
+.typeCard .icon svg {
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+}
+.typeCard:hover .icon svg {
+  filter: none; /* IE6-9 */
+  -webkit-filter: grayscale(0); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(0); /* Microsoft Edge and Firefox 35+ */
+}
+.typeCard:hover .typeIcon svg path {
+  fill: var(--main-color);
+}
+.icon {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.content {
+  display: flex;
+  align-items: center;
+  background: #f3f6fc;
+  border-radius: 11px;
+  padding: 10px 14px;
+  gap: 4px;
+}
+.typeIcon {
+  background: var(--default);
+  border-radius: 10px;
+  height: 48px;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.typeIcon svg path {
+  fill: var(--text-light);
+}
+.text {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 52px);
+}
+.title {
+  font-size: 14px;
+  color: var(--text-heading);
+}
+.cardDesc {
+  font-size: 10px;
+  color: #959ca3;
+}
+@media screen and (max-width: 768px) {
+  .wrapper {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .heading h3 {
+    font-size: 2rem;
+  }
+  .heading h4 {
+    font-size: 0.85rem;
+  }
+}
+@media screen and (max-width: 600px) {
+  .card {
+    padding: 4.5rem 1rem 5rem;
+  }
+  .wrapper {
+    margin-top: 2rem;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+  .heading h3 {
+    font-size: 1.5rem;
+  }
+  .heading h4 {
+    font-size: 0.75rem;
+  }
+  .content {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .heading h4 {
+    font-size: 0.75rem;
+  }
+}

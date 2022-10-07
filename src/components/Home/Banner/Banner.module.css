@@ -34,11 +34,9 @@
 
 .description {
   font-size: 2.5rem;
-  max-width: 1050px;
-  font-weight: 900;
+  font-weight: 500;
   text-align: center;
   color: #2d3748;
-  text-align: left;
 }
 
 .more {
