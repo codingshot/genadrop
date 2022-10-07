@@ -49,7 +49,7 @@ const Dashboard = () => {
       name: "a - z",
       date: "newest - oldest",
     },
-    activeDetail: "sale",
+    activeDetail: "created",
     collectedNfts: null,
     createdNfts: null,
     myCollections: null,
@@ -378,20 +378,6 @@ const Dashboard = () => {
         <section className={classes.header}>
           <div className={classes.details}>
             <div
-              onClick={() => activeSwitch("sale")}
-              className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
-            >
-              <p>On sale</p>
-              <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
-            </div>
-            <div
-              onClick={() => activeSwitch("collected")}
-              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
-            >
-              <p>Collected</p>
-              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
-            </div>
-            <div
               onClick={() => activeSwitch("created")}
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
@@ -402,6 +388,21 @@ const Dashboard = () => {
                   ? [...(createdNfts || []), ...(myCollections || [])].length
                   : 0}
               </span>
+            </div>
+
+            <div
+              onClick={() => activeSwitch("collected")}
+              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
+            >
+              <p>Collected</p>
+              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => activeSwitch("sale")}
+              className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
+            >
+              <p>On sale</p>
+              <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
             </div>
           </div>
         </section>
