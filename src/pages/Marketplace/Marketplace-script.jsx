@@ -177,10 +177,15 @@ export const getCollectionsByChain = ({ collections, chain, mainnet }) => {
 };
 
 export const getCollectionsBySearch = ({ collections, search }) => {
-  if (!collections.length) return;
+  if (!collections.length) return null;
   const value = search.trim().toLocaleLowerCase();
   return collections.filter(
-    (col) => col.name.toLowerCase().includes(value) || col.description.toLowerCase().includes(value)
+    (el) =>
+      el.name?.toLowerCase().includes(value) ||
+      el.description?.toLowerCase().includes(value) ||
+      el.owner?.toLowerCase().includes(value) ||
+      el.contractAddress?.toLowerCase().includes(value) ||
+      el.collection_contract?.toLowerCase().includes(value)
   );
 };
 
