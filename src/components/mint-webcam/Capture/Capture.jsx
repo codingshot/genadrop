@@ -139,16 +139,14 @@ const Capture = () => {
     const crd = pos.coords;
     const lat = crd.latitude;
     const lon = crd.longitude;
-    const API_KEY = "994462fe818ec2383a1f5e5da2a2455b";
-    const API_URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+    const API_KEY = "pk.eyJ1IjoiYmFhbTI1IiwiYSI6ImNsOG4wNzViMzAwcjAzd2xhMm52ajJoY2MifQ.kxO2vxRxoGGrvJjxnQhl5g";
+    const API_URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?limit=1&types=place%2Ccountry&access_token=${API_KEY}`;
     if (lat && lon) {
       if (category === "sesh") {
         axios
           .get(API_URL)
           .then((data) => {
-            const country = data?.data[0]?.country;
-            const city = data?.data[0]?.name;
-            const address = `${country}/${city}`;
+            const address = data?.data?.features[0]?.place_name;
             handleSetState({
               toggle: true,
               attributes: {
