@@ -100,6 +100,78 @@ function App() {
             <Route exact path="/links" component={Links} />
             <Route exact path="/search" component={SearchResult} />
             <Route exact path="/brand" component={Brand} />
+            <Route
+              exact
+              path="/tutorials"
+              component={() => {
+                window.location.replace("https://www.youtube.com/playlist?list=PLfkTuB2ltX12uhYARs5GbE0stptAFSacC");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/twitter"
+              component={() => {
+                window.location.replace("https://twitter.com/genadrop");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/linkedin"
+              component={() => {
+                window.location.replace("https://www.linkedin.com/company/genadrop/");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/youtube"
+              component={() => {
+                window.location.replace("https://www.youtube.com/c/minorityprogrammers");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/aurora"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Aurora");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/near"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Near");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/celo"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Celo");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/algorand"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Algorand");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/polygon"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Polygon");
+                return null;
+              }}
+            />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
