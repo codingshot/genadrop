@@ -225,18 +225,33 @@ const Minter = () => {
         })
       );
     }
-    if (!mintToMyAddress && receiverAddress.length < 42) {
+    if (!mintToMyAddress && receiverAddress.length < 42 && supportedChains[chainId].chain !== "Near") {
       return dispatch(
         setNotification({
-          message: "Invalid receiver address ",
+          message: "Invalid receiver address",
           type: "warning",
         })
       );
     }
-    if (receiverAddress.length >= 42 && !mintToMyAddress) {
+    if (!mintToMyAddress && receiverAddress.endsWith(".near") && !mainnet) {
+      return dispatch(
+        setNotification({
+          message: "Invalid receiver address, You're currently on Testnet Network",
+          type: "warning",
+        })
+      );
+    }
+    if (!mintToMyAddress && receiverAddress.endsWith(".testnet") && mainnet) {
+      return dispatch(
+        setNotification({
+          message: "Invalid receiver address, you're currently on Mainnet Network",
+          type: "warning",
+        })
+      );
+    }
+    if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
       singleMintProps.receiverAddress = receiverAddress;
-      console.log("Mint to another", receiverAddress);
     } else {
       mintProps.receiverAddress = account;
       singleMintProps.receiverAddress = account;
@@ -360,7 +375,11 @@ const Minter = () => {
 
   const handleReceiverAddress = (e) => {
     handleSetState({ receiverAddress: e.target.value });
-    if (e.target.value.length >= 42) {
+    if (
+      e.target.value.length >= 42 ||
+      (e.target.value.endsWith(".near") && mainnet) ||
+      (e.target.value.endsWith(".testnet") && !mainnet)
+    ) {
       handleSetState({ goodReceiverAddress: true });
     } else {
       handleSetState({ goodReceiverAddress: false });
