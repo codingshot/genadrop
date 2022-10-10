@@ -31,11 +31,15 @@
   gap: 1em;
 }
 
-.moreIconContainer,
-.shareIconContainer {
+.moreIconContainer {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.shareIconContainer {
+  position: relative;
+  display: inline-block;
 }
 
 .shareIcon,

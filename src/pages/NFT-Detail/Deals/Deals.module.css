@@ -66,6 +66,19 @@
   color: var(--outline);
 }
 
+.sea {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.opensea {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.opensea:hover {
+  cursor: pointer;
+}
 @media screen and (max-width: 1200px) {
   .btn {
     padding: 0.5em 1.5em;
