@@ -127,10 +127,12 @@ const Search = ({ searchContext, searchPlaceholder }) => {
                     ? `Showing ${suggestions.length} results `
                     : "No results"}
                 </div>
-                {suggestions?.length && (
+                {value?.length ? (
                   <div className={classes.showAll} onClick={() => hanldeAllResults()}>
                     <div /> Show All results{" "}
                   </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>
