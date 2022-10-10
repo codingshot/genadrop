@@ -45,6 +45,7 @@
   justify-content: space-between;
   margin-bottom: 3em;
   gap: 1em;
+  overflow: hidden;
 }
 
 .categories {

@@ -22,8 +22,10 @@ const Items = ({ handleSetState, state, collectionName }) => {
   const handleFilter = (_filter) => {
     handleSetState({ filter: { ...filter, ..._filter } });
   };
+
   const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
     useContext(GenContext);
+
   return (
     <div className={classes.displayWrapper}>
       <Filter

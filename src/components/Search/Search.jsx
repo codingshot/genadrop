@@ -6,7 +6,7 @@ import handleSuggestions from "./Search-script";
 import classes from "./Search.module.css";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 
-const Search = () => {
+const Search = ({ searchContext, searchPlaceholder }) => {
   const history = useHistory();
   const location = useLocation();
   const { searchContainer } = useContext(GenContext);
@@ -24,8 +24,10 @@ const Search = () => {
   };
 
   const handleChange = (e) => {
+    console.log("Search Compare: ", searchContext);
     handleSetState({ value: e.target.value });
-    handleSuggestions({ handleSetState, searchContainer, value: e.target.value });
+
+    handleSuggestions({ handleSetState, searchContext, value: e.target.value });
   };
 
   const handleToggleSearch = () => {
@@ -92,7 +94,7 @@ const Search = () => {
             onChange={hanldeSeachChange}
             type="text"
             value={value}
-            placeholder="Search collections, and 1 of 1s"
+            placeholder={searchPlaceholder}
           />
         </div>
       ) : (
@@ -104,7 +106,7 @@ const Search = () => {
             type="text"
             value={value}
             onChange={() => {}}
-            placeholder="Search collections, and 1 of 1s"
+            placeholder={searchPlaceholder}
           />
         </div>
       )}
@@ -116,13 +118,7 @@ const Search = () => {
         >
           {toggleSearch && (
             <div className={classes.searchContainer}>
-              <input
-                onChange={handleChange}
-                value={value}
-                autoFocus
-                type="text"
-                placeholder="Search collections, and 1 of 1s"
-              />
+              <input onChange={handleChange} value={value} autoFocus type="text" placeholder={searchPlaceholder} />
               <div className={classes.hint}>
                 <div className={classes.result}>
                   {!suggestions
@@ -131,10 +127,12 @@ const Search = () => {
                     ? `Showing ${suggestions.length} results `
                     : "No results"}
                 </div>
-                {suggestions?.length && (
+                {value?.length ? (
                   <div className={classes.showAll} onClick={() => hanldeAllResults()}>
                     <div /> Show All results{" "}
                   </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>

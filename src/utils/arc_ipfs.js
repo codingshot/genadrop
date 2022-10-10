@@ -342,7 +342,7 @@ export async function mintSingleToNear(nearMintProps) {
           media: `https://ipfs.io/ipfs/${asset.media}`,
           reference: asset.url,
         },
-        receiver_id: account,
+        receiver_id: receiverAddress.trim(),
       },
       gas: 300000000000000, // attached GAS (optional)
       amount: new BN("10000000000000000000000"),

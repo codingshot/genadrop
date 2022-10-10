@@ -1,70 +1,68 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
-import classes from "./singleNftCollection.module.css";
+import classes from "./MarketplaceAll.module.css";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
-import NotFound from "../../components/not-found/notFound";
+import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import { GenContext } from "../../gen-state/gen.context";
-import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
 import {
-  filterBy,
+  rangeBy,
+  sortBy,
+  getCollectionsByDate,
   getCollectionsByChain,
   getCollectionsBySearch,
-  rangeBy,
-  shuffle,
-  sortBy,
 } from "../Marketplace/Marketplace-script";
-
+import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
-import Search from "../../components/Search/Search";
+import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 
-const SingleNftCollection = () => {
+const MarketplaceAll = () => {
   const {
+    auroraCollections,
+    algoCollections,
+    polygonCollections,
+    celoCollections,
     singleAlgoNfts,
     singleAuroraNfts,
     singlePolygonNfts,
     singleCeloNfts,
     singleNearNfts,
     mainnet,
-    account,
-    searchContainer,
   } = useContext(GenContext);
+  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
-  const mountRef = useRef(null);
+  const mountRef = useRef(0);
   const [state, setState] = useState({
     collections: [],
     filteredCollection: [],
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
+    activeDate: 0,
     searchValue: "",
     notFound: false,
-    searchContext: {
-      "Algorand 1of1": searchContainer["Algorand 1of1"],
-      "Aurora 1of1": searchContainer["Aurora 1of1"],
-      "Celo 1of1": searchContainer["Celo 1of1"],
-      "Polygon 1of1": searchContainer["Polygon 1of1"],
-      "Near 1of1": searchContainer["Near 1of1"],
-    },
+    searchChain: "All Chains",
   });
 
   const {
     collections,
+    activeDate,
+    searchValue,
     paginate,
     currentPage,
     currentPageValue,
-    searchValue,
     filteredCollection,
     notFound,
-    searchContext,
+    searchChain,
   } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  // Pagination
   const handlePrev = () => {
     if (currentPage <= 1) return;
     handleSetState({ currentPage: currentPage - 1 });
@@ -81,44 +79,79 @@ const SingleNftCollection = () => {
     document.documentElement.scrollTop = 0;
   };
 
+  // Date Filter
+  const handleDateSort = (date) => {
+    let result;
+
+    const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
+
+    if (date === activeDate) {
+      result = getCollectionsByDate({ collections: tempCollection, date: 0 });
+      console.log("1", result);
+      handleSetState({ activeDate: 0, filteredCollection: result });
+    } else {
+      result = getCollectionsByDate({ collections: tempCollection, date });
+      console.log("2", result);
+
+      handleSetState({ activeDate: date, filteredCollection: result });
+    }
+  };
+
+  // Chain Filter
+  const handleChainChange = (chain) => {
+    const tempCollection = getCollectionsByDate({ collections, date: activeDate });
+
+    const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
+    handleSetState({ filteredCollection: result, searchChain: chain });
+  };
+
+  const handleFilter = async ({ type, value }) => {
+    let filterCollection = [];
+    if (activeDate) {
+      filterCollection = filteredCollection;
+    } else {
+      filterCollection = collections;
+    }
+    if (type === "sort") {
+      const result = sortBy({ collections: filterCollection, value });
+      handleSetState({ filteredCollection: result });
+    } else if (type === "range") {
+      const result = await rangeBy({ collections: filterCollection, value });
+      handleSetState({ filteredCollection: result });
+    }
+  };
+
+  // Search
   const handleSearchChange = (e) => {
     const result = getCollectionsBySearch({ collections, search: e.target.value });
     handleSetState({ filteredCollection: result, searchValue: e.target.value });
   };
 
-  const handleChainChange = (chain) => {
-    const result = getCollectionsByChain({ collections, chain, mainnet });
-    handleSetState({ filteredCollection: result });
-  };
-
-  const handleFilter = ({ type, value }) => {
-    if (type === "status") {
-      const result = filterBy({ collections, value, account });
-      handleSetState({ filteredCollection: result });
-    } else if (type === "sort") {
-      const result = sortBy({ collections, value });
-      handleSetState({ filteredCollection: result });
-    } else if (type === "range") {
-      const result = rangeBy({ collections, value });
-      handleSetState({ filteredCollection: result });
-    }
-  };
-
   useEffect(() => {
-    console.log(singleNearNfts);
-  }, [singleNearNfts]);
-
-  useEffect(() => {
-    let collections = [
+    const allNFTs = [
+      ...(auroraCollections || []),
+      ...(algoCollectionsArr || []),
+      ...(polygonCollections || []),
+      ...(celoCollections || []),
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
       ...(singleNearNfts || []),
     ];
-    collections = shuffle(collections);
-    handleSetState({ collections, filteredCollection: [...collections] });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+    handleSetState({ collections: allNFTs, filteredCollection: allNFTs });
+  }, [
+    auroraCollections,
+    algoCollections,
+    polygonCollections,
+    celoCollections,
+    singleAlgoNfts,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    singleCeloNfts,
+    singleCeloNfts,
+    singleNearNfts,
+  ]);
 
   useEffect(() => {
     const countPerPage = 20;
@@ -149,14 +182,11 @@ const SingleNftCollection = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <div className={classes.title}>
-          <h1>1 of 1s</h1>
-          <p>View all listed 1 of 1s {`(${collections.length} Listed)`}</p>
+          <h1>{searchChain}</h1>
+          <p>View all listed ({`${collections && collections.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search searchContext={searchContext} searchPlaceholder="Search By 1 of 1s and Users" />
-
-          {/* <div className={classes.search}>
-
+          <div className={classes.search}>
             <SearchIcon />
             <input
               type="text"
@@ -164,10 +194,10 @@ const SingleNftCollection = () => {
               value={searchValue}
               placeholder="Search By collections ,1 of 1s or Users"
             />
-          </div> */}
+          </div>
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
-              <ChainDropdown onChainFilter={handleChainChange} />
+              <ChainDropdown onChainFilter={handleChainChange} data={collections} />
             </div>
             <FilterDropdown handleFilter={handleFilter} />
           </div>
@@ -175,13 +205,31 @@ const SingleNftCollection = () => {
         <div className={classes.chainMobile}>
           <ChainDropdown onChainFilter={handleChainChange} />
         </div>
+        <div className={classes.dateFilter}>
+          <div onClick={() => handleDateSort(1)} className={`${classes.date} ${activeDate === 1 && classes.active}`}>
+            24 Hours
+          </div>
+          <div onClick={() => handleDateSort(7)} className={`${classes.date} ${activeDate === 7 && classes.active}`}>
+            7 Days
+          </div>
+          <div onClick={() => handleDateSort(30)} className={`${classes.date} ${activeDate === 30 && classes.active}`}>
+            30 Days
+          </div>
+          <div onClick={() => handleDateSort(0)} className={`${classes.date} ${activeDate === 0 && classes.active}`}>
+            All
+          </div>
+        </div>
       </div>
       <div className={classes.wrapper}>
         {Object.keys(paginate).length ? (
           <div className={classes.nfts}>
-            {paginate[currentPage].map((nft, idx) => (
-              <SingleNftCard key={idx} nft={nft} />
-            ))}
+            {paginate[currentPage].map((collection, idx) => {
+              return collection?.nfts ? (
+                <CollectionNftCard key={idx} collection={collection} />
+              ) : (
+                <SingleNftCard key={idx} nft={collection} />
+              );
+            })}
           </div>
         ) : !notFound ? (
           <div className={classes.nfts}>
@@ -206,4 +254,4 @@ const SingleNftCollection = () => {
   );
 };
 
-export default SingleNftCollection;
+export default MarketplaceAll;
