@@ -9,10 +9,13 @@ import {
   switchCameraToRear,
   updateVideoSize,
   generateGif,
+  capitalizeFirstLetter,
+  isEmpty,
 } from "../Capture/Capture-script";
 import useTimer from "../Capture/useTimer";
 import RecordBtn from "../Capture/RecordBtn";
 import Tooltip from "../Tooltip/Tooltip";
+import StickType from "../../stick-type/StickType";
 // icons
 import { ReactComponent as IconCapture } from "../../../assets/capture-btn.svg";
 import { ReactComponent as CameraSwitch } from "../../../assets/camera-switch.svg";
@@ -52,7 +55,11 @@ const RegularCamera = ({ regularCameraProps }) => {
     currenFile,
     activeFile,
     displayedModes,
+    attributes,
   } = regularCameraProps;
+
+  const pathname = history.location?.pathname.replace("/mint/", "");
+  const onlyCamera = pathname === "sesh" || pathname === "vibe";
 
   // Record Handles
   const handleDataAvailable = React.useCallback(
@@ -146,7 +153,7 @@ const RegularCamera = ({ regularCameraProps }) => {
 
   const updpateMainBtn = (type) => {
     // picture record
-    if (type === "BeReal") {
+    if (type === "Doubletake") {
       handleSetState({
         dualCam: true,
       });
@@ -175,15 +182,16 @@ const RegularCamera = ({ regularCameraProps }) => {
       name = "video";
       type = "Shorts";
     }
-    const pathname = history.location?.pathname.replace("/mint/", "");
-    if (pathname === "vibe") {
-      type = "Vibe";
+    if (onlyCamera) {
+      type = capitalizeFirstLetter(pathname);
     }
+
     dispatch(
       setZip({
         name,
         file,
         type,
+        ...(!isEmpty(attributes) && { attributes }),
       })
     );
 
@@ -224,18 +232,27 @@ const RegularCamera = ({ regularCameraProps }) => {
           <img src={img} alt="camera-shot" />
         )}
       </div>
+      {/* select smoking stick for proof of sesh */}
+      {!attributes.smoking_stick && pathname === "sesh" && (
+        <StickType handleSetState={handleSetState} attributes={attributes} />
+      )}
+      {/*  */}
       <div className={classes.imgBtn}>
-        <div className={classes.mintBtn} onClick={continueToMint}>
+        <div className={classes.mintBtn} onClick={continueToMint} attributes={attributes}>
           Continue
         </div>
         <p
           className={classes.mintBtn}
           onClick={() => {
+            const clearAttributes = {
+              location: attributes.location,
+            };
             handleSetState({
               img: "",
               gif: "",
               video: "",
               activeFile: "gif",
+              attributes: clearAttributes,
             });
           }}
         >
@@ -262,7 +279,7 @@ const RegularCamera = ({ regularCameraProps }) => {
           <div className={classes.videoOFF} />
         )}{" "}
       </div>
-      <div className={classes.closeBtn} onClick={() => history.push("/mint/1of1")}>
+      <div className={classes.closeBtn} onClick={() => history.push("/create")}>
         <CloseIcon />
       </div>
       {isMobileDevice && (
@@ -280,6 +297,7 @@ const RegularCamera = ({ regularCameraProps }) => {
           {displayedModes[0].icon}
           <p>{displayedModes[0].text}</p>
         </div>
+
         {/* main button */}
         {webcamCurrentType === "Photo" ? (
           <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>

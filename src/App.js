@@ -11,7 +11,6 @@ import List from "./pages/listNFT/list";
 import Profile from "./pages/profile/profile";
 import SingleNftCollection from "./pages/singleNftCollection/singleNftCollection";
 import Artist from "./pages/artist/artist";
-
 import Listed from "./pages/userDashboard/listNFT/listed";
 import Partner from "./pages/Partner/Partner";
 import Prompt from "./components/delete-prompt/prompt";
@@ -34,9 +33,8 @@ import Loader from "./components/Loader/Loader";
 import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Home from "./pages/home/home";
-import Create from "./pages/create/create";
+import CreateCollection from "./pages/createCollection/CreateCollection";
 import Mint from "./pages/mint/mint";
-import SwitchWalletNotification from "./components/Switch-Wallet-Notification/SwitchWalletNotification";
 import Pricing from "./pages/Pricing/Pricing";
 import Fallback from "./pages/fallback/fallback";
 import StoreData from "./renderless/store-data/StoreData";
@@ -46,6 +44,9 @@ import SearchResult from "./pages/searchResult/searchResult";
 import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
+import Create from "./pages/Create/Create";
+import CollectionOptions from "./pages/collection-options/CollectionOptions";
+import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -63,15 +64,22 @@ function App() {
         <ErrorBoundary>
           <Switch>
             <Route exact path="/" component={Home} />
+            <Route exact path="/collection" component={CollectionOptions} />
+            <Route exact path="/create/collection" component={CreateCollection} />
             <Route exact path="/create" component={Create} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
-            <Route exact path={["/mint/camera", "/mint/vibe"]} component={Camera} />
+            <Route
+              exact
+              path={["/mint/camera", "/mint/vibe", "/mint/sesh", "/mint/doubletake", "/mint/video"]}
+              component={Camera}
+            />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />
             <Route exact path="/marketplace/1of1" component={SingleNftCollection} />
             <Route exact path="/marketplace/collections" component={Collections} />
+            <Route exact path="/marketplace/all" component={MarketplaceAll} />
             <Route exact path="/marketplace/1of1/:chainId/:nftId" component={NFTDetail} />
 
             <Route exact path="/marketplace/1of1/list/:chainId/:nftId" component={List} />
@@ -92,6 +100,78 @@ function App() {
             <Route exact path="/links" component={Links} />
             <Route exact path="/search" component={SearchResult} />
             <Route exact path="/brand" component={Brand} />
+            <Route
+              exact
+              path="/tutorials"
+              component={() => {
+                window.location.replace("https://www.youtube.com/playlist?list=PLfkTuB2ltX12uhYARs5GbE0stptAFSacC");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/twitter"
+              component={() => {
+                window.location.replace("https://twitter.com/genadrop");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/linkedin"
+              component={() => {
+                window.location.replace("https://www.linkedin.com/company/genadrop/");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/youtube"
+              component={() => {
+                window.location.replace("https://www.youtube.com/c/minorityprogrammers");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/aurora"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Aurora");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/near"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Near");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/celo"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Celo");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/algorand"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Algorand");
+                return null;
+              }}
+            />
+            <Route
+              exact
+              path="/polygon"
+              component={() => {
+                window.location.replace("https://www.genadrop.com/marketplace/all?chain=Polygon");
+                return null;
+              }}
+            />
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>

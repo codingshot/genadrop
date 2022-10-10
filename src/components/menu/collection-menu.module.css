@@ -57,10 +57,12 @@
   flex-direction: column;
   gap: 1em;
   cursor: var(--cursor-pointer);
-  border: 1px solid var(--outline);
-  background: var(--outline);
+  background: var(--card-upload);
+  border: 1px solid #b2c5d0;
 }
-
+.uploadCard > svg path {
+  fill: #c1ddff;
+}
 .uploadBtn {
   display: flex;
   align-items: center;
@@ -71,7 +73,14 @@
   color: var(--main-color);
   border: 1px solid var(--main-color);
 }
-
+.uploadTitle {
+  font-weight: 700;
+  color: #263238;
+}
+.uploadText {
+  font-size: 0.875rem;
+  color: #767676;
+}
 .addIcon,
 .uploadIcon {
   width: 1.5em;

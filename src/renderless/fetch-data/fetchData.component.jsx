@@ -292,6 +292,7 @@ const FetchData = () => {
         );
       }
       const result = await fetchNearSingleNfts(data?.nfts);
+      console.log(result);
       if (result) {
         dispatch(setNearSingleNft(result));
         dispatch(
