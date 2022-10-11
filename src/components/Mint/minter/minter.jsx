@@ -60,9 +60,9 @@ const Minter = () => {
       isError: null,
       popup: false,
     },
-    showReceiverAddress: false,
+    mintToMyAddress: true,
     receiverAddress: "",
-    goodReceiverAddress: false,
+    goodReceiverAddress: true,
     showLocation: false,
     vibeProps: {
       friendliness: 0,
@@ -84,7 +84,7 @@ const Minter = () => {
     previewSelectMode,
     profileSelected,
     popupProps,
-    showReceiverAddress,
+    mintToMyAddress,
     receiverAddress,
     goodReceiverAddress,
     category,
@@ -94,7 +94,7 @@ const Minter = () => {
     toggleType,
     stick_type,
   } = state;
-  console.log(attributes);
+
   const mintProps = {
     dispatch,
     setLoader,
@@ -225,15 +225,31 @@ const Minter = () => {
         })
       );
     }
-    if (showReceiverAddress && receiverAddress.length < 42) {
+    if (!mintToMyAddress && receiverAddress.length < 42 && supportedChains[chainId].chain !== "Near") {
       return dispatch(
         setNotification({
-          message: "Invalid receiver address ",
+          message: "Invalid receiver address",
           type: "warning",
         })
       );
     }
-    if (receiverAddress.length >= 42 && showReceiverAddress) {
+    if (!mintToMyAddress && receiverAddress.endsWith(".near") && !mainnet) {
+      return dispatch(
+        setNotification({
+          message: "Invalid receiver address, You're currently on Testnet Network",
+          type: "warning",
+        })
+      );
+    }
+    if (!mintToMyAddress && receiverAddress.endsWith(".testnet") && mainnet) {
+      return dispatch(
+        setNotification({
+          message: "Invalid receiver address, you're currently on Mainnet Network",
+          type: "warning",
+        })
+      );
+    }
+    if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
       singleMintProps.receiverAddress = receiverAddress;
     } else {
@@ -359,14 +375,18 @@ const Minter = () => {
 
   const handleReceiverAddress = (e) => {
     handleSetState({ receiverAddress: e.target.value });
-    if (e.target.value.length >= 42) {
+    if (
+      e.target.value.length >= 42 ||
+      (e.target.value.endsWith(".near") && mainnet) ||
+      (e.target.value.endsWith(".testnet") && !mainnet)
+    ) {
       handleSetState({ goodReceiverAddress: true });
     } else {
       handleSetState({ goodReceiverAddress: false });
     }
   };
   // select category
-  let categories = ["Sesh", "Photography", "Painting", "Illustration", "3D"];
+  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic"];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
 
   // get current location
@@ -434,9 +454,6 @@ const Minter = () => {
     }
   }, [showLocation, category]);
 
-  const isVibe = metadata?.category ? metadata?.category === "Photography" : false;
-  if (isVibe) categories = ["Vibe", "Photography"];
-
   const getActivetitle = () => {
     const header = cards.filter(
       (card) =>
@@ -450,6 +467,13 @@ const Minter = () => {
         {header?.title}
       </div>
     );
+  };
+
+  const handleCheck = () => {
+    const mintToMe = !mintToMyAddress;
+    handleSetState({ mintToMyAddress: mintToMe });
+    if (!mintToMe) handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
+    else handleSetState({ goodReceiverAddress: true });
   };
 
   return (
@@ -644,7 +668,7 @@ const Minter = () => {
                         className={`${classes.chain} ${classes.active}`}
                       >
                         {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
-                        {!metadata?.attributes && <DropdownIcon className={classes.dropdownIcon} />}
+                        {!metadata?.category && <DropdownIcon className={classes.dropdownIcon} />}
                       </div>
                       <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
                         {categories.map((nftCategory) => (
@@ -759,28 +783,24 @@ const Minter = () => {
 
                           <div className={classes.inputContainer}>
                             <input type="text" value={metadata?.location?.value} disabled />
-                            {goodReceiverAddress ? <GreenTickIcon /> : ""}
                           </div>
                         </div>
                       </div>
                     </div>
                   )}
 
-                  <div className={classes.inputWrapper}>
-                    <div className={`${classes.toggleTitle} ${classes.hide}`}>
+                  <div className={`${classes.inputWrapper} `}>
+                    <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
-                        Non Tranferable NFT{" "}
+                        Mint To Your Address{" "}
                         <GenadropToolTip
-                          content="This NFT will be minted to receiver address and cannot be moved afterward"
+                          content="Click toggle button to mint to another address. This can't be reversed."
                           fill="#0d99ff"
                         />
                       </div>
                       <div className={classes.toggler}>
                         <label className={classes.switch}>
-                          <input
-                            type="checkbox"
-                            onClick={() => handleSetState({ showReceiverAddress: !showReceiverAddress })}
-                          />
+                          <input type="checkbox" onClick={() => handleCheck()} defaultChecked />
                           <span className={classes.slider} />
                         </label>
                       </div>
@@ -793,11 +813,12 @@ const Minter = () => {
                         <input
                           style={zip ? { pointerEvents: "none" } : {}}
                           type="text"
-                          value={receiverAddress}
-                          placeholder={account}
+                          value={mintToMyAddress ? account : receiverAddress}
+                          placeholder={account === "" ? "Please connect your wallet" : account}
                           onChange={(event) => handleReceiverAddress(event)}
+                          disabled={!!mintToMyAddress}
                         />
-                        {goodReceiverAddress ? <GreenTickIcon /> : ""}
+                        {goodReceiverAddress && account !== "" ? <GreenTickIcon /> : ""}
                       </div>
                     </div>
                   </div>
@@ -824,7 +845,7 @@ const Minter = () => {
                     <div className={`${classes.chainDropdown} ${toggleDropdown && classes.active}`}>
                       {Object.values(supportedChains)
                         .filter((chainE) => mainnet === chainE.isMainnet)
-                        .map((chainE, idx) => (
+                        .map((chainE) => (
                           <div
                             onClick={() =>
                               !chainE.comingSoon && chainE.networkId !== chainId

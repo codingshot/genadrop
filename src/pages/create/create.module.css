@@ -1,0 +1,155 @@
+.container {
+  padding: 2em 2em 6em;
+  max-width: 1440px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+.title {
+  font-weight: 700;
+  font-size: 4rem;
+  color: var(--text-heading);
+  margin-bottom: 0.25em;
+}
+.description {
+  font-size: 1.25rem;
+  color: #000000;
+  margin-bottom: 3.2em;
+  text-align: center;
+}
+.cardDeck {
+  display: grid;
+  gap: 27px 29px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  justify-content: space-between;
+  margin: auto;
+  width: 100%;
+}
+.card {
+  background: var(--default);
+  border: 1px solid #e5e8eb;
+  box-shadow: 26px 18px 18px rgba(93, 134, 194, 0.05);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1rem;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+.extra {
+  display: flex;
+  margin-top: 29px;
+  width: calc(100% - 54px);
+  gap: 27px;
+  justify-content: center;
+  max-height: 0;
+  overflow: hidden;
+  transition: all 200ms ease;
+}
+.extra.active {
+  max-height: 20rem;
+  overflow: visible;
+}
+.extra .card {
+  width: calc(100% / 3);
+}
+
+.extra .card:hover .icon svg path {
+  fill: var(--default);
+}
+.card:hover {
+  border-color: var(--main-color);
+  box-shadow: 26px 18px 18px rgb(93 134 194 / 16%);
+}
+.icon {
+  background: #f3f6fc;
+  border-radius: 50%;
+  padding: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  width: 6.5rem;
+  height: 6.5rem;
+}
+.card:hover .icon {
+  background: var(--main-color);
+}
+.card:hover .icon svg path {
+  stroke: var(--default);
+}
+.card:nth-child(3):hover .icon svg path {
+  fill: var(--default);
+}
+.card:nth-child(2):hover .icon svg path:last-child {
+  fill: var(--default);
+}
+.icon svg {
+  height: 100%;
+  width: 100%;
+}
+.cardTitle {
+  font-weight: 500;
+  color: var(--main-color);
+}
+.cardDescription {
+  font-size: 0.875rem;
+  color: #263238;
+}
+.moreBTN {
+  color: var(--main-color);
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-top: 3rem;
+}
+.moreBTN.active svg {
+  transform: rotate(180deg);
+}
+.moreBTN svg {
+  width: 2.3rem;
+  height: fit-content;
+  transition: transform 200ms ease-in-out;
+}
+.moreBTN svg path {
+  fill: var(--main-color);
+}
+@media screen and (max-width: 650px) {
+  .cardDeck {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+  .extra {
+    width: calc(100% - 27px);
+  }
+  .extra .card {
+    width: calc(100% / 2);
+  }
+}
+@media screen and (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+  .description {
+    font-size: 15px;
+  }
+  .card {
+    padding: 1.25rem 1rem;
+  }
+  .cardTitle {
+    font-size: 0.75rem;
+  }
+  .cardDescription {
+    font-size: 0.5rem;
+  }
+  .icon {
+    width: 57px;
+    height: 57px;
+    padding: 8px;
+  }
+}

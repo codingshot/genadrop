@@ -44,11 +44,18 @@ const TransactionHistory = ({ transactionHistory, nftDetails }) => {
     handleSetState({ searchValue: e.target.value });
   };
 
-  const handleSearch = () => {
-    if (!searchValue) return;
-    const result = transactionHistory.filter(
-      (history) => history.txId == searchValue || history.buyer == searchValue || history.seller == searchValue
+  const handleSearch = (e) => {
+    handleSetState({ searchValue: e.target.value });
+    if (!e.target.value) return handleSetState({ filterdHistory: transactionHistory });
+
+    const result = filterdHistory.filter(
+      (history) =>
+        history?.txId.includes(e.target.value) ||
+        history.buyer?.includes(e.target.value) ||
+        history.seller?.includes(e.target.value) ||
+        getFormatedTxDate(history.txDate).includes(e.target.value)
     );
+
     handleSetState({ filterdHistory: result });
   };
 
@@ -89,10 +96,8 @@ const TransactionHistory = ({ transactionHistory, nftDetails }) => {
         </div>
         <div className={classes.search}>
           <SearchIcon />
-          <input type="text" onChange={handleSearchChange} value={searchValue} placeholder="Search by Address/TxID" />
-          <div onClick={handleSearch} className={classes.searchBtn}>
-            Go
-          </div>
+          <input type="text" onChange={handleSearch} value={searchValue} placeholder="Search by Address/TxID" />
+          {/* <div className={classes.searchBtn}>Go</div> */}
         </div>
         <div className={classes.listContainer}>
           {filterdHistory &&

@@ -12,7 +12,7 @@ import {
   CollectedView,
 } from "./CardFooter";
 
-const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft, userId }) => {
+const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft, userId, usdPrice }) => {
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
@@ -21,7 +21,10 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
   const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed } = nft;
 
   const getUsdValue = async () => {
-    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+    let value = usdPrice;
+    if (!value) {
+      value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+    }
     setUsdValue(Number(value) * Number(price));
   };
 

@@ -1,6 +1,7 @@
 import proofofvibes from "../../assets/partners/proofofvibes.svg";
 import herdao from "../../assets/partners/herdao.png";
 import bluntdao from "../../assets/partners/bluntdao.svg";
+import onboarddao from "../../assets/partners/onboarddao.svg";
 
 const mediaData = [
   {
@@ -16,6 +17,10 @@ const mediaData = [
     url: "https://www.bluntdao.com/",
   },
   {
+    srcActive: onboarddao,
+    url: "https://www.onboarddao.com/",
+  },
+  {
     srcActive: herdao,
     url: "https://www.herdrop.com/",
   },
@@ -26,6 +31,10 @@ const mediaData = [
   {
     srcActive: bluntdao,
     url: "https://www.bluntdao.com/",
+  },
+  {
+    srcActive: onboarddao,
+    url: "https://www.onboarddao.com/",
   },
 ];
 export default mediaData;
