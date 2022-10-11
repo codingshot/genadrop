@@ -7,9 +7,9 @@
 }
 
 .tick {
-  /* background: red; */
+  background: red;
   fill: var(--default);
-  fill-opacity: 15%;
+  fill-opacity: 20%;
   border-radius: 50%;
 }
 
