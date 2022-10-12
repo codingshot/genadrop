@@ -6,20 +6,8 @@ import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 import openseaIcon from "../../../assets/icon-opensea.svg";
 
 const Deals = ({ nftDetails }) => {
-  const {
-    price,
-    chain,
-    sold,
-    isListed,
-    owner,
-    account,
-    chainId,
-    mainnet,
-    connector,
-    dispatch,
-    Id,
-    collection_name,
-  } = nftDetails;
+  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
+    nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -40,8 +28,6 @@ const Deals = ({ nftDetails }) => {
   };
 
   useEffect(() => {
-    console.log(nftDetails);
-
     getUsdValue();
   }, [nftDetails]);
   return (

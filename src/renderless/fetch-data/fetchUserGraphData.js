@@ -21,7 +21,7 @@ import {
   getTransactions,
   getUserGraphNft,
 } from "../../utils";
-import { auroraClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
+import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
   const { data: polygonData, error: polygonError } = await polygonClient
@@ -38,6 +38,21 @@ export const polygonUserData = async (address) => {
     });
   }
   return [polygonResult[0], trHistory];
+};
+
+export const avaxUsersNfts = async (address) => {
+  const { data: avaxData, error: avaxError } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
+  if (avaxError) return;
+  let trHistory;
+  let avaxResult = [];
+  if (avaxData?.nft !== null) {
+    avaxResult = await getGraphNft(avaxData?.nft);
+    trHistory = await getTransactions(avaxData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = avaxResult[0].price;
+    });
+  }
+  return [avaxResult[0], trHistory];
 };
 
 export const nearUserData = async (address) => {

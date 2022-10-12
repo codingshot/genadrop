@@ -61,7 +61,7 @@ const chains = [
     color: "#ffffff",
     border: "transparent",
     bg: "#E84142",
-    isComingSoon: true,
+    isComingSoon: false,
   },
 ];
 export default chains;

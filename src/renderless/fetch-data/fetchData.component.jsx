@@ -324,6 +324,7 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
+      console.log("avax", result);
       if (result) {
         dispatch(setAvaxSingleNfts(result));
       } else {

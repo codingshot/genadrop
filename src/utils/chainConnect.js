@@ -62,7 +62,7 @@ export const chainIdToParams = {
     chainName: "Avalanche",
     nativeCurrency: { name: "Avalanche", symbol: "AVAX", decimals: 18 },
     rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
-    blockExplorerUrls: ["https://testnet.snowtrace.io/address/"],
+    blockExplorerUrls: ["https://testnet.snowtrace.io/"],
     iconUrls: [""],
   },
 
