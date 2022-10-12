@@ -52,10 +52,10 @@ const aggregatorV3InterfaceABI = [
   },
 ];
 
-const ETH_USD = process.env.REACT_APP_ETH_USD;
+// const ETH_USD = process.env.REACT_APP_ETH_USD;
 // const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider)
 
-export const getLatestPrice = async () => {
-  const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider);
-  return await ethPriceFeed.latestRoundData();
-};
+// export const getLatestPrice = async () => {
+//   const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider);
+//   return await ethPriceFeed.latestRoundData();
+// };
