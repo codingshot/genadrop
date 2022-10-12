@@ -1,9 +1,9 @@
-import classes from "./PricingModal.module.css";
-import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
+import classes from "./PricingModal.module.css";
 import PaypalButton from "./PaypalButton";
 import { ReactComponent as StripeIcon } from "../../../assets/icon-stripe.svg";
 import { saveUserData } from "../../../renderless/store-data/StoreDataLocal";
@@ -106,7 +106,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
   };
 
   const checkoutOptions = {
-    lineItems: [item[plan]], //replace test with plan. plan is a variable name
+    lineItems: [item[plan]], // replace test with plan. plan is a variable name
     mode: "payment",
     successUrl: `${window.location.origin}/create/session/create`,
     cancelUrl: `${window.location.origin}/create/session/pricing/failed`,

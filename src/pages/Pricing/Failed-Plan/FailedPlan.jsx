@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
 import { ReactComponent as FailedIcon } from "../../../assets/icon-payment-failed.svg";
 import classes from "./FailedPlan.module.css";
-import { useHistory } from "react-router-dom";
 import { setProposedPlan } from "../../../gen-state/gen.actions";
-import Fallback from "../..//fallback/fallback";
+import Fallback from "../../fallback/fallback";
 
 const FailedPlan = () => {
   const history = useHistory();
@@ -15,7 +15,7 @@ const FailedPlan = () => {
 
   useEffect(() => {
     if (!proposedPlan) {
-      return history.push("/create");
+      return history.push("/create/collection");
     }
     dispatch(setProposedPlan(""));
     document.documentElement.scrollTop = 0;
@@ -31,7 +31,7 @@ const FailedPlan = () => {
           <button onClick={() => history.push("/create/session/pricing")} className={classes.btn_1}>
             Try again
           </button>
-          <button onClick={() => history.push("/create")} className={classes.btn_2}>
+          <button onClick={() => history.push("/create/collection")} className={classes.btn_2}>
             Go to create
           </button>
         </div>

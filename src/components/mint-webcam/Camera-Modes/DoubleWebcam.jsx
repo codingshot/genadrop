@@ -54,7 +54,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       setZip({
         name,
         file: result,
-        type: "BeReal",
+        type: "Doubletake",
       })
     );
 
@@ -165,7 +165,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           {/* main button */}
           <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
             <IconCapture className={classes.captureBtn} />
-            <p>BeReal</p>
+            <p>Doubletake</p>
           </div>
 
           {/* switch mode button */}

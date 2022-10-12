@@ -21,6 +21,7 @@ const NFT = ({ nftDetails }) => {
           <div className={classes.shareIconContainer}>
             <ShareIcon onClick={() => setShare(true)} className={classes.shareIcon} />
           </div>
+
           {/* <div className={classes.moreIconContainer}>
             <MoreIcon className={classes.moreIcon} />
           </div> */}

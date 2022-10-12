@@ -1,9 +1,11 @@
+import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 import classes from "./Session.module.css";
 import { ReactComponent as ChevronIcon } from "../../assets/icon-chevron-down.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 import { ReactComponent as ArrowBackIcon } from "../../assets/icon-arrow-left.svg";
-import { useContext, useEffect, useState } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   addRule,
@@ -18,11 +20,9 @@ import {
   setUpgradePlan,
 } from "../../gen-state/gen.actions";
 import { deleteAllLayers, fetchSession, fetchUserSession } from "../../renderless/store-data/StoreData.script";
-import { useHistory } from "react-router-dom";
 import { plans } from "../Pricing/Pricing.script";
 import { getCurrentUser } from "../../components/google-auth/googleAuth.script";
 import NotResult from "./No-Result/NoResult";
-import Skeleton from "react-loading-skeleton";
 import { handleResetCreate } from "../../utils";
 
 const Session = () => {
@@ -50,7 +50,7 @@ const Session = () => {
       );
       dispatch(setOverlay(false));
       console.log("fetch ends");
-      history.push("/create");
+      history.push("/create/collection");
     }
   };
 

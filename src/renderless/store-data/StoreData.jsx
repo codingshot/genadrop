@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { setImageAction, setLayerAction, setNftLayers } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
+import { getLatestPrice } from "../../utils/priceFeed";
 import {
   deleteAllTraits,
   deleteTrait,
@@ -38,6 +39,11 @@ const StoreData = () => {
     );
   };
 
+  // useEffect(() => {
+  //   getLatestPrice().then((data) => {
+  //     console.log(Number(utils.formatUnits(data[3], 8)));
+  //   });
+  // }, []);
   useEffect(() => {
     const { type } = layerAction;
     if (type !== "name") return;
@@ -59,7 +65,7 @@ const StoreData = () => {
     } else if (type === "order") {
       saveLayers({ currentUser, sessionId, layers: newLayers });
     }
-    if (location.pathname === "/create" && type !== "rule") {
+    if (location.pathname === "/create/collection" && type !== "rule") {
       dispatch(setNftLayers([]));
     }
     resetLayerAction();
@@ -107,14 +113,14 @@ const StoreData = () => {
   useEffect(() => {
     const { type } = layerAction;
     if (type !== "rule") return;
-    let newRules = rule.map((r) => {
-      let iRule = r.map(({ imageFile, ...ir }) => {
+    const newRules = rule.map((r) => {
+      const iRule = r.map(({ imageFile, ...ir }) => {
         return { imageFile: "", ...ir };
       });
       return iRule;
     });
 
-    let strRules = JSON.stringify(newRules);
+    const strRules = JSON.stringify(newRules);
     saveRules({ currentUser, sessionId, rules: strRules });
     resetLayerAction();
   }, [layerAction, currentUser, sessionId, rule]);
