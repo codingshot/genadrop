@@ -44,6 +44,7 @@ const FeautedNfts = () => {
           "genadrop-contract.nftgen.near1664562603103",
         ];
 
+
   useEffect(() => {
     let nfts = [
       ...(algoNFTs || []),
