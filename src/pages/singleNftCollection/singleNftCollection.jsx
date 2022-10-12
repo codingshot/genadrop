@@ -18,6 +18,13 @@ import {
 
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";
+import {
+  parseAlgoSingle,
+  parseAuroraSingle,
+  parseCeloSingle,
+  parseNearSingle,
+  parsePolygonSingle,
+} from "../../renderless/fetch-data/fetchData-script";
 
 const SingleNftCollection = () => {
   const {
@@ -41,13 +48,7 @@ const SingleNftCollection = () => {
     currentPageValue: 1,
     searchValue: "",
     notFound: false,
-    searchContext: {
-      "Algorand 1of1": searchContainer["Algorand 1of1"],
-      "Aurora 1of1": searchContainer["Aurora 1of1"],
-      "Celo 1of1": searchContainer["Celo 1of1"],
-      "Polygon 1of1": searchContainer["Polygon 1of1"],
-      "Near 1of1": searchContainer["Near 1of1"],
-    },
+    searchContext: "",
   });
 
   const {
@@ -105,10 +106,6 @@ const SingleNftCollection = () => {
   };
 
   useEffect(() => {
-    console.log(singleNearNfts);
-  }, [singleNearNfts]);
-
-  useEffect(() => {
     let collections = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
@@ -118,6 +115,15 @@ const SingleNftCollection = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: [...collections] });
+    handleSetState({
+      searchContext: {
+        "Algorand 1of1": parseAlgoSingle(singleAlgoNftsArr),
+        "Aurora 1of1": parseAuroraSingle(singleAuroraNfts),
+        "Celo 1of1": parseCeloSingle(singleCeloNfts),
+        "Polygon 1of1": parsePolygonSingle(singlePolygonNfts),
+        "Near 1of1": parseNearSingle(singleNearNfts),
+      },
+    });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   useEffect(() => {

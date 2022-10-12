@@ -12,15 +12,13 @@ const handleSuggestions = async ({ handleSetState, searchContext, value }) => {
 
   Object.keys(searchContext).forEach(async (chain) => {
     const search = new Promise((resolve) => {
-
-      const result = searchContainer[chain].filter(
+      const result = searchContext[chain].filter(
         (el) =>
           el.name?.toLowerCase().includes(value) ||
           el.description?.toLowerCase().includes(value) ||
           el.owner?.toLowerCase().includes(value) ||
           el.contractAddress?.toLowerCase().includes(value) ||
           el.collection_contract?.toLowerCase().includes(value)
-
       );
       resolve(result);
     });
