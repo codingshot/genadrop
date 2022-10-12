@@ -17,6 +17,12 @@ import {
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";
+import {
+  parseAlgoCollection,
+  parseAuroraCollection,
+  parseCeloCollection,
+  parsePolygonCollection,
+} from "../../renderless/fetch-data/fetchData-script";
 
 const Collections = () => {
   const {
@@ -40,12 +46,7 @@ const Collections = () => {
     searchValue: "",
     notFound: false,
     searchChain: "All Chains",
-    searchContext: {
-      "Algorand collection": searchContainer["Algorand collection"],
-      "Aurora collection": searchContainer["Aurora collection"],
-      "Celo collection": searchContainer["Celo collection"],
-      "Polygon collection": searchContainer["Polygon collection"],
-    },
+    searchContext: "",
   });
 
   const {
@@ -139,7 +140,14 @@ const Collections = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: collections });
-    console.log("Filtered: ", filteredCollection);
+    handleSetState({
+      searchContext: {
+        "Algorand collection": parseAlgoCollection(algoCollectionsArr),
+        "Aurora collection": parseAuroraCollection(auroraCollections),
+        "Celo collection": parseCeloCollection(celoCollections),
+        "Polygon collection": parsePolygonCollection(polygonCollections),
+      },
+    });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {

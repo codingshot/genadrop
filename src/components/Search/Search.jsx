@@ -25,6 +25,7 @@ const Search = ({ searchContext, searchPlaceholder }) => {
 
   const handleChange = (e) => {
     console.log("Search Compare: ", searchContext);
+    console.log("Search Compare: ", searchContainer);
     handleSetState({ value: e.target.value });
 
     handleSuggestions({ handleSetState, searchContext, value: e.target.value });
