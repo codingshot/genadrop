@@ -48,6 +48,7 @@ const SingleNftCollection = () => {
       "Celo 1of1": searchContainer["Celo 1of1"],
       "Polygon 1of1": searchContainer["Polygon 1of1"],
       "Near 1of1": searchContainer["Near 1of1"],
+      "Avax 1of1": searchContainer["Avax 1of1"],
     },
   });
 

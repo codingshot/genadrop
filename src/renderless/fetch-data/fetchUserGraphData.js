@@ -105,6 +105,14 @@ export const getNearMintedNfts = async (address) => {
   return nearMintedNfts;
 };
 
+export const getAvaxMintedNfts = async (address) => {
+  const { data: avaxData, error: avaxError } = await avalancheClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (avaxError) return;
+  const response = await getSingleGraphNfts(avaxData?.user?.nfts, address);
+  const avaxMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true);
+  return avaxMintedNfts;
+};
+
 export const getCeloNFTToList = async (address, nftId) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (celoError) return;
@@ -121,7 +129,6 @@ export const getCeloMintedNFTs = async (address) => {
       ? ethers?.utils?.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
       : ethers?.utils?.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
-  console.log(response);
   const celoMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true && NFTS?.collectionId === filterAddress);
   return celoMintedNfts;
 };

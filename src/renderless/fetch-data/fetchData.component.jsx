@@ -46,6 +46,7 @@ import {
   parseAlgoSingle,
   parseAuroraCollection,
   parseAuroraSingle,
+  parseAvaxSingle,
   parseCeloCollection,
   parseCeloSingle,
   parseNearSingle,
@@ -324,9 +325,13 @@ const FetchData = () => {
         );
       }
       const result = await getSingleGraphNfts(data?.nfts);
-      console.log("avax", result);
       if (result) {
         dispatch(setAvaxSingleNfts(result));
+        dispatch(
+          setSearchContainer({
+            "Avax 1of1": parseAvaxSingle(result),
+          })
+        );
       } else {
         dispatch(setAvaxSingleNfts(null));
       }
