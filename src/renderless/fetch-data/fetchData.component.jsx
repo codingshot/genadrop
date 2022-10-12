@@ -14,6 +14,7 @@ import {
   setCeloSingleNft,
   setSearchContainer,
   setNearSingleNft,
+  setAvaxSingleNfts,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -32,7 +33,13 @@ import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_NEAR_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
-import { celoClient, graphQLClient, graphQLClientPolygon, nearClient } from "../../utils/graphqlClient";
+import {
+  avalancheClient,
+  celoClient,
+  graphQLClient,
+  graphQLClientPolygon,
+  nearClient,
+} from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   parseAlgoCollection,
@@ -281,6 +288,7 @@ const FetchData = () => {
       return null;
     })();
 
+    // Near Single Nfts
     (async function getNearSingleNfts() {
       const { data, error } = await nearClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
       if (error) {
@@ -292,7 +300,6 @@ const FetchData = () => {
         );
       }
       const result = await fetchNearSingleNfts(data?.nfts);
-      console.log(result);
       if (result) {
         dispatch(setNearSingleNft(result));
         dispatch(
@@ -302,6 +309,25 @@ const FetchData = () => {
         );
       } else {
         dispatch(setNearSingleNft(null));
+      }
+    })();
+
+    //Avalanche Single Nfts
+    (async function getAvalancheSingleNfts() {
+      const { data, error } = await avalancheClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
+      if (result) {
+        dispatch(setAvaxSingleNfts(result));
+      } else {
+        dispatch(setAvaxSingleNfts(null));
       }
     })();
   }, [mainnet]);

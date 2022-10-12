@@ -116,5 +116,6 @@ export const nearClient = createClient({
       : "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet",
 });
 
-// "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet"
-// "https://api.thegraph.com/subgraphs/name/prometheo/near_testnet",
+export const avalancheClient = createClient({
+  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-avatestnet",
+});
