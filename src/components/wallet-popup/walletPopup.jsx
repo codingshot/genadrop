@@ -135,11 +135,11 @@ const WalletPopup = ({ handleSetState }) => {
               You&apos;re viewing data from the {mainnet ? "main" : "test"} network.
               <br /> Go to{" "}
               <a
-                href={mainnet ? "https://genadrop-staging.vercel.app/" : "https://www.genadrop.com/"}
+                href={mainnet ? "https://genadrop-testnet.vercel.app/" : "https://www.genadrop.com/"}
                 target="_blank"
                 rel="noreferrer"
               >
-                {mainnet ? "genadrop-staging.vercel.app" : "genadrop.com"}
+                {mainnet ? "genadrop-testnet.vercel.app" : "genadrop.com"}
               </a>{" "}
               to switch to {!mainnet ? "main" : "test"} network
             </div>

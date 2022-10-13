@@ -1,15 +1,26 @@
 .container {
   cursor: var(--cursor-pointer);
-  padding: 0 0.5em;
+  /* padding: 0 0.5em; */
   font-weight: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+  /* gap: 1em; */
 }
-.container svg {
-  fill: var(--main-color);
+
+.copyIcon:hover {
+  fill: var(--default);
+}
+.point {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  /* min-width: 13em; */
+  /* padding: 0.5em; */
 }
 .copyIcon {
-  width: 1.2em;
+  margin-right: 1em;
+}
+.point:hover .copyIcon {
+  fill: var(--default);
 }

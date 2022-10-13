@@ -16,9 +16,23 @@ import {
 } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import Search from "../../components/Search/Search";
+import {
+  parseAlgoCollection,
+  parseAuroraCollection,
+  parseCeloCollection,
+  parsePolygonCollection,
+} from "../../renderless/fetch-data/fetchData-script";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet } = useContext(GenContext);
+  const {
+    auroraCollections,
+    algoCollections,
+    polygonCollections,
+    celoCollections,
+    mainnet,
+    searchContainer,
+  } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -32,12 +46,14 @@ const Collections = () => {
     searchValue: "",
     notFound: false,
     searchChain: "All Chains",
+    searchContext: "",
   });
 
   const {
     collections,
     activeDate,
     searchValue,
+    searchContext,
     paginate,
     currentPage,
     currentPageValue,
@@ -71,7 +87,7 @@ const Collections = () => {
   const handleDateSort = (date) => {
     let result;
 
-    let tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
+    const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
 
     if (date === activeDate) {
       result = getCollectionsByDate({ collections: tempCollection, date: 0 });
@@ -87,7 +103,7 @@ const Collections = () => {
 
   // Chain Filter
   const handleChainChange = (chain) => {
-    let tempCollection = getCollectionsByDate({ collections, date: activeDate });
+    const tempCollection = getCollectionsByDate({ collections, date: activeDate });
 
     const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
     handleSetState({ filteredCollection: result, searchChain: chain });
@@ -124,7 +140,14 @@ const Collections = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: collections });
-    console.log("Filtered: ", filteredCollection);
+    handleSetState({
+      searchContext: {
+        "Algorand collection": parseAlgoCollection(algoCollectionsArr),
+        "Aurora collection": parseAuroraCollection(auroraCollections),
+        "Celo collection": parseCeloCollection(celoCollections),
+        "Polygon collection": parsePolygonCollection(polygonCollections),
+      },
+    });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
@@ -160,15 +183,16 @@ const Collections = () => {
           <p>View all listed Collections ({`${collections && collections.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <div className={classes.search}>
-            <SearchIcon />
+          <Search searchContext={searchContext} searchPlaceholder="Search By collections or Users" />
+
+          {/* <div className={classes.search}>
             <input
               type="text"
               onChange={handleSearchChange}
               value={searchValue}
               placeholder="Search By collections ,1 of 1s or Users"
             />
-          </div>
+          </div> */}
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
               <ChainDropdown onChainFilter={handleChainChange} data={collections} />

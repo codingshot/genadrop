@@ -1,14 +1,12 @@
 .container {
-  width: 100%;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 100;
-  align-items: center;
-  justify-content: center;
+  background-color: var(--background-3);
+  border-radius: 15px;
+  position: absolute;
+  min-width: 9em;
+  margin-top: 3em;
+  margin-left: 10.5em;
+  z-index: 1;
   display: none;
-  padding: 1em;
 }
 
 .container.active {
@@ -16,14 +14,14 @@
 }
 
 .wrapper {
-  width: 26em;
+  width: fit-content;
   background: var(--default);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 2em;
-  padding: 2em 3em;
+  padding: 1em;
   border-radius: 1em;
   border: 2px solid var(--outline);
   box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
@@ -42,16 +40,49 @@
 
 .shareContent {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1em;
+  /* gap: 1em; */
+  flex-direction: column;
 }
 
 .shareIcon {
   width: 2em;
   height: 2em;
+  margin-right: 1em;
 }
 
-.text {
-  max-width: 20em;
+.point {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 13em;
+  padding: 0.5em;
+}
+
+.point:hover {
+  background-color: var(--main-color);
+  fill: var(--default);
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.point:hover .shareIcon {
+  fill: var(--default);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin-top: 3em;
+    margin-left: 14em;
+  }
+  .point span {
+    display: none;
+  }
+
+  .point {
+    min-width: 0;
+  }
+
+  .shareIcon {
+    margin-right: 0;
+  }
 }

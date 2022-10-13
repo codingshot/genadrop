@@ -18,11 +18,11 @@ const SwitchWalletNotification = () => {
           You're viewing data from the {mainnet ? "main" : "test"} network, but you are about to switch to the{" "}
           {mainnet ? "test" : "main"} network. To continue, please switch to
           <a
-            href={mainnet ? "https://genadrop-staging.vercel.app/" : "https://www.genadrop.com/"}
+            href={mainnet ? "https://genadrop-testnet.vercel.app/" : "https://www.genadrop.com/"}
             target="_blank"
             rel="noreferrer"
           >
-            {mainnet ? "genadrop-staging.vercel.app" : "genadrop.com"}
+            {mainnet ? "genadrop-testnet.vercel.app" : "genadrop.com"}
           </a>
         </div>
         <CloseIcon className={classes.closeIcon} onClick={handleClose} />
