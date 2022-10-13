@@ -55,6 +55,7 @@ const WalletPopup = ({ handleSetState }) => {
       const near = await nearAPI.connect({ keyStore, ...nearConfig });
       const walletConnection = new nearAPI.WalletConnection(near);
       window.localStorage.removeItem("walletconnect");
+      window.selector = walletConnection;
       if (!walletConnection.isSignedIn()) {
         window.localStorage.setItem("nearConnection", true);
         await walletConnection.requestSignIn(
