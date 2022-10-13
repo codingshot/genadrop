@@ -1,10 +1,16 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useHistory, Link } from "react-router-dom";
 import classes from "./Create.module.css";
 import cards from "./Create-script";
 import { ReactComponent as DownArrow } from "../../assets/down-arrow.svg";
+import { GenContext } from "../../gen-state/gen.context";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const Create = () => {
+  const history = useHistory();
+
+  const { dispatch } = useContext(GenContext);
+
   const [state, setState] = useState({
     active: false,
   });
@@ -14,17 +20,42 @@ const Create = () => {
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
+
+  /* regular expression 
+  containing some mobile devices keywords 
+  to search it in details string */
+  const details = navigator?.userAgent;
+
+  const regexp = /android|iphone|kindle|ipad/i;
+
+  const isMobileDevice = regexp.test(details);
+  const handleRedirect = (card) => {
+    if (card.title === "Doubletake") {
+      if (isMobileDevice) {
+        history.push(card.url);
+      } else {
+        dispatch(
+          setNotification({
+            message: "This feature is only accessible to mobile devices.",
+            type: "warning",
+          })
+        );
+      }
+    } else {
+      history.push(card.url);
+    }
+  };
   return (
     <div className={classes.container}>
       <div className={classes.title}>Create</div>
       <div className={classes.description}>Create all types of NFTs, automatically indexed in our marketplace.</div>
       <div className={classes.cardDeck}>
         {cards.slice(0, 6).map((card) => (
-          <Link to={card.url} className={classes.card} key={card.title}>
+          <div onClick={() => handleRedirect(card)} to={card.url} className={classes.card} key={card.title}>
             <div className={classes.icon}>{card.icon}</div>
             <div className={classes.cardTitle}>{card.title}</div>
             <div className={classes.cardDescription}>{card.description}</div>
-          </Link>
+          </div>
         ))}
       </div>
       <div className={`${classes.extra} ${active ? classes.active : ""}`}>

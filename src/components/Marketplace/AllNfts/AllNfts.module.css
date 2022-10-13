@@ -41,11 +41,11 @@
 .filter {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 3em;
   gap: 1em;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .categories {

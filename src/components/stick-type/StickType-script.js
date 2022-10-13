@@ -4,7 +4,7 @@ import { ReactComponent as Blunt } from "../../assets/stick_type/blunt.svg";
 import { ReactComponent as Joint } from "../../assets/stick_type/joint.svg";
 import { ReactComponent as Spliff } from "../../assets/stick_type/spliff.svg";
 import { ReactComponent as Cigarette } from "../../assets/stick_type/cigarette.svg";
-import Cigar from "../../assets/stick_type/cigar.png";
+import Cigar from "../../assets/stick_type/cigar.svg";
 
 const typeCards = [
   {

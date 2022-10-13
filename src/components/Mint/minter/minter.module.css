@@ -6,6 +6,13 @@
   animation: show 650ms;
 }
 
+.tick {
+  background: red;
+  fill: var(--default);
+  fill-opacity: 20%;
+  border-radius: 50%;
+}
+
 @keyframes show {
   from {
     transform: scale(0.99) translateY(1em);

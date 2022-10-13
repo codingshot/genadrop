@@ -817,7 +817,11 @@ const Minter = () => {
                           onChange={(event) => handleReceiverAddress(event)}
                           disabled={!!mintToMyAddress}
                         />
-                        {goodReceiverAddress && account !== "" ? <GreenTickIcon /> : ""}
+                        {goodReceiverAddress && account !== "" ? (
+                          <GreenTickIcon />
+                        ) : (
+                          <GreenTickIcon className={classes.tick} />
+                        )}
                       </div>
                     </div>
                   </div>

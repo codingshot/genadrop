@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { setImageAction, setLayerAction, setNftLayers } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
+import { getLatestPrice } from "../../utils/priceFeed";
 import {
   deleteAllTraits,
   deleteTrait,
@@ -38,6 +39,11 @@ const StoreData = () => {
     );
   };
 
+  // useEffect(() => {
+  //   getLatestPrice().then((data) => {
+  //     console.log(Number(utils.formatUnits(data[3], 8)));
+  //   });
+  // }, []);
   useEffect(() => {
     const { type } = layerAction;
     if (type !== "name") return;
