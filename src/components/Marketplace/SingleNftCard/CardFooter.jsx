@@ -21,7 +21,9 @@ export const MarketplaceView = ({ footerPrpops }) => {
         </div>
       </div>
       {!price ? (
-        owner === account && supportedChains[chain]?.chain !== "Near" ? (
+        owner === account &&
+        supportedChains[chain]?.chain !== "Near" &&
+        supportedChains[chain]?.chain !== "Avalanche" ? (
           <div className={classes.btn}>List</div>
         ) : (
           <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
