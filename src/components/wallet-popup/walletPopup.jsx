@@ -69,6 +69,7 @@ const WalletPopup = ({ handleSetState }) => {
       dispatch(setAccount(account));
       dispatch(setProposedChain(chainId));
       dispatch(setConnector(walletConnection));
+      dispatch(setToggleWalletPopup(false));
       // const account = await walletConnection.getAccountId();
       // dispatch(setChainId(Number(1111)));
       // dispatch(setAccount(account));

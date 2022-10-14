@@ -3,6 +3,7 @@ import { readNftTransaction, readUserProfile } from "../../utils/firebase";
 import { getCeloGraphNft, getGraphCollection, getTransactions } from "../../utils";
 import {
   auroraUserData,
+  avaxUsersNfts,
   celoUserData,
   nearUserData,
   polygonUserData,
@@ -42,6 +43,7 @@ export const getGraphData = async ({ graphProps }) => {
     singleNearNfts,
     singleAuroraNfts,
     singlePolygonNfts,
+    singleAvaxNfts,
     singleCeloNfts,
     params: { collectionName, nftId, chainId },
   } = graphProps;
@@ -98,6 +100,16 @@ export const getGraphData = async ({ graphProps }) => {
         // if (!polygonData) return history.goBack();
         return {
           nftDetails: polygonData,
+          collection: [],
+          transactionHistory: trHistory,
+          _1of1: singlePolygonNfts,
+        };
+      }
+      if (supportedChains[Number(chainId)]?.chain === "Avalanche") {
+        const [avaxData, trHistory] = await avaxUsersNfts(nftId);
+        // if (!polygonData) return history.goBack();
+        return {
+          nftDetails: avaxData,
           collection: [],
           transactionHistory: trHistory,
           _1of1: singlePolygonNfts,

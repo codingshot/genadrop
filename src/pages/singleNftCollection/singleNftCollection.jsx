@@ -34,6 +34,7 @@ const SingleNftCollection = () => {
     singleCeloNfts,
     singleNearNfts,
     mainnet,
+    singleAvaxNfts,
     account,
     searchContainer,
   } = useContext(GenContext);
@@ -112,6 +113,7 @@ const SingleNftCollection = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
       ...(singleNearNfts || []),
+      ...(singleAvaxNfts || []),
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: [...collections] });
@@ -122,9 +124,10 @@ const SingleNftCollection = () => {
         "Celo 1of1": parseCeloSingle(singleCeloNfts),
         "Polygon 1of1": parsePolygonSingle(singlePolygonNfts),
         "Near 1of1": parseNearSingle(singleNearNfts),
+        "Avax 1of1": parseNearSingle(singleNearNfts),
       },
     });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
 
   useEffect(() => {
     const countPerPage = 20;
