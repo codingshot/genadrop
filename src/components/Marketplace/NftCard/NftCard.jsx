@@ -21,8 +21,7 @@ const NftCard = ({ nft, listed, chinPrice, use_width, fromDashboard }) => {
     if (!chinPrice) {
       setTotalPrice(priceFeed[supportedChains[chain]?.id] * price);
     }
-    console.log("PRICEEEEEEE: ", priceFeed);
-  }, [priceFeed]);
+  }, []);
 
   return (
     <Link

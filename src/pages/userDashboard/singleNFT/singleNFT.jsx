@@ -176,7 +176,6 @@ const ListSingleNFT = (nft) => {
   }, []);
 
   useEffect(() => {
-    
     handleSetState({
       chainIcon: supportedChains[nftDetails.chain].icon,
 
