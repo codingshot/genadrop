@@ -1,5 +1,5 @@
 import { async } from "@firebase/util";
-import { providers, Contract, BigNumber } from "ethers";
+import { providers, Contract, BigNumber, utils } from "ethers";
 
 const provider = new providers.JsonRpcProvider("https://mainnet.infura.io/v3/30086941e59240839834dc68944af5d7");
 const aggregatorV3InterfaceABI = [
@@ -52,10 +52,43 @@ const aggregatorV3InterfaceABI = [
   },
 ];
 
-// const ETH_USD = process.env.REACT_APP_ETH_USD;
-// const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider)
+const ETH_USD = process.env.REACT_APP_ETH_USD;
+const CELO_ETH = process.env.REACT_APP_CELO_ETH;
+const MATIC_USD = process.env.REACT_APP_MATIC_USD;
+const NEAR_USD = process.env.REACT_APP_NEAR_USD;
+const AVAX_USD = process.env.REACT_APP_AVAX_USD;
 
-// export const getLatestPrice = async () => {
-//   const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider);
-//   return await ethPriceFeed.latestRoundData();
-// };
+export const getLatestPriceCelo = async () => {
+  const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider);
+  const celoPriceFeed = new Contract(CELO_ETH, aggregatorV3InterfaceABI, provider);
+  ethPriceFeed.latestRoundData().then((data) => {
+    const ethUSDPrice = Number(utils.formatUnits(data[1], 8));
+    celoPriceFeed.latestRoundData().then((celoData) => {
+      const celoETHPrice = celoData[1];
+      const celoUSDPrice = (celoETHPrice * ethUSDPrice) / 10 ** 18;
+
+      return celoUSDPrice;
+    });
+  });
+};
+
+export const getLatestPriceMatic = async () => {
+  const maticPriceFeed = new Contract(MATIC_USD, aggregatorV3InterfaceABI, provider);
+  maticPriceFeed.latestRoundData().then((maticData) => {
+    return Number(utils.formatUnits(maticData[1], 8));
+  });
+};
+
+export const getLatestPriceNear = async () => {
+  const nearPriceFeed = new Contract(NEAR_USD, aggregatorV3InterfaceABI, provider);
+  nearPriceFeed.latestRoundData().then((nearData) => {
+    return Number(utils.formatUnits(nearData[1], 8));
+  });
+};
+
+export const getLatestPriceAvax = async () => {
+  const avaxPriceFeed = new Contract(AVAX_USD, aggregatorV3InterfaceABI, provider);
+  avaxPriceFeed.latestRoundData().then((avaxData) => {
+    return Number(utils.formatUnits(avaxData[1], 8));
+  });
+};

@@ -50,9 +50,6 @@ const List = () => {
       handleSetState({ nftDetails: nftdetails, isLoading: false });
     })();
 
-    axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-      handleSetState({ algoPrice: res.data.data.amount });
-    });
     document.documentElement.scrollTop = 0;
   }, []);
 
@@ -147,7 +144,7 @@ const List = () => {
                 <div className={classes.inputWrapper}>
                   <input type="text" value={price} onChange={handlePrice} placeholder="E.g. 10" />
                 </div>
-                <div></div>
+                <div />
                 <span>0</span>
               </div>
             </section>
