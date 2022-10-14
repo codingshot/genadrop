@@ -296,9 +296,6 @@ export const updateAccount = async (walletProps) => {
 
 export const disconnectWallet = async ({ walletConnectProvider, dispatch, history, pathname, handleSetState }) => {
   await WS.disconnectWalletConnectProvider(walletConnectProvider);
-  if (window.ethereum !== undefined) {
-    window.ethereum.on("disconnect", function () {});
-  }
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
   handleSetState({ toggleDropdown: false });
