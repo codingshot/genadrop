@@ -117,5 +117,8 @@ export const nearClient = createClient({
 });
 
 export const avalancheClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-avatestnet",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-avatestnet"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-avax",
 });

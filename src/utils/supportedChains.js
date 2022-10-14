@@ -142,6 +142,20 @@ const supportedChains = {
     switch: switchChain,
     coinGeckoLabel: "ethereum",
   },
+  43114: {
+    id: "avalanche",
+    label: "Avalanche",
+    chain: "Avalanche",
+    icon: avalancheIcon,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
+    symbol: "AVAX",
+    networkId: 43114,
+    explorer: "https://snowtrace.io/",
+    add: addChain,
+    isMainnet: true,
+    switch: switchChain,
+    coinGeckoLabel: "avalanche-2",
+  },
 
   43113: {
     id: "avalanche",
