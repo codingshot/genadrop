@@ -16,6 +16,7 @@ import {
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
+import Search from "../../components/Search/Search";
 
 const MarketplaceAll = () => {
   const {
@@ -85,16 +86,9 @@ const MarketplaceAll = () => {
 
     const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
 
-    if (date === activeDate) {
-      result = getCollectionsByDate({ collections: tempCollection, date: 0 });
-      console.log("1", result);
-      handleSetState({ activeDate: 0, filteredCollection: result });
-    } else {
-      result = getCollectionsByDate({ collections: tempCollection, date });
-      console.log("2", result);
+    result = getCollectionsByDate({ collections: tempCollection, date });
 
-      handleSetState({ activeDate: date, filteredCollection: result });
-    }
+    handleSetState({ activeDate: date, filteredCollection: result });
   };
 
   // Chain Filter
@@ -119,12 +113,6 @@ const MarketplaceAll = () => {
       const result = await rangeBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     }
-  };
-
-  // Search
-  const handleSearchChange = (e) => {
-    const result = getCollectionsBySearch({ collections, search: e.target.value });
-    handleSetState({ filteredCollection: result, searchValue: e.target.value });
   };
 
   useEffect(() => {
@@ -183,18 +171,11 @@ const MarketplaceAll = () => {
       <div className={classes.heading}>
         <div className={classes.title}>
           <h1>{searchChain}</h1>
-          <p>View all listed ({`${collections && collections.length}) Listed`}</p>
+          <p>View all listed ({`${filteredCollection && filteredCollection.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <div className={classes.search}>
-            <SearchIcon />
-            <input
-              type="text"
-              onChange={handleSearchChange}
-              value={searchValue}
-              placeholder="Search By collections ,1 of 1s or Users"
-            />
-          </div>
+          <Search searchPlaceholder="Search By collections, 1of1s or Users" />
+
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
               <ChainDropdown onChainFilter={handleChainChange} data={collections} />

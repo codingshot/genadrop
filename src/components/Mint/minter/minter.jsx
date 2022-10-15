@@ -440,7 +440,6 @@ const Minter = () => {
       })
     );
   }
-  console.log(metadata);
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
   useEffect(() => {
     if (showLocation) {

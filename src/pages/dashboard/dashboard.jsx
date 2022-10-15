@@ -10,6 +10,7 @@ import {
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
   getAuroraUserCollections,
+  getAvaxMintedNfts,
   getCeloCollectedNFTs,
   getCeloMintedNFTs,
   getCeloUserCollections,
@@ -106,6 +107,9 @@ const Dashboard = () => {
           break;
         case "Polygon":
           nfts = await getPolygonMintedNFTs(address);
+          break;
+        case "Avalanche":
+          nfts = await getAvaxMintedNfts(address);
           break;
         case "Near":
           nfts = await getNearMintedNfts(userId);

@@ -40,7 +40,7 @@
 }
 
 .btn {
-  padding: 0.5em 2em;
+  padding: 0.5em 1.5em;
   border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);

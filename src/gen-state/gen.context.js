@@ -30,6 +30,7 @@ const GenContextProvider = ({ children }) => {
     celoCollections,
     singleAuroraNfts,
     singleAlgoNfts,
+    singleAvaxNfts,
     singleCeloNfts,
     singlePolygonNfts,
     singleNearNfts,
@@ -66,6 +67,7 @@ const GenContextProvider = ({ children }) => {
     toggleUpgradeModal,
     searchContainer,
     isUser,
+    priceFeed,
   } = state;
 
   return (
@@ -95,6 +97,7 @@ const GenContextProvider = ({ children }) => {
         clipboardMessage,
         loaderMessage,
         collectionDescription,
+        singleAvaxNfts,
         didMount,
         mainnet,
         singleNfts,
@@ -130,6 +133,7 @@ const GenContextProvider = ({ children }) => {
         toggleUpgradeModal,
         searchContainer,
         isUser,
+        priceFeed,
         dispatch,
       }}
     >
