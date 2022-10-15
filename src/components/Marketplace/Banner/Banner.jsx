@@ -8,7 +8,7 @@ import { GenContext } from "../../../gen-state/gen.context";
 
 const Banner = () => {
   const history = useHistory();
-  const { searchContainer } = useContext(GenContext);
+
   return (
     <div className={classes.container} style={{ backgroundImage: `url(${image_url})` }}>
       <div className={classes.wrapper}>
