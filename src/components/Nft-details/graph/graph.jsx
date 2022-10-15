@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+
 import classes from "./graph.module.css";
 
 Chart.register(...registerables);
@@ -39,6 +40,15 @@ const Graph = ({ details }) => {
         display: false,
       },
     },
+  };
+
+  const data2 = [10, 0, -2.5, 540];
+  const props = {
+    data2,
+    smoothing: 0.3,
+    accent: "palevioletred",
+    fillBelow: "rgba(200,67,23,0.1)",
+    hover: true,
   };
   return (
     <>
