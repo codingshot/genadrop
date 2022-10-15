@@ -375,3 +375,8 @@ export const setIsUser = (state) => ({
   type: genActionTypes.SET_IS_USER,
   payload: state,
 });
+
+export const setPriceFeed = (state) => ({
+  type: genActionTypes.SET_PRICE_FEED,
+  payload: state,
+});

@@ -36,6 +36,7 @@ export const getNetworkID = () => {
 };
 
 export const initializeConnection = async (walletProps) => {
+
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;
 

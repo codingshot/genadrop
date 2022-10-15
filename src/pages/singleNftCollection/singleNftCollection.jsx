@@ -47,21 +47,12 @@ const SingleNftCollection = () => {
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
-    searchValue: "",
+
     notFound: false,
-    searchContext: "",
+    searchChain: "",
   });
 
-  const {
-    collections,
-    paginate,
-    currentPage,
-    currentPageValue,
-    searchValue,
-    filteredCollection,
-    notFound,
-    searchContext,
-  } = state;
+  const { collections, paginate, currentPage, currentPageValue, searchChain, filteredCollection, notFound } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -83,14 +74,9 @@ const SingleNftCollection = () => {
     document.documentElement.scrollTop = 0;
   };
 
-  const handleSearchChange = (e) => {
-    const result = getCollectionsBySearch({ collections, search: e.target.value });
-    handleSetState({ filteredCollection: result, searchValue: e.target.value });
-  };
-
   const handleChainChange = (chain) => {
     const result = getCollectionsByChain({ collections, chain, mainnet });
-    handleSetState({ filteredCollection: result });
+    handleSetState({ filteredCollection: result, searchChain: chain });
   };
 
   const handleFilter = ({ type, value }) => {
@@ -117,17 +103,9 @@ const SingleNftCollection = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: [...collections] });
-    handleSetState({
-      searchContext: {
-        "Algorand 1of1": parseAlgoSingle(singleAlgoNftsArr),
-        "Aurora 1of1": parseAuroraSingle(singleAuroraNfts),
-        "Celo 1of1": parseCeloSingle(singleCeloNfts),
-        "Polygon 1of1": parsePolygonSingle(singlePolygonNfts),
-        "Near 1of1": parseNearSingle(singleNearNfts),
-        "Avax 1of1": parseNearSingle(singleNearNfts),
-      },
-    });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
+
+  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+
 
   useEffect(() => {
     const countPerPage = 20;
@@ -158,22 +136,12 @@ const SingleNftCollection = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <div className={classes.title}>
-          <h1>1 of 1s</h1>
-          <p>View all listed 1 of 1s {`(${collections.length} Listed)`}</p>
+          <h1>{searchChain === "All chains" ? "1 of 1s" : searchChain}</h1>
+          <p>View all listed 1 of 1s {`(${filteredCollection.length} Listed)`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search searchContext={searchContext} searchPlaceholder="Search By 1 of 1s and Users" />
+          <Search type={"1of1"} searchPlaceholder="Search By 1 of 1s and Users" />
 
-          {/* <div className={classes.search}>
-
-            <SearchIcon />
-            <input
-              type="text"
-              onChange={handleSearchChange}
-              value={searchValue}
-              placeholder="Search By collections ,1 of 1s or Users"
-            />
-          </div> */}
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
               <ChainDropdown onChainFilter={handleChainChange} />
