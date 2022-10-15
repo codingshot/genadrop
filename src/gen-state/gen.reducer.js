@@ -323,6 +323,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         singleNearNfts: action.payload,
       };
+    case genActionTypes.SET_AVAX_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAvaxNfts: action.payload,
+      };
     case genActionTypes.SET_NOTIFICATION:
       return {
         ...state,

@@ -9,7 +9,7 @@ import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarou
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
 
 const FeautedNfts = () => {
-  const { singleAuroraNfts, singleAlgoNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts } =
+  const { singleAuroraNfts, singleAlgoNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts } =
     useContext(GenContext);
   const algoNFTs = Object.values(singleAlgoNfts);
 
@@ -51,6 +51,7 @@ const FeautedNfts = () => {
       ...(singleNearNfts || []),
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
+      ...(singleAvaxNfts || []),
     ];
 
     nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
@@ -59,7 +60,7 @@ const FeautedNfts = () => {
       featuredNFTs.includes(nft.Id)
     );
     handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
-  }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts]);
+  }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts, singleAvaxNfts]);
   return (
     <div className={classes.container}>
       <div className={classes.headingContainer}>

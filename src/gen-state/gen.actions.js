@@ -197,6 +197,11 @@ export const setNearSingleNft = (nfts) => ({
   payload: nfts,
 });
 
+export const setAvaxSingleNfts = (nfts) => ({
+  type: genActionTypes.SET_AVAX_SINGLE_NFTS,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,
