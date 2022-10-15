@@ -36,7 +36,7 @@ export const getNetworkID = () => {
 };
 
 export const initializeConnection = async (walletProps) => {
-  console.log("Let me shut, I'm Here!", walletProps);
+
   const { dispatch, handleSetState, rpc, mainnet } = walletProps;
   let walletConnectProvider = null;
 
@@ -300,6 +300,10 @@ export const disconnectWallet = async ({ walletConnectProvider, dispatch, histor
   dispatch(setProposedChain(null));
   dispatch(setChainId(null));
   handleSetState({ toggleDropdown: false });
+  if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
+    window.localStorage.removeItem("undefined_wallet_auth_key");
+    window.localStorage.removeItem("nearConnection");
+  }
   if (pathname.includes("/profile")) {
     history.push("/marketplace");
   }

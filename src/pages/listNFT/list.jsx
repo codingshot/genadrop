@@ -61,7 +61,6 @@ const List = () => {
     } else if (supportedChains[chainId].chain === "Aurora") {
       listedNFT = await listAuroraNft(listProps);
     } else {
-      console.log("RES: ", await listNft(nftDetails.Id, price, account));
       return history.push(`${match.url}/listed`);
     }
     if (listedNFT.error) {

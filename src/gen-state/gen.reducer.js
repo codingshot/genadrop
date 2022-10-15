@@ -90,6 +90,7 @@ export const INITIAL_STATE = {
   toggleUpgradeModal: "",
   searchContainer: null,
   isUser: null,
+  priceFeed: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -104,6 +105,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: addLayer(state.layers, action.payload),
       };
+
     case genActionTypes.REMOVE_LAYER:
       return {
         ...state,
@@ -321,6 +323,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         singleNearNfts: action.payload,
       };
+    case genActionTypes.SET_AVAX_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAvaxNfts: action.payload,
+      };
     case genActionTypes.SET_NOTIFICATION:
       return {
         ...state,
@@ -465,6 +472,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchContainer: { ...state.searchContainer, ...action.payload },
+      };
+    case genActionTypes.SET_PRICE_FEED:
+      return {
+        ...state,
+        priceFeed: { ...state.priceFeed, ...action.payload },
       };
     case genActionTypes.SET_IS_USER:
       return {

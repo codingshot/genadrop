@@ -34,6 +34,7 @@ const AllNfts = () => {
     singleAlgoNfts,
     singleAuroraNfts,
     singlePolygonNfts,
+    singleAvaxNfts,
     singleNearNfts,
     singleCeloNfts,
     mainnet,
@@ -95,6 +96,7 @@ const AllNfts = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
       ...(singleNearNfts || []),
+      ...(singleAvaxNfts || []),
     ];
     singles = shuffle(singles);
     handleSetState({ singles });

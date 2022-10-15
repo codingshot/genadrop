@@ -6,20 +6,8 @@ import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 import openseaIcon from "../../../assets/icon-opensea.svg";
 
 const Deals = ({ nftDetails }) => {
-  const {
-    price,
-    chain,
-    sold,
-    isListed,
-    owner,
-    account,
-    chainId,
-    mainnet,
-    connector,
-    dispatch,
-    Id,
-    collection_name,
-  } = nftDetails;
+  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
+    nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -40,8 +28,6 @@ const Deals = ({ nftDetails }) => {
   };
 
   useEffect(() => {
-    console.log(nftDetails);
-
     getUsdValue();
   }, [nftDetails]);
   return (
@@ -55,7 +41,9 @@ const Deals = ({ nftDetails }) => {
         </div>
       </div>
       {isListed ? (
-        owner === account && supportedChains[chain]?.chain !== "Near" ? (
+        owner === account &&
+        supportedChains[chain]?.chain !== "Near" &&
+        supportedChains[chain]?.chain !== "Avalanche" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
               <button className={`${classes.btn} ${classes.disable}`} disabled>
@@ -84,7 +72,9 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
-      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
+      ) : account === owner &&
+        supportedChains[chain]?.chain !== "Near" &&
+        supportedChains[chain]?.chain !== "Avalanche" ? (
         <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
           <div className={`${classes.btn}`}>List</div>
         </Link>
