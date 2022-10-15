@@ -173,7 +173,7 @@ const supportedChains = {
     comingSoon: true,
   },
   "add-avalanche-t-id": {
-    id: "avalanche",
+    id: "avalanche-2",
     label: "Avalanche Testnet",
     chain: "Avalanche",
     icon: avalancheIcon,

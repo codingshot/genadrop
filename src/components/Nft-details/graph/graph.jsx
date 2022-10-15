@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
-import classes from "./graph.module.css";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import classes from "./graph.module.css";
+
 Chart.register(...registerables);
 
 const Graph = ({ details }) => {
-  let dates = [];
+  const dates = [];
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-  let prices = [];
+  const prices = [];
   if (details) {
     details.map((e, i) => {
       const date = new Date(e.txDate * 1000);
 
-      dates.push(date.getDate() + "/" + months[date.getMonth()]);
+      dates.push(`${date.getDate()}/${months[date.getMonth()]}`);
       prices.push(e.price);
     });
   }

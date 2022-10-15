@@ -34,7 +34,7 @@ const Navbar = () => {
         <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
-        <Search searchPlaceholder="Search collections, and 1 of 1s" searchContext={searchContainer} />
+        <Search searchPlaceholder="Search collections, and 1 of 1s" />
 
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />

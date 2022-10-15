@@ -1,5 +1,4 @@
-import { async } from "@firebase/util";
-import { providers, Contract, BigNumber, utils } from "ethers";
+import { providers, Contract, utils } from "ethers";
 
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_ALCHEMY_URL);
 const aggregatorV3InterfaceABI = [
@@ -75,8 +74,6 @@ export const getLatestPriceCelo = async () => {
 export const getLatestPriceMatic = async () => {
   const maticPriceFeed = new Contract(MATIC_USD, aggregatorV3InterfaceABI, provider);
   maticPriceFeed.latestRoundData().then((maticData) => {
-    console.log("PRRSDAFADFADSFADSF", Number(utils.formatUnits(maticData[1], 8)));
-
     return Number(utils.formatUnits(maticData[1], 8));
   });
 };

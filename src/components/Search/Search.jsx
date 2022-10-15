@@ -6,7 +6,7 @@ import handleSuggestions from "./Search-script";
 import classes from "./Search.module.css";
 import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 
-const Search = ({ searchContext, searchPlaceholder }) => {
+const Search = ({ searchPlaceholder, type }) => {
   const history = useHistory();
   const location = useLocation();
   const { searchContainer } = useContext(GenContext);
@@ -24,11 +24,9 @@ const Search = ({ searchContext, searchPlaceholder }) => {
   };
 
   const handleChange = (e) => {
-    console.log("Search Compare: ", searchContext);
-    console.log("Search Compare: ", searchContainer);
     handleSetState({ value: e.target.value });
 
-    handleSuggestions({ handleSetState, searchContext, value: e.target.value });
+    handleSuggestions({ handleSetState, searchContainer, value: e.target.value, type });
   };
 
   const handleToggleSearch = () => {

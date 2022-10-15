@@ -42,18 +42,36 @@ const StoreData = () => {
   };
 
   useEffect(() => {
-    dispatch(setPriceFeed({ celo: getLatestPriceCelo() }));
-    dispatch(setPriceFeed({ avax: getLatestPriceAvax() }));
-    dispatch(setPriceFeed({ matic: getLatestPriceMatic() }));
-    dispatch(setPriceFeed({ near: getLatestPriceNear() }));
+    // dispatch(setPriceFeed({ celo: getLatestPriceCelo() }));
+    // dispatch(setPriceFeed({ "avalanche-2": getLatestPriceAvax() }));
+    // dispatch(setPriceFeed({ "matic-network": getLatestPriceMatic() }));
+    // dispatch(setPriceFeed({ near: getLatestPriceNear() }));
+
+    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=celo&vs_currencies=usd`).then((res) => {
+      const price = Object.values(res.data)[0]?.usd;
+      dispatch(setPriceFeed({ celo: price }));
+    });
+    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd`).then((res) => {
+      const price = Object.values(res.data)[0]?.usd;
+      dispatch(setPriceFeed({ "avalanche-2": price }));
+    });
+    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd`).then((res) => {
+      const price = Object.values(res.data)[0]?.usd;
+      dispatch(setPriceFeed({ "matic-network": price }));
+    });
+    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`).then((res) => {
+      const price = Object.values(res.data)[0]?.usd;
+      dispatch(setPriceFeed({ near: price }));
+    });
+
     axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd`).then((res) => {
-      const algoPrice = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ algorand: algoPrice }));
+      const price = Object.values(res.data)[0]?.usd;
+      dispatch(setPriceFeed({ algorand: price }));
     });
 
     axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd`).then((res) => {
-      const auroraPrice = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ "aurora-near": auroraPrice }));
+      const price = Object.values(res.data)[0]?.usd;
+      dispatch(setPriceFeed({ "aurora-near": price }));
     });
   }, []);
 

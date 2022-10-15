@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./collectionsCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
-import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const CollectionsCard = ({ collection, use_width, fromDashboard }) => {
@@ -14,7 +13,7 @@ const CollectionsCard = ({ collection, use_width, fromDashboard }) => {
 
   useEffect(() => {
     setTotalPrice(price * priceFeed[supportedChains[chain]?.id]);
-  }, []);
+  }, [priceFeed]);
   return (
     <div
       style={use_width ? { width: use_width } : {}}
