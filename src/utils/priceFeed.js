@@ -1,4 +1,5 @@
 import { providers, Contract, utils } from "ethers";
+import { setPriceFeed } from "../gen-state/gen.actions";
 
 const provider = new providers.JsonRpcProvider(process.env.REACT_APP_ALCHEMY_URL);
 const aggregatorV3InterfaceABI = [
@@ -57,7 +58,7 @@ const MATIC_USD = process.env.REACT_APP_MATIC_USD;
 const NEAR_USD = process.env.REACT_APP_NEAR_USD;
 const AVAX_USD = process.env.REACT_APP_AVAX_USD;
 
-export const getLatestPriceCelo = async () => {
+export const getLatestPriceCelo = async (dispatch) => {
   const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider);
   const celoPriceFeed = new Contract(CELO_ETH, aggregatorV3InterfaceABI, provider);
   ethPriceFeed.latestRoundData().then((data) => {
@@ -66,28 +67,28 @@ export const getLatestPriceCelo = async () => {
       const celoETHPrice = celoData[1];
       const celoUSDPrice = (celoETHPrice * ethUSDPrice) / 10 ** 18;
 
-      return celoUSDPrice;
+      dispatch(setPriceFeed({ celo: celoUSDPrice }));
     });
   });
 };
 
-export const getLatestPriceMatic = async () => {
+export const getLatestPriceMatic = async (dispatch) => {
   const maticPriceFeed = new Contract(MATIC_USD, aggregatorV3InterfaceABI, provider);
   maticPriceFeed.latestRoundData().then((maticData) => {
-    return Number(utils.formatUnits(maticData[1], 8));
+    dispatch(setPriceFeed({ "matic-network": Number(utils.formatUnits(maticData[1], 8)) }));
   });
 };
 
-export const getLatestPriceNear = async () => {
+export const getLatestPriceNear = async (dispatch) => {
   const nearPriceFeed = new Contract(NEAR_USD, aggregatorV3InterfaceABI, provider);
   nearPriceFeed.latestRoundData().then((nearData) => {
-    return Number(utils.formatUnits(nearData[1], 8));
+    dispatch(setPriceFeed({ near: Number(utils.formatUnits(nearData[1], 8)) }));
   });
 };
 
-export const getLatestPriceAvax = async () => {
+export const getLatestPriceAvax = async (dispatch) => {
   const avaxPriceFeed = new Contract(AVAX_USD, aggregatorV3InterfaceABI, provider);
   avaxPriceFeed.latestRoundData().then((avaxData) => {
-    return Number(utils.formatUnits(avaxData[1], 8));
+    dispatch(setPriceFeed({ "avalanche-2": Number(utils.formatUnits(avaxData[1], 8)) }));
   });
 };
