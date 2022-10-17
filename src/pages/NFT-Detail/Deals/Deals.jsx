@@ -56,10 +56,8 @@ const Deals = ({ nftDetails }) => {
           <div className={classes.appx}>{`($${usdValue.toFixed(4)})`}</div>
         </div>
       </div>
-      {isListed ? (
-        owner === account &&
-        supportedChains[chain]?.chain !== "Near" &&
-        supportedChains[chain]?.chain !== "Avalanche" ? (
+      {!isListed && !price ? (
+        owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
               <button className={`${classes.btn} ${classes.disable}`} disabled>
@@ -88,15 +86,17 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
-      ) : account === owner &&
-        supportedChains[chain]?.chain !== "Near" &&
-        supportedChains[chain]?.chain !== "Avalanche" ? (
+      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
         <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
           <div className={`${classes.btn}`}>List</div>
         </Link>
-      ) : price ? (
+      ) : price && !isListed ? (
         <div className={`${classes.btn} ${classes.disable}`} disabled>
           Sold
+        </div>
+      ) : isListed ? (
+        <div onClick={() => buyGraphNft(buyProps)} className={`${classes.btn} `}>
+          Buy
         </div>
       ) : (
         <div className={`${classes.btn} ${classes.disable}`} disabled>

@@ -162,6 +162,14 @@ export const getAuroraCollectedNFTs = async (address) => {
   return auroraCollectedNfts;
 };
 
+export const getAvaxCollectedNFTs = async (address) => {
+  const { data, error: auroraError } = await avalancheClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (auroraError) return;
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const avaxCollectedNfts = response?.filter((NFTS) => NFTS?.sold === true);
+  return avaxCollectedNfts;
+};
+
 export const getCeloUserCollections = async (account) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_COLLECTIONS, { id: account }).toPromise();
   if (celoError) return;
