@@ -74,7 +74,7 @@ const Deals = ({ nftDetails }) => {
         <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
           <div className={`${classes.btn}`}>List</div>
         </Link>
-      ) : price && sold ? (
+      ) : price && !isListed ? (
         <div className={`${classes.btn} ${classes.disable}`} disabled>
           Sold
         </div>
