@@ -7,7 +7,12 @@ import classes from "./listed.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import supportedChains from "../../../utils/supportedChains";
 import { getUserBoughtNftCollection } from "../../../utils";
-import { auroraUserData, celoUserData, polygonUserData } from "../../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraUserData,
+  avaxUsersNfts,
+  celoUserData,
+  polygonUserData,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 import { fetchUserBoughtNfts } from "../../../utils/firebase";
 import telegram from "../../../assets/blue-telegram.svg";
 import twitterIcon from "../../../assets/blue-twitter.svg";
@@ -51,6 +56,13 @@ const Listed = () => {
         });
       } else if (supportedChains[chainId].chain === "Aurora") {
         const [nft] = await auroraUserData(nftId);
+        if (!nft) history.push("/");
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+        });
+      } else if (supportedChains[chainId].chain === "Avalanche") {
+        const [nft] = await avaxUsersNfts(nftId);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

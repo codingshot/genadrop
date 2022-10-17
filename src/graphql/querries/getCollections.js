@@ -358,6 +358,7 @@ export const GET_AURORA_SINGLE_NFTS = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
@@ -381,6 +382,7 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
@@ -422,6 +424,7 @@ export const GET_NEAR_SINGLE_NFTS = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
