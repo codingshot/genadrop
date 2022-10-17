@@ -176,7 +176,7 @@ const MarketplaceAll = () => {
           <p>View all listed ({`${filteredCollection && filteredCollection.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search searchPlaceholder="Search By collections, 1of1s or Users" />
+          <Search searchPlaceholder="Search By collections, 1of1s or Users" type={""} />
 
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
