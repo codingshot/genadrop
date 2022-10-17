@@ -7,9 +7,14 @@ import supportedChains from "../../utils/supportedChains";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
 import { getUserBoughtNftCollection } from "../../utils";
-import { listAuroraNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
+import { listAuroraNft, listAvaxNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
 import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
-import { auroraUserData, celoUserData, polygonUserData } from "../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraUserData,
+  avaxUsersNfts,
+  celoUserData,
+  polygonUserData,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
 import avatar from "../../assets/avatar.png";
 
@@ -60,6 +65,8 @@ const List = () => {
       listedNFT = await listCeloNft(listProps);
     } else if (supportedChains[chainId].chain === "Aurora") {
       listedNFT = await listAuroraNft(listProps);
+    } else if (supportedChains[chainId].chain === "Avalanche") {
+      listedNFT = await listAvaxNft(listProps);
     } else {
       console.log("RES: ", await listNft(nftDetails.Id, price, account));
       return history.push(`${match.url}/listed`);
@@ -105,6 +112,9 @@ const List = () => {
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Aurora") {
         const [nftData] = await auroraUserData(nftId);
+        nft = nftData;
+      } else if (supportedChains[chainId]?.chain === "Avalanche") {
+        const [nftData] = await avaxUsersNfts(nftId);
         nft = nftData;
       } else {
         const userNftCollections = await fetchUserBoughtNfts(account);
