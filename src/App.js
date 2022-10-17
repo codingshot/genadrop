@@ -44,7 +44,7 @@ import SearchResult from "./pages/searchResult/searchResult";
 import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
-import Create from "./pages/Create/Create";
+import Create from "./pages/create/Create";
 import CollectionOptions from "./pages/collection-options/CollectionOptions";
 import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
 
