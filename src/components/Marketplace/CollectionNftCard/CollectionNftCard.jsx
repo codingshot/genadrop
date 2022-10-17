@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import supportedChains from "../../../utils/supportedChains";
 import classes from "./CollectionNftCard.module.css";
 import { getFormatedPrice } from "../../../utils";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const formattedNumber = (number, decimals = 2) => {
   const input = number?.toFixed(decimals);
@@ -14,15 +15,17 @@ const CollectionNftCard = ({ use_width, collection }) => {
   const [usdValue, setUsdValue] = useState(0);
 
   const { Id, image_url, name, description, price, chain, nfts } = collection;
-
+  const { priceFeed } = useContext(GenContext);
   const getUsdValue = async () => {
-    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
-    setUsdValue(Number(value) * Number(price));
+    if (priceFeed !== null) {
+      const value = priceFeed[supportedChains[chain].coinGeckoLabel || supportedChains[chain].id];
+      setUsdValue(Number(value) * Number(price));
+    }
   };
 
   useEffect(() => {
     getUsdValue();
-  }, [collection]);
+  }, [priceFeed]);
 
   return (
     <div

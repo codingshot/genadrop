@@ -1,13 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 import openseaIcon from "../../../assets/icon-opensea.svg";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
-    nftDetails;
+  const {
+    price,
+    chain,
+    sold,
+    isListed,
+    owner,
+    account,
+    chainId,
+    mainnet,
+    connector,
+    dispatch,
+    Id,
+    collection_name,
+  } = nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -22,14 +35,17 @@ const Deals = ({ nftDetails }) => {
     history,
     chainId,
   };
+  const { priceFeed } = useContext(GenContext);
   const getUsdValue = async () => {
-    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
-    setUsdValue(Number(value) * Number(price));
+    if (priceFeed !== null) {
+      const value = priceFeed[supportedChains[chain].coinGeckoLabel || supportedChains[chain].id];
+      setUsdValue(Number(value) * Number(price));
+    }
   };
 
   useEffect(() => {
     getUsdValue();
-  }, [nftDetails]);
+  }, [priceFeed]);
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
@@ -40,10 +56,8 @@ const Deals = ({ nftDetails }) => {
           <div className={classes.appx}>{`($${usdValue.toFixed(4)})`}</div>
         </div>
       </div>
-      {isListed ? (
-        owner === account &&
-        supportedChains[chain]?.chain !== "Near" &&
-        supportedChains[chain]?.chain !== "Avalanche" ? (
+      {!isListed && !price ? (
+        owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
               <button className={`${classes.btn} ${classes.disable}`} disabled>
@@ -72,15 +86,17 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
-      ) : account === owner &&
-        supportedChains[chain]?.chain !== "Near" &&
-        supportedChains[chain]?.chain !== "Avalanche" ? (
+      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
         <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
           <div className={`${classes.btn}`}>List</div>
         </Link>
-      ) : price ? (
+      ) : price && !isListed ? (
         <div className={`${classes.btn} ${classes.disable}`} disabled>
           Sold
+        </div>
+      ) : isListed ? (
+        <div onClick={() => buyGraphNft(buyProps)} className={`${classes.btn} `}>
+          Buy
         </div>
       ) : (
         <div className={`${classes.btn} ${classes.disable}`} disabled>
