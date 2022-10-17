@@ -28,6 +28,7 @@ const MarketplaceAll = () => {
     singleAuroraNfts,
     singlePolygonNfts,
     singleCeloNfts,
+    singleAvaxNfts,
     singleNearNfts,
     mainnet,
   } = useContext(GenContext);
@@ -126,6 +127,7 @@ const MarketplaceAll = () => {
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
       ...(singleNearNfts || []),
+      ...(singleAvaxNfts || []),
     ];
     handleSetState({ collections: allNFTs, filteredCollection: allNFTs });
   }, [
