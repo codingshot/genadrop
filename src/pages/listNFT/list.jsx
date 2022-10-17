@@ -68,7 +68,6 @@ const List = () => {
     } else if (supportedChains[chainId].chain === "Avalanche") {
       listedNFT = await listAvaxNft(listProps);
     } else {
-      console.log("RES: ", await listNft(nftDetails.Id, price, account));
       return history.push(`${match.url}/listed`);
     }
     if (listedNFT.error) {

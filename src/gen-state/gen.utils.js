@@ -6,9 +6,8 @@ export const addLayer = (layers, layerToAdd) => {
     const existingLayer = layers.map((data) => {
       if (result.layerTitle === data.layerTitle) {
         return { ...data, exists: true };
-      } else {
-        return { ...data, exists: false };
       }
+      return { ...data, exists: false };
     });
     return existingLayer;
   }

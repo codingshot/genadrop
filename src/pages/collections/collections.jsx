@@ -46,14 +46,13 @@ const Collections = () => {
     searchValue: "",
     notFound: false,
     searchChain: "All Chains",
-    searchContext: "",
   });
 
   const {
     collections,
     activeDate,
     searchValue,
-    searchContext,
+
     paginate,
     currentPage,
     currentPageValue,
@@ -89,20 +88,13 @@ const Collections = () => {
 
     const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
 
-    if (date === activeDate) {
-      result = getCollectionsByDate({ collections: tempCollection, date: 0 });
-      console.log("1", result);
-      handleSetState({ activeDate: 0, filteredCollection: result });
-    } else {
-      result = getCollectionsByDate({ collections: tempCollection, date });
-      console.log("2", result);
-
-      handleSetState({ activeDate: date, filteredCollection: result });
-    }
+    result = getCollectionsByDate({ collections: tempCollection, date });
+    handleSetState({ activeDate: date, filteredCollection: result });
   };
 
   // Chain Filter
   const handleChainChange = (chain) => {
+    console.log(chain);
     const tempCollection = getCollectionsByDate({ collections, date: activeDate });
 
     const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
@@ -125,12 +117,6 @@ const Collections = () => {
     }
   };
 
-  // Search
-  const handleSearchChange = (e) => {
-    const result = getCollectionsBySearch({ collections, search: e.target.value });
-    handleSetState({ filteredCollection: result, searchValue: e.target.value });
-  };
-
   useEffect(() => {
     let collections = [
       ...(auroraCollections || []),
@@ -140,14 +126,6 @@ const Collections = () => {
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: collections });
-    handleSetState({
-      searchContext: {
-        "Algorand collection": parseAlgoCollection(algoCollectionsArr),
-        "Aurora collection": parseAuroraCollection(auroraCollections),
-        "Celo collection": parseCeloCollection(celoCollections),
-        "Polygon collection": parsePolygonCollection(polygonCollections),
-      },
-    });
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
@@ -179,20 +157,12 @@ const Collections = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <div className={classes.title}>
-          <h1>Collections</h1>
-          <p>View all listed Collections ({`${collections && collections.length}) Listed`}</p>
+          <h1>{searchChain === "All Chains" ? "Collections" : searchChain}</h1>
+          <p>View all listed Collections ({`${filteredCollection && filteredCollection.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search searchContext={searchContext} searchPlaceholder="Search By collections or Users" />
+          <Search type={collections} searchPlaceholder="Search By collections or Users" />
 
-          {/* <div className={classes.search}>
-            <input
-              type="text"
-              onChange={handleSearchChange}
-              value={searchValue}
-              placeholder="Search By collections ,1 of 1s or Users"
-            />
-          </div> */}
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
               <ChainDropdown onChainFilter={handleChainChange} data={collections} />
