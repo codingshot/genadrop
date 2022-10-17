@@ -17,7 +17,7 @@ const Banner = () => {
             Find, Buy and Sell NFTs across <br /> blockchains
           </div>
           <div className={classes.searchContainer}>
-            <Search searchPlaceholder="Search collections, and 1 of 1s" />
+            <Search searchPlaceholder="Search collections, and 1 of 1s" type={""} />
           </div>
           <div className={classes.category}>
             <span onClick={() => history.push("/marketplace/1of1")}>1 of 1s</span>
