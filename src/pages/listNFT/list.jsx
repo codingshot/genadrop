@@ -14,7 +14,7 @@ import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.s
 import avatar from "../../assets/avatar.png";
 
 const List = () => {
-  const { account, mainnet, chainId, connector, dispatch } = useContext(GenContext);
+  const { account, mainnet, chainId, connector, dispatch, priceFeed } = useContext(GenContext);
 
   const {
     params: { nftId },
@@ -77,21 +77,13 @@ const List = () => {
   };
 
   useEffect(() => {
-    (async function getAmount() {
-      axios
-        .get(
-          `https://api.coingecko.com/api/v3/simple/price?ids=${supportedChains[chainId]?.coinGeckoLabel}&vs_currencies=usd`
-        )
-        .then((res) => {
-          const value = Object.values(res.data)[0]?.usd;
-          handleSetState({
-            // chainIcon: supportedChains[nftDetails.chain].icon,
-            amount: price * value,
-            // chainSymbol: supportedChains[nftDetails.chain].symbol,
-          });
-        });
-    })();
-  }, [price]);
+    if (priceFeed !== null) {
+      const value = priceFeed[supportedChains[chainId].coinGeckoLabel || supportedChains[chainId].id];
+      handleSetState({
+        amount: price * value,
+      });
+    }
+  }, [price, priceFeed]);
 
   useEffect(() => {
     (async function getUserCollection() {

@@ -1,13 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 import openseaIcon from "../../../assets/icon-opensea.svg";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
-    nftDetails;
+  const {
+    price,
+    chain,
+    sold,
+    isListed,
+    owner,
+    account,
+    chainId,
+    mainnet,
+    connector,
+    dispatch,
+    Id,
+    collection_name,
+  } = nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -22,14 +35,17 @@ const Deals = ({ nftDetails }) => {
     history,
     chainId,
   };
+  const { priceFeed } = useContext(GenContext);
   const getUsdValue = async () => {
-    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
-    setUsdValue(Number(value) * Number(price));
+    if (priceFeed !== null) {
+      const value = priceFeed[supportedChains[chain].coinGeckoLabel || supportedChains[chain].id];
+      setUsdValue(Number(value) * Number(price));
+    }
   };
 
   useEffect(() => {
     getUsdValue();
-  }, [nftDetails]);
+  }, [priceFeed]);
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
