@@ -12,7 +12,10 @@ const handleSuggestions = async ({ handleSetState, searchContainer, value, type 
 
   Object.keys(searchContainer).forEach(async (chain) => {
     const search = new Promise((resolve) => {
+      console.log("TO:", type);
+
       if (type === "") {
+        console.log(type);
         const result = searchContainer[chain].filter(
           (el) =>
             el.name?.toLowerCase().includes(value) ||
@@ -23,6 +26,8 @@ const handleSuggestions = async ({ handleSetState, searchContainer, value, type 
         );
         resolve(result);
       } else {
+        console.log(type);
+
         const result = searchContainer[chain].filter(
           (el) =>
             el.type === type &&
