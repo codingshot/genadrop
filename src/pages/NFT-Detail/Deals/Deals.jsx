@@ -36,11 +36,17 @@ const Deals = ({ nftDetails }) => {
     chainId,
   };
   const { priceFeed } = useContext(GenContext);
+  // const getUsdValue = async () => {
+  //   if (priceFeed !== null) {
+  //     const value = priceFeed[supportedChains[chain].coinGeckoLabel || supportedChains[chain].id];
+  //     setUsdValue(Number(value) * Number(price));
+  //   }
+  // };
+
   const getUsdValue = async () => {
-    if (priceFeed !== null) {
-      const value = priceFeed[supportedChains[chain].coinGeckoLabel || supportedChains[chain].id];
-      setUsdValue(Number(value) * Number(price));
-    }
+    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+
+    setUsdValue(Number(value) * Number(price));
   };
 
   useEffect(() => {

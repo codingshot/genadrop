@@ -30,7 +30,7 @@ const supportedChains = {
     add: addChain,
     isMainnet: true,
     switch: switchChain,
-    coinGeckoLabel: "ethereum",
+    coinGeckoLabel: "",
   },
   137: {
     id: "matic-network",
