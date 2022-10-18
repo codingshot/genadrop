@@ -83,14 +83,13 @@ const List = () => {
     return listedNFT;
   };
 
-  useEffect(() => {
-    if (priceFeed !== null) {
-      const value = priceFeed[supportedChains[chainId].coinGeckoLabel || supportedChains[chainId].id];
-      handleSetState({
-        amount: price * value,
-      });
-    }
-  }, [price, priceFeed]);
+  useEffect(async () => {
+    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+
+    handleSetState({
+      amount: price * value,
+    });
+  }, [price]);
 
   useEffect(() => {
     (async function getUserCollection() {
