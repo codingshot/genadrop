@@ -1,3 +1,4 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
@@ -41,39 +42,27 @@ const StoreData = () => {
     );
   };
 
-  useEffect(() => {
-    // dispatch(setPriceFeed({ celo: getLatestPriceCelo() }));
-    // dispatch(setPriceFeed({ "avalanche-2": getLatestPriceAvax() }));
-    // dispatch(setPriceFeed({ "matic-network": getLatestPriceMatic() }));
-    // dispatch(setPriceFeed({ near: getLatestPriceNear() }));
+  // useEffect(async () => {
 
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=celo&vs_currencies=usd`).then((res) => {
-      const price = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ celo: price }));
-    });
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd`).then((res) => {
-      const price = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ "avalanche-2": price }));
-    });
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd`).then((res) => {
-      const price = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ "matic-network": price }));
-    });
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`).then((res) => {
-      const price = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ near: price }));
-    });
+  //   getLatestPriceCelo(dispatch);
+  //   getLatestPriceAvax(dispatch);
+  //   getLatestPriceMatic(dispatch);
+  //   getLatestPriceNear(dispatch);
 
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd`).then((res) => {
-      const price = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ algorand: price }));
-    });
+  // }, []);
 
-    axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd`).then((res) => {
-      const price = Object.values(res.data)[0]?.usd;
-      dispatch(setPriceFeed({ "aurora-near": price }));
-    });
-  }, []);
+  // useEffect(()=>{
+  //   axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd`).then((res) => {
+  //     const price = Object.values(res.data)[0]?.usd;
+  //     dispatch(setPriceFeed({ algorand: price }));
+  //   });
+
+  //   axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd`).then((res) => {
+  //     const price = Object.values(res.data)[0]?.usd;
+
+  //     dispatch(setPriceFeed({ "aurora-near": price }));
+  //   });
+  // },[])
 
   useEffect(() => {
     const { type } = layerAction;
