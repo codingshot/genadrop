@@ -16,16 +16,15 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
-  const { account, priceFeed } = useContext(GenContext);
+  const { account } = useContext(GenContext);
 
   const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed } = nft;
 
   const getUsdValue = async () => {
     let value = usdPrice;
-    if (!value && priceFeed !== null) {
-      value = priceFeed[supportedChains[chain].coinGeckoLabel || supportedChains[chain].id];
+    if (!value) {
+      value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     }
-
     setUsdValue(Number(value) * Number(price));
   };
 
@@ -62,7 +61,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
 
   useEffect(() => {
     getUsdValue();
-  }, [priceFeed]);
+  }, [nft]);
 
   const footerPrpops = {
     price,
