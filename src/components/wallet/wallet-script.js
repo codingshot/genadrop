@@ -107,7 +107,8 @@ export const initializeConnection = async (walletProps) => {
     search.get("account_id") ||
     window.localStorage.getItem("near_wallet") === "connected_to_near"
   ) {
-    const nearConfig = getConfig("testnet");
+    const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+    const nearConfig = getConfig(network);
 
     const walletSelector = await setupWalletSelector({
       network: nearConfig,
@@ -339,6 +340,10 @@ export const disconnectWallet = async ({ walletConnectProvider, dispatch, histor
     window.localStorage.removeItem("near_wallet");
   }
   handleSetState({ toggleDropdown: false });
+  if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
+    window.localStorage.removeItem("undefined_wallet_auth_key");
+    window.localStorage.removeItem("nearConnection");
+  }
   if (pathname.includes("/profile")) {
     history.push("/marketplace");
   }

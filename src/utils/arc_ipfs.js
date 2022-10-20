@@ -6,6 +6,7 @@ import JSZip from "jszip";
 import { ethers } from "ethers";
 import { Contract } from "near-api-js";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+
 const BN = require("bn.js");
 
 const algosdk = require("algosdk");
@@ -288,7 +289,7 @@ async function signTx(connector, txns, dispatch) {
   return { assetID: assetIds, txId: TxIds };
 }
 export async function mintSingleToAlgo(algoMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet } = algoMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = algoMintProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
@@ -299,13 +300,13 @@ export async function mintSingleToAlgo(algoMintProps) {
     dispatch(setLoader("asset uploaded, minting in progress"));
     try {
       const { assetID, txId } = await signTx(connector, [txn], dispatch);
-      await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
+      await write.writeNft(receiverAddress, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
       // notification: asset minted
       return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
     } catch (error) {
       console.log(error.message);
       return {
-        message: `${error.message}`,
+        message: `${"insufficient balance/Min balance not enough to hold assets"}`,
       };
     }
   }
@@ -315,7 +316,7 @@ export async function mintSingleToAlgo(algoMintProps) {
 }
 
 export async function mintSingleToNear(nearMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet } = nearMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = nearMintProps;
   // initAlgoClients(mainnet);
   const {
     contract: { contractId },
@@ -374,7 +375,7 @@ export async function mintSingleToNear(nearMintProps) {
 }
 
 export async function mintSingleToPoly(singleMintProps) {
-  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -396,7 +397,7 @@ export async function mintSingleToPoly(singleMintProps) {
         : process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      data: contract.interface.encodeFunctionData("mint", [receiverAddress, id, 1, asset.url, "0x"]),
       nonce: ethNonce,
     };
     try {
@@ -433,7 +434,7 @@ export async function mintSingleToPoly(singleMintProps) {
   // );
   let txn;
   try {
-    txn = await contract.mint(account, id, 1, asset.url, "0x");
+    txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
     await txn.wait();
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -458,7 +459,7 @@ async function InitiateCeloProvider(mainnet) {
 }
 
 export async function mintSingleToCelo(singleMintProps) {
-  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -480,7 +481,7 @@ export async function mintSingleToCelo(singleMintProps) {
         : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mint", [account, id, 1, asset.url, "0x"]),
+      data: contract.interface.encodeFunctionData("mint", [receiverAddress, id, 1, asset.url, "0x"]),
       nonce: ethNonce,
     };
     try {
@@ -519,7 +520,7 @@ export async function mintSingleToCelo(singleMintProps) {
   // );
   let txn;
   try {
-    txn = await contract.mint(account, id, 1, asset.url, "0x");
+    txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
     await txn.wait();
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -536,8 +537,77 @@ export async function mintSingleToCelo(singleMintProps) {
   }
 }
 
+export async function mintSingleToAvax(singleMintProps) {
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, file.name, dispatch);
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    dispatch(setLoader("minting 1 of 1"));
+    const contract = new ethers.Contract(
+      mainnet ? process.env.REACT_APP_AVAX_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS,
+      mintSingle,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_AVAX_MAINNET_SINGLE_ADDRESS
+        : process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mint", [receiverAddress, id, 1, asset.url, "0x"]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+  const signer = await connector.getSigner();
+  dispatch(setLoader("uploading 1 of 1"));
+  const asset = await connectAndMint(file, metadata, file.name, 4);
+  const uintArray = asset.metadata.toLocaleString();
+  const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  dispatch(setLoader("minting 1 of 1"));
+  const contract = new ethers.Contract(
+    mainnet ? process.env.REACT_APP_AVAX_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS,
+    mintSingle,
+    signer
+  );
+  let txn;
+  try {
+    txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
+    await txn.wait();
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    dispatch(setLoader(""));
+    return mainnet ? `https://snowtrace.io/tx/${txn.hash}` : `https://testnet.snowtrace.io/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "something went wrong! please check your connected network and try again.",
+    };
+  }
+}
+
 export async function mintSingleToAurora(singleMintProps) {
-  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet } = singleMintProps;
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, file.name, 4);
@@ -561,7 +631,7 @@ export async function mintSingleToAurora(singleMintProps) {
   //   wallet
   // );
   try {
-    const txn = await contract.mint(account, id, 1, asset.url, "0x");
+    const txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
     await txn.wait();
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
@@ -658,6 +728,41 @@ export async function listCeloNft(nftProps) {
     return mainnet
       ? `https://celo-testnet.org/tx/${txn.hash}`
       : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
+export async function listAvaxNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_AVAX_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AVAX_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet ? `https://snowtrace.io/tx/${txn.hash}` : `hhttps://testnet.snowtrace.io/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(""));
     console.log(error);
@@ -780,7 +885,18 @@ export async function initializeContract(contractProps) {
 }
 
 export async function mintToAlgo(algoProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = algoProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    setLoader,
+    receiverAddress,
+    mainnet,
+  } = algoProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     const ipfsJsonData = await createNFT({ ...algoProps }, true);
@@ -810,13 +926,22 @@ export async function mintToAlgo(algoProps) {
         pinataMetadata: { name: "collection" },
       });
       const collectionUrl = `ipfs://${collectionHash.IpfsHash}`;
-      await write.writeUserData(account, collectionUrl, fileName, assetID, price || 0, description, mainnet, txId);
+      await write.writeUserData(
+        receiverAddress,
+        collectionUrl,
+        fileName,
+        assetID,
+        price || 0,
+        description,
+        mainnet,
+        txId
+      );
       dispatch(setLoader(""));
       return mainnet ? `https://algoexplorer.io/tx/${txId[0]}` : `https://testnet.algoexplorer.io/tx/${txId[0]}`;
     } catch (error) {
-      console.log(error);
+      console.log("===> ", error);
       return {
-        message: `${error.message}`,
+        message: `${"insufficient balance/Min balance not enough to hold assets"}`,
       };
     }
   }
@@ -824,7 +949,18 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = celoProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    setLoader,
+    mainnet,
+    receiverAddress,
+  } = celoProps;
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -865,7 +1001,7 @@ export async function mintToCelo(celoProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      data: contract.interface.encodeFunctionData("mintBatch", [receiverAddress, ids, uris]),
       nonce: ethNonce,
     };
     try {
@@ -890,7 +1026,7 @@ export async function mintToCelo(celoProps) {
     }
   }
   try {
-    tx = await contract.mintBatch(account, ids, uris);
+    tx = await contract.mintBatch(receiverAddress, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
@@ -918,8 +1054,113 @@ export async function mintToCelo(celoProps) {
     : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
 }
 
+export async function mintToAvax(celoProps) {
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    setLoader,
+    mainnet,
+    receiverAddress,
+  } = celoProps;
+  const ipfsJsonData = await createNFT({ ...celoProps });
+  dispatch(setLoader("preparing assets for minting"));
+  const contract = await initializeContract({
+    minterAddress: mainnet
+      ? process.env.REACT_APP_AVAX_MAINNET_MINTER_ADDRESS
+      : process.env.REACT_APP_AVAX_TESTNET_MINTER_ADDRESS,
+    fileName,
+    connector,
+    account,
+    dispatch,
+    setLoader,
+    description,
+  });
+  await connector.getSigner();
+  const uris = ipfsJsonData.map((asset) => asset.url);
+  const ids = ipfsJsonData.map((asset) => {
+    const uintArray = asset.metadata.toLocaleString();
+    return parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  });
+
+  // const amounts = new Array(ids.length).fill(1);
+  let tx;
+  dispatch(setLoader("finalizing"));
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const ethNonce = await signer.getTransactionCount();
+    tx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mintBatch", [receiverAddress, ids, uris]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully.",
+          type: "success",
+        })
+      );
+      return mainnet ? `https://snowtrace.io/tx/${result.hash}` : `https://testnet.snowtrace.io/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+  try {
+    tx = await contract.mintBatch(receiverAddress, ids, uris);
+    await tx.wait();
+    // await marketContract.createBulkMarketItem(
+    //   contract.address,
+    //   ids,
+    //   String(price * 10 ** 18),
+    //   amounts,
+    //   "General",
+    //   account,
+    //   description
+    // );
+  } catch (error) {
+    console.log(error);
+    dispatch(setLoader(""));
+    return;
+  }
+  dispatch(setLoader(""));
+  dispatch(
+    setNotification({
+      message: "NFTs minted successfully",
+      type: "success",
+    })
+  );
+  return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
+}
+
 export async function mintToPoly(polyProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    receiverAddress,
+    setLoader,
+    mainnet,
+  } = polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -962,7 +1203,7 @@ export async function mintToPoly(polyProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      data: contract.interface.encodeFunctionData("mintBatch", [receiverAddress, ids, uris]),
       nonce: ethNonce,
     };
     try {
@@ -985,7 +1226,7 @@ export async function mintToPoly(polyProps) {
     }
   }
   try {
-    tx = await contract.mintBatch(account, ids, uris);
+    tx = await contract.mintBatch(receiverAddress, ids, uris);
     await tx.wait();
     // await marketContract.createBulkMarketItem(
     //   contract.address,
@@ -1412,6 +1653,65 @@ export async function purchaseCeloNfts(buyProps) {
     return mainnet
       ? `https://blockscout.celo.org/tx/${tx.hash}`
       : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
+  } catch (error) {
+    console.log("erooric data", error, error.data);
+    return dispatch(
+      setNotification({
+        message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+        type: "warning",
+      })
+    );
+  }
+}
+
+export async function purchaseAvaxNfts(buyProps) {
+  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
+  if (!connector) {
+    return dispatch(
+      setNotification({
+        message: "connect wallet",
+        type: "warning",
+      })
+    );
+  }
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
+  const signature = await wallet._signTypedData(
+    // Domain
+    {
+      name: "GenaDrop",
+      version: "1.0.0",
+      chainId,
+      verifyingContract: mainnet
+        ? process.env.REACT_APP_GENADROP_AVAX_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_AVAX_TESTNET_MARKET_ADDRESS,
+    },
+    // Types
+    {
+      NFT: [
+        { name: "tokenId", type: "uint256" },
+        { name: "account", type: "address" },
+        { name: "price", type: "uint256" },
+        { name: "seller", type: "address" },
+        { name: "nftContract", type: "address" },
+      ],
+    },
+    // Value
+    { tokenId, account, price, seller, nftContract }
+  );
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_AVAX_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_AVAX_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    connector.getSigner()
+  );
+  try {
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    await tx.wait();
+    return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
   } catch (error) {
     console.log("erooric data", error, error.data);
     return dispatch(

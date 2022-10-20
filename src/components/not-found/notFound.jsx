@@ -1,5 +1,5 @@
 import React from "react";
-import icon from "../../assets/icon-not-found.svg";
+import icon from "../../assets/icon-not-found.png";
 import classes from "./notFound.module.css";
 
 const NotFound = () => (
@@ -7,7 +7,7 @@ const NotFound = () => (
     <div className={classes.imageContainer}>
       <img src={icon} alt="" />
     </div>
-    <h1>No results Found.</h1>
+    <h1>No Results Found.</h1>
     <p>We can’t find any item matching your search</p>
   </div>
 );

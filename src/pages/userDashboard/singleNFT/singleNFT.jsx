@@ -176,26 +176,11 @@ const ListSingleNFT = (nft) => {
   }, []);
 
   useEffect(() => {
-    console.log(supportedChains[nftDetails?.chain]?.chain);
-  }, [nftDetails]);
+    handleSetState({
+      chainIcon: supportedChains[nftDetails.chain].icon,
 
-  useEffect(() => {
-    const pair = supportedChains[nftDetails?.chain]?.id;
-    if (Number(nftChainId) !== 4160 && pair) {
-      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        const value = Object.values(res.data)[0]?.usd;
-        handleSetState({
-          chainIcon: supportedChains[nftDetails.chain].icon,
-          algoPrice: value,
-          chainSymbol: supportedChains[nftDetails.chain].symbol,
-        });
-      });
-    }
-    if (Number(nftChainId) === 4160) {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount });
-      });
-    }
+      chainSymbol: supportedChains[nftDetails.chain].symbol,
+    });
   }, [nftDetails]);
 
   const onCopyText = () => {

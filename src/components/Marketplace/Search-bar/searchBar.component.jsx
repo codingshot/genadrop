@@ -29,7 +29,7 @@ const SearchBar = ({ onSearch }) => {
   return (
     <div className={classes.searchInput}>
       <img src={searchIcon} alt="" />
-      <input type="search" onChange={seachHandler} value={searchValue} placeholder="Search items" />
+      <input type="text" onChange={seachHandler} value={searchValue} placeholder="Search items" />
     </div>
   );
 };

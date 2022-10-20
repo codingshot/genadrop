@@ -40,7 +40,7 @@
 }
 
 .btn {
-  padding: 0.5em 2em;
+  padding: 0.5em 1.5em;
   border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);
@@ -48,6 +48,8 @@
   cursor: pointer;
   transition: all 300ms;
   text-align: center;
+  width: 8em;
+  font-size: 1.2em;
 }
 
 .btn:hover {
@@ -64,6 +66,19 @@
   color: var(--outline);
 }
 
+.sea {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.opensea {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.opensea:hover {
+  cursor: pointer;
+}
 @media screen and (max-width: 1200px) {
   .btn {
     padding: 0.5em 1.5em;
@@ -73,5 +88,9 @@
 @media screen and (max-width: 540px) {
   .container {
     top: 3em;
+  }
+  .btn {
+    padding: 0.5em 1.5em;
+    width: 6em;
   }
 }

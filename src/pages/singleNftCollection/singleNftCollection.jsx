@@ -17,10 +17,27 @@ import {
 } from "../Marketplace/Marketplace-script";
 
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import Search from "../../components/Search/Search";
+import {
+  parseAlgoSingle,
+  parseAuroraSingle,
+  parseCeloSingle,
+  parseNearSingle,
+  parsePolygonSingle,
+} from "../../renderless/fetch-data/fetchData-script";
 
 const SingleNftCollection = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts, mainnet, account } =
-    useContext(GenContext);
+  const {
+    singleAlgoNfts,
+    singleAuroraNfts,
+    singlePolygonNfts,
+    singleCeloNfts,
+    singleNearNfts,
+    mainnet,
+    singleAvaxNfts,
+    account,
+    searchContainer,
+  } = useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const mountRef = useRef(null);
@@ -30,11 +47,12 @@ const SingleNftCollection = () => {
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
-    searchValue: "",
+
     notFound: false,
+    searchChain: "",
   });
 
-  const { collections, paginate, currentPage, currentPageValue, searchValue, filteredCollection, notFound } = state;
+  const { collections, paginate, currentPage, currentPageValue, searchChain, filteredCollection, notFound } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -56,14 +74,9 @@ const SingleNftCollection = () => {
     document.documentElement.scrollTop = 0;
   };
 
-  const handleSearchChange = (e) => {
-    const result = getCollectionsBySearch({ collections, search: e.target.value });
-    handleSetState({ filteredCollection: result, searchValue: e.target.value });
-  };
-
   const handleChainChange = (chain) => {
     const result = getCollectionsByChain({ collections, chain, mainnet });
-    handleSetState({ filteredCollection: result });
+    handleSetState({ filteredCollection: result, searchChain: chain });
   };
 
   const handleFilter = ({ type, value }) => {
@@ -80,20 +93,19 @@ const SingleNftCollection = () => {
   };
 
   useEffect(() => {
-    console.log(singleNearNfts);
-  }, [singleNearNfts]);
-
-  useEffect(() => {
     let collections = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
       ...(singlePolygonNfts || []),
       ...(singleCeloNfts || []),
       ...(singleNearNfts || []),
+      ...(singleAvaxNfts || []),
     ];
     collections = shuffle(collections);
     handleSetState({ collections, filteredCollection: [...collections] });
+
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+
 
   useEffect(() => {
     const countPerPage = 20;
@@ -124,19 +136,12 @@ const SingleNftCollection = () => {
     <div className={classes.container}>
       <div className={classes.heading}>
         <div className={classes.title}>
-          <h1>1 of 1s</h1>
-          <p>View all listed 1 of 1s {`(${collections.length} Listed)`}</p>
+          <h1>{searchChain === "All chains" ? "1 of 1s" : searchChain}</h1>
+          <p>View all listed 1 of 1s {`(${filteredCollection.length} Listed)`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <div className={classes.search}>
-            <SearchIcon />
-            <input
-              type="text"
-              onChange={handleSearchChange}
-              value={searchValue}
-              placeholder="Search By collections ,1 of 1s or Users"
-            />
-          </div>
+          <Search type={"1of1"} searchPlaceholder="Search By 1 of 1s and Users" />
+
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
               <ChainDropdown onChainFilter={handleChainChange} />

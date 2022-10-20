@@ -75,7 +75,8 @@ const WalletPopup = ({ handleSetState }) => {
       });
       const description = "Please select a wallet to sign in..";
       const contract =
-        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop.nftgen.near";
+        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop-contract.nftgen.near";
+
       const modal = setupModal(walletSelector, { contractId: contract, description });
       modal.show();
 
@@ -83,9 +84,9 @@ const WalletPopup = ({ handleSetState }) => {
       window.selector = walletSelector;
       if (isSignedIn) {
         window.localStorage.setItem("near_wallet", "connected_to_near");
-        dispatch(setChainId(1111));
+        dispatch(setChainId(chainId));
         dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
-        dispatch(setProposedChain(1111));
+        dispatch(setProposedChain(chainId));
         dispatch(setConnector(walletSelector.wallet()));
       }
 
@@ -151,11 +152,11 @@ const WalletPopup = ({ handleSetState }) => {
               You&apos;re viewing data from the {mainnet ? "main" : "test"} network.
               <br /> Go to{" "}
               <a
-                href={mainnet ? "https://genadrop-staging.vercel.app/" : "https://www.genadrop.com/"}
+                href={mainnet ? "https://genadrop-testnet.vercel.app/" : "https://www.genadrop.com/"}
                 target="_blank"
                 rel="noreferrer"
               >
-                {mainnet ? "genadrop-staging.vercel.app" : "genadrop.com"}
+                {mainnet ? "genadrop-testnet.vercel.app" : "genadrop.com"}
               </a>{" "}
               to switch to {!mainnet ? "main" : "test"} network
             </div>

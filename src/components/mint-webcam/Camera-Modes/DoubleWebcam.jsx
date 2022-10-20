@@ -30,20 +30,6 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
     switchCameraToRear(webcam, handleSetState, webcamRef);
   };
 
-  // function roundedImage(ctx, x, y, width, height, radius) {
-  //   ctx.beginPath();
-  //   ctx.moveTo(x + radius, y);
-  //   ctx.lineTo(x + width - radius, y);
-  //   ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
-  //   ctx.lineTo(x + width, y + height - radius);
-  //   ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
-  //   ctx.lineTo(x + radius, y + height);
-  //   ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
-  //   ctx.lineTo(x, y + radius);
-  //   ctx.quadraticCurveTo(x, y, x + radius, y);
-  //   ctx.closePath();
-  // }
-
   useEffect(() => {
     if (img && webcamRef.current) {
       handleSetState({
@@ -54,23 +40,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           loaderToggle: false,
         });
         const imageSrc = webcamRef.current.takePhoto();
-        // round corner canvas' reference
-        // const roundCornerCanvas = document.createElement("canvas");
-        // const roundCornerCtx = roundCornerCanvas.getContext("2d");
 
-        // const image = new Image();
-        // image.src = imageSrc;
-        // image.onload = function () {
-        //   // draw image with round corner
-        //   roundCornerCtx.save();
-        //   roundedImage(roundCornerCtx, 0, 0, webcamRef.current.clientWidth, webcamRef.current.height, 15);
-        //   roundCornerCtx.strokeStyle = "#2465D3";
-        //   roundCornerCtx.stroke();
-        //   roundCornerCtx.clip();
-        //   roundCornerCtx.drawImage(image, 20, 20, 260, 260);
-        //   roundCornerCtx.restore();
-        //   console.log(roundCornerCanvas.toDataURL());
-        // };
         handleSetState({ faceImg: imageSrc });
       }, 5000);
     }
@@ -84,7 +54,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
       setZip({
         name,
         file: result,
-        type: "BeReal",
+        type: "Doubletake",
       })
     );
 
@@ -195,7 +165,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
           {/* main button */}
           <div onClick={() => takePicture(webcamRef, handleSetState)} className={classes.mainBtn}>
             <IconCapture className={classes.captureBtn} />
-            <p>BeReal</p>
+            <p>Doubletake</p>
           </div>
 
           {/* switch mode button */}

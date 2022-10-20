@@ -1,3 +1,4 @@
+import { async } from "regenerator-runtime";
 import {
   mintSingleToAlgo,
   mintSingleToPoly,
@@ -5,9 +6,11 @@ import {
   mintToCelo,
   mintToPoly,
   mintToAurora,
+  mintToAvax,
   mintSingleToCelo,
   mintSingleToAurora,
   mintSingleToNear,
+  mintSingleToAvax,
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
@@ -30,6 +33,8 @@ export const handleMint = async (args) => {
       url = await mintToPoly({ ...args });
     } else if (chain.toLowerCase() === "aurora") {
       url = await mintToAurora({ ...args });
+    } else if (chain.toLowerCase() === "avalanche") {
+      url = await mintToAvax({ ...args });
     } else {
       dispatch(
         setNotification({
@@ -71,6 +76,8 @@ export const handleSingleMint = async (args) => {
       url = await mintSingleToAurora({ ...args });
     } else if (chain.toLowerCase() === "near") {
       url = await mintSingleToNear({ ...args });
+    } else if (chain.toLowerCase() === "avalanche") {
+      url = await mintSingleToAvax({ ...args });
     } else {
       dispatch(
         setNotification({
@@ -90,3 +97,27 @@ export const handleSingleMint = async (args) => {
     };
   }
 };
+
+export function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onerror = reject;
+    fr.onload = () => {
+      resolve({ name: file.name, url: fr.result });
+    };
+    fr.readAsDataURL(file);
+  });
+}
+
+export function getFileFromBase64(string64, fileName) {
+  const type = string64.split(",")[0]?.replace(";base64", "")?.replace("data:", "");
+  const trimmedString = string64.split(",")[1];
+  const imageContent = atob(trimmedString);
+  const buffer = new ArrayBuffer(imageContent.length);
+  const view = new Uint8Array(buffer);
+  for (let n = 0; n < imageContent.length; n += 1) {
+    view[n] = imageContent.charCodeAt(n);
+  }
+  const blob = new Blob([buffer], { type });
+  return new File([blob], fileName, { lastModified: new Date().getTime(), type });
+}

@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import { ethers } from "ethers";
 import {
   GET_CELO_GRAPH_COLLECITONS,
@@ -15,11 +16,12 @@ import {
   getGraphNft,
   getNearNft,
   getNearSingleGraphNfts,
+  getGraphTransactionHistory,
   getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
 } from "../../utils";
-import { auroraClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
+import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
   const { data: polygonData, error: polygonError } = await polygonClient
@@ -31,9 +33,26 @@ export const polygonUserData = async (address) => {
   if (polygonData?.nft !== null) {
     polygonResult = await getGraphNft(polygonData?.nft);
     trHistory = await getTransactions(polygonData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = polygonResult[0].price;
+    });
   }
-  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
-  return [polygonResult[0], transactionHistory];
+  return [polygonResult[0], trHistory];
+};
+
+export const avaxUsersNfts = async (address) => {
+  const { data: avaxData, error: avaxError } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
+  if (avaxError) return;
+  let trHistory;
+  let avaxResult = [];
+  if (avaxData?.nft !== null) {
+    avaxResult = await getGraphNft(avaxData?.nft);
+    trHistory = await getTransactions(avaxData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = avaxResult[0].price;
+    });
+  }
+  return [avaxResult[0], trHistory];
 };
 
 export const nearUserData = async (address) => {
@@ -86,6 +105,14 @@ export const getNearMintedNfts = async (address) => {
   return nearMintedNfts;
 };
 
+export const getAvaxMintedNfts = async (address) => {
+  const { data: avaxData, error: avaxError } = await avalancheClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (avaxError) return;
+  const response = await getSingleGraphNfts(avaxData?.user?.nfts, address);
+  const avaxMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true);
+  return avaxMintedNfts;
+};
+
 export const getCeloNFTToList = async (address, nftId) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (celoError) return;
@@ -135,6 +162,14 @@ export const getAuroraCollectedNFTs = async (address) => {
   return auroraCollectedNfts;
 };
 
+export const getAvaxCollectedNFTs = async (address) => {
+  const { data, error: auroraError } = await avalancheClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (auroraError) return;
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const avaxCollectedNfts = response?.filter((NFTS) => NFTS?.sold === true);
+  return avaxCollectedNfts;
+};
+
 export const getCeloUserCollections = async (account) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_COLLECTIONS, { id: account }).toPromise();
   if (celoError) return;
@@ -164,9 +199,11 @@ export const auroraUserData = async (address) => {
   if (auroraData?.nft !== null) {
     auroraResult = await getGraphNft(auroraData?.nft);
     trHistory = await getTransactions(auroraData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = auroraResult[0].price;
+    });
   }
-  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
-  return [auroraResult[0], transactionHistory];
+  return [auroraResult[0], trHistory];
 };
 
 export const celoUserData = async (address) => {
@@ -177,7 +214,93 @@ export const celoUserData = async (address) => {
   if (celoData?.nft !== null) {
     celoResult = await getCeloGraphNft(celoData?.nft);
     trHistory = await getTransactions(celoData?.nft?.transactions);
+    trHistory.find((t) => {
+      if (t.type === "Minting") t.price = celoResult[0].price;
+    });
   }
-  const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
-  return [celoResult[0], transactionHistory];
+  return [celoResult[0], trHistory];
+};
+
+export const celoCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await celoClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
+};
+
+export const polygonCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await polygonClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
+};
+
+export const auroraCollectionTransactions = async (id) => {
+  const { data: celoData, error: celoError } = await auroraClient
+    .query(
+      gql`query MyQuery {
+      transactions(
+        where: {nft_contains: "${id}"}
+        orderBy: txDate
+      ) {
+        id
+        price
+        txDate
+        txId
+        type
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
+    }`
+    )
+    .toPromise();
+  if (celoError) return;
+  const transaction = getGraphTransactionHistory(celoData?.transactions);
+  if (transaction) return (await transaction).reverse();
 };

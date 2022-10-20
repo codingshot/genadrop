@@ -14,8 +14,14 @@ const FQA = () => {
 
   const FAQS = [
     {
+      id: "1",
+      question: "What NFTs can I create?",
+      answer:
+        "You can create and generate the art for PFP NFTs, take photos, shorts, doubletake photos, or upload a file. Filter through the marketplace to see today!",
+    },
+    {
       id: "2",
-      question: "what are the requirements for each asset ?",
+      question: "what are the requirements for each asset?",
       answer:
         "Each layer in the image represents a trait (Hair, Outfit, etc), and each trait will have many variants (Short Purple Hair, Long Purple Hair, etc). Draw each variant on a transparent PNG file, so all the layers will be visible. Each image should have the same size, You can add conflict rules to the selected layers. Then you can preview and download your collection.",
     },
@@ -28,13 +34,7 @@ const FQA = () => {
     {
       id: "4",
       question: "Which blockchains does Genadrop support?",
-      answer: `
-        - Algorand
-        - Polygon
-        - Celo
-        - Aurora
-        - Near (Coming Soon)
-        - Avalanche (Coming Soon)`,
+      answer: `Algorand, Celo, Polygon, Aurora, NEAR, and COMING SOON (Avalanche)`,
     },
     {
       id: "5",

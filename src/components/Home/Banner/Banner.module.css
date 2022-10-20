@@ -25,31 +25,25 @@
 
 .features {
   font-weight: 700;
-  font-size: 10rem;
+  font-size: 8.1875rem;
   line-height: 1em;
-  color: var(--text-heading);
   text-align: center;
-}
-
-.features span {
-  display: inline-block;
-  width: 0.15em;
-  height: 0.15em;
-  border-radius: 50%;
-  background: var(--text-heading);
-  position: relative;
-  top: 0.2em;
+  color: #2d3748;
+  white-space: nowrap;
 }
 
 .description {
-  font-weight: 600;
   font-size: 2.5rem;
+  font-weight: 500;
   text-align: center;
+  color: #2d3748;
 }
 
 .more {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.75rem;
+  letter-spacing: 0.02em;
+  color: #2d3748;
 }
 
 .btnContainer {
@@ -127,23 +121,9 @@
   transform: scale(0.95);
 }
 
-@media screen and (max-width: 1380px) {
-  .features {
-    font-size: 8rem;
-  }
-
-  .description {
-    font-size: 2rem;
-  }
-
-  .more {
-    font-size: 1.2rem;
-  }
-}
-
 @media screen and (max-width: 1200px) {
   .features {
-    font-size: 6rem;
+    font-size: 6.5rem;
   }
 
   .description {
@@ -184,7 +164,7 @@
 
 @media screen and (max-width: 768px) {
   .features {
-    font-size: 3.5rem;
+    font-size: 4rem;
   }
 
   .description {
@@ -198,15 +178,15 @@
   }
 
   .features {
-    font-size: 2.2rem;
+    font-size: 2.75rem;
   }
 
   .description {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 
   .more {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
   .demo {
@@ -220,5 +200,10 @@
   .btn_1,
   .btn_2 {
     padding: 0.5em 2em;
+  }
+}
+@media screen and (max-width: 350px) {
+  .features {
+    font-size: 2rem;
   }
 }

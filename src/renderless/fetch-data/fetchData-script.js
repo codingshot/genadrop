@@ -36,6 +36,12 @@ export const parseNearSingle = (result) => {
     type: "1of1",
   }));
 };
+export const parseAvaxSingle = (result) => {
+  return result.map((val) => ({
+    ...val,
+    type: "1of1",
+  }));
+};
 export const parseCeloSingle = (result) => {
   return result.map((val) => ({
     ...val,

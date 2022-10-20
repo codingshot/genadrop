@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
 import chains from "./Chains-Script";
 import classes from "./Chains.module.css";
@@ -7,8 +7,6 @@ import classes from "./Chains.module.css";
 const Chains = () => {
   const cardRef = useRef(null);
   const history = useHistory();
-
-  const { url } = useRouteMatch();
 
   const [state, setState] = useState({
     cardWidth: 0,
@@ -22,7 +20,7 @@ const Chains = () => {
 
   const handleClick = (name, isComingSoon) => {
     if (isComingSoon) return;
-    history.push(`${url}/collections/${`?chain=${name}`}`);
+    history.push(`marketplace/all?chain=${name}`);
   };
 
   useEffect(() => {

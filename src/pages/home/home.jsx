@@ -11,6 +11,7 @@ import EarlyAccess from "../../components/Home/early-access/early-access";
 import Plans from "../../components/Home/Plans/Plans";
 import JoinDiscord from "../../components/Home/Join-Discord/JoinDiscord";
 import Media from "../../components/Media/Media";
+import Partners from "../../components/Partners/Partners";
 
 const Home = () => (
   <div className={classes.container}>
@@ -23,8 +24,9 @@ const Home = () => (
     <GenadropCreatedNFTs />
     <Review />
     <JoinDiscord />
-    <Media />
+    <Partners />
     <FAQ />
+    <Media />
   </div>
 );
 

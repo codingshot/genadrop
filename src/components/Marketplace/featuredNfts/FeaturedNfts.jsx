@@ -6,19 +6,19 @@ import "react-loading-skeleton/dist/skeleton.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
-import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
+import SingleNftCard from "../SingleNftCard/SingleNftCard";
 
 const FeautedNfts = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
-
-  const algoCollectionsArr = Object.values(algoCollections);
+  const { singleAuroraNfts, singleAlgoNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts } =
+    useContext(GenContext);
+  const algoNFTs = Object.values(singleAlgoNfts);
 
   const [state, setState] = useState({
-    collections: [],
+    NFTs: [],
     init: false,
   });
 
-  const { collections, init } = state;
+  const { NFTs, init } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -34,17 +34,33 @@ const FeautedNfts = () => {
     return array;
   }
 
-  useEffect(() => {
-    let collections = [
-      ...(auroraCollections || []),
-      ...(algoCollectionsArr || []),
-      ...(polygonCollections || []),
-      ...(celoCollections || []),
-    ];
-    collections = shuffle(collections);
-    handleSetState({ collections });
-  }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
+  const featuredNFTs =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? []
+      : [
+          "genadrop-contract.nftgen.near1664333582736",
+          "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
+          "genadrop-contract.nftgen.near1664317298336",
+          "genadrop-contract.nftgen.near1664562603103",
+        ];
 
+  useEffect(() => {
+    let nfts = [
+      ...(algoNFTs || []),
+      ...(singleAuroraNfts || []),
+      ...(singleNearNfts || []),
+      ...(singlePolygonNfts || []),
+      ...(singleCeloNfts || []),
+      ...(singleAvaxNfts || []),
+    ];
+
+    nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
+    nfts = shuffle(nfts);
+    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
+      featuredNFTs.includes(nft.Id)
+    );
+    handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
+  }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts, singleAvaxNfts]);
   return (
     <div className={classes.container}>
       <div className={classes.headingContainer}>
@@ -53,22 +69,22 @@ const FeautedNfts = () => {
 
       <div className={`${classes.wrapper}`}>
         <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
-          {collections.length ? (
-            collections.map((collection, idx) => (
-              <CollectionNftCard use_width="20em" key={idx} collection={collection} />
-            ))
-          ) : !collections ? (
+          {NFTs.length ? (
+            NFTs.map((collection) => <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />)
+          ) : !NFTs ? (
             <NotFound />
           ) : (
-            [...new Array(4)].map((_, idx) => (
-              <div className={classes.skeleton} use_width="20em" key={idx}>
-                <Skeleton count={1} height={250} />
-                <br />
-                <Skeleton count={1} height={30} />
-                <br />
-                <Skeleton count={1} height={30} />
-              </div>
-            ))
+            [...new Array(4)]
+              .map((_, idx) => idx)
+              .map((id) => (
+                <div className={classes.skeleton} use_width="20em" key={id}>
+                  <Skeleton count={1} height={250} />
+                  <br />
+                  <Skeleton count={1} height={30} />
+                  <br />
+                  <Skeleton count={1} height={30} />
+                </div>
+              ))
           )}
         </GenadropCarouselScreen>
       </div>

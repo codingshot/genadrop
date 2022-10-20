@@ -1,14 +1,17 @@
 import { useState, useEffect } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
+import openseaIcon from "../../../assets/icon-opensea.svg";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id } = nftDetails;
+  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
+    nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
+  const history = useHistory();
   const [usdValue, setUsdValue] = useState(0);
   const buyProps = {
     dispatch,
@@ -19,14 +22,12 @@ const Deals = ({ nftDetails }) => {
     history,
     chainId,
   };
-
   const getUsdValue = async () => {
     const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     setUsdValue(Number(value) * Number(price));
   };
 
   useEffect(() => {
-    console.log(nftDetails);
     getUsdValue();
   }, [nftDetails]);
   return (
@@ -39,21 +40,27 @@ const Deals = ({ nftDetails }) => {
           <div className={classes.appx}>{`($${usdValue.toFixed(4)})`}</div>
         </div>
       </div>
-      {!price ? (
+      {!isListed && !price ? (
         owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
-              <button className={classes.btn}>Re-List</button>
+              <button className={`${classes.btn} ${classes.disable}`} disabled>
+                Re-List
+              </button>
             ) : (
               <button className={classes.btn}>List</button>
             )}
           </Link>
         ) : (
-          <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
+          <div className={`${classes.btn} ${classes.disable}`} disabled>
+            Not Listed
+          </div>
         )
-      ) : owner === account ? (
-        <div className={`${classes.btn} ${classes.disable}`}>Listed</div>
-      ) : !sold || isListed ? (
+      ) : owner === account && isListed ? (
+        <div className={`${classes.btn} ${classes.disable}`} disabled>
+          Listed
+        </div>
+      ) : !sold && isListed ? (
         supportedChains[chain]?.chain === "Algorand" ? (
           <div onClick={() => buyNft(buyProps)} className={classes.btn}>
             Buy
@@ -63,9 +70,56 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
+      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
+        <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
+          <div className={`${classes.btn}`}>List</div>
+        </Link>
+      ) : price && !isListed ? (
+        <div className={`${classes.btn} ${classes.disable}`} disabled>
+          Sold
+        </div>
+      ) : isListed ? (
+        <div onClick={() => buyGraphNft(buyProps)} className={`${classes.btn} `}>
+          Buy
+        </div>
       ) : (
-        <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
+        <div className={`${classes.btn} ${classes.disable}`} disabled>
+          Not Listed
+        </div>
       )}
+      <div className={classes.sea}>
+        {supportedChains[chain]?.label === "Polygon" ? (
+          <a
+            href={`https://opensea.io/assets/matic/${
+              collection_name === "Genadrop 1 of 1"
+                ? "0x3243cd574e9d51ad012c7fa4957e8037beb8792f"
+                : "0x3243cd574e9d51ad012c7fa4957e8037beb8792f"
+            }/${nftDetails.tokenID}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div className={classes.opensea}>
+              <img src={openseaIcon} alt="" /> View Listing on Opensea
+            </div>
+          </a>
+        ) : supportedChains[chain]?.label === "Polygon Testnet" ? (
+          <a
+            href={`https://testnets.opensea.io/assets/mumbai/${
+              collection_name === "Genadrop 1 of 1"
+                ? "0x5d05fe74a923b0e2e50ef08e434ac8fa6c76fe71"
+                : "0x2b90d1ceb58d6848c07e7e1ef474bf3641efa539"
+            }/${nftDetails.tokenID}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <div className={classes.opensea}>
+              <img src={openseaIcon} alt="" /> View Listing on Opensea
+            </div>
+          </a>
+        ) : (
+          ""
+        )}
+      </div>
     </div>
   );
 };

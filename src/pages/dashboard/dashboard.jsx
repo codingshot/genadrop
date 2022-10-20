@@ -10,6 +10,8 @@ import {
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
   getAuroraUserCollections,
+  getAvaxCollectedNFTs,
+  getAvaxMintedNfts,
   getCeloCollectedNFTs,
   getCeloMintedNFTs,
   getCeloUserCollections,
@@ -49,7 +51,7 @@ const Dashboard = () => {
       name: "a - z",
       date: "newest - oldest",
     },
-    activeDetail: "sale",
+    activeDetail: "created",
     collectedNfts: null,
     createdNfts: null,
     myCollections: null,
@@ -107,6 +109,9 @@ const Dashboard = () => {
         case "Polygon":
           nfts = await getPolygonMintedNFTs(address);
           break;
+        case "Avalanche":
+          nfts = await getAvaxMintedNfts(address);
+          break;
         case "Near":
           nfts = await getNearMintedNfts(userId);
           break;
@@ -137,6 +142,9 @@ const Dashboard = () => {
           break;
         case "Polygon":
           nfts = await getPolygonCollectedNFTs(address);
+          break;
+        case "Avalanche":
+          nfts = await getAvaxCollectedNFTs(address);
           break;
         default:
           break;
@@ -311,7 +319,7 @@ const Dashboard = () => {
     } else {
       activeSwitch(activeDetail);
     }
-  });
+  }, []);
 
   return (
     <div className={classes.container}>
@@ -362,7 +370,7 @@ const Dashboard = () => {
 
             <div className={classes.address}>
               <img src={supportedChains[chainID]?.icon} alt="blockchain" />
-              <div>{userId.length > 25 ? breakAddress(userId) : userId}</div>
+              <div>{userId?.length > 25 ? breakAddress(userId) : userId}</div>
               <LinkIcon onClick={handleExplorer} />
             </div>
           </div>
@@ -378,20 +386,6 @@ const Dashboard = () => {
         <section className={classes.header}>
           <div className={classes.details}>
             <div
-              onClick={() => activeSwitch("sale")}
-              className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
-            >
-              <p>On sale</p>
-              <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
-            </div>
-            <div
-              onClick={() => activeSwitch("collected")}
-              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
-            >
-              <p>Collected</p>
-              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
-            </div>
-            <div
               onClick={() => activeSwitch("created")}
               className={`${classes.detail} ${activeDetail === "created" && classes.active}`}
             >
@@ -402,6 +396,21 @@ const Dashboard = () => {
                   ? [...(createdNfts || []), ...(myCollections || [])].length
                   : 0}
               </span>
+            </div>
+
+            <div
+              onClick={() => activeSwitch("collected")}
+              className={`${classes.detail} ${activeDetail === "collected" && classes.active}`}
+            >
+              <p>Collected</p>
+              <span>{Array.isArray(collectedNfts) ? collectedNfts.length : 0}</span>
+            </div>
+            <div
+              onClick={() => activeSwitch("sale")}
+              className={`${classes.detail} ${activeDetail === "sale" && classes.active}`}
+            >
+              <p>On sale</p>
+              <span>{Array.isArray(onSale) ? onSale.length : 0}</span>
             </div>
           </div>
         </section>

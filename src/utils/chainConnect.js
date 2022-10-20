@@ -57,6 +57,22 @@ export const chainIdToParams = {
     blockExplorerUrls: ["https://aurorascan.dev/"],
     iconUrls: [""],
   },
+  43113: {
+    chainId: "0Xa869",
+    chainName: "Avalanche",
+    nativeCurrency: { name: "Avalanche", symbol: "AVAX", decimals: 18 },
+    rpcUrls: ["https://api.avax-test.network/ext/bc/C/rpc"],
+    blockExplorerUrls: ["https://testnet.snowtrace.io/"],
+    iconUrls: [""],
+  },
+  43114: {
+    chainId: "0xa86a",
+    chainName: "Avalanche",
+    nativeCurrency: { name: "Avalanche", symbol: "AVAX", decimals: 18 },
+    rpcUrls: ["https://api.avax.network/ext/bc/C/rpc"],
+    blockExplorerUrls: ["https://snowtrace.io/"],
+    iconUrls: [""],
+  },
 
   1313161555: {
     chainId: "0X4E454153",
@@ -72,6 +88,8 @@ const chainDecimalsToHex = {
   137: "0x89",
   80001: "0x13881",
   42220: "0xa4ec",
+  43113: "0Xa869",
+  43114: "0xa86a",
   44787: "0xaef3",
   62320: "0xf370",
   1313161554: "0x4e454152",

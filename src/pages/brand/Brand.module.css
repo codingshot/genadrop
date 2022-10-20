@@ -5,9 +5,7 @@
   padding: 2em;
   overflow: hidden;
 }
-.container * {
-  font-family: "SF Pro Display", sans-serif !important;
-}
+
 .title {
   color: #0d99ff;
   font-weight: 600;
