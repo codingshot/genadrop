@@ -78,8 +78,8 @@ const ListSingleNFT = (nft) => {
     },
     {
       celo: [
-        { mainnet: "https://alfajores-blockscout.celo-testnet.org/tx/" },
-        { testnet: "https://explorer.celo.org/tx/" },
+        { testnet: "https://alfajores-blockscout.celo-testnet.org/tx/" },
+        { mainnet: "https://explorer.celo.org/tx/" },
       ],
     },
   ];

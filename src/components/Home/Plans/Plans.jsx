@@ -17,6 +17,10 @@ const Plans = () => {
   const { activePlan, render } = state;
 
   const mapDescriptionToPlan = {
+    hobby: {
+      title: "Make sleek and sizeable collection with our Hobby plan",
+      img: <HoppyPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
+    },
     pro: {
       title: "Take advantage of our pro plan and do more",
       img: <ProPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
@@ -24,10 +28,6 @@ const Plans = () => {
     agency: {
       title: "Go big with our Agency plan",
       img: <AgencyPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
-    },
-    hobby: {
-      title: "Make sleek and sizeable collection with our Hobby plan",
-      img: <HoppyPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
     },
   };
 

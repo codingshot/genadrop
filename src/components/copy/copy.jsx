@@ -29,7 +29,7 @@ const Copy = ({ message, placeholder }) => {
     >
       <span>{placeholder}</span>
       <div className={classes.point}>
-        {show ? <Check /> : <CopyIcon className={classes.copyIcon} />}
+        {show ? <Check className={classes.copyIcon} /> : <CopyIcon className={classes.copyIcon} />}
         <span>Copy to clipboard</span>
       </div>
       <input style={{ display: "none" }} ref={copyRef} type="text" defaultValue={message} />
