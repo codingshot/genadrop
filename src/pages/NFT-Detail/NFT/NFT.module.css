@@ -14,6 +14,11 @@
   border-radius: 0.7em;
 }
 
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
 .heading {
   width: 100%;
   display: flex;
