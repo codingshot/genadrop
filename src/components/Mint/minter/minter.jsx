@@ -70,6 +70,7 @@ const Minter = () => {
       density: 0,
       diversity: 0,
     },
+    location: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
   });
   const {
@@ -92,6 +93,7 @@ const Minter = () => {
     showLocation,
     vibeProps,
     toggleType,
+    location,
     stick_type,
   } = state;
 
@@ -181,11 +183,13 @@ const Minter = () => {
     if (Object.keys(attributes).length === 1) return;
 
     const newAttributes = {};
+
     for (const key in attributes) {
-      if (key !== id) {
+      if (Number.parseInt(key) != id) {
         newAttributes[key] = attributes[key];
       }
     }
+    console.log(newAttributes);
     handleSetState({ attributes: newAttributes });
   };
 
@@ -215,6 +219,10 @@ const Minter = () => {
   };
 
   const setMint = () => {
+    if (!showLocation) {
+      handleRemoveAttribute(2);
+    }
+
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
     if (!chainId) {
@@ -441,17 +449,17 @@ const Minter = () => {
     );
   }
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
-  useEffect(() => {
-    if (showLocation) {
-      getLocation();
-    } else {
-      const new_attr = attributes;
-      delete new_attr.location;
-      handleSetState({
-        attributes: new_attr,
-      });
-    }
-  }, [showLocation, category]);
+  // useEffect(() => {
+  //   if (showLocation) {
+  //     // getLocation();
+  //   } else {
+  //     const new_attr = attributes;
+  //     delete new_attr.location;
+  //     handleSetState({
+  //       attributes: new_attr,
+  //     });
+  //   }
+  // }, [showLocation, category]);
 
   const getActivetitle = () => {
     const header = cards.filter(
@@ -715,16 +723,20 @@ const Minter = () => {
                     {!zip ? (
                       <>
                         <div className={classes.attributes}>
-                          {Object.keys(attributes).map((key) => (
-                            <Attribute
-                              key={key}
-                              attribute={attributes[key]}
-                              id={key}
-                              index={key}
-                              removeAttribute={handleRemoveAttribute}
-                              changeAttribute={handleChangeAttribute}
-                            />
-                          ))}
+                          {Object.keys(attributes).map((key) =>
+                            attributes[key].trait_type !== "location" ? (
+                              <Attribute
+                                key={key}
+                                attribute={attributes[key]}
+                                id={key}
+                                index={key}
+                                removeAttribute={handleRemoveAttribute}
+                                changeAttribute={handleChangeAttribute}
+                              />
+                            ) : (
+                              () => handleSetState({ location: key })
+                            )
+                          )}
                         </div>
                         <button type="button" onClick={handleAddAttribute}>
                           + Add Attribute
@@ -778,11 +790,27 @@ const Minter = () => {
                     <div className={classes.inputWrapper}>
                       <div className={classes.toggleTitle}>
                         <div className={classes.receiverAddress}>
-                          <label>Location</label>
-
-                          <div className={classes.inputContainer}>
-                            <input type="text" value={metadata?.location?.value} disabled />
+                          <div className={classes.toggleTitle}>
+                            <label>Location</label>
+                            <div className={classes.toggler}>
+                              <label className={classes.switch}>
+                                <input
+                                  type="checkbox"
+                                  onClick={() => handleSetState({ showLocation: !showLocation })}
+                                  defaultChecked={false}
+                                />
+                                <span className={classes.slider} />
+                              </label>
+                            </div>
                           </div>
+
+                          {showLocation ? (
+                            <div className={classes.inputContainer}>
+                              <input type="text" value={metadata?.location?.value} disabled />
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
                     </div>
