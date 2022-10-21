@@ -1,5 +1,14 @@
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
+import "@near-wallet-selector/modal-ui/styles.css";
+import { setupSender } from "@near-wallet-selector/sender";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import * as WS from "./wallet-script";
 import {
   setNotification,
   setProposedChain,
@@ -14,20 +23,7 @@ import {
 import { chainIdToParams } from "../../utils/chainConnect";
 import blankImage from "../../assets/blank.png";
 import supportedChains from "../../utils/supportedChains";
-import * as WS from "./wallet-script";
 import getConfig from "../wallet-popup/nearConfig";
-import { setupWalletSelector } from "@near-wallet-selector/core";
-import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
-import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
-import NightlyIconUrl from "@near-wallet-selector/nightly/assets/nightly.png";
-import MathIconUrl from "@near-wallet-selector/math-wallet/assets/math-wallet-icon.png";
-import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
-import { setupLedger } from "@near-wallet-selector/ledger";
-import "@near-wallet-selector/modal-ui/styles.css";
-import { setupSender } from "@near-wallet-selector/sender";
-import { setupNightly } from "@near-wallet-selector/nightly";
-import { setupMathWallet } from "@near-wallet-selector/math-wallet";
-import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 
 export const breakAddress = (address = "", width = 6) => {
   if (address) return `${address.slice(0, width)}...${address.slice(-width)}`;
@@ -109,22 +105,27 @@ export const initializeConnection = async (walletProps) => {
   ) {
     const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
     const nearConfig = getConfig(network);
-
+    const connectedToNearMainnet = {};
+    if (process.env.REACT_APP_ENV_STAGING === "true") {
+      connectedToNearMainnet.modules = [
+        setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+        setupNearWallet({ iconUrl: NearIconUrl }),
+      ];
+    } else {
+      connectedToNearMainnet.modules = [
+        setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+        setupNearWallet({ iconUrl: NearIconUrl }),
+        setupSender({ iconUrl: SenderIconUrl }),
+      ];
+    }
     const walletSelector = await setupWalletSelector({
       network: nearConfig,
-      modules: [
-        setupNearWallet({ iconUrl: NearIconUrl }),
-        setupLedger({ iconUrl: LedgerIconUrl }),
-        setupSender({ iconUrl: SenderIconUrl }),
-        setupMathWallet({ iconUrl: MathIconUrl }),
-        setupNightly({ iconUrl: NightlyIconUrl }),
-      ],
+      ...connectedToNearMainnet,
     });
 
     const isSignedIn = walletSelector.isSignedIn();
     window.selector = walletSelector;
     const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
-    console.log(isSignedIn);
     if (isSignedIn) {
       window.localStorage.setItem("near_wallet", "connected_to_near");
       dispatch(setChainId(connectedChain));

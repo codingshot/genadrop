@@ -1,34 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
+import { setupModal } from "@near-wallet-selector/modal-ui";
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import "@near-wallet-selector/modal-ui/styles.css";
+import { setupSender } from "@near-wallet-selector/sender";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import classes from "./walletPopup.module.css";
-import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import metamaskIcon from "../../assets/icon-metamask.svg";
-import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
-import { GenContext } from "../../gen-state/gen.context";
 import {
   setProposedChain,
   setToggleWalletPopup,
   setAccount,
   setChainId,
-  setNotification,
   setConnector,
 } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 import "regenerator-runtime";
 import getConfig from "./nearConfig";
-import { setupWalletSelector } from "@near-wallet-selector/core";
-
-import LedgerIconUrl from "@near-wallet-selector/ledger/assets/ledger-icon.png";
-import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
-import NightlyIconUrl from "@near-wallet-selector/nightly/assets/nightly.png";
-import MathIconUrl from "@near-wallet-selector/math-wallet/assets/math-wallet-icon.png";
-import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
-import { setupLedger } from "@near-wallet-selector/ledger";
-import { setupModal } from "@near-wallet-selector/modal-ui";
-import "@near-wallet-selector/modal-ui/styles.css";
-import { setupSender } from "@near-wallet-selector/sender";
-import { setupNightly } from "@near-wallet-selector/nightly";
-import { setupMathWallet } from "@near-wallet-selector/math-wallet";
-import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import metamaskIcon from "../../assets/icon-metamask.svg";
+import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
+import { GenContext } from "../../gen-state/gen.context";
 
 const WalletPopup = ({ handleSetState }) => {
   const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
@@ -63,15 +57,22 @@ const WalletPopup = ({ handleSetState }) => {
       // NEAR Connect
       const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
       const nearConfig = getConfig(`${network}`);
+      const connectedToNearMainnet = {};
+      if (process.env.REACT_APP_ENV_STAGING === "true") {
+        connectedToNearMainnet.modules = [
+          setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+          setupNearWallet({ iconUrl: NearIconUrl }),
+        ];
+      } else {
+        connectedToNearMainnet.modules = [
+          setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+          setupNearWallet({ iconUrl: NearIconUrl }),
+          setupSender({ iconUrl: SenderIconUrl }),
+        ];
+      }
       const walletSelector = await setupWalletSelector({
         network: nearConfig,
-        modules: [
-          setupNearWallet({ iconUrl: NearIconUrl }),
-          setupLedger({ iconUrl: LedgerIconUrl }),
-          setupSender({ iconUrl: SenderIconUrl }),
-          setupMathWallet({ iconUrl: MathIconUrl }),
-          setupNightly({ iconUrl: NightlyIconUrl }),
-        ],
+        ...connectedToNearMainnet,
       });
       const description = "Please select a wallet to sign in..";
       const contract =
