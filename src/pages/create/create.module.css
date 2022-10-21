@@ -42,6 +42,19 @@
   cursor: pointer;
   text-align: center;
 }
+
+.comingSoon {
+  background-color: var(--card-light);
+  color: var(--card-shade);
+  padding: 0.5em;
+  margin-top: 0.5em;
+  border-radius: 3px;
+}
+
+.noDrop:hover {
+  cursor: no-drop;
+}
+
 .extra {
   display: flex;
   margin-top: 29px;
@@ -70,7 +83,7 @@
 .icon {
   background: #f3f6fc;
   border-radius: 50%;
-  padding: 12px;
+  padding: 15px;
   margin-bottom: 10px;
   display: flex;
   width: 6.5rem;
