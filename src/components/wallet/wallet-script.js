@@ -108,12 +108,12 @@ export const initializeConnection = async (walletProps) => {
     const connectedToNearMainnet = {};
     if (process.env.REACT_APP_ENV_STAGING === "true") {
       connectedToNearMainnet.modules = [
-        setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+        setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
       ];
     } else {
       connectedToNearMainnet.modules = [
-        setupMyNearWallet({ iconUrl: MyNearIconUrl }),
+        setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
         setupSender({ iconUrl: SenderIconUrl }),
       ];
