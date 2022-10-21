@@ -1,7 +1,14 @@
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import axios from "axios";
-import { getAlgoData, purchaseAuroraNfts, purchaseCeloNfts, PurchaseNft, purchasePolygonNfts } from "./arc_ipfs";
+import {
+  getAlgoData,
+  purchaseAuroraNfts,
+  purchaseAvaxNfts,
+  purchaseCeloNfts,
+  PurchaseNft,
+  purchasePolygonNfts,
+} from "./arc_ipfs";
 import { fetchUserNfts, readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
@@ -464,6 +471,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
+    nftArr.isListed = collection?.isListed;
     nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
@@ -537,6 +545,7 @@ export const getSingleGraphNfts = async (nfts) => {
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
+          nftObj.isListed = NFT?.isListed;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
           nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
@@ -719,7 +728,7 @@ export const buyGraphNft = async (buyProps) => {
         })
       );
       setTimeout(() => {
-        history.push(`/me/${account}`);
+        history.push(`/profile/${chainId}/${account}`);
       }, 3000);
     } else {
       dispatch(setOverlay(false));
@@ -742,7 +751,31 @@ export const buyGraphNft = async (buyProps) => {
         })
       );
       setTimeout(() => {
-        history.push(`/me/${account}`);
+        history.push(`/profile/${chainId}/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
+  } else if (supportedChains[chainId].chain === "Avalanche") {
+    dispatch(setOverlay(true));
+    const res = await purchaseAvaxNfts(buyProps);
+    if (res) {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/profile/${chainId}/${account}`);
         // history.push(`/marketplace`);
       }, 3000);
     } else {
@@ -766,7 +799,7 @@ export const buyGraphNft = async (buyProps) => {
         })
       );
       setTimeout(() => {
-        history.push(`/me/${account}`);
+        history.push(`/profile/${chainId}/${account}`);
         // history.push(`/marketplace`);
       }, 3000);
     } else {
@@ -820,7 +853,7 @@ export const buyNft = async (buyProps) => {
       })
     );
     setTimeout(() => {
-      history.push(`/me/${account}`);
+      history.push(`/profile/${chainId}/${account}`);
       // history.push(`/marketplace`);
     }, 3000);
   } else {
