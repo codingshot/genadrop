@@ -11,7 +11,7 @@ function getConfig(env) {
         contractName: "genadrop-contract.nftgen.near",
         marketContractName: MARKET_CONTRACT_NAME,
         GAS: "200000000000000",
-        walletUrl: "https://wallet.near.org",
+        // walletUrl: "https://wallet.near.org",
         helperUrl: "https://helper.mainnet.near.org",
       };
     case "development":
@@ -22,7 +22,7 @@ function getConfig(env) {
         contractName: "genadrop-test.mpadev.testnet",
         marketContractName: MARKET_CONTRACT_NAME,
         GAS: "200000000000000",
-        walletUrl: "https://wallet.testnet.near.org",
+        // walletUrl: "https://wallet.testnet.near.org",
         helperUrl: "https://helper.testnet.near.org",
       };
     case "betanet":
