@@ -65,7 +65,7 @@ const WalletPopup = ({ handleSetState }) => {
         ];
       } else {
         connectedToNearMainnet.modules = [
-          setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
+          setupMyNearWallet({ walletUrl: "https://mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
           setupSender({ iconUrl: SenderIconUrl }),
         ];
