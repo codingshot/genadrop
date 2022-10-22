@@ -114,7 +114,7 @@ const Deals = ({ nftDetails }) => {
           <a
             href={`https://opensea.io/assets/matic/${
               collection_name === "Genadrop 1 of 1"
-                ? "0x3243cd574e9d51ad012c7fa4957e8037beb8792f"
+                ? "0x436AEceaEeC57b38a17Ebe71154832fB0fAFF878"
                 : "0x3243cd574e9d51ad012c7fa4957e8037beb8792f"
             }/${nftDetails.tokenID}`}
             target="_blank"
