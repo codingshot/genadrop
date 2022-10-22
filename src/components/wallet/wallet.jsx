@@ -71,7 +71,7 @@ function ConnectWallet() {
     }, 850);
   };
 
-  const handleDisconnet = () => {
+  const handleDisconnet = async () => {
     disconnectWallet(walletProps);
   };
 
@@ -104,7 +104,7 @@ function ConnectWallet() {
 
   useEffect(() => {
     initializeConnection(walletProps);
-  }, [rpc]);
+  }, [rpc, window.selector]);
 
   const dropdown = (
     <div className={classes.dropdownContainer}>
