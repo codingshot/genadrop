@@ -44,9 +44,9 @@ import SearchResult from "./pages/searchResult/searchResult";
 import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
-import Create from "./pages/Create/Create";
 import CollectionOptions from "./pages/collection-options/CollectionOptions";
 import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
+import Creating from "./pages/creating/Creating";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -66,7 +66,7 @@ function App() {
             <Route exact path="/" component={Home} />
             <Route exact path="/collection" component={CollectionOptions} />
             <Route exact path="/create/collection" component={CreateCollection} />
-            <Route exact path="/create" component={Create} />
+            <Route exact path="/create" component={Creating} />
             <Route exact path="/preview" component={Preview} />
             <Route exact path="/mint" component={Mint} />
             <Route
