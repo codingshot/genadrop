@@ -1,22 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
-import * as nearAPI from "near-api-js";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
+import { setupModal } from "@near-wallet-selector/modal-ui";
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import "@near-wallet-selector/modal-ui/styles.css";
+import { setupSender } from "@near-wallet-selector/sender";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import classes from "./walletPopup.module.css";
-import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import metamaskIcon from "../../assets/icon-metamask.svg";
-import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
-import { GenContext } from "../../gen-state/gen.context";
 import {
   setProposedChain,
   setToggleWalletPopup,
   setAccount,
   setChainId,
-  setNotification,
   setConnector,
 } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
 import "regenerator-runtime";
 import getConfig from "./nearConfig";
-import { initializeConnection } from "../wallet/wallet-script";
+import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import metamaskIcon from "../../assets/icon-metamask.svg";
+import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
+import { GenContext } from "../../gen-state/gen.context";
 
 const WalletPopup = ({ handleSetState }) => {
   const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
@@ -34,7 +40,6 @@ const WalletPopup = ({ handleSetState }) => {
   connectOptions.unshift(supportedChains[4160]);
 
   const handleProposedChain = async () => {
-    console.log(connector);
     dispatch(setProposedChain(activeChain));
     dispatch(setToggleWalletPopup(false));
     setConnectionMethods(false);
@@ -46,43 +51,55 @@ const WalletPopup = ({ handleSetState }) => {
       setMetamask(false);
     } else {
       setMetamask(true);
+      window.localStorage.removeItem("near_wallet");
     }
     if (supportedChains[chainId]?.chain === "Near") {
       // NEAR Connect
       const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
       const nearConfig = getConfig(`${network}`);
-      const keyStore = new nearAPI.keyStores.BrowserLocalStorageKeyStore();
-      const near = await nearAPI.connect({ keyStore, ...nearConfig });
-      const walletConnection = new nearAPI.WalletConnection(near);
-      window.localStorage.removeItem("walletconnect");
-      if (!walletConnection.isSignedIn()) {
-        window.localStorage.setItem("nearConnection", true);
-        await walletConnection.requestSignIn(
-          process.env.REACT_APP_ENV_STAGING === "true"
-            ? "genadrop-test.mpadev.testnet"
-            : "genadrop-contract.nftgen.near"
-        );
+      const connectedToNearMainnet = {};
+      if (process.env.REACT_APP_ENV_STAGING === "true") {
+        connectedToNearMainnet.modules = [
+          setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
+          setupNearWallet({ iconUrl: NearIconUrl }),
+        ];
+      } else {
+        connectedToNearMainnet.modules = [
+          setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
+          setupNearWallet({ iconUrl: NearIconUrl }),
+          setupSender({ iconUrl: SenderIconUrl }),
+        ];
       }
-      window.selector = walletConnection;
-      const account = await walletConnection.getAccountId();
-      dispatch(setChainId(Number(chainId)));
-      dispatch(setAccount(account));
-      dispatch(setProposedChain(chainId));
-      dispatch(setConnector(walletConnection));
+      const walletSelector = await setupWalletSelector({
+        network: nearConfig,
+        ...connectedToNearMainnet,
+      });
+      const description = "Please select a wallet to sign in..";
+      const contract =
+        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop-contract.nftgen.near";
+
+      const modal = setupModal(walletSelector, { contractId: contract, description });
+      modal.show();
+
+      const isSignedIn = walletSelector.isSignedIn();
+      window.selector = walletSelector;
+      if (isSignedIn) {
+        window.localStorage.setItem("near_wallet", "connected_to_near");
+        dispatch(setChainId(chainId));
+        dispatch(setAccount(walletSelector.store.getState().accounts[0].accountId));
+        dispatch(setProposedChain(chainId));
+        dispatch(setConnector(walletSelector.wallet()));
+      }
+
       dispatch(setToggleWalletPopup(false));
-      // const account = await walletConnection.getAccountId();
-      // dispatch(setChainId(Number(1111)));
-      // dispatch(setAccount(account));
-      // dispatch(setConnector(walletConnection));
-      // setActiveChain(chainId);
-      // handleProposedChain();
-      // dispatch(
-      //   setNotification({
-      //     message: `Your site is connected to ${supportedChains[1111].label}`,
-      //     type: "success",
-      //   })
-      // );
+      handleProposedChain();
+
       return;
+    } else {
+      if (window.selector) {
+        const nearLogout = await window.selector.wallet();
+        nearLogout.signOut();
+      }
     }
     setActiveChain(chainId);
     setConnectionMethods(true);

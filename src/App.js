@@ -44,9 +44,9 @@ import SearchResult from "./pages/searchResult/searchResult";
 import Brand from "./pages/brand/Brand";
 import "@stripe/stripe-js";
 import NFTDetail from "./pages/NFT-Detail/NFTDetail";
-import Creating from "./pages/creating/Creating";
 import CollectionOptions from "./pages/collection-options/CollectionOptions";
 import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
+import Creating from "./pages/creating/Creating";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
