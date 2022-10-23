@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import { useHistory, Link } from "react-router-dom";
-import classes from "./Create.module.css";
-import cards from "./Create-script";
+import classes from "./Creating.module.css";
+import cards from "./Creating-script";
 import { ReactComponent as DownArrow } from "../../assets/down-arrow.svg";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
 
-const Create = () => {
+const Creating = () => {
   const history = useHistory();
 
   const { dispatch } = useContext(GenContext);
@@ -60,10 +60,11 @@ const Create = () => {
       </div>
       <div className={`${classes.extra} ${active ? classes.active : ""}`}>
         {cards.slice(6).map((card) => (
-          <Link to={card.url} className={classes.card} key={card.title}>
+          <Link to={card.url} className={`${classes.card} ${card.comingSoon ? classes.noDrop : ""}`} key={card.title}>
             <div className={classes.icon}>{card.icon}</div>
             <div className={classes.cardTitle}>{card.title}</div>
             <div className={classes.cardDescription}>{card.description}</div>
+            {card.comingSoon ? <div className={classes.comingSoon}>Coming Soon!</div> : ""}
           </Link>
         ))}
       </div>
@@ -77,4 +78,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default Creating;
