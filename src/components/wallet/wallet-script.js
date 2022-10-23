@@ -113,7 +113,7 @@ export const initializeConnection = async (walletProps) => {
       ];
     } else {
       connectedToNearMainnet.modules = [
-        setupMyNearWallet({ walletUrl: "https://mynearwallet.com", iconUrl: MyNearIconUrl }),
+        setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
         setupSender({ iconUrl: SenderIconUrl }),
       ];
