@@ -109,3 +109,23 @@ Thank you so much for your continued support. Would love to pilot some drops as 
   - Nft Factory address - https://aurorascan.dev/address/0xcdaD838f104F046f564CCc40Eae753ead10Ee862
   - Single minter address - https://aurorascan.dev/address/0xe53bC42B6b25a1d548B73636777a0599Fd27fE5c
   - Marketplace contract - https://aurorascan.dev/address/0xe93097f7C3bF7A0E0F1261c5bD88F86D878667B5
+  
+  
+## Avalanche
+
+- ### Testnet
+  - Nft Factory address - https://testnet.snowtrace.io/address/0xDf683a6B7a39C9757072c145BBB9484F3574a55c
+  - Single minter address - https://testnet.snowtrace.io/address/0x43dBdfcAADD0Ea7aD037e8d35FDD7c353B5B435b
+  - Marketplace contract - https://testnet.snowtrace.io/address/0x26a0eEF5CC8A2C41B040e64f1318CFa2314f0E0D
+- ### MAINNET
+  - Nft Factory address - https://snowtrace.io/address/0x473ced4c09024224edf353d6f7574c551806c81a
+  - Single minter address - https://snowtrace.io/address/0x5ce2DEEe9b495B5Db2996C81c16005559393efb8
+  - Marketplace contract - https://snowtrace.io/address/0xDf683a6B7a39C9757072c145BBB9484F3574a55c
+  
+ 
+ ## Near
+ 
+ - ### Testnet
+  - Single minter address - https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet
+- ### MAINNET
+  - Single minter address - https://explorer.mainnet.near.org/accounts/genadrop-contract.nftgen.near
