@@ -134,7 +134,7 @@ export const initializeConnection = async (walletProps) => {
       dispatch(setConnector(walletSelector.wallet()));
       dispatch(
         setNotification({
-          message: `Your site is connected to ${supportedChains[1111].label}`,
+          message: `Your site is connected to ${supportedChains[connectedChain].label}`,
           type: "success",
         })
       );
