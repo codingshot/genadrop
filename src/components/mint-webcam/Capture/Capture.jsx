@@ -142,7 +142,7 @@ const Capture = () => {
     const API_KEY = "pk.eyJ1IjoiYmFhbTI1IiwiYSI6ImNsOG4wNzViMzAwcjAzd2xhMm52ajJoY2MifQ.kxO2vxRxoGGrvJjxnQhl5g";
     const API_URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?limit=1&types=place%2Ccountry&access_token=${API_KEY}`;
     if (lat && lon) {
-      if (category === "sesh") {
+      if (category === "sesh" || category === "vibe") {
         axios
           .get(API_URL)
           .then((data) => {
@@ -151,19 +151,11 @@ const Capture = () => {
               toggle: true,
               attributes: {
                 ...attributes,
-                location: { trait_type: "chapter", value: address },
+                location: { trait_type: "location", value: address },
               },
             });
           })
           .catch((err) => console.log(err));
-      } else if (category === "vibe") {
-        handleSetState({
-          toggle: true,
-          attributes: {
-            ...attributes,
-            location: { trait_type: "location", value: `${lon},${lat}` },
-          },
-        });
       }
     }
   }
