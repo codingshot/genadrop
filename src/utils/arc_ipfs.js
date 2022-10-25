@@ -354,12 +354,12 @@ export async function mintSingleToNear(nearMintProps) {
       ],
     };
     let response;
-    if (window.near.account.accountId) {
+    if (window.near.accountId) {
       response = await window.near.signAndSendTransaction(tx);
     } else {
-      response = await window.selector;
+      response = await window.selector.signAndSendTransaction(tx);
     }
-    if (window.selector) console.log(window.selector);
+    // if (window.selector) console.log(window.selector);
 
     return response;
     // try {
