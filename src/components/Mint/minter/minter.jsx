@@ -343,7 +343,7 @@ const Minter = () => {
           if (url.error) {
             return handleSetState({
               popupProps: {
-                url: url.error,
+                url: "Something went wrong while minting or the process was cancelled, Please try again",
                 isError: true,
                 popup: true,
               },

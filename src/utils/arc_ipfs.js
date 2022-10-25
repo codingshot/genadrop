@@ -357,7 +357,8 @@ export async function mintSingleToNear(nearMintProps) {
     if (window.near.accountId) {
       response = await window.near.signAndSendTransaction(tx);
     } else {
-      response = await window.selector.signAndSendTransaction(tx);
+      const wallet = await window.selector.wallet();
+      response = await wallet.signAndSendTransaction(tx);
     }
     // if (window.selector) console.log(window.selector);
 
