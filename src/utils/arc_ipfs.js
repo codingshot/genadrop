@@ -4,7 +4,6 @@ import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import JSZip from "jszip";
 import { ethers } from "ethers";
-import { Contract } from "near-api-js";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
 
 const BN = require("bn.js");
@@ -326,12 +325,10 @@ export async function mintSingleToNear(nearMintProps) {
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, 4);
+    // const asset = await connectAndMint(file, metadata, file.name, 4);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
-    const wallet = await window.selector.wallet();
-
-    const res = wallet.signAndSendTransaction({
+    const tx = {
       signerId: accountId,
       receiverId: contractId,
       callbackUrl: `http://${window.location.host}/mint/1of1`,
@@ -345,8 +342,8 @@ export async function mintSingleToNear(nearMintProps) {
               metadata: {
                 title: metadata.name,
                 description: metadata.description,
-                media: `https://ipfs.io/ipfs/${asset.media}`,
-                reference: asset.url,
+                media: `https://ipfs.io/ipfs/`,
+                reference: "https://ipfs.io/ipfs/",
               },
               receiver_id: accountId,
             },
@@ -355,8 +352,16 @@ export async function mintSingleToNear(nearMintProps) {
           },
         },
       ],
-    });
-    return res;
+    };
+    let response;
+    if (window.near.account.accountId) {
+      response = await window.near.signAndSendTransaction(tx);
+    } else {
+      response = await window.selector;
+    }
+    if (window.selector) console.log(window.selector);
+
+    return response;
     // try {
     //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
     //   await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
