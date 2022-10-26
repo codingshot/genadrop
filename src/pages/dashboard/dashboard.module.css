@@ -102,8 +102,8 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  background: url("../../assets/bg.png");
-  height: 25vw;
+  background-color: #febfbb;
+  /* height: 25vw; */
   min-height: 10rem;
   background-size: cover;
 }
@@ -137,6 +137,7 @@
   max-width: 12.5rem;
   max-height: 12.5rem;
   min-width: 6rem;
+
   border: 5px solid #eeeff2;
 }
 .profileHeader {

@@ -161,7 +161,7 @@ const Collections = () => {
           <p>View all listed Collections ({`${filteredCollection && filteredCollection.length}) Listed`}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search type={"collections"} searchPlaceholder="Search By collections or Users" />
+          <Search type="collections" searchPlaceholder="Search By collections or Users" />
 
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
