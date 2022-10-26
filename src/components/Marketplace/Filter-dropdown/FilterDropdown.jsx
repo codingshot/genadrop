@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./FilterDropdown.module.css";
 import Dropdown from "../../../pages/Explore/Dropdown/Dropdown";
 import RadioButton from "../../../pages/Explore/Radio-Button/RadioButton";
@@ -13,13 +13,28 @@ const FilterDropdown = ({ handleFilter, collection }) => {
       minPrice: "",
       maxPrice: "",
     },
+    inContainer: false,
   });
 
-  const { filter, toggleFilter } = state;
+  const { filter, toggleFilter, inContainer } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
+  const wrapperRef = useRef(null);
+  const hanldeClickOutside = (e) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+      handleSetState({ toggleFilter: false });
+    }
+  };
+
+  useEffect(() => {
+    if (inContainer) {
+      document.addEventListener("click", hanldeClickOutside, true);
+      return () => document.removeEventListener("click", hanldeClickOutside, true);
+    }
+  }, [inContainer]);
 
   const handleStatus = (value) => {
     handleSetState({ filter: { ...filter, status: value } });
@@ -55,8 +70,11 @@ const FilterDropdown = ({ handleFilter, collection }) => {
   const sortFilter = ["newest", "oldest", "highest price", "lowest price", "a - z", "z - a"];
 
   return (
-    <div className={classes.container}>
-      <div onClick={() => handleSetState({ toggleFilter: !toggleFilter })} className={classes.filterBtn}>
+    <div className={classes.container} ref={wrapperRef}>
+      <div
+        onClick={() => handleSetState({ toggleFilter: !toggleFilter, inContainer: true })}
+        className={classes.filterBtn}
+      >
         <FilterIcon className={classes.filterIcon} />
         <div>Filters</div>
       </div>

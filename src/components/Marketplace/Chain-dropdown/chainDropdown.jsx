@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import classes from "./chainDropdown.module.css";
 import polygonIcon from "../../../assets/icon-polygon.svg";
@@ -25,14 +25,29 @@ const ChainDropdown = ({ onChainFilter, data }) => {
   const [state, setState] = useState({
     toggleChainFilter: false,
     chain: "All Chains",
+    inContainer: false,
   });
   const location = useLocation();
   const { mainnet } = useContext(GenContext);
-  const { toggleChainFilter, chain } = state;
+  const { toggleChainFilter, chain, inContainer } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
+  const wrapperRef = useRef(null);
+  const hanldeClickOutside = (e) => {
+    if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
+      handleSetState({ toggleChainFilter: false });
+    }
+  };
+
+  useEffect(() => {
+    if (inContainer) {
+      document.addEventListener("click", hanldeClickOutside, true);
+      return () => document.removeEventListener("click", hanldeClickOutside, true);
+    }
+  }, [inContainer]);
 
   useEffect(() => {
     const { search } = location;
@@ -53,8 +68,11 @@ const ChainDropdown = ({ onChainFilter, data }) => {
     handleSetState({ chain: name, toggleChainFilter: false });
   };
   return (
-    <div className={classes.chainDropdown}>
-      <div onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter })} className={classes.selectedChain}>
+    <div className={classes.chainDropdown} ref={wrapperRef}>
+      <div
+        onClick={() => handleSetState({ toggleChainFilter: !toggleChainFilter, inContainer: true })}
+        className={classes.selectedChain}
+      >
         <div>
           {chainIcon[chain.toLowerCase()] ? (
             <img className={classes.chainImg} src={chainIcon[chain.toLowerCase()]} alt={chain} />

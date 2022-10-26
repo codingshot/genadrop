@@ -23,7 +23,7 @@ const Home = () => (
     <Plans />
     <GenadropCreatedNFTs />
     <Review />
-    <JoinDiscord />
+    {/* <JoinDiscord /> */}
     <Partners />
     <FAQ />
     <Media />
