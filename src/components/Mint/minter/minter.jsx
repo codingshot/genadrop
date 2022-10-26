@@ -349,8 +349,17 @@ const Minter = () => {
               },
             });
           }
+          if (url.response[0].transaction.hash) {
+            return handleSetState({
+              popupProps: {
+                url: `https://explorer.near.org/?query=${url.response[0].transaction.hash}`,
+                isError: false,
+                popup: true,
+              },
+            });
+          }
         }
-        if (typeof url === "object") {
+        if (typeof url === "object" && singleMintProps.chain.toLowerCase() !== "near") {
           handleSetState({
             popupProps: {
               url: url.message,
