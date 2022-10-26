@@ -51,11 +51,13 @@
 }
 
 .point {
+  padding: 0.4em;
+}
+
+.shareLink {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  /* min-width: 13em; */
-  padding: 0.4em;
 }
 
 .point span {

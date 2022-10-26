@@ -34,7 +34,7 @@ const FQA = () => {
     {
       id: "4",
       question: "Which blockchains does Genadrop support?",
-      answer: `Algorand, Celo, Polygon, Aurora, NEAR, and COMING SOON (Avalanche)`,
+      answer: `Algorand, Celo, Polygon, Aurora, NEAR, and Avalanche`,
     },
     {
       id: "5",

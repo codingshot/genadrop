@@ -601,7 +601,7 @@ const Minter = () => {
                       style={zip ? { pointerEvents: "none" } : {}}
                       type="text"
                       value={fileName}
-                      onChange={(event) => handleSetState({ fileName: event.target.value })}
+                      onChange={(event) => handleSetState({ fileName: event.target.value.replace(/[^\w\s-]/gi, "") })}
                     />
                   </div>
 

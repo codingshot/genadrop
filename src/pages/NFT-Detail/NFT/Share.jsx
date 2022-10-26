@@ -22,22 +22,22 @@ const Share = ({ share, setShare }) => {
             <Copy message={window.location.href} placeholder="" />
           </div>
           <div className={classes.point}>
-            <TwitterShareButton url={window.location.href}>
+            <TwitterShareButton url={window.location.href} className={classes.shareLink}>
               <TwitterIcon className={classes.shareIcon} />
+              <span>Twitter</span>
             </TwitterShareButton>
-            <span>Twitter</span>
           </div>
           <div className={classes.point}>
-            <WhatsappShareButton url={window.location.href}>
+            <WhatsappShareButton url={window.location.href} className={classes.shareLink}>
               <WhatsappIcon className={classes.shareIcon} />
+              <span>Whatsapp</span>
             </WhatsappShareButton>
-            <span>Whatsapp</span>
           </div>
           <div className={classes.point}>
-            <FacebookShareButton url={window.location.href}>
+            <FacebookShareButton url={window.location.href} className={classes.shareLink}>
               <FacebookIcon className={classes.shareIcon} />
+              <span>Facebook</span>
             </FacebookShareButton>
-            <span>Facebook</span>
           </div>
         </div>
       </div>
