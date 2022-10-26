@@ -87,7 +87,6 @@ export const handleSingleMint = async (args) => {
       );
     }
     dispatch(setLoader(""));
-    console.log("__________________this is the final url________________", url);
     return url;
   } catch (error) {
     console.error("error: ==========>", error);
