@@ -2,9 +2,9 @@
 /* eslint-disable no-await-in-loop */
 import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
+import { utils } from "near-api-js";
 import JSZip from "jszip";
 import { ethers } from "ethers";
-import { Contract } from "near-api-js";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
 
 const BN = require("bn.js");
@@ -329,16 +329,12 @@ export async function mintSingleToNear(nearMintProps) {
     const asset = await connectAndMint(file, metadata, file.name, 4);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
-    const wallet = await window.selector.wallet();
-
-    const res = wallet.signAndSendTransaction({
-      signerId: accountId,
-      receiverId: contractId,
-      callbackUrl: `http://${window.location.host}/mint/1of1`,
-      actions: [
-        {
-          type: "FunctionCall",
-          params: {
+    let response;
+    if (window.near.accountId) {
+      response = await window.near.signAndSendTransaction({
+        receiverId: contractId,
+        actions: [
+          {
             methodName: "nft_mint",
             args: {
               token_id: `${Date.now()}`,
@@ -350,13 +346,41 @@ export async function mintSingleToNear(nearMintProps) {
               },
               receiver_id: accountId,
             },
-            gas: 300000000000000,
-            deposit: new BN("10000000000000000000000"),
+            gas: utils.format.parseNearAmount("0.0000000003"),
+            deposit: utils.format.parseNearAmount("0.01"),
           },
-        },
-      ],
-    });
-    return res;
+        ],
+      });
+    } else {
+      const wallet = await window.selector.wallet();
+      response = await wallet.signAndSendTransaction({
+        signerId: accountId,
+        receiverId: contractId,
+        callbackUrl: `http://${window.location.host}/mint/1of1`,
+        actions: [
+          {
+            type: "FunctionCall",
+            params: {
+              methodName: "nft_mint",
+              args: {
+                token_id: `${Date.now()}`,
+                metadata: {
+                  title: metadata.name,
+                  description: metadata.description,
+                  media: `https://ipfs.io/ipfs/${asset.media}`,
+                  reference: asset.url,
+                },
+                receiver_id: accountId,
+              },
+              gas: 300000000000000,
+              deposit: new BN("10000000000000000000000"),
+            },
+          },
+        ],
+      });
+    }
+    // if (window.selector) console.log(window.selector);
+    return response;
     // try {
     //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
     //   await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
