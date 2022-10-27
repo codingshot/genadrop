@@ -9,8 +9,14 @@ import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarou
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
 
 const FeautedNfts = () => {
-  const { singleAuroraNfts, singleAlgoNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts } =
-    useContext(GenContext);
+  const {
+    singleAuroraNfts,
+    singleAlgoNfts,
+    singleCeloNfts,
+    singlePolygonNfts,
+    singleNearNfts,
+    singleAvaxNfts,
+  } = useContext(GenContext);
   const algoNFTs = Object.values(singleAlgoNfts);
 
   const [state, setState] = useState({
@@ -38,10 +44,13 @@ const FeautedNfts = () => {
     process.env.REACT_APP_ENV_STAGING === "true"
       ? []
       : [
-          "genadrop-contract.nftgen.near1664333582736",
-          "0xc291846a587cf00a7cc4af0bc4eedbc9c3340c36231138",
-          "genadrop-contract.nftgen.near1664317298336",
           "genadrop-contract.nftgen.near1664562603103",
+          "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
+          "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
+          "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
+          "0x5ce2deee9b495b5db2996c81c16005559393efb845339",
+          "0x5ce2deee9b495b5db2996c81c16005559393efb812068",
+          "0x436aeceaeec57b38a17ebe71154832fb0faff878160136",
         ];
 
   useEffect(() => {
