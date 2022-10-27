@@ -139,7 +139,6 @@ export const initializeConnection = async (walletProps) => {
         })
       );
     }
-    return;
   } else if (window.ethereum !== undefined) {
     WS.updateAccount(walletProps);
 
@@ -158,10 +157,8 @@ export const initializeConnection = async (walletProps) => {
       WS.updateAccount(walletProps);
     });
     handleSetState({ isMetamask: true });
-    return;
   } else {
     handleSetState({ isMetamask: false });
-    return;
   }
 
   // Subscribe to accounts change
@@ -340,8 +337,8 @@ export const disconnectWallet = async ({ walletConnectProvider, dispatch, histor
     nearLogout.signOut();
     window.localStorage.removeItem("near_wallet");
   }
-  if (window.near.isSignedIn()) {
-    window.near.signOut();
+  if (window?.near?.isSignedIn()) {
+    window?.near?.signOut();
   }
   handleSetState({ toggleDropdown: false });
   if (window.localStorage.undefined_wallet_auth_key || window.localStorage.nearConnection) {
