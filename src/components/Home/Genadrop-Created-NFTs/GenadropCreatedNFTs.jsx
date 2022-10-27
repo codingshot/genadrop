@@ -31,15 +31,24 @@ const GenadropCreatedNFTs = () => {
   const history = useHistory();
 
   const featturedNFTs =
-    process.env.REACT_APP_ENV_STAGING === "true" ? [] : ["genadrop-contract.nftgen.near1664317298336"];
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? []
+      : [
+          "genadrop-contract.nftgen.near1664562603103",
+          "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
+          "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
+          "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
+        ];
 
   useEffect(() => {
     const goodIds = [
-      "genadrop-contract.nftgen.near1664562603103",
-      "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
-      "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
+      "0x436aeceaeec57b38a17ebe71154832fb0faff878112213",
+      "genadrop-contract.nftgen.near1664899686094",
       "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
+      "788819960",
     ];
+
+    const goodTesnet = ["genadrop-test.mpadev.testnet1663492551707"];
 
     let singles = [
       ...(singleAlgoNftsArr || []),
@@ -56,7 +65,7 @@ const GenadropCreatedNFTs = () => {
     );
 
     if (process.env.REACT_APP_ENV_STAGING)
-      handleSetState({ singles: [...featuredNFT1, ...singles.slice(0, 4 - featturedNFTs.length)] });
+      handleSetState({ singles: [...singles.filter((e) => featturedNFTs.includes(e.Id))] });
     else handleSetState({ singles: [...singles.filter((e) => goodIds.includes(e.Id))] });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
