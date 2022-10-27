@@ -15,7 +15,7 @@ const GenadropCreatedNFTs = () => {
 
   const { singles } = state;
   useEffect(() => {}, []);
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts } = useContext(
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts, mainnet } = useContext(
     GenContext
   );
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
@@ -30,27 +30,15 @@ const GenadropCreatedNFTs = () => {
   }, []);
   const history = useHistory();
 
-  const featturedNFTs =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? []
-      : [
-          "genadrop-contract.nftgen.near1664562603103",
-          "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
-          "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
-          "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
-        ];
-
   useEffect(() => {
     const goodIds = [
-      "0x436aeceaeec57b38a17ebe71154832fb0faff878112213",
-      "genadrop-contract.nftgen.near1664899686094",
+      "genadrop-contract.nftgen.near1664562603103",
+      "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
+      "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
       "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
-      "788819960",
     ];
 
-    const goodTesnet = ["genadrop-test.mpadev.testnet1663492551707"];
-
-    let singles = [
+    const singles = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
       ...(singlePolygonNfts || []),
@@ -58,15 +46,16 @@ const GenadropCreatedNFTs = () => {
       ...(singleNearNfts || []),
     ];
 
-    singles = singles.filter((nft) => !featturedNFTs.includes(nft.Id));
-    singles = shuffle(singles);
-    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
-      featturedNFTs.includes(nft.Id)
-    );
+    const goodTesnet = ["genadrop-test.mpadev.testnet1663492551707"];
 
-    if (process.env.REACT_APP_ENV_STAGING)
-      handleSetState({ singles: [...singles.filter((e) => featturedNFTs.includes(e.Id))] });
-    else handleSetState({ singles: [...singles.filter((e) => goodIds.includes(e.Id))] });
+    // singles = singles.filter((nft) => !featturedNFTs.includes(nft.Id));
+    // singles = shuffle(singles);
+    // const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
+    //   featturedNFTs.includes(nft.Id)
+    // );
+
+    if (mainnet) handleSetState({ singles: [...singles.filter((e) => goodIds.includes(e.Id))] });
+    else handleSetState({ singles: [...singles.filter((e) => goodTesnet.includes(e.Id))] });
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   const handlePreview = (chain, Id) => {
