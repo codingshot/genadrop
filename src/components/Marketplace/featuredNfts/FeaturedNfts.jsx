@@ -64,11 +64,15 @@ const FeautedNfts = () => {
     ];
 
     nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
+
     nfts = shuffle(nfts);
     const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
       featuredNFTs.includes(nft.Id)
     );
-    handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
+
+    if (process.env.REACT_APP_ENV_STAGING)
+      handleSetState({ singles: [...nfts.filter((e) => featuredNFTs.includes(e.Id))] });
+    else handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
   }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts, singleAvaxNfts]);
   return (
     <div className={classes.container}>
