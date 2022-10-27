@@ -35,10 +35,10 @@ const GenadropCreatedNFTs = () => {
 
   useEffect(() => {
     const goodIds = [
-      "0x436aeceaeec57b38a17ebe71154832fb0faff878112213",
-      "genadrop-contract.nftgen.near1664899686094",
+      "genadrop-contract.nftgen.near1664562603103",
+      "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
+      "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
       "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
-      "788819960",
     ];
 
     let singles = [
