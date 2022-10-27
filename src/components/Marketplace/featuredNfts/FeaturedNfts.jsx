@@ -16,6 +16,7 @@ const FeautedNfts = () => {
     singlePolygonNfts,
     singleNearNfts,
     singleAvaxNfts,
+    mainnet,
   } = useContext(GenContext);
   const algoNFTs = Object.values(singleAlgoNfts);
 
@@ -40,21 +41,18 @@ const FeautedNfts = () => {
     return array;
   }
 
-  const featuredNFTs =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? []
-      : [
-          "genadrop-contract.nftgen.near1664562603103",
-          "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
-          "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
-          "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
-          "0x5ce2deee9b495b5db2996c81c16005559393efb845339",
-          "0x5ce2deee9b495b5db2996c81c16005559393efb812068",
-          "0x436aeceaeec57b38a17ebe71154832fb0faff878160136",
-        ];
+  const featuredNFTs = [
+    "genadrop-contract.nftgen.near1664562603103",
+    "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
+    "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
+    "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
+    "0x5ce2deee9b495b5db2996c81c16005559393efb845339",
+    "0x5ce2deee9b495b5db2996c81c16005559393efb812068",
+    "0x436aeceaeec57b38a17ebe71154832fb0faff878160136",
+  ];
 
   useEffect(() => {
-    let nfts = [
+    const nfts = [
       ...(algoNFTs || []),
       ...(singleAuroraNfts || []),
       ...(singleNearNfts || []),
@@ -63,15 +61,14 @@ const FeautedNfts = () => {
       ...(singleAvaxNfts || []),
     ];
 
-    nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
+    // nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
 
-    nfts = shuffle(nfts);
+    // nfts = shuffle(nfts);
     const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
       featuredNFTs.includes(nft.Id)
     );
 
-    if (process.env.REACT_APP_ENV_STAGING)
-      handleSetState({ singles: [...nfts.filter((e) => featuredNFTs.includes(e.Id))] });
+    if (mainnet) handleSetState({ NFTs: [...nfts.filter((e) => featuredNFTs.includes(e.Id))] });
     else handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
   }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts, singleAvaxNfts]);
   return (
