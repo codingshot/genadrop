@@ -7,20 +7,8 @@ import openseaIcon from "../../../assets/icon-opensea.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const Deals = ({ nftDetails }) => {
-  const {
-    price,
-    chain,
-    sold,
-    isListed,
-    owner,
-    account,
-    chainId,
-    mainnet,
-    connector,
-    dispatch,
-    Id,
-    collection_name,
-  } = nftDetails;
+  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
+    nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -59,7 +47,7 @@ const Deals = ({ nftDetails }) => {
         <div className={classes.priceSection}>
           <img className={classes.chainIcon} src={supportedChains[chain].icon} alt="" />
           <div className={classes.price}>{Number(price).toFixed(4)}</div>
-          <div className={classes.appx}>{`($${usdValue.toFixed(4)})`}</div>
+          <div className={classes.appx}>{`($${price ? usdValue.toFixed(4) : "0"})`}</div>
         </div>
       </div>
       {!isListed && !price ? (

@@ -549,11 +549,10 @@ export async function mintSingleToCelo(singleMintProps) {
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet
-      ? `https://celo-testnet.org/tx/${txn.hash}`
+      ? `https://explorer.celo.org/mainnet/tx/${txn.hash}`
       : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(""));
-    console.log(error);
     return {
       error,
       message: "something went wrong! please check your connected network and try again.",
@@ -750,7 +749,7 @@ export async function listCeloNft(nftProps) {
     await txn.wait();
     dispatch(setLoader(""));
     return mainnet
-      ? `https://celo-testnet.org/tx/${txn.hash}`
+      ? `https://explorer.celo.org/mainnet/tx/${txn.hash}`
       : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(""));
