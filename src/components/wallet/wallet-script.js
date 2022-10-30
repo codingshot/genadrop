@@ -9,6 +9,7 @@ import "@near-wallet-selector/modal-ui/styles.css";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import * as WS from "./wallet-script";
+
 import {
   setNotification,
   setProposedChain,
