@@ -1,32 +1,162 @@
-# GenaDrop - The Ultimate No-code NFT solution
+<a name="readme-top"></a>
 
-## USER DOCUMENTATION
+[![MIT License][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+
+<br />
+<div align="center">
+  <a href="https://github.com/codingshot/genadrop">
+    <img src="./src/assets/Genadro-logo.svg" alt="Logo" width="80" height="80">
+  </a>
+
+  <h1 align="center">GenaDrop </h1>
+
+  <p align="center">
+     The Ultimate No-code NFT solution
+    <br />
+    <a href="https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://youtu.be/wC0odzMW_9g">View Demo</a>
+    ·
+    <a href="https://github.com/codingshot/genadrop/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/codingshot/genadrop/issues">Request Feature</a>
+  </p>
+</div>
+
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About Genadrop</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contracts">Contracts</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
+
+
+
+## About Genadrop
+<div align="center">
+<br>
+<br>
+  <a href="https://genadrop.com">
+    <img src="./src/assets/landingPage.png " alt="Logo" width="600" height="500">
+  </a>
+<br>
+<br>
+
+</div>
+
+GenaDrop is the ultimate multi-chain no code generative NFT creator, minter, and marketplace.
+
+Coming from the name "Generative Drops". GenaDrop allows artists to create layers, choose rarities, add conflict rules, add blank images, pick the number to generate, generate a preview, delete bad images, edit metadata, download a zip, upload to ipfs, mint to multiple blockchains with a simple to use user interface.
+
+
+### Built With
+
+* [![ReactJS][React.js]][React-url]
+* [![EtherJS][Ether.js]][Ether-url]
+* [![Firebase][Firebase]][Firebase-url]
+* [![WalletConnect][WalletConnect]][WalletConnect-url]
+* [![Pinata][Pinata]][Pinata-url]
+* [![Alchemy][Alchemy]][Alchemy-url]
+
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+Proceed with the following steps to get Genadrop up and running on any device
+
+### Prerequisites
+
+
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+* yarn
+  ```sh
+  npm install yarn -g
+  ```
+
+
+### Installation
+
+
+1. Get a free API Key at 
+    * Pinata account: https://www.pinata.cloud/
+    * Alchemy account: https://www.alchemy.com/
+2. Clone the repo
+   ```sh
+   git clone https://github.com/codingshot/genadrop
+   ```
+3. Install packages
+   ```sh
+   yarn install
+   ```
+   Or
+   ```sh
+   npm install
+   ```
+
+4. Create a `.env` file and enter fill up keys as per the `example.env`
+   
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+This doc link can be found here: genadrop.com/docs
+## Usage
+### USER DOCUMENTATION
 
 https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs
 
-## TECHNICAL DOCUMENTATION
+### TECHNICAL DOCUMENTATION
 
 https://docs.google.com/document/d/1ZYpUnSBJqeGJmmtlkuSD1FSMFJmHrl53c3iyHomj8rs/edit
 
 ### NFT Generative Drop Builder + Marketplace
 
-Create and sell NFTs easily. 💧GenaDrop💧 is a multi-chain, no code generative art creator, minter, and marketplace.
-
 Genadrop Walk Through https://docs.google.com/document/d/e/2PACX-1vS8bwlR12wBqlAA2VovqtdzMOBWLtPdGu6kI99pAGgpfI08jomOc4Auoi_bStFoedsBoPXtKHZZBemc/pub
 
-## Algorand Foundation Milestones
 
-Milestone 1 YouTube Deliverables https://youtu.be/vXzubFQ5Ulo
+## Roadmap
 
-### Minting Nft on Algorand flow
+- [x] Algorand Integration  
+    - Milestone 1 YouTube Deliverables https://youtu.be/vXzubFQ5Ulo
+    -  Minting Nft on Algorand flow : https://www.loom.com/share/68509b38d5d0489891b5f1e426c1cd29
+- [x] Celo Integration 
+- [x] Polygon Integration 
+- [x] Avalanche Integration 
+- [x] Near Integration 
 
-https://www.loom.com/share/68509b38d5d0489891b5f1e426c1cd29
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-# ALGORAND UPDATE 1
 
-### January 3rd, 2021
 
-Thank you so much Algorand Foundation and Happy New Year! Let this year be the year of getting Algorand dApps into production.
+<!--### January 3rd, 2021
+ Thank you so much Algorand Foundation and Happy New Year! Let this year be the year of getting Algorand dApps into production.
 
 We have made a lot of progress with Genadrop. Right now genadrop is used by artists to generate art. We have even been spending time adding functionality as we launch NFT drops to help the creative process.
 
@@ -73,11 +203,13 @@ Individual NFT view
 Custom transfer contracts
 Tweak metadata description
 
-Thank you so much for your continued support. Would love to pilot some drops as other foundations are asking us to add minters and definitely want Algorand support in the marketing of the genadrop marketplace when it comes out.
+Thank you so much for your continued support. Would love to pilot some drops as other foundations are asking us to add minters and definitely want Algorand support in the marketing of the genadrop marketplace when it comes out. -->
 
-# Genadrop Contract addresses evm chains
+# Contracts
 
-## Celo
+### Genadrop Contract addresses evm chains
+
+### Celo
 
 - ### Testnet
   - Nft Factory address - https://alfajores-blockscout.celo-testnet.org/address/0xe8C59969Cc0B161d8e045f99B86e3496bD4B88c2
@@ -88,7 +220,7 @@ Thank you so much for your continued support. Would love to pilot some drops as 
   - Single minter address - https://explorer.celo.org/address/0xC291846A587cf00a7CC4AF0bc4EEdbC9c3340C36
   - Marketplace contract - https://explorer.celo.org/address/0x5616BCcc278F7CE8B003f5a48f3754DDcfA4db5a
 
-## Polygon
+### Polygon
 
 - ### Testnet
   - Nft Factory address - https://mumbai.polygonscan.com/address/0x4ab6c03e7779fCC67b06f76169CC07d93FD4965A
@@ -99,7 +231,7 @@ Thank you so much for your continued support. Would love to pilot some drops as 
   - Single minter address - https://polygonscan.com/address/0x436AEceaEeC57b38a17Ebe71154832fB0fAFF878
   - Marketplace contract - https://polygonscan.com/address/0x57Eb0aaAf69E22D8adAe897535bF57c7958e3b1b
 
-## Aurora
+### Aurora
 
 - ### Testnet
   - Nft Factory address - https://testnet.aurorascan.dev/address/0x9663429db7c868e1d83c2c1616713396cf6b2806
@@ -111,7 +243,7 @@ Thank you so much for your continued support. Would love to pilot some drops as 
   - Marketplace contract - https://aurorascan.dev/address/0xe93097f7C3bF7A0E0F1261c5bD88F86D878667B5
   
   
-## Avalanche
+### Avalanche
 
 - ### Testnet
   - Nft Factory address - https://testnet.snowtrace.io/address/0xDf683a6B7a39C9757072c145BBB9484F3574a55c
@@ -123,9 +255,70 @@ Thank you so much for your continued support. Would love to pilot some drops as 
   - Marketplace contract - https://snowtrace.io/address/0xDf683a6B7a39C9757072c145BBB9484F3574a55c
   
  
- ## Near
+ ### Near
  
- - ### Testnet
+- ### Testnet
   - Single minter address - https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet
 - ### MAINNET
   - Single minter address - https://explorer.mainnet.near.org/accounts/genadrop-contract.nftgen.near
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Follow the steps below to contribute to Genadrop
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`js git commit -m 'Add some AmazingFeature`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- CONTACT -->
+## Contact
+
+Coding Shot - [@genadrop](https://twitter.com/genadrop) - https://linktr.ee/MinorityProgrammers
+
+Project Link: [https://github.com/codingshot/genadrop](https://github.com/codingshot/genadrop)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* [Best-README-Template](https://github.com/othneildrew/Best-README-Template)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/othneildrew
+[product-screenshot]: ./src/assets/landingPage.png 
+
+[React.js]: ./src/assets/react-logo.svg 
+[React-url]: https://reactjs.org/
+[Ether.js]: ./src/assets/ether-logo.svg 
+[Ether-url]: https://docs.ethers.io/v5/
+[Firebase]: ./src/assets/firebase.svg 
+[Firebase-url]: https://firebase.google.com/
+[WalletConnect]: ./src/assets/walletConnect-logo.svg 
+[WalletConnect-url]: https://walletconnect.com/ 
+[Pinata]: ./src/assets/pinata.svg 
+[Pinata-url]: https://www.pinata.cloud/
+[Alchemy]: ./src/assets/alchemy.svg 
+[Alchemy-url]: https://www.alchemy.com/ 
