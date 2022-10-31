@@ -6,7 +6,7 @@ import classes from "./list.module.css";
 import supportedChains from "../../utils/supportedChains";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
-import { getUserBoughtNftCollection } from "../../utils";
+import { buyNft, getFormatedPrice, getUserBoughtNftCollection } from "../../utils";
 import { listAuroraNft, listAvaxNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
 import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
 import {
@@ -16,7 +16,9 @@ import {
   polygonUserData,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
+
 import avatar from "../../assets/avatar.png";
+import { useCallback } from "react";
 
 const List = () => {
   const { account, mainnet, chainId, connector, dispatch, priceFeed } = useContext(GenContext);
@@ -31,12 +33,12 @@ const List = () => {
     nftDetails: null,
     amount: 0,
     isLoading: true,
-    chain: "Algo",
-    price: "",
+    chain: "",
+    price: 0,
     image_url: "",
     activeTab: "sell",
   });
-  const { nftDetails, isLoading, price, amount, activeTab } = state;
+  const { nftDetails, isLoading, price, amount, activeTab, chain } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -47,7 +49,13 @@ const List = () => {
 
   const listNFT = async () => {
     // eslint-disable-next-line no-alert
-    if (!price) return alert("price can't be empty");
+    if (!price)
+      return dispatch(
+        setNotification({
+          type: "warning",
+          message: "Price cannot be empty",
+        })
+      );
 
     const listProps = {
       dispatch,
@@ -83,13 +91,16 @@ const List = () => {
     return listedNFT;
   };
 
-  useEffect(async () => {
-    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
-
+  const getUSDValue = useCallback(async () => {
+    const value = await getFormatedPrice(supportedChains[chainId]?.coinGeckoLabel || supportedChains[chainId]?.id);
     handleSetState({
       amount: price * value,
     });
   }, [price]);
+
+  useEffect(() => {
+    getUSDValue();
+  }, [getUSDValue]);
 
   useEffect(() => {
     (async function getUserCollection() {
@@ -232,13 +243,22 @@ const List = () => {
             </div>
 
             <div className={`${classes.dropdownContent}`}>
-              <button type="button" className={classes.buy} onClick={listNFT}>
-                <div className={classes.btnText}>
-                  <img src="/assets/price-tage.svg" alt="" />
-                  SET PRICE
-                </div>
-                <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
-              </button>
+              <div className={classes.dropdownItems}>
+                <button type="button" className={classes.buy}>
+                  <div className={classes.btnText}>
+                    <img src="/assets/price-tag.svg" alt="" />
+                    SET PRICE
+                  </div>
+                  <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
+                </button>
+                {/* <button type="button" className={classes.bid} disabled={nftDetails.sold}>
+                  <div className={classes.btnText}>
+                    <img src="/assets/bid.svg" alt="" />
+                    HIGHEST BID
+                  </div>
+                  <span className={classes.btnSpan}>Auction to the highest Bider</span>
+                </button> */}
+              </div>
             </div>
           </div>
           <div className={`${classes.feature}`}>
@@ -257,13 +277,6 @@ const List = () => {
                 to give you an idea of the average price of the NFT at the moment
               </div>
               <div className={classes.chain}>
-                {/* <div className={classes.inputWrapper}>
-                  <select value={chain} onChange={(event) => handleSetState({ chain: event.target.value })}>
-                    <option value="Algo">Algo</option>
-                    <option value="Celo">Celo</option>
-                    <option value="Polygon">Polygon</option>
-                  </select>
-                </div> */}
                 <img className={classes.icon} src={supportedChains[nftDetails?.chain]?.icon} alt="" />
                 <div className={classes.inputWrapper}>
                   <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
@@ -272,34 +285,13 @@ const List = () => {
               </div>
             </section>
           </div>
+          <div className={classes.listButtonWrapper}>
+            <button onClick={listNFT} type="button" className={`${classes.listButton}`}>
+              Post your Listing
+            </button>
+          </div>
         </div>
       </div>
-      {/* {price ? (
-        <div className={classes.feature}>
-          <div className={classes.mainDetails}>
-            <div className={classes.collectionHeader}>
-              <div className={classes.nftId}>Fees</div>
-            </div>
-          </div>
-
-          <div className={classes.detailContent}>
-            <div className={classes.priceDescription}>
-              Listing is Free! At the time of sale, the following fees will be deducted
-            </div>
-            <div className={classes.row}>
-              Genadrop <span>10%</span>
-            </div>
-            <div className={classes.row}>
-              {nftDetails?.name ? nftDetails?.name : ""} <span>7%</span>
-            </div>
-            <div className={classes.row}>
-              Total <span>17%</span>
-            </div>
-          </div>
-        </div>
-      ) : (
-        ""
-      )} */}
     </div>
   );
 };

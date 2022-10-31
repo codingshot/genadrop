@@ -66,7 +66,7 @@ export const NearSuccessPopup = (props) => {
   const nearExplorerUrl =
     process.env.REACT_APP_ENV_STAGING === "true"
       ? `https://explorer.testnet.near.org/?query=${url}`
-      : `https://explorer.near.org/?query=${url}`;
+      : `https://explorer.near.org/transactions/${url}`;
 
   const handleResetPopup = () => {
     handleSetState({
