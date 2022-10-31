@@ -25,14 +25,8 @@ import {
 } from "../../renderless/fetch-data/fetchData-script";
 
 const Collections = () => {
-  const {
-    auroraCollections,
-    algoCollections,
-    polygonCollections,
-    celoCollections,
-    mainnet,
-    searchContainer,
-  } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, searchContainer } =
+    useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -158,7 +152,7 @@ const Collections = () => {
       <div className={classes.heading}>
         <div className={classes.title}>
           <h1>{searchChain === "All Chains" ? "Collections" : searchChain}</h1>
-          <p>View all listed Collections ({`${filteredCollection && filteredCollection.length}) Listed`}</p>
+          <p>View all minted Collections ({`${filteredCollection && filteredCollection.length}) minted`}</p>
         </div>
         <div className={classes.searchAndFilter}>
           <Search type="collections" searchPlaceholder="Search By collections or Users" />
