@@ -13,7 +13,9 @@ const WebcamEnable = ({ toggle, pathname, enableAccess }) => {
         <div className={classes.card}>
           <div className={classes.heading}>
             <CameraIcon />
-            <h3>{enableLocation ? "Allow camera & Location access" : "Allow camera access"}</h3>
+            <h3>Allow camera access</h3>
+
+            {/* <h3>{enableLocation ? "Allow camera & Location access" : "Allow camera access"}</h3> */}
             <p>
               {enableLocation
                 ? "Please allow us to access your web cam and Location to take pictures"
