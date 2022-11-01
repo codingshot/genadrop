@@ -11,6 +11,7 @@
 
 .container.active {
   display: flex;
+  width: 25em;
 }
 
 .wrapper {
@@ -47,7 +48,7 @@
 .shareIcon {
   width: 1.2em;
   height: 1.2em;
-  margin-right: 1em;
+  margin-right: 0.5em;
 }
 
 .point {
@@ -62,7 +63,7 @@
 
 .point span {
   font-weight: 400;
-  font-size: 0.8em;
+  font-size: 15px;
 }
 
 .point:hover {
