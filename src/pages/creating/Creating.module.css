@@ -74,7 +74,7 @@
 }
 
 .extra .card:hover .icon svg path {
-  fill: var(--default);
+  /* fill: var(--main-color); */
 }
 .card:hover {
   border-color: var(--main-color);
@@ -96,7 +96,7 @@
   stroke: var(--default);
 }
 .card:nth-child(3):hover .icon svg path {
-  fill: var(--default);
+  /* fill: var(--default); */
 }
 .card:nth-child(2):hover .icon svg path:last-child {
   fill: var(--default);
