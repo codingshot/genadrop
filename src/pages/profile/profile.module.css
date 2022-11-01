@@ -311,7 +311,7 @@
 }
 
 .copyIcon {
-  width: 1.2em;
+  width: 0.5em;
 }
 
 .copyIcon:hover {
@@ -340,7 +340,8 @@
 .text img {
   width: 30px;
   height: 30px;
-  border-radius: 50%;
+  /* border-radius: 50%; */
+  /* padding: 3px; */
   margin-top: 0.3rem;
   margin-right: 1rem;
   margin-left: 1rem;
