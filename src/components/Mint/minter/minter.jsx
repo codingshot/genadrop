@@ -533,13 +533,19 @@ const Minter = () => {
 
   const enableAccess = () => {
     if (isMobileDevice) {
+      const input = document.getElementById("location");
+      input.click();
+
+      handleSetState({
+        showLocation: false,
+      });
       dispatch(
         setNotification({
-          message: " Mobile Browser Location \n Not Support Yet",
+          message: " Mobile browser location not support yet",
           type: "warning",
         })
       );
-      handleSetState({ showLocation: false });
+
       return;
     }
 
