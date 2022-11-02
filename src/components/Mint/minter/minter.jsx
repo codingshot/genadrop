@@ -466,32 +466,20 @@ const Minter = () => {
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
 
+    const input = document.getElementById("location");
+    input.click();
+
     handleSetState({
       showLocation: false,
     });
 
-    const input = document.getElementById("location");
-    input.click();
-
     return dispatch(
       setNotification({
-        message: "Location access failed. Restart your browser",
+        message: "Location access failed. Please Restart your browser",
         type: "warning",
       })
     );
   }
-
-  // useEffect(() => {
-  //   if (showLocation) {
-  //     getLocation();
-  //   } else {
-  //     const new_attr = attributes;
-  //     delete new_attr.location;
-  //     handleSetState({
-  //       attributes: new_attr,
-  //     });
-  //   }
-  // }, [showLocation, category]);
 
   const getActivetitle = () => {
     const header = cards.filter(
@@ -545,13 +533,19 @@ const Minter = () => {
 
   const enableAccess = () => {
     if (isMobileDevice) {
+      const input = document.getElementById("location");
+      input.click();
+
+      handleSetState({
+        showLocation: false,
+      });
       dispatch(
         setNotification({
-          message: " Mobile Browser Location \n Not Support Yet",
+          message: " Mobile browser location not support yet",
           type: "warning",
         })
       );
-      handleSetState({ showLocation: false });
+
       return;
     }
 
