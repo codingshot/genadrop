@@ -469,25 +469,29 @@ const Minter = () => {
     handleSetState({
       showLocation: false,
     });
+
+    const input = document.getElementById("location");
+    input.click();
+
     return dispatch(
       setNotification({
-        message: "Location access denied",
-        type: "error",
+        message: "Location access failed. Restart your browser",
+        type: "warning",
       })
     );
   }
 
-  useEffect(() => {
-    if (showLocation) {
-      getLocation();
-    } else {
-      const new_attr = attributes;
-      delete new_attr.location;
-      handleSetState({
-        attributes: new_attr,
-      });
-    }
-  }, [showLocation, category]);
+  // useEffect(() => {
+  //   if (showLocation) {
+  //     getLocation();
+  //   } else {
+  //     const new_attr = attributes;
+  //     delete new_attr.location;
+  //     handleSetState({
+  //       attributes: new_attr,
+  //     });
+  //   }
+  // }, [showLocation, category]);
 
   const getActivetitle = () => {
     const header = cards.filter(
@@ -552,12 +556,13 @@ const Minter = () => {
     }
 
     if (!navigator.geolocation) {
-      return dispatch(
+      dispatch(
         setNotification({
           message: "Geolocation not supported",
           type: "error",
         })
       );
+      return;
     }
     if (location !== "") return;
 
@@ -882,12 +887,13 @@ const Minter = () => {
                             <div className={classes.toggler}>
                               <label className={classes.switch}>
                                 <input
+                                  id="location"
                                   type="checkbox"
                                   onClick={() => {
                                     enableAccess();
                                     handleSetState({ showLocation: !showLocation });
                                   }}
-                                  defaultChecked={false}
+                                  defaultChecked={location !== ""}
                                 />
                                 <span className={classes.slider} />
                               </label>
