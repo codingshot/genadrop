@@ -1,6 +1,7 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { async } from "regenerator-runtime";
 import classes from "./Capture.module.css";
 import WebcamEnable from "../webcam-enable/webcamEnable";
 import DoubleWebcam from "../Camera-Modes/DoubleWebcam";
@@ -46,6 +47,7 @@ const Capture = () => {
     width: "100%",
     height: "100%",
     // genrate GIF loading status
+    cameraPermission: false,
     gifGenrating: false,
     webcamCurrentType: pathname === "video" ? "Video" : pathname === "doubletake" ? "Doubletake" : "Photo",
     trackRecord: false,
@@ -67,6 +69,7 @@ const Capture = () => {
     activeFile,
     gifGenrating,
     webcamCurrentType,
+    cameraPermission,
     videoDuration,
     imgList,
     faceImg,
@@ -97,6 +100,12 @@ const Capture = () => {
       icon: <IconDoubleTake />,
     },
   ];
+
+  useEffect(async () => {
+    navigator.permissions.query({ name: "camera" }).then((permission) => {
+      handleSetState({ cameraPermission: permission.state === "granted", toggle: permission.state === "granted" });
+    });
+  }, []);
 
   const displayedModes = modeSwitchList.filter((mode) => mode.text !== webcamCurrentType);
 
@@ -129,62 +138,15 @@ const Capture = () => {
     attributes,
   };
 
-  // get current location
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
-  function success(pos) {
-    const crd = pos.coords;
-    const lat = crd.latitude;
-    const lon = crd.longitude;
-    const API_KEY = "pk.eyJ1IjoiYmFhbTI1IiwiYSI6ImNsOG4wNzViMzAwcjAzd2xhMm52ajJoY2MifQ.kxO2vxRxoGGrvJjxnQhl5g";
-    const API_URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?limit=1&types=place%2Ccountry&access_token=${API_KEY}`;
-    if (lat && lon) {
-      if (category === "sesh" || category === "vibe") {
-        axios
-          .get(API_URL)
-          .then((data) => {
-            const address = data?.data?.features[0]?.place_name;
-            handleSetState({
-              toggle: true,
-              attributes: {
-                ...attributes,
-                location: { trait_type: "location", value: address },
-              },
-            });
-          })
-          .catch((err) => console.log(err));
-      }
-    }
-  }
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-    dispatch(
-      setNotification({
-        message: "Location access denied",
-        type: "error",
-      })
-    );
-    history.push("/create");
-  }
-
-  const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
-
-  const enableAccess = () => {
-    if (category === "sesh" || category === "vibe") {
-      getLocation();
-    } else {
-      handleSetState({
-        toggle: true,
-      });
-    }
+  const enableAccess = async () => {
+    handleSetState({
+      toggle: true,
+    });
   };
 
   return (
     <div className={`${classes.container}`}>
-      <WebcamEnable toggle={toggle} pathname={pathname} enableAccess={enableAccess} />
+      <WebcamEnable toggle={toggle} enableAccess={enableAccess} cameraPermission={cameraPermission} />
       {dualCam ? (
         <DoubleWebcam doubleCameraProps={doubleCameraProps} />
       ) : (
