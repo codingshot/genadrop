@@ -29,6 +29,7 @@ const Creating = () => {
   const regexp = /android|iphone|kindle|ipad/i;
 
   const isMobileDevice = regexp.test(details);
+
   const handleRedirect = (card) => {
     if (card.title === "Doubletake") {
       if (isMobileDevice) {
@@ -45,6 +46,7 @@ const Creating = () => {
       history.push(card.url);
     }
   };
+
   return (
     <div className={classes.container}>
       <div className={classes.title}>Create</div>

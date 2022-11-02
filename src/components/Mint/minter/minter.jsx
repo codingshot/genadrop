@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { async } from "regenerator-runtime";
 import classes from "./minter.module.css";
 // utils
 import { handleMint, handleSingleMint, getBase64, getFileFromBase64 } from "./minter-script";
@@ -38,9 +39,11 @@ const Minter = () => {
   const history = useHistory();
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
+
   // save file progress
   const loadedMinter = JSON.parse(sessionStorage.getItem("minter"));
   const { file, fileName: fName, metadata, zip } = minter;
+
   const [state, setState] = useState({
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
@@ -60,6 +63,7 @@ const Minter = () => {
       isError: null,
       popup: false,
     },
+    locationPermission: false,
     mintToMyAddress: true,
     receiverAddress: "",
     goodReceiverAddress: true,
@@ -73,6 +77,7 @@ const Minter = () => {
     location: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
   });
+
   const {
     attributes,
     fileName,
@@ -94,6 +99,7 @@ const Minter = () => {
     vibeProps,
     toggleType,
     location,
+    locationPermission,
     stick_type,
   } = state;
 
@@ -136,6 +142,11 @@ const Minter = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
+  useEffect(async () => {
+    navigator.permissions.query({ name: "geolocation" }).then((permission) => {
+      handleSetState({ locationPermission: permission.state === "granted" });
+    });
+  }, []);
   useEffect(() => {
     if (minter) {
       Promise.all(Array.prototype.map.call(minter.file, getBase64))
@@ -219,8 +230,13 @@ const Minter = () => {
   };
 
   const setMint = () => {
-    if (!showLocation) {
-      handleRemoveAttribute(2);
+    if (showLocation && location !== "") {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          [Date.now()]: location,
+        },
+      });
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
@@ -414,44 +430,39 @@ const Minter = () => {
   const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic"];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
 
-  // get current location
-  const options = {
-    enableHighAccuracy: true,
-    timeout: 5000,
-    maximumAge: 0,
-  };
-  function success(pos) {
-    const crd = pos.coords;
-    const lat = crd.latitude;
-    const lon = crd.longitude;
-    const API_KEY = "994462fe818ec2383a1f5e5da2a2455b";
-    const API_URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
-    if (lat && lon) {
-      if (category === "Sesh") {
-        axios
-          .get(API_URL)
-          .then((data) => {
-            const country = data?.data[0]?.country;
-            const city = data?.data[0]?.name;
-            const address = `${country}/${city}`;
-            handleSetState({
-              attributes: {
-                ...attributes,
-                location: { trait_type: "chapter", value: address },
-              },
-            });
-          })
-          .catch((err) => console.log(err));
-      } else {
-        handleSetState({
-          attributes: {
-            ...attributes,
-            location: { trait_type: "location", value: `${lon},${lat}` },
-          },
-        });
-      }
-    }
-  }
+  // function success(pos) {
+  //   const crd = pos.coords;
+  //   const lat = crd.latitude;
+  //   const lon = crd.longitude;
+  //   const API_KEY = "994462fe818ec2383a1f5e5da2a2455b";
+  //   const API_URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
+  //   if (lat && lon) {
+  //     if (category === "sesh" || category === "vibe") {
+  //       axios
+  //         .get(API_URL)
+  //         .then((data) => {
+  //           const country = data?.data[0]?.country;
+  //           const city = data?.data[0]?.name;
+  //           const address = `${country}/${city}`;
+  //           handleSetState({
+  //             attributes: {
+  //               ...attributes,
+  //               location: { trait_type: "location", value: address },
+  //             },
+  //           });
+  //         })
+  //         .catch((err) => console.log(err));
+  //     } else {
+  //       handleSetState({
+  //         attributes: {
+  //           ...attributes,
+  //           location: { trait_type: "location", value: `${lon},${lat}` },
+  //         },
+  //       });
+  //     }
+  //   }
+  // }
+
   function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
 
@@ -465,18 +476,18 @@ const Minter = () => {
       })
     );
   }
-  const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
-  // useEffect(() => {
-  //   if (showLocation) {
-  //     // getLocation();
-  //   } else {
-  //     const new_attr = attributes;
-  //     delete new_attr.location;
-  //     handleSetState({
-  //       attributes: new_attr,
-  //     });
-  //   }
-  // }, [showLocation, category]);
+
+  useEffect(() => {
+    if (showLocation) {
+      getLocation();
+    } else {
+      const new_attr = attributes;
+      delete new_attr.location;
+      handleSetState({
+        attributes: new_attr,
+      });
+    }
+  }, [showLocation, category]);
 
   const getActivetitle = () => {
     const header = cards.filter(
@@ -499,6 +510,65 @@ const Minter = () => {
     if (!mintToMe) handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
     else handleSetState({ goodReceiverAddress: true });
   };
+
+  // get current location
+  const options = {
+    enableHighAccuracy: true,
+    timeout: 50000,
+    maximumAge: 0,
+  };
+
+  function success(pos) {
+    const crd = pos.coords;
+    const lat = crd.latitude;
+    const lon = crd.longitude;
+    const API_KEY = "pk.eyJ1IjoiYmFhbTI1IiwiYSI6ImNsOG4wNzViMzAwcjAzd2xhMm52ajJoY2MifQ.kxO2vxRxoGGrvJjxnQhl5g";
+    const API_URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${lon},${lat}.json?limit=1&types=place%2Ccountry&access_token=${API_KEY}`;
+    if (lat && lon) {
+      axios
+        .get(API_URL)
+        .then((data) => {
+          const address = data?.data?.features[0]?.place_name;
+          handleSetState({
+            location: { trait_type: "location", value: address },
+          });
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+
+  const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
+
+  const enableAccess = () => {
+    if (isMobileDevice) {
+      dispatch(
+        setNotification({
+          message: " Mobile Browser Location \n Not Support Yet",
+          type: "warning",
+        })
+      );
+      handleSetState({ showLocation: false });
+      return;
+    }
+
+    if (!navigator.geolocation) {
+      return dispatch(
+        setNotification({
+          message: "Geolocation not supported",
+          type: "error",
+        })
+      );
+    }
+    if (location !== "") return;
+
+    getLocation();
+  };
+
+  const details = navigator?.userAgent;
+
+  const regexp = /android|iphone|kindle|ipad/i;
+
+  const isMobileDevice = regexp.test(details);
 
   return (
     <div className={classes.container}>
@@ -813,7 +883,10 @@ const Minter = () => {
                               <label className={classes.switch}>
                                 <input
                                   type="checkbox"
-                                  onClick={() => handleSetState({ showLocation: !showLocation })}
+                                  onClick={() => {
+                                    enableAccess();
+                                    handleSetState({ showLocation: !showLocation });
+                                  }}
                                   defaultChecked={false}
                                 />
                                 <span className={classes.slider} />
@@ -823,7 +896,11 @@ const Minter = () => {
 
                           {showLocation ? (
                             <div className={classes.inputContainer}>
-                              <input type="text" value={metadata?.location?.value} disabled />
+                              <input
+                                type="text"
+                                value={location?.value ? location.value : "Getting location ..."}
+                                disabled
+                              />
                             </div>
                           ) : (
                             ""
@@ -844,7 +921,7 @@ const Minter = () => {
                       </div>
                       <div className={classes.toggler}>
                         <label className={classes.switch}>
-                          <input type="checkbox" onClick={() => handleCheck()} defaultChecked />
+                          <input type="checkbox" onClick={() => handleCheck()} defaultChecked={account !== ""} />
                           <span className={classes.slider} />
                         </label>
                       </div>
