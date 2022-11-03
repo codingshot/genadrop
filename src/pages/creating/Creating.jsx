@@ -62,7 +62,11 @@ const Creating = () => {
       </div>
       <div className={`${classes.extra} ${active ? classes.active : ""}`}>
         {cards.slice(6).map((card) => (
-          <Link to={card.url} className={`${classes.card} ${card.comingSoon ? classes.noDrop : ""}`} key={card.title}>
+          <Link
+            to={!card.comingSoon && card.url}
+            className={`${classes.card} ${card.comingSoon ? classes.noDrop : ""}`}
+            key={card.title}
+          >
             <div className={classes.icon}>{card.icon}</div>
             <div className={classes.cardTitle}>{card.title}</div>
             <div className={classes.cardDescription}>{card.description}</div>
