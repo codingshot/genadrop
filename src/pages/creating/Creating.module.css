@@ -66,6 +66,10 @@
   width: 100%;
   transition: all 200ms ease;
 }
+.extra.active {
+  max-height: 0;
+  overflow: hidden;
+}
 
 .extra .card:hover .icon svg path {
   /* fill: var(--main-color); */
@@ -157,5 +161,9 @@
     width: 57px;
     height: 57px;
     padding: 8px;
+  }
+  .comingSoon {
+    padding: 0.25em;
+    font-size: 15px;
   }
 }
