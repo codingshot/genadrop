@@ -178,7 +178,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  /* justify-content: space-around; */
+  justify-content: space-around;
 }
 
 .dropdownContent {
@@ -229,9 +229,9 @@
 
 .buy img,
 .bid img {
-  width: 28px;
-  height: 22px;
-  margin-right: 10px;
+  width: 22px;
+  height: 18px;
+  margin-right: 7px;
 }
 .heading {
   padding: 0.5rem;
@@ -243,8 +243,9 @@
   .container {
     max-width: 1200px;
   }
-  .buy .bid {
-    max-width: 10rem;
+  .buy,
+  .bid {
+    max-width: 48%;
   }
 }
 
@@ -257,6 +258,14 @@
 @media screen and (max-width: 1000px) {
   .container {
     max-width: 768px;
+  }
+  .dropdownItems {
+    flex-direction: column;
+  }
+  .buy,
+  .bid {
+    margin-bottom: 15px;
+    max-width: 95%;
   }
 }
 
