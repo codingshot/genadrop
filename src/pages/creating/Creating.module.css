@@ -62,13 +62,16 @@
   grid-template-rows: repeat(2, 1fr);
   justify-content: space-between;
   margin: auto;
+  max-height: 0;
+  overflow: hidden;
   margin-top: 29px;
   width: 100%;
   transition: all 200ms ease;
 }
 .extra.active {
-  max-height: 0;
+  max-height: 50rem;
   overflow: hidden;
+  padding-bottom: 1rem;
 }
 
 .extra .card:hover .icon svg path {
@@ -150,6 +153,7 @@
   }
   .card {
     padding: 1.25rem 1rem;
+    max-height: 180px;
   }
   .cardTitle {
     font-size: 0.75rem;
@@ -162,8 +166,11 @@
     height: 57px;
     padding: 8px;
   }
+  .moreBTN {
+    margin-top: 1rem;
+  }
   .comingSoon {
-    padding: 0.25em;
-    font-size: 15px;
+    padding: 0.25rem;
+    font-size: 13px;
   }
 }
