@@ -59,6 +59,7 @@
 
 .btn.disable {
   background: var(--outline-dark);
+  cursor: not-allowed;
   border: 1px solid var(--outline-dark);
 }
 
