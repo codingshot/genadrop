@@ -11,6 +11,7 @@
   width: 100%;
   max-width: 36em;
   object-fit: cover;
+  cursor: pointer;
   border-radius: 0.7em;
 }
 

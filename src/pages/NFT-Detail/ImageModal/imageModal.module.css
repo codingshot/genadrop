@@ -1,0 +1,67 @@
+.modalShadow {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  background: rgba(38, 50, 56, 0.63);
+  z-index: 98;
+}
+
+.Modal {
+  width: 790px;
+  position: fixed;
+  top: 110px;
+  z-index: 999;
+  max-height: 846px;
+  left: calc(50% - 350px);
+  display: flex;
+  flex-direction: column;
+  @media (max-width: 500px) {
+    left: 0px;
+    margin: 0px 10px;
+  }
+}
+.ModalImage {
+  max-width: 704px;
+  max-height: 720px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+@media screen and (max-width: 900px) {
+  .Modal {
+    max-width: 710px;
+  }
+  .ModalImage {
+    margin: 0px auto;
+    width: 654px;
+    height: 700px;
+  }
+}
+
+@media screen and (max-width: 740px) {
+  .Modal {
+    width: 91%;
+    left: 10px;
+  }
+  .ModalImage {
+    margin: 0px 10px;
+    max-width: 100%;
+    height: auto;
+  }
+  .CloseIcon {
+    width: 35px;
+    margin-left: 40px !important;
+  }
+}
+
+.CloseIcon {
+  margin-bottom: 22px;
+  cursor: pointer;
+  float: right;
+}
+
+.CloseIcon:hover {
+  opacity: 0.8;
+  transition: 0.3s;
+}

@@ -251,13 +251,13 @@ const List = () => {
                   </div>
                   <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
                 </button>
-                {/* <button type="button" className={classes.bid} disabled={nftDetails.sold}>
+                <button type="button" className={classes.bid} disabled={nftDetails.sold}>
                   <div className={classes.btnText}>
                     <img src="/assets/bid.svg" alt="" />
                     HIGHEST BID
                   </div>
                   <span className={classes.btnSpan}>Auction to the highest Bider</span>
-                </button> */}
+                </button>
               </div>
             </div>
           </div>
