@@ -18,7 +18,7 @@
     "@near-wallet-selector/near-wallet": "^7.0.2",
     "@near-wallet-selector/nightly": "^7.0.3",
     "@near-wallet-selector/sender": "^7.0.2",
-    "@near-wallet-selector/wallet-connect": "^7.1.0",
+    "@near-wallet-selector/wallet-connect": "^7.0.2",
     "@openzeppelin/contracts": "^4.7.3",
     "@openzeppelin/contracts-upgradeable": "^4.7.3",
     "@openzeppelin/hardhat-upgrades": "^1.20.0",

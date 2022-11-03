@@ -5,8 +5,6 @@ import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-ic
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import WalletConnectIcon from "@near-wallet-selector/wallet-connect/assets/wallet-connect-icon.png";
-import { setupWalletConnect } from "@near-wallet-selector/wallet-connect";
 import "@near-wallet-selector/modal-ui/styles.css";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
@@ -64,14 +62,12 @@ const WalletPopup = ({ handleSetState }) => {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
-          setupWalletConnect({ iconUrl: WalletConnectIcon }),
         ];
       } else {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
           setupSender({ iconUrl: SenderIconUrl }),
-          setupWalletConnect({ iconUrl: WalletConnectIcon }),
         ];
       }
       const walletSelector = await setupWalletSelector({
