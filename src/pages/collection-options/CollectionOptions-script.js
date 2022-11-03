@@ -22,7 +22,7 @@ const cards = [
     url: "/create/session",
   },
   {
-    title: "Mint NFT",
+    title: "Mint Collection",
     description: `The zip file should contain "metadata" and "images" folders`,
     icon: <MintIcon />,
     footerIcon: <Share />,
