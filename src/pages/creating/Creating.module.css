@@ -56,21 +56,15 @@
 }
 
 .extra {
-  display: flex;
+  display: grid;
+  gap: 27px 29px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  justify-content: space-between;
+  margin: auto;
   margin-top: 29px;
-  width: calc(100% - 54px);
-  gap: 27px;
-  justify-content: center;
-  max-height: 0;
-  overflow: hidden;
+  width: 100%;
   transition: all 200ms ease;
-}
-.extra.active {
-  max-height: 20rem;
-  overflow: visible;
-}
-.extra .card {
-  width: calc(100% / 3);
 }
 
 .extra .card:hover .icon svg path {
@@ -137,15 +131,10 @@
   fill: var(--main-color);
 }
 @media screen and (max-width: 650px) {
-  .cardDeck {
+  .cardDeck,
+  .extra {
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(3, 1fr);
-  }
-  .extra {
-    width: calc(100% - 27px);
-  }
-  .extra .card {
-    width: calc(100% / 2);
   }
 }
 @media screen and (max-width: 480px) {
