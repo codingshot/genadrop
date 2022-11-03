@@ -5,11 +5,9 @@ import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
 import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
-import WalletConnectIcon from "@near-wallet-selector/wallet-connect/assets/wallet-connect-icon.png";
 import "@near-wallet-selector/modal-ui/styles.css";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
-import { setupWalletConnect } from "@near-wallet-selector/wallet-connect";
 import * as WS from "./wallet-script";
 
 import {
@@ -113,7 +111,6 @@ export const initializeConnection = async (walletProps) => {
       connectedToNearMainnet.modules = [
         setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
-        setupWalletConnect({ iconUrl: WalletConnectIcon }),
       ];
     } else {
       connectedToNearMainnet.modules = [
