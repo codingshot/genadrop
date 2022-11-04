@@ -7,7 +7,7 @@ import supportedChains from "../../utils/supportedChains";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
 import { buyNft, getFormatedPrice, getUserBoughtNftCollection } from "../../utils";
-import { listAuroraNft, listAvaxNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
+import { listAlgoNft, listAuroraNft, listAvaxNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
 import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
 import {
   auroraUserData,
@@ -19,14 +19,26 @@ import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.s
 
 import avatar from "../../assets/avatar.png";
 import { useCallback } from "react";
+import { getAlgoData } from "../NFT-Detail/NFTDetail-script";
 
 const List = () => {
-  const { account, mainnet, chainId, connector, dispatch, priceFeed } = useContext(GenContext);
+  const {
+    account,
+    chainId,
+    connector,
+    dispatch,
+    priceFeed,
+    singleAlgoNfts,
+    algoCollections,
+    activeCollection,
+    mainnet,
+  } = useContext(GenContext);
 
   const {
     params: { nftId },
   } = useRouteMatch();
   const match = useRouteMatch();
+  const { params } = useRouteMatch();
   const history = useHistory();
 
   const [state, setState] = useState({
@@ -57,6 +69,15 @@ const List = () => {
         })
       );
 
+    const listAlgoProps = {
+      dispatch,
+      account,
+      connector,
+      nftDetails,
+      mainnet,
+      price,
+    };
+
     const listProps = {
       dispatch,
       account,
@@ -75,6 +96,8 @@ const List = () => {
       listedNFT = await listAuroraNft(listProps);
     } else if (supportedChains[chainId].chain === "Avalanche") {
       listedNFT = await listAvaxNft(listProps);
+    } else if (supportedChains[chainId].chain === "Algorand") {
+      listedNFT = await listAlgoNft(listAlgoProps);
     } else {
       return history.push(`${match.url}/listed`);
     }
@@ -117,11 +140,18 @@ const List = () => {
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
         const [nftData] = await avaxUsersNfts(nftId);
         nft = nftData;
-      } else {
-        const userNftCollections = await fetchUserBoughtNfts(account);
-        const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
-        const [nftData] = result.filter((NFT) => String(NFT?.Id) === nftId);
-        nft = nftData;
+      } else if (supportedChains[chainId]?.chain === "Algorand") {
+        const algoProps = {
+          singleAlgoNfts,
+          algoCollections,
+          activeCollection,
+          params,
+          mainnet,
+        };
+        if (activeCollection || supportedChains[params.chainId]?.chain === "Algorand") {
+          const algoNft = await getAlgoData({ algoProps });
+          nft = algoNft?.nftDetails;
+        }
       }
       if (nft === null) {
         return (
