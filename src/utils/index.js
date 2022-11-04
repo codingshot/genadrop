@@ -554,6 +554,7 @@ export const getSingleGraphNfts = async (nfts) => {
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
+          nftObj.createdAt = Number(NFT?.createdAtTimestamp);
           nftObj.ipfs_data = data;
           nftObj.collection_contract = NFT?.id?.split(NFT?.tokenID)[0];
           nftObj.contractAddress = NFT?.id?.split(NFT?.tokenID)[0];
@@ -644,6 +645,7 @@ export const fetchNearSingleNfts = async (nfts) => {
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
+          nftObj.createdAt = Number(NFT?.createdAtTimestamp);
           nftObj.ipfs_data = data;
           nftObj.collection_contract = NFT?.id?.split(NFT?.tokenID)[0];
           nftObj.contractAddress = NFT?.id?.split(NFT?.tokenID)[0];

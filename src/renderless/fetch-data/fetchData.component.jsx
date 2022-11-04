@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { ethers } from "ethers";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
   setCollections,
@@ -34,11 +35,13 @@ import {
   GET_NEAR_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
 import {
+  auroraClient,
   avalancheClient,
   celoClient,
   graphQLClient,
   graphQLClientPolygon,
   nearClient,
+  polygonClient,
 } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 import {
@@ -53,7 +56,6 @@ import {
   parsePolygonCollection,
   parsePolygonSingle,
 } from "./fetchData-script";
-import { ethers } from "ethers";
 
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
@@ -75,7 +77,7 @@ const FetchData = () => {
       }
     })();
 
-    // Get ALGO Signle NFTs
+    // Get ALGO Single NFTs
     (async function getAlgoSingle() {
       const singleNfts = await fetchAlgoSingle(mainnet);
       dispatch(setSingleNfts(singleNfts));
@@ -92,16 +94,8 @@ const FetchData = () => {
     })();
 
     // get Aurora Collections
-    (async function getDataFromEndpointA() {
-      const { data, error } = await graphQLClient
-        .query(
-          GET_GRAPH_COLLECTIONS,
-          {},
-          {
-            clientName: "aurora",
-          }
-        )
-        .toPromise();
+    (async function getAuroraCollection() {
+      const { data, error } = await auroraClient.query(GET_GRAPH_COLLECTIONS).toPromise();
       if (error) {
         return dispatch(
           setNotification({
@@ -115,7 +109,7 @@ const FetchData = () => {
         process.env.REACT_APP_ENV_STAGING === "true"
           ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
           : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
-      const res = result?.filter((data) => data?.Id !== filterAddress);
+      const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
       if (res?.length) {
         dispatch(setAuroraCollections(res));
         dispatch(
@@ -130,16 +124,8 @@ const FetchData = () => {
     })();
 
     // Get Aurora Signle NFTs
-    (async function getDataFromEndpointA() {
-      const { data, error } = await graphQLClient
-        .query(
-          GET_AURORA_SINGLE_NFTS,
-          {},
-          {
-            clientName: "aurora",
-          }
-        )
-        .toPromise();
+    (async function getAuroraSingleNfts() {
+      const { data, error } = await auroraClient.query(GET_AURORA_SINGLE_NFTS).toPromise();
       if (error) {
         return dispatch(
           setNotification({
@@ -164,16 +150,8 @@ const FetchData = () => {
     })();
 
     // Get Polygon Collections
-    (async function getDataFromEndpointB() {
-      const { data, error } = await graphQLClientPolygon
-        .query(
-          GET_ALL_POLYGON_COLLECTIONS,
-          {},
-          {
-            clientName: "polygon",
-          }
-        )
-        .toPromise();
+    (async function getPolygonCollections() {
+      const { data, error } = await polygonClient.query(GET_ALL_POLYGON_COLLECTIONS).toPromise();
       if (error) {
         return dispatch(
           setNotification({
@@ -202,16 +180,8 @@ const FetchData = () => {
     })();
 
     // Get Polygon Signle NFTs
-    (async function getDataFromEndpointB() {
-      const { data, error } = await graphQLClientPolygon
-        .query(
-          GET_POLYGON_SINGLE_NFTS,
-          {},
-          {
-            clientName: "polygon",
-          }
-        )
-        .toPromise();
+    (async function getPolygonSingleNfts() {
+      const { data, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
       if (error) {
         return dispatch(
           setNotification({

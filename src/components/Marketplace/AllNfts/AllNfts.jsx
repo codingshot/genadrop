@@ -12,6 +12,7 @@ import {
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
+import moment from "moment/moment";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -103,16 +104,20 @@ const AllNfts = () => {
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
 
   useEffect(() => {
-    let newest = [...collections, ...singles];
-    newest = shuffle(newest);
-    newest = newest.sort((a, b) => {
+    const newNfts = shuffle([...collections, ...singles]);
+    newNfts.sort((a, b) => {
       if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
       if (typeof a.createdAt === "object") {
         return a.createdAt.seconds - b.createdAt.seconds;
       }
       return a.createdAt - b.createdAt;
     });
-    handleSetState({ newest });
+    const sorted = [...collections, ...singles].sort((a, b) => moment(a.createdAt).diff(b.createdAt));
+    console.log(
+      "This is the newest",
+      sorted.map((data) => moment(data.createdAt).fromNow())
+    );
+    handleSetState({ newest: newNfts });
   }, [singles, collections]);
 
   useEffect(() => {
