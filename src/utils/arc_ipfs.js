@@ -866,6 +866,122 @@ export async function listPolygonNft(nftProps) {
   }
 }
 
+export async function listAlgoNft(nftProps) {
+  const { dispatch, nftDetails, account, connector, price, mainnet } = nftProps;
+  const { new_acct, new_key } = algosdk.generateAccount();
+  initAlgoClients(mainnet);
+  const params = await algodTxnClient.getTransactionParams().do();
+  let note = enc.encode("Storage fund");
+  const fundTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: new_acct,
+    amount: 0.5 * 1000000,
+    note,
+    suggestedParams: params,
+  });
+
+  const optInTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: account,
+    closeRemainderTo: undefined,
+    amount: 0,
+    assetIndex: nftDetails.Id,
+    suggestedParams: params,
+  });
+
+  note = enc.encode("List to Genadrop");
+
+  const Transfertxn = algosdk.makeAssetTransferTxnWithSuggestedParams(
+    nftDetails.owner,
+    account,
+    undefined,
+    undefined,
+    1,
+    note,
+    nftDetails.Id,
+    params
+  );
+
+  note = enc.encode("rk to sc");
+  const appId = 120333660;
+  const rekeyTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: new_acct,
+    to: new_acct,
+    amount: 0,
+    note,
+    suggestedParams: params,
+    rekeyTo: "OU5TOTPNH66VMMPNVE3SA2AEEGXLZ3L47F7R3CO5QZAAQPGTGRQKQ6XVG4",
+  });
+
+  let app_args = ["initializeSale", nftDetails.owner, price, nftDetails.Id];
+
+  let appOptinTx = algosdk.makeApplicationOptInTxn(new_acct, params, appId);
+
+  const listTxn = algosdk.makeApplicationCallTxnFromObject({
+    from: new_acct,
+    suggestedParams: params,
+    appIndex: appId,
+    appArgs: app_args,
+    accounts: [account],
+    foreignAssets: [nftDetails.Id],
+    onComplete: algosdk.OnApplicationComplete.NoOpOC,
+  })
+
+  let txList = [fundTxn, optInTxn, Transfertxn, appOptinTx, listTxn, rekeyTxn];
+  let groupedTx = algosdk.assignGroupID(txList);
+  const txnsToSignByUser = [fundTxn, Transfertxn];
+  const optInTxnSigned = optInTxn.signTxn(new_key);
+  const appOptinTxSigned = appOptinTx.signTxn(new_key);
+  const listTxnSigned = listTxn.signTxn(new_key);
+  const rekeyTxnSigned = rekeyTxn.signTxn(new_key);
+  // const tx = await algodTxnClient.sendRawTransaction(rawSignedTxn).do();
+  const txnsToSign = txnsToSignByUser.map((txn) => {
+    const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
+    return {
+      txn: encodedTxn,
+      message: "Nft Listing",
+      // Note: if the transaction does not need to be signed (because it's part of an atomic group
+      // that will be signed by another party), specify an empty singers array like so:
+      // signers: [],
+    };
+  });
+
+  let result;
+  try {
+    const request = formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
+    dispatch(
+      setNotification({
+        message: "please check your wallet to confirm transaction",
+        type: "warning",
+      })
+    );
+    result = await connector.send(request);
+  } catch (error) {
+    dispatch(
+      setNotification({
+        message: error.message,
+        type: "error",
+      })
+    );
+    throw error;
+  }
+
+  const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
+  
+  decodedResult.append(optInTxnSigned)
+  decodedResult.append(appOptinTxSigned)
+  decodedResult.append(listTxnSigned)
+  decodedResult.append(rekeyTxnSigned)
+
+  const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
+
+  console.log("final tx", tx.txId)
+
+  await write.writeListNft(nftDetails.Id, nftDetails.price, nftDetails.owner, new_acct, tx.txId, true);
+  dispatch(setLoader(""));
+  return mainnet ? `https://algoexplorer.io/tx/${tx.txId}` : `https://testnet.algoexplorer.io/tx/${tx.txId}`;
+}
+
 export async function initializeContract(contractProps) {
   const { minterAddress, fileName, connector, account, dispatch, setLoader, description } = contractProps;
   const name = fileName.split("-")[0];

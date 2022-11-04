@@ -174,6 +174,27 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   return true;
 }
 
+async function writeListNft(assetId, price, owner, manager, txId, list) {
+  const updates = {};
+  updates[assetId] = {
+    id: assetId,
+    isListed: !!list,
+    price,
+    account: manager,
+  };
+  db.collection("nfts")
+    .doc(`${owner}`)
+    .set(
+      {
+        ...updates,
+      },
+      { merge: true }
+    );
+  await recordTransaction(assetId, "Listing", owner, null, null, txId);
+
+  return true;
+}
+
 // async function readData() {
 //   const dbRef = ref(getDatabase());
 //   await get(child(dbRef, 'list'))
@@ -374,6 +395,7 @@ export {
   fetchUserNfts,
   fetchUserBoughtNfts,
   writeNft,
+  writeListNft,
   recordTransaction,
   readNftTransaction,
   readUserProfile,
