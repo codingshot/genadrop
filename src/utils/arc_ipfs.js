@@ -876,7 +876,7 @@ export async function listAlgoNft(nftProps) {
   const fundTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: account,
     to: new_acct,
-    amount: 0.5 * 1000000,
+    amount: 411000,
     note,
     suggestedParams: params,
   });
@@ -904,19 +904,19 @@ export async function listAlgoNft(nftProps) {
   );
 
   note = enc.encode("rk to sc");
-  const appId = 120333660;
+  const appId = 120582738;
   const rekeyTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: new_acct,
     to: new_acct,
     amount: 0,
     note,
     suggestedParams: params,
-    rekeyTo: "OU5TOTPNH66VMMPNVE3SA2AEEGXLZ3L47F7R3CO5QZAAQPGTGRQKQ6XVG4",
+    rekeyTo: "VDG4C3J4N2545DFIUELUBIXDZY6H3FXHPWFANDHTIFSL374UFGWH5253HY",
   });
 
-  let app_args = ["initializeSale", nftDetails.owner, price, nftDetails.Id];
+  const app_args = ["initializeSale", nftDetails.owner, price, nftDetails.Id];
 
-  let appOptinTx = algosdk.makeApplicationOptInTxn(new_acct, params, appId);
+  const appOptinTx = algosdk.makeApplicationOptInTxn(new_acct, params, appId);
 
   const listTxn = algosdk.makeApplicationCallTxnFromObject({
     from: new_acct,
@@ -928,7 +928,7 @@ export async function listAlgoNft(nftProps) {
     onComplete: algosdk.OnApplicationComplete.NoOpOC,
   })
 
-  let txList = [fundTxn, optInTxn, Transfertxn, appOptinTx, listTxn, rekeyTxn];
+  const txList = [fundTxn, optInTxn, Transfertxn, appOptinTx, listTxn, rekeyTxn];
   let groupedTx = algosdk.assignGroupID(txList);
   const txnsToSignByUser = [fundTxn, Transfertxn];
   const optInTxnSigned = optInTxn.signTxn(new_key);
@@ -968,7 +968,6 @@ export async function listAlgoNft(nftProps) {
   }
 
   const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
-  
   decodedResult.append(optInTxnSigned)
   decodedResult.append(appOptinTxSigned)
   decodedResult.append(listTxnSigned)
@@ -1623,6 +1622,88 @@ export async function getPolygonUserPurchasedNfts(connector, mainnet) {
   );
   const art = await contract.fetchPurchasedNFTs();
   return art;
+}
+
+export async function purchaseAlgoNfts(buyProps) {
+  const { dispatch, nftDetails, account, connector, mainnet } = buyProps;
+  dispatch(setLoader("executing transaction..."));
+  initAlgoClients(mainnet);
+  const params = await algodTxnClient.getTransactionParams().do();
+  const enc = new TextEncoder();
+  const note = enc.encode("Nft Purchase");
+  const note2 = enc.encode("Platform fee");
+  const txns = [];
+  const userBalance = await algodClient.accountInformation(account).do();
+  if (algosdk.microalgosToAlgos(userBalance.amount) <= nftDetails.price) {
+    dispatch(
+      setNotification({
+        message: "insufficent fund to cover cost",
+        type: "warning",
+      })
+    );
+    return false;
+  }
+  const appId = 120582738;
+  
+  const optTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: account,
+    closeRemainderTo: undefined,
+    amount: 0,
+    assetIndex: nftDetails.Id,
+    suggestedParams: params,
+  });
+
+  const platformFee = (nftDetails.price * 10) / 100;
+  const sellerFee = nftDetails.price - platformFee;
+
+  const txn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: nftDetails.owner,
+    amount: sellerFee * 1000000,
+    note,
+    suggestedParams: params,
+  });
+  txns.push(txn);
+
+  const txn2 = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: mainnet ? process.env.REACT_APP_GENADROP_ALGO_TAX_ADDRESS : process.env.REACT_APP_GENADROP_MANAGER_ADDRESS,
+    amount: platformFee * 1000000,
+    note: note2,
+    suggestedParams: params,
+  });
+  txns.push(txn2);
+
+  const rekeyTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: new_acct,
+    to: new_acct,
+    amount: 0,
+    note,
+    suggestedParams: params,
+    rekeyTo: "VDG4C3J4N2545DFIUELUBIXDZY6H3FXHPWFANDHTIFSL374UFGWH5253HY",
+  });
+
+  let appOptinTx = algosdk.makeApplicationOptInTxn(account, params, appId);
+
+  const buyTxn = algosdk.makeApplicationCallTxnFromObject({
+    from: account,
+    suggestedParams: params,
+    appIndex: appId,
+    appArgs: ["buy", nftDetails.owner],
+    accounts: [nftDetails.manager],
+    foreignAssets: [nftDetails.Id],
+    onComplete: algosdk.OnApplicationComplete.NoOpOC,
+  })
+  let appCloseTxn = algosdk.makeApplicationCloseOutTxn(account, params, appId);
+  const refundTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
+    from: account,
+    to: account,
+    amount: 0,
+    note,
+    suggestedParams: params,
+    closeRemainderTo: nftDetails.owner,
+  });
 }
 
 export async function purchasePolygonNfts(buyProps) {

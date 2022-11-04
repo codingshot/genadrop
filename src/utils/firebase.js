@@ -180,7 +180,7 @@ async function writeListNft(assetId, price, owner, manager, txId, list) {
     id: assetId,
     isListed: !!list,
     price,
-    account: manager,
+    manager: manager,
   };
   db.collection("nfts")
     .doc(`${owner}`)
