@@ -871,6 +871,7 @@ export async function listAlgoNft(nftProps) {
   const { new_acct, new_key } = algosdk.generateAccount();
   initAlgoClients(mainnet);
   const params = await algodTxnClient.getTransactionParams().do();
+  const enc = new TextEncoder();
   let note = enc.encode("Storage fund");
   const fundTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: account,
