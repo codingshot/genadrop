@@ -91,7 +91,7 @@ const AllNfts = () => {
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
-    let singles = [
+    const singleData = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
       ...(singlePolygonNfts || []),
@@ -99,31 +99,31 @@ const AllNfts = () => {
       ...(singleNearNfts || []),
       ...(singleAvaxNfts || []),
     ];
-    singles = shuffle(singles);
-    handleSetState({ singles });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+    const singlesNfts = shuffle(singleData);
+    handleSetState({ singles: singlesNfts });
+  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
 
   useEffect(() => {
-    const newNfts = shuffle([...collections, ...singles]);
-    newNfts.sort((a, b) => {
-      if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
-      if (typeof a.createdAt === "object") {
-        return a.createdAt.seconds - b.createdAt.seconds;
-      }
-      return a.createdAt - b.createdAt;
-    });
-    const sorted = [...collections, ...singles].sort((a, b) => moment(a.createdAt).diff(b.createdAt));
-    console.log(
-      "This is the newest",
-      sorted.map((data) => moment(data.createdAt).fromNow())
-    );
-    handleSetState({ newest: newNfts });
+    // const newNfts = shuffle([...collections, ...singles]);
+    // newNfts
+    //   .filter((chainId) => chainId.chain !== 4160)
+    //   .sort((a, b) => {
+    //     if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
+    //     if (typeof a.createdAt === "object") {
+    //       return a.createdAt.seconds - b.createdAt.seconds;
+    //     }
+    //     return a.createdAt - b.createdAt;
+    //   });
+    const sorted = [...collections, ...singles]
+      .filter((chainId) => chainId.chain !== 4160)
+      .sort((a, b) => moment(b.createdAt).diff(a.createdAt));
+    handleSetState({ newest: sorted });
   }, [singles, collections]);
 
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
     handleSetState({ filteredCollection: result || [] });
-  }, [singles, collections, newest]);
+  }, [singles, collections]);
 
   useEffect(() => {
     dispatch(setActiveCollection(null));

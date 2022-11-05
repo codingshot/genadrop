@@ -17,6 +17,8 @@ import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import Search from "../../components/Search/Search";
+import supportedChains from "../../utils/supportedChains";
+import { promises } from "form-data";
 
 const MarketplaceAll = () => {
   const {
@@ -129,6 +131,7 @@ const MarketplaceAll = () => {
       ...(singleNearNfts || []),
       ...(singleAvaxNfts || []),
     ];
+
     handleSetState({ collections: allNFTs, filteredCollection: allNFTs });
   }, [
     auroraCollections,
