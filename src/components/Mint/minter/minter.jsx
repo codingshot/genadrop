@@ -230,14 +230,15 @@ const Minter = () => {
   };
 
   const setMint = () => {
-    if (showLocation && location !== "") {
+    // Add location attribute
+    /*  if (showLocation && location !== "") {
       handleSetState({
         attributes: {
           ...attributes,
           [Date.now()]: location,
         },
       });
-    }
+    } */
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
@@ -430,57 +431,6 @@ const Minter = () => {
   const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic"];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
 
-  // function success(pos) {
-  //   const crd = pos.coords;
-  //   const lat = crd.latitude;
-  //   const lon = crd.longitude;
-  //   const API_KEY = "994462fe818ec2383a1f5e5da2a2455b";
-  //   const API_URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&appid=${API_KEY}`;
-  //   if (lat && lon) {
-  //     if (category === "sesh" || category === "vibe") {
-  //       axios
-  //         .get(API_URL)
-  //         .then((data) => {
-  //           const country = data?.data[0]?.country;
-  //           const city = data?.data[0]?.name;
-  //           const address = `${country}/${city}`;
-  //           handleSetState({
-  //             attributes: {
-  //               ...attributes,
-  //               location: { trait_type: "location", value: address },
-  //             },
-  //           });
-  //         })
-  //         .catch((err) => console.log(err));
-  //     } else {
-  //       handleSetState({
-  //         attributes: {
-  //           ...attributes,
-  //           location: { trait_type: "location", value: `${lon},${lat}` },
-  //         },
-  //       });
-  //     }
-  //   }
-  // }
-
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-
-    const input = document.getElementById("location");
-    input.click();
-
-    handleSetState({
-      showLocation: false,
-    });
-
-    return dispatch(
-      setNotification({
-        message: "Location access failed. Please Restart your browser",
-        type: "warning",
-      })
-    );
-  }
-
   const getActivetitle = () => {
     const header = cards.filter(
       (card) =>
@@ -503,8 +453,9 @@ const Minter = () => {
     else handleSetState({ goodReceiverAddress: true });
   };
 
-  // get current location
-  const options = {
+  // *************** GET CURRENT LOCATION: START ***************
+
+  /* const options = {
     enableHighAccuracy: true,
     timeout: 50000,
     maximumAge: 0,
@@ -528,7 +479,23 @@ const Minter = () => {
         .catch((err) => console.log(err));
     }
   }
+ function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
 
+    const input = document.getElementById("location");
+    input.click();
+
+    handleSetState({
+      showLocation: false,
+    });
+
+    return dispatch(
+      setNotification({
+        message: "Location access failed. Please Restart your browser",
+        type: "warning",
+      })
+    );
+  }
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
 
   const enableAccess = () => {
@@ -567,7 +534,9 @@ const Minter = () => {
 
   const regexp = /android|iphone|kindle|ipad/i;
 
-  const isMobileDevice = regexp.test(details);
+  const isMobileDevice = regexp.test(details); */
+
+  // *************** GET CURRENT LOCATION: END ***************
 
   return (
     <div className={classes.container}>
@@ -872,7 +841,9 @@ const Minter = () => {
                     </>
                   )}
 
-                  {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
+                  {/* *************** TOGGLE LOCATION: START *************** */}
+
+                  {/*  {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
                     <div className={classes.inputWrapper}>
                       <div className={classes.toggleTitle}>
                         <div className={classes.receiverAddress}>
@@ -908,7 +879,9 @@ const Minter = () => {
                         </div>
                       </div>
                     </div>
-                  )}
+                  )} */}
+
+                  {/* *************** TOGGLE LOCATION: END *************** */}
 
                   <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
