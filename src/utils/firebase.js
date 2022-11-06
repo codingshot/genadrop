@@ -180,7 +180,7 @@ async function writeListNft(assetId, price, owner, manager, txId, list) {
     id: assetId,
     isListed: !!list,
     price,
-    manager: manager,
+    manager,
   };
   db.collection("nfts")
     .doc(`${owner}`)
@@ -339,7 +339,7 @@ async function fetchUserBoughtNfts(account) {
   return filtered;
 }
 
-async function listNft(assetId, price, owner) {
+async function listNft(assetId, price, owner, manager, txId, list) {
   console.log("so you wanna list??");
   // let asset = await readSIngleUserNft(prevOwner, assetId);
   // if (asset.buyer !== newOwner) {
@@ -361,6 +361,7 @@ async function listNft(assetId, price, owner) {
     updatedAt: new Date(),
     sold: false,
     isListed: true,
+    manager,
   };
 
   const transactionRecords = {};
@@ -369,7 +370,7 @@ async function listNft(assetId, price, owner) {
     buyer: owner,
     id: assetId,
     price,
-    txId: "",
+    txId,
     txDate: new Date(),
   };
   try {
