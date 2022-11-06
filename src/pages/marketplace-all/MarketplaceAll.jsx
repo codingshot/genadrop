@@ -19,6 +19,15 @@ import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftC
 import Search from "../../components/Search/Search";
 import supportedChains from "../../utils/supportedChains";
 import { promises } from "form-data";
+import {
+  getAllAuroraCollections,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonCollections,
+  getAllPolygonNfts,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const MarketplaceAll = () => {
   const {
@@ -145,6 +154,18 @@ const MarketplaceAll = () => {
     singleCeloNfts,
     singleNearNfts,
   ]);
+
+  useEffect(() => {
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraCollections(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllPolygonCollections(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+    ]).then((data) => console.log(data));
+  }, []);
 
   useEffect(() => {
     const countPerPage = 20;
