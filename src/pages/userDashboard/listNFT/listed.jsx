@@ -18,13 +18,15 @@ import telegram from "../../../assets/blue-telegram.svg";
 import twitterIcon from "../../../assets/blue-twitter.svg";
 import facebookIcon from "../../../assets/blue-facebook.svg";
 import linktree from "../../../assets/linked-tree.svg";
+import { getAlgoData } from "../../../utils/arc_ipfs";
 
 const Listed = () => {
-  const { account, mainnet } = useContext(GenContext);
+  const { account, mainnet, singleAlgoNfts, activeCollection, algoCollections } = useContext(GenContext);
 
   const {
     params: { nftId, url },
   } = useRouteMatch();
+  const { params } = useRouteMatch();
   const { chainId } = useContext(GenContext);
   const history = useHistory();
   const [state, setState] = useState({
@@ -68,11 +70,20 @@ const Listed = () => {
           nftDetails: nft,
           isLoading: false,
         });
-      } else {
-        const userNftCollections = await fetchUserBoughtNfts(account);
-        const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
+      } else if (supportedChains[chainId].chain === "Algorand") {
+        // const userNftCollections = await fetchUserBoughtNfts(account);
+        // const result = await getUserBoughtNftCollection(mainnet, userNftCollections);
 
-        const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
+        // const nft = result.filter((NFT) => String(NFT.Id) === nftId)[0];
+        const algoProps = {
+          singleAlgoNfts,
+          algoCollections,
+          activeCollection,
+          params,
+          mainnet,
+        };
+        const algoNft = await getAlgoData({ algoProps });
+        const nft = algoNft?.nftDetails;
         if (!nft) history.push("/");
         handleSetState({ nftDetails: nft, isLoading: false });
       }

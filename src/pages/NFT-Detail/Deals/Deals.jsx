@@ -38,6 +38,10 @@ const Deals = ({ nftDetails }) => {
   };
 
   useEffect(() => {
+    console.log(nftDetails);
+  }, [nftDetails]);
+
+  useEffect(() => {
     getUsdValue();
   }, [priceFeed]);
   return (
