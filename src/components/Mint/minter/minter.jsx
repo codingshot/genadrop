@@ -497,6 +497,11 @@ const Minter = () => {
     );
   }
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
+  const details = navigator?.userAgent;
+
+  const regexp = /android|iphone|kindle|ipad/i;
+
+  const isMobileDevice = regexp.test(details);
 
   const enableAccess = () => {
     if (isMobileDevice) {
@@ -529,12 +534,6 @@ const Minter = () => {
 
     getLocation();
   };
-
-  const details = navigator?.userAgent;
-
-  const regexp = /android|iphone|kindle|ipad/i;
-
-  const isMobileDevice = regexp.test(details);
 
   // *************** GET CURRENT LOCATION: END ***************
 
