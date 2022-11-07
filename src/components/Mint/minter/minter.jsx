@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import axios from "axios";
 import { async } from "regenerator-runtime";
 import classes from "./minter.module.css";
@@ -36,6 +36,8 @@ import {
 import { GenContext } from "../../../gen-state/gen.context";
 
 const Minter = () => {
+  const params = useParams();
+
   const history = useHistory();
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
@@ -75,6 +77,7 @@ const Minter = () => {
       diversity: 0,
     },
     location: "",
+    fileExtension: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
   });
 
@@ -98,6 +101,7 @@ const Minter = () => {
     showLocation,
     vibeProps,
     toggleType,
+    fileExtension,
     location,
     locationPermission,
     stick_type,
@@ -147,6 +151,14 @@ const Minter = () => {
       handleSetState({ locationPermission: permission.state === "granted" });
     });
   }, []);
+
+  useEffect(() => {
+    if (file) {
+      const filename = file[0].name.replace(/\.+\s*\./, ".").split(".");
+      handleSetState({ fileExtension: filename.slice(filename.length - 1).join() });
+    }
+  }, [file]);
+
   useEffect(() => {
     if (minter) {
       Promise.all(Array.prototype.map.call(minter.file, getBase64))
@@ -179,7 +191,7 @@ const Minter = () => {
       });
     }
     return null;
-  }, [chain]);
+  }, [chain, showLocation]);
 
   const handleAddAttribute = () => {
     handleSetState({
@@ -230,7 +242,6 @@ const Minter = () => {
   };
 
   const setMint = () => {
-    // Add location attribute
     if (showLocation && location !== "") {
       handleSetState({
         attributes: {
@@ -428,15 +439,23 @@ const Minter = () => {
     }
   };
   // select category
-  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic"];
+  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic", "Audio", "Video"];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
+  const audioExtensions = ["mp3", "aac", "wav"];
+  const videoExtensions = ["mp4", "m4v", "mov", "mkv", "avi", "webm", "flv"];
 
   const getActivetitle = () => {
     const header = cards.filter(
       (card) =>
         card.value === category ||
         (card.value === "collection" && file?.length > 1) ||
-        (card.value === "Art" && file?.length === 1 && !category)
+        (card.value === "audio" && params.mintId === "Audio File" && !category) ||
+        (card.value === "video" && params.mintId === "Video File" && !category) ||
+        (card.value === "Art" &&
+          file?.length === 1 &&
+          !category &&
+          params.mintId !== "Audio File" &&
+          params.mintId !== "Video File")
     )[0];
     return (
       <div className={classes.headerText}>
@@ -479,43 +498,26 @@ const Minter = () => {
         .catch((err) => console.log(err));
     }
   }
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
 
-    const input = document.getElementById("location");
-    input.click();
-
-    handleSetState({
-      showLocation: false,
-    });
-
-    return dispatch(
-      setNotification({
-        message: "Location access failed. Please Restart your browser",
-        type: "warning",
-      })
-    );
-  }
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
+  const details = navigator?.userAgent;
 
-  const enableAccess = () => {
-    if (isMobileDevice) {
-      const input = document.getElementById("location");
-      input.click();
+  const regexp = /android|iphone|kindle|ipad/i;
 
-      handleSetState({
-        showLocation: false,
-      });
+  const isMobileDevice = regexp.test(details);
+
+  const accessDenied = () => {
+    if (!isMobileDevice && !showLocation) {
       dispatch(
         setNotification({
           message: " Mobile browser location not support yet",
           type: "warning",
         })
       );
-
-      return;
     }
+  };
 
+  const enableAccess = () => {
     if (!navigator.geolocation) {
       dispatch(
         setNotification({
@@ -526,15 +528,8 @@ const Minter = () => {
       return;
     }
     if (location !== "") return;
-
     getLocation();
   };
-
-  const details = navigator?.userAgent;
-
-  const regexp = /android|iphone|kindle|ipad/i;
-
-  const isMobileDevice = regexp.test(details);
 
   // *************** GET CURRENT LOCATION: END ***************
 
@@ -568,7 +563,7 @@ const Minter = () => {
             <div className={classes.headerDescription}>
               Upload an{" "}
               <span>
-                image
+                {params.mintId}
                 <BorderIcon />
               </span>{" "}
               to create a proof of sesh NFTs <br />
@@ -576,7 +571,7 @@ const Minter = () => {
             </div>
           )}
           <div className={classes.grid}>
-            <Category handleSetState={handleSetState} category={category} file={file} />
+            <Category handleSetState={handleSetState} category={category} file={file} params={params} />
             <div className={classes.mintSection}>
               <section className={classes.assetContainer}>
                 <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
@@ -591,8 +586,24 @@ const Minter = () => {
                             className={classes.imageContainer}
                           />
                         ))
-                    ) : file[0].type === "video/mp4" ? (
-                      <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} autoPlay loop />
+                    ) : videoExtensions.includes(fileExtension) ? (
+                      <video
+                        src={URL.createObjectURL(file[0])}
+                        alt=""
+                        className={classes.singleImage}
+                        autoPlay
+                        loop
+                        // controls
+                        muted
+                      />
+                    ) : audioExtensions.includes(fileExtension) ? (
+                      <audio
+                        src={URL.createObjectURL(file[0])}
+                        className={classes.singleImage}
+                        controls
+                        autoPlay
+                        muted
+                      />
                     ) : (
                       <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                     ))}
@@ -850,7 +861,10 @@ const Minter = () => {
                           <div className={classes.toggleTitle}>
                             <label>Location</label>
                             <div className={classes.toggler}>
-                              <label className={classes.switch}>
+                              <label
+                                className={`${classes.switch} ${isMobileDevice && classes.noClick}`}
+                                onClick={() => (isMobileDevice ? accessDenied() : "")}
+                              >
                                 <input
                                   id="location"
                                   type="checkbox"
