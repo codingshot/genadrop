@@ -1,11 +1,17 @@
 import { gql } from "@apollo/client";
 import { ethers } from "ethers";
 import {
+  GET_ALL_POLYGON_COLLECTIONS,
+  GET_AURORA_SINGLE_NFTS,
   GET_CELO_GRAPH_COLLECITONS,
   GET_CELO_NFT,
+  GET_CELO_SINGLE_NFT,
+  GET_GRAPH_COLLECTIONS,
   GET_GRAPH_NFT,
   GET_NEAR_NFT,
+  GET_NEAR_SINGLE_NFTS,
   GET_NEAR_USER_NFT,
+  GET_POLYGON_SINGLE_NFTS,
   GET_USER_COLLECTIONS,
   GET_USER_NFT,
 } from "../../graphql/querries/getCollections";
@@ -20,7 +26,10 @@ import {
   getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
+  getNftCollections,
+  getSingleNfts,
 } from "../../utils";
+import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
@@ -219,6 +228,85 @@ export const celoUserData = async (address) => {
     });
   }
   return [celoResult[0], trHistory];
+};
+
+export const getAllCeloNfts = async () => {
+  const { data: graphData, error } = await celoClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllPolygonNfts = async () => {
+  const { data: graphData, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllAuroraNfts = async () => {
+  const { data: graphData, error } = await auroraClient.query(GET_AURORA_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllNearNfts = async () => {
+  const { data: graphData, error } = await nearClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllAlgorandNfts = async (mainnet, dispatch) => {
+  const singleNfts = await fetchAlgoSingle(mainnet);
+  let result = [];
+  if (singleNfts?.length) {
+    const nfts = await getSingleNfts({ mainnet, singleNfts, dispatch });
+    result = Object.values(nfts);
+  }
+  return result;
+};
+
+export const getAllAlgorandCollections = async (mainnet, dispatch) => {
+  const collections = await fetchAlgoCollections(mainnet);
+  let result = [];
+  if (collections?.length) {
+    const collectionNfts = await getNftCollections({ collections, mainnet, dispatch });
+    result = Object.values(collectionNfts);
+  }
+  return result;
+};
+
+export const getAllAvalancheNfts = async () => {
+  const { data: graphData, error } = await avalancheClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllAuroraCollections = async () => {
+  const { data, error } = await auroraClient.query(GET_GRAPH_COLLECTIONS).toPromise();
+  if (error) return [];
+  const result = await getGraphCollections(data?.collections);
+  const filterAddress =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
+      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
+  const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
+  return res;
+};
+
+export const getAllPolygonCollections = async () => {
+  const { data, error } = await polygonClient.query(GET_ALL_POLYGON_COLLECTIONS).toPromise();
+  if (error) return [];
+  const result = await getGraphCollections(data?.collections);
+  const filterAddress =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? ethers.utils.hexlify(process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS)
+      : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
+  const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
+  return res;
 };
 
 export const celoCollectionTransactions = async (id) => {

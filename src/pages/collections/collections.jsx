@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
-import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import { GenContext } from "../../gen-state/gen.context";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
@@ -12,17 +11,10 @@ import {
   shuffle,
   getCollectionsByDate,
   getCollectionsByChain,
-  getCollectionsBySearch,
 } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";
-import {
-  parseAlgoCollection,
-  parseAuroraCollection,
-  parseCeloCollection,
-  parsePolygonCollection,
-} from "../../renderless/fetch-data/fetchData-script";
 
 const Collections = () => {
   const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, searchContainer } =
@@ -45,8 +37,6 @@ const Collections = () => {
   const {
     collections,
     activeDate,
-    searchValue,
-
     paginate,
     currentPage,
     currentPageValue,
@@ -88,7 +78,6 @@ const Collections = () => {
 
   // Chain Filter
   const handleChainChange = (chain) => {
-    console.log(chain);
     const tempCollection = getCollectionsByDate({ collections, date: activeDate });
 
     const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });

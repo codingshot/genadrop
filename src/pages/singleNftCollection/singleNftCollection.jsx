@@ -25,6 +25,14 @@ import {
   parseNearSingle,
   parsePolygonSingle,
 } from "../../renderless/fetch-data/fetchData-script";
+import {
+  getAllAlgorandNfts,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonNfts,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const SingleNftCollection = () => {
   const {
@@ -37,6 +45,7 @@ const SingleNftCollection = () => {
     singleAvaxNfts,
     account,
     searchContainer,
+    dispatch,
   } = useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
@@ -49,7 +58,7 @@ const SingleNftCollection = () => {
     currentPageValue: 1,
 
     notFound: false,
-    searchChain: "",
+    searchChain: "All Chains",
   });
 
   const { collections, paginate, currentPage, currentPageValue, searchChain, filteredCollection, notFound } = state;
@@ -93,17 +102,15 @@ const SingleNftCollection = () => {
   };
 
   useEffect(() => {
-    let collections = [
-      ...(singleAlgoNftsArr || []),
-      ...(singleAuroraNfts || []),
-      ...(singlePolygonNfts || []),
-      ...(singleCeloNfts || []),
-      ...(singleNearNfts || []),
-      ...(singleAvaxNfts || []),
-    ];
-    collections = shuffle(collections);
-    handleSetState({ collections, filteredCollection: [...collections] });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+      getAllAlgorandNfts(mainnet, dispatch),
+    ]).then((data) => handleSetState({ collections: shuffle(data.flat()), filteredCollection: shuffle(data.flat()) }));
+  }, []);
 
   useEffect(() => {
     const countPerPage = 20;
