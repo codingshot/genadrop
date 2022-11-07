@@ -122,7 +122,7 @@ export const getGraphCollections = async (collections) => {
         collectionObj.description = collection?.description;
         collectionObj.isListed = collection?.isListed ? collection?.isListed : false;
         collectionObj.nfts = collection?.nfts;
-        collectionObj.createdAt = Number(collection?.nfts?.[0].createdAtTimestamp);
+        collectionObj.createdAt = new Date(Number(collection?.nfts?.[0].createdAtTimestamp) * 1000);
         collectionObj.transactions = collection?.nfts?.transactions;
         resolve(collectionObj);
       } catch (err) {
@@ -554,6 +554,7 @@ export const getSingleGraphNfts = async (nfts) => {
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
+          nftObj.createdAt = new Date(Number(NFT?.createdAtTimestamp) * 1000);
           nftObj.ipfs_data = data;
           nftObj.collection_contract = NFT?.id?.split(NFT?.tokenID)[0];
           nftObj.contractAddress = NFT?.id?.split(NFT?.tokenID)[0];
@@ -644,6 +645,7 @@ export const fetchNearSingleNfts = async (nfts) => {
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
+          nftObj.createdAt = new Date(Number(NFT?.createdAtTimestamp) * 1000);
           nftObj.ipfs_data = data;
           nftObj.collection_contract = NFT?.id?.split(NFT?.tokenID)[0];
           nftObj.contractAddress = NFT?.id?.split(NFT?.tokenID)[0];

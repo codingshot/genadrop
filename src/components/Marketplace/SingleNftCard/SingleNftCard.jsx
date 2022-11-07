@@ -88,7 +88,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
           ) : (
             <div className={classes.tag}>1 of 1</div>
           )}
-          <img className={classes.chain} src={supportedChains[chain].icon} alt="" />
+          <img className={classes.chain} src={supportedChains[chain]?.icon} alt="" />
         </div>
         <div className={classes.name}>{name}</div>
         <div className={classes.owner}>{breakAddress(owner)}</div>

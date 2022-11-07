@@ -15,7 +15,7 @@ export const MarketplaceView = ({ footerPrpops }) => {
         <div className={classes.priceLabel}>Price</div>
         <div className={classes.amount}>
           <span className={classes.accent}>
-            {formattedNumber(Number(price), 4)} {supportedChains[chain].symbol}
+            {formattedNumber(Number(price), 4)} {supportedChains[chain]?.symbol}
           </span>
           <span>{`($${formattedNumber(usdValue, 4)})`}</span>
         </div>

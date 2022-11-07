@@ -145,20 +145,24 @@ export const shuffle = (array) => {
 export const getCollectionsByDate = ({ collections, date }) => {
   if (date === 0) return collections;
 
-  const getDiff = (createdDate) => {
-    const now = new Date();
-    const cDate = new Date(createdDate * 1000);
-    const diff = (now.getTime() - cDate.getTime()) / (1000 * 3600 * 24);
-
-    if (diff <= date) return true;
-    return false;
-  };
+  const currentDate = new Date();
+  const currentDateTime = currentDate.getTime();
+  const last30DaysDate = new Date(currentDate.setDate(currentDate.getDate() - date));
+  const last30DaysDateTime = last30DaysDate.getTime();
 
   return collections.filter((c) => {
-    if (typeof c.createdAt === "object") {
-      return getDiff(c.createdAt.seconds);
+    let newDate;
+    if (c?.createdAt?.seconds) {
+      newDate = c.createdAt.seconds;
+    } else {
+      newDate = c.createdAt;
     }
-    return getDiff(c.createdAt);
+
+    const elementDateTime = new Date(newDate).getTime();
+    if (elementDateTime <= currentDateTime && elementDateTime > last30DaysDateTime) {
+      return true;
+    }
+    return false;
   });
 };
 
