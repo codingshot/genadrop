@@ -104,16 +104,6 @@ const AllNfts = () => {
   }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
 
   useEffect(() => {
-    // const newNfts = shuffle([...collections, ...singles]);
-    // newNfts
-    //   .filter((chainId) => chainId.chain !== 4160)
-    //   .sort((a, b) => {
-    //     if (!a.createdAt || !b.createAt) return a - b; // this code line is because 1of1 nfts do not yet have createAt properties
-    //     if (typeof a.createdAt === "object") {
-    //       return a.createdAt.seconds - b.createdAt.seconds;
-    //     }
-    //     return a.createdAt - b.createdAt;
-    //   });
     const sorted = [...collections, ...singles]
       .filter((chainId) => chainId.chain !== 4160)
       .sort((a, b) => moment(b.createdAt).diff(a.createdAt));
