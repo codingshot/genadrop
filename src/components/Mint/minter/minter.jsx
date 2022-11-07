@@ -439,7 +439,7 @@ const Minter = () => {
     }
   };
   // select category
-  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic"];
+  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic", "Audio", "Video"];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
   const audioExtensions = ["mp3", "aac", "wav"];
   const videoExtensions = ["mp4", "m4v", "mov", "mkv", "avi", "webm", "flv"];
