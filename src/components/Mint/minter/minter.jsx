@@ -231,14 +231,14 @@ const Minter = () => {
 
   const setMint = () => {
     // Add location attribute
-    /*  if (showLocation && location !== "") {
+    if (showLocation && location !== "") {
       handleSetState({
         attributes: {
           ...attributes,
           [Date.now()]: location,
         },
       });
-    } */
+    }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
@@ -455,7 +455,7 @@ const Minter = () => {
 
   // *************** GET CURRENT LOCATION: START ***************
 
-  /* const options = {
+  const options = {
     enableHighAccuracy: true,
     timeout: 50000,
     maximumAge: 0,
@@ -479,7 +479,7 @@ const Minter = () => {
         .catch((err) => console.log(err));
     }
   }
- function error(err) {
+  function error(err) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
 
     const input = document.getElementById("location");
@@ -534,7 +534,7 @@ const Minter = () => {
 
   const regexp = /android|iphone|kindle|ipad/i;
 
-  const isMobileDevice = regexp.test(details); */
+  const isMobileDevice = regexp.test(details);
 
   // *************** GET CURRENT LOCATION: END ***************
 
@@ -843,7 +843,7 @@ const Minter = () => {
 
                   {/* *************** TOGGLE LOCATION: START *************** */}
 
-                  {/*  {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
+                  {(category === "Vibe" || category === "Sesh") && file?.length === 1 && (
                     <div className={classes.inputWrapper}>
                       <div className={classes.toggleTitle}>
                         <div className={classes.receiverAddress}>
@@ -879,7 +879,7 @@ const Minter = () => {
                         </div>
                       </div>
                     </div>
-                  )} */}
+                  )}
 
                   {/* *************** TOGGLE LOCATION: END *************** */}
 
