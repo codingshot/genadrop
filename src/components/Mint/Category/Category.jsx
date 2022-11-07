@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import cards from "./Category-script";
 import classes from "./Category.module.css";
 
-const Category = ({ category, file }) => {
+const Category = ({ category, file, params }) => {
   return (
     <div className={classes.container}>
       {cards.map((card) => (
@@ -13,7 +13,13 @@ const Category = ({ category, file }) => {
           className={`${classes.card} ${
             card.value === category ||
             (card.value === "collection" && file?.length > 1) ||
-            (card.value === "Art" && file?.length === 1 && !category)
+            (card.value === "audio" && params.mintId === "Audio File" && !category) ||
+            (card.value === "video" && params.mintId === "Video File" && !category) ||
+            (card.value === "Art" &&
+              file?.length === 1 &&
+              !category &&
+              params.mintId !== "Audio File" &&
+              params.mintId !== "Video File")
               ? classes.active
               : ""
           }`}

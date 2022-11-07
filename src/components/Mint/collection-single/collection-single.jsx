@@ -151,7 +151,7 @@ const CollectionToSingleMinter = () => {
     if (params.mintId === "collection") {
       handleSetState({ acceptedFileType: ".zip" });
     } else if (params.mintId === "Video File") {
-      handleSetState({ acceptedFileType: ".mp4, .mov, .mkv, .avi, .webm, .flv" });
+      handleSetState({ acceptedFileType: ".mp4, .m4v, .mov, .mkv, .avi, .webm, .flv" });
     } else if (params.mintId === "Audio File") {
       handleSetState({ acceptedFileType: ".mp3, .aac, .wav" });
     } else {
@@ -168,9 +168,8 @@ const CollectionToSingleMinter = () => {
 
   useEffect(() => {
     if (!file) return;
-    console.log("changed", { file });
     dispatch(setMinter({ file, fileName, metadata, zip, mintType }));
-    history.push(`${url}/minter`);
+    history.push(`${url}/minter/`);
   }, [file]);
 
   return (
@@ -187,9 +186,15 @@ const CollectionToSingleMinter = () => {
         <header className={classes.headingWrapper}>
           {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
           <p className={classes.description}>
-            Upload a{" "}
+            Upload a{params.mintId === "Audio File" ? "n " : " "}
             <span>
-              {params.mintId === "1of1" ? "image" : "collection"}
+              {params.mintId === "1of1"
+                ? "image"
+                : params.mintId === "collection"
+                ? "collection"
+                : params.mintId === "Video File"
+                ? "Video"
+                : "Audio"}
               <img src={line} alt="" />
             </span>{" "}
             to create NFTs on any of our <br />
