@@ -26,7 +26,10 @@ import {
   getSingleGraphNfts,
   getTransactions,
   getUserGraphNft,
+  getNftCollections,
+  getSingleNfts,
 } from "../../utils";
+import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
@@ -253,6 +256,26 @@ export const getAllNearNfts = async () => {
   if (error) return [];
   const data = await getSingleGraphNfts(graphData?.nfts);
   return data;
+};
+
+export const getAllAlgorandNfts = async (mainnet, dispatch) => {
+  const singleNfts = await fetchAlgoSingle(mainnet);
+  let result = [];
+  if (singleNfts?.length) {
+    const nfts = await getSingleNfts({ mainnet, singleNfts, dispatch });
+    result = Object.values(nfts);
+  }
+  return result;
+};
+
+export const getAllAlgorandCollections = async (mainnet, dispatch) => {
+  const collections = await fetchAlgoCollections(mainnet);
+  let result = [];
+  if (collections?.length) {
+    const collectionNfts = await getNftCollections({ collections, mainnet, dispatch });
+    result = Object.values(collectionNfts);
+  }
+  return result;
 };
 
 export const getAllAvalancheNfts = async () => {

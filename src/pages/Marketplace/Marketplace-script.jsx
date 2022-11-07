@@ -144,7 +144,6 @@ export const shuffle = (array) => {
 
 export const getCollectionsByDate = ({ collections, date }) => {
   if (date === 0) return collections;
-
   const getDiff = (createdDate) => {
     const now = new Date();
     const cDate = new Date(createdDate * 1000);

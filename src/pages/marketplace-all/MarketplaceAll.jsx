@@ -12,6 +12,7 @@ import {
   getCollectionsByDate,
   getCollectionsByChain,
   getCollectionsBySearch,
+  shuffle,
 } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
@@ -20,6 +21,8 @@ import Search from "../../components/Search/Search";
 import supportedChains from "../../utils/supportedChains";
 import { promises } from "form-data";
 import {
+  getAllAlgorandCollections,
+  getAllAlgorandNfts,
   getAllAuroraCollections,
   getAllAuroraNfts,
   getAllAvalancheNfts,
@@ -30,21 +33,7 @@ import {
 } from "../../renderless/fetch-data/fetchUserGraphData";
 
 const MarketplaceAll = () => {
-  const {
-    auroraCollections,
-    algoCollections,
-    polygonCollections,
-    celoCollections,
-    singleAlgoNfts,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleCeloNfts,
-    singleAvaxNfts,
-    singleNearNfts,
-    mainnet,
-  } = useContext(GenContext);
-  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
-  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
+  const { mainnet, dispatch } = useContext(GenContext);
 
   const mountRef = useRef(0);
   const [state, setState] = useState({
@@ -62,7 +51,6 @@ const MarketplaceAll = () => {
   const {
     collections,
     activeDate,
-    searchValue,
     paginate,
     currentPage,
     currentPageValue,
@@ -74,6 +62,20 @@ const MarketplaceAll = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
+
+  useEffect(() => {
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraCollections(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllPolygonCollections(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+      getAllAlgorandNfts(mainnet, dispatch),
+      getAllAlgorandCollections(mainnet, dispatch),
+    ]).then((data) => handleSetState({ collections: shuffle(data.flat()), filteredCollection: shuffle(data.flat()) }));
+  }, []);
 
   // Pagination
   const handlePrev = () => {
@@ -94,12 +96,9 @@ const MarketplaceAll = () => {
 
   // Date Filter
   const handleDateSort = (date) => {
-    let result;
-
     const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
 
-    result = getCollectionsByDate({ collections: tempCollection, date });
-
+    const result = getCollectionsByDate({ collections: tempCollection, date });
     handleSetState({ activeDate: date, filteredCollection: result });
   };
 
@@ -113,11 +112,7 @@ const MarketplaceAll = () => {
 
   const handleFilter = async ({ type, value }) => {
     let filterCollection = [];
-    if (activeDate) {
-      filterCollection = filteredCollection;
-    } else {
-      filterCollection = collections;
-    }
+    filterCollection = filteredCollection;
     if (type === "sort") {
       const result = sortBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
@@ -126,46 +121,6 @@ const MarketplaceAll = () => {
       handleSetState({ filteredCollection: result });
     }
   };
-
-  useEffect(() => {
-    const allNFTs = [
-      ...(auroraCollections || []),
-      ...(algoCollectionsArr || []),
-      ...(polygonCollections || []),
-      ...(celoCollections || []),
-      ...(singleAlgoNftsArr || []),
-      ...(singleAuroraNfts || []),
-      ...(singlePolygonNfts || []),
-      ...(singleCeloNfts || []),
-      ...(singleNearNfts || []),
-      ...(singleAvaxNfts || []),
-    ];
-
-    handleSetState({ collections: allNFTs, filteredCollection: allNFTs });
-  }, [
-    auroraCollections,
-    algoCollections,
-    polygonCollections,
-    celoCollections,
-    singleAlgoNfts,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleCeloNfts,
-    singleCeloNfts,
-    singleNearNfts,
-  ]);
-
-  useEffect(() => {
-    Promise.all([
-      getAllCeloNfts(),
-      getAllAuroraCollections(),
-      getAllAuroraNfts(),
-      getAllAvalancheNfts(),
-      getAllPolygonCollections(),
-      getAllPolygonNfts(),
-      getAllNearNfts(),
-    ]).then((data) => console.log(data));
-  }, []);
 
   useEffect(() => {
     const countPerPage = 20;
