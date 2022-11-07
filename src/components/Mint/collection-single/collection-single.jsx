@@ -150,6 +150,10 @@ const CollectionToSingleMinter = () => {
   useEffect(() => {
     if (params.mintId === "collection") {
       handleSetState({ acceptedFileType: ".zip" });
+    } else if (params.mintId === "Video File") {
+      handleSetState({ acceptedFileType: ".mp4, .mov, .mkv, .avi, .webm, .flv" });
+    } else if (params.mintId === "Audio File") {
+      handleSetState({ acceptedFileType: ".mp3, .aac, .wav" });
     } else {
       handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .gif" });
     }
@@ -225,11 +229,11 @@ const CollectionToSingleMinter = () => {
               Browse files
             </button>
           </div>
-        ) : mintType === "1of1" ? (
+        ) : (
           <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
             {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
             <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
-            <h3 className={classes.title}> Mint 1 of 1 </h3>
+            <h3 className={classes.title}> Mint {params.mintId} </h3>
             {/* <Link className={classes.takePic} to="/mint/camera">
               <div>
                 <CameraIcon />
@@ -246,12 +250,10 @@ const CollectionToSingleMinter = () => {
             </button>
             <div className={classes.explanatoryText}>
               <div>Drag and Drop your image file here</div>
-              <p>We support JPG, PNG, webp files and deploy to Celo, Algorand, Near, and Polygon </p>
+              <p>We support {acceptedFileType} files and deploy to Celo, Algorand, Near, and Polygon </p>
               <p>Max file size: 20mb </p>
             </div>
           </div>
-        ) : (
-          <div className={classes.cardPlaceholder} />
         )}
 
         <input

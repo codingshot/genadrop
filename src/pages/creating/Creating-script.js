@@ -79,15 +79,15 @@ const cards = [
     title: "Video",
     description: "Mint your favorite videos on chain",
     icon: <Video />,
-    url: "/mint/video",
-    comingSoon: true,
+    url: "/mint/Video File",
+    comingSoon: "",
   },
   {
     title: "Audio",
     description: "Mint your songs/audios on chain",
     icon: <Audio />,
-    url: "/mint/audio",
-    comingSoon: true,
+    url: "/mint/Audio File",
+    comingSoon: "",
   },
 ];
 export default cards;
