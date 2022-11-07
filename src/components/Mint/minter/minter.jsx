@@ -179,7 +179,7 @@ const Minter = () => {
       });
     }
     return null;
-  }, [chain]);
+  }, [chain, showLocation]);
 
   const handleAddAttribute = () => {
     handleSetState({
@@ -503,24 +503,18 @@ const Minter = () => {
 
   const isMobileDevice = regexp.test(details);
 
-  const enableAccess = () => {
-    if (isMobileDevice) {
-      const input = document.getElementById("location");
-      input.click();
-
-      handleSetState({
-        showLocation: false,
-      });
+  const accessDenied = () => {
+    if (!isMobileDevice && !showLocation) {
       dispatch(
         setNotification({
           message: " Mobile browser location not support yet",
           type: "warning",
         })
       );
-
-      return;
     }
+  };
 
+  const enableAccess = () => {
     if (!navigator.geolocation) {
       dispatch(
         setNotification({
@@ -531,7 +525,6 @@ const Minter = () => {
       return;
     }
     if (location !== "") return;
-
     getLocation();
   };
 
@@ -849,7 +842,10 @@ const Minter = () => {
                           <div className={classes.toggleTitle}>
                             <label>Location</label>
                             <div className={classes.toggler}>
-                              <label className={classes.switch}>
+                              <label
+                                className={`${classes.switch} ${isMobileDevice && classes.noClick}`}
+                                onClick={() => (isMobileDevice ? accessDenied() : "")}
+                              >
                                 <input
                                   id="location"
                                   type="checkbox"

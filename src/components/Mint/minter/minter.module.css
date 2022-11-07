@@ -526,6 +526,15 @@ div.showPreview > span {
   margin-left: 0.625em;
 }
 
+.noClick {
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.noClick:hover {
+  cursor: not-allowed;
+}
+
 .mintForm {
   width: 100%;
   display: flex;
