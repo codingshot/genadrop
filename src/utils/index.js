@@ -51,6 +51,7 @@ function fetchNFT(NFT, mainnet) {
       nftObj.sold = NFT.sold;
       nftObj.dateSold = NFT.dateSold;
       nftObj.isListed = NFT.isListed;
+      nftObj.manager = NFT.manager;
       nftObj.description = NFT.description;
       nftObj.mainnet = NFT.mainnet;
       const { params } = await getAlgoData(mainnet, NFT.id);
