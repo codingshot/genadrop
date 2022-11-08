@@ -1807,7 +1807,7 @@ export async function PurchaseNft(buyProps) {
   console.log("final tx", tx.txId);
 
   dispatch(setLoader(""));
-  await write.recordTransaction(nftDetails.Id, "Sale", account, nftDetails.owner, nftDetails.price, tx.txId);
+  await write.writeNftSale(nftDetails.Id, nftDetails.price, account, tx.txId, nftDetails.owner);
   return mainnet ? `https://algoexplorer.io/tx/${tx.txId}` : `https://testnet.algoexplorer.io/tx/${tx.txId}`;
 }
 
