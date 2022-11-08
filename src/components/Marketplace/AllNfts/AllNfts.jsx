@@ -79,6 +79,15 @@ const AllNfts = () => {
     }
   };
 
+  const haandleTabActive = (active) => {
+    handleSetState({
+      activeType: active,
+    });
+    let result = getCollectionsByChain({ collections: type[active], chain: activeChain, mainnet });
+    result = getCollectionsByCategory({ collections: result, category: activeCategory });
+    handleSetState({ filteredCollection: result });
+  };
+
   useEffect(() => {
     let collections = [
       ...(auroraCollections || []),
@@ -108,12 +117,12 @@ const AllNfts = () => {
       .filter((chainId) => chainId.chain !== 4160)
       .sort((a, b) => moment(b.createdAt).diff(a.createdAt));
     handleSetState({ newest: sorted });
-  }, [singles, collections]);
+  }, [singles, collections, newest, activeType]);
 
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
     handleSetState({ filteredCollection: result || [] });
-  }, [singles, collections]);
+  }, [singles, collections, activeType, newest]);
 
   useEffect(() => {
     dispatch(setActiveCollection(null));
@@ -122,15 +131,6 @@ const AllNfts = () => {
   const categoryFilter = (category) => {
     handleSetState({ activeCategory: category });
     const result = getCollectionsByCategory({ collections: type[activeType], category });
-    handleSetState({ filteredCollection: result || [] });
-  };
-
-  const haandleTabActive = (active) => {
-    handleSetState({
-      activeType: active,
-    });
-    let result = getCollectionsByChain({ collections: type[active], chain: activeChain, mainnet });
-    result = getCollectionsByCategory({ collections: result, category: activeCategory });
     handleSetState({ filteredCollection: result || [] });
   };
 
@@ -171,13 +171,13 @@ const AllNfts = () => {
           </div>
           <ChainDropdown onChainFilter={handleChainChange} />
         </section>
-        {filteredCollection.length ? (
+        {collections?.length ? (
           <section className={classes.nfts}>
             {activeType === "T1" ? (
               filteredCollection
-                .slice(0, 16)
-                .map((el, idx) =>
-                  !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
+                ?.slice(0, 16)
+                ?.map((el, idx) =>
+                  !el?.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
                 )
             ) : activeType === "T2" ? (
               filteredCollection.slice(0, 16).map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
