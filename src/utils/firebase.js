@@ -339,7 +339,7 @@ async function fetchUserBoughtNfts(account) {
   return filtered;
 }
 
-async function writeNftSale(assetId, price, owner, manager, txId, seller) {
+async function writeNftSale(assetId, price, owner, txId, seller) {
   // console.log("so you wanna list??");
   const updates = {};
   const batch = db.batch();
