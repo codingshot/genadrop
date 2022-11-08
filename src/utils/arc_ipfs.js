@@ -906,14 +906,14 @@ export async function listAlgoNft(nftProps) {
   );
 
   note = enc.encode("rk to sc");
-  const appId = 121257165;
+  const appId = 121305178;
   const rekeyTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: new_acct,
     to: new_acct,
     amount: 0,
     note,
     suggestedParams: params,
-    rekeyTo: "JF3P3D7F4ENSINXI44YGDXBGSASYABJPPDCL6L3WMQYE7OT7SP7X7I5XBI",
+    rekeyTo: "PN5Q5SLJYMX2W5O4SASR76SY6AEZDCN2Q532M3FLUDKEIJ6ROGIBTF7JOY",
   });
 
   const arg_price = Number(price) * 1000000;
@@ -1690,7 +1690,7 @@ export async function PurchaseNft(buyProps) {
     );
     return false;
   }
-  const appId = 121257165;
+  const appId = 121305178;
 
   const optTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
     from: account,
@@ -1722,7 +1722,7 @@ export async function PurchaseNft(buyProps) {
   });
   txns.push(payTax);
 
-  const appOptinTx = algosdk.makeApplicationOptInTxn(account, params, appId);
+  // const appOptinTx = algosdk.makeApplicationOptInTxn(account, params, appId);
 
   const app_args = [new Uint8Array(Buffer.from("buy")), new Uint8Array(Buffer.from(nftDetails.owner))];
 
@@ -1748,7 +1748,7 @@ export async function PurchaseNft(buyProps) {
 
   console.log("txes", appCloseTxn, refundTxn, params)
 
-  const txList = [payTax, paySeller, optTxn, appOptinTx, buyTxn, appCloseTxn, refundTxn]
+  const txList = [payTax, paySeller, optTxn, buyTxn, appCloseTxn, refundTxn]
   const groupedTx = algosdk.assignGroupID(txList);
   const txnsFromManager = [appCloseTxn, refundTxn]
 
@@ -1799,8 +1799,8 @@ export async function PurchaseNft(buyProps) {
 
   const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
   console.log("dcoded", decodedResult)
-  decodedResult[5] = appCloseTxnSigned;
-  decodedResult[6] = refundTxnSigned;
+  decodedResult[4] = appCloseTxnSigned;
+  decodedResult[5] = refundTxnSigned;
   console.log("dcoded 2", decodedResult)
   const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
 
