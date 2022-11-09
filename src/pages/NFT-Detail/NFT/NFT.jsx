@@ -46,7 +46,7 @@ const NFT = ({ nftDetails }) => {
       {nftDetails.ipfs_data.image_mimetype.includes("video") ? (
         <video className={classes.image} src={image_url} alt="" controls />
       ) : nftDetails.ipfs_data.image_mimetype.includes("audio") ? (
-        <audio className={classes.image} src={image_url} alt="" ccontrols />
+        <audio className={classes.image} src={image_url} alt="" controls />
       ) : (
         <img className={classes.image} src={image_url} alt="" />
       )}
