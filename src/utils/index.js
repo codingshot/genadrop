@@ -49,6 +49,7 @@ function fetchNFT(NFT, mainnet) {
       nftObj.buyer = NFT.Buyer;
       nftObj.owner = NFT.owner;
       nftObj.sold = NFT.sold;
+      nftObj.createdAt = NFT?.createdAt;
       nftObj.dateSold = NFT.dateSold;
       nftObj.isListed = NFT.isListed;
       nftObj.manager = NFT.manager;
