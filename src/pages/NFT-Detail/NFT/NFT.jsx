@@ -43,7 +43,14 @@ const NFT = ({ nftDetails }) => {
           </div> */}
         </div>
       </div>
-      <img role="button" onClick={() => setOpen(true)} src={image_url} alt="" />
+      {nftDetails.ipfs_data.image_mimetype.includes("video") ? (
+        <video className={classes.image} src={image_url} alt="" controls />
+      ) : nftDetails.ipfs_data.image_mimetype.includes("audio") ? (
+        <audio className={classes.image} src={image_url} alt="" ccontrols />
+      ) : (
+        <img className={classes.image} src={image_url} alt="" />
+      )}
+      {/* <img role="button" onClick={() => setOpen(true)} src={image_url} alt="" /> */}
       <div className={classes.details}>
         <div className={classes.detail}>
           {owner && (

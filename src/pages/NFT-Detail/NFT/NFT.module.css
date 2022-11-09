@@ -7,7 +7,9 @@
   border-radius: 0.7em;
 }
 
-.container > img {
+.container > img,
+.container > video,
+.container > audio {
   width: 100%;
   max-width: 36em;
   object-fit: cover;
