@@ -7,6 +7,8 @@ import { ReactComponent as Sesh } from "../../../assets/create/sesh-icon.svg";
 import { ReactComponent as Shorts } from "../../../assets/create/shorts-icon.svg";
 import { ReactComponent as Art } from "../../../assets/create/art-icon.svg";
 import { ReactComponent as Doubletake } from "../../../assets/create/bereal-icon.svg";
+import { ReactComponent as Audio } from "../../../assets/create/MusicNotes.svg";
+import { ReactComponent as Video } from "../../../assets/create/MintVideos.svg";
 
 const cards = [
   {
@@ -57,6 +59,34 @@ const cards = [
     icon: <Shorts />,
     value: "Shorts",
     url: "/mint/video",
+  },
+  //  {
+  //   title: "AI",
+  //   description: "Create Digital art with AI",
+  //   icon: <Ai />,
+  //   url: "/mint/ai",
+
+  // },
+  // {
+  //   title: "Tweets",
+  //   description: "Mint your favorite tweets on chain",
+  //   icon: <Tweets />,
+  //   url: "/mint/tweet",
+
+  // },
+  {
+    title: "Video Art",
+    description: "Mint your favorite videos on chain",
+    icon: <Video />,
+    value: "video",
+    url: "/mint/Video File",
+  },
+  {
+    title: "Audio Art",
+    description: "Mint your songs/audios on chain",
+    icon: <Audio />,
+    value: "audio",
+    url: "/mint/Audio File",
   },
 ];
 export default cards;
