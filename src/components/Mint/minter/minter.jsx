@@ -587,23 +587,9 @@ const Minter = () => {
                           />
                         ))
                     ) : videoExtensions.includes(fileExtension) ? (
-                      <video
-                        src={URL.createObjectURL(file[0])}
-                        alt=""
-                        className={classes.singleImage}
-                        autoPlay
-                        loop
-                        // controls
-                        muted
-                      />
+                      <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} controls />
                     ) : audioExtensions.includes(fileExtension) ? (
-                      <audio
-                        src={URL.createObjectURL(file[0])}
-                        className={classes.singleImage}
-                        controls
-                        autoPlay
-                        muted
-                      />
+                      <audio src={URL.createObjectURL(file[0])} className={classes.singleImage} controls muted />
                     ) : (
                       <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
                     ))}
