@@ -37,6 +37,7 @@ const Deals = ({ nftDetails }) => {
     setUsdValue(Number(value) * Number(price));
   };
 
+
   useEffect(() => {
     getUsdValue();
   }, [priceFeed]);

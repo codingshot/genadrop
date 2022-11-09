@@ -62,6 +62,20 @@ const cards = [
     comingSoon: "",
   },
   {
+    title: "Video",
+    description: "Mint your favorite videos on chain",
+    icon: <Video />,
+    url: "/mint/Video File",
+    comingSoon: "",
+  },
+  {
+    title: "Audio",
+    description: "Mint your songs/audios on chain",
+    icon: <Audio />,
+    url: "/mint/Audio File",
+    comingSoon: "",
+  },
+  {
     title: "AI",
     description: "Create Digital art with AI",
     icon: <Ai />,
@@ -73,20 +87,6 @@ const cards = [
     description: "Mint your favorite tweets on chain",
     icon: <Tweets />,
     url: "/mint/tweet",
-    comingSoon: true,
-  },
-  {
-    title: "Video",
-    description: "Mint your favorite videos on chain",
-    icon: <Video />,
-    url: "/mint/video",
-    comingSoon: true,
-  },
-  {
-    title: "Audio",
-    description: "Mint your songs/audios on chain",
-    icon: <Audio />,
-    url: "/mint/audio",
     comingSoon: true,
   },
 ];

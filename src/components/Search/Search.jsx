@@ -140,7 +140,14 @@ const Search = ({ searchPlaceholder, type }) => {
             {suggestions && suggestions.length ? (
               suggestions.map((suggestion) => (
                 <div onClick={() => handleSearch(suggestion)} key={suggestion.Id} className={classes.suggestion}>
-                  <img className={classes.image} src={suggestion.image_url} alt="" />
+                  {/* <img className={classes.image} src={suggestion.image_url} alt="" /> */}
+                  {suggestion.ipfs_data.image_mimetype.includes("video") ? (
+                    <video className={classes.image} src={image_url} alt="" />
+                  ) : suggestion.ipfs_data.image_mimetype.includes("audio") ? (
+                    <audio className={classes.image} src={image_url} alt="" />
+                  ) : (
+                    <img className={classes.image} src={image_url} alt="" />
+                  )}
                   <div className={classes.content}>
                     <div className={classes.name}>{getHighlightedText(suggestion.name, value)}</div>
                     <div className={classes.description}>

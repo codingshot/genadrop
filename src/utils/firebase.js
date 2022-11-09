@@ -174,6 +174,27 @@ async function writeNft(owner, collection, assetId, price, sold, buyer, dateSold
   return true;
 }
 
+async function writeListNft(assetId, price, owner, manager, txId, list) {
+  const updates = {};
+  updates[assetId] = {
+    id: assetId,
+    isListed: !!list,
+    price,
+    manager,
+  };
+  db.collection("nfts")
+    .doc(`${owner}`)
+    .set(
+      {
+        ...updates,
+      },
+      { merge: true }
+    );
+  await recordTransaction(assetId, "Listing", owner, null, null, txId);
+
+  return true;
+}
+
 // async function readData() {
 //   const dbRef = ref(getDatabase());
 //   await get(child(dbRef, 'list'))
@@ -318,20 +339,46 @@ async function fetchUserBoughtNfts(account) {
   return filtered;
 }
 
-async function listNft(assetId, price, owner) {
+async function writeNftSale(assetId, price, owner, txId, seller) {
+  // console.log("so you wanna list??");
+  const updates = {};
+  const batch = db.batch();
+
+  updates[assetId] = {
+    updatedAt: new Date(),
+    dateSold: new Date(),
+    sold: true,
+    isListed: false,
+    Buyer: owner,
+    owner,
+  };
+
+  const transactionRecords = {};
+  transactionRecords[nanoid()] = {
+    type: "Sale",
+    buyer: owner,
+    id: assetId,
+    txDate: new Date(),
+    seller,
+    price,
+    txId,
+  };
+  try {
+    const nftRef = await db.collection("nfts").where(`${assetId}.id`, "==", assetId).get();
+    console.log(nftRef);
+    const recordRef = db.collection("transactionsHistory").doc(`${assetId}`);
+    batch.set(nftRef.docs[0].ref, updates, { merge: true });
+    batch.set(recordRef, transactionRecords, { merge: true });
+    await batch.commit();
+    return { message: "Nft has been relisted" };
+  } catch (err) {
+    console.log(err);
+    return { message: "an error occured while listing nft" };
+  }
+}
+
+async function listNft(assetId, price, owner, manager, txId, list) {
   console.log("so you wanna list??");
-  // let asset = await readSIngleUserNft(prevOwner, assetId);
-  // if (asset.buyer !== newOwner) {
-  //   return { message: "you do not own this nft" };
-  // }
-  // const nftRef = db.collection("nfts").where(`${assetId}.id`, "==", assetId).get()
-  // const res = [];
-  // (await nftRef).forEach((docs) => {
-  //   res.push(...Object.values(docs.data()));
-  // });
-  // const rep = res.filter((asset) => asset.id === assetId);
-  // console.log("rev fighter", res, rep);
-  // return;
   const updates = {};
   const batch = db.batch();
 
@@ -340,6 +387,7 @@ async function listNft(assetId, price, owner) {
     updatedAt: new Date(),
     sold: false,
     isListed: true,
+    manager,
   };
 
   const transactionRecords = {};
@@ -348,7 +396,7 @@ async function listNft(assetId, price, owner) {
     buyer: owner,
     id: assetId,
     price,
-    txId: "",
+    txId,
     txDate: new Date(),
   };
   try {
@@ -374,11 +422,13 @@ export {
   fetchUserNfts,
   fetchUserBoughtNfts,
   writeNft,
+  writeListNft,
   recordTransaction,
   readNftTransaction,
   readUserProfile,
   writeUserProfile,
   listNft,
+  writeNftSale,
   fetchUserCreatedNfts,
   readUsers,
 };
