@@ -906,14 +906,16 @@ export async function listAlgoNft(nftProps) {
   );
 
   note = enc.encode("rk to sc");
-  const appId = 121305178;
+  const appId = mainnet ? 939259299 : 121305178;
   const rekeyTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: new_acct,
     to: new_acct,
     amount: 0,
     note,
     suggestedParams: params,
-    rekeyTo: "PN5Q5SLJYMX2W5O4SASR76SY6AEZDCN2Q532M3FLUDKEIJ6ROGIBTF7JOY",
+    rekeyTo: mainnet
+      ? "26DE4TXZOPFLBAJYGTOXCFTXQEUJ5ZQO6KDNZKIH2YOGLALP2QMS6JQX3I"
+      : "PN5Q5SLJYMX2W5O4SASR76SY6AEZDCN2Q532M3FLUDKEIJ6ROGIBTF7JOY",
   });
 
   const arg_price = Number(price) * 1000000;
@@ -1690,7 +1692,7 @@ export async function PurchaseNft(buyProps) {
     );
     return false;
   }
-  const appId = 121305178;
+  const appId = mainnet ? 939259299 : 121305178
 
   const optTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
     from: account,
