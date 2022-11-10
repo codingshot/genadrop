@@ -5,6 +5,8 @@ import polygonIcon from "../assets/icon-polygon.svg";
 import nearIcon from "../assets/icon-near.svg";
 // import solanaIcon from "../assets/icon-solana.svg";
 import avalancheIcon from "../assets/icon-avalanche.svg";
+import arbitrumIcon from "../assets/arbitrum.svg";
+import optimismIcon from "../assets/optism.svg";
 import { addChain, switchChain } from "./chainConnect";
 
 const supportedChains = {
@@ -116,18 +118,6 @@ const supportedChains = {
     coinGeckoLabel: "celo",
     comingSoon: false,
   },
-  // 62320: {
-  //   label: "Celo Testnet (Baklava)",
-  //   chain: "Celo",
-  //   icon: celoIcon,
-  //   symbol: "CGLD",
-  //   networkId: 62320,
-  //   add: addChain,
-  //   isMainnet: false,
-  //   switch: switchChain,
-  //   coinGeckoLabel: "celo",
-  //   comingSoon: true,
-  // },
   1313161555: {
     id: "ethereum",
     label: "Aurora Testnet",
@@ -170,6 +160,52 @@ const supportedChains = {
     isMainnet: false,
     switch: switchChain,
     coinGeckoLabel: "avalanche-2",
+  },
+
+  421611: {
+    id: "arbitrum",
+    label: "Arbitrum Testnet",
+    chain: "Arbitrum",
+    icon: arbitrumIcon,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
+    symbol: "ETH",
+    networkId: 421611,
+    explorer: "https://rinkeby-explorer.arbitrum.io/#/",
+    add: addChain,
+    isMainnet: false,
+    switch: switchChain,
+    coinGeckoLabel: "ethereum",
+    comingSoon: true,
+  },
+  42161: {
+    id: "arbitrum",
+    label: "Arbitrum",
+    chain: "Arbitrum",
+    icon: arbitrumIcon,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
+    symbol: "ETH",
+    networkId: 42161,
+    explorer: "https://arbiscan.io/",
+    add: addChain,
+    isMainnet: true,
+    switch: switchChain,
+    coinGeckoLabel: "ethereum",
+    comingSoon: true,
+  },
+  10: {
+    id: "optimism",
+    label: "Optimism",
+    chain: "Optimism",
+    icon: optimismIcon,
+    livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
+    symbol: "OP",
+    networkId: 10,
+    explorer: "https://optimistic.etherscan.io/",
+    add: addChain,
+    isMainnet: true,
+    switch: switchChain,
+    coinGeckoLabel: "optimism",
+    comingSoon: true,
   },
 
   // "add-avalanche-t-id": {
