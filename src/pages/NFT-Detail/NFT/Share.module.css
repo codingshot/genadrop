@@ -79,8 +79,7 @@
 
 @media screen and (max-width: 768px) {
   .container {
-    margin-top: 3em;
-    margin-left: 14em;
+    margin-left: -2.2em;
   }
   .point span {
     display: none;
@@ -90,6 +89,9 @@
     min-width: 0;
   }
 
+  .wrapper {
+    padding: 0.5em;
+  }
   .shareIcon {
     margin-right: 0;
   }
