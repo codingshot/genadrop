@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import moment from "moment/moment";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -12,7 +13,6 @@ import {
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
-import moment from "moment/moment";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -55,6 +55,8 @@ const AllNfts = () => {
     "Painting",
     "Illustration",
     "3D",
+    // "Video",
+    // "Audio",
   ];
   const type = {
     T1: newest,
