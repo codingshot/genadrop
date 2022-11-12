@@ -49,6 +49,7 @@ function fetchNFT(NFT, mainnet) {
       nftObj.buyer = NFT.Buyer;
       nftObj.owner = NFT.owner;
       nftObj.sold = NFT.sold;
+      nftObj.createdAt = new Date(NFT.createdAt.seconds * 1000);
       nftObj.dateSold = NFT.dateSold;
       nftObj.isListed = NFT.isListed;
       nftObj.manager = NFT.manager;
@@ -84,7 +85,7 @@ function fetchCollection(collection, mainnet) {
       collectionObj.owner = collection.owner;
       collectionObj.description = collection.description;
       collectionObj.url = collection.url;
-      collectionObj.createdAt = collection?.createdAt;
+      collectionObj.createdAt = new Date(collection?.createdAt?.seconds * 1000);
       const urlIPF = collection.url.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
       const { data } = await axios.get(urlIPF);
       collectionObj.nfts = data;
