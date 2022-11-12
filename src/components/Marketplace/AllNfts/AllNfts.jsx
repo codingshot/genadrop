@@ -95,6 +95,7 @@ const AllNfts = () => {
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
+    // console.log(singleAlgoNftsArr);
     const singleData = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
@@ -105,13 +106,10 @@ const AllNfts = () => {
     ];
     const singlesNfts = shuffle(singleData);
     handleSetState({ singles: singlesNfts });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
+  }, [singleAlgoNftsArr, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
 
   useEffect(() => {
     const sorted = [...collections, ...singles].sort((a, b) => {
-      if (typeof a.createdAt === "object") {
-        moment(new Date(b.createdAt.seconds)).diff(new Date(a.createdAt.seconds));
-      }
       return moment(new Date(b.createdAt)).diff(new Date(a.createdAt));
     });
     handleSetState({ newest: sorted });

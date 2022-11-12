@@ -22,7 +22,6 @@ import {
   getNftCollections,
   getSingleNfts,
   getSingleGraphNfts,
-  getCeloGraphCollections,
   fetchNearSingleNfts,
 } from "../../utils";
 import {
@@ -34,15 +33,7 @@ import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_NEAR_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
-import {
-  auroraClient,
-  avalancheClient,
-  celoClient,
-  graphQLClient,
-  graphQLClientPolygon,
-  nearClient,
-  polygonClient,
-} from "../../utils/graphqlClient";
+import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   parseAlgoCollection,
