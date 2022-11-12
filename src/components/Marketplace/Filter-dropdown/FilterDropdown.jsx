@@ -53,7 +53,6 @@ const FilterDropdown = ({ handleFilter, collection }) => {
   };
 
   const handleApply = () => {
-    console.log(filter.minPrice);
     if (filter.maxPrice < filter.minPrice) return;
     handleFilter({
       type: "range",

@@ -93,7 +93,6 @@ export const rangeBy = async ({ value, collections }) => {
     collections.map(async (col) => {
       const rate = await getFormatedPrice(supportedChains[col.chain].coinGeckoLabel || supportedChains[col.chain].id);
       const price = Number(rate) * Number(col.price);
-      console.log(price >= value.minPrice && price <= value.maxPrice);
       return price >= value.minPrice && price <= value.maxPrice ? col : null;
     })
   );
