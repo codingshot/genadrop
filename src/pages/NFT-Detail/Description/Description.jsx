@@ -12,7 +12,7 @@ const Description = ({ nftDetails }) => {
     <div className={classes.container}>
       <div className={classes.heading}>Description</div>
       <div className={classes.content}>
-        {showMore || description.length <= 210 ? (
+        {showMore || description?.length <= 210 ? (
           <div>{description ? description : "No description available."}</div>
         ) : (
           <div>

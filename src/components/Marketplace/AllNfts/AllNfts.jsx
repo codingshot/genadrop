@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import moment from "moment/moment";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -9,10 +10,10 @@ import {
   getCollectionsByCategory,
   getCollectionsByChain,
   shuffle,
+  sortBy,
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
-import moment from "moment/moment";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -55,6 +56,8 @@ const AllNfts = () => {
     "Painting",
     "Illustration",
     "3D",
+    // "Video",
+    // "Audio",
   ];
   const type = {
     T1: newest,
@@ -100,6 +103,7 @@ const AllNfts = () => {
   }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
+    // console.log(singleAlgoNftsArr);
     const singleData = [
       ...(singleAlgoNftsArr || []),
       ...(singleAuroraNfts || []),
@@ -110,14 +114,15 @@ const AllNfts = () => {
     ];
     const singlesNfts = shuffle(singleData);
     handleSetState({ singles: singlesNfts });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
+  }, [singleAlgoNftsArr, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
 
   useEffect(() => {
-    const sorted = [...collections, ...singles]
-      .filter((chainId) => chainId.chain !== 4160)
-      .sort((a, b) => moment(b.createdAt).diff(a.createdAt));
-    handleSetState({ newest: sorted });
-  }, [singles, collections, newest, activeType]);
+    const newestNfts = sortBy({ collections: [...collections, ...singles], value: "newest" });
+    // const sorted = [...collections, ...singles].sort((a, b) => {
+    //   return moment(new Date(b.createdAt)).diff(new Date(a.createdAt));
+    // });
+    handleSetState({ newest: newestNfts });
+  }, [singles, collections]);
 
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
