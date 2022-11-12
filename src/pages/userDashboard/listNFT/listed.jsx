@@ -84,7 +84,6 @@ const Listed = () => {
         };
         const algoNft = await getAlgoData({ algoProps });
         const nft = algoNft?.nftDetails;
-        console.log(nft);
         if (!nft) history.push("/");
         handleSetState({ nftDetails: nft, isLoading: false });
       }

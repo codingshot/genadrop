@@ -1,3 +1,4 @@
+import moment from "moment";
 import { getFormatedPrice } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 
@@ -7,52 +8,20 @@ const filterByListed = (collections, account) => {
 };
 
 const filterByNOtListed = (collections, account) => {
-  return collections.filter(({ price, owner }) => !price && owner !== account);
+  return collections.filter(({ isListed }) => !isListed);
 };
 
 const filterByOnAuchtion = (collections) => {
-  return collections.filter(({ price, sold }) => price && !sold);
+  return collections.filter(({ isListed }) => isListed);
 };
 
 const sortByDateAscending = (col) => {
-  const collection = [...col].sort((a, b) => {
-    if (a.createdAt && b.createdAt) {
-      if (typeof b.createdAt === "object" && typeof a.createdAt === "object") {
-        return b.createdAt.seconds - a.createdAt.seconds;
-      }
-      if (typeof b.createdAt !== "object" && typeof a.createdAt !== "object") {
-        return b.createdAt - a.createdAt;
-      }
-      if (typeof b.createdAt === "object" && typeof a.createdAt !== "object") {
-        return b.createdAt.seconds - a.createdAt;
-      }
-      if (typeof b.createdAt !== "object" && typeof a.createdAt === "object") {
-        return b.createdAt - a.createdAt.seconds;
-      }
-    }
-  });
-
+  const collection = [...col].sort((a, b) => moment(new Date(b.createdAt)).diff(new Date(a.createdAt)));
   return collection;
 };
 
 const sortByDateDescending = (col) => {
-  const collection = [...col].sort((a, b) => {
-    if (a.createdAt && b.createdAt) {
-      if (typeof a.createdAt === "object" && typeof b.createdAt === "object") {
-        return a.createdAt.seconds - b.createdAt.seconds;
-      }
-      if (typeof a.createdAt !== "object" && typeof b.createdAt !== "object") {
-        return a.createdAt - b.createdAt;
-      }
-      if (typeof a.createdAt === "object" && typeof b.createdAt !== "object") {
-        return a.createdAt.seconds - b.createdAt;
-      }
-      if (typeof a.createdAt !== "object" && typeof b.createdAt === "object") {
-        return a.createdAt - b.createdAt.seconds;
-      }
-    }
-  });
-
+  const collection = [...col].sort((a, b) => moment(new Date(a.createdAt)).diff(new Date(b.createdAt)));
   return collection;
 };
 
@@ -124,7 +93,6 @@ export const rangeBy = async ({ value, collections }) => {
     collections.map(async (col) => {
       const rate = await getFormatedPrice(supportedChains[col.chain].coinGeckoLabel || supportedChains[col.chain].id);
       const price = Number(rate) * Number(col.price);
-
       return price >= value.minPrice && price <= value.maxPrice ? col : null;
     })
   );
@@ -150,15 +118,15 @@ export const getCollectionsByDate = ({ collections, date }) => {
   const last30DaysDate = new Date(currentDate.setDate(currentDate.getDate() - date));
   const last30DaysDateTime = last30DaysDate.getTime();
 
-  return collections.filter((c) => {
-    let newDate;
-    if (c?.createdAt?.seconds) {
-      newDate = c.createdAt.seconds;
-    } else {
-      newDate = c.createdAt;
-    }
+  return collections.filter((nft) => {
+    // let newDate;
+    // if (c?.createdAt?.seconds) {
+    //   newDate = c.createdAt.seconds;
+    // } else {
+    //   newDate = c.createdAt;
+    // }
 
-    const elementDateTime = new Date(newDate).getTime();
+    const elementDateTime = new Date(nft?.createdAt).getTime();
     if (elementDateTime <= currentDateTime && elementDateTime > last30DaysDateTime) {
       return true;
     }

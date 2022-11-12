@@ -13,6 +13,7 @@ import {
   getCollectionsByChain,
   getCollectionsBySearch,
   shuffle,
+  filterBy,
 } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
@@ -74,7 +75,10 @@ const MarketplaceAll = () => {
       getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
       getAllAlgorandCollections(mainnet, dispatch),
-    ]).then((data) => handleSetState({ collections: shuffle(data.flat()), filteredCollection: shuffle(data.flat()) }));
+    ]).then((data) => {
+      const filteredData = sortBy({ collections: shuffle(data.flat()), value: "newest" });
+      handleSetState({ collections: filteredData, filteredCollection: filteredData });
+    });
   }, []);
 
   // Pagination
@@ -118,6 +122,10 @@ const MarketplaceAll = () => {
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
       const result = await rangeBy({ collections: filterCollection, value });
+      handleSetState({ filteredCollection: result });
+    }
+    if (type === "status") {
+      const result = await filterBy({ collections: filterCollection, value });
       handleSetState({ filteredCollection: result });
     }
   };
