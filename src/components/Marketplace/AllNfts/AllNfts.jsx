@@ -9,6 +9,7 @@ import {
   getCollectionsByCategory,
   getCollectionsByChain,
   shuffle,
+  sortBy,
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
@@ -42,11 +43,7 @@ const AllNfts = () => {
     dispatch,
   } = useContext(GenContext);
 
-  const singleAlgoNftsArr = Object.values(singleAlgoNfts).forEach((data) => {
-    if (typeof data.createdAt === "object") {
-      return data.cr;
-    }
-  });
+  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
   const algoCollectionsArr = Object.values(algoCollections);
   const categories = [
     "All",
@@ -109,10 +106,11 @@ const AllNfts = () => {
   }, [singleAlgoNftsArr, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
 
   useEffect(() => {
-    const sorted = [...collections, ...singles].sort((a, b) => {
-      return moment(new Date(b.createdAt)).diff(new Date(a.createdAt));
-    });
-    handleSetState({ newest: sorted });
+    const newestNfts = sortBy({ collections: [...collections, ...singles], value: "newest" });
+    // const sorted = [...collections, ...singles].sort((a, b) => {
+    //   return moment(new Date(b.createdAt)).diff(new Date(a.createdAt));
+    // });
+    handleSetState({ newest: newestNfts });
   }, [singles, collections]);
 
   useEffect(() => {

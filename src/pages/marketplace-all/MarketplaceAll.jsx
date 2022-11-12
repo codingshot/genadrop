@@ -115,7 +115,6 @@ const MarketplaceAll = () => {
   };
 
   const handleFilter = async ({ type, value }) => {
-    console.log(type);
     let filterCollection = [];
     filterCollection = filteredCollection;
     if (type === "sort") {
