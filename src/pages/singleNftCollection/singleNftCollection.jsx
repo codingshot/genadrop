@@ -35,19 +35,7 @@ import {
 } from "../../renderless/fetch-data/fetchUserGraphData";
 
 const SingleNftCollection = () => {
-  const {
-    singleAlgoNfts,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleCeloNfts,
-    singleNearNfts,
-    mainnet,
-    singleAvaxNfts,
-    account,
-    searchContainer,
-    dispatch,
-  } = useContext(GenContext);
-  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
+  const { mainnet, account, dispatch } = useContext(GenContext);
 
   const mountRef = useRef(null);
   const [state, setState] = useState({
@@ -90,13 +78,13 @@ const SingleNftCollection = () => {
 
   const handleFilter = ({ type, value }) => {
     if (type === "status") {
-      const result = filterBy({ collections, value, account });
+      const result = filterBy({ collections: filteredCollection, value, account });
       handleSetState({ filteredCollection: result });
     } else if (type === "sort") {
-      const result = sortBy({ collections, value });
+      const result = sortBy({ collections: filteredCollection, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      const result = rangeBy({ collections, value });
+      const result = rangeBy({ collections: filteredCollection, value });
       handleSetState({ filteredCollection: result });
     }
   };

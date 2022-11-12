@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import moment from "moment/moment";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -13,7 +14,6 @@ import {
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
-import moment from "moment/moment";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -56,6 +56,8 @@ const AllNfts = () => {
     "Painting",
     "Illustration",
     "3D",
+    // "Video",
+    // "Audio",
   ];
   const type = {
     T1: newest,
@@ -78,6 +80,15 @@ const AllNfts = () => {
     } else if (activeType === "T3") {
       history.push("/marketplace/collections");
     }
+  };
+
+  const haandleTabActive = (active) => {
+    handleSetState({
+      activeType: active,
+    });
+    let result = getCollectionsByChain({ collections: type[active], chain: activeChain, mainnet });
+    result = getCollectionsByCategory({ collections: result, category: activeCategory });
+    handleSetState({ filteredCollection: result });
   };
 
   useEffect(() => {
@@ -116,7 +127,7 @@ const AllNfts = () => {
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
     handleSetState({ filteredCollection: result || [] });
-  }, [singles, collections]);
+  }, [singles, collections, activeType, newest]);
 
   useEffect(() => {
     dispatch(setActiveCollection(null));
@@ -125,15 +136,6 @@ const AllNfts = () => {
   const categoryFilter = (category) => {
     handleSetState({ activeCategory: category });
     const result = getCollectionsByCategory({ collections: type[activeType], category });
-    handleSetState({ filteredCollection: result || [] });
-  };
-
-  const haandleTabActive = (active) => {
-    handleSetState({
-      activeType: active,
-    });
-    let result = getCollectionsByChain({ collections: type[active], chain: activeChain, mainnet });
-    result = getCollectionsByCategory({ collections: result, category: activeCategory });
     handleSetState({ filteredCollection: result || [] });
   };
 
@@ -174,13 +176,13 @@ const AllNfts = () => {
           </div>
           <ChainDropdown onChainFilter={handleChainChange} />
         </section>
-        {filteredCollection.length ? (
+        {collections?.length ? (
           <section className={classes.nfts}>
             {activeType === "T1" ? (
               filteredCollection
-                .slice(0, 16)
-                .map((el, idx) =>
-                  !el.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
+                ?.slice(0, 16)
+                ?.map((el, idx) =>
+                  !el?.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
                 )
             ) : activeType === "T2" ? (
               filteredCollection.slice(0, 16).map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)

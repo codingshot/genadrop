@@ -1,7 +1,7 @@
 .chainDropdown {
   position: relative;
   background: var(--default);
-  border-radius: 2.5em;
+  border-radius: 10px;
   z-index: 10;
   display: flex;
   align-items: center;
@@ -133,5 +133,9 @@
 
   .dropdownIcon {
     width: 1em;
+  }
+  .chainDropdown .dropdown {
+    width: 12em;
+    left: 1em;
   }
 }
