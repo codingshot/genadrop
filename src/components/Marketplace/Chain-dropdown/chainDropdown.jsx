@@ -90,6 +90,7 @@ const ChainDropdown = ({ onChainFilter, data }) => {
           </div>,
           ...Object.values(supportedChains)
             .filter((_chain) => mainnet === _chain.isMainnet)
+            .sort((a) => (a.comingSoon === true ? 1 : -1))
             .map((_chain, idx) => (
               <div
                 key={idx + 1}
