@@ -20,14 +20,19 @@ const CollectionToSingleMinter = () => {
   const location = useLocation();
   const fileRef = useRef(null);
   const dragRef = useRef(null);
-
+  const fileTypes = {
+    collection: ".zip",
+    "Video File": ".mp4, .m4v, .mov, .mkv, .avi, .webm, .flv",
+    "Audio File": ".mp3, .aac, .wav",
+    "1of1": ".jpg, .jpeg, .png, .webp, .gif",
+  };
   const { zip: zipObg, dispatch } = useContext(GenContext);
   const [state, setState] = useState({
     mintType: "",
     cameraSwitch: false,
     loading1: false,
     loading2: false,
-    acceptedFileType: "",
+    acceptedFileType: fileTypes[params.mintId],
     file: null,
     fileName: "",
     metadata: null,
@@ -62,6 +67,7 @@ const CollectionToSingleMinter = () => {
   };
 
   useEffect(() => {
+    console.log("PARAM", params.mintId);
     const search = new URL(document.location).searchParams;
     if (search.get("errorCode")) {
       handleSetState({
@@ -83,12 +89,18 @@ const CollectionToSingleMinter = () => {
   }, []);
 
   const handleFileChange = (event) => {
+    console.log("accepte: ", acceptedFileType);
+
     handleSetState({ fileName: "", file: null, metadata: null, zip: null });
     const uploadedFile = event.target.files[0];
-    if (!uploadedFile) return;
+    if (uploadedFile === null) return;
+
     const name = uploadedFile.name.replace(/\.+\s*\./, ".").split(".");
     const uploadedFileName = name.slice(0, name.length - 1).join(".");
     const fileType = name.slice(name.length - 1).join();
+    console.log(!uploadedFile, uploadedFile);
+
+    console.log("accepte: ", acceptedFileType);
     if (!acceptedFileType.includes(fileType.toLowerCase())) return;
 
     if (fileType === "zip") {
@@ -147,18 +159,19 @@ const CollectionToSingleMinter = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (params.mintId === "collection") {
-      handleSetState({ acceptedFileType: ".zip" });
-    } else if (params.mintId === "Video File") {
-      handleSetState({ acceptedFileType: ".mp4, .m4v, .mov, .mkv, .avi, .webm, .flv" });
-    } else if (params.mintId === "Audio File") {
-      handleSetState({ acceptedFileType: ".mp3, .aac, .wav" });
-    } else {
-      handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .gif" });
-    }
-    handleSetState({ mintType: params.mintId });
-  }, [params.mintId]);
+  // useEffect(() => {
+  //   if (params.mintId === "collection") {
+  //     handleSetState({ acceptedFileType: ".zip" });
+  //   } else if (params.mintId === "Video File") {
+  //     handleSetState({ acceptedFileType: ".mp4, .m4v, .mov, .mkv, .avi, .webm, .flv" });
+  //   } else if (params.mintId === "Audio File") {
+  //     handleSetState({ acceptedFileType: ".mp3, .aac, .wav" });
+  //   } else {
+  //     handleSetState({ acceptedFileType: ".jpg, .jpeg, .png, .webp, .gif" });
+  //   }
+  //   handleSetState({ mintType: params.mintId });
+  //   console.log("ACCC", acceptedFileType);
+  // }, [params.mintId, acceptedFileType]);
 
   useEffect(() => {
     if (Object.keys(zipObg).length !== 0) {
