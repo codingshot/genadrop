@@ -11,7 +11,7 @@ async function main() {
 
   const Factory = await upgrades.deployProxy(NftFactory, [Nft.address], { kind: "uups", initializer: "initialize" });
 
-  console.log("proxy deployed to:", Factory.address);
+  console.log("factory deployed to:", Factory.address);
   console.log(await Factory.collectionsOf("0x504D51f62846fbeee1c3d5ae518398b5d22bB905"));
 }
 
