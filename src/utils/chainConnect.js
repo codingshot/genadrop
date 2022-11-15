@@ -74,11 +74,11 @@ export const chainIdToParams = {
     iconUrls: [""],
   },
   421611: {
-    chainId: "0x066eed",
+    chainId: "0x66eed",
     chainName: "Arbitrum Testnet",
     nativeCurrency: { name: "Arbitrum", symbol: "ETH", decimals: 18 },
-    rpcUrls: ["https://arb1.arbitrum.io/rpc"],
-    blockExplorerUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
+    rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
+    blockExplorerUrls: ["https://goerli.arbiscan.io/"],
     iconUrls: [""],
   },
   43114: {
@@ -106,7 +106,7 @@ const chainDecimalsToHex = {
   42220: "0xa4ec",
   43113: "0Xa869",
   421613: "0xa4b1",
-  421611: "0x066eed",
+  421611: "0x66eed",
   43114: "0xa86a",
   44787: "0xaef3",
   62320: "0xf370",
