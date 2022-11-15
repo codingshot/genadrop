@@ -170,14 +170,13 @@ const supportedChains = {
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "ETH",
     networkId: 421611,
-    explorer: "https://rinkeby-explorer.arbitrum.io/#/",
+    explorer: "https://goerli.arbiscan.io/",
     add: addChain,
     isMainnet: false,
     switch: switchChain,
     coinGeckoLabel: "ethereum",
-    comingSoon: true,
   },
-  42161: {
+  421613: {
     id: "arbitrum",
     label: "Arbitrum",
     chain: "Arbitrum",
@@ -190,7 +189,6 @@ const supportedChains = {
     isMainnet: true,
     switch: switchChain,
     coinGeckoLabel: "ethereum",
-    comingSoon: true,
   },
   10: {
     id: "optimism",
