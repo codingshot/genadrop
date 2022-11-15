@@ -11,15 +11,14 @@ import {
   OnSalveView,
   CollectedView,
 } from "./CardFooter";
+import thumbnail from "../../../assets/music-thumbnail.svg";
 
 const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft, userId, usdPrice }) => {
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
   const { account } = useContext(GenContext);
-
   const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed } = nft;
-  console.log(nft);
   const getUsdValue = async () => {
     let value = usdPrice;
     if (!value) {
@@ -78,10 +77,12 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
     <div style={use_width ? { width: use_width } : {}} onClick={handlePreview} className={classes.container}>
       <div className={classes.imageContainer}>
         <div className={classes.imageWrapper}>
-          {nft.ipfs_data.image_mimetype.includes("video") ? (
+          {nft?.ipfs_data?.image_mimetype?.includes("video") ? (
             <video className={classes.image} src={image_url} alt="" controls />
-          ) : nft.ipfs_data.image_mimetype.includes("audio") ? (
-            <audio className={classes.image} src={image_url} alt="" ccontrols />
+          ) : nft?.ipfs_data?.image_mimetype?.includes("audio") ? (
+            <div className={classes.thumbnail} style={{ backgroundImage: `url(${thumbnail})` }}>
+              <audio className={classes.audio} src={image_url} alt="" controls />
+            </div>
           ) : (
             <img className={classes.image} src={image_url} alt="" />
           )}

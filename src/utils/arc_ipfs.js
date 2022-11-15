@@ -330,8 +330,8 @@ export async function mintSingleToNear(nearMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
-    if (window.near.accountId) {
-      response = await window.near.signAndSendTransaction({
+    if (window?.near?.accountId) {
+      response = await window?.near?.signAndSendTransaction({
         receiverId: contractId,
         actions: [
           {
@@ -899,7 +899,7 @@ export async function listPolygonNft(nftProps) {
 
 export async function listAlgoNft(nftProps) {
   const { dispatch, nftDetails, account, connector, price, mainnet } = nftProps;
-  const newAccount = await algosdk.generateAccount()
+  const newAccount = await algosdk.generateAccount();
   const new_acct = newAccount.addr;
   const new_key = newAccount.sk;
   dispatch(setLoader("Building transactions...."));
@@ -937,14 +937,16 @@ export async function listAlgoNft(nftProps) {
   );
 
   note = enc.encode("rk to sc");
-  const appId = 121305178;
+  const appId = mainnet ? 939259299 : 121305178;
   const rekeyTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: new_acct,
     to: new_acct,
     amount: 0,
     note,
     suggestedParams: params,
-    rekeyTo: "PN5Q5SLJYMX2W5O4SASR76SY6AEZDCN2Q532M3FLUDKEIJ6ROGIBTF7JOY",
+    rekeyTo: mainnet
+      ? "26DE4TXZOPFLBAJYGTOXCFTXQEUJ5ZQO6KDNZKIH2YOGLALP2QMS6JQX3I"
+      : "PN5Q5SLJYMX2W5O4SASR76SY6AEZDCN2Q532M3FLUDKEIJ6ROGIBTF7JOY",
   });
 
   const arg_price = Number(price) * 1000000;
@@ -956,7 +958,7 @@ export async function listAlgoNft(nftProps) {
     new Uint8Array(Buffer.from(nftDetails.Id.toString())),
   ];
 
-  console.log(app_args, arg_price, price, nftDetails.Id)
+  console.log(app_args, arg_price, price, nftDetails.Id);
 
   const appOptinTx = algosdk.makeApplicationOptInTxn(new_acct, params, appId);
 
@@ -968,20 +970,20 @@ export async function listAlgoNft(nftProps) {
     accounts: [account],
     foreignAssets: [nftDetails.Id],
     onComplete: algosdk.OnApplicationComplete.NoOpOC,
-  })
+  });
 
   const txList = [fundTxn, optInTxn, Transfertxn, appOptinTx, listTxn, rekeyTxn];
   let groupedTx = algosdk.assignGroupID(txList);
 
-  console.log("two kind", txList, groupedTx)
+  console.log("two kind", txList, groupedTx);
   const txnsToSignByUser = [fundTxn, Transfertxn];
   const txToSignByNewAcct = [optInTxn, appOptinTx, listTxn, rekeyTxn];
   // const tx = await algodTxnClient.sendRawTransaction(rawSignedTxn).do();
-  console.log("Louis", txToSignByNewAcct)
+  console.log("Louis", txToSignByNewAcct);
   const txnsToSign = txList.map((txn) => {
     const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
     if (txnsToSignByUser.includes(txn)) {
-      console.log("Louis", txn)
+      console.log("Louis", txn);
       return {
         txn: encodedTxn,
         message: "Nft Listing",
@@ -990,7 +992,7 @@ export async function listAlgoNft(nftProps) {
         // signers: [],
       };
     }
-    console.log("lane", txn)
+    console.log("lane", txn);
     return {
       txn: encodedTxn,
       message: "Nft Listing",
@@ -1049,7 +1051,7 @@ export async function listAlgoNft(nftProps) {
     rekeyTxnSigned,
   ];
 
-  dispatch(setLoader("Broadcasting transaction....."))
+  dispatch(setLoader("Broadcasting transaction....."));
 
   const tx = await algodTxnClient.sendRawTransaction(new_tx_list).do();
 
@@ -1824,7 +1826,7 @@ export async function PurchaseNft(buyProps) {
     );
     return false;
   }
-  const appId = 121305178;
+  const appId = mainnet ? 939259299 : 121305178;
 
   const optTxn = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject({
     from: account,
@@ -1869,7 +1871,7 @@ export async function PurchaseNft(buyProps) {
     accounts: [nftDetails.manager, manager.addr],
     foreignAssets: [nftDetails.Id],
     onComplete: algosdk.OnApplicationComplete.NoOpOC,
-  })
+  });
   const appCloseTxn = algosdk.makeApplicationCloseOutTxn(nftDetails.manager, params, appId);
   const refundTxn = algosdk.makePaymentTxnWithSuggestedParamsFromObject({
     from: nftDetails.manager,
@@ -1880,11 +1882,11 @@ export async function PurchaseNft(buyProps) {
     closeRemainderTo: nftDetails.owner,
   });
 
-  console.log("txes", appCloseTxn, refundTxn, params)
+  console.log("txes", appCloseTxn, refundTxn, params);
 
-  const txList = [payTax, paySeller, optTxn, buyTxn, appCloseTxn, refundTxn]
+  const txList = [payTax, paySeller, optTxn, buyTxn, appCloseTxn, refundTxn];
   const groupedTx = algosdk.assignGroupID(txList);
-  const txnsFromManager = [appCloseTxn, refundTxn]
+  const txnsFromManager = [appCloseTxn, refundTxn];
 
   const txnsToSign = txList.map((txn) => {
     const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
@@ -1908,7 +1910,7 @@ export async function PurchaseNft(buyProps) {
 
   let result;
   try {
-    console.log("To Soung??", txnsToSign)
+    console.log("To Soung??", txnsToSign);
     const request = formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
     dispatch(
       setNotification({
@@ -1923,19 +1925,19 @@ export async function PurchaseNft(buyProps) {
         message: error.message,
         type: "error",
       })
-  );
+    );
     throw error;
   }
 
-  console.log("rihanna go girl X Fenty", result, manager.addr)
+  console.log("rihanna go girl X Fenty", result, manager.addr);
   const appCloseTxnSigned = appCloseTxn.signTxn(manager.sk);
   const refundTxnSigned = refundTxn.signTxn(manager.sk);
 
   const decodedResult = result.map((element) => (element ? new Uint8Array(Buffer.from(element, "base64")) : null));
-  console.log("dcoded", decodedResult)
+  console.log("dcoded", decodedResult);
   decodedResult[4] = appCloseTxnSigned;
   decodedResult[5] = refundTxnSigned;
-  console.log("dcoded 2", decodedResult)
+  console.log("dcoded 2", decodedResult);
   const tx = await algodTxnClient.sendRawTransaction(decodedResult).do();
 
   console.log("final tx", tx.txId);

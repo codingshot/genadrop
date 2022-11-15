@@ -168,11 +168,11 @@ const WalletPopup = ({ handleSetState }) => {
           <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
+              .sort((a) => (a.comingSoon === true ? 1 : -1))
               .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div
                   onClick={async () => {
-                    console.log("break them chains", chain);
                     await handleChain(chain.networkId, chain.comingSoon);
                   }}
                   key={idx}

@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import moment from "moment/moment";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -9,10 +10,23 @@ import {
   getCollectionsByCategory,
   getCollectionsByChain,
   shuffle,
+  sortBy,
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
-import moment from "moment/moment";
+import {
+  getAllAlgorandCollections,
+  getAllAlgorandNfts,
+  getAllAuroraCollections,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloCollections,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonCollections,
+  getAllPolygonNfts,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
+import { promises } from "form-data";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -55,6 +69,8 @@ const AllNfts = () => {
     "Painting",
     "Illustration",
     "3D",
+    // "Video",
+    // "Audio",
   ];
   const type = {
     T1: newest,
@@ -89,35 +105,34 @@ const AllNfts = () => {
   };
 
   useEffect(() => {
-    let collections = [
-      ...(auroraCollections || []),
-      ...(algoCollectionsArr || []),
-      ...(polygonCollections || []),
-      ...(celoCollections || []),
-    ];
-    collections = shuffle(collections);
-    handleSetState({ collections });
-  }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
+    Promise.all([
+      getAllAuroraCollections(),
+      getAllPolygonCollections(),
+      getAllCeloCollections(),
+      getAllAlgorandCollections(mainnet, dispatch),
+    ]).then((data) => {
+      const filteredData = sortBy({ collections: shuffle(data.flat()), value: "newest" });
+      handleSetState({ collections: filteredData });
+    });
+  }, []);
 
   useEffect(() => {
-    const singleData = [
-      ...(singleAlgoNftsArr || []),
-      ...(singleAuroraNfts || []),
-      ...(singlePolygonNfts || []),
-      ...(singleCeloNfts || []),
-      ...(singleNearNfts || []),
-      ...(singleAvaxNfts || []),
-    ];
-    const singlesNfts = shuffle(singleData);
-    handleSetState({ singles: singlesNfts });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+      getAllAlgorandNfts(mainnet, dispatch),
+    ]).then((data) => {
+      handleSetState({ singles: shuffle(data.flat()) });
+    });
+  }, []);
 
   useEffect(() => {
-    const sorted = [...collections, ...singles]
-      .filter((chainId) => chainId.chain !== 4160)
-      .sort((a, b) => moment(b.createdAt).diff(a.createdAt));
-    handleSetState({ newest: sorted });
-  }, [singles, collections, newest, activeType]);
+    const newestNfts = sortBy({ collections: [...collections, ...singles], value: "newest" });
+    handleSetState({ newest: newestNfts });
+  }, [singles, collections]);
 
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });

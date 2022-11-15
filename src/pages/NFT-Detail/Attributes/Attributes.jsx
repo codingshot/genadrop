@@ -7,7 +7,7 @@ const Attributes = ({ nftDetails }) => {
     <div className={classes.container}>
       <div className={classes.heading}>Attributes</div>
       <div className={classes.attributes}>
-        {properties.map((p, idx) => (
+        {properties?.map((p, idx) => (
           <div key={idx} className={classes.attribute}>
             <div className={classes.type}>
               <div className={classes.title}>{p.trait_type}</div>
