@@ -14,6 +14,19 @@ import {
 } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
+import {
+  getAllAlgorandCollections,
+  getAllAlgorandNfts,
+  getAllAuroraCollections,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloCollections,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonCollections,
+  getAllPolygonNfts,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
+import { promises } from "form-data";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -92,35 +105,32 @@ const AllNfts = () => {
   };
 
   useEffect(() => {
-    let collections = [
-      ...(auroraCollections || []),
-      ...(algoCollectionsArr || []),
-      ...(polygonCollections || []),
-      ...(celoCollections || []),
-    ];
-    collections = shuffle(collections);
-    handleSetState({ collections });
-  }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
+    Promise.all([
+      getAllAuroraCollections(),
+      getAllPolygonCollections(),
+      getAllCeloCollections(),
+      getAllAlgorandCollections(mainnet, dispatch),
+    ]).then((data) => {
+      const filteredData = sortBy({ collections: shuffle(data.flat()), value: "newest" });
+      handleSetState({ collections: filteredData });
+    });
+  }, []);
 
   useEffect(() => {
-    // console.log(singleAlgoNftsArr);
-    const singleData = [
-      ...(singleAlgoNftsArr || []),
-      ...(singleAuroraNfts || []),
-      ...(singlePolygonNfts || []),
-      ...(singleCeloNfts || []),
-      ...(singleNearNfts || []),
-      ...(singleAvaxNfts || []),
-    ];
-    const singlesNfts = shuffle(singleData);
-    handleSetState({ singles: singlesNfts });
-  }, [singleAlgoNftsArr, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts, singleAvaxNfts]);
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+      getAllAlgorandNfts(mainnet, dispatch),
+    ]).then((data) => {
+      handleSetState({ singles: shuffle(data.flat()) });
+    });
+  }, []);
 
   useEffect(() => {
     const newestNfts = sortBy({ collections: [...collections, ...singles], value: "newest" });
-    // const sorted = [...collections, ...singles].sort((a, b) => {
-    //   return moment(new Date(b.createdAt)).diff(new Date(a.createdAt));
-    // });
     handleSetState({ newest: newestNfts });
   }, [singles, collections]);
 

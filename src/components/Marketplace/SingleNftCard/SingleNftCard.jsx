@@ -18,7 +18,6 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
   const { account } = useContext(GenContext);
-  console.log(nft);
   const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed } = nft;
   const getUsdValue = async () => {
     let value = usdPrice;

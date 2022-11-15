@@ -309,6 +309,18 @@ export const getAllPolygonCollections = async () => {
   return res;
 };
 
+export const getAllCeloCollections = async () => {
+  const { data, error } = await celoClient.query(GET_CELO_GRAPH_COLLECITONS).toPromise();
+  if (error) return [];
+  const result = await getGraphCollections(data?.collections);
+  const filterAddress =
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? ethers.utils.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
+      : ethers.utils.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
+  const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
+  return res;
+};
+
 export const celoCollectionTransactions = async (id) => {
   const { data: celoData, error: celoError } = await celoClient
     .query(
