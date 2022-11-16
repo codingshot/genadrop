@@ -65,7 +65,7 @@ export const chainIdToParams = {
     blockExplorerUrls: ["https://testnet.snowtrace.io/"],
     iconUrls: [""],
   },
-  421611: {
+  42161: {
     chainId: "0xa4b1",
     chainName: "Arbitrum",
     nativeCurrency: { name: "Arbitrum", symbol: "ETH", decimals: 18 },
