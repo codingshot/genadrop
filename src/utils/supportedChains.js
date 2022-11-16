@@ -162,7 +162,7 @@ const supportedChains = {
     coinGeckoLabel: "avalanche-2",
   },
 
-  421611: {
+  421613: {
     id: "arbitrum",
     label: "Arbitrum Testnet",
     chain: "Arbitrum",
@@ -176,7 +176,7 @@ const supportedChains = {
     switch: switchChain,
     coinGeckoLabel: "ethereum",
   },
-  421613: {
+  421611: {
     id: "arbitrum",
     label: "Arbitrum",
     chain: "Arbitrum",
