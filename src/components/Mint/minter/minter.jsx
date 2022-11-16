@@ -212,7 +212,7 @@ const Minter = () => {
         newAttributes[key] = attributes[key];
       }
     }
-    console.log(newAttributes);
+
     handleSetState({ attributes: newAttributes });
   };
 
@@ -301,6 +301,7 @@ const Minter = () => {
           })
         );
       }
+
       dispatch(setOverlay(true));
       handleMint(mintProps).then((url) => {
         dispatch(setOverlay(false));

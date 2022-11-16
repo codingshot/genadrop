@@ -8,6 +8,9 @@ import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-ic
 import "@near-wallet-selector/modal-ui/styles.css";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { Magic } from "magic-sdk";
+import { ConnectExtension } from "@magic-ext/connect";
+import Web3 from "web3";
 import * as WS from "./wallet-script";
 
 import {
@@ -236,7 +239,15 @@ export const initConnectWallet = (walletProps) => {
 };
 
 export const connectWallet = async (walletProps) => {
-  const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
+  const {
+    dispatch,
+    proposedChain,
+    connectionMethod,
+    walletProviderRef,
+    handleSetState,
+    mainnet,
+    walletConnectProvider,
+  } = walletProps;
   if (connectionMethod === "metamask") {
     if (window?.ethereum !== undefined) {
       await WS.connectWithMetamask(walletProps);
@@ -267,6 +278,50 @@ export const connectWallet = async (walletProps) => {
         },
       });
     }
+  } else if (connectionMethod === "magicLink") {
+    console.log(chainIdToParams[proposedChain].rpcUrls[0], proposedChain);
+
+    const magic = new Magic("pk_live_051193EF8469FA65", {
+      network: {
+        rpcUrl: chainIdToParams[proposedChain].rpcUrls[0],
+        chainId: proposedChain,
+      },
+      locale: "en_US",
+      extensions: [new ConnectExtension()],
+    });
+
+    const web3 = new Web3(magic.rpcProvider);
+
+    web3.eth
+      .getAccounts()
+      .then(async (accounts) => {
+        // WS.updateAccount(walletProps);
+
+        let res;
+        res = await supportedChains[proposedChain]?.switch(proposedChain);
+        if (!res) {
+          await WS.disconnectWalletConnectProvider(walletConnectProvider);
+          const activeChain = await WS.getNetworkID();
+          if (activeChain === proposedChain) {
+            WS.updateAccount(walletProps);
+          }
+        } else {
+          dispatch(setChainId(Number(proposedChain)));
+          dispatch(setAccount(accounts[0]));
+          dispatch(
+            setNotification({
+              message: `Your site is connected to ${supportedChains[proposedChain].label}`,
+              type: "success",
+            })
+          );
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+    dispatch(setConnector(ethereumProvider));
   }
 };
 
