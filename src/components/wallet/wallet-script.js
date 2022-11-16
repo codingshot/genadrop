@@ -239,7 +239,15 @@ export const initConnectWallet = (walletProps) => {
 };
 
 export const connectWallet = async (walletProps) => {
-  const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
+  const {
+    dispatch,
+    proposedChain,
+    connectionMethod,
+    walletProviderRef,
+    handleSetState,
+    mainnet,
+    walletConnectProvider,
+  } = walletProps;
   if (connectionMethod === "metamask") {
     if (window?.ethereum !== undefined) {
       await WS.connectWithMetamask(walletProps);
@@ -289,18 +297,31 @@ export const connectWallet = async (walletProps) => {
       .then(async (accounts) => {
         // WS.updateAccount(walletProps);
 
-        dispatch(setChainId(Number(proposedChain)));
-        dispatch(setAccount(accounts[0]));
-        dispatch(
-          setNotification({
-            message: `Your site is connected to ${supportedChains[proposedChain].label}`,
-            type: "success",
-          })
-        );
+        let res;
+        res = await supportedChains[proposedChain]?.switch(proposedChain);
+        if (!res) {
+          await WS.disconnectWalletConnectProvider(walletConnectProvider);
+          const activeChain = await WS.getNetworkID();
+          if (activeChain === proposedChain) {
+            WS.updateAccount(walletProps);
+          }
+        } else {
+          dispatch(setChainId(Number(proposedChain)));
+          dispatch(setAccount(accounts[0]));
+          dispatch(
+            setNotification({
+              message: `Your site is connected to ${supportedChains[proposedChain].label}`,
+              type: "success",
+            })
+          );
+        }
       })
       .catch((error) => {
         console.log(error);
       });
+
+    const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
+    dispatch(setConnector(ethereumProvider));
   }
 };
 
