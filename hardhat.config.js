@@ -38,6 +38,16 @@ module.exports = {
       accounts: [process.env.REACT_APP_PRIV_KEY],
       chainId: 1313161554,
     },
+    arbitrum: {
+      url: process.env.REACT_APP_ARBITRUM_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+      chainId: 42161,
+    },
+    arbitrumGoerli: {
+      url: process.env.REACT_APP_ArbitrumTest_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+      chainId: 421613,
+    },
     hardhat: {
       forking: {
         // Using Alchemy
