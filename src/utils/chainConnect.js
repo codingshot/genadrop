@@ -65,7 +65,7 @@ export const chainIdToParams = {
     blockExplorerUrls: ["https://testnet.snowtrace.io/"],
     iconUrls: [""],
   },
-  421613: {
+  421611: {
     chainId: "0xa4b1",
     chainName: "Arbitrum",
     nativeCurrency: { name: "Arbitrum", symbol: "ETH", decimals: 18 },
@@ -73,9 +73,9 @@ export const chainIdToParams = {
     blockExplorerUrls: ["https://arbiscan.io/"],
     iconUrls: [""],
   },
-  421611: {
+  421613: {
     chainId: "0x66eed",
-    chainName: "Arbitrum Testnet",
+    chainName: "Arbitrum Goerli Testnet",
     nativeCurrency: { name: "Arbitrum", symbol: "ETH", decimals: 18 },
     rpcUrls: ["https://goerli-rollup.arbitrum.io/rpc"],
     blockExplorerUrls: ["https://goerli.arbiscan.io/"],
@@ -105,8 +105,8 @@ const chainDecimalsToHex = {
   80001: "0x13881",
   42220: "0xa4ec",
   43113: "0Xa869",
-  421613: "0xa4b1",
-  421611: "0x66eed",
+  421611: "0xa4b1",
+  421613: "0x66eed",
   43114: "0xa86a",
   44787: "0xaef3",
   62320: "0xf370",
