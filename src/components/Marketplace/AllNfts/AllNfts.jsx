@@ -121,6 +121,7 @@ const AllNfts = () => {
       getAllCeloNfts(),
       getAllAuroraNfts(),
       getAllAvalancheNfts(),
+
       getAllPolygonNfts(),
       getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
@@ -130,7 +131,7 @@ const AllNfts = () => {
   }, []);
 
   useEffect(() => {
-    const newestNfts = sortBy({ collections: [...collections, ...singles], value: "newest" });
+    const newestNfts = sortBy({ collections: [...singles], value: "newest" });
     handleSetState({ newest: newestNfts });
   }, [singles, collections]);
 
