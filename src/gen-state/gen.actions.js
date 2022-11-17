@@ -202,6 +202,11 @@ export const setAvaxSingleNfts = (nfts) => ({
   payload: nfts,
 });
 
+export const setArbitrumNfts = (nfts) => ({
+  type: genActionTypes.SET_ARBITRUM_SINGLE_NFTS,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,

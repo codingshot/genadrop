@@ -16,6 +16,7 @@ import {
   setSearchContainer,
   setNearSingleNft,
   setAvaxSingleNfts,
+  setArbitrumNfts,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -33,11 +34,19 @@ import {
   GET_CELO_GRAPH_COLLECITONS,
   GET_NEAR_SINGLE_NFTS,
 } from "../../graphql/querries/getCollections";
-import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
+import {
+  arbitrumClient,
+  auroraClient,
+  avalancheClient,
+  celoClient,
+  nearClient,
+  polygonClient,
+} from "../../utils/graphqlClient";
 import { GenContext } from "../../gen-state/gen.context";
 import {
   parseAlgoCollection,
   parseAlgoSingle,
+  parseArbitrumSingle,
   parseAuroraCollection,
   parseAuroraSingle,
   parseAvaxSingle,
@@ -295,6 +304,30 @@ const FetchData = () => {
         );
       } else {
         dispatch(setAvaxSingleNfts(null));
+      }
+    })();
+
+    //Arbitrum Single Nfts
+    (async function getArbitrumSingleNfts() {
+      const { data, error } = await arbitrumClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+      if (error) {
+        return dispatch(
+          setNotification({
+            message: error.message,
+            type: "warning",
+          })
+        );
+      }
+      const result = await getSingleGraphNfts(data?.nfts);
+      if (result) {
+        dispatch(setArbitrumNfts(result));
+        dispatch(
+          setSearchContainer({
+            "Arbitrum 1of1": parseArbitrumSingle(result),
+          })
+        );
+      } else {
+        dispatch(setArbitrumNfts(null));
       }
     })();
   }, [mainnet]);

@@ -30,7 +30,14 @@ import {
   getSingleNfts,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
-import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
+import {
+  arbitrumClient,
+  auroraClient,
+  avalancheClient,
+  celoClient,
+  nearClient,
+  polygonClient,
+} from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
   const { data: polygonData, error: polygonError } = await polygonClient
@@ -239,6 +246,13 @@ export const getAllCeloNfts = async () => {
 
 export const getAllPolygonNfts = async () => {
   const { data: graphData, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllArbitrumNfts = async () => {
+  const { data: graphData, error } = await arbitrumClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
   if (error) return [];
   const data = await getSingleGraphNfts(graphData?.nfts);
   return data;

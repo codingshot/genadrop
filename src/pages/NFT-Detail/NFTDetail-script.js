@@ -11,11 +11,15 @@ import {
 import supportedChains from "../../utils/supportedChains";
 
 export const getAlgoData = async ({ algoProps }) => {
-  const { singleAlgoNfts, activeCollection, params } = algoProps;
+  const { singleAlgoNfts, activeCollection, params, algoCollections } = algoProps;
   const { collectionName, nftId } = params;
   let nftDetails;
   if (collectionName) {
-    nftDetails = activeCollection.find((col) => col.Id === Number(nftId));
+    if (activeCollection) {
+      nftDetails = activeCollection.find((col) => col.Id === Number(nftId));
+    } else {
+      nftDetails = algoCollections[nftId];
+    }
   } else {
     nftDetails = singleAlgoNfts[nftId];
   }
