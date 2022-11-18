@@ -17,6 +17,7 @@ import NotFound from "../../not-found/notFound";
 import {
   getAllAlgorandCollections,
   getAllAlgorandNfts,
+  getAllArbitrumNfts,
   getAllAuroraCollections,
   getAllAuroraNfts,
   getAllAvalancheNfts,
@@ -121,7 +122,7 @@ const AllNfts = () => {
       getAllCeloNfts(),
       getAllAuroraNfts(),
       getAllAvalancheNfts(),
-
+      getAllArbitrumNfts(),
       getAllPolygonNfts(),
       getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
