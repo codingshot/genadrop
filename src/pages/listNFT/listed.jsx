@@ -10,8 +10,6 @@ import facebookIcon from "../../assets/blue-facebook.svg";
 import linktree from "../../assets/linked-tree.svg";
 
 const Listed = () => {
-  // const { account, connector } = useContext(GenContext);
-
   const {
     params: { nftId },
   } = useRouteMatch();
