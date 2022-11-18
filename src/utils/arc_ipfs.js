@@ -863,7 +863,7 @@ export async function listAuroraNft(nftProps) {
   }
 }
 
-export async function listAuroraNft(nftProps) {
+export async function listArbitrumNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
