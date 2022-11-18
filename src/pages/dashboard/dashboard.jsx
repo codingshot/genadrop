@@ -7,6 +7,8 @@ import classes from "./dashboard.module.css";
 import { GenContext } from "../../gen-state/gen.context";
 import { fetchUserBoughtNfts, fetchUserCollections, fetchUserCreatedNfts, readUserProfile } from "../../utils/firebase";
 import {
+  getArbitrumCollectedNFTs,
+  getArbitrumMintedNfts,
   getAuroraCollectedNFTs,
   getAuroraMintedNfts,
   getAuroraUserCollections,
@@ -109,6 +111,9 @@ const Dashboard = () => {
         case "Polygon":
           nfts = await getPolygonMintedNFTs(address);
           break;
+        case "Arbitrum":
+          nfts = await getArbitrumMintedNfts(address);
+          break;
         case "Avalanche":
           nfts = await getAvaxMintedNfts(address);
           break;
@@ -142,6 +147,9 @@ const Dashboard = () => {
           break;
         case "Polygon":
           nfts = await getPolygonCollectedNFTs(address);
+          break;
+        case "Arbitrum":
+          nfts = await getArbitrumCollectedNFTs(address);
           break;
         case "Avalanche":
           nfts = await getAvaxCollectedNFTs(address);

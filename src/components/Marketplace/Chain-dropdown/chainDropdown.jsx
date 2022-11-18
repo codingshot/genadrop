@@ -5,6 +5,8 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
+import arbitrumIcon from "../../../assets/arbitrum.svg";
+
 import nearIcon from "../../../assets/icon-near.svg";
 import avalancheIcon from "../../../assets/icon-avalanche.svg";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-chevron-down.svg";
@@ -16,6 +18,7 @@ const chainIcon = {
   polygon: polygonIcon,
   algorand: algoIcon,
   aurora: auroraIcon,
+  arbitrum: arbitrumIcon,
   near: nearIcon,
   celo: celoIcon,
   avalanche: avalancheIcon,
