@@ -57,20 +57,15 @@ export const polygonUserData = async (address) => {
 };
 
 export const arbitrumUserData = async (address) => {
-  const { data: polygonData, error: polygonError } = await arbitrumClient
-    .query(GET_GRAPH_NFT, { id: address })
-    .toPromise();
+  const { data, error: polygonError } = await arbitrumClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
   if (polygonError) return;
   let trHistory;
-  let polygonResult = [];
-  if (polygonData?.nft !== null) {
-    polygonResult = await getGraphNft(polygonData?.nft);
-    trHistory = await getTransactions(polygonData?.nft?.transactions);
-    trHistory.find((t) => {
-      if (t.type === "Minting") t.price = polygonResult[0].price;
-    });
+  let arbitrumResult = [];
+  if (data?.nft !== null) {
+    arbitrumResult = await getGraphNft(data?.nft);
+    trHistory = await getTransactions(data?.nft?.transactions);
   }
-  return [polygonResult[0], trHistory];
+  return [arbitrumResult[0], trHistory];
 };
 
 export const avaxUsersNfts = async (address) => {
