@@ -10,6 +10,7 @@ import { buyNft, getFormatedPrice, getUserBoughtNftCollection } from "../../util
 import { listAlgoNft, listAuroraNft, listAvaxNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
 import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
 import {
+  arbitrumUserData,
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
@@ -139,6 +140,9 @@ const List = () => {
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
         const [nftData] = await avaxUsersNfts(nftId);
+        nft = nftData;
+      } else if (supportedChains[chainId]?.chain === "Arbitrum") {
+        const [nftData] = await arbitrumUserData(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Algorand") {
         const algoProps = {
