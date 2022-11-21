@@ -29,12 +29,6 @@ import magicLinkIcon from "../../assets/icon-magic-link.svg";
 import { GenContext } from "../../gen-state/gen.context";
 
 const WalletPopup = ({ handleSetState }) => {
-  const magic = new Magic("pk_live_051193EF8469FA65", {
-    network: "goerli",
-    locale: "en_US",
-    extensions: [new ConnectExtension()],
-  });
-
   const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [showConnectionMethods, setConnectionMethods] = useState(false);
@@ -223,11 +217,11 @@ const WalletPopup = ({ handleSetState }) => {
               <h3>WalletConnect</h3>
               <p>Scan with WalletConnect to connect</p>
             </div>
-            <div onClick={handleMagicLink} className={classes.connectionMethod}>
+            {/* <div onClick={handleMagicLink} className={classes.connectionMethod}>
               <img src={magicLinkIcon} alt="" />
               <h3>Magic Connect</h3>
               <p>Connect using Magic Connect</p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

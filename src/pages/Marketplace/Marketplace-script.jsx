@@ -176,3 +176,6 @@ export const getCollectionsByCategory = ({ collections, category }) => {
   });
   return [...singleNFTs];
 };
+
+// audio/mpeg
+// Video
