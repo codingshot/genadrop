@@ -161,9 +161,8 @@ export const getCollectionsBySearch = ({ collections, search }) => {
   );
 };
 
-export const getCollectionsByCategory = ({ collections, category }) => {
+export const getCollectionsByCategory = ({ collections, category, activeChain }) => {
   if (category === "All") return collections;
-
   let singleNFTs = collections.filter((col) => !col.nfts);
 
   singleNFTs = singleNFTs.filter((col) => {

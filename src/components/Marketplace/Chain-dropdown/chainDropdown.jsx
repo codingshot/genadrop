@@ -94,6 +94,7 @@ const ChainDropdown = ({ onChainFilter, data }) => {
           ...Object.values(supportedChains)
             .filter((_chain) => mainnet === _chain.isMainnet)
             .sort((a) => (a.comingSoon === true ? 1 : -1))
+            .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
             .map((_chain, idx) => (
               <div
                 key={idx + 1}

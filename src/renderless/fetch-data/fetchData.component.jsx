@@ -17,6 +17,7 @@ import {
   setNearSingleNft,
   setAvaxSingleNfts,
   setArbitrumNfts,
+  setAllNfts,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -56,6 +57,15 @@ import {
   parsePolygonCollection,
   parsePolygonSingle,
 } from "./fetchData-script";
+import {
+  getAllAlgorandNfts,
+  getAllArbitrumNfts,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonNfts,
+} from "./fetchUserGraphData";
 
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
@@ -330,6 +340,16 @@ const FetchData = () => {
         dispatch(setArbitrumNfts(null));
       }
     })();
+
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllArbitrumNfts(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+      getAllAlgorandNfts(mainnet, dispatch),
+    ]).then((data) => dispatch(setAllNfts(data.flat())));
   }, [mainnet]);
 
   return null;

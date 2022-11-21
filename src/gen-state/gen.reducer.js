@@ -309,6 +309,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         singleAlgoNfts: action.payload,
       };
+    case genActionTypes.SET_ALL_NFTS:
+      return {
+        ...state,
+        allChainsNfts: action.payload,
+      };
     case genActionTypes.SET_AURORA_SINGLE_NFTS:
       return {
         ...state,

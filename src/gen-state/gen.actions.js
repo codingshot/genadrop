@@ -207,6 +207,11 @@ export const setArbitrumNfts = (nfts) => ({
   payload: nfts,
 });
 
+export const setAllNfts = (nfts) => ({
+  type: genActionTypes.SET_ALL_NFTS,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,
