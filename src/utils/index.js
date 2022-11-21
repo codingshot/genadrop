@@ -3,6 +3,7 @@
 import axios from "axios";
 import {
   getAlgoData,
+  purchaseArbitrumNfts,
   purchaseAuroraNfts,
   purchaseAvaxNfts,
   purchaseCeloNfts,
@@ -463,7 +464,9 @@ export const getCeloGraphNft = async (collection) => {
 };
 
 export const getGraphNft = async (collection, mainnet) => {
-  const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+  const { data } = await axios.get(
+    collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+  );
   const nftObj = [];
   try {
     const nftArr = {};
@@ -474,7 +477,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.owner = collection?.owner?.id;
     nftArr.isListed = collection?.isListed;
     nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
-    nftArr.image_url = data?.image?.replace("ipfs://", "https://ipfs.io/ipfs/");
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
@@ -539,7 +542,9 @@ export const getSingleGraphNfts = async (nfts) => {
       setTimeout(async () => {
         try {
           const nftObj = {};
-          const { data } = await axios.get(NFT.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+          const { data } = await axios.get(
+            NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+          );
           nftObj.Id = NFT?.id;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
@@ -547,7 +552,7 @@ export const getSingleGraphNfts = async (nfts) => {
           nftObj.isListed = NFT?.isListed;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
-          nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+          nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           nftObj.collectionId = NFT?.collection?.id;
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
@@ -583,14 +588,16 @@ export const getNearSingleGraphNfts = async (nfts) => {
       setTimeout(async () => {
         try {
           const nftObj = {};
-          const { data } = await axios.get(NFT.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+          const { data } = await axios.get(
+            NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+          );
           nftObj.Id = NFT?.id;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
-          nftObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+          nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           nftObj.collectionId = NFT?.collection?.id;
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
@@ -741,6 +748,30 @@ export const buyGraphNft = async (buyProps) => {
   } else if (supportedChains[chainId].chain === "Aurora") {
     dispatch(setOverlay(true));
     const res = await purchaseAuroraNfts(buyProps);
+    if (res) {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/profile/${chainId}/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
+  } else if (supportedChains[chainId].chain === "Arbitrum") {
+    dispatch(setOverlay(true));
+    const res = await purchaseArbitrumNfts(buyProps);
     if (res) {
       dispatch(setOverlay(false));
       dispatch(

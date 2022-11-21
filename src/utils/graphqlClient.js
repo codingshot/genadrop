@@ -124,5 +124,8 @@ export const avalancheClient = createClient({
 });
 
 export const arbitrumClient = createClient({
-  url: "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-arbitrum-goerli",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-arbitrum-goerli"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/arbitrum",
 });

@@ -183,6 +183,7 @@ const WalletPopup = ({ handleSetState }) => {
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
               .sort((a) => (a.comingSoon === true ? 1 : -1))
+              .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
               .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div

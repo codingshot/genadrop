@@ -7,7 +7,14 @@ import supportedChains from "../../utils/supportedChains";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
 import { buyNft, getFormatedPrice, getUserBoughtNftCollection } from "../../utils";
-import { listAlgoNft, listAuroraNft, listAvaxNft, listCeloNft, listPolygonNft } from "../../utils/arc_ipfs";
+import {
+  listAlgoNft,
+  listArbitrumNft,
+  listAuroraNft,
+  listAvaxNft,
+  listCeloNft,
+  listPolygonNft,
+} from "../../utils/arc_ipfs";
 import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
 import {
   arbitrumUserData,
@@ -99,6 +106,8 @@ const List = () => {
       listedNFT = await listAvaxNft(listProps);
     } else if (supportedChains[chainId].chain === "Algorand") {
       listedNFT = await listAlgoNft(listAlgoProps);
+    } else if (supportedChains[chainId].chain === "Arbitrum") {
+      listedNFT = await listArbitrumNft(listProps);
     } else {
       return history.push(`${match.url}/listed`);
     }
