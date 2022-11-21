@@ -279,8 +279,6 @@ export const connectWallet = async (walletProps) => {
       });
     }
   } else if (connectionMethod === "magicLink") {
-    console.log(chainIdToParams[proposedChain].rpcUrls[0], proposedChain);
-
     const magic = new Magic("pk_live_051193EF8469FA65", {
       network: {
         rpcUrl: chainIdToParams[proposedChain].rpcUrls[0],

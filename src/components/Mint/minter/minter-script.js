@@ -16,7 +16,6 @@ import {
 
 export const handleMint = async (args) => {
   const { account, chain, dispatch, setNotification, setLoader } = args;
-  console.log("Chain: ", chain);
   if (!account) {
     return dispatch(
       setNotification({
