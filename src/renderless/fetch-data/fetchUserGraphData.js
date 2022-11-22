@@ -30,7 +30,14 @@ import {
   getSingleNfts,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
-import { auroraClient, avalancheClient, celoClient, nearClient, polygonClient } from "../../utils/graphqlClient";
+import {
+  arbitrumClient,
+  auroraClient,
+  avalancheClient,
+  celoClient,
+  nearClient,
+  polygonClient,
+} from "../../utils/graphqlClient";
 
 export const polygonUserData = async (address) => {
   const { data: polygonData, error: polygonError } = await polygonClient
@@ -47,6 +54,18 @@ export const polygonUserData = async (address) => {
     });
   }
   return [polygonResult[0], trHistory];
+};
+
+export const arbitrumUserData = async (address) => {
+  const { data, error: polygonError } = await arbitrumClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
+  if (polygonError) return;
+  let trHistory;
+  let arbitrumResult = [];
+  if (data?.nft !== null) {
+    arbitrumResult = await getGraphNft(data?.nft);
+    trHistory = await getTransactions(data?.nft?.transactions);
+  }
+  return [arbitrumResult[0], trHistory];
 };
 
 export const avaxUsersNfts = async (address) => {
@@ -93,6 +112,14 @@ export const getPolygonCollectedNFTs = async (address) => {
   return polygonBoughtNft;
 };
 
+export const getArbitrumCollectedNFTs = async (address) => {
+  const { data, error } = await arbitrumClient.query(GET_USER_NFT, { id: address }).toPromise();
+  if (error) return;
+  const response = await getSingleGraphNfts(data?.user?.nfts, address);
+  const arbitrumBoughtNft = response?.filter((NFTS) => NFTS.sold === true);
+  return arbitrumBoughtNft;
+};
+
 export const getPolygonMintedNFTs = async (address) => {
   const { data, error: polygonError } = await polygonClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (polygonError) return;
@@ -112,6 +139,15 @@ export const getNearMintedNfts = async (address) => {
   const response = await getNearSingleGraphNfts(nearData?.user?.nfts, address);
   const nearMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true);
   return nearMintedNfts;
+};
+
+export const getArbitrumMintedNfts = async (address) => {
+  const { data, error } = await arbitrumClient.query(GET_NEAR_USER_NFT, { id: address }).toPromise();
+  if (error) return;
+
+  const response = await getNearSingleGraphNfts(data?.user?.nfts, address);
+  const arbitrumMintedNfts = response?.filter((NFTS) => NFTS?.sold !== true);
+  return arbitrumMintedNfts;
 };
 
 export const getAvaxMintedNfts = async (address) => {
@@ -239,6 +275,13 @@ export const getAllCeloNfts = async () => {
 
 export const getAllPolygonNfts = async () => {
   const { data: graphData, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
+  if (error) return [];
+  const data = await getSingleGraphNfts(graphData?.nfts);
+  return data;
+};
+
+export const getAllArbitrumNfts = async () => {
+  const { data: graphData, error } = await arbitrumClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
   if (error) return [];
   const data = await getSingleGraphNfts(graphData?.nfts);
   return data;

@@ -162,20 +162,19 @@ const supportedChains = {
     coinGeckoLabel: "avalanche-2",
   },
 
-  421611: {
+  421613: {
     id: "arbitrum",
     label: "Arbitrum Testnet",
     chain: "Arbitrum",
     icon: arbitrumIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "ETH",
-    networkId: 421611,
-    explorer: "https://rinkeby-explorer.arbitrum.io/#/",
+    networkId: 421613,
+    explorer: "https://goerli.arbiscan.io/",
     add: addChain,
     isMainnet: false,
     switch: switchChain,
     coinGeckoLabel: "ethereum",
-    comingSoon: true,
   },
   42161: {
     id: "arbitrum",
@@ -190,7 +189,6 @@ const supportedChains = {
     isMainnet: true,
     switch: switchChain,
     coinGeckoLabel: "ethereum",
-    comingSoon: true,
   },
   10: {
     id: "optimism",

@@ -130,7 +130,7 @@ const SingleNftCollection = () => {
       <div className={classes.heading}>
         <div className={classes.title}>
           <h1>{searchChain === "All chains" ? "1 of 1s" : searchChain}</h1>
-          <p>View all minted 1 of 1s {`(${filteredCollection.length} minted)`}</p>
+          <p>View all minted 1 of 1s {filteredCollection.length ? `(${filteredCollection.length} minted)` : "(...)"}</p>
         </div>
         <div className={classes.searchAndFilter}>
           <Search type={"1of1"} searchPlaceholder="Search By 1 of 1s and Users" />

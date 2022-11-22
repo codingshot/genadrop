@@ -3,6 +3,10 @@
   padding: 0 2em;
 }
 
+.notFound {
+  grid-column: 1 / span 4;
+}
+
 .wrapper {
   width: 100%;
   max-width: 1440px;
@@ -108,6 +112,12 @@
   transition: all 300ms;
 }
 
+.skeleton {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1em;
+}
+
 .btn:hover {
   color: var(--default);
   background: var(--main-color);
@@ -123,6 +133,9 @@
   .nfts {
     grid-template-columns: repeat(2, 1fr);
   }
+  .skeleton {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media screen and (max-width: 900px) {
@@ -134,6 +147,9 @@
     padding: 0.2em 1em;
     font-size: 1.2rem;
   }
+  .skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
   .category {
     font-size: 1rem;
@@ -144,11 +160,18 @@
   .nfts {
     grid-template-columns: repeat(1, 1fr);
   }
+  .skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media screen and (max-width: 540px) {
   .container {
     padding: 0 1em;
+  }
+
+  .skeleton {
+    grid-template-columns: repeat(1, 1fr);
   }
 
   .filter {
