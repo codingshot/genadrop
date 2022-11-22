@@ -176,14 +176,14 @@ const supportedChains = {
     switch: switchChain,
     coinGeckoLabel: "ethereum",
   },
-  421611: {
+  42161: {
     id: "arbitrum",
     label: "Arbitrum",
     chain: "Arbitrum",
     icon: arbitrumIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "ETH",
-    networkId: 421611,
+    networkId: 42161,
     explorer: "https://arbiscan.io/",
     add: addChain,
     isMainnet: true,
