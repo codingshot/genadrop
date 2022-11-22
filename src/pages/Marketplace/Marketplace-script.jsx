@@ -162,10 +162,16 @@ export const getCollectionsBySearch = ({ collections, search }) => {
 };
 
 export const getCollectionsByCategory = ({ collections, category, activeChain }) => {
-  if (category === "All") return collections;
   let singleNFTs = collections.filter((col) => !col.nfts);
+  const filteredCategory = singleNFTs.filter((nft) => supportedChains[nft.chain].chain === activeChain);
 
-  singleNFTs = singleNFTs.filter((col) => {
+  if (category === "All" && activeChain === "All Chains") {
+    return collections;
+  }
+  if (category === "All" && activeChain !== "All Chains") {
+    return filteredCategory;
+  }
+  singleNFTs = filteredCategory.filter((col) => {
     let categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;
 
     categoryCheck = categoryCheck?.filter((property) => {
