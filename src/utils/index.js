@@ -3,6 +3,7 @@
 import axios from "axios";
 import {
   getAlgoData,
+  purchaseArbitrumNfts,
   purchaseAuroraNfts,
   purchaseAvaxNfts,
   purchaseCeloNfts,
@@ -747,6 +748,30 @@ export const buyGraphNft = async (buyProps) => {
   } else if (supportedChains[chainId].chain === "Aurora") {
     dispatch(setOverlay(true));
     const res = await purchaseAuroraNfts(buyProps);
+    if (res) {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction successful",
+          type: "success",
+        })
+      );
+      setTimeout(() => {
+        history.push(`/profile/${chainId}/${account}`);
+        // history.push(`/marketplace`);
+      }, 3000);
+    } else {
+      dispatch(setOverlay(false));
+      dispatch(
+        setNotification({
+          message: "transaction failed",
+          type: "error",
+        })
+      );
+    }
+  } else if (supportedChains[chainId].chain === "Arbitrum") {
+    dispatch(setOverlay(true));
+    const res = await purchaseArbitrumNfts(buyProps);
     if (res) {
       dispatch(setOverlay(false));
       dispatch(

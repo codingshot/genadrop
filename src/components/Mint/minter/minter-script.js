@@ -11,6 +11,7 @@ import {
   mintSingleToAurora,
   mintSingleToNear,
   mintSingleToAvax,
+  mintSingleToAbitrum,
 } from "../../../utils/arc_ipfs";
 
 export const handleMint = async (args) => {
@@ -56,6 +57,7 @@ export const handleMint = async (args) => {
 
 export const handleSingleMint = async (args) => {
   const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
+
   if (!account) {
     return dispatch(
       setNotification({
@@ -78,6 +80,8 @@ export const handleSingleMint = async (args) => {
       url = await mintSingleToNear({ ...args });
     } else if (chain.toLowerCase() === "avalanche") {
       url = await mintSingleToAvax({ ...args });
+    } else if (chain.toLowerCase() === "arbitrum") {
+      url = await mintSingleToAbitrum({ ...args });
     } else {
       dispatch(
         setNotification({

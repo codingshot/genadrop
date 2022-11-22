@@ -141,7 +141,9 @@ const Collections = () => {
       <div className={classes.heading}>
         <div className={classes.title}>
           <h1>{searchChain === "All Chains" ? "Collections" : searchChain}</h1>
-          <p>View all minted Collections ({`${filteredCollection && filteredCollection.length}) minted`}</p>
+          <p>
+            View all minted Collections {filteredCollection.length ? `(${filteredCollection.length} minted)` : "(...)"}
+          </p>
         </div>
         <div className={classes.searchAndFilter}>
           <Search type="collections" searchPlaceholder="Search By collections or Users" />

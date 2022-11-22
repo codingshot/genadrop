@@ -8,6 +8,10 @@ import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import "@near-wallet-selector/modal-ui/styles.css";
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { async } from "regenerator-runtime";
+import Web3 from "web3";
+import { Magic } from "magic-sdk";
+import { ConnectExtension } from "@magic-ext/connect";
 import classes from "./walletPopup.module.css";
 import {
   setProposedChain,
@@ -17,11 +21,11 @@ import {
   setConnector,
 } from "../../gen-state/gen.actions";
 import supportedChains from "../../utils/supportedChains";
-import "regenerator-runtime";
 import getConfig from "./nearConfig";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
+import magicLinkIcon from "../../assets/icon-magic-link.svg";
 import { GenContext } from "../../gen-state/gen.context";
 
 const WalletPopup = ({ handleSetState }) => {
@@ -95,12 +99,12 @@ const WalletPopup = ({ handleSetState }) => {
       handleProposedChain();
 
       return;
-    } else {
-      if (window.selector) {
-        const nearLogout = await window.selector.wallet();
-        nearLogout.signOut();
-      }
     }
+    if (window.selector) {
+      const nearLogout = await window.selector.wallet();
+      nearLogout.signOut();
+    }
+
     setActiveChain(chainId);
     setConnectionMethods(true);
   };
@@ -116,6 +120,10 @@ const WalletPopup = ({ handleSetState }) => {
     handleProposedChain();
   };
 
+  const handleMagicLink = async () => {
+    handleSetState({ connectionMethod: "magicLink" });
+    handleProposedChain();
+  };
   useEffect(() => {
     setShowMoreOptions(false);
     setConnectionMethods(false);
@@ -169,6 +177,7 @@ const WalletPopup = ({ handleSetState }) => {
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
               .sort((a) => (a.comingSoon === true ? 1 : -1))
+              .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
               .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div
@@ -209,6 +218,11 @@ const WalletPopup = ({ handleSetState }) => {
               <h3>WalletConnect</h3>
               <p>Scan with WalletConnect to connect</p>
             </div>
+            {/* <div onClick={handleMagicLink} className={classes.connectionMethod}>
+              <img src={magicLinkIcon} alt="" />
+              <h3>Magic Connect</h3>
+              <p>Connect using Magic Connect</p>
+            </div> */}
           </div>
         </div>
       </div>

@@ -67,7 +67,6 @@ const CollectionToSingleMinter = () => {
   };
 
   useEffect(() => {
-    console.log("PARAM", params.mintId);
     const search = new URL(document.location).searchParams;
     if (search.get("errorCode")) {
       handleSetState({
@@ -89,8 +88,6 @@ const CollectionToSingleMinter = () => {
   }, []);
 
   const handleFileChange = (event) => {
-    console.log("accepte: ", acceptedFileType);
-
     handleSetState({ fileName: "", file: null, metadata: null, zip: null });
     const uploadedFile = event.target.files[0];
     if (uploadedFile === null) return;
@@ -98,14 +95,32 @@ const CollectionToSingleMinter = () => {
     const name = uploadedFile.name.replace(/\.+\s*\./, ".").split(".");
     const uploadedFileName = name.slice(0, name.length - 1).join(".");
     const fileType = name.slice(name.length - 1).join();
-    console.log(!uploadedFile, uploadedFile);
 
-    console.log("accepte: ", acceptedFileType);
     if (!acceptedFileType.includes(fileType.toLowerCase())) return;
 
     if (fileType === "zip") {
       handleSetState({ zip: uploadedFile, fileName: uploadedFileName });
       handleZipFile({ uploadedFile, handleSetState });
+    } else if (params.mintId === "Video File") {
+      handleSetState({
+        file: [uploadedFile],
+        fileName: uploadedFileName,
+        metadata: {
+          attributes: {
+            0: { trait_type: "File Type", value: "Video" },
+          },
+        },
+      });
+    } else if (params.mintId === "Audio File") {
+      handleSetState({
+        file: [uploadedFile],
+        fileName: uploadedFileName,
+        metadata: {
+          attributes: {
+            0: { trait_type: "File Type", value: "Audio" },
+          },
+        },
+      });
     } else {
       handleSetState({
         file: [uploadedFile],

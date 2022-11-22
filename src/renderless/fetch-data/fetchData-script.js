@@ -42,6 +42,12 @@ export const parseAvaxSingle = (result) => {
     type: "1of1",
   }));
 };
+export const parseArbitrumSingle = (result) => {
+  return result.map((val) => ({
+    ...val,
+    type: "1of1",
+  }));
+};
 export const parseCeloSingle = (result) => {
   return result.map((val) => ({
     ...val,

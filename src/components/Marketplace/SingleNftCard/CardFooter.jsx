@@ -64,7 +64,6 @@ export const OnSalveView = ({ footerPrpops }) => {
 // Collected
 export const CollectedView = ({ footerPrpops }) => {
   const { price, userId, account, isListed } = footerPrpops;
-  console.log(footerPrpops);
   return (
     <div className={classes.collected}>
       <div className={`${classes.list}  ${price || userId ? classes.listed : ""}`}>
