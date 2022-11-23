@@ -30,8 +30,14 @@
   color: #5b7083;
 }
 
-.content {
+.contents {
   width: 18em;
+
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+.content {
   margin: 0.5em 0;
   border-radius: 10px;
 }
