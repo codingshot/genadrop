@@ -1000,12 +1000,17 @@ const Minter = () => {
                               </div>
                             </div>
 
-                            <div className={`${classes.hashtags}  ${!hashtags && classes.noTag}`}>
-                              {tweet?.hashtags?.map((e) => `#${e}`)}
-                            </div>
+                            {tweet?.hashtags?.map((e) => {
+                              if (e !== null) {
+                                return (
+                                  <div className={`${classes.hashtags}  ${!hashtags && classes.noTag}`}>{`@${e}`}</div>
+                                );
+                              }
+                            })}
                           </div>
                         </div>
                       </div>
+
                       <div className={classes.inputWrapper}>
                         <div className={classes.toggleTitle}>
                           <div className={classes.receiverAddress}>
@@ -1024,9 +1029,13 @@ const Minter = () => {
                               </div>
                             </div>
 
-                            <div className={`${classes.hashtags}  ${!mentions && classes.noTag}`}>
-                              {tweet?.mentions?.map((e) => `@${e}`)}
-                            </div>
+                            {tweet?.mentions?.map((e) => {
+                              if (e !== null) {
+                                return (
+                                  <div className={`${classes.hashtags}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                );
+                              }
+                            })}
                           </div>
                         </div>
                       </div>
