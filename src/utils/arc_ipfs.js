@@ -109,12 +109,11 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 
 const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   const fileCat = nftFile.type.split("/")[0];
-  const nftFileNameSplit = nftFileName?.split(".");
-  const fileExt = nftFileName ? nftFileNameSplit[1] : "png";
-  console.log("file: ", nftFile, fileCat, nftFileNameSplit, fileExt);
+  const nftFileNameSplit = nftFileName.split(".");
+  const fileExt = nftFileNameSplit[1];
 
   const kvProperties = {
-    url: nftFileName ? nftFileNameSplit[0] : "tweet",
+    url: nftFileNameSplit[0],
     mimetype: `${fileCat}/${fileExt}`,
   };
   const pinataMetadata = JSON.stringify({
@@ -1009,7 +1008,7 @@ export async function listAlgoNft(nftProps) {
   });
 
   const txList = [fundTxn, optInTxn, Transfertxn, appOptinTx, listTxn, rekeyTxn];
-  const groupedTx = algosdk.assignGroupID(txList);
+  let groupedTx = algosdk.assignGroupID(txList);
 
   console.log("two kind", txList, groupedTx);
   const txnsToSignByUser = [fundTxn, Transfertxn];

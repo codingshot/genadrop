@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment/moment";
-import Skeleton from "react-loading-skeleton";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -28,9 +27,7 @@ import {
   getAllPolygonCollections,
   getAllPolygonNfts,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
-
 import Skeleton from "react-loading-skeleton";
-
 
 const AllNfts = () => {
   const history = useHistory();
@@ -179,7 +176,6 @@ const AllNfts = () => {
         {collections?.length > 0 ? (
           <section className={classes.nfts}>
             {activeType === "T1" ? (
-
               filteredCollection.length > 0 ? (
                 filteredCollection
                   .slice(0, 16)
@@ -191,7 +187,6 @@ const AllNfts = () => {
                   <NotFound />
                 </div>
               )
-
             ) : activeType === "T2" ? (
               filteredCollection.length > 0 ? (
                 filteredCollection.slice(0, 16).map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
