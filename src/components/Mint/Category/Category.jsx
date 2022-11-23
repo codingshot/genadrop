@@ -15,7 +15,6 @@ const Category = ({ category, file, params }) => {
             (card.value === "collection" && file?.length > 1) ||
             (card.value === "audio" && params.mintId === "Audio File" && !category) ||
             (card.value === "video" && params.mintId === "Video File" && !category) ||
-            (card.value === "tweet" && params.mintId === "tweet" && !category) ||
             (card.value === "Art" &&
               file?.length === 1 &&
               !category &&
