@@ -29,6 +29,9 @@ import {
   getAllPolygonNfts,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 
+import Skeleton from "react-loading-skeleton";
+
+
 const AllNfts = () => {
   const history = useHistory();
   const [state, setState] = useState({
@@ -176,11 +179,19 @@ const AllNfts = () => {
         {collections?.length > 0 ? (
           <section className={classes.nfts}>
             {activeType === "T1" ? (
-              filteredCollection
-                .slice(0, 16)
-                .map((el, idx) =>
-                  !el?.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
-                )
+
+              filteredCollection.length > 0 ? (
+                filteredCollection
+                  .slice(0, 16)
+                  .map((el, idx) =>
+                    !el?.nfts ? <SingleNftCard key={idx} nft={el} /> : <CollectionNftCard key={idx} collection={el} />
+                  )
+              ) : (
+                <div className={classes.notFound}>
+                  <NotFound />
+                </div>
+              )
+
             ) : activeType === "T2" ? (
               filteredCollection.length > 0 ? (
                 filteredCollection.slice(0, 16).map((nft, idx) => <SingleNftCard key={idx} nft={nft} />)
