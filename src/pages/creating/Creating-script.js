@@ -76,18 +76,19 @@ const cards = [
     comingSoon: "",
   },
   {
+    title: "Tweets",
+    description: "Mint your favorite tweets on chain",
+    icon: <Tweets />,
+    url: "/mint/tweet",
+    comingSoon: "",
+  },
+  {
     title: "AI",
     description: "Create Digital art with AI",
     icon: <Ai />,
     url: "/mint/ai",
     comingSoon: true,
   },
-  {
-    title: "Tweets",
-    description: "Mint your favorite tweets on chain",
-    icon: <Tweets />,
-    url: "/mint/tweet",
-    comingSoon: true,
-  },
+  
 ];
 export default cards;
