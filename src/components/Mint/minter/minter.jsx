@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { async } from "regenerator-runtime";
+
 import moment from "moment";
 // import TweetEmbed from "react-tweet-embed";
 import * as htmlToImage from "html-to-image";
@@ -298,10 +298,9 @@ const Minter = () => {
       // html2canvas(tweetRef.current).then((canvas) => {
       //   const blobImage = htmlToImage.toBlob(canvas.toDataURL("image/png"));
       // });
+      // singleMintProps.file = await htmlToImage.toBlob();
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
-      // const blobImage = htmlToImage.toBlob(image);
-      // console.log(blobImage);
-
+      console.log(singleMintProps.file);
       // return;
     }
 
