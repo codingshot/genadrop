@@ -307,7 +307,7 @@ const Minter = () => {
       handleSetState({
         attributes: {
           ...attributes,
-          [Date.now()]: { trait_type: "mentions", value: `@${tweet.mentions.join(" @")}` },
+          [Date.now()]: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
         },
       });
     }
@@ -1035,13 +1035,15 @@ const Minter = () => {
                               </div>
                             </div>
 
-                            {tweet?.mentions?.map((e) => {
-                              if (e !== null) {
-                                return (
-                                  <div className={`${classes.hashtag}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
-                                );
-                              }
-                            })}
+                            <div className={classes.hashtags}>
+                              {tweet?.mentions[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                  );
+                                }
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
