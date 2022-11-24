@@ -9,7 +9,6 @@ import { ReactComponent as Art } from "../../../assets/create/art-icon.svg";
 import { ReactComponent as Doubletake } from "../../../assets/create/bereal-icon.svg";
 import { ReactComponent as Audio } from "../../../assets/create/MusicNotes.svg";
 import { ReactComponent as Video } from "../../../assets/create/MintVideos.svg";
-import { ReactComponent as Tweets } from "../../../assets/create/tweets-icon.svg";
 
 const cards = [
   {
@@ -68,13 +67,13 @@ const cards = [
   //   url: "/mint/ai",
 
   // },
-  {
-    title: "Tweets",
-    description: "Mint your favorite tweets on chain",
-    icon: <Tweets />,
-    value: "tweet",
-    url: "/mint/tweet",
-  },
+  // {
+  //   title: "Tweets",
+  //   description: "Mint your favorite tweets on chain",
+  //   icon: <Tweets />,
+  //   url: "/mint/tweet",
+
+  // },
   {
     title: "Video Art",
     description: "Mint your favorite videos on chain",

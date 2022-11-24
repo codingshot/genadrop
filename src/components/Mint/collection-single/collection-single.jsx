@@ -12,7 +12,6 @@ import line from "../../../assets/icon-line.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setMinter, setZip } from "../../../gen-state/gen.actions";
 import { NearErrorPop, NearSuccessPopup } from "../popup/nearMintPopup";
-import MintTweet from "../mintTweet/mintTweet";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
@@ -160,21 +159,19 @@ const CollectionToSingleMinter = () => {
   };
 
   useEffect(() => {
-    if (params.mintId !== "tweet") {
-      dragRef.current.ondragover = (e) => {
-        e.preventDefault();
-        document.querySelector(".drop-area").style.border = "2px dashed green";
-      };
-      dragRef.current.ondragleave = (e) => {
-        e.preventDefault();
-        document.querySelector(".drop-area").style.border = "2px solid var(--outline)";
-      };
-      dragRef.current.ondrop = (e) => {
-        e.preventDefault();
-        document.querySelector(".drop-area").style.border = "2px solid green";
-        handleFileChange({ target: e.dataTransfer });
-      };
-    }
+    dragRef.current.ondragover = (e) => {
+      e.preventDefault();
+      document.querySelector(".drop-area").style.border = "2px dashed green";
+    };
+    dragRef.current.ondragleave = (e) => {
+      e.preventDefault();
+      document.querySelector(".drop-area").style.border = "2px solid var(--outline)";
+    };
+    dragRef.current.ondrop = (e) => {
+      e.preventDefault();
+      document.querySelector(".drop-area").style.border = "2px solid green";
+      handleFileChange({ target: e.dataTransfer });
+    };
   }, []);
 
   // useEffect(() => {
@@ -204,40 +201,36 @@ const CollectionToSingleMinter = () => {
   }, [file]);
 
   return (
-    <>
-      {params.mintId === "tweet" ? (
-        <MintTweet />
-      ) : (
-        <div ref={dragRef} className={classes.container}>
-          {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
-          {popupProps.isError && <NearErrorPop handleSetState={handleSetState} popupProps={popupProps} />}
-          {!popupProps.isError && popupProps.Popup && (
-            <NearSuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
-          )}
-          <>
-            <Link to="/create" className={classes.goBack}>
-              <BackIcon className={classes.backIcon} />
-            </Link>
-            <header className={classes.headingWrapper}>
-              {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
-              <p className={classes.description}>
-                Upload a{params.mintId === "Audio File" ? "n " : " "}
-                <span>
-                  {params.mintId === "1of1"
-                    ? "image"
-                    : params.mintId === "collection"
-                    ? "collection"
-                    : params.mintId === "Video File"
-                    ? "Video"
-                    : "Audio"}
-                  <img src={line} alt="" />
-                </span>{" "}
-                to create NFTs on any of our <br />
-                supported blockchains super fast!
-              </p>
-            </header>
+    <div ref={dragRef} className={classes.container}>
+      {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
+      {popupProps.isError && <NearErrorPop handleSetState={handleSetState} popupProps={popupProps} />}
+      {!popupProps.isError && popupProps.Popup && (
+        <NearSuccessPopup handleSetState={handleSetState} popupProps={popupProps} />
+      )}
+      <>
+        <Link to="/create" className={classes.goBack}>
+          <BackIcon className={classes.backIcon} />
+        </Link>
+        <header className={classes.headingWrapper}>
+          {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
+          <p className={classes.description}>
+            Upload a{params.mintId === "Audio File" ? "n " : " "}
+            <span>
+              {params.mintId === "1of1"
+                ? "image"
+                : params.mintId === "collection"
+                ? "collection"
+                : params.mintId === "Video File"
+                ? "Video"
+                : "Audio"}
+              <img src={line} alt="" />
+            </span>{" "}
+            to create NFTs on any of our <br />
+            supported blockchains super fast!
+          </p>
+        </header>
 
-            {/* <div className={classes.mintSwitch}>
+        {/* <div className={classes.mintSwitch}>
           <button
             type="button"
             className={`${params.mintId === "collection" && classes.active}`}
@@ -250,31 +243,31 @@ const CollectionToSingleMinter = () => {
           </button>
         </div> */}
 
-            {mintType === "collection" ? (
-              <div className={`${classes.card} ${classes[params.mintId]} drop-area`}>
-                {!loading1 ? <div className={classes.imagePlaceholder} /> : null}
-                <img
-                  style={!loading1 ? { display: "none" } : {}}
-                  src={collectionIcon}
-                  alt=""
-                  onLoad={handleImageLoading1}
-                />
-                <h3 className={classes.title}> Mint a collection</h3>
-                <p className={classes.action}>Drag and Drop your zip file created using Genadrop Create app</p>
-                <p className={classes.supportedFiles}>
-                  We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
-                </p>
-                <div>or</div>
-                <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
-                  Browse files
-                </button>
-              </div>
-            ) : (
-              <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
-                {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
-                <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
-                <h3 className={classes.title}> Mint {params.mintId} </h3>
-                {/* <Link className={classes.takePic} to="/mint/camera">
+        {mintType === "collection" ? (
+          <div className={`${classes.card} ${classes[params.mintId]} drop-area`}>
+            {!loading1 ? <div className={classes.imagePlaceholder} /> : null}
+            <img
+              style={!loading1 ? { display: "none" } : {}}
+              src={collectionIcon}
+              alt=""
+              onLoad={handleImageLoading1}
+            />
+            <h3 className={classes.title}> Mint a collection</h3>
+            <p className={classes.action}>Drag and Drop your zip file created using Genadrop Create app</p>
+            <p className={classes.supportedFiles}>
+              We only support .Zip files for collection mints and deploy to Celo, Algorand, Aurora, and Polygon{" "}
+            </p>
+            <div>or</div>
+            <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
+              Browse files
+            </button>
+          </div>
+        ) : (
+          <div className={`${classes.card} ${classes[`_${params.mintId}`]} drop-area`}>
+            {!loading2 ? <div className={classes.imagePlaceholder} /> : null}
+            <img style={!loading2 ? { display: "none" } : {}} src={_1of1Icon} alt="" onLoad={handleImageLoading2} />
+            <h3 className={classes.title}> Mint {params.mintId} </h3>
+            {/* <Link className={classes.takePic} to="/mint/camera">
               <div>
                 <CameraIcon />
               </div>
@@ -285,28 +278,26 @@ const CollectionToSingleMinter = () => {
               <p>Record video and turn it into a GIF</p>
             </div>
             <div>or</div> */}
-                <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
-                  Browse files
-                </button>
-                <div className={classes.explanatoryText}>
-                  <div>Drag and Drop your image file here</div>
-                  <p>We support {acceptedFileType} files and deploy to Celo, Algorand, Near, and Polygon </p>
-                  <p>Max file size: 20mb </p>
-                </div>
-              </div>
-            )}
+            <button type="button" onClick={() => fileRef.current.click()} className={classes.btn}>
+              Browse files
+            </button>
+            <div className={classes.explanatoryText}>
+              <div>Drag and Drop your image file here</div>
+              <p>We support {acceptedFileType} files and deploy to Celo, Algorand, Near, and Polygon </p>
+              <p>Max file size: 20mb </p>
+            </div>
+          </div>
+        )}
 
-            <input
-              style={{ display: "none" }}
-              onChange={handleFileChange}
-              ref={fileRef}
-              type="file"
-              accept={acceptedFileType}
-            />
-          </>
-        </div>
-      )}
-    </>
+        <input
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+          ref={fileRef}
+          type="file"
+          accept={acceptedFileType}
+        />
+      </>
+    </div>
   );
 };
 

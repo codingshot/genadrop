@@ -13,18 +13,6 @@
   border-radius: 50%;
 }
 
-.hashtags {
-  border: 1px solid var(--card-outline);
-  padding: 0.5em;
-  border-radius: 10em;
-  width: fit-content;
-  color: var(--main-color);
-}
-
-.noTag {
-  color: var(--card-outline);
-}
-
 @keyframes show {
   from {
     transform: scale(0.99) translateY(1em);
@@ -712,10 +700,6 @@ div.showPreview > span {
 .headerIcon .photoIcon path {
   fill: var(--default);
 }
-
-.tweet {
-  width: 28em;
-}
 @media screen and (max-width: 1038px) {
   .grid {
     display: grid;
@@ -740,9 +724,6 @@ div.showPreview > span {
   }
   .headerDescription span svg {
     width: 4rem;
-  }
-  .tweet {
-    width: 20em;
   }
   .imageContainers {
     width: 90%;

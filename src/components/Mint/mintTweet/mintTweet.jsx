@@ -30,7 +30,7 @@ const MintTweet = () => {
 
   const validateLink = () => {
     const id = tweetLink.split(/[/?]/).find((i) => Number.parseInt(i));
-    console.log(id);
+
     axios
       .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL([id])}`, {
         headers: {
@@ -40,7 +40,7 @@ const MintTweet = () => {
       .then((data) => {
         let tweets = data.data;
 
-        const attachments = [];
+        const attachments = {};
         const users = {};
         data.data.includes.users.forEach((element) => {
           users[element.id] = {
@@ -50,24 +50,24 @@ const MintTweet = () => {
             name: element.name,
           };
         });
-        data.data?.includes?.media?.forEach((element) => {
+        data.data.includes.media.forEach((element) => {
           let img;
           if (element?.type === "photo") {
             img = element?.url;
           } else {
             img = element.variants[0]?.url;
           }
-          attachments.push({
+          attachments[element.media_key] = {
             media_key: element.media_key,
             type: element?.type,
             url: img,
-          });
+          };
         });
 
         tweets = data.data.data.map((tweet) => {
           return {
             id: tweet.id,
-            media: attachments,
+            media: attachments[tweet?.attachments?.media_keys[0]],
             author_id: users[tweet?.author_id],
             created_at: tweet?.created_at,
             text: tweet.text?.split("https://t.co/")[0],
@@ -75,9 +75,9 @@ const MintTweet = () => {
             domain: "Twitter Web App",
             icon: twitterIcon,
             links: tweet.entities?.urls?.filter((link) => !link.display_url.includes("pic.twitter"))[0],
-            hashtags: [tweet.entities?.hashtags?.map((tag) => tag.tag)],
-            mentions: [tweet.entities?.mentions?.map((mention) => mention.username)],
-            lightTheme,
+            hashtags: [tweet.entities?.hashtags.map((tag) => tag.tag)],
+            mentions: [tweet.entities?.mentions.map((mention) => mention.username)],
+            theme: lightTheme,
             attributes: {
               0: { trait_type: "File Type", value: "Tweet" },
               1: { trait_type: "Time & Date", value: moment(tweet.created_at).format("hh:mm a · MM Do, YYYY") },
@@ -85,7 +85,7 @@ const MintTweet = () => {
             },
           };
         });
-        // console.log("TW: ", tweets[0]);
+        console.log("TW: ", tweets[0]);
 
         history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
         // history.push({ pathname: "/mint/tweet/minter", state: { data: JSON.stringify(tweets[0]) } });
@@ -98,7 +98,7 @@ const MintTweet = () => {
 
   return (
     <div className={classes.container}>
-      {/* https://twitter.com/EricNjiiru/status/1593639908073054209?t=-udTrBVn6HvqP2QBpLt6Tw&s=08 */}
+      https://twitter.com/EricNjiiru/status/1593639908073054209?t=-udTrBVn6HvqP2QBpLt6Tw&s=08
       <div className={classes.header}>Mint a Tweet</div>
       <div className={classes.caption}>Capture and keep record of your historical moments on twitter on chain</div>
       <div className={classes.instruction}>Enter a link to the tweet you want to mint</div>
