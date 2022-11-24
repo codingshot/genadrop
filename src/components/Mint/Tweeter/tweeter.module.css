@@ -20,6 +20,11 @@
   flex-direction: column;
 }
 
+.description,
+.date {
+  text-align: left;
+  margin-top: 1em;
+}
 .username {
   font-weight: 700;
 }
@@ -30,8 +35,14 @@
   color: #5b7083;
 }
 
-.content {
-  width: 18em;
+.contents {
   margin: 0.5em 0;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.2em;
+}
+
+.content {
   border-radius: 10px;
 }
