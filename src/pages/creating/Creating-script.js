@@ -89,5 +89,6 @@ const cards = [
     url: "/mint/ai",
     comingSoon: true,
   },
+  
 ];
 export default cards;
