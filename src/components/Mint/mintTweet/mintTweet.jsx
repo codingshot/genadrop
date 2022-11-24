@@ -82,12 +82,13 @@ const MintTweet = () => {
               0: { trait_type: "File Type", value: "Tweet" },
               1: { trait_type: "Time & Date", value: moment(tweet.created_at).format("hh:mm a · MM Do, YYYY") },
               2: { trait_type: "Author", value: `@${users[tweet?.author_id].username}` },
+              3: { trait_type: "Tweet URL", value: tweetLink },
             },
           };
         });
         // console.log("TW: ", tweets[0]);
 
-        history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
+        history.push("/mint/tweet/minterthe ", { data: JSON.stringify(tweets[0]) });
         // history.push({ pathname: "/mint/tweet/minter", state: { data: JSON.stringify(tweets[0]) } });
       })
       .catch((err) => {

@@ -211,7 +211,7 @@ const Minter = () => {
     } else if (params.mintId === "tweet") {
       handleSetState({
         description: tweet.text,
-        fileName: tweet.created_at,
+        fileName: tweet?.author_id?.name,
       });
     } else {
       if (!loadedMinter) {
