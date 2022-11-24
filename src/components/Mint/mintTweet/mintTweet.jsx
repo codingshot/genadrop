@@ -77,7 +77,7 @@ const MintTweet = () => {
             links: tweet.entities?.urls?.filter((link) => !link.display_url.includes("pic.twitter"))[0],
             hashtags: [tweet.entities?.hashtags?.map((tag) => tag.tag)],
             mentions: [tweet.entities?.mentions?.map((mention) => mention.username)],
-            theme: lightTheme,
+            lightTheme,
             attributes: {
               0: { trait_type: "File Type", value: "Tweet" },
               1: { trait_type: "Time & Date", value: moment(tweet.created_at).format("hh:mm a · MM Do, YYYY") },
