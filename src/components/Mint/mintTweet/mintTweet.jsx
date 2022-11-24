@@ -88,7 +88,7 @@ const MintTweet = () => {
         });
         // console.log("TW: ", tweets[0]);
 
-        history.push("/mint/tweet/minter ", { data: JSON.stringify(tweets[0]) });
+        history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
         // history.push({ pathname: "/mint/tweet/minter", state: { data: JSON.stringify(tweets[0]) } });
       })
       .catch((err) => {
