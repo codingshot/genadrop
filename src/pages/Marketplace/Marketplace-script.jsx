@@ -3,12 +3,12 @@ import { getFormatedPrice } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 
 const filterByListed = (collections, account) => {
-  return collections.filter(({ price, sold }) => price && !sold);
+  return collections.filter((col) => col.isListed);
   // return collections.filter(({ price, owner }) => !price && owner === account);
 };
 
 const filterByNOtListed = (collections, account) => {
-  return collections.filter(({ isListed }) => !isListed);
+  return collections.filter((col) => !col.isListed);
 };
 
 const filterByOnAuchtion = (collections) => {
@@ -166,9 +166,13 @@ export const getCollectionsByCategory = ({ collections, category, activeChain })
     return collections;
   }
   let singleNFTs = collections.filter((col) => !col.nfts);
-  let filteredCategory = singleNFTs.filter((nft) => supportedChains[nft.chain].chain === activeChain);
+  let filteredCategory = [];
   if (category !== "All" && activeChain === "All Chains") {
     filteredCategory = singleNFTs;
+  } else if (category === "All" && activeChain !== "All Chains") {
+    return [...singleNFTs.filter((nft) => supportedChains[nft.chain].chain === activeChain)];
+  } else {
+    filteredCategory = singleNFTs.filter((nft) => supportedChains[nft.chain].chain === activeChain);
   }
   singleNFTs = filteredCategory.filter((col) => {
     let categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;

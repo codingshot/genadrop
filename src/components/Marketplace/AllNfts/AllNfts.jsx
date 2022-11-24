@@ -112,7 +112,7 @@ const AllNfts = () => {
       getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
     ]).then((data) => {
-      handleSetState({ singles: shuffle(data.flat()) });
+      handleSetState({ singles: sortBy({ collections: data.flat(), value: "newest" }) });
     });
   }, []);
 

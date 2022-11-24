@@ -8,8 +8,8 @@ const FilterDropdown = ({ handleFilter, collection }) => {
   const [state, setState] = useState({
     toggleFilter: false,
     filter: {
-      status: "not listed",
-      sortby: "newest",
+      status: "",
+      sortby: "",
       minPrice: "",
       maxPrice: "",
     },
