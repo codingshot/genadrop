@@ -293,22 +293,14 @@ const Minter = () => {
     }
 
     if (tweet) {
-      // takeScreenshot(tweetRef.current);
-      // singleMintProps.file = image;
-      // html2canvas(tweetRef.current).then((canvas) => {
-      //   const blobImage = htmlToImage.toBlob(canvas.toDataURL("image/png"));
-      // });
-      // singleMintProps.file = await htmlToImage.toBlob();
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
-      console.log(singleMintProps.file);
-      // return;
     }
 
     if (mentions) {
       handleSetState({
         attributes: {
           ...attributes,
-          mentions: tweet.mentions,
+          mentions: `@${tweet.mentions.join(" @")}`,
         },
       });
     }
@@ -317,7 +309,7 @@ const Minter = () => {
       handleSetState({
         attributes: {
           ...attributes,
-          hashtags: tweet.hashtags,
+          hashtags: `#${tweet.hashtags.join(" #")}`,
         },
       });
     }

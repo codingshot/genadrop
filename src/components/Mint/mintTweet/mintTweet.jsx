@@ -98,7 +98,6 @@ const MintTweet = () => {
 
   return (
     <div className={classes.container}>
-      {/* https://twitter.com/EricNjiiru/status/1593639908073054209?t=-udTrBVn6HvqP2QBpLt6Tw&s=08 */}
       <div className={classes.header}>Mint a Tweet</div>
       <div className={classes.caption}>Capture and keep record of your historical moments on twitter on chain</div>
       <div className={classes.instruction}>Enter a link to the tweet you want to mint</div>
