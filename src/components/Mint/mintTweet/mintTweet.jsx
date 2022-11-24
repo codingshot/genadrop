@@ -30,7 +30,7 @@ const MintTweet = () => {
 
   const validateLink = () => {
     const id = tweetLink.split(/[/?]/).find((i) => Number.parseInt(i));
-    console.log(id);
+
     axios
       .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL([id])}`, {
         headers: {
@@ -86,6 +86,7 @@ const MintTweet = () => {
             },
           };
         });
+
         history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
       })
       .catch((err) => {
