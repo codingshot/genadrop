@@ -20,18 +20,34 @@
   flex-direction: column;
 }
 
+.description,
+.date {
+  text-align: left;
+  margin-top: 1em;
+}
 .username {
   font-weight: 700;
+}
+
+.contents {
+  margin: 0.5em 0;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.2em;
+}
+
+.content {
+  border-radius: 10px;
+}
+
+.dark {
+  color: #fff;
+  background-color: #000;
 }
 
 .usertag,
 .date {
   font-size: 0.8em;
   color: #5b7083;
-}
-
-.content {
-  width: 18em;
-  margin: 0.5em 0;
-  border-radius: 10px;
 }
