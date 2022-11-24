@@ -14,11 +14,18 @@
 }
 
 .hashtags {
+  display: flex;
+  gap: 1em;
+  overflow: scroll;
+  overflow-y: hidden;
+}
+.hashtag {
   border: 1px solid var(--card-outline);
   padding: 0.5em;
   border-radius: 10em;
   width: fit-content;
   color: var(--main-color);
+  margin-bottom: 0.3em;
 }
 
 .noTag {

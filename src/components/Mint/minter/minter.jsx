@@ -303,13 +303,20 @@ const Minter = () => {
           mentions: `@${tweet.mentions.join(" @")}`,
         },
       });
+
+      handleSetState({
+        attributes: {
+          ...attributes,
+          [Date.now()]: { trait_type: "mentions", value: `@${tweet.mentions.join(" @")}` },
+        },
+      });
     }
 
     if (hashtags) {
       handleSetState({
         attributes: {
           ...attributes,
-          hashtags: `#${tweet.hashtags.join(" #")}`,
+          [Date.now()]: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
         },
       });
     }
@@ -997,13 +1004,15 @@ const Minter = () => {
                               </div>
                             </div>
 
-                            {tweet?.hashtags?.map((e) => {
-                              if (e !== null) {
-                                return (
-                                  <div className={`${classes.hashtags}  ${!hashtags && classes.noTag}`}>{`@${e}`}</div>
-                                );
-                              }
-                            })}
+                            <div className={classes.hashtags}>
+                              {tweet?.hashtags[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!hashtags && classes.noTag}`}>{`#${e}`}</div>
+                                  );
+                                }
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1029,7 +1038,7 @@ const Minter = () => {
                             {tweet?.mentions?.map((e) => {
                               if (e !== null) {
                                 return (
-                                  <div className={`${classes.hashtags}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                  <div className={`${classes.hashtag}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
                                 );
                               }
                             })}
