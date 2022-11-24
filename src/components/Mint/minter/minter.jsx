@@ -3,9 +3,8 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 import { async } from "regenerator-runtime";
 import moment from "moment";
-import TweetEmbed from "react-tweet-embed";
+// import TweetEmbed from "react-tweet-embed";
 import * as htmlToImage from "html-to-image";
-import html2canvas from "html2canvas";
 
 import classes from "./minter.module.css";
 // utils
