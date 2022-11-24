@@ -297,24 +297,30 @@ const Minter = () => {
     }
 
     if (mentions && hashtags) {
-      singleMintProps.metadata.attributes = {
-        ...attributes,
-        1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
-        1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-      };
+      handleSetState({
+        attributes: {
+          ...attributes,
+          1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
+          1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
+        },
+      });
     } else {
       if (hashtags) {
-        singleMintProps.metadata.attributes = {
-          ...attributes,
-          1000: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-        };
+        handleSetState({
+          attributes: {
+            ...attributes,
+            1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
+          },
+        });
       }
 
       if (mentions) {
-        singleMintProps.metadata.attributes = {
-          ...attributes,
-          1001: { trait_type: "mentions", value: `#${tweet.mentions[0].join(" #")}` },
-        };
+        handleSetState({
+          attributes: {
+            ...attributes,
+            1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
+          },
+        });
       }
     }
 
