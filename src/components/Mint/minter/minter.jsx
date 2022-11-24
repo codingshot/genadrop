@@ -685,7 +685,11 @@ const Minter = () => {
                 <div className={classes.assetInfo}>
                   <div className={classes.innerAssetInfo}>
                     <div className={classes.assetInfoTitle}>
-                      <span>{tweet ? `Tweet_${moment(tweet.created_at).format("hh:mm a · MM Do, YYYY")}` : fName}</span>
+                      <span>
+                        {tweet
+                          ? `${tweet.author_id.username + moment(tweet.created_at).format(" hh:mm a · MM Do, YYYY")}`
+                          : fName}
+                      </span>
                     </div>
                     <div>
                       <span>Number of assets:</span> <p>{file?.length ? file.length : 1}</p>
@@ -703,7 +707,12 @@ const Minter = () => {
                       </div>
                     ) : null}
                   </div>
-                  <button onClick={changeFile} type="button">
+                  <button
+                    onClick={() => {
+                      tweet ? history.push("/mint/tweet") : changeFile();
+                    }}
+                    type="button"
+                  >
                     Change asset
                   </button>
                 </div>

@@ -5,6 +5,8 @@ import polygonIcon from "../../../assets/icon-polygon.svg";
 import algoIcon from "../../../assets/icon-algo.svg";
 import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
+import arbitrumIcon from "../../../assets/arbitrum.svg";
+
 import nearIcon from "../../../assets/icon-near.svg";
 import avalancheIcon from "../../../assets/icon-avalanche.svg";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-chevron-down.svg";
@@ -16,6 +18,7 @@ const chainIcon = {
   polygon: polygonIcon,
   algorand: algoIcon,
   aurora: auroraIcon,
+  arbitrum: arbitrumIcon,
   near: nearIcon,
   celo: celoIcon,
   avalanche: avalancheIcon,
@@ -91,6 +94,7 @@ const ChainDropdown = ({ onChainFilter, data }) => {
           ...Object.values(supportedChains)
             .filter((_chain) => mainnet === _chain.isMainnet)
             .sort((a) => (a.comingSoon === true ? 1 : -1))
+            .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
             .map((_chain, idx) => (
               <div
                 key={idx + 1}

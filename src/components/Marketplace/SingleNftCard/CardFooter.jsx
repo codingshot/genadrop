@@ -21,19 +21,13 @@ export const MarketplaceView = ({ footerPrpops }) => {
         </div>
       </div>
       {!price ? (
-        owner === account &&
-        supportedChains[chain]?.chain !== "Near" &&
-        supportedChains[chain]?.chain !== "Avalanche" ? (
+        owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <div className={classes.btn}>List</div>
         ) : (
           <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
         )
       ) : !sold || isListed ? (
-        supportedChains[chain]?.chain === "Algorand" ? (
-          <div className={classes.btn}>Buy</div>
-        ) : (
-          <div className={classes.btn}>Buy</div>
-        )
+        <div className={classes.btn}>Buy</div>
       ) : (
         <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
       )}
@@ -64,7 +58,6 @@ export const OnSalveView = ({ footerPrpops }) => {
 // Collected
 export const CollectedView = ({ footerPrpops }) => {
   const { price, userId, account, isListed } = footerPrpops;
-  console.log(footerPrpops);
   return (
     <div className={classes.collected}>
       <div className={`${classes.list}  ${price || userId ? classes.listed : ""}`}>

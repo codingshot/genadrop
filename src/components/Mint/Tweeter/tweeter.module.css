@@ -29,12 +29,6 @@
   font-weight: 700;
 }
 
-.usertag,
-.date {
-  font-size: 0.8em;
-  color: #5b7083;
-}
-
 .contents {
   margin: 0.5em 0;
   border-radius: 10px;
@@ -45,4 +39,15 @@
 
 .content {
   border-radius: 10px;
+}
+
+.dark {
+  color: #fff;
+  background-color: #000;
+}
+
+.usertag,
+.date {
+  font-size: 0.8em;
+  color: #5b7083;
 }

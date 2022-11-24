@@ -6,14 +6,15 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import classes from "./listed.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import supportedChains from "../../../utils/supportedChains";
-import { getUserBoughtNftCollection } from "../../../utils";
+// import { getUserBoughtNftCollection } from "../../../utils";
 import {
+  arbitrumUserData,
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
   polygonUserData,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
-import { fetchUserBoughtNfts } from "../../../utils/firebase";
+// import { fetchUserBoughtNfts } from "../../../utils/firebase";
 import telegram from "../../../assets/blue-telegram.svg";
 import twitterIcon from "../../../assets/blue-twitter.svg";
 import facebookIcon from "../../../assets/blue-facebook.svg";
@@ -58,6 +59,13 @@ const Listed = () => {
         });
       } else if (supportedChains[chainId]?.chain === "Aurora") {
         const [nft] = await auroraUserData(nftId);
+        if (!nft) history.push("/");
+        handleSetState({
+          nftDetails: nft,
+          isLoading: false,
+        });
+      } else if (supportedChains[chainId]?.chain === "Arbitrum") {
+        const [nft] = await arbitrumUserData(nftId);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

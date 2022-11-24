@@ -161,12 +161,16 @@ export const getCollectionsBySearch = ({ collections, search }) => {
   );
 };
 
-export const getCollectionsByCategory = ({ collections, category }) => {
-  if (category === "All") return collections;
-
+export const getCollectionsByCategory = ({ collections, category, activeChain }) => {
+  if (category === "All" && activeChain === "All Chains") {
+    return collections;
+  }
   let singleNFTs = collections.filter((col) => !col.nfts);
-
-  singleNFTs = singleNFTs.filter((col) => {
+  let filteredCategory = singleNFTs.filter((nft) => supportedChains[nft.chain].chain === activeChain);
+  if (category !== "All" && activeChain === "All Chains") {
+    filteredCategory = singleNFTs;
+  }
+  singleNFTs = filteredCategory.filter((col) => {
     let categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;
 
     categoryCheck = categoryCheck?.filter((property) => {
