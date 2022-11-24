@@ -83,6 +83,7 @@ const MintTweet = () => {
               1: { trait_type: "Time & Date", value: moment(tweet.created_at).format("hh:mm a · MM Do, YYYY") },
               2: { trait_type: "Author", value: `${users[tweet?.author_id].name}` },
               3: { trait_type: "Tweet URL", value: tweetLink },
+              3: { trait_type: "Category", value: "Tweet" },
             },
           };
         });

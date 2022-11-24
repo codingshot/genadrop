@@ -296,29 +296,26 @@ const Minter = () => {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
 
-    if (mentions) {
-      handleSetState({
-        attributes: {
+    if (mentions && hashtags) {
+      singleMintProps.metadata.attributes = {
+        ...attributes,
+        1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
+        1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
+      };
+    } else {
+      if (hashtags) {
+        singleMintProps.metadata.attributes = {
           ...attributes,
-          mentions: `@${tweet.mentions.join(" @")}`,
-        },
-      });
+          1000: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
+        };
+      }
 
-      handleSetState({
-        attributes: {
+      if (mentions) {
+        singleMintProps.metadata.attributes = {
           ...attributes,
-          [Date.now()]: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
-        },
-      });
-    }
-
-    if (hashtags) {
-      handleSetState({
-        attributes: {
-          ...attributes,
-          [Date.now()]: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-        },
-      });
+          1001: { trait_type: "mentions", value: `#${tweet.mentions[0].join(" #")}` },
+        };
+      }
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
@@ -876,7 +873,7 @@ const Minter = () => {
                       <>
                         <div className={classes.attributes}>
                           {Object.keys(attributes).map((key) =>
-                            attributes[key].trait_type !== "location" ? (
+                            attributes[key].trait_type !== "location" && attributes[key].trait_type !== "Category" ? (
                               <Attribute
                                 key={key}
                                 attribute={attributes[key]}
