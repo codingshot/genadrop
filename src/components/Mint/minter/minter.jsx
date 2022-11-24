@@ -1,7 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
-import { async } from "regenerator-runtime";
+
+import moment from "moment";
+// import TweetEmbed from "react-tweet-embed";
+import * as htmlToImage from "html-to-image";
+
 import classes from "./minter.module.css";
 // utils
 import { handleMint, handleSingleMint, getBase64, getFileFromBase64 } from "./minter-script";
@@ -23,7 +27,7 @@ import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import SliderInput from "./SliderInput";
 import Category from "../Category/Category";
 import Attribute from "../Attribute/Attribute";
-// react context
+
 import {
   setClipboard,
   setConnectFromMint,
@@ -34,11 +38,15 @@ import {
   setToggleWalletPopup,
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
+import Tweeter from "../Tweeter/tweeter";
 
 const Minter = () => {
   const params = useParams();
+  const browserLocation = useLocation();
 
   const history = useHistory();
+  const tweetRef = useRef(null);
+
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
 
@@ -47,6 +55,7 @@ const Minter = () => {
   const { file, fileName: fName, metadata, zip } = minter;
 
   const [state, setState] = useState({
+    tweet: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -80,6 +89,8 @@ const Minter = () => {
     fileExtension: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
     header: "",
+    hashtags: false,
+    mentions: false,
   });
 
   const {
@@ -105,8 +116,11 @@ const Minter = () => {
     fileExtension,
     location,
     locationPermission,
+    tweet,
     stick_type,
     header,
+    hashtags,
+    mentions,
   } = state;
 
   const mintProps = {
@@ -155,6 +169,11 @@ const Minter = () => {
   }, []);
 
   useEffect(() => {
+    if (params.mintId === "tweet") {
+      const { data } = browserLocation.state;
+      handleSetState({ tweet: JSON.parse(data), attributes: JSON.parse(data).attributes });
+    }
+
     handleSetState({
       header: cards.filter(
         (card) =>
@@ -162,6 +181,7 @@ const Minter = () => {
           (card.value === "collection" && file?.length > 1) ||
           (card.value === "audio" && params.mintId === "Audio File" && !category) ||
           (card.value === "video" && params.mintId === "Video File" && !category) ||
+          (card.value === "tweet" && params.mintId === "tweet" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -188,6 +208,11 @@ const Minter = () => {
           console.log(error);
           // ...handle/report error...
         });
+    } else if (params.mintId === "tweet") {
+      handleSetState({
+        description: tweet.text,
+        fileName: tweet.created_at,
+      });
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -257,12 +282,42 @@ const Minter = () => {
     history.push(`/create`);
   };
 
-  const setMint = () => {
+  const setMint = async () => {
     if (showLocation && location !== "") {
       handleSetState({
         attributes: {
           ...attributes,
           [Date.now()]: location,
+        },
+      });
+    }
+
+    if (tweet) {
+      // takeScreenshot(tweetRef.current);
+      // singleMintProps.file = image;
+      // html2canvas(tweetRef.current).then((canvas) => {
+      //   const blobImage = htmlToImage.toBlob(canvas.toDataURL("image/png"));
+      // });
+      // singleMintProps.file = await htmlToImage.toBlob();
+      singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
+      console.log(singleMintProps.file);
+      // return;
+    }
+
+    if (mentions) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          mentions: tweet.mentions,
+        },
+      });
+    }
+
+    if (hashtags) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          hashtags: tweet.hashtags,
         },
       });
     }
@@ -588,35 +643,52 @@ const Minter = () => {
             <Category handleSetState={handleSetState} category={category} file={file} params={params} />
             <div className={classes.mintSection}>
               <section className={classes.assetContainer}>
-                <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
-                  {file &&
-                    (file?.length > 1 ? (
-                      file
-                        .filter((_, idx) => idx < 3)
-                        .map((f, idx) => (
-                          <div
-                            key={idx}
-                            style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
-                            className={classes.imageContainer}
-                          />
-                        ))
-                    ) : videoExtensions.includes(fileExtension) ? (
-                      <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} controls />
-                    ) : audioExtensions.includes(fileExtension) ? (
-                      <audio src={URL.createObjectURL(file[0])} className={classes.singleImage} controls muted />
-                    ) : (
-                      <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
-                    ))}
-                  {category === "Vibe" && <VibesLogo className={classes.overlayImage} />}
-                </div>
+                {tweet ? (
+                  <div ref={tweetRef}>
+                    <Tweeter tweet={tweet} />
+                  </div>
+                ) : (
+                  // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
+                  //   <TweetEmbed
+                  //     id={tweet.id}
+                  //     placeholder="loading..."
+                  //     options={{ theme: !tweet.theme ? "dark" : "" }}
+                  //   />
+                  // </div>
+                  <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
+                    {file &&
+                      (file?.length > 1 ? (
+                        file
+                          .filter((_, idx) => idx < 3)
+                          .map((f, idx) => (
+                            <div
+                              key={idx}
+                              style={{ backgroundImage: `url(${URL.createObjectURL(f)})` }}
+                              className={classes.imageContainer}
+                            />
+                          ))
+                      ) : videoExtensions.includes(fileExtension) ? (
+                        <video src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} controls />
+                      ) : audioExtensions.includes(fileExtension) ? (
+                        <audio src={URL.createObjectURL(file[0])} className={classes.singleImage} controls muted />
+                      ) : (
+                        <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
+                      ))}
+                    {category === "Vibe" && <VibesLogo className={classes.overlayImage} />}
+                  </div>
+                )}
 
                 <div className={classes.assetInfo}>
                   <div className={classes.innerAssetInfo}>
                     <div className={classes.assetInfoTitle}>
-                      <span>{fName}</span>
+                      <span>
+                        {tweet
+                          ? `${tweet.author_id.username + moment(tweet.created_at).format(" hh:mm a · MM Do, YYYY")}`
+                          : fName}
+                      </span>
                     </div>
                     <div>
-                      <span>Number of assets:</span> <p>{file?.length}</p>
+                      <span>Number of assets:</span> <p>{file?.length ? file.length : 1}</p>
                     </div>
                     {chainId === 4160 && (
                       <div className={classes.priceTooltip}>
@@ -631,7 +703,12 @@ const Minter = () => {
                       </div>
                     ) : null}
                   </div>
-                  <button onClick={changeFile} type="button">
+                  <button
+                    onClick={() => {
+                      tweet ? history.push("/mint/tweet") : changeFile();
+                    }}
+                    type="button"
+                  >
                     Change asset
                   </button>
                 </div>
@@ -906,6 +983,73 @@ const Minter = () => {
                   )}
 
                   {/* *************** TOGGLE LOCATION: END *************** */}
+
+                  {/*  *************** TOGGLE TWEET: START ***************   */}
+                  {tweet ? (
+                    <>
+                      <div className={classes.inputWrapper}>
+                        <div className={classes.toggleTitle}>
+                          <div className={classes.receiverAddress}>
+                            <div className={classes.toggleTitle}>
+                              <label>Hashtags</label>
+                              <div className={classes.toggler}>
+                                <label className={`${classes.switch}`}>
+                                  <input
+                                    id="location"
+                                    type="checkbox"
+                                    defaultChecked={hashtags}
+                                    onClick={() => handleSetState({ hashtags: !hashtags })}
+                                  />
+                                  <span className={classes.slider} />
+                                </label>
+                              </div>
+                            </div>
+
+                            {tweet?.hashtags?.map((e) => {
+                              if (e !== null) {
+                                return (
+                                  <div className={`${classes.hashtags}  ${!hashtags && classes.noTag}`}>{`@${e}`}</div>
+                                );
+                              }
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className={classes.inputWrapper}>
+                        <div className={classes.toggleTitle}>
+                          <div className={classes.receiverAddress}>
+                            <div className={classes.toggleTitle}>
+                              <label>Mentions</label>
+                              <div className={classes.toggler}>
+                                <label className={`${classes.switch}`}>
+                                  <input
+                                    id="location"
+                                    type="checkbox"
+                                    defaultChecked={mentions}
+                                    onClick={() => handleSetState({ mentions: !mentions })}
+                                  />
+                                  <span className={classes.slider} />
+                                </label>
+                              </div>
+                            </div>
+
+                            {tweet?.mentions?.map((e) => {
+                              if (e !== null) {
+                                return (
+                                  <div className={`${classes.hashtags}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                );
+                              }
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  {/*  *************** TOGGLE TWEET: END ***************   */}
 
                   <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
