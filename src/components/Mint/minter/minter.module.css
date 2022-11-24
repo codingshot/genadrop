@@ -16,7 +16,7 @@
 .hashtags {
   display: flex;
   gap: 1em;
-  overflow: scroll;
+  overflow-x: scroll;
   overflow-y: hidden;
 }
 .hashtag {
