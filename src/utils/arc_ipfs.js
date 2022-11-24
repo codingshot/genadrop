@@ -111,7 +111,6 @@ const uploadToIpfs = async (nftFile, nftFileName, asset) => {
   const fileCat = nftFile.type.split("/")[0];
   const nftFileNameSplit = nftFileName?.split(".");
   const fileExt = nftFileName ? nftFileNameSplit[1] : "png";
-  console.log("file: ", nftFile, fileCat, nftFileNameSplit, fileExt);
 
   const kvProperties = {
     url: nftFileName ? nftFileNameSplit[0] : "tweet",
