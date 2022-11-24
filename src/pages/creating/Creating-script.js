@@ -80,7 +80,7 @@ const cards = [
     description: "Mint your favorite tweets on chain",
     icon: <Tweets />,
     url: "/mint/tweet",
-    comingSoon: "",
+    comingSoon: false,
   },
   {
     title: "AI",
