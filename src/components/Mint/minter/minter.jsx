@@ -6,7 +6,6 @@ import moment from "moment";
 import TweetEmbed from "react-tweet-embed";
 import * as htmlToImage from "html-to-image";
 import html2canvas from "html2canvas";
-import { useScreenshot } from "use-react-screenshot";
 
 import classes from "./minter.module.css";
 // utils
@@ -51,7 +50,6 @@ const Minter = () => {
 
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
-  const [image, takeScreenshot] = useScreenshot();
 
   // save file progress
   const loadedMinter = JSON.parse(sessionStorage.getItem("minter"));
