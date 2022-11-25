@@ -2,6 +2,7 @@ import { readNftTransaction, readUserProfile } from "../../utils/firebase";
 // import axios from "axios";
 import { getCeloGraphNft, getGraphCollection, getTransactions } from "../../utils";
 import {
+  arbitrumUserData,
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
@@ -11,11 +12,15 @@ import {
 import supportedChains from "../../utils/supportedChains";
 
 export const getAlgoData = async ({ algoProps }) => {
-  const { singleAlgoNfts, activeCollection, params } = algoProps;
+  const { singleAlgoNfts, activeCollection, params, algoCollections } = algoProps;
   const { collectionName, nftId } = params;
   let nftDetails;
   if (collectionName) {
-    nftDetails = activeCollection.find((col) => col.Id === Number(nftId));
+    if (activeCollection) {
+      nftDetails = activeCollection.find((col) => col.Id === Number(nftId));
+    } else {
+      nftDetails = algoCollections[nftId];
+    }
   } else {
     nftDetails = singleAlgoNfts[nftId];
   }
@@ -44,6 +49,7 @@ export const getGraphData = async ({ graphProps }) => {
     singleAuroraNfts,
     singlePolygonNfts,
     singleAvaxNfts,
+    singleArbitrumNfts,
     singleCeloNfts,
     params: { collectionName, nftId, chainId },
   } = graphProps;
@@ -105,6 +111,16 @@ export const getGraphData = async ({ graphProps }) => {
           _1of1: singlePolygonNfts,
         };
       }
+      if (supportedChains[Number(chainId)]?.chain === "Arbitrum") {
+        const [data, trHistory] = await arbitrumUserData(nftId);
+        // if (!polygonData) return history.goBack();
+        return {
+          nftDetails: data,
+          collection: [],
+          transactionHistory: trHistory,
+          _1of1: singleArbitrumNfts,
+        };
+      }
       if (supportedChains[Number(chainId)]?.chain === "Avalanche") {
         const [avaxData, trHistory] = await avaxUsersNfts(nftId);
         // if (!polygonData) return history.goBack();
@@ -112,7 +128,7 @@ export const getGraphData = async ({ graphProps }) => {
           nftDetails: avaxData,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: singlePolygonNfts,
+          _1of1: singleAvaxNfts,
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Near") {

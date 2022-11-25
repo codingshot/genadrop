@@ -9,6 +9,7 @@ import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.s
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
+
 import {
   setNetworkType,
   connectWallet,
@@ -19,6 +20,7 @@ import {
   initializeConnection,
   initConnectWallet,
 } from "./wallet-script";
+
 import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
 
 function ConnectWallet() {
@@ -38,8 +40,15 @@ function ConnectWallet() {
     rpc: null,
   });
 
-  const { clipboardState, network, walletConnectProvider, overrideWalletConnect, connectionMethod, rpc, isMetamask } =
-    state;
+  const {
+    clipboardState,
+    network,
+    walletConnectProvider,
+    overrideWalletConnect,
+    connectionMethod,
+    rpc,
+    isMetamask,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));

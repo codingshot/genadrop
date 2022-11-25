@@ -317,6 +317,7 @@ Project Link: [https://github.com/codingshot/genadrop](https://github.com/coding
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/company/minority-programmers/
+[linkedin-url]: https://linkedin.com/company/genadrop/
 [product-screenshot]: ./src/assets/landingPage.png 
 
 [React.js]: ./src/assets/react-logo.svg 

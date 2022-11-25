@@ -122,3 +122,10 @@ export const avalancheClient = createClient({
       ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-avatestnet"
       : "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-avax",
 });
+
+export const arbitrumClient = createClient({
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://api.thegraph.com/subgraphs/name/prometheo/genadrop-arbitrum-goerli"
+      : "https://api.thegraph.com/subgraphs/name/prometheo/arbitrum",
+});

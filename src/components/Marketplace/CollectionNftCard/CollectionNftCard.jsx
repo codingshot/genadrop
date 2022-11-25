@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 import supportedChains from "../../../utils/supportedChains";
 import classes from "./CollectionNftCard.module.css";
-import { getFormatedPrice } from "../../../utils";
+// import { getFormatedPrice } from "../../../utils";
 
 const formattedNumber = (number, decimals = 2) => {
   const input = number?.toFixed(decimals);
@@ -15,14 +16,17 @@ const CollectionNftCard = ({ use_width, collection }) => {
 
   const { Id, image_url, name, description, price, chain, nfts } = collection;
 
-  const getUsdValue = async () => {
-    const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
+  const getUsdValue = useCallback(async () => {
+    const chainName = supportedChains[chain].coinGeckoLabel || supportedChains[chain].id;
+    const value = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${chainName}&vs_currencies=usd`);
+
+    // const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     setUsdValue(Number(value) * Number(price));
-  };
+  }, []);
 
   useEffect(() => {
     getUsdValue();
-  }, [collection]);
+  }, [getUsdValue]);
 
   return (
     <div

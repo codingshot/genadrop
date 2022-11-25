@@ -37,7 +37,6 @@ const Deals = ({ nftDetails }) => {
     setUsdValue(Number(value) * Number(price));
   };
 
-
   useEffect(() => {
     getUsdValue();
   }, [priceFeed]);
@@ -47,7 +46,7 @@ const Deals = ({ nftDetails }) => {
         <div className={classes.title}>CURRENT PRICE</div>
         <div className={classes.priceSection}>
           <img className={classes.chainIcon} src={supportedChains[chain].icon} alt="" />
-          <div className={classes.price}>{Number(price).toFixed(2)}</div>
+          <div className={classes.price}>{Number(price).toFixed(4)}</div>
           <div className={classes.appx}>{`($${price ? usdValue.toFixed(4) : "0"})`}</div>
         </div>
       </div>

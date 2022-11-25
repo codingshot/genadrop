@@ -39,6 +39,7 @@ const NFTDetail = () => {
     celoCollections,
     singleAuroraNfts,
     singlePolygonNfts,
+    singleArbitrumNfts,
     singleAvaxNfts,
     singleCeloNfts,
     singleNearNfts,
@@ -56,6 +57,7 @@ const NFTDetail = () => {
     singlePolygonNfts,
     singleNearNfts,
     singleCeloNfts,
+    singleArbitrumNfts,
     singleAvaxNfts,
     params,
   };

@@ -79,6 +79,7 @@ const Minter = () => {
     location: "",
     fileExtension: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
+    header: "",
   });
 
   const {
@@ -105,6 +106,7 @@ const Minter = () => {
     location,
     locationPermission,
     stick_type,
+    header,
   } = state;
 
   const mintProps = {
@@ -153,6 +155,20 @@ const Minter = () => {
   }, []);
 
   useEffect(() => {
+    handleSetState({
+      header: cards.filter(
+        (card) =>
+          card.value === category ||
+          (card.value === "collection" && file?.length > 1) ||
+          (card.value === "audio" && params.mintId === "Audio File" && !category) ||
+          (card.value === "video" && params.mintId === "Video File" && !category) ||
+          (card.value === "Art" &&
+            file?.length === 1 &&
+            !category &&
+            params.mintId !== "Audio File" &&
+            params.mintId !== "Video File")
+      )[0],
+    });
     if (file) {
       const filename = file[0].name.replace(/\.+\s*\./, ".").split(".");
       handleSetState({ fileExtension: filename.slice(filename.length - 1).join() });
@@ -212,7 +228,7 @@ const Minter = () => {
         newAttributes[key] = attributes[key];
       }
     }
-    console.log(newAttributes);
+
     handleSetState({ attributes: newAttributes });
   };
 
@@ -439,24 +455,22 @@ const Minter = () => {
     }
   };
   // select category
-  const categories = ["Sesh", "Photography", "Painting", "Illustration", "3D", "Digital Graphic", "Audio", "Video"];
+  const categories = [
+    // "Sesh",
+    // "Vibe",
+    "Photography",
+    "Painting",
+    "Illustration",
+    "3D",
+    "Digital Graphic",
+    // "Audio",
+    // "Video",
+  ];
   const stick_types = ["Blunt", "Joint", "Spliff", "Hashish", "Bong", "Cigarette", "Cigar"];
   const audioExtensions = ["mp3", "aac", "wav"];
   const videoExtensions = ["mp4", "m4v", "mov", "mkv", "avi", "webm", "flv"];
 
   const getActivetitle = () => {
-    const header = cards.filter(
-      (card) =>
-        card.value === category ||
-        (card.value === "collection" && file?.length > 1) ||
-        (card.value === "audio" && params.mintId === "Audio File" && !category) ||
-        (card.value === "video" && params.mintId === "Video File" && !category) ||
-        (card.value === "Art" &&
-          file?.length === 1 &&
-          !category &&
-          params.mintId !== "Audio File" &&
-          params.mintId !== "Video File")
-    )[0];
     return (
       <div className={classes.headerText}>
         <div className={classes.headerIcon}>{header?.icon}</div>
@@ -726,8 +740,18 @@ const Minter = () => {
                         }}
                         className={`${classes.chain} ${classes.active}`}
                       >
-                        {category ? <div className={classes.chainLabel}>{category}</div> : <span>Select Category</span>}
-                        {!metadata?.category && <DropdownIcon className={classes.dropdownIcon} />}
+                        {category ? (
+                          <div className={classes.chainLabel}>{category}</div>
+                        ) : params.mintId === "Audio File" ? (
+                          <div className={classes.chainLabel}>Audio</div>
+                        ) : params.mintId === "Video File" ? (
+                          <div className={classes.chainLabel}>Video</div>
+                        ) : (
+                          <span>Select Category</span>
+                        )}
+                        {!metadata?.category && params.mintId !== "Audio File" && params.mintId !== "Video File" && (
+                          <DropdownIcon className={classes.dropdownIcon} />
+                        )}
                       </div>
                       <div className={`${classes.chainDropdown} ${toggleCategory && classes.active}`}>
                         {categories.map((nftCategory) => (

@@ -5,7 +5,7 @@ const Description = ({ nftDetails }) => {
   const [showMore, setShowMore] = useState(false);
   const { description } = nftDetails;
   const sentenceBreak = (str) => {
-    return str.substr(0, 210);
+    return str?.substr(0, 210);
   };
 
   return (

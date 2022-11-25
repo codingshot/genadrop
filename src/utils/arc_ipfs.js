@@ -669,6 +669,37 @@ export async function mintSingleToAurora(singleMintProps) {
   }
 }
 
+export async function mintSingleToAbitrum(singleMintProps) {
+  const { file, metadata, price, account, connector, dispatch, setLoader, mainnet, receiverAddress } = singleMintProps;
+  const signer = await connector.getSigner();
+  dispatch(setLoader("uploading 1 of 1"));
+  const asset = await connectAndMint(file, metadata, file.name, 4);
+  const uintArray = asset.metadata.toLocaleString();
+  const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  dispatch(setLoader("minting 1 of 1"));
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_ARBITRUM_MAINNET_SINGLE_ADDRESS
+      : process.env.REACT_APP_ARBITRUM_TESTNET_SINGLE_ADDRESS,
+    mintSingle,
+    signer
+  );
+  try {
+    const txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
+    await txn.wait();
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    dispatch(setLoader(""));
+    return mainnet ? `https://arbiscan.io/tx/${txn.hash}` : `https://goerli.arbiscan.io/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "something went wrong! please check your connected network and try again.",
+    };
+  }
+}
+
 export async function createNFT(createProps, doAccountCheck) {
   const { file, dispatch, account, setNotification, setLoader } = createProps;
   const assets = [];
@@ -821,6 +852,41 @@ export async function listAuroraNft(nftProps) {
     await txn.wait();
     dispatch(setLoader(""));
     return mainnet ? `https://aurorascan.dev/tx/${txn.hash}` : `https://testnet.aurorascan.dev/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    console.log(error);
+    return {
+      error,
+      message: "Error listing nft, please try again or reavhout to support.",
+    };
+  }
+}
+
+export async function listArbitrumNft(nftProps) {
+  const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  const signer = await connector.getSigner();
+  const marketContract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_ARBITRUM_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_ARBITRUM_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    signer
+  );
+  try {
+    dispatch(setLoader("Approve marketplace to list nft"));
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+    await approvalTxn.wait();
+    const txn = await marketContract.createMarketplaceItem(
+      nftContract,
+      id,
+      String(price * 10 ** 18),
+      "General",
+      account
+    );
+    await txn.wait();
+    dispatch(setLoader(""));
+    return mainnet ? `https://arbiscan.io/tx/${txn.hash}` : `https://goerli.arbiscan.io/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(""));
     console.log(error);
@@ -1644,6 +1710,109 @@ export async function mintToAurora(polyProps) {
   return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
 }
 
+export async function mintToArbitrum(polyProps) {
+  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const ipfsJsonData = await createNFT({ ...polyProps });
+  dispatch(
+    setNotification({
+      message: "preparing assets for minting",
+      type: "default",
+    })
+  );
+  const contract = await initializeContract({
+    minterAddress: mainnet
+      ? process.env.REACT_APP_ARBITRUM_MAINNET_MINTER_ADDRESS
+      : process.env.REACT_APP_ARBITRUM_TESTNET_MINTER_ADDRESS,
+    fileName,
+    connector,
+    account,
+    dispatch,
+    setLoader,
+    description,
+  });
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
+
+  const uris = ipfsJsonData.map((asset) => asset.url);
+  const ids = ipfsJsonData.map((asset) => {
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    return id;
+  });
+
+  let tx;
+
+  dispatch(setLoader("finalizing"));
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const ethNonce = await signer.getTransactionCount();
+    tx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      dispatch(
+        setNotification({
+          message: "NFTs minted successfully.",
+          type: "success",
+        })
+      );
+      return mainnet ? `https://arbiscan.io/tx/${result.hash}` : `https://goerli.arbiscan.io/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+
+  try {
+    tx = await contract.mintBatch(account, ids, uris);
+    await tx.wait();
+    // await marketContract.createBulkMarketItem(
+    //   contract.address,
+    //   ids,
+    //   String(price * 10 ** 18),
+    //   amounts,
+    //   "General",
+    //   account,
+    //   description
+    // );
+  } catch (error) {
+    dispatch(setLoader(""));
+    dispatch(
+      setNotification({
+        message: `${error.message}`,
+        type: "error",
+      })
+    );
+    return;
+  }
+  dispatch(setLoader(""));
+  dispatch(
+    setNotification({
+      message: "NFTs successfully minted.",
+      type: "success",
+    })
+  );
+  return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
+}
+
 export async function getPolygonNfts(mainnet) {
   const provider = new ethers.providers.AlchemyProvider("maticmum", process.env.REACT_APP_ALCHEMY_KEY);
   const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
@@ -1920,6 +2089,65 @@ export async function purchaseAuroraNfts(buyProps) {
     const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
+  } catch (error) {
+    console.log("erooric data", error, error.data);
+    return dispatch(
+      setNotification({
+        message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+        type: "warning",
+      })
+    );
+  }
+}
+
+export async function purchaseArbitrumNfts(buyProps) {
+  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
+  if (!connector) {
+    return dispatch(
+      setNotification({
+        message: "connect wallet",
+        type: "warning",
+      })
+    );
+  }
+  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  const { chainId } = connector._network;
+  price = ethers.utils.parseEther(price.toString()).toString();
+  const signature = await wallet._signTypedData(
+    // Domain
+    {
+      name: "GenaDrop",
+      version: "1.0.0",
+      chainId,
+      verifyingContract: mainnet
+        ? process.env.REACT_APP_GENADROP_ARBITRUM_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_ARBITRUM_TESTNET_MARKET_ADDRESS,
+    },
+    // Types
+    {
+      NFT: [
+        { name: "tokenId", type: "uint256" },
+        { name: "account", type: "address" },
+        { name: "price", type: "uint256" },
+        { name: "seller", type: "address" },
+        { name: "nftContract", type: "address" },
+      ],
+    },
+    // Value
+    { tokenId, account, price, seller, nftContract }
+  );
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_GENADROP_ARBITRUM_MAINNET_MARKET_ADDRESS
+      : process.env.REACT_APP_GENADROP_ARBITRUM_TESTNET_MARKET_ADDRESS,
+    marketAbi,
+    connector.getSigner()
+  );
+  try {
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    await tx.wait();
+    return mainnet ? `https://arbiscan.io/tx/${tx.hash}` : `https://goerli.arbiscan.io/tx/${tx.hash}`;
   } catch (error) {
     console.log("erooric data", error, error.data);
     return dispatch(
