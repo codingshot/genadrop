@@ -57,6 +57,7 @@ const AllNfts = () => {
     "3D",
     "Video",
     "Audio",
+    "Tweet",
   ];
   const type = {
     T1: newest,

@@ -211,7 +211,7 @@ const Minter = () => {
     } else if (params.mintId === "tweet") {
       handleSetState({
         description: tweet.text,
-        fileName: tweet.created_at,
+        fileName: tweet?.author_id?.name,
       });
     } else {
       if (!loadedMinter) {
@@ -293,33 +293,35 @@ const Minter = () => {
     }
 
     if (tweet) {
-      // takeScreenshot(tweetRef.current);
-      // singleMintProps.file = image;
-      // html2canvas(tweetRef.current).then((canvas) => {
-      //   const blobImage = htmlToImage.toBlob(canvas.toDataURL("image/png"));
-      // });
-      // singleMintProps.file = await htmlToImage.toBlob();
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
-      console.log(singleMintProps.file);
-      // return;
     }
 
-    if (mentions) {
+    if (mentions && hashtags) {
       handleSetState({
         attributes: {
           ...attributes,
-          mentions: tweet.mentions,
+          1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
+          1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
         },
       });
-    }
+    } else {
+      if (hashtags) {
+        handleSetState({
+          attributes: {
+            ...attributes,
+            1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
+          },
+        });
+      }
 
-    if (hashtags) {
-      handleSetState({
-        attributes: {
-          ...attributes,
-          hashtags: tweet.hashtags,
-        },
-      });
+      if (mentions) {
+        handleSetState({
+          attributes: {
+            ...attributes,
+            1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
+          },
+        });
+      }
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
@@ -877,7 +879,7 @@ const Minter = () => {
                       <>
                         <div className={classes.attributes}>
                           {Object.keys(attributes).map((key) =>
-                            attributes[key].trait_type !== "location" ? (
+                            attributes[key].trait_type !== "location" && attributes[key].trait_type !== "Category" ? (
                               <Attribute
                                 key={key}
                                 attribute={attributes[key]}
@@ -1005,13 +1007,15 @@ const Minter = () => {
                               </div>
                             </div>
 
-                            {tweet?.hashtags?.map((e) => {
-                              if (e !== null) {
-                                return (
-                                  <div className={`${classes.hashtags}  ${!hashtags && classes.noTag}`}>{`@${e}`}</div>
-                                );
-                              }
-                            })}
+                            <div className={classes.hashtags}>
+                              {tweet?.hashtags[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!hashtags && classes.noTag}`}>{`#${e}`}</div>
+                                  );
+                                }
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -1034,13 +1038,15 @@ const Minter = () => {
                               </div>
                             </div>
 
-                            {tweet?.mentions?.map((e) => {
-                              if (e !== null) {
-                                return (
-                                  <div className={`${classes.hashtags}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
-                                );
-                              }
-                            })}
+                            <div className={classes.hashtags}>
+                              {tweet?.mentions[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                  );
+                                }
+                              })}
+                            </div>
                           </div>
                         </div>
                       </div>

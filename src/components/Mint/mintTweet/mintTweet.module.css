@@ -89,3 +89,14 @@
   border: 2px solid var(--main-color);
   cursor: var(--cursor-default);
 }
+
+@media screen and (max-width: 550px) {
+  .input {
+    width: 15em;
+  }
+
+  .tweeter {
+    flex-direction: column;
+    gap: 1em;
+  }
+}
