@@ -21,19 +21,13 @@ export const MarketplaceView = ({ footerPrpops }) => {
         </div>
       </div>
       {!price ? (
-        owner === account &&
-        supportedChains[chain]?.chain !== "Near" &&
-        supportedChains[chain]?.chain !== "Avalanche" ? (
+        owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <div className={classes.btn}>List</div>
         ) : (
           <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
         )
       ) : !sold || isListed ? (
-        supportedChains[chain]?.chain === "Algorand" ? (
-          <div className={classes.btn}>Buy</div>
-        ) : (
-          <div className={classes.btn}>Buy</div>
-        )
+        <div className={classes.btn}>Buy</div>
       ) : (
         <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
       )}
