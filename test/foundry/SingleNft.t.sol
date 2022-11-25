@@ -18,8 +18,17 @@ contract NftTest is Test {
 
     // test that params like name and symbol is set
     function testParamsSet() public {
-        assertEq(nft.name(), "Para");
-        assertEq(nft.symbol(), "PRR");
+        assertEq(nft.name(), "ParaSingles");
+        assertEq(nft.symbol(), "PRS");
+    }
+
+    function testMintBatch() public {
+        uint256[] memory ids = new uint256[](2);
+        string[] memory uris = new string[](2);
+        uris[1] = "https://go.com";
+        vm.prank(address(1));
+        nft.mintBatch(address(1), ids, uris);
+        assertEq(nft.uri(0), "https://go.com");
     }
 
     function testMint() public {
@@ -38,24 +47,26 @@ contract NftTest is Test {
 
     // test that the user balance increases after
     function testUserBalanceIncrease() public {
-        uint256 slotBalance = stdstore.target(address(nft)).sig(nft.balanceOf.selector).with_key(address(1)).with_key(2).find();
+        uint256 slotBalance = stdstore
+            .target(address(nft))
+            .sig(nft.balanceOf.selector)
+            .with_key(address(1))
+            .with_key(2)
+            .find();
         // change to deployer address
         vm.prank(address(1));
         nft.mint(address(1), 2, 1, "https://go.com", "0x");
-        uint256 balanceAfterMint = uint256(
-            vm.load(address(nft), bytes32(slotBalance))
-        );
+        uint256 balanceAfterMint = uint256(vm.load(address(nft), bytes32(slotBalance)));
         assertEq(balanceAfterMint, 1);
     }
-
 
     function testFailMint() public {
         // change to deployer address
         // vm.prank(address(1));
         nft.mint(address(1), 2, 1, "https://go.com", "0x");
+        assertEq(nft.uri(2), "https://g.com");
     }
 }
-
 
 contract Receiver is ERC1155Receiver {
     function onERC1155Received(
