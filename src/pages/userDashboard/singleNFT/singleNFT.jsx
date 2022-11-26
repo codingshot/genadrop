@@ -19,7 +19,6 @@ import detailsIcon from "../../../assets/details.png";
 import Search from "../../../components/Nft-details/history/search";
 import { readNftTransaction } from "../../../utils/firebase";
 import algoLogo from "../../../assets/icon-algo.svg";
-import { setNotification } from "../../../gen-state/gen.actions";
 import supportedChains from "../../../utils/supportedChains";
 import {
   auroraUserData,
