@@ -27,6 +27,7 @@ import {
 } from "../../renderless/fetch-data/fetchData-script";
 import {
   getAllAlgorandNfts,
+  getAllArbitrumNfts,
   getAllAuroraNfts,
   getAllAvalancheNfts,
   getAllCeloNfts,
@@ -94,10 +95,16 @@ const SingleNftCollection = () => {
       getAllCeloNfts(),
       getAllAuroraNfts(),
       getAllAvalancheNfts(),
+      getAllArbitrumNfts(),
       getAllPolygonNfts(),
       getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
-    ]).then((data) => handleSetState({ collections: shuffle(data.flat()), filteredCollection: shuffle(data.flat()) }));
+    ]).then((data) =>
+      handleSetState({
+        collections: sortBy({ collections: data.flat(), value: "newest" }),
+        filteredCollection: sortBy({ collections: data.flat(), value: "newest" }),
+      })
+    );
   }, []);
 
   useEffect(() => {
