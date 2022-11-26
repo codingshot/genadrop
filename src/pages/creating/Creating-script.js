@@ -41,12 +41,13 @@ const cards = [
     comingSoon: "",
   },
   {
-    title: "Doubletake",
-    description: "Take a photo and selfie and mint",
-    icon: <Doubletake />,
-    url: "/mint/doubletake",
-    comingSoon: "",
+    title: "Tweets",
+    description: "Mint your favorite tweets on chain",
+    icon: <Tweets />,
+    url: "/mint/tweet",
+    comingSoon: false,
   },
+ 
   {
     title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
@@ -76,11 +77,11 @@ const cards = [
     comingSoon: "",
   },
   {
-    title: "Tweets",
-    description: "Mint your favorite tweets on chain",
-    icon: <Tweets />,
-    url: "/mint/tweet",
-    comingSoon: false,
+    title: "Doubletake",
+    description: "Take a photo and selfie and mint",
+    icon: <Doubletake />,
+    url: "/mint/doubletake",
+    comingSoon: "",
   },
   {
     title: "AI",

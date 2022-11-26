@@ -26,10 +26,10 @@ export const MarketplaceView = ({ footerPrpops }) => {
         ) : (
           <div className={`${classes.btn} ${classes.disable}`}>Not Listed</div>
         )
-      ) : !sold || isListed ? (
-        <div className={classes.btn}>Buy</div>
-      ) : (
+      ) : sold && price && !isListed ? (
         <div className={`${classes.btn} ${classes.disable}`}>Sold</div>
+      ) : (
+        <div className={classes.btn}>Buy</div>
       )}
     </div>
   );

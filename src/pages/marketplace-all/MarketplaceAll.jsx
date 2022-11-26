@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
+import { useHistory, useLocation } from "react-router-dom";
 import classes from "./MarketplaceAll.module.css";
-import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import { GenContext } from "../../gen-state/gen.context";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
@@ -11,7 +11,7 @@ import {
   sortBy,
   getCollectionsByDate,
   getCollectionsByChain,
-  getCollectionsBySearch,
+  // getCollectionsBySearch,
   shuffle,
   filterBy,
 } from "../Marketplace/Marketplace-script";
@@ -19,11 +19,10 @@ import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import Search from "../../components/Search/Search";
-import supportedChains from "../../utils/supportedChains";
-import { promises } from "form-data";
 import {
   getAllAlgorandCollections,
   getAllAlgorandNfts,
+  getAllArbitrumNfts,
   getAllAuroraCollections,
   getAllAuroraNfts,
   getAllAvalancheNfts,
@@ -36,11 +35,13 @@ import {
 
 const MarketplaceAll = () => {
   const { mainnet, dispatch } = useContext(GenContext);
-
+  const location = useLocation();
+  const history = useHistory();
   const mountRef = useRef(0);
   const [state, setState] = useState({
     collections: [],
     filteredCollection: [],
+    chainData: [],
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
@@ -55,6 +56,7 @@ const MarketplaceAll = () => {
     activeDate,
     paginate,
     currentPage,
+    chainData,
     currentPageValue,
     filteredCollection,
     notFound,
@@ -74,11 +76,12 @@ const MarketplaceAll = () => {
       getAllPolygonCollections(),
       getAllCeloCollections(),
       getAllPolygonNfts(),
+      getAllArbitrumNfts(),
       getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
       getAllAlgorandCollections(mainnet, dispatch),
     ]).then((data) => {
-      const filteredData = sortBy({ collections: shuffle(data.flat()), value: "newest" });
+      const filteredData = sortBy({ collections: data.flat(), value: "newest" });
       handleSetState({ collections: filteredData, filteredCollection: filteredData });
     });
   }, []);
@@ -99,9 +102,28 @@ const MarketplaceAll = () => {
     handleSetState({ currentPage: Number(currentPageValue) });
     document.documentElement.scrollTop = 0;
   };
+  // const params = new URLSearchParams(location.search);
+  // const activeSwitch = (active) => {
+  //   params.set("tab", active);
+  //   history.push({
+  //     pathname: location.pathname,
+  //     search: params.toString(),
+  //   });
+  //   handleSetState({ activeDate: active });
+  // };
+
+  // useEffect(() => {
+  //   const active = params.get("tab");
+  //   if (active) {
+  //     handleSetState({ activeDate: active });
+  //   } else {
+  //     activeSwitch(activeDate);
+  //   }
+  // }, []);
 
   // Date Filter
   const handleDateSort = (date) => {
+    // activeSwitch(date);
     const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
 
     const result = getCollectionsByDate({ collections: tempCollection, date });
@@ -113,21 +135,19 @@ const MarketplaceAll = () => {
     const tempCollection = getCollectionsByDate({ collections, date: activeDate });
 
     const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
-    handleSetState({ filteredCollection: result, searchChain: chain });
+    handleSetState({ filteredCollection: result, searchChain: chain, chainData: result });
   };
 
   const handleFilter = async ({ type, value }) => {
-    let filterCollection = [];
-    filterCollection = filteredCollection;
     if (type === "sort") {
-      const result = sortBy({ collections: filterCollection, value });
+      const result = sortBy({ collections: chainData, value });
       handleSetState({ filteredCollection: result });
     } else if (type === "range") {
-      const result = await rangeBy({ collections: filterCollection, value });
+      const result = await rangeBy({ collections: chainData, value });
       handleSetState({ filteredCollection: result });
     }
     if (type === "status") {
-      const result = await filterBy({ collections: filterCollection, value });
+      const result = filterBy({ collections: chainData, value });
       handleSetState({ filteredCollection: result });
     }
   };

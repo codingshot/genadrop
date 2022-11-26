@@ -3,6 +3,7 @@ import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
 import polygonIcon from "../../../assets/icon-polygon.svg";
 import nearIcon from "../../../assets/icon-near.svg";
+import arbitrumIcon from "../../../assets/arbitrum.svg";
 import avalancheIcon from "../../../assets/icon-avalanche.svg";
 import allChains from "../../../assets/all-chains.svg";
 
@@ -53,6 +54,14 @@ const chains = [
     color: "black",
     border: "transparent",
     bg: "#EEE6FA",
+    isComingSoon: false,
+  },
+  {
+    name: "Arbitrum",
+    icon: arbitrumIcon,
+    color: "black",
+    border: "transparent",
+    bg: "#96BEDC",
     isComingSoon: false,
   },
   {
