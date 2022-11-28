@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.title {
+    font-size: 64px;
+    font-weight: 700;
+    margin-bottom: 17px;
+}
+.subTitle {
+    font-size: 20px;
+    margin-bottom: 69px;
+    font-weight: 400;
+}

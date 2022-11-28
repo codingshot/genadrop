@@ -84,6 +84,13 @@ const cards = [
     comingSoon: "",
   },
   {
+    title: "IPFS",
+    description: "Mint your NFTs using IPFS link",
+    icon: <Doubletake />,
+    url: "/mint/ipfs",
+    comingSoon: "",
+  },
+  {
     title: "AI",
     description: "Create Digital art with AI",
     icon: <Ai />,
