@@ -317,7 +317,6 @@ export async function mintSingleToAlgo(algoMintProps) {
 
 export async function mintSingleToNear(nearMintProps) {
   const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = nearMintProps;
-  // initAlgoClients(mainnet);
   const {
     contract: { contractId },
     accounts,
@@ -344,7 +343,7 @@ export async function mintSingleToNear(nearMintProps) {
                 media: `https://ipfs.io/ipfs/${asset.media}`,
                 reference: asset.url,
               },
-              receiver_id: accountId,
+              receiver_id: receiverAddress,
             },
             gas: utils.format.parseNearAmount("0.0000000003"),
             deposit: utils.format.parseNearAmount("0.01"),
@@ -370,7 +369,7 @@ export async function mintSingleToNear(nearMintProps) {
                   media: `https://ipfs.io/ipfs/${asset.media}`,
                   reference: asset.url,
                 },
-                receiver_id: accountId,
+                receiver_id: receiverAddress,
               },
               gas: 300000000000000,
               deposit: new BN("10000000000000000000000"),
