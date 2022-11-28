@@ -887,6 +887,7 @@ const Minter = () => {
                                 index={key}
                                 removeAttribute={handleRemoveAttribute}
                                 changeAttribute={handleChangeAttribute}
+                                iscat={attributes[key].trait_type === "Category"}
                               />
                             ) : (
                               () => handleSetState({ location: key })
