@@ -88,7 +88,6 @@ const MintTweet = () => {
             },
           };
         });
-
         history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
       })
       .catch((err) => {
