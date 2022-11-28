@@ -30,6 +30,11 @@ const links = [
     url: "https://www.genadrop.com/docs",
   },
   {
+    title: "Github",
+    img: "/assets/linktree/github.png",
+    url: "https://github.com/codingshot/genadrop",
+  },
+  {
     title: "by MinorityProgrammers",
     img: "/assets/linktree/build.png",
     url: "https://linktr.ee/MinorityProgrammers",
