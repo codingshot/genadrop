@@ -29,7 +29,7 @@ const MintTweet = () => {
   };
 
   const validateLink = () => {
-    const id = tweetLink.split(/[/?]/).find((i) => Number.parseInt(i));
+    const id = tweetLink.split(/[/?]/).find((i) => /^-?\d+$/.test(i));
 
     axios
       .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL([id])}`, {
@@ -79,7 +79,7 @@ const MintTweet = () => {
             mentions: [tweet.entities?.mentions?.map((mention) => mention.username)],
             lightTheme,
             attributes: {
-              0: { trait_type: "File Type", value: "Tweet" },
+              0: { trait_type: "File Type", value: "Png" },
               1: { trait_type: "Time & Date", value: moment(tweet.created_at).format("hh:mm a · MM Do, YYYY") },
               2: { trait_type: "Author", value: `${users[tweet?.author_id].name}` },
               3: { trait_type: "Tweet URL", value: tweetLink },
