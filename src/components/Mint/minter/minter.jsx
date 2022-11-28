@@ -171,7 +171,12 @@ const Minter = () => {
   useEffect(() => {
     if (params.mintId === "tweet") {
       const { data } = browserLocation.state;
-      handleSetState({ tweet: JSON.parse(data), attributes: JSON.parse(data).attributes });
+      handleSetState({
+        tweet: JSON.parse(data),
+        attributes: JSON.parse(data).attributes,
+        description: tweet.text,
+        fileName: tweet?.author_id?.name,
+      });
     }
 
     handleSetState({
@@ -193,7 +198,7 @@ const Minter = () => {
       const filename = file[0].name.replace(/\.+\s*\./, ".").split(".");
       handleSetState({ fileExtension: filename.slice(filename.length - 1).join() });
     }
-  }, [file]);
+  }, [file, attributes, hashtags, mentions]);
 
   useEffect(() => {
     if (minter) {
