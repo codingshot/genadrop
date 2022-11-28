@@ -178,6 +178,7 @@ export const getCollectionsByCategory = ({ collections, category, activeChain })
     let categoryCheck = col.properties ? col.properties : col.ipfs_data?.properties;
 
     categoryCheck = categoryCheck?.filter((property) => {
+      console.log(property.trait_type === "Category" && property.value === category, category, property.trait_type);
       return property.trait_type === "Category" && property.value === category;
     });
     return categoryCheck.length;
