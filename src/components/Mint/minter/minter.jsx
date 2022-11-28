@@ -879,7 +879,7 @@ const Minter = () => {
                       <>
                         <div className={classes.attributes}>
                           {Object.keys(attributes).map((key) =>
-                            attributes[key].trait_type !== "location" && attributes[key].trait_type !== "Category" ? (
+                            attributes[key].trait_type !== "location" ? (
                               <Attribute
                                 key={key}
                                 attribute={attributes[key]}
@@ -887,6 +887,7 @@ const Minter = () => {
                                 index={key}
                                 removeAttribute={handleRemoveAttribute}
                                 changeAttribute={handleChangeAttribute}
+                                iscat={attributes[key].trait_type === "Category"}
                               />
                             ) : (
                               () => handleSetState({ location: key })

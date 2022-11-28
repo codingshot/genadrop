@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./Attribute.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 
-const Attribute = ({ attribute, removeAttribute, id, changeAttribute, index }) => (
+const Attribute = ({ attribute, removeAttribute, id, changeAttribute, index, iscat }) => (
   <div className={classes.container}>
     <input
       name="trait_type"
@@ -18,7 +18,11 @@ const Attribute = ({ attribute, removeAttribute, id, changeAttribute, index }) =
       onChange={(event) => changeAttribute({ event, id })}
       placeholder="eg. green"
     />
-    <button className={classes[`_${index}`]} type="button" onClick={() => removeAttribute(id)}>
+    <button
+      className={iscat || index === "0" ? classes._0 : ""}
+      type="button"
+      onClick={() => (iscat || index === "0" ? "" : removeAttribute(id))}
+    >
       <CloseIcon className={classes.closeIcon} />
     </button>
   </div>
