@@ -324,8 +324,6 @@ const Minter = () => {
 
       handleSetState({ attributes: newAttributes });
     }
-    console.log(mentions, hashtags, attributes);
-    return;
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
