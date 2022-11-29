@@ -1051,7 +1051,7 @@ const Minter = () => {
                             </div>
 
                             <div className={classes.hashtags}>
-                              {tweet?.mentions !== "none"
+                              {tweet?.mentions === "none"
                                 ? ""
                                 : tweet?.mentions[0]?.map((e) => {
                                     if (e !== null) {
