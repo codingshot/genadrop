@@ -324,6 +324,8 @@ const Minter = () => {
 
       handleSetState({ attributes: newAttributes });
     }
+    console.log(mentions, hashtags, attributes);
+    return;
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
@@ -1003,10 +1005,8 @@ const Minter = () => {
                                   <input
                                     id="location"
                                     type="checkbox"
-                                    defaultChecked={hashtags && tweet?.hashtags !== "none"}
-                                    onClick={() =>
-                                      tweet?.hashtags === "none" ? "" : handleSetState({ hashtags: !hashtags })
-                                    }
+                                    defaultChecked={hashtags}
+                                    onClick={() => handleSetState({ hashtags: !hashtags })}
                                   />
                                   <span className={classes.slider} />
                                 </label>
@@ -1014,17 +1014,13 @@ const Minter = () => {
                             </div>
 
                             <div className={classes.hashtags}>
-                              {tweet?.hashtags === "none"
-                                ? ""
-                                : tweet?.hashtags[0]?.map((e) => {
-                                    if (e !== null) {
-                                      return (
-                                        <div
-                                          className={`${classes.hashtag}  ${!hashtags && classes.noTag}`}
-                                        >{`#${e}`}</div>
-                                      );
-                                    }
-                                  })}
+                              {tweet?.hashtags[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!hashtags && classes.noTag}`}>{`#${e}`}</div>
+                                  );
+                                }
+                              })}
                             </div>
                           </div>
                         </div>
@@ -1040,10 +1036,8 @@ const Minter = () => {
                                   <input
                                     id="location"
                                     type="checkbox"
-                                    defaultChecked={mentions && tweet?.mentions !== "none"}
-                                    onClick={() =>
-                                      tweet?.mentions === "none" ? "" : handleSetState({ mentions: !mentions })
-                                    }
+                                    defaultChecked={mentions}
+                                    onClick={() => handleSetState({ mentions: !mentions })}
                                   />
                                   <span className={classes.slider} />
                                 </label>
@@ -1051,17 +1045,13 @@ const Minter = () => {
                             </div>
 
                             <div className={classes.hashtags}>
-                              {tweet?.mentions === "none"
-                                ? ""
-                                : tweet?.mentions[0]?.map((e) => {
-                                    if (e !== null) {
-                                      return (
-                                        <div
-                                          className={`${classes.hashtag}  ${!mentions && classes.noTag}`}
-                                        >{`@${e}`}</div>
-                                      );
-                                    }
-                                  })}
+                              {tweet?.mentions[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                  );
+                                }
+                              })}
                             </div>
                           </div>
                         </div>
