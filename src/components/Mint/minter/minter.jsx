@@ -370,11 +370,9 @@ const Minter = () => {
     }
 
     if (tweet) {
-      // singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
+      singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
 
-    console.log(attributes);
-    return;
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
     if (!chainId) {
