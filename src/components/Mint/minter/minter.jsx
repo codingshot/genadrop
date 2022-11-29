@@ -298,30 +298,43 @@ const Minter = () => {
     }
 
     if (tweet) {
-      singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
+      // singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
 
-    if (!hashtags) {
-      const newAttributes = {};
-
-      for (const key in attributes) {
-        if (Number.parseInt(key) != 7) {
-          newAttributes[key] = attributes[key];
-        }
-      }
-
-      handleSetState({ attributes: newAttributes });
-    }
-
-    if (!mentions) {
-      const newAttributes = {};
-      for (const key in attributes) {
-        if (Number.parseInt(key) != 6) {
-          newAttributes[key] = attributes[key];
-        }
-      }
-
-      handleSetState({ attributes: newAttributes });
+    if (hashtags && mentions && tweet?.hashtags[0] !== null && tweet?.mentions[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          6: {
+            trait_type: "hashtags",
+            value: `#${[tweet?.hashtags[0]?.map((tag) => tag)].join(" #")}`,
+          },
+          7: {
+            trait_type: "mentions",
+            value: `@${[tweet?.mentions[0]?.map((mention) => mention)].join(" @")}`,
+          },
+        },
+      });
+    } else if (hashtags && tweet?.hashtags[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          6: {
+            trait_type: "hashtags",
+            value: `#${[tweet?.hashtags[0]?.map((tag) => tag)].join(" #")}`,
+          },
+        },
+      });
+    } else if (mentions && tweet?.mentions[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          7: {
+            trait_type: "mentions",
+            value: `@${[tweet?.mentions[0]?.map((mention) => mention)].join(" @")}`,
+          },
+        },
+      });
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
