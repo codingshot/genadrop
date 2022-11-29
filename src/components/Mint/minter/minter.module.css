@@ -6,6 +6,12 @@
   animation: show 650ms;
 }
 
+.ipfs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .tick {
   background: red;
   fill: var(--default);

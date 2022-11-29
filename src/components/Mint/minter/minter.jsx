@@ -39,6 +39,7 @@ import {
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
+import IpfsImage from "../IpfsImage/IpfsImage";
 
 const Minter = () => {
   const params = useParams();
@@ -56,6 +57,8 @@ const Minter = () => {
 
   const [state, setState] = useState({
     tweet: "",
+    ipfsLink: "",
+    ipfsType: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -117,6 +120,8 @@ const Minter = () => {
     location,
     locationPermission,
     tweet,
+    ipfsLink,
+    ipfsType,
     stick_type,
     header,
     hashtags,
@@ -158,6 +163,7 @@ const Minter = () => {
     mainnet,
     chain: chain?.chain,
   };
+
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -169,14 +175,22 @@ const Minter = () => {
   }, []);
 
   useEffect(() => {
+    console.log("Updated State", attributes);
+  }, [attributes]);
+  useEffect(() => {
     if (params.mintId === "tweet") {
-      const { data } = browserLocation.state;
+      const { data } = browserLocation?.state;
       handleSetState({
         tweet: JSON.parse(data),
         attributes: JSON.parse(data).attributes,
         description: tweet.text,
         fileName: tweet?.author_id?.name,
       });
+    }
+
+    if (params.mintId === "ipfs") {
+      const { data, type } = browserLocation.state;
+      handleSetState({ ipfsLink: data, ipfsType: type });
     }
 
     handleSetState({
@@ -187,6 +201,7 @@ const Minter = () => {
           (card.value === "audio" && params.mintId === "Audio File" && !category) ||
           (card.value === "video" && params.mintId === "Video File" && !category) ||
           (card.value === "tweet" && params.mintId === "tweet" && !category) ||
+          (card.value === "ipfs" && params.mintId === "ipfs" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -198,7 +213,7 @@ const Minter = () => {
       const filename = file[0].name.replace(/\.+\s*\./, ".").split(".");
       handleSetState({ fileExtension: filename.slice(filename.length - 1).join() });
     }
-  }, [file, attributes, hashtags, mentions]);
+  }, [file]);
 
   useEffect(() => {
     if (minter) {
@@ -214,10 +229,10 @@ const Minter = () => {
           // ...handle/report error...
         });
     } else if (params.mintId === "tweet") {
-      handleSetState({
-        description: tweet.text,
-        fileName: tweet?.author_id?.name,
-      });
+      handleSetState({ description: tweet.text });
+    } else if (params.mintId === "ipfs") {
+      const { type } = browserLocation.state;
+      console.log(type);
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -225,6 +240,7 @@ const Minter = () => {
       const files = loadedMinter.file.map((base64file) => {
         return getFileFromBase64(base64file.url, base64file.name);
       });
+
       loadedMinter.file = files;
       setMinterObj(loadedMinter);
       handleSetState({
@@ -237,7 +253,7 @@ const Minter = () => {
       });
     }
     return null;
-  }, [chain, showLocation]);
+  }, [chain, showLocation, fileName]);
 
   const handleAddAttribute = () => {
     handleSetState({
@@ -287,6 +303,62 @@ const Minter = () => {
     history.push(`/create`);
   };
 
+  const addHashtag = () => {
+    if (tweet?.hashtags[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          6: {
+            trait_type: "Hashtags",
+            value: `#${[tweet?.hashtags[0]?.map((tag) => tag)].join(" #")}`,
+          },
+        },
+        hashtags: true,
+      });
+    }
+  };
+
+  const addMentions = () => {
+    if (tweet?.mentions[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          7: {
+            trait_type: "Mentions",
+            value: `#${[tweet?.mentions[0]?.map((tag) => tag)].join(" #")}`,
+          },
+        },
+        mentions: true,
+      });
+    }
+  };
+
+  const removeHashtag = () => {
+    if (tweet?.hashtags[0] === null) return;
+
+    const newAttributes = {};
+    for (const key in attributes) {
+      if (Number.parseInt(key) != 6) {
+        newAttributes[key] = attributes[key];
+      }
+    }
+
+    handleSetState({ attributes: newAttributes, hashtags: false });
+  };
+
+  const removeMentions = () => {
+    if (tweet?.mentions[0] === null) return;
+
+    const newAttributes = {};
+    for (const key in attributes) {
+      if (Number.parseInt(key) != 7) {
+        newAttributes[key] = attributes[key];
+      }
+    }
+
+    handleSetState({ mentions: false, attributes: newAttributes });
+  };
+
   const setMint = async () => {
     if (showLocation && location !== "") {
       handleSetState({
@@ -299,34 +371,6 @@ const Minter = () => {
 
     if (tweet) {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
-    }
-
-    if (mentions && hashtags) {
-      handleSetState({
-        attributes: {
-          ...attributes,
-          1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
-          1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-        },
-      });
-    } else {
-      if (hashtags) {
-        handleSetState({
-          attributes: {
-            ...attributes,
-            1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-          },
-        });
-      }
-
-      if (mentions) {
-        handleSetState({
-          attributes: {
-            ...attributes,
-            1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
-          },
-        });
-      }
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
@@ -409,6 +453,12 @@ const Minter = () => {
             type: "warning",
           })
         );
+      }
+      if (ipfsLink && ipfsType) {
+        singleMintProps.metadata.attributes.push({
+          trait_type: "Category",
+          value: ipfsType,
+        });
       }
       if (category) {
         singleMintProps.metadata.attributes.push({
@@ -654,6 +704,10 @@ const Minter = () => {
                   <div ref={tweetRef}>
                     <Tweeter tweet={tweet} />
                   </div>
+                ) : ipfsLink ? (
+                  <div className={classes.ipfs}>
+                    <IpfsImage ipfsLink={ipfsLink} type={ipfsType} />
+                  </div>
                 ) : (
                   // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
                   //   <TweetEmbed
@@ -734,7 +788,9 @@ const Minter = () => {
                       style={zip ? { pointerEvents: "none" } : {}}
                       type="text"
                       value={fileName}
-                      onChange={(event) => handleSetState({ fileName: event.target.value.replace(/[^\w\s-]/gi, "") })}
+                      onChange={(event) => {
+                        handleSetState({ fileName: event.target.value });
+                      }}
                     />
                   </div>
 
@@ -811,7 +867,7 @@ const Minter = () => {
                     />
                   </div>
 
-                  {file?.length === 1 && (
+                  {(file?.length === 1 || ipfsLink) && (
                     <div className={classes.inputWrapper}>
                       <label>Category</label>
                       <div
@@ -826,9 +882,9 @@ const Minter = () => {
                       >
                         {category ? (
                           <div className={classes.chainLabel}>{category}</div>
-                        ) : params.mintId === "Audio File" ? (
+                        ) : params.mintId === "Audio File" || ipfsType === "Audio" ? (
                           <div className={classes.chainLabel}>Audio</div>
-                        ) : params.mintId === "Video File" ? (
+                        ) : params.mintId === "Video File" || ipfsType === "Video" ? (
                           <div className={classes.chainLabel}>Video</div>
                         ) : (
                           <span>Select Category</span>
@@ -892,7 +948,11 @@ const Minter = () => {
                                 index={key}
                                 removeAttribute={handleRemoveAttribute}
                                 changeAttribute={handleChangeAttribute}
-                                iscat={attributes[key].trait_type === "Category"}
+                                iscat={
+                                  attributes[key].trait_type === "Category" ||
+                                  attributes[key].trait_type === "Mentions" ||
+                                  attributes[key].trait_type === "Hashtag"
+                                }
                               />
                             ) : (
                               () => handleSetState({ location: key })
@@ -1006,7 +1066,7 @@ const Minter = () => {
                                     id="location"
                                     type="checkbox"
                                     defaultChecked={hashtags}
-                                    onClick={() => handleSetState({ hashtags: !hashtags })}
+                                    onClick={() => (hashtags ? removeHashtag() : addHashtag())}
                                   />
                                   <span className={classes.slider} />
                                 </label>
@@ -1037,7 +1097,7 @@ const Minter = () => {
                                     id="location"
                                     type="checkbox"
                                     defaultChecked={mentions}
-                                    onClick={() => handleSetState({ mentions: !mentions })}
+                                    onClick={() => (mentions ? removeMentions() : addMentions())}
                                   />
                                   <span className={classes.slider} />
                                 </label>

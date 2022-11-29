@@ -57,6 +57,7 @@ export const handleMint = async (args) => {
 
 export const handleSingleMint = async (args) => {
   const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
+  console.log(args);
 
   if (!account) {
     return dispatch(
