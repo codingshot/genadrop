@@ -47,7 +47,6 @@ const Minter = () => {
 
   const history = useHistory();
   const tweetRef = useRef(null);
-  const ipfsRef = useRef(null);
 
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
@@ -59,6 +58,7 @@ const Minter = () => {
   const [state, setState] = useState({
     tweet: "",
     ipfsLink: "",
+    ipfsType: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -121,6 +121,7 @@ const Minter = () => {
     locationPermission,
     tweet,
     ipfsLink,
+    ipfsType,
     stick_type,
     header,
     hashtags,
@@ -187,8 +188,8 @@ const Minter = () => {
     }
 
     if (params.mintId === "ipfs") {
-      const { data } = browserLocation.state;
-      handleSetState({ ipfsLink: data });
+      const { data, type } = browserLocation.state;
+      handleSetState({ ipfsLink: data, ipfsType: type });
     }
 
     handleSetState({
@@ -232,7 +233,8 @@ const Minter = () => {
         fileName: tweet?.author_id?.name,
       });
     } else if (params.mintId === "ipfs") {
-      console.log("here");
+      const { type } = browserLocation.state;
+      console.log(type);
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -428,6 +430,12 @@ const Minter = () => {
             type: "warning",
           })
         );
+      }
+      if (ipfsLink && ipfsType) {
+        singleMintProps.metadata.attributes.push({
+          trait_type: "Category",
+          value: ipfsType,
+        });
       }
       if (category) {
         singleMintProps.metadata.attributes.push({
@@ -675,7 +683,7 @@ const Minter = () => {
                   </div>
                 ) : ipfsLink ? (
                   <div className={classes.ipfs}>
-                    <IpfsImage ipfsLink={ipfsLink} />
+                    <IpfsImage ipfsLink={ipfsLink} type={ipfsType} />
                   </div>
                 ) : (
                   // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
@@ -851,9 +859,9 @@ const Minter = () => {
                       >
                         {category ? (
                           <div className={classes.chainLabel}>{category}</div>
-                        ) : params.mintId === "Audio File" ? (
+                        ) : params.mintId === "Audio File" || ipfsType === "Audio" ? (
                           <div className={classes.chainLabel}>Audio</div>
-                        ) : params.mintId === "Video File" ? (
+                        ) : params.mintId === "Video File" || ipfsType === "Video" ? (
                           <div className={classes.chainLabel}>Video</div>
                         ) : (
                           <span>Select Category</span>

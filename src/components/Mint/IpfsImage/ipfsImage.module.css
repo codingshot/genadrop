@@ -1,5 +1,4 @@
 .container {
-    border: 1px solid var(--outline);
     border-radius: 10px;
     padding: 5px;
     display: flex;
@@ -10,4 +9,9 @@
 
 .container img {
     width: 100%;
+}
+
+.singleVideo {
+    width: 400px;
+    height: 300px;
 }
