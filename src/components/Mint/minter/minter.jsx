@@ -214,6 +214,7 @@ const Minter = () => {
           console.log(error);
           // ...handle/report error...
         });
+    } else if (params.mintId === "tweet") {
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -324,8 +325,6 @@ const Minter = () => {
 
       handleSetState({ attributes: newAttributes });
     }
-    console.log(mentions, hashtags, attributes);
-    return;
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
