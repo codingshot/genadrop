@@ -309,7 +309,7 @@ const Minter = () => {
         attributes: {
           ...attributes,
           6: {
-            trait_type: "hashtags",
+            trait_type: "Hashtags",
             value: `#${[tweet?.hashtags[0]?.map((tag) => tag)].join(" #")}`,
           },
         },
@@ -324,7 +324,7 @@ const Minter = () => {
         attributes: {
           ...attributes,
           7: {
-            trait_type: "mentions",
+            trait_type: "Mentions",
             value: `#${[tweet?.mentions[0]?.map((tag) => tag)].join(" #")}`,
           },
         },
@@ -334,7 +334,7 @@ const Minter = () => {
   };
 
   const removeHashtag = () => {
-    if (tweet?.hashtags[0] !== null) return;
+    if (tweet?.hashtags[0] === null) return;
 
     const newAttributes = {};
     for (const key in attributes) {
@@ -347,7 +347,7 @@ const Minter = () => {
   };
 
   const removeMentions = () => {
-    if (tweet?.mentions[0] !== null) return;
+    if (tweet?.mentions[0] === null) return;
 
     const newAttributes = {};
     for (const key in attributes) {
@@ -356,7 +356,7 @@ const Minter = () => {
       }
     }
 
-    handleSetState({ attributes: newAttributes, mentions: false });
+    handleSetState({ mentions: false, attributes: newAttributes });
   };
 
   const setMint = async () => {
@@ -948,7 +948,11 @@ const Minter = () => {
                                 index={key}
                                 removeAttribute={handleRemoveAttribute}
                                 changeAttribute={handleChangeAttribute}
-                                iscat={attributes[key].trait_type === "Category"}
+                                iscat={
+                                  attributes[key].trait_type === "Category" ||
+                                  attributes[key].trait_type === "Mentions" ||
+                                  attributes[key].trait_type === "Hashtag"
+                                }
                               />
                             ) : (
                               () => handleSetState({ location: key })
