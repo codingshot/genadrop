@@ -20,7 +20,8 @@ const Category = ({ category, file, params }) => {
               file?.length === 1 &&
               !category &&
               params.mintId !== "Audio File" &&
-              params.mintId !== "Video File")
+              params.mintId !== "Video File") ||
+            (card.value === "ipfs" && params.mintId === "ipfs" && !category)
               ? classes.active
               : ""
           }`}

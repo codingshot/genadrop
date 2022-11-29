@@ -13,6 +13,7 @@ import { GenContext } from "../../../gen-state/gen.context";
 import { setMinter, setZip } from "../../../gen-state/gen.actions";
 import { NearErrorPop, NearSuccessPopup } from "../popup/nearMintPopup";
 import MintTweet from "../mintTweet/mintTweet";
+import MintIpfs from "../mintIPFS/mintIPFS";
 
 const CollectionToSingleMinter = () => {
   const params = useParams();
@@ -160,7 +161,7 @@ const CollectionToSingleMinter = () => {
   };
 
   useEffect(() => {
-    if (params.mintId !== "tweet") {
+    if (params.mintId !== "tweet" && params.mintId !== "ipfs") {
       dragRef.current.ondragover = (e) => {
         e.preventDefault();
         document.querySelector(".drop-area").style.border = "2px dashed green";
@@ -207,6 +208,10 @@ const CollectionToSingleMinter = () => {
     <>
       {params.mintId === "tweet" ? (
         <MintTweet />
+      ) : params.mintId === "ipfs" ? (
+        <>
+          <MintIpfs />
+        </>
       ) : (
         <div ref={dragRef} className={classes.container}>
           {/* <div ref={dropRef} style={{display: 'none'}} className="drop-area"><UploadOverlay /></div>  */}
@@ -305,7 +310,8 @@ const CollectionToSingleMinter = () => {
             />
           </>
         </div>
-      )}
+         )
+      }
     </>
   );
 };
