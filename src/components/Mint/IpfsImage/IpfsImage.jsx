@@ -1,12 +1,14 @@
+import axios from "axios";
 import React, { useCallback, useState, useEffect } from "react";
 import classes from "./ipfsImage.module.css";
 
-const IpfsImage = ({ ipfsLink }) => {
-  const [image, setImage] = useState("");
+const IpfsImage = ({ ipfsLink, type }) => {
+  const [file, setFile] = useState("");
+
   const getImage = useCallback(async () => {
     try {
       const link = ipfsLink.replace("ipfs://", "https://ipfs.io/ipfs/");
-      setImage(link);
+      setFile(link);
     } catch (error) {
       console.log(error);
     }
@@ -18,7 +20,13 @@ const IpfsImage = ({ ipfsLink }) => {
   return (
     <div className={classes.container}>
       <div>
-        <img alt="" src={image} />
+        {type === "Audio" ? (
+          <audio src={file} className={classes.singleVideo} controls muted />
+        ) : type === "Video" ? (
+          <video src={file} alt="" className={classes.singleVideo} controls />
+        ) : (
+          <img src={file} alt="" className={classes.singleImage} />
+        )}
       </div>
     </div>
   );

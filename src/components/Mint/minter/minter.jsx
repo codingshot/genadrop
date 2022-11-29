@@ -39,6 +39,7 @@ import {
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
+import IpfsImage from "../IpfsImage/IpfsImage";
 
 const Minter = () => {
   const params = useParams();
@@ -56,6 +57,8 @@ const Minter = () => {
 
   const [state, setState] = useState({
     tweet: "",
+    ipfsLink: "",
+    ipfsType: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -117,6 +120,8 @@ const Minter = () => {
     location,
     locationPermission,
     tweet,
+    ipfsLink,
+    ipfsType,
     stick_type,
     header,
     hashtags,
@@ -180,6 +185,11 @@ const Minter = () => {
       });
     }
 
+    if (params.mintId === "ipfs") {
+      const { data, type } = browserLocation.state;
+      handleSetState({ ipfsLink: data, ipfsType: type });
+    }
+
     handleSetState({
       header: cards.filter(
         (card) =>
@@ -188,6 +198,7 @@ const Minter = () => {
           (card.value === "audio" && params.mintId === "Audio File" && !category) ||
           (card.value === "video" && params.mintId === "Video File" && !category) ||
           (card.value === "tweet" && params.mintId === "tweet" && !category) ||
+          (card.value === "ipfs" && params.mintId === "ipfs" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -216,6 +227,9 @@ const Minter = () => {
         });
     } else if (params.mintId === "tweet") {
       handleSetState({ description: tweet.text });
+    } else if (params.mintId === "ipfs") {
+      const { type } = browserLocation.state;
+      console.log(type);
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -404,6 +418,12 @@ const Minter = () => {
             type: "warning",
           })
         );
+      }
+      if (ipfsLink && ipfsType) {
+        singleMintProps.metadata.attributes.push({
+          trait_type: "Category",
+          value: ipfsType,
+        });
       }
       if (category) {
         singleMintProps.metadata.attributes.push({
@@ -649,6 +669,10 @@ const Minter = () => {
                   <div ref={tweetRef}>
                     <Tweeter tweet={tweet} />
                   </div>
+                ) : ipfsLink ? (
+                  <div className={classes.ipfs}>
+                    <IpfsImage ipfsLink={ipfsLink} type={ipfsType} />
+                  </div>
                 ) : (
                   // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
                   //   <TweetEmbed
@@ -808,7 +832,7 @@ const Minter = () => {
                     />
                   </div>
 
-                  {file?.length === 1 && (
+                  {(file?.length === 1 || ipfsLink) && (
                     <div className={classes.inputWrapper}>
                       <label>Category</label>
                       <div
@@ -823,9 +847,9 @@ const Minter = () => {
                       >
                         {category ? (
                           <div className={classes.chainLabel}>{category}</div>
-                        ) : params.mintId === "Audio File" ? (
+                        ) : params.mintId === "Audio File" || ipfsType === "Audio" ? (
                           <div className={classes.chainLabel}>Audio</div>
-                        ) : params.mintId === "Video File" ? (
+                        ) : params.mintId === "Video File" || ipfsType === "Video" ? (
                           <div className={classes.chainLabel}>Video</div>
                         ) : (
                           <span>Select Category</span>
