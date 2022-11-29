@@ -39,7 +39,7 @@ const MintIpfs = () => {
           <input
             onChange={(e) => handleSetState({ ipfsLink: e.target.value })}
             type="text"
-            placeholder="ipfs://bafybeidlkqhddsjrdue7y3dy27pu5d7ydyemcls4z24szlyik3we7vqvam/nft-image.png/"
+            placeholder="ipfs://bafybeidlkqhddsjrdue7y3dy27pu5d7ydyemcls4z24szlyik3we7vqvam"
           />
           <button onClick={validateLink} className={classes.mintButton} type="button">
             Mint

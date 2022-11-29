@@ -380,7 +380,6 @@ const Minter = () => {
       singleMintProps.file = ipfsLink;
       singleMintProps.fileName = singleMintProps.fileName && `${singleMintProps.fileName}.png`;
       singleMintProps.isIpfsLink = true;
-      console.log(singleMintProps);
     }
     if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
@@ -834,7 +833,7 @@ const Minter = () => {
                     />
                   </div>
 
-                  {file?.length === 1 && (
+                  {(file?.length === 1 || ipfsLink) && (
                     <div className={classes.inputWrapper}>
                       <label>Category</label>
                       <div
