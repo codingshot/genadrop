@@ -134,6 +134,7 @@ const Minter = () => {
     setClipboard,
     description,
     receiverAddress,
+
     account,
     chainId,
     connector,
@@ -149,6 +150,7 @@ const Minter = () => {
     setNotification,
     setClipboard,
     receiverAddress,
+    isIpfsLink: false,
     account,
     chainId,
     connector,
@@ -308,13 +310,8 @@ const Minter = () => {
         },
       });
     }
-
     if (tweet) {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
-    }
-    if (ipfsLink) {
-      singleMintProps.file = ipfsLink;
-      singleMintProps.fileName = `${singleMintProps.fileName}.png`;
     }
 
     if (mentions && hashtags) {
@@ -380,7 +377,10 @@ const Minter = () => {
       );
     }
     if (ipfsLink) {
-      return console.log(singleMintProps);
+      singleMintProps.file = ipfsLink;
+      singleMintProps.fileName = singleMintProps.fileName && `${singleMintProps.fileName}.png`;
+      singleMintProps.isIpfsLink = true;
+      console.log(singleMintProps);
     }
     if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
