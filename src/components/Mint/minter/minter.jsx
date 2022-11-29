@@ -230,8 +230,10 @@ const Minter = () => {
         description: tweet.text,
         fileName: tweet?.author_id?.name,
       });
+
     } else if (params.mintId === "ipfs") {
       console.log("here");
+
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -251,7 +253,7 @@ const Minter = () => {
       });
     }
     return null;
-  }, [chain, showLocation]);
+  }, [chain, showLocation, fileName]);
 
   const handleAddAttribute = () => {
     handleSetState({
