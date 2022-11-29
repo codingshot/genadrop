@@ -314,10 +314,6 @@ const Minter = () => {
     if (tweet) {
       // singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
-    if (ipfsLink) {
-      singleMintProps.file = ipfsLink;
-      singleMintProps.fileName = `${singleMintProps.fileName}.png`;
-    }
 
     if (!hashtags) {
       const newAttributes = {};
