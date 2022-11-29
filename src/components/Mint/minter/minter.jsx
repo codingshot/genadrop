@@ -39,7 +39,6 @@ import {
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
-import IpfsImage from "../IpfsImage/IpfsImage";
 
 const Minter = () => {
   const params = useParams();
@@ -47,7 +46,6 @@ const Minter = () => {
 
   const history = useHistory();
   const tweetRef = useRef(null);
-  const ipfsRef = useRef(null);
 
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
@@ -58,7 +56,6 @@ const Minter = () => {
 
   const [state, setState] = useState({
     tweet: "",
-    ipfsLink: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -92,8 +89,8 @@ const Minter = () => {
     fileExtension: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
     header: "",
-    hashtags: false,
-    mentions: false,
+    hashtags: true,
+    mentions: true,
   });
 
   const {
@@ -120,7 +117,6 @@ const Minter = () => {
     location,
     locationPermission,
     tweet,
-    ipfsLink,
     stick_type,
     header,
     hashtags,
@@ -134,7 +130,6 @@ const Minter = () => {
     setClipboard,
     description,
     receiverAddress,
-
     account,
     chainId,
     connector,
@@ -150,7 +145,6 @@ const Minter = () => {
     setNotification,
     setClipboard,
     receiverAddress,
-    isIpfsLink: false,
     account,
     chainId,
     connector,
@@ -164,6 +158,7 @@ const Minter = () => {
     mainnet,
     chain: chain?.chain,
   };
+
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
@@ -176,18 +171,13 @@ const Minter = () => {
 
   useEffect(() => {
     if (params.mintId === "tweet") {
-      const { data } = browserLocation.state;
+      const { data } = browserLocation?.state;
       handleSetState({
         tweet: JSON.parse(data),
         attributes: JSON.parse(data).attributes,
         description: tweet.text,
         fileName: tweet?.author_id?.name,
       });
-    }
-
-    if (params.mintId === "ipfs") {
-      const { data } = browserLocation.state;
-      handleSetState({ ipfsLink: data });
     }
 
     handleSetState({
@@ -198,7 +188,6 @@ const Minter = () => {
           (card.value === "audio" && params.mintId === "Audio File" && !category) ||
           (card.value === "video" && params.mintId === "Video File" && !category) ||
           (card.value === "tweet" && params.mintId === "tweet" && !category) ||
-          (card.value === "ipfs" && params.mintId === "ipfs" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -210,7 +199,7 @@ const Minter = () => {
       const filename = file[0].name.replace(/\.+\s*\./, ".").split(".");
       handleSetState({ fileExtension: filename.slice(filename.length - 1).join() });
     }
-  }, [file, attributes, hashtags, mentions]);
+  }, [file]);
 
   useEffect(() => {
     if (minter) {
@@ -225,17 +214,8 @@ const Minter = () => {
           console.log(error);
           // ...handle/report error...
         });
-    } else if (params.mintId === "tweet") {
-      handleSetState({
-        description: tweet.text,
-        fileName: tweet?.author_id?.name,
-      });
-
-    } else if (params.mintId === "ipfs") {
-      console.log("here");
-
     } else {
-      if (!loadedMinter) {
+      if (!loadedMinter && params.mintId !== "tweet") {
         return history.push("/create");
       }
       const files = loadedMinter.file.map((base64file) => {
@@ -312,36 +292,32 @@ const Minter = () => {
         },
       });
     }
+
     if (tweet) {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
 
-    if (mentions && hashtags) {
-      handleSetState({
-        attributes: {
-          ...attributes,
-          1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
-          1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-        },
-      });
-    } else {
-      if (hashtags) {
-        handleSetState({
-          attributes: {
-            ...attributes,
-            1001: { trait_type: "hashtags", value: `#${tweet.hashtags[0].join(" #")}` },
-          },
-        });
+    if (!hashtags) {
+      const newAttributes = {};
+
+      for (const key in attributes) {
+        if (Number.parseInt(key) != 7) {
+          newAttributes[key] = attributes[key];
+        }
       }
 
-      if (mentions) {
-        handleSetState({
-          attributes: {
-            ...attributes,
-            1000: { trait_type: "mentions", value: `@${tweet.mentions[0].join(" @")}` },
-          },
-        });
+      handleSetState({ attributes: newAttributes });
+    }
+
+    if (!mentions) {
+      const newAttributes = {};
+      for (const key in attributes) {
+        if (Number.parseInt(key) != 6) {
+          newAttributes[key] = attributes[key];
+        }
       }
+
+      handleSetState({ attributes: newAttributes });
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
@@ -377,11 +353,6 @@ const Minter = () => {
           type: "warning",
         })
       );
-    }
-    if (ipfsLink) {
-      singleMintProps.file = ipfsLink;
-      singleMintProps.fileName = singleMintProps.fileName && `${singleMintProps.fileName}.png`;
-      singleMintProps.isIpfsLink = true;
     }
     if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
@@ -674,10 +645,6 @@ const Minter = () => {
                   <div ref={tweetRef}>
                     <Tweeter tweet={tweet} />
                   </div>
-                ) : ipfsLink ? (
-                  <div className={classes.ipfs}>
-                    <IpfsImage ipfsLink={ipfsLink} />
-                  </div>
                 ) : (
                   // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
                   //   <TweetEmbed
@@ -758,7 +725,9 @@ const Minter = () => {
                       style={zip ? { pointerEvents: "none" } : {}}
                       type="text"
                       value={fileName}
-                      onChange={(event) => handleSetState({ fileName: event.target.value.replace(/[^\w\s-]/gi, "") })}
+                      onChange={(event) => {
+                        handleSetState({ fileName: event.target.value });
+                      }}
                     />
                   </div>
 
@@ -835,7 +804,7 @@ const Minter = () => {
                     />
                   </div>
 
-                  {(file?.length === 1 || ipfsLink) && (
+                  {file?.length === 1 && (
                     <div className={classes.inputWrapper}>
                       <label>Category</label>
                       <div
