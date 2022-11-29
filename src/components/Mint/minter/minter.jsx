@@ -215,6 +215,10 @@ const Minter = () => {
           // ...handle/report error...
         });
     } else if (params.mintId === "tweet") {
+      handleSetState({
+        description: tweet.text,
+        fileName: tweet?.author_id?.name,
+      });
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -234,7 +238,7 @@ const Minter = () => {
       });
     }
     return null;
-  }, [chain, showLocation]);
+  }, [chain, showLocation, fileName]);
 
   const handleAddAttribute = () => {
     handleSetState({
