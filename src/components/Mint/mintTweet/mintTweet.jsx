@@ -64,6 +64,16 @@ const MintTweet = () => {
           });
         });
 
+        const mens =
+          data.data.data.map((tweet) => {
+            return tweet.entities?.mentions?.map((mention) => mention.username);
+          })[0] === undefined;
+
+        const hashs =
+          data.data.data.map((tweet) => {
+            return tweet.entities?.hashtags?.map((tag) => tag.tag);
+          })[0] === undefined;
+
         tweets = data.data.data.map((tweet) => {
           return {
             id: tweet.id,
@@ -75,8 +85,8 @@ const MintTweet = () => {
             domain: "Twitter Web App",
             icon: twitterIcon,
             links: tweet.entities?.urls?.filter((link) => !link.display_url.includes("pic.twitter"))[0],
-            hashtags: [tweet.entities?.hashtags?.map((tag) => tag.tag)],
-            mentions: [tweet.entities?.mentions?.map((mention) => mention.username)],
+            hashtags: !hashs ? [tweet.entities?.hashtags?.map((tag) => tag.tag)] : "none",
+            mentions: !mens ? [tweet.entities?.mentions?.map((mention) => mention.username)] : "none",
             lightTheme,
             attributes: {
               0: { trait_type: "File Type", value: "PNG" },
@@ -85,13 +95,24 @@ const MintTweet = () => {
               3: { trait_type: "Handle", value: `@${users[tweet?.author_id].username}` },
               4: { trait_type: "Tweet URL", value: tweetLink },
               5: { trait_type: "Time & Date", value: moment(tweet.created_at).format("ll") },
+              6: {
+                trait_type: "mentions",
+                value: !mens ? `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}` : "none",
+              },
+              7: {
+                trait_type: "hashtags",
+                value: !hashs ? `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}` : "none",
+              },
             },
           };
         });
+
+        console.log(mens, hashs, tweets[0]);
+        // return;
         history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
       })
       .catch((err) => {
-        dispatch(setNotification({ message: "Invalid tweet link", type: "error" }));
+        dispatch(setNotification({ message: "Bad network or Invalid link", type: "error" }));
         console.log(err);
       });
   };
