@@ -214,13 +214,14 @@ const Minter = () => {
           console.log(error);
           // ...handle/report error...
         });
-    } else {
-      if (!loadedMinter && params.mintId !== "tweet") {
+    } else if (params.mintId !== "tweet") {
+      if (!loadedMinter) {
         return history.push("/create");
       }
       const files = loadedMinter.file.map((base64file) => {
         return getFileFromBase64(base64file.url, base64file.name);
       });
+
       loadedMinter.file = files;
       setMinterObj(loadedMinter);
       handleSetState({
@@ -259,6 +260,7 @@ const Minter = () => {
   };
 
   const handleChangeAttribute = (arg) => {
+    ``;
     const {
       event: {
         target: { name, value },
