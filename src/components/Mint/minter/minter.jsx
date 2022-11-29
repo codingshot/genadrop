@@ -39,6 +39,7 @@ import {
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
+import IpfsImage from "../IpfsImage/IpfsImage";
 
 const Minter = () => {
   const params = useParams();
@@ -46,6 +47,7 @@ const Minter = () => {
 
   const history = useHistory();
   const tweetRef = useRef(null);
+  const ipfsRef = useRef(null);
 
   const { dispatch, connector, account, chainId, mainnet, minter: minterFile } = useContext(GenContext);
   const [minter, setMinterObj] = useState(minterFile);
@@ -56,6 +58,7 @@ const Minter = () => {
 
   const [state, setState] = useState({
     tweet: "",
+    ipfsLink: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -117,6 +120,7 @@ const Minter = () => {
     location,
     locationPermission,
     tweet,
+    ipfsLink,
     stick_type,
     header,
     hashtags,
@@ -179,6 +183,11 @@ const Minter = () => {
       });
     }
 
+    if (params.mintId === "ipfs") {
+      const { data } = browserLocation.state;
+      handleSetState({ ipfsLink: data });
+    }
+
     handleSetState({
       header: cards.filter(
         (card) =>
@@ -187,6 +196,7 @@ const Minter = () => {
           (card.value === "audio" && params.mintId === "Audio File" && !category) ||
           (card.value === "video" && params.mintId === "Video File" && !category) ||
           (card.value === "tweet" && params.mintId === "tweet" && !category) ||
+          (card.value === "ipfs" && params.mintId === "ipfs" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -218,6 +228,8 @@ const Minter = () => {
         description: tweet.text,
         fileName: tweet?.author_id?.name,
       });
+    } else if (params.mintId === "ipfs") {
+      console.log("here");
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -300,6 +312,10 @@ const Minter = () => {
     if (tweet) {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
+    if (ipfsLink) {
+      singleMintProps.file = ipfsLink;
+      singleMintProps.fileName = `${singleMintProps.fileName}.png`;
+    }
 
     if (mentions && hashtags) {
       handleSetState({
@@ -362,6 +378,9 @@ const Minter = () => {
           type: "warning",
         })
       );
+    }
+    if (ipfsLink) {
+      return console.log(singleMintProps);
     }
     if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
@@ -653,6 +672,10 @@ const Minter = () => {
                 {tweet ? (
                   <div ref={tweetRef}>
                     <Tweeter tweet={tweet} />
+                  </div>
+                ) : ipfsLink ? (
+                  <div className={classes.ipfs}>
+                    <IpfsImage ipfsLink={ipfsLink} />
                   </div>
                 ) : (
                   // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
