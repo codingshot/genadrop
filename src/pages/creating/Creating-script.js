@@ -10,6 +10,8 @@ import { ReactComponent as Ai } from "../../assets/create/ai-icon.svg";
 import { ReactComponent as Audio } from "../../assets/create/MusicNotes.svg";
 import { ReactComponent as Video } from "../../assets/create/MintVideos.svg";
 import { ReactComponent as Tweets } from "../../assets/create/tweets-icon.svg";
+import { ReactComponent as Ipfs } from "../../assets/create/ipfsIcon.svg";
+
 
 const cards = [
   {
@@ -81,6 +83,13 @@ const cards = [
     description: "Take a photo and selfie and mint",
     icon: <Doubletake />,
     url: "/mint/doubletake",
+    comingSoon: "",
+  },
+  {
+    title: "IPFS",
+    description: "Mint your NFTs using IPFS link",
+    icon: <Ipfs />,
+    url: "/mint/ipfs",
     comingSoon: "",
   },
   {

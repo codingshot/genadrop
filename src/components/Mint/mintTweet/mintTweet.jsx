@@ -85,8 +85,8 @@ const MintTweet = () => {
             domain: "Twitter Web App",
             icon: twitterIcon,
             links: tweet.entities?.urls?.filter((link) => !link.display_url.includes("pic.twitter"))[0],
-            hashtags: [tweet.entities?.hashtags?.map((tag) => tag.tag)],
-            mentions: [tweet.entities?.mentions?.map((mention) => mention.username)],
+            hashtags: !hashs ? [tweet.entities?.hashtags?.map((tag) => tag.tag)] : "none",
+            mentions: !mens ? [tweet.entities?.mentions?.map((mention) => mention.username)] : "none",
             lightTheme,
             attributes: {
               0: { trait_type: "File Type", value: "PNG" },
@@ -97,16 +97,17 @@ const MintTweet = () => {
               5: { trait_type: "Time & Date", value: moment(tweet.created_at).format("ll") },
               6: {
                 trait_type: "mentions",
-                value: `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}`,
+                value: !mens ? `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}` : "none",
               },
               7: {
                 trait_type: "hashtags",
-                value: `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}`,
+                value: !hashs ? `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}` : "none",
               },
             },
           };
         });
 
+        console.log(mens, hashs, tweets[0]);
         // return;
         history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
       })
