@@ -214,7 +214,9 @@ const Minter = () => {
           console.log(error);
           // ...handle/report error...
         });
-    } else if (params.mintId !== "tweet") {
+    } else if (params.mintId === "tweet") {
+      handleSetState({ description: tweet.text });
+    } else {
       if (!loadedMinter) {
         return history.push("/create");
       }
