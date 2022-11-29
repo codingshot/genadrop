@@ -135,7 +135,6 @@ const Minter = () => {
     setClipboard,
     description,
     receiverAddress,
-
     account,
     chainId,
     connector,
@@ -151,7 +150,6 @@ const Minter = () => {
     setNotification,
     setClipboard,
     receiverAddress,
-    isIpfsLink: false,
     account,
     chainId,
     connector,
@@ -178,7 +176,7 @@ const Minter = () => {
 
   useEffect(() => {
     if (params.mintId === "tweet") {
-      const { data } = browserLocation.state;
+      const { data } = browserLocation?.state;
       handleSetState({
         tweet: JSON.parse(data),
         attributes: JSON.parse(data).attributes,
@@ -200,7 +198,6 @@ const Minter = () => {
           (card.value === "audio" && params.mintId === "Audio File" && !category) ||
           (card.value === "video" && params.mintId === "Video File" && !category) ||
           (card.value === "tweet" && params.mintId === "tweet" && !category) ||
-          (card.value === "ipfs" && params.mintId === "ipfs" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -228,10 +225,7 @@ const Minter = () => {
           // ...handle/report error...
         });
     } else if (params.mintId === "tweet") {
-      handleSetState({
-        description: tweet.text,
-        fileName: tweet?.author_id?.name,
-      });
+      handleSetState({ description: tweet.text });
     } else if (params.mintId === "ipfs") {
       const { type } = browserLocation.state;
       console.log(type);
@@ -242,6 +236,7 @@ const Minter = () => {
       const files = loadedMinter.file.map((base64file) => {
         return getFileFromBase64(base64file.url, base64file.name);
       });
+
       loadedMinter.file = files;
       setMinterObj(loadedMinter);
       handleSetState({
@@ -254,7 +249,7 @@ const Minter = () => {
       });
     }
     return null;
-  }, [chain, showLocation]);
+  }, [chain, showLocation, fileName]);
 
   const handleAddAttribute = () => {
     handleSetState({
@@ -280,6 +275,7 @@ const Minter = () => {
   };
 
   const handleChangeAttribute = (arg) => {
+    ``;
     const {
       event: {
         target: { name, value },
@@ -313,8 +309,9 @@ const Minter = () => {
         },
       });
     }
+
     if (tweet) {
-      // singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
+      singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
 
     if (!hashtags) {
@@ -322,8 +319,6 @@ const Minter = () => {
 
       for (const key in attributes) {
         if (Number.parseInt(key) != 7) {
-          console.log("HASH:", key);
-
           newAttributes[key] = attributes[key];
         }
       }
@@ -333,11 +328,8 @@ const Minter = () => {
 
     if (!mentions) {
       const newAttributes = {};
-
       for (const key in attributes) {
         if (Number.parseInt(key) != 6) {
-          console.log("MEN:", key);
-
           newAttributes[key] = attributes[key];
         }
       }
@@ -378,11 +370,6 @@ const Minter = () => {
           type: "warning",
         })
       );
-    }
-    if (ipfsLink) {
-      singleMintProps.file = ipfsLink;
-      singleMintProps.fileName = singleMintProps.fileName && `${singleMintProps.fileName}.png`;
-      singleMintProps.isIpfsLink = true;
     }
     if (receiverAddress.length >= 10 && !mintToMyAddress) {
       mintProps.receiverAddress = receiverAddress;
@@ -1038,10 +1025,8 @@ const Minter = () => {
                                   <input
                                     id="location"
                                     type="checkbox"
-                                    defaultChecked={hashtags && tweet?.hashtags !== "none"}
-                                    onClick={() =>
-                                      tweet?.hashtags === "none" ? "" : handleSetState({ hashtags: !hashtags })
-                                    }
+                                    defaultChecked={hashtags}
+                                    onClick={() => handleSetState({ hashtags: !hashtags })}
                                   />
                                   <span className={classes.slider} />
                                 </label>
@@ -1049,17 +1034,13 @@ const Minter = () => {
                             </div>
 
                             <div className={classes.hashtags}>
-                              {tweet?.hastags === "none"
-                                ? ""
-                                : tweet?.hashtags[0]?.map((e) => {
-                                    if (e !== null) {
-                                      return (
-                                        <div
-                                          className={`${classes.hashtag}  ${!hashtags && classes.noTag}`}
-                                        >{`#${e}`}</div>
-                                      );
-                                    }
-                                  })}
+                              {tweet?.hashtags[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!hashtags && classes.noTag}`}>{`#${e}`}</div>
+                                  );
+                                }
+                              })}
                             </div>
                           </div>
                         </div>
@@ -1075,10 +1056,8 @@ const Minter = () => {
                                   <input
                                     id="location"
                                     type="checkbox"
-                                    defaultChecked={mentions && tweet?.mentions !== "none"}
-                                    onClick={() =>
-                                      tweet?.mentions === "none" ? "" : handleSetState({ mentions: !mentions })
-                                    }
+                                    defaultChecked={mentions}
+                                    onClick={() => handleSetState({ mentions: !mentions })}
                                   />
                                   <span className={classes.slider} />
                                 </label>
@@ -1086,17 +1065,13 @@ const Minter = () => {
                             </div>
 
                             <div className={classes.hashtags}>
-                              {tweet?.mentions === "none"
-                                ? ""
-                                : tweet?.mentions[0]?.map((e) => {
-                                    if (e !== null) {
-                                      return (
-                                        <div
-                                          className={`${classes.hashtag}  ${!mentions && classes.noTag}`}
-                                        >{`@${e}`}</div>
-                                      );
-                                    }
-                                  })}
+                              {tweet?.mentions[0]?.map((e) => {
+                                if (e !== null) {
+                                  return (
+                                    <div className={`${classes.hashtag}  ${!mentions && classes.noTag}`}>{`@${e}`}</div>
+                                  );
+                                }
+                              })}
                             </div>
                           </div>
                         </div>
