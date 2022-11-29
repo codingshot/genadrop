@@ -92,8 +92,8 @@ const Minter = () => {
     fileExtension: "",
     stick_type: metadata?.smoking_stick ? metadata?.smoking_stick.value : "",
     header: "",
-    hashtags: true,
-    mentions: true,
+    hashtags: false,
+    mentions: false,
   });
 
   const {
@@ -174,6 +174,9 @@ const Minter = () => {
     });
   }, []);
 
+  useEffect(() => {
+    console.log("Updated State", attributes);
+  }, [attributes]);
   useEffect(() => {
     if (params.mintId === "tweet") {
       const { data } = browserLocation?.state;
@@ -276,7 +279,6 @@ const Minter = () => {
   };
 
   const handleChangeAttribute = (arg) => {
-    ``;
     const {
       event: {
         target: { name, value },
@@ -301,6 +303,62 @@ const Minter = () => {
     history.push(`/create`);
   };
 
+  const addHashtag = () => {
+    if (tweet?.hashtags[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          6: {
+            trait_type: "Hashtags",
+            value: `#${[tweet?.hashtags[0]?.map((tag) => tag)].join(" #")}`,
+          },
+        },
+        hashtags: true,
+      });
+    }
+  };
+
+  const addMentions = () => {
+    if (tweet?.mentions[0] !== null) {
+      handleSetState({
+        attributes: {
+          ...attributes,
+          7: {
+            trait_type: "Mentions",
+            value: `#${[tweet?.mentions[0]?.map((tag) => tag)].join(" #")}`,
+          },
+        },
+        mentions: true,
+      });
+    }
+  };
+
+  const removeHashtag = () => {
+    if (tweet?.hashtags[0] === null) return;
+
+    const newAttributes = {};
+    for (const key in attributes) {
+      if (Number.parseInt(key) != 6) {
+        newAttributes[key] = attributes[key];
+      }
+    }
+
+    handleSetState({ attributes: newAttributes, hashtags: false });
+  };
+
+  const removeMentions = () => {
+    if (tweet?.mentions[0] === null) return;
+
+    const newAttributes = {};
+    for (const key in attributes) {
+      if (Number.parseInt(key) != 7) {
+        newAttributes[key] = attributes[key];
+      }
+    }
+
+    handleSetState({ mentions: false, attributes: newAttributes });
+  };
+
   const setMint = async () => {
     if (showLocation && location !== "") {
       handleSetState({
@@ -313,29 +371,6 @@ const Minter = () => {
 
     if (tweet) {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
-    }
-
-    if (!hashtags) {
-      const newAttributes = {};
-
-      for (const key in attributes) {
-        if (Number.parseInt(key) != 7) {
-          newAttributes[key] = attributes[key];
-        }
-      }
-
-      handleSetState({ attributes: newAttributes });
-    }
-
-    if (!mentions) {
-      const newAttributes = {};
-      for (const key in attributes) {
-        if (Number.parseInt(key) != 6) {
-          newAttributes[key] = attributes[key];
-        }
-      }
-
-      handleSetState({ attributes: newAttributes });
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
@@ -913,7 +948,11 @@ const Minter = () => {
                                 index={key}
                                 removeAttribute={handleRemoveAttribute}
                                 changeAttribute={handleChangeAttribute}
-                                iscat={attributes[key].trait_type === "Category"}
+                                iscat={
+                                  attributes[key].trait_type === "Category" ||
+                                  attributes[key].trait_type === "Mentions" ||
+                                  attributes[key].trait_type === "Hashtag"
+                                }
                               />
                             ) : (
                               () => handleSetState({ location: key })
@@ -1027,7 +1066,7 @@ const Minter = () => {
                                     id="location"
                                     type="checkbox"
                                     defaultChecked={hashtags}
-                                    onClick={() => handleSetState({ hashtags: !hashtags })}
+                                    onClick={() => (hashtags ? removeHashtag() : addHashtag())}
                                   />
                                   <span className={classes.slider} />
                                 </label>
@@ -1058,7 +1097,7 @@ const Minter = () => {
                                     id="location"
                                     type="checkbox"
                                     defaultChecked={mentions}
-                                    onClick={() => handleSetState({ mentions: !mentions })}
+                                    onClick={() => (mentions ? removeMentions() : addMentions())}
                                   />
                                   <span className={classes.slider} />
                                 </label>

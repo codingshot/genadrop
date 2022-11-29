@@ -95,14 +95,14 @@ const MintTweet = () => {
               3: { trait_type: "Handle", value: `@${users[tweet?.author_id].username}` },
               4: { trait_type: "Tweet URL", value: tweetLink },
               5: { trait_type: "Time & Date", value: moment(tweet.created_at).format("ll") },
-              6: {
-                trait_type: "mentions",
-                value: `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}`,
-              },
-              7: {
-                trait_type: "hashtags",
-                value: `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}`,
-              },
+              // 6: {
+              //   trait_type: "mentions",
+              //   value: mens ? "none" : `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}`,
+              // },
+              // 7: {
+              //   trait_type: "hashtags",
+              //   value: hashs ? "none" : `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}`,
+              // },
             },
           };
         });
