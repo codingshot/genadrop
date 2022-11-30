@@ -40,6 +40,7 @@ const MintIpfs = () => {
         history.push("/mint/ipfs/minter", {
           data: ipfsLink?.trim(),
           type: mintType,
+          uploadType: fileType.split("/")[1],
         });
       } catch (error) {
         dispatch(setNotification({ message: "Invalid IPFS Link, could not get the IPFS link type", type: "error" }));
