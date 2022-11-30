@@ -149,6 +149,7 @@ const Minter = () => {
     setLoader,
     setNotification,
     setClipboard,
+    isIpfsLink: false,
     receiverAddress,
     account,
     chainId,
@@ -174,9 +175,6 @@ const Minter = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log("Updated State", attributes);
-  }, [attributes]);
   useEffect(() => {
     if (params.mintId === "tweet") {
       const { data } = browserLocation?.state;
@@ -231,8 +229,7 @@ const Minter = () => {
     } else if (params.mintId === "tweet") {
       handleSetState({ description: tweet.text });
     } else if (params.mintId === "ipfs") {
-      const { type } = browserLocation.state;
-      console.log(type);
+      const { uploadType } = browserLocation.state;
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -414,6 +411,12 @@ const Minter = () => {
       mintProps.receiverAddress = account;
       singleMintProps.receiverAddress = account;
     }
+    if (ipfsLink) {
+      const { uploadType } = browserLocation.state;
+      singleMintProps.file = ipfsLink;
+      singleMintProps.fileName = `${singleMintProps.fileName}.${uploadType}`;
+      singleMintProps.isIpfsLink = true;
+    }
     if (file?.length > 1) {
       if (!mintProps.description) {
         return dispatch(
@@ -460,6 +463,7 @@ const Minter = () => {
           value: ipfsType,
         });
       }
+
       if (category) {
         singleMintProps.metadata.attributes.push({
           trait_type: "Category",
