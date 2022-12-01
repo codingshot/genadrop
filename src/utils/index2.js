@@ -142,9 +142,9 @@ ${i + 1} of ${value.length}`
 export const handleDownload = async (input) => {
   const { dispatch, setZip, setNotification, name, currentPlan } = input;
   // transform attribute to metadata format
-  let value = input.value;
+  let { value } = input;
   value = value.map(({ attributes, ...v }) => {
-    let transformAttribute = attributes.map((attr) => ({
+    const transformAttribute = attributes.map((attr) => ({
       trait_type: attr.trait_type,
       value: attr.imageName,
       rarity: attr.rarity,
@@ -152,10 +152,10 @@ export const handleDownload = async (input) => {
     return { ...v, attributes: transformAttribute };
   });
 
-  if (currentPlan === "free") {
-    dispatch(setToggleUpgradeModal(true));
-    return;
-  }
+  // if (currentPlan === "free") {
+  //   dispatch(setToggleUpgradeModal(true));
+  //   return;
+  // }
   if (!name) {
     return dispatch(
       setNotification({
