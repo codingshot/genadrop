@@ -454,7 +454,7 @@ export async function mintSingleToPoly(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch, );
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));

@@ -12,7 +12,6 @@ import { ReactComponent as Video } from "../../../assets/create/MintVideos.svg";
 import { ReactComponent as Tweets } from "../../../assets/create/tweets-icon.svg";
 import { ReactComponent as Ipfs } from "../../../assets/create/ipfsIcon.svg";
 
-
 const cards = [
   {
     title: "Doubletake",

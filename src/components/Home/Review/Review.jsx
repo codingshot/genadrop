@@ -33,7 +33,7 @@ const Review = () => {
 
   useEffect(() => {
     axios
-      .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL(reviews)}`, {
+      .get(`https://cors-anywhere-wjlt.onrender.com/${twitterAPIURL(reviews)}`, {
         headers: {
           Authorization: `Bearer ${process.env.REACT_APP_TWITTER_ACCESS_TOKEN}`,
         },
