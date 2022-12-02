@@ -540,8 +540,8 @@ export async function mintSingleToCelo(singleMintProps) {
       await result.wait();
       dispatch(setLoader(""));
       return mainnet
-        ? `https://blockscout.celo.org/tx/${result.hash}`
-        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+        ? `https://explorer.celo.org/mainnet/tx/${result.hash}`
+        : `https://explorer.celo.org/alfajores/tx/${result.hash}`;
     } catch (error) {
       dispatch(setLoader(""));
       return {
@@ -577,7 +577,7 @@ export async function mintSingleToCelo(singleMintProps) {
     dispatch(setLoader(""));
     return mainnet
       ? `https://explorer.celo.org/mainnet/tx/${txn.hash}`
-      : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+      : `https://explorer.celo.org/alfajores/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(""));
     return {
@@ -630,8 +630,8 @@ export async function mintSingleToAvax(singleMintProps) {
       await result.wait();
       dispatch(setLoader(""));
       return mainnet
-        ? `https://blockscout.celo.org/tx/${result.hash}`
-        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+        ? `https://explorer.celo.org/mainnet/tx/${result.hash}`
+        : `https://explorer.celo.org/alfajores/tx/${result.hash}`;
     } catch (error) {
       dispatch(setLoader(""));
       return {
@@ -889,7 +889,7 @@ export async function listCeloNft(nftProps) {
     dispatch(setLoader(""));
     return mainnet
       ? `https://explorer.celo.org/mainnet/tx/${txn.hash}`
-      : `https://alfajores-blockscout.celo-testnet.org/tx/${txn.hash}`;
+      : `https://explorer.celo.org/alfajores/tx/${txn.hash}`;
   } catch (error) {
     dispatch(setLoader(""));
     console.log(error);
@@ -1414,8 +1414,8 @@ export async function mintToCelo(celoProps) {
         })
       );
       return mainnet
-        ? `https://blockscout.celo.org/tx/${result.hash}`
-        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+        ? `https://explorer.celo.org/mainnet/tx/${result.hash}`
+        : `https://explorer.celo.org/alfajores/tx/${result.hash}`;
     } catch (error) {
       dispatch(setLoader(""));
       return {
@@ -1449,8 +1449,8 @@ export async function mintToCelo(celoProps) {
     })
   );
   return mainnet
-    ? `https://blockscout.celo.org/tx/${tx.hash}`
-    : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
+    ? `https://explorer.celo.org/mainnet/tx/${tx.hash}`
+    : `https://explorer.celo.org/alfajores/tx/${tx.hash}`;
 }
 
 export async function mintToAvax(celoProps) {
@@ -2481,8 +2481,8 @@ export async function purchaseCeloNfts(buyProps) {
     const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
     await tx.wait();
     return mainnet
-      ? `https://blockscout.celo.org/tx/${tx.hash}`
-      : `https://alfajores-blockscout.celo-testnet.org/tx/${tx.hash}`;
+      ? `https://explorer.celo.org/mainnet/tx/${tx.hash}`
+      : `https://explorer.celo.org/alfajores/tx/${tx.hash}`;
   } catch (error) {
     console.log("erooric data", error, error.data);
     return dispatch(
