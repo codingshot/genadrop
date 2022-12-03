@@ -12,7 +12,6 @@ import { ReactComponent as Video } from "../../assets/create/MintVideos.svg";
 import { ReactComponent as Tweets } from "../../assets/create/tweets-icon.svg";
 // import { ReactComponent as Ipfs } from "../../assets/create/ipfsIcon.svg";
 
-
 const cards = [
   {
     title: "Collection",
@@ -49,7 +48,7 @@ const cards = [
     url: "/mint/tweet",
     comingSoon: false,
   },
- 
+
   {
     title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
@@ -99,6 +98,5 @@ const cards = [
     url: "/mint/ai",
     comingSoon: true,
   },
-  
 ];
 export default cards;
