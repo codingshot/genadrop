@@ -310,8 +310,7 @@ const CollectionToSingleMinter = () => {
             />
           </>
         </div>
-         )
-      }
+      )}
     </>
   );
 };

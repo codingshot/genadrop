@@ -47,6 +47,7 @@ import NFTDetail from "./pages/NFT-Detail/NFTDetail";
 import CollectionOptions from "./pages/collection-options/CollectionOptions";
 import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
 import Creating from "./pages/creating/Creating";
+import Redirect from "./utils/redirect";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -102,38 +103,6 @@ function App() {
             <Route exact path="/brand" component={Brand} />
             <Route
               exact
-              path="/tutorials"
-              component={() => {
-                window.location.replace("https://www.youtube.com/playlist?list=PLfkTuB2ltX12uhYARs5GbE0stptAFSacC");
-                return null;
-              }}
-            />
-            <Route
-              exact
-              path="/twitter"
-              component={() => {
-                window.location.replace("https://twitter.com/genadrop");
-                return null;
-              }}
-            />
-            <Route
-              exact
-              path="/linkedin"
-              component={() => {
-                window.location.replace("https://www.linkedin.com/company/genadrop/");
-                return null;
-              }}
-            />
-            <Route
-              exact
-              path="/youtube"
-              component={() => {
-                window.location.replace("https://www.youtube.com/c/minorityprogrammers");
-                return null;
-              }}
-            />
-            <Route
-              exact
               path="/aurora"
               component={() => {
                 window.location.replace("https://www.genadrop.com/marketplace/all?chain=Aurora");
@@ -172,6 +141,8 @@ function App() {
                 return null;
               }}
             />
+            <Redirect />
+
             <Route component={Fallback} />
           </Switch>
         </ErrorBoundary>
