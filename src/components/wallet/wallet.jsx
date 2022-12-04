@@ -40,15 +40,8 @@ function ConnectWallet() {
     rpc: null,
   });
 
-  const {
-    clipboardState,
-    network,
-    walletConnectProvider,
-    overrideWalletConnect,
-    connectionMethod,
-    rpc,
-    isMetamask,
-  } = state;
+  const { clipboardState, network, walletConnectProvider, overrideWalletConnect, connectionMethod, rpc, isMetamask } =
+    state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));

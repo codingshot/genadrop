@@ -15,9 +15,8 @@ const GenadropCreatedNFTs = () => {
 
   const { singles } = state;
   useEffect(() => {}, []);
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts, mainnet } = useContext(
-    GenContext
-  );
+  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts, mainnet } =
+    useContext(GenContext);
   const singleAlgoNftsArr = Object.values(singleAlgoNfts);
 
   const handleSetState = (payload) => {

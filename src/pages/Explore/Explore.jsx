@@ -49,9 +49,8 @@ const Explore = () => {
     activeType,
     collectionId,
   } = state;
-  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } = useContext(
-    GenContext
-  );
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
+    useContext(GenContext);
 
   const { collectionName } = useParams();
 
