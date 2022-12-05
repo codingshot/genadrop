@@ -42,8 +42,10 @@ export const INITIAL_STATE = {
   celoCollections: [],
   singleAuroraNfts: [],
   singleCeloNfts: [],
+  singleArbitrumNfts: [],
+  singleNearNfts: [],
   singlePolygonNfts: [],
-  activeCollection: [],
+  activeCollection: null,
   notification: {
     message: "",
     type: "", // warning|error|success|default
@@ -89,6 +91,7 @@ export const INITIAL_STATE = {
   toggleUpgradeModal: "",
   searchContainer: null,
   isUser: null,
+  priceFeed: null,
 };
 
 export const genReducer = (state = INITIAL_STATE, action) => {
@@ -103,6 +106,7 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         layers: addLayer(state.layers, action.payload),
       };
+
     case genActionTypes.REMOVE_LAYER:
       return {
         ...state,
@@ -305,6 +309,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
         ...state,
         singleAlgoNfts: action.payload,
       };
+    case genActionTypes.SET_ALL_NFTS:
+      return {
+        ...state,
+        allChainsNfts: action.payload,
+      };
     case genActionTypes.SET_AURORA_SINGLE_NFTS:
       return {
         ...state,
@@ -314,6 +323,21 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         singlePolygonNfts: action.payload,
+      };
+    case genActionTypes.SET_NEAR_SINGLE_NFTS:
+      return {
+        ...state,
+        singleNearNfts: action.payload,
+      };
+    case genActionTypes.SET_ARBITRUM_SINGLE_NFTS:
+      return {
+        ...state,
+        singleArbitrumNfts: action.payload,
+      };
+    case genActionTypes.SET_AVAX_SINGLE_NFTS:
+      return {
+        ...state,
+        singleAvaxNfts: action.payload,
       };
     case genActionTypes.SET_NOTIFICATION:
       return {
@@ -459,6 +483,11 @@ export const genReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         searchContainer: { ...state.searchContainer, ...action.payload },
+      };
+    case genActionTypes.SET_PRICE_FEED:
+      return {
+        ...state,
+        priceFeed: { ...state.priceFeed, ...action.payload },
       };
     case genActionTypes.SET_IS_USER:
       return {

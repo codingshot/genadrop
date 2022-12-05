@@ -3,16 +3,41 @@ import auroraIcon from "../../../assets/icon-aurora.svg";
 import celoIcon from "../../../assets/icon-celo.svg";
 import polygonIcon from "../../../assets/icon-polygon.svg";
 import nearIcon from "../../../assets/icon-near.svg";
-import solanaIcon from "../../../assets/icon-solana.svg";
+import arbitrumIcon from "../../../assets/arbitrum.svg";
+import avalancheIcon from "../../../assets/icon-avalanche.svg";
 import allChains from "../../../assets/all-chains.svg";
 
-export const chains = [
+const chains = [
   {
     name: "All Chains",
     icon: allChains,
     color: "#009987",
     border: "#009987",
     bg: "#FFFFFF",
+    isComingSoon: false,
+  },
+  {
+    name: "Aurora",
+    icon: auroraIcon,
+    color: "white",
+    border: "transparent",
+    bg: "#6CD34B",
+    isComingSoon: false,
+  },
+  {
+    name: "Near",
+    icon: nearIcon,
+    color: "#000000",
+    border: "transparent",
+    bg: "#E1EBF5",
+    isComingSoon: false,
+  },
+  {
+    name: "Celo",
+    icon: celoIcon,
+    color: "#000000",
+    border: "transparent",
+    bg: "#FFEA94",
     isComingSoon: false,
   },
   {
@@ -32,35 +57,20 @@ export const chains = [
     isComingSoon: false,
   },
   {
-    name: "Celo",
-    icon: celoIcon,
-    color: "#000000",
+    name: "Arbitrum",
+    icon: arbitrumIcon,
+    color: "black",
     border: "transparent",
-    bg: "#FFEA94",
+    bg: "#96BEDC",
     isComingSoon: false,
   },
   {
-    name: "Aurora",
-    icon: auroraIcon,
-    color: "white",
+    name: "Avalanche",
+    icon: avalancheIcon,
+    color: "#ffffff",
     border: "transparent",
-    bg: "#6CD34B",
+    bg: "#E84142",
     isComingSoon: false,
   },
-  {
-    name: "Near",
-    icon: nearIcon,
-    color: "#000000",
-    border: "transparent",
-    bg: "#E1EBF5",
-    isComingSoon: true,
-  },
-  // {
-  //   name: "Solana",
-  //   icon: solanaIcon,
-  //   color: "#FFFFFF",
-  //   border: "transparent",
-  //   bg: "#000000",
-  //   isComingSoon: true,
-  // },
 ];
+export default chains;

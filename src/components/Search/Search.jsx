@@ -4,8 +4,9 @@ import { GenContext } from "../../gen-state/gen.context";
 import supportedChains from "../../utils/supportedChains";
 import handleSuggestions from "./Search-script";
 import classes from "./Search.module.css";
+import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 
-const Search = () => {
+const Search = ({ searchPlaceholder, type }) => {
   const history = useHistory();
   const location = useLocation();
   const { searchContainer } = useContext(GenContext);
@@ -24,7 +25,8 @@ const Search = () => {
 
   const handleChange = (e) => {
     handleSetState({ value: e.target.value });
-    handleSuggestions({ handleSetState, searchContainer, value: e.target.value });
+
+    handleSuggestions({ handleSetState, searchContainer, value: e.target.value, type });
   };
 
   const handleToggleSearch = () => {
@@ -36,9 +38,15 @@ const Search = () => {
     handleSetState({ value: "", suggestions: null, toggleSearch: false });
   };
 
-  const handleSearch = (searchType) => {
+  const suggestionURL = (suggestion) => {
+    return suggestion?.type !== "1of1"
+      ? `/marketplace/collections/${suggestion?.chain === 4160 ? suggestion?.name : suggestion?.Id}`
+      : `/marketplace/1of1/${suggestion?.chain}/${suggestion?.Id}`;
+  };
+
+  const handleSearch = (suggestion) => {
     handleSetState({ value: "", suggestions: null, toggleSearch: false });
-    history.push(`/marketplace/${searchType}${`?search=${value}`}`);
+    history.push(suggestionURL(suggestion));
   };
 
   const hanldeAllResults = (keyword = value) => {
@@ -67,32 +75,49 @@ const Search = () => {
       </span>
     );
   }
+
   return (
     <div className={`${classes.container} ${toggleSearch && classes.active}`}>
       {location.pathname === "/search" ? (
         <div className={classes.placeholder}>
-          <input onChange={hanldeSeachChange} type="text" value={value} placeholder="Search collections, and 1 of 1s" />
+          <SearchIcon />
+          <input
+            className={classes.mobile}
+            onChange={hanldeSeachChange}
+            type="text"
+            value={value}
+            placeholder="Search..."
+          />
+          <input
+            className={classes.desktop}
+            onChange={hanldeSeachChange}
+            type="text"
+            value={value}
+            placeholder={searchPlaceholder}
+          />
         </div>
       ) : (
         <div onClick={handleToggleSearch} className={classes.placeholder}>
-          <input type="text" value={value} placeholder="Search collections, and 1 of 1s" />
+          <SearchIcon />
+          <input className={classes.mobile} type="text" value={value} onChange={() => {}} placeholder="Search..." />
+          <input
+            className={classes.desktop}
+            type="text"
+            value={value}
+            onChange={() => {}}
+            placeholder={searchPlaceholder}
+          />
         </div>
       )}
       <div onClick={handleCloseSearch} className={classes.dropdownContainer}>
         <div
-          onMouseOut={() => handleSetState({ ignoreSearch: false })}
-          onMouseOver={() => handleSetState({ ignoreSearch: true })}
+          onMouseLeave={() => handleSetState({ ignoreSearch: false })}
+          onMouseEnter={() => handleSetState({ ignoreSearch: true })}
           className={classes.dropdown}
         >
           {toggleSearch && (
             <div className={classes.searchContainer}>
-              <input
-                onChange={handleChange}
-                value={value}
-                autoFocus
-                type="text"
-                placeholder="Search collections, and 1 of 1s"
-              />
+              <input onChange={handleChange} value={value} autoFocus type="text" placeholder={searchPlaceholder} />
               <div className={classes.hint}>
                 <div className={classes.result}>
                   {!suggestions
@@ -101,26 +126,37 @@ const Search = () => {
                     ? `Showing ${suggestions.length} results `
                     : "No results"}
                 </div>
-                {suggestions?.length && (
+                {value?.length ? (
                   <div className={classes.showAll} onClick={() => hanldeAllResults()}>
                     <div /> Show All results{" "}
                   </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>
           )}
           <div className={classes.suggestions}>
             {suggestions && suggestions.length ? (
-              suggestions.map(({ image_url, type, name, description, chain }, idx) => (
-                <div onClick={() => handleSearch(type)} key={idx} className={classes.suggestion}>
-                  <img className={classes.image} src={image_url} alt="" />
+              suggestions.map((suggestion) => (
+                <div onClick={() => handleSearch(suggestion)} key={suggestion.Id} className={classes.suggestion}>
+                  {/* <img className={classes.image} src={suggestion.image_url} alt="" /> */}
+                  {suggestion?.ipfs_data?.image_mimetype?.includes("video") ? (
+                    <video className={classes.image} src={suggestion.image_url} alt="" />
+                  ) : suggestion?.ipfs_data?.image_mimetype?.includes("audio") ? (
+                    <audio className={classes.image} src={suggestion.image_url} alt="" />
+                  ) : (
+                    <img className={classes.image} src={suggestion.image_url} alt="" />
+                  )}
                   <div className={classes.content}>
-                    <div className={classes.name}>{getHighlightedText(name, value)}</div>
-                    <div className={classes.description}>{getHighlightedText(description, value)}</div>
-                    <div className={classes.type_m}>{type}</div>
+                    <div className={classes.name}>{getHighlightedText(suggestion.name, value)}</div>
+                    <div className={classes.description}>
+                      {getHighlightedText(suggestion.description.slice(0, 40), value)}...
+                    </div>
+                    <div className={classes.type_m}>{suggestion.type}</div>
                   </div>
-                  <div className={classes.type}>{type}</div>
-                  <img className={classes.chain} src={supportedChains[chain]?.icon} alt="" />
+                  <div className={classes.type}>{suggestion.type}</div>
+                  <img className={classes.chain} src={supportedChains[suggestion.chain]?.icon} alt="" />
                 </div>
               ))
             ) : suggestions ? (

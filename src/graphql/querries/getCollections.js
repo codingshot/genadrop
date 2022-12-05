@@ -180,6 +180,27 @@ export const GET_USER_NFT = gql`
   }
 `;
 
+export const GET_NEAR_USER_NFT = gql`
+  query ($id: ID) {
+    user(id: $id) {
+      id
+      nfts {
+        category
+        chain
+        createdAtTimestamp
+        id
+        isSold
+        price
+        tokenID
+        owner {
+          id
+        }
+        tokenIPFSPath
+      }
+    }
+  }
+`;
+
 export const GET_USER_COLLECTIONS = gql`
   query ($id: ID) {
     user(id: $id) {
@@ -337,6 +358,7 @@ export const GET_AURORA_SINGLE_NFTS = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
@@ -360,6 +382,7 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
       createdAtTimestamp
       id
       isSold
+      isListed
       price
       tokenID
       owner {
@@ -389,6 +412,56 @@ export const GET_CELO_SINGLE_NFT = gql`
         id
       }
       tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_NEAR_SINGLE_NFTS = gql`
+  query MyQuery {
+    nfts {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_NEAR_NFT = gql`
+  query ($id: ID) {
+    nft(id: $id) {
+      chain
+      category
+      createdAtTimestamp
+      id
+      isSold
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+      transactions {
+        id
+        txDate
+        txId
+        type
+        price
+        to {
+          id
+        }
+        from {
+          id
+        }
+      }
     }
   }
 `;

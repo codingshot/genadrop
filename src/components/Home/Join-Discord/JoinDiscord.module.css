@@ -18,6 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 2em 0;
 }
 
 .content {
@@ -63,7 +64,7 @@
 .btn {
   display: inline-block;
   padding: 0.75em 3em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);
   transition: all 300ms;

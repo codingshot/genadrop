@@ -1,11 +1,12 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import classes from "./Plans.module.css";
-import planIcon from "../../../assets/icon-plan.png";
-import { useState } from "react";
 import { plans } from "../../../pages/Pricing/Pricing.script";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { ReactComponent as MarkIcon } from "../../../assets/icon-mark.svg";
-import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { ReactComponent as HoppyPlan } from "../../../assets/home-page/hoppy-plan.svg";
+import { ReactComponent as AgencyPlan } from "../../../assets/home-page/agency-plan.svg";
+import { ReactComponent as ProPlan } from "../../../assets/home-page/pro-plan.svg";
 
 const Plans = () => {
   const [state, setState] = useState({
@@ -16,9 +17,18 @@ const Plans = () => {
   const { activePlan, render } = state;
 
   const mapDescriptionToPlan = {
-    pro: "Take advantage of our pro plan and do more",
-    agency: "Go big with our Agency plan",
-    hobby: "Make sleek and sizeable collection with our Hobby plan",
+    hobby: {
+      title: "Make sleek and sizeable collection with our Hobby plan",
+      img: <HoppyPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
+    },
+    pro: {
+      title: "Take advantage of our pro plan and do more",
+      img: <ProPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
+    },
+    agency: {
+      title: "Go big with our Agency plan",
+      img: <AgencyPlan className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />,
+    },
   };
 
   const handleSetState = (payload) => {
@@ -63,7 +73,7 @@ const Plans = () => {
         <div className={classes.preview}>
           <div className={classes.planInfo}>
             <div className={classes.infoHeading}>plans that works for your NFT collection and Budget </div>
-            <div className={classes.infoDescription}>{mapDescriptionToPlan[activePlan]}</div>
+            <div className={classes.infoDescription}>{mapDescriptionToPlan[activePlan].title}</div>
             <div className={classes.supportedFeatures}>
               {plans[activePlan].services.map(({ name, available }, idx) => (
                 <div key={idx} className={`${classes.plan} ${render ? classes.render : classes.re_render}`}>
@@ -82,7 +92,8 @@ const Plans = () => {
               <div className={classes.btn}>View Pricing</div>
             </Link>
           </div>
-          <img src={planIcon} alt="" className={`${classes.planIcon} ${render ? classes.render : classes.re_render}`} />
+          {mapDescriptionToPlan[activePlan].img}
+          {/* <img src= alt="" /> */}
         </div>
       </div>
     </div>

@@ -6,12 +6,8 @@
 
 .wrapper {
   width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-}
-
-.heading {
-  font-size: 3rem;
+  margin-bottom: 0.5em;
+  font-size: 2.5rem;
   font-weight: 600;
   text-align: center;
 }
@@ -29,7 +25,7 @@
 
 .display {
   width: 100%;
-  height: 42em;
+  height: 12em;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -39,7 +35,7 @@
 
 .shadow {
   width: 100%;
-  height: 20em;
+  height: 4em;
   bottom: 0;
   position: absolute;
 }
@@ -49,7 +45,7 @@
   grid-template-columns: repeat(3, 1fr);
   align-items: center;
   justify-content: center;
-  gap: 2em;
+  gap: 1em;
   animation: scroll 15s infinite linear forwards;
 }
 
@@ -62,18 +58,18 @@
     transform: translateY(0);
   }
   to {
-    transform: translateY(-56em);
+    transform: translateY(-20em);
   }
 }
 
 .reviewCard {
   background: #f5f6f8;
-  padding: 2em;
+  padding: 1em 0.5em;
   border-radius: 1em;
 }
 
 .review {
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-style: italic;
   margin-bottom: 1em;
 }
@@ -86,14 +82,13 @@
 }
 
 .thumbnail {
-  width: 2.5em;
-  height: 2.5em;
+  width: 2em;
+  height: 2em;
   border-radius: 50%;
-  border: 1px solid gray;
 }
 
 .name {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -117,7 +112,7 @@
       transform: translateY(0);
     }
     to {
-      transform: translateY(-72em);
+      transform: translateY(-28em);
     }
   }
 }
@@ -131,14 +126,6 @@
     font-size: 1.2rem;
   }
 
-  .display {
-    height: 28em;
-  }
-
-  .shadow {
-    height: 16em;
-  }
-
   .name,
   .handle,
   .review {
@@ -149,7 +136,7 @@
 @media screen and (max-width: 768px) {
   .row {
     grid-template-columns: auto;
-    animation-duration: 35s;
+    animation-duration: 25s;
   }
 
   @keyframes scroll {
@@ -157,7 +144,7 @@
       transform: translateY(0);
     }
     to {
-      transform: translateY(-84em);
+      transform: translateY(-48em);
     }
   }
 
@@ -175,7 +162,7 @@
 
 @media screen and (max-width: 540px) {
   .row {
-    animation-duration: 45s;
+    animation-duration: 35s;
   }
 
   .container {

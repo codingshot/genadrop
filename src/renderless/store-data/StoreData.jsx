@@ -1,7 +1,10 @@
+import { async } from "@firebase/util";
+import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { setImageAction, setLayerAction, setNftLayers } from "../../gen-state/gen.actions";
+import { setImageAction, setLayerAction, setNftLayers, setPriceFeed } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
+import { getLatestPriceAvax, getLatestPriceCelo, getLatestPriceMatic, getLatestPriceNear } from "../../utils/priceFeed";
 import {
   deleteAllTraits,
   deleteTrait,
@@ -28,6 +31,7 @@ const StoreData = () => {
     layerAction,
     upgradePlan,
     currentPlan,
+    priceFeed,
   } = useContext(GenContext);
 
   const resetLayerAction = () => {
@@ -37,6 +41,28 @@ const StoreData = () => {
       })
     );
   };
+
+  // useEffect(async () => {
+
+  //   getLatestPriceCelo(dispatch);
+  //   getLatestPriceAvax(dispatch);
+  //   getLatestPriceMatic(dispatch);
+  //   getLatestPriceNear(dispatch);
+
+  // }, []);
+
+  // useEffect(()=>{
+  //   axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd`).then((res) => {
+  //     const price = Object.values(res.data)[0]?.usd;
+  //     dispatch(setPriceFeed({ algorand: price }));
+  //   });
+
+  //   axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd`).then((res) => {
+  //     const price = Object.values(res.data)[0]?.usd;
+
+  //     dispatch(setPriceFeed({ "aurora-near": price }));
+  //   });
+  // },[])
 
   useEffect(() => {
     const { type } = layerAction;
@@ -59,7 +85,7 @@ const StoreData = () => {
     } else if (type === "order") {
       saveLayers({ currentUser, sessionId, layers: newLayers });
     }
-    if (location.pathname === "/create" && type !== "rule") {
+    if (location.pathname === "/create/collection" && type !== "rule") {
       dispatch(setNftLayers([]));
     }
     resetLayerAction();
@@ -107,14 +133,14 @@ const StoreData = () => {
   useEffect(() => {
     const { type } = layerAction;
     if (type !== "rule") return;
-    let newRules = rule.map((r) => {
-      let iRule = r.map(({ imageFile, ...ir }) => {
+    const newRules = rule.map((r) => {
+      const iRule = r.map(({ imageFile, ...ir }) => {
         return { imageFile: "", ...ir };
       });
       return iRule;
     });
 
-    let strRules = JSON.stringify(newRules);
+    const strRules = JSON.stringify(newRules);
     saveRules({ currentUser, sessionId, rules: strRules });
     resetLayerAction();
   }, [layerAction, currentUser, sessionId, rule]);

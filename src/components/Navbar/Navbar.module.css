@@ -235,7 +235,7 @@
     text-align: center;
     font-weight: 700;
     border: 1px solid var(--outline);
-    border-radius: 2em;
+    border-radius: 0.7em;
   }
 
   .navItem:hover {
@@ -256,7 +256,6 @@
     display: none;
     width: 100%;
     margin-top: 3em;
-    white-space: nowrap;
   }
 
   .walletAuthContainer.mobile {

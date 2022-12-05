@@ -1,0 +1,98 @@
+.container {
+  background-color: var(--background-3);
+  border-radius: 15px;
+  position: absolute;
+
+  /* margin-top: -2em; */
+  margin-left: -8em;
+  z-index: 1;
+  display: none;
+}
+
+.container.active {
+  display: flex;
+  width: 25em;
+}
+
+.wrapper {
+  background: var(--default);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+  padding: 1em;
+  border-radius: 1em;
+  border: 2px solid var(--outline);
+  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
+}
+
+.content {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content input {
+  width: 100%;
+}
+
+.shareContent {
+  display: flex;
+
+  /* gap: 1em; */
+  flex-direction: column;
+}
+
+.shareIcon {
+  width: 1.2em;
+  height: 1.2em;
+  margin-right: 0.5em;
+}
+
+.point {
+  padding: 0.4em;
+}
+
+.shareLink {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.point span {
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.point:hover {
+  background-color: var(--main-color);
+  fill: var(--default);
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.point:hover .shareIcon {
+  fill: var(--default);
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    margin-left: -2.2em;
+  }
+  .point span {
+    display: none;
+  }
+
+  .point {
+    min-width: 0;
+  }
+
+  .wrapper {
+    padding: 0.5em;
+  }
+  .shareIcon {
+    margin-right: 0;
+  }
+}

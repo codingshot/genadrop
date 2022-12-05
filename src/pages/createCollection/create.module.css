@@ -1,0 +1,243 @@
+.container {
+  width: 100%;
+  max-width: 1920px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1em;
+  padding: 1em;
+  padding-bottom: 0;
+  position: relative;
+  margin: 0 auto;
+  margin-bottom: 8em;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+  position: relative;
+}
+
+.details {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1em;
+}
+
+.profileContainer {
+  z-index: 18;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
+}
+
+.profileContainer.active {
+  display: flex;
+}
+
+.signIn {
+  display: none;
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+  padding: 0.25em 1em;
+  border-radius: 0.7em;
+  transition: all 300ms;
+  cursor: pointer;
+  position: relative;
+}
+
+.signIn.active {
+  display: block;
+}
+
+.signIn:hover {
+  background: var(--main-color);
+  color: var(--default);
+}
+
+.overlayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2.5em;
+}
+
+.overlayer.active {
+  display: flex;
+}
+
+.loadingIcon {
+  width: 1em;
+  height: 1em;
+  animation: rotate 650ms infinite linear;
+  fill: var(--main-color);
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.autoSave,
+.profile {
+  background: var(--default);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  border-radius: 0.7em;
+  padding: 0.25em 0.25em;
+  padding-right: 0.75em;
+  transition: all 300ms;
+  cursor: pointer;
+  position: relative;
+}
+
+.diskIcon {
+  width: 1.2em;
+  height: 1.2em;
+}
+
+.profile.active {
+  border: 1px solid var(--main-color);
+}
+
+.dropdownIconContainer {
+  border-left: 1px solid var(--outline);
+  padding: 0 0.25em;
+}
+
+.dropdownIcon {
+  fill: var(--main-color);
+}
+
+.collectionNameContainer {
+  max-width: 6em;
+  overflow: hidden;
+}
+
+.collectionName {
+  display: none;
+}
+
+.collectionName.active {
+  width: max-content;
+  display: inline-flex;
+  color: var(--main-color);
+  white-space: nowrap;
+  overflow: auto;
+  font-weight: 600;
+}
+
+.collectionName.move {
+  animation: move 5s infinite alternate linear;
+}
+
+@keyframes move {
+  0%,
+  20% {
+    transform: translateX(0);
+  }
+
+  80%,
+  100% {
+    transform: translateX(calc(-100% + 6em));
+  }
+}
+
+.autoSave {
+  background: var(--main-color);
+  box-shadow: var(--btn-open);
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+  padding: 0.5em;
+}
+
+.autoSave:hover {
+  box-shadow: var(--btn-close);
+}
+
+.autoSave * {
+  color: var(--default);
+}
+
+.profile * {
+  color: var(--text-heading);
+}
+
+.layer_overview {
+  width: calc(100% - 22em);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 2em;
+}
+
+.icon {
+  width: 40%;
+}
+
+.guide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  font-size: 0.75rem;
+}
+
+.guide > *:nth-child(2) {
+  color: var(--main-color);
+  border: 1px solid var(--outline);
+  border-radius: 1em;
+  box-shadow: var(--shadow-light-3);
+  padding: 0.5em;
+  cursor: var(--cursor-pointer);
+}
+
+.guide > *:nth-child(3) {
+  color: var(--main-color);
+  cursor: var(--cursor-pointer);
+}
+
+.guide > *:nth-child(2):hover,
+.guide > *:nth-child(3):hover {
+  color: var(--main-hovered);
+}
+
+@media screen and (max-width: 1000px) {
+  .wrapper {
+    flex-direction: column;
+    margin-bottom: 6em;
+  }
+
+  .layer_overview {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .layer_overview {
+    flex-direction: column;
+  }
+
+  .guide {
+    display: none;
+  }
+}

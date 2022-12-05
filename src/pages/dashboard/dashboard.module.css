@@ -102,8 +102,8 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  background: url("../../assets/bg.png");
-  height: 25vw;
+  background-color: #febfbb;
+  /* height: 25vw; */
   min-height: 10rem;
   background-size: cover;
 }
@@ -137,6 +137,7 @@
   max-width: 12.5rem;
   max-height: 12.5rem;
   min-width: 6rem;
+
   border: 5px solid #eeeff2;
 }
 .profileHeader {
@@ -175,7 +176,18 @@
   background: #e9f2ff;
   border-radius: 5px;
   display: flex;
+  align-items: center;
   gap: 5px;
+}
+.address svg {
+  height: 1rem;
+  cursor: pointer;
+}
+.address svg path {
+  transition: all 200ms ease;
+}
+.address svg:hover path:first-child {
+  transform: translate(2px, -2px);
 }
 .address > img {
   max-width: 20px;
@@ -222,7 +234,7 @@
   max-width: 1440px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   justify-items: center;
   gap: 1em;
 }
@@ -237,7 +249,7 @@
 }
 .skeleton {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1em;
 }
 

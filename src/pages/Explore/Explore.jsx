@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./Explore.module.css";
@@ -9,14 +9,17 @@ import { groupAttributesByTraitType, mapAttributeToFilter } from "./Explore-scri
 import { getGraphCollection, getNftCollection } from "../../utils";
 import Menu from "./Menu/Menu";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
+import listIcon from "../../assets/icon-items.svg";
+import activityIcon from "../../assets/icon-activity.svg";
 import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
 import { setActiveCollection } from "../../gen-state/gen.actions";
-import supportedChains from "../../utils/supportedChains";
+import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
+import Items from "./items/items";
+import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
 
 const Explore = () => {
   const [state, setState] = useState({
     toggleFilter: true,
-    togglePriceFilter: false,
     NFTCollection: null,
     FilteredCollection: null,
     loadedChain: null,
@@ -27,7 +30,11 @@ const Explore = () => {
     headerHeight: 0,
     filter: {
       searchValue: "",
+      status: "not listed",
+      sortby: "newest",
     },
+    activeType: "T1",
+    collectionId: null,
   });
   const {
     toggleFilter,
@@ -39,8 +46,10 @@ const Explore = () => {
     FilteredCollection,
     headerHeight,
     loadedChain,
+    activeType,
+    collectionId,
   } = state;
-  const { dispatch, mainnet, chainId, algoCollections, auroraCollections, polygonCollections, celoCollections } =
+  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
     useContext(GenContext);
 
   const { collectionName } = useParams();
@@ -65,14 +74,16 @@ const Explore = () => {
 
   useEffect(() => {
     (async function getAlgoResult() {
+      dispatch(setActiveCollection(null));
       if (Object.keys(algoCollections).length) {
         const collection = algoCollections[collectionName.trimEnd()];
         if (collection) {
-          const { NFTCollection, loadedChain } = await getNftCollection({
+          const res = await getNftCollection({
             collection,
             mainnet,
           });
-          handleSetState({ NFTCollection, loadedChain, collection });
+          const { NFTCollection } = res;
+          handleSetState({ NFTCollection, loadedChain: collection.chain, collection });
           dispatch(setActiveCollection(NFTCollection));
         }
       }
@@ -84,13 +95,15 @@ const Explore = () => {
       const allCollection = getAllCollectionChains();
       const NFTCollection = allCollection?.filter((col) => col?.Id === collectionName);
       if (NFTCollection?.length) {
-        const result = await getGraphCollection(NFTCollection[0]?.nfts, NFTCollection[0]);
+        const result = await getGraphCollection(NFTCollection[0].nfts, NFTCollection[0]);
         handleSetState({
           collection: {
             ...NFTCollection[0],
             owner: NFTCollection[0]?.owner,
             price: result[0]?.collectionPrice,
           },
+          collectionId: NFTCollection[0]?.Id,
+
           NFTCollection: result,
           loadedChain: result[0]?.chain,
         });
@@ -114,11 +127,15 @@ const Explore = () => {
 
   useEffect(() => {
     if (!NFTCollection) return;
-    const filtered = NFTCollection.filter(
-      (col) => Number(col.price) >= Number(filter.priceRange.min) && Number(col.price) <= Number(filter.priceRange.max)
-    );
+    const filtered = filterBy({ value: filter.status, collections: NFTCollection });
     handleSetState({ FilteredCollection: filtered });
-  }, [filter.priceRange]);
+  }, [filter.status]);
+
+  useEffect(() => {
+    if (!NFTCollection) return;
+    const filtered = sortBy({ value: filter.sortby, collections: NFTCollection });
+    handleSetState({ FilteredCollection: filtered });
+  }, [filter.sortby]);
 
   useEffect(() => {
     if (!NFTCollection) return;
@@ -134,52 +151,52 @@ const Explore = () => {
     document.documentElement.scrollTop = headerHeight;
   }, [filter.attributes]);
 
+  useEffect(() => {
+    document.documentElement.scrollTop = 0;
+  }, []);
+
+  const handleTabActive = (active) => {
+    handleSetState({
+      activeType: active,
+    });
+  };
   return (
     <div className={classes.container}>
-      <Header
-        getHeight={getHeight}
-        collection={{
-          ...collection,
-          numberOfNfts: NFTCollection && NFTCollection.length,
-          imageUrl: NFTCollection && NFTCollection[Math.floor(Math.random() * NFTCollection.length)]?.image_url,
-        }}
-        loadedChain={loadedChain}
-      />
+      {collection ? (
+        <Header
+          getHeight={getHeight}
+          collection={{
+            ...collection,
+          }}
+          loadedChain={loadedChain}
+        />
+      ) : null}
 
       <div className={classes.displayContainer}>
-        <Filter
-          handleFilter={handleFilter}
-          filterToDelete={filterToDelete}
-          attributes={attributes}
-          toggleFilter={toggleFilter}
-          handleExploreSetState={(prop) => handleSetState({ ...prop })}
-        />
-        <main className={classes.displayWrapper}>
-          <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={(value) => handleSetState({ filter: { ...filter, searchValue: value } })} />
+        <div className={`${classes.displayWrapper} ${classes.section}`}>
+          <div className={classes.types}>
+            <div
+              onClick={() => handleTabActive("T1")}
+              className={`${classes.type}  ${activeType === "T1" && classes.active}`}
+            >
+              <img src={listIcon} alt="" />
+              Items
+            </div>
+            <div
+              onClick={() => handleTabActive("T2")}
+              className={`${classes.type}  ${activeType === "T2" && classes.active}`}
+            >
+              <img src={activityIcon} alt="" />
+              Activity
+            </div>
           </div>
+        </div>
 
-          <div className={classes.filterDisplay}>
-            {filter?.attributes &&
-              filter.attributes.map((f, idx) => (
-                <div key={idx} className={classes.filteredItem}>
-                  <span>{`${f.trait_type}: ${f.value}`}</span>
-                  <CloseIcon onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon} />
-                </div>
-              ))}
-            {filter?.attributes && filter.attributes.length ? (
-              <div onClick={() => handleSetState({ filterToDelete: [] })} className={classes.clearFilter}>
-                clear all
-              </div>
-            ) : null}
-          </div>
-          <Menu
-            NFTCollection={FilteredCollection}
-            loadedChain={loadedChain}
-            chain={algoCollections[collectionName.trimEnd()]?.chain}
-            toggleFilter={toggleFilter}
-          />
-        </main>
+        {activeType === "T1" ? (
+          <Items handleSetState={handleSetState} state={state} collectionName={collectionName} />
+        ) : (
+          <ExploreTransactionHistory collectionId={collectionId} chain={NFTCollection[0]?.chain} />
+        )}
       </div>
     </div>
   );

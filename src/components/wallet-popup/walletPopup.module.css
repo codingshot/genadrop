@@ -46,8 +46,8 @@
   margin-bottom: 0.5em;
 }
 
-.heading p {
-  font-size: 0.75rem;
+.description {
+  font-size: 0.85rem;
 }
 
 .iconContainer {
@@ -61,18 +61,18 @@
   padding: 0.25em;
   width: 1.5em;
   height: 1.5em;
-  border: 1px solid black;
+  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 0.25em;
   cursor: var(--cursor-pointer);
-  transition: all 300ms;
   fill: var(--icon-color);
 }
 
 .closeIcon:hover {
-  background: var(--main-lightest);
+  background: var(--outline-dark);
+  fill: var(--default);
 }
 
 .wrapper {
@@ -101,7 +101,7 @@
   gap: 1em;
   padding: 0.5em 0;
   padding-left: 1em;
-  border-radius: 3em;
+  border-radius: 1em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
 }
@@ -230,7 +230,19 @@
 .connectionMethod p {
   font-size: 0.85rem;
 }
-
+.networkSwitch {
+  font-size: 0.75rem;
+  background: var(--card-info);
+  padding: 0.5em 1rem;
+  margin-top: 0.5em;
+  text-align: left;
+}
+.networkSwitch a {
+  color: var(--main-color);
+}
+.networkSwitch a:hover {
+  text-decoration: underline;
+}
 @media screen and (max-width: 768px) {
   .heading h4 {
     font-size: 0.85rem;

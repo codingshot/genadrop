@@ -1,29 +1,66 @@
 .container {
   width: 100%;
-  padding: 0 1em;
-  padding-top: 2em;
   padding-bottom: 6em;
   position: relative;
   background: var(--default);
 }
 
 .displayContainer {
+  width: 100%;
+  padding: 0 2em;
+}
+
+.displayWrapper {
   max-width: 1440px;
   margin: 0 auto;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
   gap: 1em;
-  border-radius: 0.5em;
   background: var(--default);
-  box-shadow: var(--shadow-light);
 }
 
-.displayWrapper {
+.section {
+  border-bottom: 1px solid var(--outline);
+  margin-bottom: 2em;
+}
+
+.main {
   flex: 1;
   padding: 1em;
 }
 
+.types {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3em;
+}
+
+.type {
+  padding: 0.1em 1.5em;
+  font-size: 1.8rem;
+  font-weight: 600;
+  background: #f7f9fd;
+  border-bottom: 4px solid transparent;
+  border-radius: 0.4em 0.4em 0 0;
+  white-space: nowrap;
+  cursor: pointer;
+  color: var(--main-color);
+  display: flex;
+  align-items: center;
+}
+.type img {
+  margin-right: 0.5em;
+}
+.type:hover {
+  color: var(--text-sub-heading);
+}
+
+.type.active {
+  border-bottom: 4px solid var(--main-color);
+  color: var(--main-color);
+}
 .filterDisplay {
   width: 100%;
   margin-bottom: 1em;
@@ -36,13 +73,17 @@
 }
 
 .filteredItem {
-  border: 1px solid var(--outline);
+  border: 1px solid var(--main-color);
   padding: 0.5em;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5em;
-  border-radius: 1.5em;
+  border-radius: 0.5em;
+}
+
+.filteredItem span:first-child {
+  font-weight: 600;
 }
 
 .closeIcon {
@@ -56,7 +97,7 @@
 }
 
 .closeIcon:hover {
-  background: rgb(0, 0, 0, 0.1);
+  fill: var(--main-color);
 }
 
 .clearFilter {
@@ -69,32 +110,61 @@
   color: var(--main-color);
 }
 
-.searchAndFilter {
+.searchContainer {
   width: 100%;
   display: flex;
   align-items: stretch;
   justify-content: space-between;
   gap: 1em;
-  margin-bottom: 0.5em;
+  margin-bottom: 1em;
 }
 
+@media screen and (max-width: 900px) {
+  .types {
+    gap: 2em;
+  }
+
+  .type {
+    padding: 0.2em 1em;
+    font-size: 1.2rem;
+  }
+}
 @media screen and (max-width: 768px) {
-  .displayWrapper {
+  .main {
     width: 100%;
   }
 
-  .displayContainer {
+  .displayWrapper {
     flex-direction: column;
+  }
+
+  .type img {
+    width: 2em;
   }
 }
 
 @media screen and (max-width: 540px) {
-  .searchAndFilter {
+  .displayContainer {
+    padding: 0 1em;
+  }
+
+  .searchContainer {
     flex-direction: column;
     gap: 0.5em;
   }
 
-  .searchAndFilter > div {
+  .searchContainer > div {
     width: 100%;
+  }
+
+  .types {
+    gap: 0.5em;
+    /* margin-bottom: 1.6em; */
+    justify-content: center;
+  }
+
+  .type {
+    padding: 0.2em 1em;
+    font-size: 0.8rem;
   }
 }

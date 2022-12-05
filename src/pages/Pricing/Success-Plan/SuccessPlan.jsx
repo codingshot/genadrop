@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
+import { useHistory } from "react-router-dom";
 import {
   addRule,
   setCollectionName,
@@ -15,10 +17,8 @@ import {
 } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import { handleResetCreate } from "../../../utils";
-import { v4 as uuid } from "uuid";
 import { ReactComponent as SuccessIcon } from "../../../assets/icon-payment-successful.svg";
 import classes from "./SuccessPlan.module.css";
-import { useHistory } from "react-router-dom";
 import { fetchUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { saveSession } from "../../../renderless/store-data/StoreData.script";
 import Fallback from "../../fallback/fallback";
@@ -30,7 +30,7 @@ const SuccessPlan = () => {
   }
   const { dispatch, upgradePlan, sessionId, collectionName, proposedPlan, currentUser } = useContext(GenContext);
   const [inputValue, setInputValue] = useState("");
-  let isStripe = window.sessionStorage.isStripe;
+  const { isStripe } = window.sessionStorage;
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -40,7 +40,6 @@ const SuccessPlan = () => {
     const res = await saveSession({ currentUser, sessionId, collectionName, currentPlan: proposedPlan });
     if (!res) return; // showNotification
     dispatch(setUpgradePlan(false));
-    return;
   };
 
   const handleContinue = async (e) => {
@@ -52,12 +51,12 @@ const SuccessPlan = () => {
       })
     );
     await save({ collectionName: inputValue, sessionId, currentUser, proposedPlan });
-    history.push("/create");
+    history.push("/create/collection");
   };
 
   useEffect(() => {
     if (isStripe === "true") return;
-    let ID = uuid();
+    const ID = uuid();
     if (!upgradePlan) {
       handleResetCreate({ dispatch });
       dispatch(setCurrentSession(ID));
@@ -77,7 +76,7 @@ const SuccessPlan = () => {
   useEffect(() => {
     if (isStripe === "true") return;
     if (!proposedPlan) {
-      return history.push("/create");
+      return history.push("/create/collection");
     }
     document.documentElement.scrollTop = 0;
   }, []);
@@ -97,7 +96,7 @@ const SuccessPlan = () => {
           currentPlan,
           currentUser,
         } = await fetchUserData();
-        let ID = uuid();
+        const ID = uuid();
         if (!upgradePlan) {
           handleResetCreate({ dispatch });
           await save({ collectionName: "New Collection", sessionId: ID, currentUser, proposedPlan });
@@ -107,12 +106,13 @@ const SuccessPlan = () => {
           dispatch(setCurrentPlan(proposedPlan));
           dispatch(setProposedPlan(proposedPlan));
           return;
-        } else if (!sessionId) {
+        }
+        if (!sessionId) {
           dispatch(setCurrentSession(ID));
         } else {
           dispatch(setCurrentSession(sessionId));
         }
-        await save({ collectionName, sessionId: sessionId ? sessionId : ID, currentUser, proposedPlan: currentPlan });
+        await save({ collectionName, sessionId: sessionId || ID, currentUser, proposedPlan: currentPlan });
         dispatch(setLayers(layers));
         dispatch(setNftLayers(nftLayers));
         dispatch(setPreview(preview));

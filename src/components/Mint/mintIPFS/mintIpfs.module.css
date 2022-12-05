@@ -1,0 +1,117 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 75vh;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.title {
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 17px;
+}
+.subTitle {
+  font-size: 20px;
+  margin-bottom: 69px;
+  font-weight: 400;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.inputWrapper > h6 {
+  font-size: 18px;
+  margin-bottom: 18px;
+  font-weight: 400;
+}
+.mintButton {
+  background-color: var(--main-color);
+  color: var(--default);
+  width: 125px;
+  height: 45px;
+  padding: 3px, 24px, 3px, 24px;
+  border-radius: 6px;
+  transition: 0.3s;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.input {
+  border: 1px solid var(--outline);
+  padding: 0.5em;
+  border-radius: 18px;
+  width: 50%;
+  height: 4.93em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2em;
+  box-shadow: 5px 2px 2px var(--outline);
+  padding-left: 1em;
+}
+
+.input img:hover {
+  cursor: pointer;
+}
+
+.input input {
+  outline: 0;
+  border: 0;
+  width: 70%;
+  font-size: 16px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.input input:focus {
+  border: none;
+  cursor: text;
+}
+
+@media screen and (max-width: 1000px) {
+  .input {
+    width: 80%;
+  }
+
+  .input input {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: px) {
+  .container {
+    margin-bottom: 40px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .input {
+    width: 90%;
+  }
+  .title {
+    font-size: 45px;
+  }
+  .subTitle {
+    font-size: 17px;
+  }
+  .input input {
+    width: 80%;
+  }
+  .mintButton {
+    width: 80px;
+    height: 35px;
+    font-size: 15px;
+  }
+}

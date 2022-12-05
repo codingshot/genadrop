@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--card-light);
   padding: 0.25em;
   gap: 0.5em;
@@ -60,7 +60,7 @@
 
 .mintSwitch > button {
   width: 10em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.5em 0;
   font-size: 1rem;
   background: var(--card-light);
@@ -172,7 +172,7 @@
 
 .btn {
   width: 10em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   font-size: 1rem;
   transition: all 300ms;
   color: var(--main-color);

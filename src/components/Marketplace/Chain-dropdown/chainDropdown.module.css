@@ -1,32 +1,11 @@
 .chainDropdown {
   position: relative;
-  width: 12em;
-  z-index: 2;
   background: var(--default);
-  border-radius: 2.5em;
+  border-radius: 10px;
   z-index: 10;
-}
-
-.selectedPrice {
-  cursor: var(--cursor-pointer);
-  background: var(--default);
-  color: #000000;
-  border: 1px solid var(--outline);
-  padding: 0.5em 1em;
-  border-radius: 2.5em;
-  transition: all 300ms;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  text-transform: capitalize;
-  gap: 1em;
-}
-
-.selectedPrice span {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1em;
+  justify-content: center;
 }
 
 .selectedChain {
@@ -34,14 +13,14 @@
   padding: 0.25em 1em;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid var(--main-color);
-  border-radius: 2.5em;
+  gap: 0.25em;
+  border: 1px solid var(--card-outline);
+  border-radius: 0.7em;
   cursor: var(--cursor-pointer);
   height: 100%;
   color: var(--main-color);
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
 }
 
 .selectedChain:hover {
@@ -56,8 +35,8 @@
 }
 
 .chainDropdown .dropdown {
-  width: 100%;
-  left: 0;
+  width: 16em;
+  top: 3em;
   position: absolute;
   background: transparent;
   visibility: hidden;
@@ -68,6 +47,9 @@
   cursor: var(--cursor-pointer);
   transform: translateY(-0.5em);
   text-transform: capitalize;
+  border-radius: 0.5em;
+  background: var(--default);
+  overflow: hidden;
 }
 
 .chainDropdown .dropdown.active {
@@ -82,7 +64,7 @@
 
 .chain {
   padding: 0.5em 1em;
-  border: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -128,8 +110,32 @@
 
 .dropdownIcon {
   transition: all 250ms;
+  fill: #8c93a3;
 }
 
 .dropdownIcon.active {
   transform: rotate(180deg);
+}
+
+@media screen and (max-width: 540px) {
+  .selectedChain > div {
+    gap: 0.5em;
+  }
+
+  .selectedChain {
+    padding: 0.5em;
+  }
+
+  .chainImg {
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  .dropdownIcon {
+    width: 1em;
+  }
+  .chainDropdown .dropdown {
+    width: 12em;
+    left: 1em;
+  }
 }

@@ -44,7 +44,7 @@
 
 .imgContainer {
   padding: 2em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   box-shadow: -26px 49px 31px -24px rgba(93, 134, 194, 0.12), 26px 49px 31px -28px rgba(93, 134, 194, 0.12);
   margin-bottom: 1em;
 }
@@ -86,7 +86,7 @@
 .actionBtn {
   width: 12em;
   border: 1px solid transparent;
-  border-radius: 2em;
+  border-radius: 0.7em;
   padding: 0.75em 0;
   transition: all 300ms;
   display: flex;
@@ -172,6 +172,7 @@
   max-width: 32em;
   max-height: 8em;
   overflow: auto;
+  text-align: center;
   padding: 0.25em 1em;
   font-size: 0.85rem;
   border: 1px solid transparent;

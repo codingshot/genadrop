@@ -1,11 +1,11 @@
-import createImage from "../../../assets/app-create.svg";
+import createImage from "../../../assets/app-create.png";
 import mintImage from "../../../assets/app-mint.svg";
 import exploreImage from "../../../assets/app-explore.svg";
 
-export const features = [
+const features = [
   {
     heading: "CREATE",
-    link: "Explore how to create",
+    link: "Try Genadrop Create for FREE",
     url: "/create",
     image: createImage,
     title: "No More need for copy & Paste or Uploading your NFTs all over again.",
@@ -14,8 +14,8 @@ export const features = [
   },
   {
     heading: "MINT",
-    link: "Explore how to Mint",
-    url: "/mint",
+    link: "Go to Mint",
+    url: "/create",
     image: mintImage,
     title: "You do not need to know all the technical terms before minting your NFTs.",
     description:
@@ -31,3 +31,5 @@ export const features = [
       "Genadrop makes the whole process of listing your NFTs on the marketplace seamless with the auto listing feature, directly after you mint your NFTs .",
   },
 ];
+
+export default features;

@@ -1,0 +1,125 @@
+.container {
+  width: 100%;
+  margin-bottom: 4em;
+  padding: 4em 2em;
+  position: relative;
+}
+
+.desktop {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
+.mobile {
+  width: 100%;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2em;
+}
+
+.backBtnContainer {
+  padding: 0;
+  margin-bottom: 2em;
+  margin-top: 1em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1em;
+  cursor: pointer;
+  display: none;
+}
+
+.backIcon {
+  width: 1em;
+  transition: transform 300ms;
+}
+
+.backBtnContainer:hover .backIcon {
+  transform: translateX(-30%);
+}
+
+.wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sectionWrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2em;
+  margin-bottom: 3em;
+}
+
+.nftSection {
+  width: 50%;
+}
+
+.detailSection {
+  width: 50%;
+}
+
+.priceHistory {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.historySection {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 2em;
+  margin-bottom: 4em;
+}
+
+@media screen and (max-width: 1200px) {
+  .wrapper {
+    max-width: 56em;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .wrapper {
+    max-width: 64em;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .wrapper {
+    max-width: 64em;
+  }
+
+  .desktop {
+    display: none;
+  }
+
+  .mobile {
+    display: flex;
+  }
+
+  .sectionWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .detailSection,
+  .nftSection {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .container {
+    padding: 2em 1em;
+  }
+}

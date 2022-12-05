@@ -30,8 +30,10 @@
 }
 
 .wrapper {
+  border-radius: 1rem;
+}
+.wrapper.active {
   background: var(--main-color);
-  border-radius: 1.5em;
 }
 
 .card {
@@ -101,7 +103,7 @@
   width: 10em;
   text-align: center;
   padding: 0.5em 1em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   color: var(--main-color);
   background: var(--default);
   border: 1px solid var(--main-color);

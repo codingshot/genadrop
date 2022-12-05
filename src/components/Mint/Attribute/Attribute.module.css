@@ -18,6 +18,7 @@
 
 ._0 {
   background: var(--outline) !important;
+  cursor: no-drop;
 }
 
 .container input::placeholder {

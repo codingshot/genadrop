@@ -144,6 +144,7 @@
 .planIcon {
   width: 100%;
   max-width: 46vw;
+  height: auto;
 }
 
 .planIcon.render {
@@ -225,7 +226,7 @@
 
 .btn {
   padding: 0.75em 3em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);
   transition: all 650ms;

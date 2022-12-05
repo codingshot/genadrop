@@ -1,18 +1,20 @@
 import React, { useEffect } from "react";
-import classes from "./graph.module.css";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+
+import classes from "./graph.module.css";
+
 Chart.register(...registerables);
 
 const Graph = ({ details }) => {
-  let dates = [];
+  const dates = [];
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-  let prices = [];
+  const prices = [];
   if (details) {
     details.map((e, i) => {
       const date = new Date(e.txDate * 1000);
 
-      dates.push(date.getDate() + "/" + months[date.getMonth()]);
+      dates.push(`${date.getDate()}/${months[date.getMonth()]}`);
       prices.push(e.price);
     });
   }
@@ -25,8 +27,8 @@ const Graph = ({ details }) => {
         // label: "First dataset",
         data: prices,
         fill: true,
-        backgroundColor: "rgba(75,192,192,0.2)",
-        borderColor: "rgba(75,192,192,1)",
+        backgroundColor: "#dbf0ff",
+        borderColor: "#0d99ff",
       },
     ],
   };
@@ -38,6 +40,15 @@ const Graph = ({ details }) => {
         display: false,
       },
     },
+  };
+
+  const data2 = [10, 0, -2.5, 540];
+  const props = {
+    data2,
+    smoothing: 0.3,
+    accent: "palevioletred",
+    fillBelow: "rgba(200,67,23,0.1)",
+    hover: true,
   };
   return (
     <>

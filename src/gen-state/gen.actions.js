@@ -192,6 +192,26 @@ export const setCeloSingleNft = (nfts) => ({
   payload: nfts,
 });
 
+export const setNearSingleNft = (nfts) => ({
+  type: genActionTypes.SET_NEAR_SINGLE_NFTS,
+  payload: nfts,
+});
+
+export const setAvaxSingleNfts = (nfts) => ({
+  type: genActionTypes.SET_AVAX_SINGLE_NFTS,
+  payload: nfts,
+});
+
+export const setArbitrumNfts = (nfts) => ({
+  type: genActionTypes.SET_ARBITRUM_SINGLE_NFTS,
+  payload: nfts,
+});
+
+export const setAllNfts = (nfts) => ({
+  type: genActionTypes.SET_ALL_NFTS,
+  payload: nfts,
+});
+
 export const setPolygonCollections = (collections) => ({
   type: genActionTypes.SET_POLYGON_COLLECTIONS,
   payload: collections,
@@ -363,5 +383,10 @@ export const setSearchContainer = (val) => ({
 
 export const setIsUser = (state) => ({
   type: genActionTypes.SET_IS_USER,
+  payload: state,
+});
+
+export const setPriceFeed = (state) => ({
+  type: genActionTypes.SET_PRICE_FEED,
   payload: state,
 });

@@ -6,100 +6,12 @@
   position: relative;
   max-width: 1280px;
 }
-.container * {
-  user-select: none;
-  -webkit-user-select: none; /* disable selection/Copy of UIWebView */
-  -webkit-touch-callout: none; /* disable the IOS popup when long-press on a link */
-}
-.videoOFF {
-  width: 100%;
-  height: 100%;
-  background: rgba(75, 75, 90, 0.74);
-  object-fit: cover;
-}
-.videoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-.videoWrapper {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: fit-content;
-  width: 100%;
-  height: calc(100vh - 5rem);
-}
-.videoWrapper div:first-child {
-  width: 100%;
-  height: 100%;
-}
-.cameraWrapper {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  width: fit-content;
-  height: calc(100vh - 5rem);
-}
-.videoWrapper video {
-  /* object-fit: cover; */
-}
-.enableContainer {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-}
 
-.cameraShot {
-  width: 100%;
-  height: 100%;
-  background: #ffffff;
-  object-fit: contain;
-  border: 4px solid #ffffff;
-  box-shadow: 5px 5px 32px rgb(0 0 0 / 25%);
-  /* margin-top: 1.25em; */
-}
 .inActive {
   height: 0 !important;
   border: none;
 }
-.btnWrapper {
-  position: absolute;
-  bottom: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgb(15 29 64 / 60%);
-  padding: 0rem 2rem;
-  height: 6rem;
-  width: 20em;
-  border-radius: 16px;
-}
-.btnWrapper > div {
-  cursor: var(--cursor-pointer);
-  transition: background 0.2s ease-in-out;
-}
 
-.holdBtn {
-  position: absolute;
-  top: 50%;
-  left: 2rem;
-  transform: translateY(-50%);
-  display: flex;
-  height: fit-content;
-}
-.holdBtn > svg {
-  height: 50px;
-  width: 50px;
-}
-.holdBtn.active {
-  position: initial;
-  /* padding: 1.5rem; */
-  transform: inherit;
-}
 .RecordBtnWrapper {
   display: flex;
   align-items: center;
@@ -107,15 +19,10 @@
   height: 50px;
   background: white;
   border-radius: 50%;
-  display: flex;
-  /* padding: 8px; */
   transition: outline 300ms;
   position: relative;
 }
-.holdBtn.active .RecordBtnWrapper {
-  width: 64px;
-  height: 64px;
-}
+
 .RecordBtnWrapper:hover {
   outline: 1px solid #ff3236;
 }
@@ -129,47 +36,7 @@
   background: #ff3236;
   border-radius: 50%;
 }
-.holdBtn.active .recordBtn {
-  width: 40px;
-  height: 40px;
-}
-.holdBtn.recording .recordBtn {
-  width: 30px;
-  height: 30px;
-  border-radius: unset;
-}
-.captureBtn {
-  height: 100%;
-  display: flex;
-  align-items: center;
-}
-.captureBtn svg {
-  height: 64px;
-  width: 64px;
-}
-.captureBtn svg circle {
-  transition: all 0.2s ease-in-out;
-}
-.captureBtn:hover svg circle {
-  fill: var(--main-color);
-}
-.uploadBtn {
-  position: absolute;
-  /* display: none; */
-  right: 2rem;
-  align-items: center;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.btnWrapper .uploadBtn svg {
-  width: 50px;
-}
-.btnWrapper .uploadBtn:hover svg path {
-  fill: #d9d9d9;
-}
-.btnWrapper .RecordBtnWrapper:hover {
-  color: #d9d9d9;
-}
+
 .coninue {
   color: var(--default);
 }
@@ -185,42 +52,11 @@
 .btn:hover {
   transform: scale(1.05);
 }
-.retake {
-  display: flex;
-  align-items: center;
-  margin-right: auto;
-  cursor: var(--cursor-pointer);
-  font-weight: 500;
-  font-size: 1.25rem;
-  position: absolute;
-  top: 1.5rem;
-  left: 1.5rem;
-  z-index: 1;
-  background: rgb(101 110 133 / 75%);
-  padding: 8px;
-  border-radius: 50%;
-}
-.retake svg {
-  transition: all 0.2s ease;
-}
-.retake svg path {
-  fill: white;
-}
-.retake:hover svg {
-  transform: translateX(-6px);
-}
+
 .none {
   display: none !important;
 }
-.imgBtn {
-  display: flex;
-  position: absolute;
-  bottom: 1.5rem;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
+
 .typeSelcet {
   display: grid;
   max-width: 15rem;
@@ -269,94 +105,16 @@ div.active .rdaioBtn {
 div.active .rdaioBtn > div {
   display: block;
 }
-.mintBtn {
-  background: var(--main-color);
-  color: #ffffff;
-  border-radius: 39px;
-  font-size: 1em;
-  max-width: 15rem;
-  width: 100%;
-  padding: 0.675rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: -0.799296px;
-  cursor: var(--cursor-pointer);
-  transition: background 0.2s ease-in-out;
-  border: 1px solid var(--main-color);
-}
-.mintBtn.disabled {
-  background: var(--outline-dark);
-  color: white !important;
-  pointer-events: none;
-  border-color: var(--outline-dark);
-}
-.imgBtn .mintBtn:hover {
-  background: var(--default);
-  color: var(--main-color);
-}
+
 .testrecod {
   position: absolute;
   font-size: 2rem;
   top: 10%;
   background: white;
 }
-.closeBtn {
-  position: absolute;
-  top: 2rem;
-  right: 2rem;
-  background: rgb(15 29 64 / 60%);
-  width: 2rem;
-  height: 2rem;
-  padding: 2px;
-  display: flex;
-  border-radius: 50%;
-  cursor: var(--cursor-pointer);
-  padding: 8px;
-}
-.closeBtn svg {
-  width: 100%;
-  height: 100%;
-}
-.closeBtn svg path {
-  fill: var(--default);
-}
+
 @media screen and (max-width: 768px) {
   .uploadBtn {
     display: flex;
-  }
-}
-@media screen and (max-width: 480px) {
-  .btnWrapper {
-    bottom: 0rem;
-    width: 100%;
-    height: 7rem;
-    border-radius: 0;
-  }
-  .videoContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    position: fixed;
-    height: 100vh;
-    top: 0;
-    z-index: 1000;
-    background: white;
-  }
-  .cameraWrapper {
-    background: white;
-    width: 100%;
-    position: fixed;
-    height: 100vh;
-    top: 0;
-    z-index: 1000;
-  }
-  .videoWrapper {
-    height: 100vh;
-    background: white;
-  }
-  .videoWrapper video {
-    height: 100%;
   }
 }

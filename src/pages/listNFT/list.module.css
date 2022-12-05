@@ -114,6 +114,34 @@
   transition: all 300ms ease;
 }
 
+.listButtonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  align-items: center;
+}
+
+.listButton {
+  background: var(--main-color);
+  color: white;
+  width: 13rem;
+  height: 4.25rem;
+  padding: 0.3rem 1rem;
+  border-radius: 1rem;
+  font-size: 20px;
+  transition: all 300ms ease;
+  font-weight: bold;
+}
+
+.listButton.disable {
+  background: rgba(13, 153, 255, 0.39);
+  border: 1px solid var(--outline-dark);
+}
+
+.listButton.disable:hover {
+  color: var(--outline);
+}
+
 .mainDetails {
   padding: 1.25rem 1rem;
   border-bottom: 1px solid var(--outline);
@@ -146,6 +174,13 @@
   font-size: 1.3rem;
 }
 
+.dropdownItems {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
 .dropdownContent {
   padding: 1rem;
   border-radius: 1rem;
@@ -159,47 +194,45 @@
 
 .buy,
 .bid {
-  width: 18rem;
-  height: 7.8rem;
+  width: 15.8rem;
+  height: 4.8rem;
   flex-direction: row;
-  color: white;
+  color: var(--text-heading);
   padding: 0.3rem 1rem;
   border-radius: 1rem;
   font-weight: bold;
 }
 
 .buy {
-  background-color: var(--main-color);
+  background-color: white;
+  border: 1px solid #0d99ff;
+  box-shadow: 0px 4px 4px rgba(38, 38, 38, 0.26);
 }
 
 .btnText {
-  color: white;
-  font-size: 1.5rem;
-  margin-bottom: 20px;
+  color: var(--text-heading);
+  font-size: 1rem;
+  margin-bottom: 5px;
 }
 
 .btnSpan {
-  color: white;
-  font-size: 0.8rem;
+  color: var(--text-heading);
+  font-size: 0.65rem;
+  font-weight: 400 !important;
 }
 
 .bid {
-  border: 1px solid var(--main-color);
   color: white;
+  background-color: var(--outline);
+  cursor: not-allowed;
 }
 
 .buy img,
 .bid img {
-  width: 28px;
-  margin-right: 10px;
+  width: 22px;
+  height: 18px;
+  margin-right: 7px;
 }
-
-.buy:hover,
-.bid:hover {
-  transform: scale(1.05);
-  transition: all 0.2s ease-in-out;
-}
-
 .heading {
   padding: 0.5rem;
   border-bottom: 1px solid #e5e8eb;
@@ -209,6 +242,10 @@
 @media screen and (max-width: 1440px) {
   .container {
     max-width: 1200px;
+  }
+  .buy,
+  .bid {
+    max-width: 48%;
   }
 }
 
@@ -221,6 +258,14 @@
 @media screen and (max-width: 1000px) {
   .container {
     max-width: 768px;
+  }
+  .dropdownItems {
+    flex-direction: column;
+  }
+  .buy,
+  .bid {
+    margin-bottom: 15px;
+    max-width: 95%;
   }
 }
 

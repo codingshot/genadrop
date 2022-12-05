@@ -9,6 +9,7 @@ import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.s
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
+
 import {
   setNetworkType,
   connectWallet,
@@ -19,6 +20,7 @@ import {
   initializeConnection,
   initConnectWallet,
 } from "./wallet-script";
+
 import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
 
 function ConnectWallet() {
@@ -71,7 +73,7 @@ function ConnectWallet() {
     }, 850);
   };
 
-  const handleDisconnet = () => {
+  const handleDisconnet = async () => {
     disconnectWallet(walletProps);
   };
 
@@ -80,7 +82,7 @@ function ConnectWallet() {
   };
 
   const handleDashboard = () => {
-    history.push(`/me/${account}`);
+    history.push(`/profile/${chainId}/${account}`);
   };
 
   useEffect(() => {
@@ -104,7 +106,7 @@ function ConnectWallet() {
 
   useEffect(() => {
     initializeConnection(walletProps);
-  }, [rpc]);
+  }, [rpc, window.selector]);
 
   const dropdown = (
     <div className={classes.dropdownContainer}>
@@ -135,7 +137,7 @@ function ConnectWallet() {
       <div className={classes.connected}>
         <img className={classes.chain} src={getConnectedChain(chainId)} alt="" />
         <div className={classes.address}>
-          <span>{breakAddress(account)}</span>
+          <span>{account?.length > 15 ? breakAddress(account) : account}</span>
         </div>
         <div className={classes.dropdownIconContainer}>
           <DropdownIcon className={classes.dropdownIcon} />
@@ -148,14 +150,8 @@ function ConnectWallet() {
   const changeNetwork = (
     <div className={classes.networkContainer}>
       <div className={classes.network}>
-        <div className={classes.dot} />{" "}
+        <div className={`${classes.dot} ${network === "mainnet" && classes.mainnet}`} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
-        <DropdownIcon className={classes.chevronIcon} />
-      </div>
-      <div className={classes.networkDropdownContainer}>
-        <div onClick={handleNetworkClick} className={classes.networkDropdown}>
-          {network === "mainnet" ? "Switch to testnet" : "Switch to mainnet"}
-        </div>
       </div>
     </div>
   );

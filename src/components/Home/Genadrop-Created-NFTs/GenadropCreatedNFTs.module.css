@@ -11,7 +11,17 @@
 .container * {
   transition: max-width 300ms;
 }
-
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  white-space: nowrap;
+}
+.load {
+  width: 30%;
+  max-width: 25em;
+}
 .heading {
   width: 100%;
   text-align: center;
@@ -38,7 +48,7 @@
 .btn {
   display: inline-block;
   padding: 0.75em 3em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   background: var(--main-color);
   color: var(--default);
   transition: all 300ms;
@@ -53,18 +63,28 @@
   border: 1px solid var(--main-color);
 }
 
+.cardGrid {
+  display: flex;
+  grid-gap: 0.6em;
+}
+
 .card {
+  height: 20em;
   width: 18em;
   flex: 0 0 auto;
-  border: 1px solid red;
   padding: 0.5em;
   padding-bottom: 2em;
   border-radius: 1em;
   border: 1px solid var(--outline);
 }
 
-.card img {
+.imgContainer {
+  height: 17em;
+}
+.imgContainer img {
+  height: 100%;
   width: 100%;
+  object-fit: cover;
   transition: transform 300ms;
   margin-bottom: 0.5em;
   border-radius: 1em;
@@ -72,23 +92,31 @@
 
 .card:hover img {
   transform: scale(1.01);
+  cursor: pointer;
 }
 
 .card .name {
   width: 100%;
   text-align: center;
   font-size: 1.2rem;
+  margin-top: 0.5em;
 }
 
 @media screen and (max-width: 1200px) {
   .heading {
     font-size: 2.5rem;
   }
+  .card:nth-child(4) {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 900px) {
   .heading {
     font-size: 2rem;
+  }
+  .card:nth-child(3) {
+    display: none;
   }
 
   .heading .accent {
@@ -104,7 +132,12 @@
     padding: 2em 1em;
     margin-bottom: 4em;
   }
-
+  .cardGrid {
+    justify-content: center;
+  }
+  .card:nth-child(2) {
+    display: none;
+  }
   .heading {
     font-size: 1.5rem;
   }

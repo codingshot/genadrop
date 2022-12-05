@@ -1,15 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import GenadropCarouselCard from "../../Genadrop-Carousel-Card/GenadropCarouselCard";
-import { chains } from "./Chains-Script";
+import chains from "./Chains-Script";
 import classes from "./Chains.module.css";
-import { useHistory, useRouteMatch, useLocation } from "react-router-dom";
 
 const Chains = () => {
   const cardRef = useRef(null);
   const history = useHistory();
-  const location = useLocation();
-
-  const { url } = useRouteMatch();
 
   const [state, setState] = useState({
     cardWidth: 0,
@@ -23,7 +20,7 @@ const Chains = () => {
 
   const handleClick = (name, isComingSoon) => {
     if (isComingSoon) return;
-    history.push(`${url}/collections/${`?chain=${name}`}`);
+    history.push(`marketplace/all?chain=${name}`);
   };
 
   useEffect(() => {
@@ -34,12 +31,6 @@ const Chains = () => {
   return (
     <div className={classes.container}>
       <div className={classes.wrapper}>
-        <div className={classes.heading}>
-          <h3>Start Exploring Now</h3>
-          <p className={classes.description}>
-            Explore/List your NFTs on the next generation of multi-chains NFT trading marketplace
-          </p>
-        </div>
         <GenadropCarouselCard cardWidth={cardWidth} gap={16}>
           {chains.map((chain, idx) => (
             <div

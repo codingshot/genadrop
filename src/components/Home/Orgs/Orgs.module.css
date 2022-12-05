@@ -1,7 +1,7 @@
 .container {
   width: 100%;
-  padding: 0 2em;
-  margin-bottom: 6em;
+  padding: 1em 2em 6em;
+  overflow: hidden;
 }
 
 .wrapper {
@@ -208,8 +208,7 @@
 
 @media screen and (max-width: 540px) {
   .container {
-    padding: 0 1em;
-    margin-bottom: 4em;
+    padding: 1em 1em 4em;
   }
 
   .heading {
@@ -229,7 +228,7 @@
   }
 
   .org {
-    border-radius: 1.5em;
+    border-radius: 0.7em;
   }
 
   .icon {

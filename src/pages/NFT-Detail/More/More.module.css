@@ -1,0 +1,46 @@
+.container {
+  margin-bottom: 1em;
+}
+
+.heading {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 2em;
+}
+
+.display {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  overflow: auto;
+  gap: 2em;
+}
+
+.display > * {
+  flex: 0 0 auto;
+}
+
+.btnContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.5em;
+}
+
+.btn {
+  width: 100%;
+  max-width: 12em;
+  padding: 0.5em 1.5em;
+  border-radius: 0.7em;
+  cursor: var(--cursor-pointer);
+  color: var(--default);
+  background: var(--main-color);
+  text-align: center;
+  border: 1px solid var(--main-color);
+  transition: background 300ms;
+}
+
+.btn:hover {
+  background: var(--main-hovered);
+}

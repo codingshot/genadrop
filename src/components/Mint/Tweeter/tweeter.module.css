@@ -1,0 +1,60 @@
+.tweetContainer {
+  border: 1px solid var(--outline);
+  border-radius: 10px;
+  box-shadow: 5px 10px 18px var(--outline);
+  padding: 1em;
+  width: 20em;
+}
+
+.tweetHeader {
+  display: flex;
+  gap: 0.5em;
+}
+
+.tweetHeader img {
+  border-radius: 50em;
+}
+
+.headerRight {
+  display: flex;
+  flex-direction: column;
+}
+
+.description,
+.date {
+  text-align: left;
+  margin-top: 1em;
+}
+
+.username {
+  font-weight: 700;
+  width: 8em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.contents {
+  margin: 0.5em 0;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 0.2em;
+}
+
+.content {
+  border-radius: 10px;
+}
+
+.dark {
+  color: #fff;
+  background-color: #000;
+}
+
+.usertag,
+.date {
+  font-size: 0.8em;
+  color: #5b7083;
+  text-align: left;
+}

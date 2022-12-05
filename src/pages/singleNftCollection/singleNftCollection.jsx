@@ -1,241 +1,184 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
-import "react-loading-skeleton/dist/skeleton.css";
-import { useHistory, useLocation } from "react-router-dom";
 import classes from "./singleNftCollection.module.css";
-import NftCard from "../../components/Marketplace/NftCard/NftCard";
+import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import NotFound from "../../components/not-found/notFound";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
-import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import { GenContext } from "../../gen-state/gen.context";
+import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
+import PageControl from "../../components/Marketplace/Page-Control/PageControl";
+import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
+import {
+  filterBy,
+  getCollectionsByChain,
+  getCollectionsBySearch,
+  rangeBy,
+  shuffle,
+  sortBy,
+} from "../Marketplace/Marketplace-script";
+
+import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
+import Search from "../../components/Search/Search";
+import {
+  parseAlgoSingle,
+  parseAuroraSingle,
+  parseCeloSingle,
+  parseNearSingle,
+  parsePolygonSingle,
+} from "../../renderless/fetch-data/fetchData-script";
+import {
+  getAllAlgorandNfts,
+  getAllArbitrumNfts,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonNfts,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const SingleNftCollection = () => {
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts } = useContext(GenContext);
-  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
+  const { mainnet, account, dispatch } = useContext(GenContext);
 
-  const location = useLocation();
-  const history = useHistory();
-
+  const mountRef = useRef(null);
   const [state, setState] = useState({
-    togglePriceFilter: false,
-    toggleChainFilter: false,
+    collections: [],
     filteredCollection: [],
-    celoCollection: null,
-    allChains: null,
-    filter: {
-      searchValue: "",
-      chain: "All Chains",
-      price: "low - high",
-      name: "a - z",
-      date: "newest - oldest",
-    },
+    currentPage: 1,
+    paginate: {},
+    currentPageValue: 1,
+
+    notFound: false,
+    searchChain: "All Chains",
   });
 
-  const { celoCollection, filter, filteredCollection } = state;
+  const { collections, paginate, currentPage, currentPageValue, searchChain, filteredCollection, notFound } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const getCollectionByChain = (network = filter.chain) => {
-    switch (network.toLowerCase().replace(/ /g, "")) {
-      case "allchains":
-        return !singleAlgoNftsArr && !singlePolygonNfts && !singleCeloNfts && !singleAuroraNfts
-          ? null
-          : [
-              ...(singleAlgoNftsArr || []),
-              ...(singlePolygonNfts || []),
-              ...(singleCeloNfts || []),
-              ...(singleAuroraNfts || []),
-            ];
-      case "algorand":
-        return singleAlgoNftsArr;
-      case "polygon":
-        return singlePolygonNfts;
-      case "celo":
-        return singleCeloNfts;
-      case "aurora":
-        return singleAuroraNfts;
-      default:
-        break;
-    }
-    return null;
+  const handlePrev = () => {
+    if (currentPage <= 1) return;
+    handleSetState({ currentPage: currentPage - 1 });
   };
 
-  // get search result for all blockchains
-  const searchHandler = (value) => {
-    value = value.trim().toLowerCase();
-    if (!value) return;
-    handleSetState({ filter: { ...filter, searchValue: value } });
-    const { search } = location;
-    const chainParam = new URLSearchParams(search).get("chain");
-    const params = new URLSearchParams({
-      search: value,
-      ...(chainParam && { chain: chainParam }),
-    });
-    history.replace({ pathname: location.pathname, search: params.toString() });
-    const collection = getCollectionByChain();
-    if (!collection) return;
-    const filtered = collection.filter(
-      (col) => col.name.toLowerCase().includes(value) || col.description.toLowerCase().includes(value)
+  const handleNext = () => {
+    if (currentPage >= Object.keys(paginate).length) return;
+    handleSetState({ currentPage: currentPage + 1 });
+  };
+
+  const handleGoto = () => {
+    if (currentPageValue < 1 || currentPageValue > Object.keys(paginate).length) return;
+    handleSetState({ currentPage: Number(currentPageValue) });
+    document.documentElement.scrollTop = 0;
+  };
+
+  const handleChainChange = (chain) => {
+    const result = getCollectionsByChain({ collections, chain, mainnet });
+    handleSetState({ filteredCollection: result, searchChain: chain });
+  };
+
+  const handleFilter = ({ type, value }) => {
+    if (type === "status") {
+      const result = filterBy({ collections: filteredCollection, value, account });
+      handleSetState({ filteredCollection: result });
+    } else if (type === "sort") {
+      const result = sortBy({ collections: filteredCollection, value });
+      handleSetState({ filteredCollection: result });
+    } else if (type === "range") {
+      const result = rangeBy({ collections: filteredCollection, value });
+      handleSetState({ filteredCollection: result });
+    }
+  };
+
+  useEffect(() => {
+    Promise.all([
+      getAllCeloNfts(),
+      getAllAuroraNfts(),
+      getAllAvalancheNfts(),
+      getAllArbitrumNfts(),
+      getAllPolygonNfts(),
+      getAllNearNfts(),
+      getAllAlgorandNfts(mainnet, dispatch),
+    ]).then((data) =>
+      handleSetState({
+        collections: sortBy({ collections: data.flat(), value: "newest" }),
+        filteredCollection: sortBy({ collections: data.flat(), value: "newest" }),
+      })
     );
-    if (filtered.length) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-  };
-
-  const chainChange = (value) => {
-    const { search } = location;
-    const name = new URLSearchParams(search).get("search");
-    const params = new URLSearchParams({
-      chain: value.toLowerCase().replace(/ /g, ""),
-      ...(name && { search: name }),
-    });
-    history.replace({ pathname: location.pathname, search: params.toString() });
-    handleSetState({ filter: { ...filter, chain: value } });
-    const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
-    if (collection) {
-      if (filter.searchValue) {
-        const filtered = collection.filter(
-          (col) =>
-            col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
-            col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
-        );
-        if (filtered.length) {
-          handleSetState({ filteredCollection: filtered });
-        } else {
-          handleSetState({ filteredCollection: null });
-        }
-      } else {
-        handleSetState({ filteredCollection: collection });
-      }
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-  };
-
-  const handleFilterDropdown = ({ name, label }) => {
-    handleSetState({ filter: { ...filter, [name]: label } });
-  };
+  }, []);
 
   useEffect(() => {
-    if (!filteredCollection) return;
-    let filtered = null;
-    if (filter.price === "low - high") {
-      filtered = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else {
-      filtered = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+    const countPerPage = 20;
+    const numberOfPages = Math.ceil(filteredCollection.length / countPerPage);
+    let startIndex = 0;
+    let endIndex = startIndex + countPerPage;
+    const paginate = {};
+    for (let i = 1; i <= numberOfPages; i += 1) {
+      paginate[i] = filteredCollection.slice(startIndex, endIndex);
+      startIndex = endIndex;
+      endIndex = startIndex + countPerPage;
     }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.price]);
+    handleSetState({ paginate });
+  }, [filteredCollection]);
 
   useEffect(() => {
-    if (!filteredCollection) return;
-    let filtered = null;
-    if (filter.name === "a - z") {
-      filtered = filteredCollection.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        return -1;
-      });
-    } else {
-      filtered = filteredCollection.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
-        return 1;
-      });
+    if (mountRef.current > 2) {
+      handleSetState({ notFound: !Object.keys(paginate).length });
     }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.name]);
+    mountRef.current += 1;
+  }, [paginate]);
 
   useEffect(() => {
-    console.log({ filteredCollection });
-    if (!filteredCollection || true) return; // 1of1 nfts currently do not have createdAt property.
-    // Remove || true when the property is available
-    let filtered = null;
-    if (filter.date === "newest - oldest") {
-      filtered = filteredCollection.sort((a, b) => {
-        if (typeof a.createdAt === "object") {
-          return a.createdAt.seconds - b.createdAt.seconds;
-        }
-        return a.createdAt - b.createdAt;
-      });
-    } else {
-      filtered = filteredCollection.sort((a, b) => {
-        if (typeof a.createdAt === "object") {
-          return b.createdAt.seconds - a.createdAt.seconds;
-        }
-        return b.createdAt - a.createdAt;
-      });
-    }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.date]);
-
-  // compile data for all blockchains
-  useEffect(() => {
-    const { search } = location;
-    const name = new URLSearchParams(search).get("search");
-    const chainParameter = new URLSearchParams(search).get("chain");
-    if (chainParameter) {
-      handleSetState({ filter: { ...filter, chain: chainParameter } });
-    }
-    const collection = getCollectionByChain(chainParameter ? chainParameter.toLowerCase() : "All Chains");
-    if (name) {
-      handleSetState({ filter: { ...filter, searchValue: name } });
-    }
-    const filtered = collection?.filter(
-      (col) =>
-        col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
-        col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
-    );
-    if (singleAlgoNftsArr || singleAuroraNfts) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-    return null;
-  }, [singleAlgoNfts, singlePolygonNfts, celoCollection, singleAuroraNfts]);
-
-  useEffect(() => {
-    window.localStorage.activeAlgoNft = null;
     document.documentElement.scrollTop = 0;
   }, []);
+
   return (
     <div className={classes.container}>
-      <div className={classes.innerContainer}>
-        <div className={classes.header}>
-          <h1>1 of 1s</h1>
-          <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={searchHandler} />
-            <ChainDropdown onChainFilter={chainChange} />
-            <FilterDropdown onFilter={handleFilterDropdown} />
+      <div className={classes.heading}>
+        <div className={classes.title}>
+          <h1>{searchChain === "All chains" ? "1 of 1s" : searchChain}</h1>
+          <p>View all minted 1 of 1s {filteredCollection.length ? `(${filteredCollection.length} minted)` : "(...)"}</p>
+        </div>
+        <div className={classes.searchAndFilter}>
+          <Search type={"1of1"} searchPlaceholder="Search By 1 of 1s and Users" />
+
+          <div className={classes.filter}>
+            <div className={classes.chainDesktop}>
+              <ChainDropdown onChainFilter={handleChainChange} />
+            </div>
+            <FilterDropdown handleFilter={handleFilter} />
           </div>
         </div>
-        {filteredCollection?.length ? (
-          <div className={classes.wrapper}>
-            {filteredCollection.map((nft) => (
-              <NftCard key={nft.Id} nft={nft} listed />
+        <div className={classes.chainMobile}>
+          <ChainDropdown onChainFilter={handleChainChange} />
+        </div>
+      </div>
+      <div className={classes.wrapper}>
+        {Object.keys(paginate).length ? (
+          <div className={classes.nfts}>
+            {paginate[currentPage].map((nft, idx) => (
+              <SingleNftCard key={idx} nft={nft} />
             ))}
           </div>
-        ) : !filteredCollection && filter.searchValue ? (
-          <NotFound />
-        ) : !filteredCollection ? (
-          <NotFound />
+        ) : !notFound ? (
+          <div className={classes.nfts}>
+            {[...new Array(8)]
+              .map((_, idx) => idx)
+              .map((id) => (
+                <div className={classes.loader} key={id}>
+                  <Skeleton count={1} height={200} />
+                  <br />
+                  <Skeleton count={1} height={40} />
+                </div>
+              ))}
+          </div>
         ) : (
-          <div className={classes.skeleton}>
-            {[...new Array(5)].map((id) => (
-              <div key={id}>
-                <Skeleton count={1} height={200} />
-                <br />
-                <Skeleton count={1} height={30} />
-                <br />
-                <Skeleton count={1} height={30} />{" "}
-              </div>
-            ))}
-          </div>
+          <NotFound />
         )}
       </div>
+      {Object.keys(paginate).length ? (
+        <PageControl controProps={{ handleNext, handlePrev, handleGoto, ...state, handleSetState }} />
+      ) : null}
     </div>
   );
 };

@@ -1,18 +1,26 @@
 .container {
   cursor: var(--cursor-pointer);
-  padding: 0 0.5em;
   font-weight: inherit;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 1em;
+}
+
+.copyIcon:hover {
+  fill: var(--default);
+}
+.point {
+  font-size: 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .copyIcon {
-  width: 1.2em;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: 1em;
 }
-
-.copyIcon.active {
-  transform: scale(0.8);
-  border: 1px solid var(--main-color);
+.point:hover .copyIcon {
+  fill: var(--default);
 }

@@ -21,7 +21,12 @@ import { readNftTransaction } from "../../../utils/firebase";
 import algoLogo from "../../../assets/icon-algo.svg";
 import { setNotification } from "../../../gen-state/gen.actions";
 import supportedChains from "../../../utils/supportedChains";
-import { auroraUserData, celoUserData, polygonUserData } from "../../../renderless/fetch-data/fetchUserGraphData";
+import {
+  auroraUserData,
+  celoUserData,
+  nearUserData,
+  polygonUserData,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const ListSingleNFT = (nft) => {
   const { account, connector, mainnet, dispatch, singleAlgoNfts, chainId } = useContext(GenContext);
@@ -73,8 +78,8 @@ const ListSingleNFT = (nft) => {
     },
     {
       celo: [
-        { mainnet: "https://alfajores-blockscout.celo-testnet.org/tx/" },
-        { testnet: "https://explorer.celo.org/tx/" },
+        { testnet: "https://alfajores-blockscout.celo-testnet.org/tx/" },
+        { mainnet: "https://explorer.celo.org/tx/" },
       ],
     },
   ];
@@ -154,6 +159,14 @@ const ListSingleNFT = (nft) => {
             isLoading: false,
             transactionHistory: trHistory,
           });
+        } else if (supportedChains[Number(nftChainId)].chain === "Near") {
+          const [nearData, trHistory] = await nearUserData(nftId);
+          if (!nearData) return history.goBack();
+          handleSetState({
+            nftDetails: nearData,
+            isLoading: false,
+            transactionHistory: trHistory,
+          });
         }
       } catch (error) {
         console.log({ error });
@@ -163,22 +176,11 @@ const ListSingleNFT = (nft) => {
   }, []);
 
   useEffect(() => {
-    const pair = supportedChains[nftDetails?.chain]?.id;
-    if (Number(nftChainId) !== 4160 && pair) {
-      axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${pair}&vs_currencies=usd`).then((res) => {
-        const value = Object.values(res.data)[0]?.usd;
-        handleSetState({
-          chainIcon: supportedChains[nftDetails.chain].icon,
-          algoPrice: value,
-          chainSymbol: supportedChains[nftDetails.chain].symbol,
-        });
-      });
-    }
-    if (Number(nftChainId) === 4160) {
-      axios.get("https://api.coinbase.com/v2/prices/ALGO-USD/spot").then((res) => {
-        handleSetState({ algoPrice: res.data.data.amount });
-      });
-    }
+    handleSetState({
+      chainIcon: supportedChains[nftDetails.chain].icon,
+
+      chainSymbol: supportedChains[nftDetails.chain].symbol,
+    });
   }, [nftDetails]);
 
   const onCopyText = () => {
@@ -256,7 +258,6 @@ const ListSingleNFT = (nft) => {
       <div className={classes.section1}>
         <div className={classes.v_subsection1}>
           <img className={classes.nft} src={nftDetails.image_url} alt="" />
-
           <div className={classes.feature}>
             <DropItem key={1} item={attributesItem} id={1} dropdown={dropdown} handleSetState={handleSetState} />
           </div>
@@ -293,7 +294,7 @@ const ListSingleNFT = (nft) => {
             <div className={classes.btns}>
               <div className={classes.alignIcon}>
                 <img className={classes.iconImg} src={supportedChains[nftDetails?.chain]?.icon} />
-                {nftDetails?.owner === account ? (
+                {nftDetails?.owner === account && supportedChains[nftDetails?.chain]?.chain !== "Near" ? (
                   <Link
                     to={
                       nft.collection_name

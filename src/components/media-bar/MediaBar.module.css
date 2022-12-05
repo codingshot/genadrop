@@ -1,0 +1,20 @@
+.slide {
+  display: flex;
+  position: relative;
+  width: fit-content;
+  z-index: 2;
+}
+.slide img {
+  height: 4rem;
+  width: auto;
+  /* width: 100%; */
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(1); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(1); /* Microsoft Edge and Firefox 35+ */
+  transition: 300ms all;
+}
+.slide img:hover {
+  filter: none; /* IE6-9 */
+  -webkit-filter: grayscale(0); /* Google Chrome, Safari 6+ & Opera 15+ */
+  filter: grayscale(0); /* Microsoft Edge and Firefox 35+ */
+}

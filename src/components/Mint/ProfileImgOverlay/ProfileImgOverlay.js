@@ -14,7 +14,7 @@ const ProfileImgOverlay = ({ toggleGuide, file, handleSetState, collectionProfil
     <div className={`${classes.modelContainer} ${toggleGuide ? classes.modelActive : ""}`}>
       <div className={classes.guideContainer}>
         <div className={classes.imgContainer}>
-          {file.slice(0, 6).map((f) => (
+          {file?.slice(0, 6).map((f) => (
             <div
               key={f.name}
               className={collectionProfile.name === f.name && classes.active}

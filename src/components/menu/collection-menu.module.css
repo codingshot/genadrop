@@ -48,7 +48,6 @@
 }
 
 .uploadCard {
-  border: 1px solid red;
   width: 100%;
   height: 16em;
   border-radius: 0.5em;
@@ -58,21 +57,30 @@
   flex-direction: column;
   gap: 1em;
   cursor: var(--cursor-pointer);
-  border: 1px solid var(--outline);
-  background: var(--outline);
+  background: var(--card-upload);
+  border: 1px solid #b2c5d0;
 }
-
+.uploadCard > svg path {
+  fill: #c1ddff;
+}
 .uploadBtn {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1em;
   padding: 0.5em 1em;
-  border-radius: 2em;
+  border-radius: 0.7em;
   color: var(--main-color);
   border: 1px solid var(--main-color);
 }
-
+.uploadTitle {
+  font-weight: 700;
+  color: #263238;
+}
+.uploadText {
+  font-size: 0.875rem;
+  color: #767676;
+}
 .addIcon,
 .uploadIcon {
   width: 1.5em;
@@ -118,4 +126,10 @@
 .btnContainer .upload:hover,
 .btnContainer .addBlank:hover {
   border: 2px solid var(--main-color);
+}
+
+@media screen and (max-width: 768px) {
+  .uploadText {
+    font-size: 0.8em;
+  }
 }

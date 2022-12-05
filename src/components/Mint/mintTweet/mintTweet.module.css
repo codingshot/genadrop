@@ -1,0 +1,102 @@
+.container {
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 2em 1em;
+  padding-bottom: 6em;
+  z-index: 10;
+}
+
+.header {
+  color: var(--text-dark-800);
+  font-weight: bold;
+  font-size: 3rem;
+  margin-bottom: 0.5em;
+}
+
+.caption {
+  color: var(--text-dark-800);
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 2em;
+}
+
+.instruction {
+  color: var(--text-dark-800);
+  font-size: 0.8rem;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+.input {
+  border: 1px solid var(--outline);
+  padding: 0.5em;
+  border-radius: 10px;
+  width: 35em;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2em;
+  box-shadow: 5px 10px 18px var(--outline);
+  padding-left: 1em;
+}
+
+.input img:hover {
+  cursor: pointer;
+}
+
+.input input {
+  outline: 0;
+  border: 0;
+  width: 30em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.input input:focus {
+  border: none;
+  cursor: text;
+}
+
+.tweeter {
+  display: flex;
+  align-items: center;
+  gap: 5em;
+}
+
+.theme {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.theme img {
+  box-shadow: 5px 10px 18px var(--outline);
+  margin-bottom: 1em;
+  border-radius: 10px;
+}
+
+.theme img:hover {
+  border: 1px solid var(--main-color);
+  cursor: pointer;
+}
+
+.selected {
+  border: 2px solid var(--main-color);
+  cursor: var(--cursor-default);
+}
+
+@media screen and (max-width: 550px) {
+  .input {
+    width: 15em;
+  }
+
+  .tweeter {
+    flex-direction: column;
+    gap: 1em;
+  }
+}

@@ -1,16 +1,16 @@
+import React, { useContext, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import successIcon from "../../../assets/icon-success_2.svg";
 import linkIconAccent from "../../../assets/icon-link-accent.svg";
 import linkIconWhite from "../../../assets/icon-link-white.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
-import { useContext, useRef, useState } from "react";
 import classes from "./popup.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
-import { useHistory } from "react-router-dom";
 
 const SuccessPopup = (props) => {
   const clipboardRef = useRef(null);
   const history = useHistory();
-  const { account } = useContext(GenContext);
+  const { account, chainId } = useContext(GenContext);
   const [clipboardState, setClipboardState] = useState("Copy");
 
   const {
@@ -48,14 +48,13 @@ const SuccessPopup = (props) => {
       <h3 className={`${classes.heading} ${classes.success}`}>Mint Successful</h3>
       <div className={classes.actionBtnContainer}>
         <button
-          onClick={() => {
-            history.push(`/me/${account}`);
-          }}
+          onClick={() => history.push(`/profile/${chainId}/${account}?tab=created`)}
+          type="button"
           className={`${classes.actionBtn} ${classes._1}`}
         >
           Go to Dashboard
         </button>
-        <button className={`${classes.actionBtn} ${classes._2}`}>
+        <button className={`${classes.actionBtn} ${classes._2}`} type="button">
           <a href={url} target="_blank" rel="noreferrer">
             Block Explorer
           </a>
@@ -68,7 +67,11 @@ const SuccessPopup = (props) => {
       <div className={classes.detailsContainer}>
         <div className={classes.tag}>Share</div>
         <div className={classes.url}>{url}</div>
-        <button onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })} className={classes.copyBtn}>
+        <button
+          onClick={() => handleCopy({ navigator, clipboard: clipboardRef.current })}
+          className={classes.copyBtn}
+          type="button"
+        >
           {clipboardState}
         </button>
         <input style={{ display: "none" }} ref={clipboardRef} type="text" defaultValue={url} />

@@ -1,0 +1,164 @@
+.container {
+  width: 100%;
+  max-width: 50%;
+  background: #ffffff;
+  border: 2px solid #eeeff2;
+  box-shadow: 2px 7px 22px rgba(28, 27, 28, 0.1);
+  border-radius: 16px;
+}
+
+.wrapper {
+  width: 100%;
+  padding: 0.5em;
+}
+
+.heading {
+  width: 100%;
+  padding: 0.5em;
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+  gap: 1em;
+  background: #f5f6f7;
+  border-radius: 14px 14px 0px 0px;
+}
+
+.tabs {
+  width: 100%;
+  display: flex;
+  gap: 1em;
+  overflow: auto;
+  margin-bottom: 1em;
+}
+
+.tab {
+  padding: 0.1em 0.5em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  color: var(--main-color);
+  background: #f5f6f7;
+}
+
+.tab.active {
+  background: var(--main-color);
+  color: var(--default);
+}
+
+.search {
+  border: 1px solid black;
+  width: 100%;
+  max-width: 24em;
+  border-radius: 0.7em;
+  padding: 0.25em 0.5em;
+  margin-bottom: 1em;
+  background: #ffffff;
+  border: 1px solid #eeeff2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+}
+
+.search input {
+  font-size: 0.65rem;
+  outline: none;
+  border: none;
+  flex: 1;
+}
+
+.searchBtn {
+  padding: 0.15em 0.75em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--outline);
+  color: gray;
+  border-radius: 0.7em;
+  cursor: pointer;
+  border: 1px solid var(--card-outline);
+  transition: all 300ms;
+}
+
+.searchBtn:hover {
+  background: var(--outline-dark);
+  color: var(--default);
+}
+
+.listContainer {
+  width: 100%;
+  height: 24em;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.list:first-child {
+  border-top: 1px solid #dde1e6;
+}
+
+.list {
+  border-bottom: 1px solid #dde1e6;
+  width: max-content;
+  min-width: 100%;
+  padding: 1em 0;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5em;
+  font-size: 0.75rem;
+  padding: 0.25em 1em;
+  border-radius: 0.7em;
+  border: 1px solid #a4a9b6;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1em;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.item * {
+  white-space: nowrap;
+  text-align: center;
+}
+
+.accent {
+  font-weight: 600;
+  width: 9em;
+  text-align: center;
+  border-bottom: 1px solid var(--outline);
+}
+
+.date {
+  width: 9em;
+}
+
+.txIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  height: 2.5em;
+  border: 0.775px solid #c7ccd1;
+  border-radius: 0.25em;
+}
+
+@media screen and (max-width: 768px) {
+  .container {
+    max-width: 100%;
+  }
+
+  .listContainer {
+    height: auto;
+  }
+}

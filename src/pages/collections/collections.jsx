@@ -1,243 +1,204 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useHistory, useLocation } from "react-router-dom";
 import classes from "./collections.module.css";
-import "react-loading-skeleton/dist/skeleton.css";
-import CollectionsCard from "../../components/Marketplace/collectionsCard/collectionsCard";
+import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import { GenContext } from "../../gen-state/gen.context";
+import PageControl from "../../components/Marketplace/Page-Control/PageControl";
+import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
+import {
+  rangeBy,
+  sortBy,
+  shuffle,
+  getCollectionsByDate,
+  getCollectionsByChain,
+} from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
-import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import SearchBar from "../../components/Marketplace/Search-bar/searchBar.component";
+import Search from "../../components/Search/Search";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, searchContainer } =
+    useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
-  const location = useLocation();
-  const history = useHistory();
-
+  const mountRef = useRef(0);
   const [state, setState] = useState({
+    collections: [],
     filteredCollection: [],
-    celoCollection: null,
-    nearCollection: null,
-    allChains: null,
-    filter: {
-      searchValue: "",
-      chain: "All Chains",
-      price: "low - high",
-      name: "a - z",
-      date: "newest - oldest",
-    },
+    currentPage: 1,
+    paginate: {},
+    currentPageValue: 1,
+    activeDate: 0,
+    searchValue: "",
+    notFound: false,
+    searchChain: "All Chains",
   });
 
-  const { celoCollection, nearCollection, filter, filteredCollection } = state;
+  const {
+    collections,
+    activeDate,
+    paginate,
+    currentPage,
+    currentPageValue,
+    filteredCollection,
+    notFound,
+    searchChain,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const getCollectionByChain = (network = filter.chain) => {
-    switch (network.toLowerCase().replace(/ /g, "")) {
-      case "allchains":
-        return !algoCollectionsArr && !polygonCollections && !celoCollections && !nearCollection && !auroraCollections
-          ? null
-          : [
-              ...(algoCollectionsArr || []),
-              ...(polygonCollections || []),
-              ...(celoCollections || []),
-              ...(auroraCollections || []),
-              ...(nearCollection || []),
-            ];
-      case "algorand":
-        return algoCollectionsArr;
-      case "polygon":
-        return polygonCollections;
-      case "celo":
-        return celoCollections;
-      case "near":
-        return nearCollection;
-      case "aurora":
-        return auroraCollections;
-      default:
-        break;
-    }
-    return null;
+  // Pagination
+  const handlePrev = () => {
+    if (currentPage <= 1) return;
+    handleSetState({ currentPage: currentPage - 1 });
   };
 
-  // get search result for all blockchains
-  const searchHandler = (value) => {
-    value = value.trim().toLowerCase();
-    if (!value) return;
-    handleSetState({ filter: { ...filter, searchValue: value } });
-    const { search } = location;
-    const chainParam = new URLSearchParams(search).get("chain");
-    const params = new URLSearchParams({
-      search: value,
-      ...(chainParam && { chain: chainParam }),
-    });
-    history.replace({ pathname: location.pathname, search: params.toString() });
-    const collection = getCollectionByChain();
-    if (!collection) return;
-    const filtered = collection.filter(
-      (col) => col.name.toLowerCase().includes(value) || col.description.toLowerCase().includes(value)
-    );
-    if (filtered.length) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
+  const handleNext = () => {
+    if (currentPage >= Object.keys(paginate).length) return;
+    handleSetState({ currentPage: currentPage + 1 });
   };
 
-  const chainChange = (value) => {
-    const { search } = location;
-    const name = new URLSearchParams(search).get("search");
-    const params = new URLSearchParams({
-      chain: value.toLowerCase().replace(/ /g, ""),
-      ...(name && { search: name }),
-    });
-    history.replace({ pathname: location.pathname, search: params.toString() });
-    handleSetState({ filter: { ...filter, chain: value } });
-    const collection = getCollectionByChain(value.toLowerCase().replace(/ /g, ""));
-    if (collection) {
-      if (filter.searchValue) {
-        const filtered = collection.filter(
-          (col) =>
-            col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
-            col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
-        );
-        if (filtered.length) {
-          handleSetState({ filteredCollection: filtered });
-        } else {
-          handleSetState({ filteredCollection: null });
-        }
-      } else {
-        handleSetState({ filteredCollection: collection });
-      }
+  const handleGoto = () => {
+    if (currentPageValue < 1 || currentPageValue > Object.keys(paginate).length) return;
+    handleSetState({ currentPage: Number(currentPageValue) });
+    document.documentElement.scrollTop = 0;
+  };
+
+  // Date Filter
+  const handleDateSort = (date) => {
+    let result;
+
+    const tempCollection = getCollectionsByChain({ collections, chain: searchChain, mainnet });
+
+    result = getCollectionsByDate({ collections: tempCollection, date });
+    handleSetState({ activeDate: date, filteredCollection: result });
+  };
+
+  // Chain Filter
+  const handleChainChange = (chain) => {
+    const tempCollection = getCollectionsByDate({ collections, date: activeDate });
+
+    const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
+    handleSetState({ filteredCollection: result, searchChain: chain });
+  };
+
+  const handleFilter = async ({ type, value }) => {
+    let filterCollection = [];
+    if (activeDate) {
+      filterCollection = filteredCollection;
     } else {
-      handleSetState({ filteredCollection: null });
+      filterCollection = collections;
+    }
+    if (type === "sort") {
+      const result = sortBy({ collections: filterCollection, value });
+      handleSetState({ filteredCollection: result });
+    } else if (type === "range") {
+      const result = await rangeBy({ collections: filterCollection, value });
+      handleSetState({ filteredCollection: result });
     }
   };
 
-  const handleFilterDropdown = ({ name, label }) => {
-    handleSetState({ filter: { ...filter, [name]: label } });
-  };
+  useEffect(() => {
+    let collections = [
+      ...(auroraCollections || []),
+      ...(algoCollectionsArr || []),
+      ...(polygonCollections || []),
+      ...(celoCollections || []),
+    ];
+    collections = shuffle(collections);
+    handleSetState({ collections, filteredCollection: collections });
+  }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
 
   useEffect(() => {
-    if (!filteredCollection) return;
-    let filtered = null;
-    if (filter.price === "low - high") {
-      filtered = filteredCollection.sort((a, b) => Number(a.price) - Number(b.price));
-    } else {
-      filtered = filteredCollection.sort((a, b) => Number(b.price) - Number(a.price));
+    const countPerPage = 20;
+    const numberOfPages = Math.ceil(filteredCollection.length / countPerPage);
+    let startIndex = 0;
+    let endIndex = startIndex + countPerPage;
+    const paginate = {};
+    for (let i = 1; i <= numberOfPages; i += 1) {
+      paginate[i] = filteredCollection.slice(startIndex, endIndex);
+      startIndex = endIndex;
+      endIndex = startIndex + countPerPage;
     }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.price]);
+    handleSetState({ paginate });
+  }, [filteredCollection]);
 
   useEffect(() => {
-    if (!filteredCollection) return;
-    let filtered = null;
-    if (filter.name === "a - z") {
-      filtered = filteredCollection.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
-        return -1;
-      });
-    } else {
-      filtered = filteredCollection.sort((a, b) => {
-        if (a.name.toLowerCase() > b.name.toLowerCase()) return -1;
-        return 1;
-      });
+    if (mountRef.current > 2) {
+      handleSetState({ notFound: !Object.keys(paginate).length });
     }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.name]);
+    mountRef.current += 1;
+  }, [paginate]);
 
   useEffect(() => {
-    if (!filteredCollection) return;
-    let filtered = null;
-    if (filter.date === "newest - oldest") {
-      filtered = filteredCollection.sort((a, b) => {
-        if (typeof a.createdAt === "object") {
-          return a.createdAt.seconds - b.createdAt.seconds;
-        } else {
-          return a.createdAt - b.createdAt;
-        }
-      });
-    } else {
-      filtered = filteredCollection.sort((a, b) => {
-        if (typeof a.createdAt === "object") {
-          return b.createdAt.seconds - a.createdAt.seconds;
-        } else {
-          return b.createdAt - a.createdAt;
-        }
-      });
-    }
-    handleSetState({ FilteredCollection: filtered });
-  }, [filter.date]);
-
-  useEffect(() => {
-    const { search } = location;
-    const name = new URLSearchParams(search).get("search");
-    const chainParameter = new URLSearchParams(search).get("chain");
-    if (chainParameter) {
-      handleSetState({ filter: { ...filter, chain: chainParameter } });
-    }
-    const collection = getCollectionByChain(chainParameter ? chainParameter.toLowerCase() : "All Chains");
-    if (name) {
-      handleSetState({ filter: { ...filter, searchValue: name } });
-    }
-    const filtered = collection?.filter(
-      (col) =>
-        col.name.toLowerCase().includes(name ? name.toLowerCase() : "") ||
-        col.description.toLowerCase().includes(name ? name.toLowerCase() : "")
-    );
-    if (algoCollectionsArr || auroraCollections || celoCollection || polygonCollections) {
-      handleSetState({ filteredCollection: filtered });
-    } else {
-      handleSetState({ filteredCollection: null });
-    }
-    return null;
-  }, [algoCollections, polygonCollections, celoCollection, auroraCollections]);
-
-  useEffect(() => {
-    window.localStorage.activeCollection = {};
     document.documentElement.scrollTop = 0;
   }, []);
 
   return (
     <div className={classes.container}>
-      <div className={classes.innerContainer}>
-        <div className={classes.header}>
-          <h1>Collections</h1>
-          <div className={classes.searchAndFilter}>
-            <SearchBar onSearch={searchHandler} />
-            <ChainDropdown onChainFilter={chainChange} />
-            <FilterDropdown onFilter={handleFilterDropdown} />
+      <div className={classes.heading}>
+        <div className={classes.title}>
+          <h1>{searchChain === "All Chains" ? "Collections" : searchChain}</h1>
+          <p>
+            View all minted Collections {filteredCollection.length ? `(${filteredCollection.length} minted)` : "(...)"}
+          </p>
+        </div>
+        <div className={classes.searchAndFilter}>
+          <Search type="collections" searchPlaceholder="Search By collections or Users" />
+
+          <div className={classes.filter}>
+            <div className={classes.chainDesktop}>
+              <ChainDropdown onChainFilter={handleChainChange} data={collections} />
+            </div>
+            <FilterDropdown handleFilter={handleFilter} />
           </div>
         </div>
-        {filteredCollection?.length ? (
-          <div className={classes.wrapper}>
-            {filteredCollection.map((collection, idx) => (
-              <CollectionsCard key={idx} collection={collection} />
+        <div className={classes.chainMobile}>
+          <ChainDropdown onChainFilter={handleChainChange} />
+        </div>
+        <div className={classes.dateFilter}>
+          <div onClick={() => handleDateSort(1)} className={`${classes.date} ${activeDate === 1 && classes.active}`}>
+            24 Hours
+          </div>
+          <div onClick={() => handleDateSort(7)} className={`${classes.date} ${activeDate === 7 && classes.active}`}>
+            7 Days
+          </div>
+          <div onClick={() => handleDateSort(30)} className={`${classes.date} ${activeDate === 30 && classes.active}`}>
+            30 Days
+          </div>
+          <div onClick={() => handleDateSort(0)} className={`${classes.date} ${activeDate === 0 && classes.active}`}>
+            All
+          </div>
+        </div>
+      </div>
+      <div className={classes.wrapper}>
+        {Object.keys(paginate).length ? (
+          <div className={classes.nfts}>
+            {paginate[currentPage].map((collection, idx) => (
+              <CollectionNftCard key={idx} collection={collection} />
             ))}
           </div>
-        ) : !filteredCollection && filter.searchValue ? (
-          <NotFound />
-        ) : !filteredCollection ? (
-          <NotFound />
+        ) : !notFound ? (
+          <div className={classes.nfts}>
+            {[...new Array(8)]
+              .map((_, idx) => idx)
+              .map((id) => (
+                <div className={classes.loader} key={id}>
+                  <Skeleton count={1} height={200} />
+                  <br />
+                  <Skeleton count={1} height={40} />
+                </div>
+              ))}
+          </div>
         ) : (
-          <div className={classes.skeleton}>
-            {[...new Array(5)].map((_, id) => (
-              <div key={id}>
-                <Skeleton count={1} height={200} />
-                <br />
-                <Skeleton count={1} height={30} />
-                <br />
-                <Skeleton count={1} height={30} />
-              </div>
-            ))}
-          </div>
+          <NotFound />
         )}
       </div>
+      {Object.keys(paginate).length ? (
+        <PageControl controProps={{ handleNext, handlePrev, handleGoto, ...state, handleSetState }} />
+      ) : null}
     </div>
   );
 };
