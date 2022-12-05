@@ -51,6 +51,7 @@ const mintCollectionAbi = [
 const mintSingle = [
   "function mint(address to, uint256 id, uint256 amount, string memory uri, bytes memory data) public {}",
   "function setApprovalForAll(address operator, bool approved) public virtual override {}",
+  "function isApprovedForAll(address account, address operator) public view returns (bool)",
 ];
 
 // const marketAi = ['function getMarketItems() public view {}'];
@@ -865,6 +866,69 @@ export async function createNFT(createProps, doAccountCheck) {
 
 export async function listCeloNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const marketContract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    // const contract = new ethers.Contract(
+    //   mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+    //   mintSingle,
+    //   signer
+    // );
+    const approvalCheck = await contract.isApprovedForAll(account, marketContract.address);
+
+    try {
+      // only pop approval equest if unapproved
+      if (!approvalCheck) {
+        dispatch(setLoader("Approve marketplace to list nft"));
+        const ethNonce = await signer.getTransactionCount();
+        const approvalTx = {
+          from: account,
+          to: contract.address,
+          // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+          // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+          data: contract.interface.encodeFunctionData("setApprovalForAll", [marketContract.address, true]),
+          nonce: ethNonce,
+        };
+        const result = await signer.sendTransaction(approvalTx);
+        await result.wait();
+      }
+      const ethNonce = await signer.getTransactionCount();
+      const listingTx = {
+        from: account,
+        to: marketContract.address,
+        // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+        // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+        data: marketContract.interface.encodeFunctionData("createMarketplaceItem", [
+          nftContract,
+          id,
+          String(price * 10 ** 18),
+          "General",
+          account,
+        ]),
+        nonce: ethNonce,
+      };
+      const result = await signer.sendTransaction(listingTx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
     mainnet
@@ -874,10 +938,14 @@ export async function listCeloNft(nftProps) {
     signer
   );
   try {
-    dispatch(setLoader("Approve marketplace to list nft"));
     const contract = new ethers.Contract(nftContract, mintSingle, signer);
-    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
-    await approvalTxn.wait();
+    const approvalCheck = await contract.isApprovedForAll(account, marketContract.address);
+    if (!approvalCheck) {
+      dispatch(setLoader("Approve marketplace to list nft"));
+      const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+      await approvalTxn.wait();
+    }
+    dispatch(setLoader("Listing Nft to marketplace"));
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,
@@ -937,6 +1005,67 @@ export async function listAvaxNft(nftProps) {
 
 export async function listAuroraNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const marketContract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    // const contract = new ethers.Contract(
+    //   mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+    //   mintSingle,
+    //   signer
+    // );
+    const approvalCheck = await contract.isApprovedForAll(account, marketContract.address);
+
+    try {
+      // only pop approval equest if unapproved
+      if (!approvalCheck) {
+        dispatch(setLoader("Approve marketplace to list nft"));
+        const ethNonce = await signer.getTransactionCount();
+        const approvalTx = {
+          from: account,
+          to: contract.address,
+          // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+          // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+          data: contract.interface.encodeFunctionData("setApprovalForAll", [marketContract.address, true]),
+          nonce: ethNonce,
+        };
+        const result = await signer.sendTransaction(approvalTx);
+        await result.wait();
+      }
+      const ethNonce = await signer.getTransactionCount();
+      const listingTx = {
+        from: account,
+        to: marketContract.address,
+        // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+        // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+        data: marketContract.interface.encodeFunctionData("createMarketplaceItem", [
+          nftContract,
+          id,
+          String(price * 10 ** 18),
+          "General",
+          account,
+        ]),
+        nonce: ethNonce,
+      };
+      const result = await signer.sendTransaction(listingTx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet ? `https://aurorascan.dev/tx/${result.hash}` : `https://testnet.aurorascan.dev/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
     mainnet
@@ -946,10 +1075,14 @@ export async function listAuroraNft(nftProps) {
     signer
   );
   try {
-    dispatch(setLoader("Approve marketplace to list nft"));
     const contract = new ethers.Contract(nftContract, mintSingle, signer);
-    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
-    await approvalTxn.wait();
+    const approvalCheck = await contract.isApprovedForAll(account, marketContract.address);
+    if (!approvalCheck) {
+      dispatch(setLoader("Approve marketplace to list nft"));
+      const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+      await approvalTxn.wait();
+    }
+    dispatch(setLoader("Listing Nft to marketplace"));
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,
@@ -1044,6 +1177,67 @@ export async function listOptimismNft(nftProps) {
 
 export async function listPolygonNft(nftProps) {
   const { account, connector, id, nftContract, dispatch, price, mainnet } = nftProps;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const marketContract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const contract = new ethers.Contract(nftContract, mintSingle, signer);
+    // const contract = new ethers.Contract(
+    //   mainnet ? process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS,
+    //   mintSingle,
+    //   signer
+    // );
+    const approvalCheck = await contract.isApprovedForAll(account, marketContract.address);
+
+    try {
+      // only pop approval equest if unapproved
+      if (!approvalCheck) {
+        dispatch(setLoader("Approve marketplace to list nft"));
+        const ethNonce = await signer.getTransactionCount();
+        const approvalTx = {
+          from: account,
+          to: contract.address,
+          // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+          // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+          data: contract.interface.encodeFunctionData("setApprovalForAll", [marketContract.address, true]),
+          nonce: ethNonce,
+        };
+        const result = await signer.sendTransaction(approvalTx);
+        await result.wait();
+      }
+      const ethNonce = await signer.getTransactionCount();
+      const listingTx = {
+        from: account,
+        to: marketContract.address,
+        // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+        // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+        data: marketContract.interface.encodeFunctionData("createMarketplaceItem", [
+          nftContract,
+          id,
+          String(price * 10 ** 18),
+          "General",
+          account,
+        ]),
+        nonce: ethNonce,
+      };
+      const result = await signer.sendTransaction(listingTx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet ? `https://polygonscan.com/tx/${result.hash}` : `https://mumbai.polygonscan.com/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
   const signer = await connector.getSigner();
   const marketContract = new ethers.Contract(
     mainnet
@@ -1053,10 +1247,14 @@ export async function listPolygonNft(nftProps) {
     signer
   );
   try {
-    dispatch(setLoader("Approve marketplace to list nft"));
     const contract = new ethers.Contract(nftContract, mintSingle, signer);
-    const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
-    await approvalTxn.wait();
+    const approvalCheck = await contract.isApprovedForAll(account, marketContract.address);
+    if (!approvalCheck) {
+      dispatch(setLoader("Approve marketplace to list nft"));
+      const approvalTxn = await contract.setApprovalForAll(marketContract.address, true);
+      await approvalTxn.wait();
+    }
+    dispatch(setLoader("Listing Nft to marketplace"));
     const txn = await marketContract.createMarketplaceItem(
       nftContract,
       id,
@@ -2205,8 +2403,16 @@ export async function purchasePolygonNfts(buyProps) {
       })
     );
   }
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const { chainId } = connector._network;
+  let wallet;
+  let chainId;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+    ({ chainId } = provider._network);
+  } else {
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+    ({ chainId } = connector._network);
+  }
   price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
@@ -2231,6 +2437,40 @@ export async function purchasePolygonNfts(buyProps) {
     // Value
     { tokenId, account, price, seller, nftContract }
   );
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const saleTx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      value: price,
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(saleTx);
+      await result.wait();
+      return mainnet ? `https://polygonscan.com/tx/${result.hash}` : `https://mumbai.polygonscan.com/tx/${result.hash}`;
+    } catch (error) {
+      console.log("erooric data", error, error.data);
+      return dispatch(
+        setNotification({
+          message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+          type: "warning",
+        })
+      );
+    }
+  }
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
@@ -2264,8 +2504,16 @@ export async function purchaseAuroraNfts(buyProps) {
       })
     );
   }
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const { chainId } = connector._network;
+  let wallet;
+  let chainId;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+    ({ chainId } = provider._network);
+  } else {
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+    ({ chainId } = connector._network);
+  }
   price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
@@ -2290,6 +2538,40 @@ export async function purchaseAuroraNfts(buyProps) {
     // Value
     { tokenId, account, price, seller, nftContract }
   );
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const saleTx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      value: price,
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(saleTx);
+      await result.wait();
+      return mainnet ? `https://aurorascan.dev/tx/${result.hash}` : `https://testnet.aurorascan.dev/tx/${result.hash}`;
+    } catch (error) {
+      console.log("erooric data", error, error.data);
+      return dispatch(
+        setNotification({
+          message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+          type: "warning",
+        })
+      );
+    }
+  }
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
@@ -2444,8 +2726,16 @@ export async function purchaseCeloNfts(buyProps) {
       })
     );
   }
-  const wallet = await InitiateCeloProvider(mainnet);
-  const { chainId } = connector._network;
+  let wallet;
+  let chainId
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+    ({ chainId } = provider._network);
+  } else {
+    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+    ({ chainId } = connector._network);
+  }
   price = ethers.utils.parseEther(price.toString()).toString();
   const signature = await wallet._signTypedData(
     // Domain
@@ -2470,6 +2760,42 @@ export async function purchaseCeloNfts(buyProps) {
     // Value
     { tokenId, account, price, seller, nftContract }
   );
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
+        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
+      marketAbi,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const saleTx = {
+      from: account,
+      to: contract.address,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      value: price,
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(saleTx);
+      await result.wait();
+      return mainnet
+        ? `https://blockscout.celo.org/tx/${result.hash}`
+        : `https://alfajores-blockscout.celo-testnet.org/tx/${result.hash}`;
+    } catch (error) {
+      console.log("erooric data", error, error.data);
+      return dispatch(
+        setNotification({
+          message: error.data ? error.data.message.substring(0, 48) : error.message.substring(0, 48),
+          type: "warning",
+        })
+      );
+    }
+  }
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
