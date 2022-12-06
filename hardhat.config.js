@@ -25,6 +25,10 @@ module.exports = {
       url: process.env.REACT_APP_AvaxTest_URL,
       accounts: [process.env.REACT_APP_PRIV_KEY],
     },
+    Avax: {
+      url: process.env.REACT_APP_AVAX_URL,
+      accounts: [process.env.REACT_APP_PRIV_KEY],
+    },
     polygon: {
       url: process.env.REACT_APP_POLYGON_URL,
       accounts: [process.env.REACT_APP_PRIV_KEY],
