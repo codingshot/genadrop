@@ -68,6 +68,7 @@ const Minter = () => {
     collectionProfile: "",
     toggleGuide: false,
     toggleDropdown: false,
+    isSoulBound: false,
     toggleCategory: false,
     toggleType: false,
     previewSelectMode: false,
@@ -107,6 +108,7 @@ const Minter = () => {
     toggleDropdown,
     previewSelectMode,
     profileSelected,
+    isSoulBound,
     popupProps,
     mintToMyAddress,
     receiverAddress,
@@ -153,6 +155,7 @@ const Minter = () => {
     receiverAddress,
     account,
     chainId,
+    isSoulBound,
     connector,
     file: file ? file[0] : {},
     metadata: {
@@ -496,7 +499,6 @@ const Minter = () => {
         }
       }
       dispatch(setOverlay(true));
-
       handleSingleMint(singleMintProps).then((url) => {
         dispatch(setOverlay(false));
         if (singleMintProps.chain.toLowerCase() === "near") {
@@ -600,6 +602,10 @@ const Minter = () => {
     handleSetState({ mintToMyAddress: mintToMe });
     if (!mintToMe) handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
     else handleSetState({ goodReceiverAddress: true });
+  };
+
+  const handleCheckSoulBound = () => {
+    handleSetState({ isSoulBound: !isSoulBound });
   };
 
   // *************** GET CURRENT LOCATION: START ***************
@@ -1161,6 +1167,28 @@ const Minter = () => {
                         ) : (
                           <GreenTickIcon className={classes.tick} />
                         )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`${classes.inputWrapper} `}>
+                    <div className={`${classes.toggleTitle}`}>
+                      <div className={classes.category}>
+                        Soul Bound{" "}
+                        <GenadropToolTip
+                          content="Soulbound token is a publicly verifiable and non-transferable NFT that represents an individual's credentials."
+                          fill="#0d99ff"
+                        />
+                      </div>
+                      <div className={classes.toggler}>
+                        <label className={classes.switch}>
+                          <input
+                            type="checkbox"
+                            value={isSoulBound}
+                            onClick={() => handleCheckSoulBound()}
+                            defaultChecked={false}
+                          />
+                          <span className={classes.slider} />
+                        </label>
                       </div>
                     </div>
                   </div>
