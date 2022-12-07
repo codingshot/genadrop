@@ -76,13 +76,13 @@ const cards = [
     value: "tweet",
     url: "/mint/tweet",
   },
-  {
-    title: "IPFS",
-    description: "Mint your NFTs using IPFS link",
-    icon: <Ipfs />,
-    value: "ipfs",
-    url: "/mint/ipfs",
-  },
+  // {
+  //   title: "IPFS",
+  //   description: "Mint your NFTs using IPFS link",
+  //   icon: <Ipfs />,
+  //   value: "ipfs",
+  //   url: "/mint/ipfs",
+  // },
   {
     title: "Video Art",
     description: "Mint your favorite videos on chain",
