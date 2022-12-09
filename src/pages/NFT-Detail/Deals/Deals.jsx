@@ -4,11 +4,26 @@ import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
 import openseaIcon from "../../../assets/icon-opensea.svg";
+import lockIcon from "../../../assets/lock-white.svg";
+
 import { GenContext } from "../../../gen-state/gen.context";
 
 const Deals = ({ nftDetails }) => {
-  const { price, chain, sold, isListed, owner, account, chainId, mainnet, connector, dispatch, Id, collection_name } =
-    nftDetails;
+  const {
+    price,
+    chain,
+    sold,
+    isListed,
+    owner,
+    account,
+    chainId,
+    mainnet,
+    connector,
+    dispatch,
+    Id,
+    collection_name,
+    isSoulBound,
+  } = nftDetails;
   const {
     params: { chainId: nftChainId, nftId },
   } = useRouteMatch();
@@ -46,11 +61,16 @@ const Deals = ({ nftDetails }) => {
         <div className={classes.title}>CURRENT PRICE</div>
         <div className={classes.priceSection}>
           <img className={classes.chainIcon} src={supportedChains[chain].icon} alt="" />
-          <div className={classes.price}>{Number(price).toFixed(4)}</div>
+          <div className={classes.price}>{`${price ? Number(price).toFixed(4) : "0.0"}`}</div>
           <div className={classes.appx}>{`($${price ? usdValue.toFixed(4) : "0"})`}</div>
         </div>
       </div>
-      {!isListed && !price ? (
+      {isSoulBound ? (
+        <div className={classes.lock}>
+          <img src={lockIcon} alt="" />
+          <span>Non Transferable</span>
+        </div>
+      ) : !isListed && !price ? (
         owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (

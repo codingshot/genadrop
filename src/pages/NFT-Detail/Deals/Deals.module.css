@@ -18,6 +18,25 @@
   border-radius: 50%;
 }
 
+.lock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: not-allowed;
+  justify-content: space-around;
+  background-color: #B2B7C2;
+  border-radius: 6.5px;
+  padding: 15px;
+}
+.lock > img {
+  margin-right: 6px;
+  width: 31px;
+}
+.lock > span {
+  font-size: 22px;
+  color: white;
+}
+
 .title {
   margin-bottom: 0.5em;
   color: var(--text-placeholder);
@@ -93,5 +112,15 @@
   .btn {
     padding: 0.5em !important;
     width: 6em;
+  }
+  .lock {
+    padding: 10px;
+  }
+
+  .lock span {
+    font-size: 16px;
+  }
+  .lock img {
+    width: 25px;
   }
 }
