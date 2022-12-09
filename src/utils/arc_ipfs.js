@@ -54,6 +54,12 @@ const mintSingle = [
   "function isApprovedForAll(address account, address operator) public view returns (bool)",
 ];
 
+const mintSoul = [
+  "function safeMint(address to, string memory uri) public {}",
+  "function setApprovalForAll(address operator, bool approved) public virtual override {}",
+  "function isApprovedForAll(address account, address operator) public view returns (bool)",
+];
+
 // const marketAi = ['function getMarketItems() public view {}'];
 
 const mintAbi = ["function mintBatch( address to, uint256[] memory ids, string[] memory uris) public {}"];
@@ -402,6 +408,276 @@ export async function mintSingleToNear(nearMintProps) {
   };
 }
 
+export async function mintSoulBoundPoly(mintprops) {
+  const {
+    file,
+    metadata,
+    price,
+    account,
+    connector,
+    dispatch,
+    setLoader,
+    mainnet,
+    receiverAddress,
+    isIpfsLink,
+    fileName,
+    isSoulBound,
+  } = mintprops;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    dispatch(setLoader("minting 1 of 1"));
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS
+        : process.env.REACT_APP_POLY_TESTNET_SOULBOUND_ADDRESS,
+      mintSoul,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS
+        : process.env.REACT_APP_POLY_TESTNET_SOULBOUND_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("safeMint", [receiverAddress, asset.url]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet ? `https://polygonscan.com/tx/${result.hash}` : `https://mumbai.polygonscan.com/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+  const signer = await connector.getSigner();
+  dispatch(setLoader("uploading 1 of 1"));
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  const uintArray = asset.metadata.toLocaleString();
+  const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  dispatch(setLoader("minting 1 of 1"));
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS
+      : process.env.REACT_APP_POLY_TESTNET_SOULBOUND_ADDRESS,
+    mintSoul,
+    signer
+  );
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
+  let txn;
+  try {
+    txn = await contract.safeMint(receiverAddress, asset.url);
+    await txn.wait();
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    dispatch(setLoader(""));
+    return mainnet ? `https://polygonscan.com/tx/${txn.hash}` : `https://mumbai.polygonscan.com/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    return {
+      error,
+      message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+    };
+  }
+}
+
+export async function mintSoulBoundAvax(mintprops) {
+  const {
+    file,
+    metadata,
+    price,
+    account,
+    connector,
+    dispatch,
+    setLoader,
+    mainnet,
+    receiverAddress,
+    isIpfsLink,
+    fileName,
+    isSoulBound,
+  } = mintprops;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const uintArray = asset.metadata.toLocaleString();
+    dispatch(setLoader("minting 1 of 1"));
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_AVAX_MAINNET_SOULBOUND_ADDRESS
+        : process.env.REACT_APP_AVAX_TESTNET_SOULBOUND_ADDRESS,
+      mintSoul,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_AVAX_MAINNET_SOULBOUND_ADDRESS
+        : process.env.REACT_APP_AVAX_TESTNET_SOULBOUND_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("safeMint", [receiverAddress, asset.url]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet ? `https://snowtrace.io/tx/${result.hash}` : `https://testnet.snowtrace.io/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+  const signer = await connector.getSigner();
+  dispatch(setLoader("uploading 1 of 1"));
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  dispatch(setLoader("minting 1 of 1"));
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_AVAX_MAINNET_SOULBOUND_ADDRESS
+      : process.env.REACT_APP_AVAX_TESTNET_SOULBOUND_ADDRESS,
+    mintSoul,
+    signer
+  );
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
+  let txn;
+  try {
+    txn = await contract.safeMint(receiverAddress, asset.url);
+    await txn.wait();
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    dispatch(setLoader(""));
+    return mainnet ? `https://snowtrace.io/tx/${txn.hash}` : `https://testnet.snowtrace.io/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    return {
+      error,
+      message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+    };
+  }
+}
+
+export async function mintSoulBoundCelo(mintprops) {
+  const {
+    file,
+    metadata,
+    price,
+    account,
+    connector,
+    dispatch,
+    setLoader,
+    mainnet,
+    receiverAddress,
+    isIpfsLink,
+    fileName,
+    isSoulBound,
+  } = mintprops;
+  if (connector.isWalletConnect) {
+    const provider = new ethers.providers.Web3Provider(connector);
+    const signer = provider.getSigner();
+    dispatch(setLoader("uploading 1 of 1"));
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    dispatch(setLoader("minting 1 of 1"));
+    const contract = new ethers.Contract(
+      mainnet
+        ? process.env.REACT_APP_CELO_MAINNET_SOULBOUND_ADDRESS
+        : process.env.REACT_APP_CELO_TESTNET_SOULBOUND_ADDRESS,
+      mintSoul,
+      signer
+    );
+    const ethNonce = await signer.getTransactionCount();
+    const tx = {
+      from: account,
+      to: mainnet
+        ? process.env.REACT_APP_CELO_MAINNET_SOULBOUND_ADDRESS
+        : process.env.REACT_APP_CELO_TESTNET_SOULBOUND_ADDRESS,
+      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
+      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
+      data: contract.interface.encodeFunctionData("safeMint", [receiverAddress, asset.url]),
+      nonce: ethNonce,
+    };
+    try {
+      const result = await signer.sendTransaction(tx);
+      await result.wait();
+      dispatch(setLoader(""));
+      return mainnet
+        ? `https://explorer.celo.org/mainnet/tx/${result.hash}`
+        : `https://explorer.celo.org/alfajores/tx/${result.hash}`;
+    } catch (error) {
+      dispatch(setLoader(""));
+      return {
+        error,
+        message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+      };
+    }
+  }
+  const signer = await connector.getSigner();
+  dispatch(setLoader("uploading 1 of 1"));
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  dispatch(setLoader("minting 1 of 1"));
+  const contract = new ethers.Contract(
+    mainnet
+      ? process.env.REACT_APP_CELO_MAINNET_SOULBOUND_ADDRESS
+      : process.env.REACT_APP_CELO_TESTNET_SOULBOUND_ADDRESS,
+    mintSoul,
+    signer
+  );
+  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  // const marketContract = new ethers.Contract(
+  //   mainnet
+  //     ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+  //     : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+  //   marketAbi,
+  //   wallet
+  // );
+  let txn;
+  try {
+    txn = await contract.safeMint(receiverAddress, asset.url);
+    await txn.wait();
+    // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
+    dispatch(setLoader(""));
+    return mainnet
+      ? `https://explorer.celo.org/mainnet/tx/${txn.hash}`
+      : `https://explorer.celo.org/alfajores/tx/${txn.hash}`;
+  } catch (error) {
+    dispatch(setLoader(""));
+    return {
+      error,
+      message: error.message ? error.message : "something went wrong! check your connected network and try again.",
+    };
+  }
+}
+
 export async function mintSingleToPoly(singleMintProps) {
   const {
     file,
@@ -415,7 +691,11 @@ export async function mintSingleToPoly(singleMintProps) {
     receiverAddress,
     isIpfsLink,
     fileName,
+    isSoulBound,
   } = singleMintProps;
+  if (isSoulBound) {
+    return mintSoulBoundPoly(singleMintProps);
+  }
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -488,15 +768,15 @@ export async function mintSingleToPoly(singleMintProps) {
   }
 }
 
-async function InitiateCeloProvider(mainnet) {
-  const provider = new CeloProvider(mainnet ? "https://forno.celo.org" : "https://alfajores-forno.celo-testnet.org");
-  await provider.ready;
-  const wallet = new CeloWallet(
-    mainnet ? process.env.REACT_APP_GENADROP_SERVER_KEY : process.env.REACT_APP_GENADROP_SERVER_KEY,
-    provider
-  );
-  return wallet;
-}
+// async function InitiateCeloProvider(mainnet) {
+//   const provider = new CeloProvider(mainnet ? "https://forno.celo.org" : "https://alfajores-forno.celo-testnet.org");
+//   await provider.ready;
+//   const wallet = new CeloWallet(
+//     mainnet ? process.env.REACT_APP_GENADROP_SERVER_KEY : process.env.REACT_APP_GENADROP_SERVER_KEY,
+//     provider
+//   );
+//   return wallet;
+// }
 
 export async function mintSingleToCelo(singleMintProps) {
   const {
@@ -511,7 +791,11 @@ export async function mintSingleToCelo(singleMintProps) {
     receiverAddress,
     fileName,
     isIpfsLink,
+    isSoulBound,
   } = singleMintProps;
+  if (isSoulBound) {
+    return mintSoulBoundCelo(singleMintProps);
+  }
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -601,7 +885,11 @@ export async function mintSingleToAvax(singleMintProps) {
     receiverAddress,
     fileName,
     isIpfsLink,
+    isSoulBound,
   } = singleMintProps;
+  if (isSoulBound) {
+    return mintSoulBoundAvax(singleMintProps);
+  }
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();

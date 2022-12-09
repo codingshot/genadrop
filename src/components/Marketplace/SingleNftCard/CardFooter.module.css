@@ -17,6 +17,23 @@
   transition: all 300ms;
 }
 
+.lock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  background-color: rgba(170, 219, 255, 0.4);
+  border-radius: 6.5px;
+  padding: 10px;
+}
+.lock > img {
+  margin-right: 6px;
+  width: 16px;
+}
+.lock > span {
+  font-size: 14px;
+}
+
 .marketplace .btn:hover {
   color: var(--default);
   background: var(--main-color);
