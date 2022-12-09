@@ -207,10 +207,10 @@ export const getAuroraMintedNfts = async (address) => {
       : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
 
   const auroraSoulBoundAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS);
-
+  process.env.REACT_APP_ENV_STAGING === "true"
+  ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS)
+      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS);
+  
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
   const auroraMintedNfts = response?.filter(
     (NFTS) => !NFTS?.sold && (NFTS?.collectionId === auroraSoulBoundAddress || NFTS?.collectionId === filterAddress)
