@@ -26,11 +26,9 @@ const Review = () => {
 
   useEffect(() => {
     axios
-
       .get(
         `${process.env.REACT_APP_TWITTER_BACKEND}?url=https://api.twitter.com/2/tweets?ids=${reviews}&tweet.fields=attachments,author_id,created_at,entities&expansions=attachments.media_keys,author_id&media.fields=alt_text,duration_ms,media_key,preview_image_url,type,url,variants&user.fields=name,profile_image_url,username`
       )
-
       .then((data) => {
         console.log("XXX", data);
         let tweets = data.data;
