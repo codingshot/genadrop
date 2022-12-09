@@ -448,6 +448,7 @@ export const getCeloGraphNft = async (collection) => {
     nftArr.isListed = collection?.isListed;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
+    nftArr.isSoulBound = collection?.isSoulBound
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftObj.contractAddress = collection?.id?.split(collection?.tokenID)[0];
@@ -479,6 +480,7 @@ export const getGraphNft = async (collection, mainnet) => {
     nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
+    nftArr.isSoulBound = collection?.isSoulBound;
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftArr.Id = collection?.id;
@@ -535,7 +537,7 @@ export const getUserBoughtNftCollection = async (mainnet, data) => {
   return nftArr;
 };
 
-export const getSingleGraphNfts = async (nfts) => {
+export const getSingleGraphNfts = async (nfts, address) => {
   function fetchGraphNFT(NFT, idx, singleNfts) {
     return new Promise((resolve, reject) => {
       const delay = getDelayTime(idx, singleNfts, 60);
@@ -554,7 +556,9 @@ export const getSingleGraphNfts = async (nfts) => {
           nftObj.description = data?.description;
           nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
+          nftObj.isSoulBound = NFT?.isSoulBound;
           nftObj.collectionId = NFT?.collection?.id;
+          nftObj.address = address
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
