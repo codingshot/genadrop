@@ -2,18 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import classes from "./Review.module.css";
 import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
-import { twitterAPIURL } from "./Reviews-Script";
+
 import displayShadow from "../../../assets/home-display-shadow.png";
 
-const reviews = [
-  "1486289656203427845",
-  "1484447708668649475",
-  "1473516385691062273",
-  "1507735586190381056",
-  "1542292827203284998",
-  "1541303812979400704",
-  "1539289304853360644",
-];
+const reviews =
+  "1486289656203427845,1484447708668649475,1473516385691062273,1507735586190381056,1542292827203284998,1541303812979400704,1539289304853360644";
 
 const Review = () => {
   const [state, setState] = useState({
@@ -33,12 +26,11 @@ const Review = () => {
 
   useEffect(() => {
     axios
-      .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL(reviews)}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_TWITTER_ACCESS_TOKEN}`,
-        },
-      })
+      .get(
+        `${process.env.REACT_APP_TWITTER_BACKEND}/?url=https://api.twitter.com/2/tweets?ids=${reviews}&tweet.fields=attachments,author_id,created_at,entities&expansions=attachments.media_keys,author_id&media.fields=alt_text,duration_ms,media_key,preview_image_url,type,url,variants&user.fields=name,profile_image_url,username`
+      )
       .then((data) => {
+        console.log("XXX", data);
         let tweets = data.data;
         const attachments = {};
         const users = {};
