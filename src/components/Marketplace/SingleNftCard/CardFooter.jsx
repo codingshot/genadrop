@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./CardFooter.module.css";
 import supportedChains from "../../../utils/supportedChains";
+import lockIcon from "../../../assets/lock-icon.svg";
 
 const formattedNumber = (number, decimals = 2) => {
   const input = number?.toFixed(decimals);
@@ -8,7 +9,7 @@ const formattedNumber = (number, decimals = 2) => {
 };
 
 export const MarketplaceView = ({ footerPrpops }) => {
-  const { price, chain, account, owner, sold, isListed, usdValue } = footerPrpops;
+  const { price, chain, account, owner, sold, isListed, usdValue, isSoulBound } = footerPrpops;
   return (
     <div className={classes.marketplace}>
       <div className={classes.floorPrice}>
@@ -20,7 +21,12 @@ export const MarketplaceView = ({ footerPrpops }) => {
           <span>{`($${formattedNumber(usdValue, 4)})`}</span>
         </div>
       </div>
-      {!price ? (
+      {isSoulBound ? (
+        <div className={classes.lock}>
+          <img src={lockIcon} alt="" />
+          <span>Non Transferable</span>
+        </div>
+      ) : !price ? (
         owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <div className={classes.btn}>List</div>
         ) : (

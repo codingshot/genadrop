@@ -1,13 +1,17 @@
 .container {
-    border: 1px solid var(--outline);
-    border-radius: 10px;
-    padding: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
+  border-radius: 10px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 }
 
 .container img {
-    width: 100%;
+  width: 100%;
+}
+
+.singleVideo {
+  width: 400px;
+  height: 300px;
 }

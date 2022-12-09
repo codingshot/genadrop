@@ -12,7 +12,6 @@ import { ReactComponent as Video } from "../../../assets/create/MintVideos.svg";
 import { ReactComponent as Tweets } from "../../../assets/create/tweets-icon.svg";
 import { ReactComponent as Ipfs } from "../../../assets/create/ipfsIcon.svg";
 
-
 const cards = [
   {
     title: "Doubletake",
@@ -77,13 +76,13 @@ const cards = [
     value: "tweet",
     url: "/mint/tweet",
   },
-  {
-    title: "IPFS",
-    description: "Mint your NFTs using IPFS link",
-    icon: <Ipfs />,
-    value: "ipfs",
-    url: "/mint/ipfs",
-  },
+  // {
+  //   title: "IPFS",
+  //   description: "Mint your NFTs using IPFS link",
+  //   icon: <Ipfs />,
+  //   value: "ipfs",
+  //   url: "/mint/ipfs",
+  // },
   {
     title: "Video Art",
     description: "Mint your favorite videos on chain",

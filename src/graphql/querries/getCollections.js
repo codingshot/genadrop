@@ -164,6 +164,7 @@ export const GET_USER_NFT = gql`
         id
         isSold
         price
+        isSoulBound
         tokenID
         collection {
           id
@@ -255,6 +256,7 @@ export const GET_CELO_NFT = gql`
       price
       isListed
       tokenID
+      isSoulBound
       owner {
         id
       }
@@ -292,6 +294,7 @@ export const GET_GRAPH_NFT = gql`
       isSold
       isListed
       price
+      isSoulBound
       tokenID
       owner {
         id
@@ -350,15 +353,21 @@ const auroraAddress =
     ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
     : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
 
+const auroraSoulBoundAddress =
+  process.env.REACT_APP_ENV_STAGING === "true"
+    ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS)
+    : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS)
+
 export const GET_AURORA_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection: "${auroraAddress}" }) {
+    nfts(where: { collection_in: ["${auroraAddress}", "${auroraSoulBoundAddress}"]}) {
       category
       chain
       createdAtTimestamp
       id
       isSold
       isListed
+      isSoulBound
       price
       tokenID
       owner {
@@ -373,16 +382,17 @@ const polygonAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
     ? ethers.utils.hexlify(process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS)
     : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
-
+const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS);
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection: "${polygonAddress}" }) {
+    nfts(where: { collection_in: ["${polygonAddress}", "${soulboundSingleFilterAddress}"]}) {
       category
       chain
       createdAtTimestamp
       id
       isSold
       isListed
+      isSoulBound
       price
       tokenID
       owner {
@@ -400,13 +410,14 @@ const celoAddress =
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection: "${celoAddress}" }) {
+    nfts(where: { collection_in: ["${celoAddress}", "${soulboundSingleFilterAddress}"]}) {
       category
       chain
       createdAtTimestamp
       id
       isSold
       price
+      isSoulBound
       tokenID
       owner {
         id
@@ -425,6 +436,26 @@ export const GET_NEAR_SINGLE_NFTS = gql`
       id
       isSold
       isListed
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_AVAX_SINGLE_NFTS = gql`
+  query MyQuery {
+    nfts {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
       price
       tokenID
       owner {

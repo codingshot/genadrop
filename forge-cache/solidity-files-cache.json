@@ -6,10 +6,7 @@
     "sources": "contracts",
     "tests": "test/foundry",
     "scripts": "script",
-    "libraries": [
-      "lib",
-      "node_modules"
-    ]
+    "libraries": ["lib", "node_modules"]
   },
   "files": {
     "contracts/GenadropPolygonMArket.sol": {
@@ -27,16 +24,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -83,16 +72,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -134,16 +115,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -185,16 +158,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -241,16 +206,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -280,16 +237,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -324,25 +273,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "lib/forge-std/src/Vm.sol"
-      ],
+      "imports": ["lib/forge-std/src/Vm.sol"],
       "versionRequirement": ">=0.6.0, <0.9.0",
       "artifacts": {
         "stdJson": {
@@ -365,16 +304,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -420,16 +351,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -459,16 +382,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -498,16 +413,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -537,25 +444,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "IERC2981": {
@@ -578,25 +475,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts/utils/Address.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts/utils/Address.sol"],
       "versionRequirement": "^0.8.2",
       "artifacts": {
         "Initializable": {
@@ -619,25 +506,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "IERC1155": {
@@ -660,25 +537,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "IERC1155Receiver": {
@@ -701,16 +568,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -743,16 +602,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -786,16 +637,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -829,16 +672,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -868,16 +703,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -907,16 +734,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -946,25 +765,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts/utils/introspection/IERC165.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "ERC165": {
@@ -987,16 +796,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1026,25 +827,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "IERC2981Upgradeable": {
@@ -1067,16 +858,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1106,16 +889,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1145,16 +920,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1190,16 +957,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1229,25 +988,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol"],
       "versionRequirement": "^0.8.2",
       "artifacts": {
         "Initializable": {
@@ -1270,16 +1019,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1316,16 +1057,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1358,25 +1091,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "IERC1155ReceiverUpgradeable": {
@@ -1399,25 +1122,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "IERC1155Upgradeable": {
@@ -1440,16 +1153,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1482,16 +1187,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1527,16 +1224,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1566,16 +1255,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1608,16 +1289,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1647,16 +1320,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1686,25 +1351,15 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
           "libraries": {}
         }
       },
-      "imports": [
-        "node_modules/@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol"
-      ],
+      "imports": ["node_modules/@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol"],
       "versionRequirement": "^0.8.0",
       "artifacts": {
         "ECDSAUpgradeable": {
@@ -1727,16 +1382,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1771,16 +1418,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1814,16 +1453,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1853,16 +1484,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1913,16 +1536,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",
@@ -1976,16 +1591,8 @@
           },
           "outputSelection": {
             "*": {
-              "": [
-                "ast"
-              ],
-              "*": [
-                "abi",
-                "evm.bytecode",
-                "evm.deployedBytecode",
-                "evm.methodIdentifiers",
-                "metadata"
-              ]
+              "": ["ast"],
+              "*": ["abi", "evm.bytecode", "evm.deployedBytecode", "evm.methodIdentifiers", "metadata"]
             }
           },
           "evmVersion": "london",

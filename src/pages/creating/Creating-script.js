@@ -10,8 +10,7 @@ import { ReactComponent as Ai } from "../../assets/create/ai-icon.svg";
 import { ReactComponent as Audio } from "../../assets/create/MusicNotes.svg";
 import { ReactComponent as Video } from "../../assets/create/MintVideos.svg";
 import { ReactComponent as Tweets } from "../../assets/create/tweets-icon.svg";
-import { ReactComponent as Ipfs } from "../../assets/create/ipfsIcon.svg";
-
+// import { ReactComponent as Ipfs } from "../../assets/create/ipfsIcon.svg";
 
 const cards = [
   {
@@ -49,7 +48,7 @@ const cards = [
     url: "/mint/tweet",
     comingSoon: false,
   },
- 
+
   {
     title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
@@ -85,13 +84,13 @@ const cards = [
     url: "/mint/doubletake",
     comingSoon: "",
   },
-  {
-    title: "IPFS",
-    description: "Mint your NFTs using IPFS link",
-    icon: <Ipfs />,
-    url: "/mint/ipfs",
-    comingSoon: "",
-  },
+  // {
+  //   title: "IPFS",
+  //   description: "Mint your NFTs using IPFS link",
+  //   icon: <Ipfs />,
+  //   url: "/mint/ipfs",
+  //   comingSoon: "",
+  // },
   {
     title: "AI",
     description: "Create Digital art with AI",
@@ -99,6 +98,5 @@ const cards = [
     url: "/mint/ai",
     comingSoon: true,
   },
-  
 ];
 export default cards;

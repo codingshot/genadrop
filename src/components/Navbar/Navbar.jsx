@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
-import logo from "../../assets/genadrop-logo.svg";
+import logo from "../../assets/genadropchristmaslogo.png";
 import drop from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
