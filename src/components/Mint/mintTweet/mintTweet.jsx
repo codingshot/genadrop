@@ -2,15 +2,11 @@ import { useState, useEffect, useContext, useRef } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
-import * as htmlToImage from "html-to-image";
-import { async } from "regenerator-runtime";
-import TweetEmbed from "react-tweet-embed";
 import arrow from "../../../assets/icon-right-arrow.svg";
 import light from "../../../assets/tweeter-light.svg";
 import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
 import dark from "../../../assets/tweeter-dark.svg";
 import classes from "./mintTweet.module.css";
-import { twitterAPIURL } from "../../Home/Review/Reviews-Script";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setNotification } from "../../../gen-state/gen.actions";
 
@@ -30,13 +26,12 @@ const MintTweet = () => {
 
   const validateLink = () => {
     const id = tweetLink.split(/[/?]/).find((i) => /^-?\d+$/.test(i));
+    console.log(id);
 
     axios
-      .get(`https://cors-demo-app1.herokuapp.com/${twitterAPIURL([id])}`, {
-        headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_TWITTER_ACCESS_TOKEN}`,
-        },
-      })
+      .get(
+        `${process.env.REACT_APP_TWITTER_BACKEND}?url=https://api.twitter.com/2/tweets/${id}?tweet.fields=attachments,author_id,created_at,entities%26expansions=attachments.media_keys,author_id%26media.fields=alt_text,duration_ms,media_key,preview_image_url,type,url,variants%26user.fields=name,profile_image_url,username`
+      )
       .then((data) => {
         let tweets = data.data;
 
@@ -64,51 +59,40 @@ const MintTweet = () => {
           });
         });
 
-        const mens =
-          data.data.data.map((tweet) => {
-            return tweet.entities?.mentions?.map((mention) => mention.username);
-          })[0] === undefined;
+        const partData = data.data.data;
 
-        const hashs =
-          data.data.data.map((tweet) => {
-            return tweet.entities?.hashtags?.map((tag) => tag.tag);
-          })[0] === undefined;
+        tweets = {
+          id: partData.id,
+          media: attachments,
+          author_id: users[partData?.author_id],
+          created_at: partData?.created_at,
+          text: partData.text?.split("https://t.co/")[0],
+          url: `https://twitter.com/${users[partData?.author_id]?.username}/status/${partData.id}`,
+          domain: "Twitter Web App",
+          icon: twitterIcon,
+          links: partData.entities?.urls?.filter((link) => !link.display_url.includes("pic.twitter"))[0],
+          hashtags: [partData.entities?.hashtags?.map((tag) => tag.tag)],
+          mentions: [partData.entities?.mentions?.map((mention) => mention.username)],
+          lightTheme,
+          attributes: {
+            0: { trait_type: "File Type", value: "PNG" },
+            1: { trait_type: "Category", value: "Tweet" },
+            2: { trait_type: "Author", value: `${users[partData?.author_id].name}` },
+            3: { trait_type: "Handle", value: `@${users[partData?.author_id].username}` },
+            4: { trait_type: "Tweet URL", value: tweetLink },
+            5: { trait_type: "Time & Date", value: moment(partData.created_at).format("ll") },
+            // 6: {
+            //   trait_type: "mentions",
+            //   value: mens ? "none" : `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}`,
+            // },
+            // 7: {
+            //   trait_type: "hashtags",
+            //   value: hashs ? "none" : `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}`,
+            // },
+          },
+        };
 
-        tweets = data.data.data.map((tweet) => {
-          return {
-            id: tweet.id,
-            media: attachments,
-            author_id: users[tweet?.author_id],
-            created_at: tweet?.created_at,
-            text: tweet.text?.split("https://t.co/")[0],
-            url: `https://twitter.com/${users[tweet?.author_id]?.username}/status/${tweet.id}`,
-            domain: "Twitter Web App",
-            icon: twitterIcon,
-            links: tweet.entities?.urls?.filter((link) => !link.display_url.includes("pic.twitter"))[0],
-            hashtags: [tweet.entities?.hashtags?.map((tag) => tag.tag)],
-            mentions: [tweet.entities?.mentions?.map((mention) => mention.username)],
-            lightTheme,
-            attributes: {
-              0: { trait_type: "File Type", value: "PNG" },
-              1: { trait_type: "Category", value: "Tweet" },
-              2: { trait_type: "Author", value: `${users[tweet?.author_id].name}` },
-              3: { trait_type: "Handle", value: `@${users[tweet?.author_id].username}` },
-              4: { trait_type: "Tweet URL", value: tweetLink },
-              5: { trait_type: "Time & Date", value: moment(tweet.created_at).format("ll") },
-              // 6: {
-              //   trait_type: "mentions",
-              //   value: mens ? "none" : `@${[tweet.entities?.mentions?.map((mention) => mention.username)].join(" @")}`,
-              // },
-              // 7: {
-              //   trait_type: "hashtags",
-              //   value: hashs ? "none" : `#${[tweet.entities?.hashtags?.map((tag) => tag.tag)].join(" #")}`,
-              // },
-            },
-          };
-        });
-
-        // return;
-        history.push("/mint/tweet/minter", { data: JSON.stringify(tweets[0]) });
+        history.push("/mint/tweet/minter", { data: JSON.stringify(tweets) });
       })
       .catch((err) => {
         dispatch(setNotification({ message: "Bad network or Invalid link", type: "error" }));

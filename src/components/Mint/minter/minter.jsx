@@ -3,7 +3,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import moment from "moment";
-// import TweetEmbed from "react-tweet-embed";
+import TweetEmbed from "react-tweet-embed";
 import * as htmlToImage from "html-to-image";
 
 import classes from "./minter.module.css";
