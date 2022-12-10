@@ -11,20 +11,26 @@ const Graph = ({ details }) => {
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
   const prices = [];
   if (details) {
-    details.map((e, i) => {
-      const date = new Date(e.txDate * 1000);
+    // sort transactions buy date first
+    details.sort((a, b) => {
+      return a.txDate - b.txDate;
+    });
 
-      dates.push(`${date.getDate()}/${months[date.getMonth()]}`);
-      prices.push(e.price);
+    details.map((e, i) => {
+      if (e.type === "Listing" || e.type === "Sale") {
+        const date = new Date(e.txDate * 1000);
+
+        dates.push(`${date.getDate()}/${months[date.getMonth()]}`);
+        prices.push(e.price);
+      }
     });
   }
 
-  // console.log(dates, prices);
+  console.log("PRICE DETAILS: ", details, prices);
   const data = {
     labels: dates,
     datasets: [
       {
-        // label: "First dataset",
         data: prices,
         fill: true,
         backgroundColor: "#dbf0ff",
@@ -42,14 +48,6 @@ const Graph = ({ details }) => {
     },
   };
 
-  const data2 = [10, 0, -2.5, 540];
-  const props = {
-    data2,
-    smoothing: 0.3,
-    accent: "palevioletred",
-    fillBelow: "rgba(200,67,23,0.1)",
-    hover: true,
-  };
   return (
     <>
       {prices ? (
