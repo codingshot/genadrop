@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import classes from "./singleNftCollection.module.css";
-import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
+// import { ReactComponent as SearchIcon } from "../../assets/icon-search.svg";
 import NotFound from "../../components/not-found/notFound";
 import { GenContext } from "../../gen-state/gen.context";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
@@ -18,13 +18,6 @@ import {
 
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";
-import {
-  parseAlgoSingle,
-  parseAuroraSingle,
-  parseCeloSingle,
-  parseNearSingle,
-  parsePolygonSingle,
-} from "../../renderless/fetch-data/fetchData-script";
 import {
   getAllAlgorandNfts,
   getAllArbitrumNfts,

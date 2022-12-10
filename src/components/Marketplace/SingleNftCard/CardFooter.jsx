@@ -45,7 +45,7 @@ export const MarketplaceView = ({ footerPrpops }) => {
 
 // On  Sale
 export const OnSalveView = ({ footerPrpops }) => {
-  const { price, chain, usdValue } = footerPrpops;
+  const { price, chain, usdValue, isSoulBound } = footerPrpops;
   return (
     <div className={classes.onSale}>
       <div className={classes.floorPrice}>
@@ -57,6 +57,12 @@ export const OnSalveView = ({ footerPrpops }) => {
           <div>{`($${formattedNumber(usdValue)})`}</div>
         </div>
       </div>
+      {isSoulBound && (
+        <div className={classes.lock}>
+          <img src={lockIcon} alt="" />
+          <span>Non Transferable</span>
+        </div>
+      )}
     </div>
   );
 };
