@@ -115,7 +115,14 @@ const MintTweet = () => {
           type="text"
           placeholder="https://twitter.com/BluntDAO/space/1573722916725850112"
         />
-        <img src={arrow} alt="" onClick={validateLink} />
+        <img
+          src={arrow}
+          alt=""
+          onClick={validateLink}
+          onKeyDown={(e) => {
+            e.key === "Enter" ? validateLink : "";
+          }}
+        />
       </div>
       <div className={classes.tweeter}>
         <div className={`${classes.theme} `} onClick={() => handleSetState({ lightTheme: true })}>
