@@ -8,7 +8,7 @@ import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
 import dark from "../../../assets/tweeter-dark.svg";
 import classes from "./mintTweet.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
-import { setNotification } from "../../../gen-state/gen.actions";
+import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 
 const MintTweet = () => {
   const [state, setState] = useState({
@@ -27,6 +27,7 @@ const MintTweet = () => {
   const validateLink = () => {
     const id = tweetLink.split(/[/?]/).find((i) => /^-?\d+$/.test(i));
     console.log(id);
+    dispatch(setOverlay(true));
 
     axios
       .get(
@@ -35,6 +36,7 @@ const MintTweet = () => {
       .then((data) => {
         let tweets = data.data;
 
+        console.log(data);
         const attachments = [];
         const users = {};
         data.data.includes.users.forEach((element) => {
@@ -91,10 +93,13 @@ const MintTweet = () => {
             // },
           },
         };
+        dispatch(setOverlay(false));
 
         history.push("/mint/tweet/minter", { data: JSON.stringify(tweets) });
       })
       .catch((err) => {
+        dispatch(setOverlay(false));
+
         dispatch(setNotification({ message: "Bad network or Invalid link", type: "error" }));
         console.log(err);
       });
@@ -111,7 +116,14 @@ const MintTweet = () => {
           type="text"
           placeholder="https://twitter.com/BluntDAO/space/1573722916725850112"
         />
-        <img src={arrow} alt="" onClick={validateLink} />
+        <img
+          src={arrow}
+          alt=""
+          onClick={validateLink}
+          onKeyDown={(e) => {
+            e.key === "Enter" ? validateLink : "";
+          }}
+        />
       </div>
       <div className={classes.tweeter}>
         <div className={`${classes.theme} `} onClick={() => handleSetState({ lightTheme: true })}>
