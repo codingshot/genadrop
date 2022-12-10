@@ -36,6 +36,7 @@ const MintTweet = () => {
       .then((data) => {
         let tweets = data.data;
 
+        console.log(data);
         const attachments = [];
         const users = {};
         data.data.includes.users.forEach((element) => {
