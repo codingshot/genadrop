@@ -1,7 +1,7 @@
 {
   "short_name": "GenaDROP APP",
   "name": "Create NFT Images",
-  "icons": [],
+  "icons": "./favicon.ico",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
