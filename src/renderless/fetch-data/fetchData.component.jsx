@@ -34,6 +34,8 @@ import {
   GET_CELO_SINGLE_NFT,
   GET_CELO_GRAPH_COLLECITONS,
   GET_NEAR_SINGLE_NFTS,
+  GET_POLYGON_SOUL_BOUND_NFTS,
+  GET_CELO_SOUL_BOUND_NFTS,
 } from "../../graphql/querries/getCollections";
 import {
   arbitrumClient,
@@ -57,15 +59,6 @@ import {
   parsePolygonCollection,
   parsePolygonSingle,
 } from "./fetchData-script";
-import {
-  getAllAlgorandNfts,
-  getAllArbitrumNfts,
-  getAllAuroraNfts,
-  getAllAvalancheNfts,
-  getAllCeloNfts,
-  getAllNearNfts,
-  getAllPolygonNfts,
-} from "./fetchUserGraphData";
 
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
@@ -192,7 +185,8 @@ const FetchData = () => {
     // Get Polygon Signle NFTs
     (async function getPolygonSingleNfts() {
       const { data, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
-      if (error) {
+      const { data: sbData, error: sbError } = await polygonClient.query(GET_POLYGON_SOUL_BOUND_NFTS).toPromise();
+      if (error || sbError) {
         return dispatch(
           setNotification({
             message: error.message,
@@ -200,7 +194,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getSingleGraphNfts(data?.nfts);
+      const result = await getSingleGraphNfts([...data.nfts, ...sbData.nfts]);
       if (result?.length) {
         dispatch(setPolygonSingleNfts(result));
         dispatch(
@@ -217,7 +211,9 @@ const FetchData = () => {
     // Get Celo Single NFTs
     (async function getCeloSingleNft() {
       const { data, error } = await celoClient.query(GET_CELO_SINGLE_NFT).toPromise();
-      if (error) {
+      const { data: sbData, error: sbError } = await celoClient.query(GET_CELO_SOUL_BOUND_NFTS).toPromise();
+
+      if (error || sbError) {
         return dispatch(
           setNotification({
             message: error.message,
@@ -225,7 +221,7 @@ const FetchData = () => {
           })
         );
       }
-      const result = await getSingleGraphNfts(data?.nfts);
+      const result = await getSingleGraphNfts([...data.nfts, sbData.nfts]);
       if (result?.length) {
         dispatch(setCeloSingleNft(result));
         dispatch(
@@ -340,16 +336,6 @@ const FetchData = () => {
         dispatch(setArbitrumNfts(null));
       }
     })();
-
-    Promise.all([
-      getAllCeloNfts(),
-      getAllAuroraNfts(),
-      getAllAvalancheNfts(),
-      getAllArbitrumNfts(),
-      getAllPolygonNfts(),
-      getAllNearNfts(),
-      getAllAlgorandNfts(mainnet, dispatch),
-    ]).then((data) => dispatch(setAllNfts(data.flat())));
   }, [mainnet]);
 
   return null;

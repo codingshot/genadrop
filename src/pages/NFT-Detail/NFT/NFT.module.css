@@ -114,3 +114,11 @@
     max-width: 100%;
   }
 }
+
+@media screen and (max-width: 400px) {
+  .name {
+    font-weight: 500;
+    font-size: 15px;
+  }
+}
+

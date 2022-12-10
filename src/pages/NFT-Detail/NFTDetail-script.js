@@ -93,7 +93,6 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Aurora") {
         const [auroraData, trHistory] = await auroraUserData(nftId);
-        // if (!auroraData) return;
         return {
           nftDetails: auroraData,
           collection: [],
