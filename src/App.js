@@ -34,7 +34,6 @@ import ErrorBoundary from "./components/error-boundary/error-boundary";
 import Welcome from "./pages/welcome/welcome";
 import Home from "./pages/home/home";
 import CreateCollection from "./pages/createCollection/CreateCollection";
-import Mint from "./pages/mint/mint";
 import Pricing from "./pages/Pricing/Pricing";
 import Fallback from "./pages/fallback/fallback";
 import StoreData from "./renderless/store-data/StoreData";
@@ -69,7 +68,7 @@ function App() {
             <Route exact path="/create/collection" component={CreateCollection} />
             <Route exact path="/create" component={Creating} />
             <Route exact path="/preview" component={Preview} />
-            <Route exact path="/mint" component={Mint} />
+            <Route exact path="/mint" component={Creating} />
             <Route
               exact
               path={["/mint/camera", "/mint/vibe", "/mint/sesh", "/mint/doubletake", "/mint/video"]}
