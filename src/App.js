@@ -47,6 +47,7 @@ import CollectionOptions from "./pages/collection-options/CollectionOptions";
 import MarketplaceAll from "./pages/marketplace-all/MarketplaceAll";
 import Creating from "./pages/creating/Creating";
 import Redirect from "./utils/redirect";
+import AiMint from "./pages/ai/AiMint";
 
 function App() {
   const [showWelcomeScreen, setShowWelcomeScreen] = useState(true);
@@ -74,6 +75,7 @@ function App() {
               path={["/mint/camera", "/mint/vibe", "/mint/sesh", "/mint/doubletake", "/mint/video"]}
               component={Camera}
             />
+            <Route exact path="/mint/ai" component={AiMint} />
             <Route exact path="/mint/:mintId" component={CollectionToSingleMinter} />
             <Route exact path="/mint/:mintId/minter" component={Minter} />
             <Route exact path="/marketplace" component={Marketplace} />

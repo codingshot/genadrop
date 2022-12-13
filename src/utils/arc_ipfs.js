@@ -3015,7 +3015,7 @@ export async function purchaseCeloNfts(buyProps) {
     );
   }
   let wallet;
-  let chainId
+  let chainId;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
