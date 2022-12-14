@@ -20,7 +20,7 @@ import {
   setChainId,
   setConnector,
 } from "../../gen-state/gen.actions";
-import supportedChains from "../../utils/supportedChains";
+import supportedChains, { orderedChainsList } from "../../utils/supportedChains";
 import getConfig from "./nearConfig";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
@@ -34,14 +34,7 @@ const WalletPopup = ({ handleSetState }) => {
   const [showConnectionMethods, setConnectionMethods] = useState(false);
   const [activeChain, setActiveChain] = useState(null);
   const [showMetamask, setMetamask] = useState(true);
-
-  const connectOptions = [];
-  for (const key in supportedChains) {
-    if (key !== "4160") {
-      connectOptions.push(supportedChains[key]);
-    }
-  }
-  connectOptions.unshift(supportedChains[4160]);
+  const [connectOptions, setConnectOptions] = useState(orderedChainsList);
 
   const handleProposedChain = async () => {
     dispatch(setProposedChain(activeChain));
@@ -176,8 +169,8 @@ const WalletPopup = ({ handleSetState }) => {
           <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
-              .sort((a) => (a.comingSoon === true ? 1 : -1))
-              .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
+              // .sort((a) => (a.comingSoon === true ? 1 : -1))
+              // .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
               .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div
