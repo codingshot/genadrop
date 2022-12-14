@@ -1,0 +1,25 @@
+.wrapper {
+  width: 100%;
+  margin-bottom: 2.5em;
+  border: 1px solid var(--card-outline);
+  border-radius: 0.5em;
+  padding: 1em;
+}
+.aiMain {
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  /* column-gap: ; */
+  width: 100%;
+  align-items: center;
+  height: 100vh;
+  padding: 0 6em;
+  column-gap: 3em;
+}
+.aiLeft {
+    flex: 1.5;
+}
+.aiRight {
+    flex: 1;
+}
