@@ -7,7 +7,7 @@ const AI = () => {
 
   const handleAiDesc = (e) => {
     // e.target.value.length;
-    // console.log({ value: e.target.value, number: String(e.target.value).length });
+    // console.log({ value: e.target.value, text: String(e.target.value).length });
     setWordCount(String(e.target.value).trim().length);
   };
   return (
@@ -18,29 +18,36 @@ const AI = () => {
             <h2 className={classes.promtFormTitle}>Enter prompt</h2>
             <span className={classes.descWordCount}>{wordCount}/200</span>
           </div>
-          <input type="text" className={classes.wrapper || classes.aiTextInput} onChange={handleAiDesc} />
+          <input type="text" className={`${classes.wrapper} ${classes.aiTextInput}`} onChange={handleAiDesc} />
           <section className={classes.artStyleSection}>
             <h2 className={classes.artStyle}>Art Style</h2>
             <main className={classes.artStyleList}></main>
           </section>
-          <button className={classes.wrapper || classes.createImageBtn}>Create Image</button>
+          <button type="submit" className={`${classes.wrapper} ${classes.createImageBtn}`}>
+            Create Image
+          </button>
         </form>
       </section>
-      <section className={classes.aiRight}>
-        <form className={classes.previewSizeForm}>
-          <section className={classes.imageSizeSection}>
-            <label htmlFor="height">
+      <form className={classes.previewSizeForm}>
+        <section className={classes.imageSizeSection}>
+          <h2 className={classes.aiPreviewHeading}>Preview Image</h2>
+          <div className={classes.sizesMain}>
+            <label htmlFor="height" className={classes.sizeLabel}>
               <span>Height</span>
-              <input type="number" className={classes.sizeInput} name="height" /> <span>px</span>
+              <span className={classes.sizeInWrapper}>
+                <input type="text" className={classes.sizeInput} name="height" /> <span>px</span>
+              </span>
             </label>
-            <label htmlFor="width">
+            <label htmlFor="width" className={classes.sizeLabel}>
               <span>Width</span>
-              <input type="number" className={classes.sizeInput} name="width" /> <span>px</span>
+              <span className={classes.sizeInWrapper}>
+                <input type="text" className={classes.sizeInput} name="width" /> <span>px</span>
+              </span>
             </label>
-          </section>
-          <output className={classes.artPreview} />
-        </form>
-      </section>
+          </div>
+        </section>
+        <output className={classes.artPreview} />
+      </form>
     </main>
   );
 };

@@ -1,25 +1,131 @@
+:root {
+  --page-gray: #6c757d;
+  --btnInactive: #0d9aff57;
+  --btnActive: #0d99ff;
+}
+
 .wrapper {
-  width: 100%;
-  margin-bottom: 2.5em;
+  /* width: 100%; */
   border: 1px solid var(--card-outline);
   border-radius: 0.5em;
   padding: 1em;
 }
 .aiMain {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  /* flex-direction: row;
   align-content: center;
-  justify-content: center;
-  /* column-gap: ; */
-  width: 100%;
+  justify-content: center; */
+  width: 100vw;
   align-items: center;
-  height: 100vh;
-  padding: 0 6em;
-  column-gap: 3em;
+  /* height: 100vh; */
+  padding: 6em;
+  /* flex-wrap: wrap; */
+  grid-template-columns: 3fr 2fr;
+  gap: 3em;
 }
 .aiLeft {
-    flex: 1.5;
+  flex: 3;
+  align-items: center;
+  justify-content: center;
 }
-.aiRight {
-    flex: 1;
+
+.aiTextInput {
+  outline: none;
+}
+
+.promptForm {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1em;
+}
+
+.promptFormTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.artStyleSection {
+  display: none;
+}
+
+.createImageBtn {
+  display: flex;
+  font-size: 24px;
+  background-color: var(--btnInactive);
+  color: #fff;
+  border: transparent;
+  padding: 0.5em 1em;
+  border: none;
+  margin: 0 auto;
+}
+
+.createImageBtn:focus,
+.createImageBtn:hover,
+.createImageBtn:active {
+  background-color: var(--btnActive);
+  outline: none;
+}
+
+.previewSizeForm {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}
+.imageSizeSection,
+.sizesMain,
+.imageSizeSection > label {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 10px;
+}
+.imageSizeSection {
+  margin: 1em 0;
+  display: flex;
+  color: var(--page-gray);
+}
+.sizesMain {
+  column-gap: 0.6em;
+}
+
+.aiPreviewHeading {
+  font-size: 24px;
+}
+
+.sizeLabel,
+.sizeInWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.sizeLabel {
+  align-items: center;
+  column-gap: 0.6em;
+}
+.sizeInWrapper {
+  padding: 0.3em 0.4em;
+  border: 1px solid var(--card-outline);
+  border-radius: 0.5em;
+  width: 57px;
+}
+.sizeInWrapper span {
+  border-left: 1px solid var(--card-outline);
+  padding: 0 0.4em;
+  font-weight: 600;
+}
+.sizeInput {
+  border: none;
+  width: 30px;
+  outline: none;
+  font-size: 10px;
+  color: var(--page-gray);
+}
+.artPreview {
+  background-color: #d3d9eb;
+  border-radius: 0.5em;
+  height: 300px;
+  width: 100%;
 }
