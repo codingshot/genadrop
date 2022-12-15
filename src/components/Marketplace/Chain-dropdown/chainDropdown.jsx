@@ -11,7 +11,7 @@ import nearIcon from "../../../assets/icon-near.svg";
 import avalancheIcon from "../../../assets/icon-avalanche.svg";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-chevron-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
-import supportedChains from "../../../utils/supportedChains";
+import supportedChains, { orderedChainsList } from "../../../utils/supportedChains";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const chainIcon = {
@@ -91,10 +91,8 @@ const ChainDropdown = ({ onChainFilter, data }) => {
           <div key={0} onClick={() => chainHandler("All Chains")} className={classes.chain}>
             <img src={allChainsIcon} alt="All Chains" /> <span>All Chains</span>
           </div>,
-          ...Object.values(supportedChains)
+          orderedChainsList
             .filter((_chain) => mainnet === _chain.isMainnet)
-            .sort((a) => (a.comingSoon === true ? 1 : -1))
-            .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
             .map((_chain, idx) => (
               <div
                 key={idx + 1}
