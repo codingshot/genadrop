@@ -12,17 +12,46 @@
 }
 .aiMain {
   display: grid;
-  /* flex-direction: row;
-  align-content: center;
-  justify-content: center; */
-  width: 100vw;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 4em 0px;
+  /* width: 100vw;
   align-items: center;
-  /* height: 100vh; */
   padding: 6em;
-  /* flex-wrap: wrap; */
   grid-template-columns: 3fr 2fr;
-  gap: 3em;
+  gap: 3em; */
+  align-items: center;
+  --auto-grid-min-size: 26rem;
 }
+
+.aiMain > * {
+  max-width: 400px;
+}
+
+.aiMain > * + * {
+  margin-top: 1rem;
+}
+
+@supports (display: grid) {
+  .aiMain {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 2fr));
+    gap: 1.5rem;
+    /* justify-items: center; */
+    padding: 4em 2em;
+    margin: 0 auto;
+  }
+
+  .aiMain > * {
+    /* max-width: 80%; */
+    max-width: unset;
+  }
+
+  .aiMain > * + * {
+    margin-top: unset;
+  }
+}
+
 .aiLeft {
   flex: 3;
   align-items: center;
@@ -128,4 +157,24 @@
   border-radius: 0.5em;
   height: 60vh;
   width: 100%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.imageDownloadBtn {
+  display: flex;
+  align-items: center;
+  background-color: #eff3f9;
+  justify-content: center;
+  align-self: center;
+  margin: 10px auto;
+  column-gap: 0.6em;
+  padding: 0.4em 0.8em;
+  font-size: 16px;
+  color: #0f1d40;
+  border: transparent;
+}
+.imageDownloadBtn:first-child {
+  height: 10px;
+  width: 10px;
 }
