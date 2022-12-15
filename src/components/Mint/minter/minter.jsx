@@ -1170,7 +1170,8 @@ const Minter = () => {
                       </div>
                     </div>
                   </div>
-                  {supportedChains[chainId]?.chain !== "Algorand" &&
+                  {chainId !== null &&
+                    supportedChains[chainId]?.chain !== "Algorand" &&
                     supportedChains[chainId]?.chain !== "Near" &&
                     supportedChains[chainId]?.chain !== "Arbitrum" &&
                     supportedChains[chainId]?.chain !== "Optimism" && (
