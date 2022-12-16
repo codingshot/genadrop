@@ -101,6 +101,8 @@
   display: flex;
   flex-flow: column nowrap;
   height: 100%;
+  align-items: center;
+  align-content: center;
 }
 .imageSizeSection,
 .sizesMain,

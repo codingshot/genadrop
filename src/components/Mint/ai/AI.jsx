@@ -24,6 +24,7 @@ const AI = () => {
   const imageDownloadHandler = (e) => {
     e.preventDefault();
     setDownloadStatus(true);
+    alert("Download");
   };
 
   // eslint-disable-next-line no-shadow
@@ -119,7 +120,10 @@ const AI = () => {
           </div>
         </section>
         <Loader />
-        <output className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }} />
+        <output
+          className={classes.artPreview}
+          style={{ backgroundImage: `url(${imageUrl})`, width: imageDimension, height: imageDimension }}
+        />
         <button
           type="submit"
           className={`${classes.wrapper} ${classes.imageDownloadBtn}`}
