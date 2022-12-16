@@ -1,12 +1,9 @@
 /* eslint-disable no-use-before-define */
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
-import { async } from "regenerator-runtime";
-import { useRef } from "react";
-import { useEffect } from "react";
+import Loader from "../../Loader/Loader";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -121,6 +118,7 @@ const AI = () => {
             </label>
           </div>
         </section>
+        <Loader />
         <output className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }} />
         <button
           type="submit"
