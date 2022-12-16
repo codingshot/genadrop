@@ -89,7 +89,6 @@
   margin: 0 auto;
 }
 
-.createImageBtn:focus,
 .createImageBtn:hover,
 .createImageBtn:active {
   background-color: var(--btnActive);

@@ -4,6 +4,7 @@ import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import Loader from "../../Loader/Loader";
+import { async } from "regenerator-runtime";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -25,8 +26,23 @@ const AI = () => {
     e.preventDefault();
     setDownloadStatus(true);
     alert("Download");
+    downloadImage(imageUrl);
   };
 
+  const downloadImage = async (url) => {
+    await fetch(url, {
+      mode: "no-cors",
+    })
+      .then((response) => response.blob())
+      .then((blob) => {
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.download = `genadrop-ai-@${Date.now()}.jpg`;
+        a.href = blobUrl;
+        a.click();
+        a.remove();
+      });
+  };
   // eslint-disable-next-line no-shadow
 
   const formSubmitHandler = (e) => {
