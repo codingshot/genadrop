@@ -1,11 +1,12 @@
 /* eslint-disable no-use-before-define */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import Loader from "../../Loader/Loader";
 import { async } from "regenerator-runtime";
 import { setOverlay } from "../../../gen-state/gen.actions";
+import { GenContext } from "../../../gen-state/gen.context";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -13,6 +14,7 @@ const AI = () => {
   const [downloadStatus, setDownloadStatus] = useState(false);
   const [promptText, setPromptText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
+  const { dispatch } = useContext(GenContext);
 
   const handleAiDesc = (e) => {
     setPromptText(e.target.value);
@@ -73,18 +75,21 @@ const AI = () => {
       alert("Please Enter prompt");
     } else {
       try {
+        dispatch(setOverlay(true));
+
         fetch("https://twitter-api-weber77.vercel.app/genImage", requestOptions)
           .then(async (response) => {
-            // if (!response.ok) {
-            //   throw new Error("That image could not be generated");
-            // }
+            if (!response.ok) {
+              dispatch(setOverlay(false));
+              throw new Error("That image could not be generated");
+            }
 
             return response.json();
           })
           .then((data) => {
+            dispatch(setOverlay(false));
             // console.log(data.data.data[0].url);
             // console.log(data.data.data[0].url.headers);
-            // dispatch(setOverlay(true));
             setImageUrl(data.data.data[0]?.url);
           });
       } catch (error) {
