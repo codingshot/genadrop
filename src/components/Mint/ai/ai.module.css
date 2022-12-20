@@ -1,5 +1,4 @@
 .wrapper {
-  /* width: 100%; */
   border: 1px solid var(--card-outline);
   border-radius: 0.5em;
   padding: 1em;
@@ -9,11 +8,6 @@
   max-width: 1080px;
   margin: 0 auto;
   padding: 4em 0px;
-  /* width: 100vw;
-  align-items: center;
-  padding: 6em;
-  grid-template-columns: 3fr 2fr;
-  gap: 3em; */
   align-items: center;
   --auto-grid-min-size: 26rem;
 }
@@ -31,13 +25,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 2fr));
     gap: 1.5rem;
-    /* justify-items: center; */
     padding: 4em 2em;
     margin: 0 auto;
   }
 
   .aiMain > * {
-    /* max-width: 80%; */
     max-width: unset;
   }
 
@@ -54,6 +46,7 @@
 
 .aiTextInput {
   outline: none;
+  box-shadow: 8px 8px 18px rgba(93, 134, 194, 0.08);
 }
 
 .aiTextInput:active,
@@ -66,6 +59,7 @@
   display: flex;
   flex-flow: column nowrap;
   gap: 1em;
+  width: 100%;
 }
 
 .promptFormTop {
@@ -79,6 +73,27 @@
 }
 .artStyleSection {
   display: none;
+}
+.aiPromptSuggestions {
+  display: flex;
+  overflow-x: scroll;
+  padding: 0.5em 1em 2em 0;
+  flex-wrap: nowrap;
+  column-gap: 1em;
+  /* width: 25em; */
+  /* align-content: center; */
+  /* justify-content: space-evenly; */
+  align-items: center;
+}
+.suggestionItem {
+  background-color: #e2e4e8;
+  border-radius: 3em;
+  color: var(--text-heading);
+  text-align: center;
+  white-space: nowrap;
+  padding: 0.6em 1.5em;
+  width: fit-content;
+  cursor: pointer;
 }
 
 .createImageBtn {

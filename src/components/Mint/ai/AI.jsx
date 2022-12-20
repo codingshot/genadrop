@@ -18,7 +18,7 @@ const AI = () => {
 
   const handleAiDesc = (e) => {
     setPromptText(e.target.value);
-    setWordCount(String(e.target.value).trim().length);
+    setWordCount(String(promptText.trim().length));
   };
 
   const imageDimensionChangeHandler = (e) => {
@@ -77,7 +77,7 @@ const AI = () => {
       try {
         dispatch(setOverlay(true));
 
-        fetch("https://twitter-api-weber77.vercel.app/genImage", requestOptions)
+        await fetch("https://twitter-api-weber77.vercel.app/genImage", requestOptions)
           .then(async (response) => {
             if (!response.ok) {
               dispatch(setOverlay(false));
@@ -102,6 +102,20 @@ const AI = () => {
   //   generateIamgeRequest();
   // }, []);
 
+  const SUGGESTIONS = [
+    "Sunset Cliffs",
+    "Fire and water",
+    "Never ending flower",
+    "DNA Torna",
+    "An oak tree",
+    "Cat on Bycicle",
+  ];
+
+  const suggestedPrompts = SUGGESTIONS.map((item, id) => (
+    <li id={id} className={classes.suggestionItem} onClick={() => setPromptText(item)}>
+      {item}
+    </li>
+  ));
   return (
     <main className={classes.aiMain}>
       <section className={classes.wrapper || classes.aiLeft}>
@@ -114,11 +128,12 @@ const AI = () => {
             type="text"
             className={`${classes.wrapper} ${classes.aiTextInput}`}
             onChange={handleAiDesc}
+            onBlur={handleAiDesc}
             value={promptText}
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
           />
-          <ul className={classes.aiPromptSuggestions}></ul>
+          <ul className={classes.aiPromptSuggestions}>{suggestedPrompts}</ul>
           <section className={classes.artStyleSection}>
             <h2 className={classes.artStyle}>Art Style</h2>
             <main className={classes.artStyleList}></main>
