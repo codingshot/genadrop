@@ -3,6 +3,33 @@
   border-radius: 0.5em;
   padding: 1em;
 }
+.aiPageNav {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  margin: 3em 0 -2em -6em;
+  max-width: 1080px;
+  justify-content: center;
+}
+.aiPageNavMain {
+  display: flex;
+  column-gap: 1em;
+  width: 50%;
+  align-items: center;
+  align-content: center;
+}
+.aiPageNavMain:hover {
+  cursor: pointer;
+}
+.aiPageNavBackArrow {
+  height: 24px;
+  width: 24px;
+}
+.aiPageNavMain > span {
+  white-space: nowrap;
+  flex: 1;
+  font-size: 16px;
+}
 .aiMain {
   display: grid;
   max-width: 1080px;
@@ -80,9 +107,6 @@
   padding: 0.5em 1em 2em 0;
   flex-wrap: nowrap;
   column-gap: 1em;
-  /* width: 25em; */
-  /* align-content: center; */
-  /* justify-content: space-evenly; */
   align-items: center;
 }
 .suggestionItem {
@@ -94,6 +118,7 @@
   padding: 0.6em 1.5em;
   width: fit-content;
   cursor: pointer;
+  font-size: 14px;
 }
 
 .createImageBtn {
