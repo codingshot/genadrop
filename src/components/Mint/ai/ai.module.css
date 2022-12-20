@@ -1,9 +1,3 @@
-:root {
-  --page-gray: #6c757d;
-  --btnInactive: #0d9aff57;
-  --btnActive: #0d99ff;
-}
-
 .wrapper {
   /* width: 100%; */
   border: 1px solid var(--card-outline);
@@ -62,6 +56,12 @@
   outline: none;
 }
 
+.aiTextInput:active,
+.aiTextInput:hover,
+.aiTextInput:focus {
+  border: 1px solid var(--main-color);
+}
+
 .promptForm {
   display: flex;
   flex-flow: column nowrap;
@@ -73,7 +73,10 @@
   align-items: center;
   justify-content: space-between;
 }
-
+.promptFormTop > h2 {
+  color: var(--text-heading);
+  font-weight: 500;
+}
 .artStyleSection {
   display: none;
 }
@@ -81,17 +84,21 @@
 .createImageBtn {
   display: flex;
   font-size: 24px;
-  background-color: var(--btnInactive);
   color: #fff;
   border: transparent;
   padding: 0.5em 1em;
   border: none;
   margin: 0 auto;
+  background-color: var(--main-color);
+}
+.createImageBtn_inactive {
+  border: transparent;
+  opacity: 34%;
+  cursor: not-allowed;
 }
 
-.createImageBtn:hover,
-.createImageBtn:active {
-  background-color: var(--btnActive);
+.createImageBtn_active {
+  opacity: 100%;
   outline: none;
 }
 
@@ -115,14 +122,17 @@
 .imageSizeSection {
   margin: 1em 0;
   display: flex;
-  color: var(--page-gray);
+  color: var(--text-light);
 }
 .sizesMain {
   column-gap: 0.6em;
 }
 
 .aiPreviewHeading {
+  color: var(--text-light);
+  font-weight: 500;
   font-size: 24px;
+  padding-right: 1em;
 }
 
 .sizeLabel,
@@ -151,7 +161,7 @@
   width: 30px;
   outline: none;
   font-size: 10px;
-  color: var(--page-gray);
+  color: var(--text-light);
 }
 .artPreview {
   background-color: #d3d9eb;

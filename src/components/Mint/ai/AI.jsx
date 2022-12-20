@@ -5,6 +5,7 @@ import { ReactComponent as Download } from "../../../assets/mint-ai-page/downloa
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import Loader from "../../Loader/Loader";
 import { async } from "regenerator-runtime";
+import { setOverlay } from "../../../gen-state/gen.actions";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -24,25 +25,28 @@ const AI = () => {
 
   const imageDownloadHandler = (e) => {
     e.preventDefault();
-    setDownloadStatus(true);
+    setDownloadStatus(!downloadStatus);
     alert("Download");
-    downloadImage(imageUrl);
+    // downloadImage();
   };
 
-  const downloadImage = async (url) => {
-    await fetch(url, {
-      mode: "no-cors",
-    })
-      .then((response) => response.blob())
-      .then((blob) => {
-        const blobUrl = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.download = `genadrop-ai-@${Date.now()}.jpg`;
-        a.href = blobUrl;
-        a.click();
-        a.remove();
-      });
-  };
+  // const downloadImage = async () => {
+  //   const url =
+  //     "https://oaidalleapiprodscus.blob.core.windows.net/private/org-VLqvuP3nE8JYj21Vy2JDoovx/user-OfbTsDfpcsqhy0CDvImWDAuV/img-glKvMPTUlAkzugybaoSBa7Qq.png";
+  //   await fetch(url, {
+  //     mode: "no-cors",
+  //   })
+  //     .then((response) => response.blob())
+  //     .then((blob) => {
+  //       const blobUrl = window.URL.createObjectURL(blob);
+  //       console.table({ blobURL: blobUrl });
+  //       const a = document.createElement("a");
+  //       a.download = `genadrop-ai-@${Date.now()}.jpg`;
+  //       a.href = blobUrl;
+  //       a.click();
+  //       a.remove();
+  //     });
+  // };
   // eslint-disable-next-line no-shadow
 
   const formSubmitHandler = (e) => {
@@ -65,25 +69,33 @@ const AI = () => {
   };
 
   const generateIamgeRequest = async () => {
-    try {
-      fetch("https://twitter-api-weber77.vercel.app/genImage", requestOptions).then(async (response) => {
-        // if (!response.ok) {
-        //   throw new Error("That image could not be generated");
-        // }
+    if (promptText === "") {
+      alert("Please Enter prompt");
+    } else {
+      try {
+        fetch("https://twitter-api-weber77.vercel.app/genImage", requestOptions)
+          .then(async (response) => {
+            // if (!response.ok) {
+            //   throw new Error("That image could not be generated");
+            // }
 
-        const data = await response.json();
-        console.log(data.data.data[0].url);
-
-        setImageUrl(data.data.data[0].url);
-      });
-    } catch (error) {
-      console.log(error);
+            return response.json();
+          })
+          .then((data) => {
+            // console.log(data.data.data[0].url);
+            // console.log(data.data.data[0].url.headers);
+            // dispatch(setOverlay(true));
+            setImageUrl(data.data.data[0]?.url);
+          });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
-  useEffect(() => {
-    generateIamgeRequest();
-  }, []);
+  // useEffect(() => {
+  //   generateIamgeRequest();
+  // }, []);
 
   return (
     <main className={classes.aiMain}>
@@ -101,11 +113,17 @@ const AI = () => {
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
           />
+          <ul className={classes.aiPromptSuggestions}></ul>
           <section className={classes.artStyleSection}>
             <h2 className={classes.artStyle}>Art Style</h2>
             <main className={classes.artStyleList}></main>
           </section>
-          <button type="submit" className={`${classes.wrapper} ${classes.createImageBtn}`}>
+          <button
+            type="submit"
+            className={`${classes.wrapper} ${classes.createImageBtn} ${
+              wordCount > 0 ? classes.createImageBtn_active : classes.createImageBtn_inactive
+            }`}
+          >
             Create Image
           </button>
         </form>
@@ -145,8 +163,15 @@ const AI = () => {
           className={`${classes.wrapper} ${classes.imageDownloadBtn}`}
           onClick={imageDownloadHandler}
         >
+          {/* <a
+          href="https://oaidalleapiprodscus.blob.core.windows.net/private/org-VLqvuP3nE8JYj21Vy2JDoovx/user-OfbTsDfpcsqhy0CDvImWDAuV/img-glKvMPTUlAkzugybaoSBa7Qq.png"
+          target="_blank"
+          rel="noopener noreferrer"
+          className={`${classes.wrapper} ${classes.imageDownloadBtn}`}
+        > */}
           {downloadStatus ? <Reload /> : <Download />}
           <span>Download</span>
+          {/* </a> */}
         </button>
       </form>
     </main>
