@@ -5,7 +5,7 @@ import { ReactComponent as Download } from "../../../assets/mint-ai-page/downloa
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
 import { async } from "regenerator-runtime";
-import { setOverlay } from "../../../gen-state/gen.actions";
+import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const AI = () => {
@@ -74,6 +74,7 @@ const AI = () => {
   const generateIamgeRequest = async () => {
     if (promptText === "") {
       alert("Please Enter prompt");
+      dispatch(setNotification({ message: "Please Enter a prompt", type: "error" }));
     } else {
       try {
         dispatch(setOverlay(true));
@@ -83,7 +84,7 @@ const AI = () => {
             if (!response.ok) {
               dispatch(setOverlay(false));
               setGenerated(false);
-              throw new Error("That image could not be generated");
+              dispatch(setNotification({ message: "Image could not be generated", type: "error" }));
             }
 
             return response.json();
@@ -96,6 +97,7 @@ const AI = () => {
             setGenerated(true);
           });
       } catch (error) {
+        dispatch(setNotification({ message: "Image could not be generated please try another prompt", type: "error" }));
         console.log(error);
       }
     }
@@ -122,6 +124,10 @@ const AI = () => {
 
   const navigateBackHandler = () => {
     setGenerated(false);
+  };
+
+  const aiMintHandler = () => {
+    history.push("/mint/tweet/minter", { data: JSON.stringify(tweets) });
   };
   return (
     <>
@@ -206,6 +212,7 @@ const AI = () => {
                       onChange={imageDimensionChangeHandler}
                       className={classes.sizeInput}
                       name="width"
+                      placeholder="A pink cat painting a black dog in space"
                     />{" "}
                     <span>px</span>
                   </span>
