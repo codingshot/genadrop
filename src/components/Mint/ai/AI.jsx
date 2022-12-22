@@ -89,7 +89,7 @@ const AI = () => {
             // console.log(data.data.data[0].url.headers);
             setImageUrl(data.data.data[0]?.url);
             fetch(
-              `http://localhost:8081/singleImage`,
+              `${process.env.REACT_APP_TWITTER_BACKEND}singleImage`,
               getReqOptions({
                 uri: data?.data?.data[0].url,
               })
