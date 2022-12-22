@@ -1,21 +1,22 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useEffect, useContext } from "react";
+import { async } from "regenerator-runtime";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
-import { async } from "regenerator-runtime";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
   const [imageDimension, setImageDimension] = useState(256);
-  const [downloadStatus, setDownloadStatus] = useState(false);
   const [promptText, setPromptText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const { dispatch } = useContext(GenContext);
   const [generated, setGenerated] = useState(false);
+  const [imageBlob, setImageBlob] = useState("");
+  const [downloadStatus, setDownloadStatus] = useState(false);
 
   const handleAiDesc = (e) => {
     setPromptText(e.target.value);
@@ -26,60 +27,54 @@ const AI = () => {
     setImageDimension(e.target.value.trim());
   };
 
-  const imageDownloadHandler = (e) => {
-    e.preventDefault();
-    setDownloadStatus(!downloadStatus);
-    alert("Download");
-    // downloadImage();
-  };
-
-  // const downloadImage = async () => {
-  //   const url =
-  //     "https://oaidalleapiprodscus.blob.core.windows.net/private/org-VLqvuP3nE8JYj21Vy2JDoovx/user-OfbTsDfpcsqhy0CDvImWDAuV/img-glKvMPTUlAkzugybaoSBa7Qq.png";
-  //   await fetch(url, {
-  //     mode: "no-cors",
-  //   })
-  //     .then((response) => response.blob())
-  //     .then((blob) => {
-  //       const blobUrl = window.URL.createObjectURL(blob);
-  //       console.table({ blobURL: blobUrl });
-  //       const a = document.createElement("a");
-  //       a.download = `genadrop-ai-@${Date.now()}.jpg`;
-  //       a.href = blobUrl;
-  //       a.click();
-  //       a.remove();
-  //     });
-  // };
-  // eslint-disable-next-line no-shadow
-
   const formSubmitHandler = (e) => {
     e.preventDefault();
-
-    console.table({ prompt: promptText, size: imageDimension });
     generateIamgeRequest();
   };
 
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      prompt: promptText,
-      n: 1,
-      size: String(`${imageDimension}x${imageDimension}`),
-    }),
+  const downloadImage = async (e) => {
+    e.preventDefault();
+    dispatch(setOverlay(true));
+
+    const blobUrl = window.URL.createObjectURL(imageBlob);
+    const a = document.createElement("a");
+    a.download = `genadrop-ai-@${Date.now()}.png`;
+    a.href = blobUrl;
+    a.click();
+    a.remove();
+    dispatch(setOverlay(false));
+  };
+
+  const getReqOptions = (data) => {
+    return {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    };
   };
 
   const generateIamgeRequest = async () => {
     if (promptText === "") {
-      alert("Please Enter prompt");
-      dispatch(setNotification({ message: "Please Enter a prompt", type: "error" }));
+      dispatch(
+        setNotification({
+          message: "Please Enter prompt",
+          type: "warning",
+        })
+      );
     } else {
       try {
         dispatch(setOverlay(true));
 
-        await fetch("https://twitter-api-weber77.vercel.app/genImage", requestOptions)
+        await fetch(
+          `${process.env.REACT_APP_TWITTER_BACKEND}genImage`,
+          getReqOptions({
+            prompt: promptText,
+            n: 1,
+            size: String(`${512}x${512}`),
+          })
+        )
           .then(async (response) => {
             if (!response.ok) {
               dispatch(setOverlay(false));
@@ -90,10 +85,19 @@ const AI = () => {
             return response.json();
           })
           .then((data) => {
-            dispatch(setOverlay(false));
             // console.log(data.data.data[0].url);
             // console.log(data.data.data[0].url.headers);
             setImageUrl(data.data.data[0]?.url);
+            fetch(
+              `http://localhost:8081/singleImage`,
+              getReqOptions({
+                uri: data?.data?.data[0].url,
+              })
+            ).then(async (response) => {
+              const blob = await response.blob();
+              setImageBlob(blob);
+              dispatch(setOverlay(false));
+            });
             setGenerated(true);
           });
       } catch (error) {
@@ -102,10 +106,6 @@ const AI = () => {
       }
     }
   };
-
-  // useEffect(() => {
-  //   generateIamgeRequest();
-  // }, []);
 
   const SUGGESTIONS = [
     "Sunset Cliffs",
@@ -127,7 +127,7 @@ const AI = () => {
   };
 
   const aiMintHandler = () => {
-    history.push("/mint/tweet/minter", { data: JSON.stringify(tweets) });
+    history.push("/mint/tweet/minter", { data: JSON.stringify({ image: imageBlob, title: promptText }) });
   };
   return (
     <>
@@ -167,7 +167,7 @@ const AI = () => {
               <ul className={classes.aiPromptSuggestions}>{suggestedPrompts}</ul>
               <section className={classes.artStyleSection}>
                 <h2 className={classes.artStyle}>Art Style</h2>
-                <main className={classes.artStyleList}></main>
+                <main className={classes.artStyleList} />
               </section>
               <button
                 type="submit"
@@ -225,11 +225,7 @@ const AI = () => {
             style={{ backgroundImage: `url(${imageUrl})`, width: imageDimension, height: imageDimension }}
           />
           {generated && (
-            <button
-              type="submit"
-              className={`${classes.wrapper} ${classes.imageDownloadBtn}`}
-              onClick={imageDownloadHandler}
-            >
+            <button type="submit" className={`${classes.wrapper} ${classes.imageDownloadBtn}`} onClick={downloadImage}>
               {downloadStatus ? <Reload /> : <Download />}
               <span>Download</span>
             </button>

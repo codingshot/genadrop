@@ -3,7 +3,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import moment from "moment";
-import TweetEmbed from "react-tweet-embed";
+
 import * as htmlToImage from "html-to-image";
 
 import classes from "./minter.module.css";
@@ -57,6 +57,7 @@ const Minter = () => {
 
   const [state, setState] = useState({
     tweet: "",
+    aiData: "",
     ipfsLink: "",
     ipfsType: "",
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
@@ -99,6 +100,7 @@ const Minter = () => {
 
   const {
     attributes,
+    aiData,
     fileName,
     description,
     chain,
@@ -186,6 +188,13 @@ const Minter = () => {
         attributes: JSON.parse(data).attributes,
         description: tweet.text,
         fileName: tweet?.author_id?.name,
+      });
+    }
+
+    if (params.mintId === "ai") {
+      const { data } = browserLocation?.state;
+      handleSetState({
+        aiData: JSON.parse(data),
       });
     }
 
@@ -719,13 +728,6 @@ const Minter = () => {
                     <IpfsImage ipfsLink={ipfsLink} type={ipfsType} />
                   </div>
                 ) : (
-                  // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
-                  //   <TweetEmbed
-                  //     id={tweet.id}
-                  //     placeholder="loading..."
-                  //     options={{ theme: !tweet.theme ? "dark" : "" }}
-                  //   />
-                  // </div>
                   <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
                     {file &&
                       (file?.length > 1 ? (
@@ -743,7 +745,11 @@ const Minter = () => {
                       ) : audioExtensions.includes(fileExtension) ? (
                         <audio src={URL.createObjectURL(file[0])} className={classes.singleImage} controls muted />
                       ) : (
-                        <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
+                        <img
+                          src={params.mintId !== "ai" ? URL.createObjectURL(file[0]) : aiData.image}
+                          alt=""
+                          className={classes.singleImage}
+                        />
                       ))}
                     {category === "Vibe" && <VibesLogo className={classes.overlayImage} />}
                   </div>
