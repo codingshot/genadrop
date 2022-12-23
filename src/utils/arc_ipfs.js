@@ -115,7 +115,7 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 };
 
 const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink, isAi) => {
-  console.log("II", isIpfsLink, isAi);
+  console.log("II", nftFile, nftFileName, asset, isIpfsLink, isAi);
   const fileCat = isIpfsLink || isAi ? "*" : nftFile.type.split("/")[0];
   const nftFileNameSplit = nftFileName?.split(".");
   const fileExt = nftFileName ? nftFileNameSplit[1] : "png";
@@ -137,6 +137,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink, isAi) => {
     resultFile.IpfsHash = nftFile.split("//")[1];
   } else {
     resultFile = await pinFileToIPFS(pinataApiKey, pinataApiSecret, nftFile, pinataMetadata, pinataOptions);
+    return resultFile;
   }
   const metadata = config.arc3MetadataJSON;
   const integrity = convertIpfsCidV0ToByte32(resultFile.IpfsHash);
@@ -173,7 +174,7 @@ export const connectAndMint = async (file, metadata, imgName, retryTimes, isIpfs
       alert("network error while uploading file");
       throw error;
     }
-    return connectAndMint(file, metadata, imgName, retryTimes - 1, isIpfsLink);
+    return connectAndMint(file, metadata, imgName, retryTimes - 1, isIpfsLink, isAi);
   }
 };
 
@@ -703,7 +704,7 @@ export async function mintSingleToPoly(singleMintProps) {
   if (isSoulBound) {
     return mintSoulBoundPoly(singleMintProps);
   }
-  console.log("XX", isIpfsLink, isAi);
+  // return console.log("XX", isIpfsLink, isAi, metadata);
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -745,6 +746,7 @@ export async function mintSingleToPoly(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
 
   const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  console.log("xxx", asset);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
