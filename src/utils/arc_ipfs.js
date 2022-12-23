@@ -115,6 +115,7 @@ const convertIpfsCidV0ToByte32 = (cid) => {
 };
 
 const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink) => {
+  console.log(isIpfsLink);
   const fileCat = isIpfsLink ? "*" : nftFile.type.split("/")[0];
   const nftFileNameSplit = nftFileName?.split(".");
   const fileExt = nftFileName ? nftFileNameSplit[1] : "png";
@@ -300,12 +301,13 @@ async function signTx(connector, txns, dispatch) {
   return { assetID: assetIds, txId: TxIds };
 }
 export async function mintSingleToAlgo(algoMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = algoMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress, fileName, isIpfsLink } =
+    algoMintProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, 4);
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
@@ -327,7 +329,8 @@ export async function mintSingleToAlgo(algoMintProps) {
 }
 
 export async function mintSingleToNear(nearMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = nearMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress, fileName, isIpfsLink } =
+    nearMintProps;
   const {
     contract: { contractId },
     accounts,
@@ -336,7 +339,7 @@ export async function mintSingleToNear(nearMintProps) {
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, 4);
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
@@ -696,6 +699,7 @@ export async function mintSingleToPoly(singleMintProps) {
   if (isSoulBound) {
     return mintSoulBoundPoly(singleMintProps);
   }
+  console.log("XX", isIpfsLink);
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -735,7 +739,8 @@ export async function mintSingleToPoly(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+
+  const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
