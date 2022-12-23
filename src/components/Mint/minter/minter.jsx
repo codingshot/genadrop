@@ -395,6 +395,8 @@ const Minter = () => {
 
     if (mintId === "ai") {
       singleMintProps.file = aiData.imageBlob;
+      singleMintProps.isIpfsLink = true;
+      singleMintProps.fileName = aiData.title;
     }
 
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
