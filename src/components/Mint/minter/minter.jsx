@@ -498,6 +498,7 @@ const Minter = () => {
           })
         );
       }
+
       if (ipfsLink && ipfsType) {
         singleMintProps.metadata.attributes.push({
           trait_type: "Category",
