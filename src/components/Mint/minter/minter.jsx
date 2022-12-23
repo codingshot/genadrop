@@ -396,7 +396,17 @@ const Minter = () => {
     }
 
     if (mintId === "ai") {
-      singleMintProps.file = aiData.imageBlob;
+      dispatch(setLoader("Getting image"));
+      const response = await fetch(`${process.env.REACT_APP_TWITTER_BACKEND}singleImage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uri: aiData.imageUrl }),
+      });
+
+      singleMintProps.file = await response.blob();
+      dispatch(setLoader(""));
       singleMintProps.isAi = true;
       singleMintProps.fileName = aiData.title;
     }
