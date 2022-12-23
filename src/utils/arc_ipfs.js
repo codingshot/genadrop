@@ -746,7 +746,7 @@ export async function mintSingleToPoly(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
 
   const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
-  console.log("xxx", asset);
+
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
