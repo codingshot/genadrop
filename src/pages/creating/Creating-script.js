@@ -96,7 +96,7 @@ const cards = [
     description: "Create Digital art with AI",
     icon: <Ai />,
     url: "/mint/ai",
-    comingSoon: true,
+    comingSoon: "",
   },
 ];
 export default cards;
