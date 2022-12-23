@@ -60,6 +60,7 @@ const Minter = () => {
     aiData: "",
     ipfsLink: "",
     ipfsType: "",
+
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -156,6 +157,7 @@ const Minter = () => {
     setNotification,
     setClipboard,
     isIpfsLink: false,
+    isAi: false,
     receiverAddress,
     account,
     chainId,
@@ -196,13 +198,13 @@ const Minter = () => {
 
     if (params.mintId === "ai") {
       const { data } = browserLocation?.state;
-      console.log(JSON.parse(data).imageUrl);
 
       handleSetState({
         aiData: JSON.parse(data),
         attributes: JSON.parse(data).attributes,
         mintId: params.mintId,
         fileName: JSON.parse(data).title,
+        isAi: true,
       });
     }
 
@@ -395,7 +397,7 @@ const Minter = () => {
 
     if (mintId === "ai") {
       singleMintProps.file = aiData.imageBlob;
-      singleMintProps.isIpfsLink = true;
+      singleMintProps.isAi = true;
       singleMintProps.fileName = aiData.title;
     }
 
