@@ -1,6 +1,7 @@
 /* eslint-disable no-use-before-define */
 import React, { useState, useEffect, useContext } from "react";
 import { async } from "regenerator-runtime";
+import { useHistory } from "react-router-dom";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
@@ -16,7 +17,8 @@ const AI = () => {
   const { dispatch } = useContext(GenContext);
   const [generated, setGenerated] = useState(false);
   const [imageBlob, setImageBlob] = useState("");
-  const [downloadStatus, setDownloadStatus] = useState(false);
+
+  const history = useHistory();
 
   const handleAiDesc = (e) => {
     setPromptText(e.target.value);
@@ -85,9 +87,8 @@ const AI = () => {
             return response.json();
           })
           .then((data) => {
-            // console.log(data.data.data[0].url);
-            // console.log(data.data.data[0].url.headers);
             setImageUrl(data.data.data[0]?.url);
+            dispatch(setNotification({ message: "Preparing your image", type: "success" }));
             fetch(
               `${process.env.REACT_APP_TWITTER_BACKEND}singleImage`,
               getReqOptions({
@@ -97,6 +98,7 @@ const AI = () => {
               const blob = await response.blob();
               setImageBlob(blob);
               dispatch(setOverlay(false));
+              dispatch(setNotification({ message: "Ready to mint", type: "success" }));
             });
             setGenerated(true);
           });
@@ -117,7 +119,14 @@ const AI = () => {
   ];
 
   const suggestedPrompts = SUGGESTIONS.map((item, id) => (
-    <li id={id} className={classes.suggestionItem} onClick={() => setPromptText(item)}>
+    <li
+      id={id}
+      className={classes.suggestionItem}
+      onClick={() => {
+        setPromptText(item);
+        setWordCount(String(item.length));
+      }}
+    >
       {item}
     </li>
   ));
@@ -127,7 +136,16 @@ const AI = () => {
   };
 
   const aiMintHandler = () => {
-    history.push("/mint/tweet/minter", { data: JSON.stringify({ image: imageBlob, title: promptText }) });
+    const aiData = {
+      image: imageBlob,
+      title: promptText,
+      imageUrl,
+      attributes: {
+        0: { trait_type: "File Type", value: "PNG" },
+        1: { trait_type: "Category", value: "AI" },
+      },
+    };
+    history.push("/mint/ai/minter", { data: JSON.stringify(aiData) });
   };
   return (
     <>
@@ -184,6 +202,7 @@ const AI = () => {
               type="submit"
               className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
               style={{ margin: "1em 0.5em" }}
+              onClick={aiMintHandler}
             >
               Mint
             </button>
@@ -226,7 +245,7 @@ const AI = () => {
           />
           {generated && (
             <button type="submit" className={`${classes.wrapper} ${classes.imageDownloadBtn}`} onClick={downloadImage}>
-              {downloadStatus ? <Reload /> : <Download />}
+              <Download />
               <span>Download</span>
             </button>
           )}
