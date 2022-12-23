@@ -301,12 +301,13 @@ async function signTx(connector, txns, dispatch) {
   return { assetID: assetIds, txId: TxIds };
 }
 export async function mintSingleToAlgo(algoMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = algoMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
+    algoMintProps;
   initAlgoClients(mainnet);
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, 4);
+    const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
@@ -328,7 +329,8 @@ export async function mintSingleToAlgo(algoMintProps) {
 }
 
 export async function mintSingleToNear(nearMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress } = nearMintProps;
+  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
+    nearMintProps;
   const {
     contract: { contractId },
     accounts,
@@ -337,7 +339,7 @@ export async function mintSingleToNear(nearMintProps) {
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, file.name, 4);
+    const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
@@ -421,6 +423,7 @@ export async function mintSoulBoundPoly(mintprops) {
     mainnet,
     receiverAddress,
     isIpfsLink,
+    isAi,
     fileName,
     isSoulBound,
   } = mintprops;
@@ -428,7 +431,7 @@ export async function mintSoulBoundPoly(mintprops) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -465,7 +468,7 @@ export async function mintSoulBoundPoly(mintprops) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, dispatch, isAi);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -512,6 +515,7 @@ export async function mintSoulBoundAvax(mintprops) {
     mainnet,
     receiverAddress,
     isIpfsLink,
+    isAi,
     fileName,
     isSoulBound,
   } = mintprops;
@@ -519,7 +523,7 @@ export async function mintSoulBoundAvax(mintprops) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -555,7 +559,7 @@ export async function mintSoulBoundAvax(mintprops) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, dispatch, isAi);
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -600,6 +604,7 @@ export async function mintSoulBoundCelo(mintprops) {
     mainnet,
     receiverAddress,
     isIpfsLink,
+    isAi,
     fileName,
     isSoulBound,
   } = mintprops;
@@ -607,7 +612,7 @@ export async function mintSoulBoundCelo(mintprops) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
       mainnet
@@ -644,7 +649,7 @@ export async function mintSoulBoundCelo(mintprops) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, file.name, dispatch);
+  const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, dispatch, isAi);
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -706,7 +711,7 @@ export async function mintSingleToPoly(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -795,8 +800,9 @@ export async function mintSingleToCelo(singleMintProps) {
     setLoader,
     mainnet,
     receiverAddress,
-    fileName,
     isIpfsLink,
+    isAi,
+    fileName,
     isSoulBound,
   } = singleMintProps;
   if (isSoulBound) {
@@ -806,7 +812,7 @@ export async function mintSingleToCelo(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -843,7 +849,7 @@ export async function mintSingleToCelo(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -889,8 +895,9 @@ export async function mintSingleToAvax(singleMintProps) {
     setLoader,
     mainnet,
     receiverAddress,
-    fileName,
     isIpfsLink,
+    isAi,
+    fileName,
     isSoulBound,
   } = singleMintProps;
   if (isSoulBound) {
@@ -900,7 +907,7 @@ export async function mintSingleToAvax(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -937,7 +944,7 @@ export async function mintSingleToAvax(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -974,12 +981,13 @@ export async function mintSingleToAurora(singleMintProps) {
     setLoader,
     mainnet,
     receiverAddress,
-    fileName,
     isIpfsLink,
+    isAi,
+    fileName,
   } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1026,12 +1034,13 @@ export async function mintSingleToAbitrum(singleMintProps) {
     setLoader,
     mainnet,
     receiverAddress,
-    fileName,
     isIpfsLink,
+    isAi,
+    fileName,
   } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1069,12 +1078,13 @@ export async function mintSingleToOptimism(singleMintProps) {
     setLoader,
     mainnet,
     receiverAddress,
-    fileName,
     isIpfsLink,
+    isAi,
+    fileName,
   } = singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
+  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
