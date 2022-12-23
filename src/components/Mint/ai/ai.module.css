@@ -1,0 +1,231 @@
+.wrapper {
+  border: 1px solid var(--card-outline);
+  border-radius: 0.5em;
+  padding: 1em;
+}
+.aiPageNav {
+  display: flex;
+  align-items: center;
+  width: 100vw;
+  margin: 3em 0 -2em -6em;
+  max-width: 1080px;
+  justify-content: center;
+}
+.aiPageNavMain {
+  display: flex;
+  column-gap: 1em;
+  width: 50%;
+  align-items: center;
+  align-content: center;
+}
+.aiPageNavMain:hover {
+  cursor: pointer;
+}
+.aiPageNavBackArrow {
+  height: 24px;
+  width: 24px;
+}
+.aiPageNavMain > span {
+  white-space: nowrap;
+  flex: 1;
+  font-size: 16px;
+}
+.aiMain {
+  display: grid;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 4em 0px;
+  align-items: center;
+  --auto-grid-min-size: 26rem;
+}
+
+.aiMain > * {
+  max-width: 400px;
+}
+
+.aiMain > * + * {
+  margin-top: 1rem;
+}
+
+@supports (display: grid) {
+  .aiMain {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size), 2fr));
+    gap: 1.5rem;
+    padding: 4em 2em;
+    margin: 0 auto;
+  }
+
+  .aiMain > * {
+    max-width: unset;
+  }
+
+  .aiMain > * + * {
+    margin-top: unset;
+  }
+}
+
+.aiLeft {
+  flex: 3;
+  align-items: center;
+  justify-content: center;
+}
+
+.aiTextInput {
+  outline: none;
+  box-shadow: 8px 8px 18px rgba(93, 134, 194, 0.08);
+}
+
+.aiTextInput:active,
+.aiTextInput:hover,
+.aiTextInput:focus {
+  border: 1px solid var(--main-color);
+}
+
+.promptForm {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1em;
+  width: 100%;
+}
+
+.promptFormTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.promptFormTop > h2 {
+  color: var(--text-heading);
+  font-weight: 500;
+}
+.artStyleSection {
+  display: none;
+}
+.aiPromptSuggestions {
+  display: flex;
+  overflow-x: scroll;
+  padding: 0.5em 1em 2em 0;
+  flex-wrap: nowrap;
+  column-gap: 1em;
+  align-items: center;
+}
+.suggestionItem {
+  background-color: #e2e4e8;
+  border-radius: 3em;
+  color: var(--text-heading);
+  text-align: center;
+  white-space: nowrap;
+  padding: 0.6em 1.5em;
+  width: fit-content;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.createImageBtn {
+  display: flex;
+  font-size: 24px;
+  color: #fff;
+  border: transparent;
+  padding: 0.5em 1em;
+  border: none;
+  margin: 0 auto;
+  background-color: var(--main-color);
+}
+.createImageBtn_inactive {
+  border: transparent;
+  opacity: 34%;
+  cursor: not-allowed;
+}
+
+.createImageBtn_active {
+  opacity: 100%;
+  outline: none;
+}
+
+.previewSizeForm {
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  align-items: center;
+  align-content: center;
+}
+.imageSizeSection,
+.sizesMain,
+.imageSizeSection > label {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 10px;
+}
+.imageSizeSection {
+  margin: 1em 0;
+  display: flex;
+  color: var(--text-light);
+}
+.sizesMain {
+  column-gap: 0.6em;
+}
+
+.aiPreviewHeading {
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: 24px;
+  padding-right: 1em;
+}
+
+.sizeLabel,
+.sizeInWrapper {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+}
+.sizeLabel {
+  align-items: center;
+  column-gap: 0.6em;
+}
+.sizeInWrapper {
+  padding: 0.3em 0.4em;
+  border: 1px solid var(--card-outline);
+  border-radius: 0.5em;
+  width: 57px;
+}
+.sizeInWrapper span {
+  border-left: 1px solid var(--card-outline);
+  padding: 0 0.4em;
+  font-weight: 600;
+}
+.sizeInput {
+  border: none;
+  width: 30px;
+  outline: none;
+  font-size: 10px;
+  color: var(--text-light);
+}
+.artPreview {
+  background-color: #d3d9eb;
+  border-radius: 0.5em;
+  height: 60vh;
+  width: 100%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.imageDownloadBtn {
+  display: flex;
+  align-items: center;
+  background-color: #eff3f9;
+  justify-content: center;
+  align-self: center;
+  margin: 10px auto;
+  column-gap: 0.6em;
+  padding: 0.4em 0.8em;
+  font-size: 16px;
+  color: #0f1d40;
+  border: transparent;
+}
+.imageDownloadBtn:first-child {
+  height: 10px;
+  width: 10px;
+}

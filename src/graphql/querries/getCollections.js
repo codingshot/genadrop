@@ -355,8 +355,8 @@ const auroraAddress =
 
 const auroraSoulBoundAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
-    ? ethers.utils.hexlify(process.env?.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS)
-    : ethers.utils.hexlify(process.env?.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS);
+    ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS)
+    : ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS);
 
 export const GET_AURORA_SINGLE_NFTS = gql`
   query MyQuery {
@@ -396,7 +396,7 @@ query MyQuery {
     tokenIPFSPath
   }
 }
-`
+`;
 
 const polygonAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
@@ -441,7 +441,7 @@ query MyQuery {
     tokenIPFSPath
   }
 }
-`
+`;
 
 const celoAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
@@ -484,7 +484,7 @@ query MyQuery {
     tokenIPFSPath
   }
 }
-`
+`;
 
 export const GET_NEAR_SINGLE_NFTS = gql`
   query MyQuery {
