@@ -114,9 +114,8 @@ const convertIpfsCidV0ToByte32 = (cid) => {
   return { base64, hex, buffer };
 };
 
-const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink, isAi) => {
-  // return console.log("MMM", nftFile, nftFileName, asset, isIpfsLink, isAi);
-  const fileCat = isIpfsLink || isAi ? "*" : nftFile.type.split("/")[0];
+const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink) => {
+  const fileCat = isIpfsLink ? "*" : nftFile.type.split("/")[0];
   const nftFileNameSplit = nftFileName?.split(".");
   const fileExt = nftFileName ? nftFileNameSplit[1] : "png";
 
@@ -163,17 +162,17 @@ const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink, isAi) => {
   };
 };
 
-export const connectAndMint = async (file, metadata, imgName, retryTimes, isIpfsLink, isAi) => {
+export const connectAndMint = async (file, metadata, imgName, retryTimes, isIpfsLink) => {
   try {
     await pinata.testAuthentication();
-    return await uploadToIpfs(file, imgName, metadata, isIpfsLink, isAi);
+    return await uploadToIpfs(file, imgName, metadata, isIpfsLink);
   } catch (error) {
     console.error(error);
     if (retryTimes === 1) {
       alert("network error while uploading file");
       throw error;
     }
-    return connectAndMint(file, metadata, imgName, retryTimes - 1, isIpfsLink, isAi);
+    return connectAndMint(file, metadata, imgName, retryTimes - 1, isIpfsLink);
   }
 };
 
@@ -691,22 +690,17 @@ export async function mintSingleToPoly(singleMintProps) {
     mainnet,
     receiverAddress,
     isIpfsLink,
-    isAi,
     fileName,
     isSoulBound,
   } = singleMintProps;
-
-  console.log(isAi, isIpfsLink, file);
-
   if (isSoulBound) {
     return mintSoulBoundPoly(singleMintProps);
   }
-
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink);
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink);
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -741,7 +735,7 @@ export async function mintSingleToPoly(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const asset = await connectAndMint(file, metadata, file.name, dispatch);
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -3021,7 +3015,7 @@ export async function purchaseCeloNfts(buyProps) {
     );
   }
   let wallet;
-  let chainId;
+  let chainId
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
