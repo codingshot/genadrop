@@ -448,7 +448,7 @@ export const getCeloGraphNft = async (collection) => {
     nftArr.isListed = collection?.isListed;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
-    nftArr.isSoulBound = collection?.isSoulBound;
+    nftArr.isSoulBound = collection?.isSoulBound
     nftArr.sold = collection?.isSold;
     nftArr.description = data?.description;
     nftObj.contractAddress = collection?.id?.split(collection?.tokenID)[0];
@@ -558,7 +558,7 @@ export const getSingleGraphNfts = async (nfts, address) => {
           nftObj.name = data?.name;
           nftObj.isSoulBound = NFT?.isSoulBound;
           nftObj.collectionId = NFT?.collection?.id;
-          nftObj.address = address;
+          nftObj.address = address
           nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
