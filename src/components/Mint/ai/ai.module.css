@@ -133,12 +133,12 @@
 }
 .createImageBtn_inactive {
   border: transparent;
-  opacity: 34%;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
 .createImageBtn_active {
-  opacity: 100%;
+  opacity: 1;
   outline: none;
 }
 
