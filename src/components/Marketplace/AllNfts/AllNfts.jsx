@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import moment from "moment/moment";
+import Skeleton from "react-loading-skeleton";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
@@ -27,7 +28,6 @@ import {
   getAllPolygonCollections,
   getAllPolygonNfts,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
-import Skeleton from "react-loading-skeleton";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -58,6 +58,7 @@ const AllNfts = () => {
     "Video",
     "Audio",
     "Tweet",
+    "AI",
   ];
   const type = {
     T1: newest,

@@ -14,6 +14,13 @@ import { ReactComponent as Tweets } from "../../assets/create/tweets-icon.svg";
 
 const cards = [
   {
+    title: "AI",
+    description: "Create Digital art with AI",
+    icon: <Ai />,
+    url: "/mint/ai",
+    comingSoon: "",
+  },
+  {
     title: "Collection",
     description: "Import arts into layers",
     icon: <Collection />,
@@ -91,12 +98,5 @@ const cards = [
   //   url: "/mint/ipfs",
   //   comingSoon: "",
   // },
-  {
-    title: "AI",
-    description: "Create Digital art with AI",
-    icon: <Ai />,
-    url: "/mint/ai",
-    comingSoon: true,
-  },
 ];
 export default cards;
