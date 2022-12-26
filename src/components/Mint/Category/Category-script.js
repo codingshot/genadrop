@@ -11,7 +11,6 @@ import { ReactComponent as Audio } from "../../../assets/create/MusicNotes.svg";
 import { ReactComponent as Video } from "../../../assets/create/MintVideos.svg";
 import { ReactComponent as Tweets } from "../../../assets/create/tweets-icon.svg";
 import { ReactComponent as Ipfs } from "../../../assets/create/ipfsIcon.svg";
-import { ReactComponent as Ai } from "../../../assets/create/ai-icon.svg";
 
 const cards = [
   {
@@ -63,13 +62,13 @@ const cards = [
     value: "Shorts",
     url: "/mint/video",
   },
-  {
-    title: "AI Art",
-    description: "Create Digital art with AI",
-    icon: <Ai />,
-    value: "ai",
-    url: "/mint/ai",
-  },
+  //  {
+  //   title: "AI",
+  //   description: "Create Digital art with AI",
+  //   icon: <Ai />,
+  //   url: "/mint/ai",
+
+  // },
   {
     title: "Tweets",
     description: "Mint your favorite tweets on chain",
