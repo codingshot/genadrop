@@ -711,7 +711,7 @@ export async function mintSingleToPoly(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
