@@ -3,7 +3,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
 
 import moment from "moment";
-
+import TweetEmbed from "react-tweet-embed";
 import * as htmlToImage from "html-to-image";
 
 import classes from "./minter.module.css";
@@ -57,10 +57,8 @@ const Minter = () => {
 
   const [state, setState] = useState({
     tweet: "",
-    aiData: "",
     ipfsLink: "",
     ipfsType: "",
-
     attributes: file?.length === 1 && metadata?.attributes ? metadata.attributes : {},
     category: metadata?.category ? metadata?.category : "",
     fileName: minter?.fileName,
@@ -97,12 +95,10 @@ const Minter = () => {
     header: "",
     hashtags: false,
     mentions: false,
-    mintId: "",
   });
 
   const {
     attributes,
-    aiData,
     fileName,
     description,
     chain,
@@ -132,7 +128,6 @@ const Minter = () => {
     header,
     hashtags,
     mentions,
-    mintId,
   } = state;
 
   const mintProps = {
@@ -157,7 +152,6 @@ const Minter = () => {
     setNotification,
     setClipboard,
     isIpfsLink: false,
-    isAi: false,
     receiverAddress,
     account,
     chainId,
@@ -192,25 +186,12 @@ const Minter = () => {
         attributes: JSON.parse(data).attributes,
         description: tweet.text,
         fileName: tweet?.author_id?.name,
-        mintId: params.mintId,
-      });
-    }
-
-    if (params.mintId === "ai") {
-      const { data } = browserLocation?.state;
-
-      handleSetState({
-        aiData: JSON.parse(data),
-        attributes: JSON.parse(data).attributes,
-        mintId: params.mintId,
-        fileName: JSON.parse(data).title,
-        isAi: true,
       });
     }
 
     if (params.mintId === "ipfs") {
       const { data, type } = browserLocation.state;
-      handleSetState({ ipfsLink: data, ipfsType: type, mintId: params.mintId });
+      handleSetState({ ipfsLink: data, ipfsType: type });
     }
 
     handleSetState({
@@ -222,7 +203,6 @@ const Minter = () => {
           (card.value === "video" && params.mintId === "Video File" && !category) ||
           (card.value === "tweet" && params.mintId === "tweet" && !category) ||
           (card.value === "ipfs" && params.mintId === "ipfs" && !category) ||
-          (card.value === "ai" && params.mintId === "ai" && !category) ||
           (card.value === "Art" &&
             file?.length === 1 &&
             !category &&
@@ -253,8 +233,6 @@ const Minter = () => {
       handleSetState({ description: tweet.text });
     } else if (params.mintId === "ipfs") {
       const { uploadType } = browserLocation.state;
-    } else if (params.mintId == "ai") {
-      return;
     } else {
       if (!loadedMinter) {
         return history.push("/create");
@@ -395,22 +373,6 @@ const Minter = () => {
       singleMintProps.file = await htmlToImage.toBlob(tweetRef.current);
     }
 
-    if (mintId === "ai") {
-      dispatch(setLoader("Getting image"));
-      const response = await fetch(`${process.env.REACT_APP_TWITTER_BACKEND}singleImage`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ uri: aiData.imageUrl }),
-      });
-
-      singleMintProps.file = await response.blob();
-      dispatch(setLoader(""));
-      singleMintProps.isAi = true;
-      singleMintProps.fileName = aiData.title;
-    }
-
     if (!(window.localStorage.walletconnect || chainId)) return initConnectWallet({ dispatch });
 
     if (!chainId) {
@@ -498,7 +460,6 @@ const Minter = () => {
           })
         );
       }
-
       if (ipfsLink && ipfsType) {
         singleMintProps.metadata.attributes.push({
           trait_type: "Category",
@@ -674,9 +635,6 @@ const Minter = () => {
     }
   }
 
-  const error = (err) => {
-    dispatch(setNotification({ message: "couldn't get location", type: "error" }));
-  };
   const getLocation = () => navigator.geolocation.getCurrentPosition(success, error, options);
   const details = navigator?.userAgent;
 
@@ -741,7 +699,7 @@ const Minter = () => {
             <div className={classes.headerDescription}>
               Upload an{" "}
               <span>
-                {mintId}
+                {params.mintId}
                 <BorderIcon />
               </span>{" "}
               to create a proof of sesh NFTs <br />
@@ -761,11 +719,15 @@ const Minter = () => {
                     <IpfsImage ipfsLink={ipfsLink} type={ipfsType} />
                   </div>
                 ) : (
+                  // <div className={classes.tweet} ref={tweetRef} crossOrigin="anonymous">
+                  //   <TweetEmbed
+                  //     id={tweet.id}
+                  //     placeholder="loading..."
+                  //     options={{ theme: !tweet.theme ? "dark" : "" }}
+                  //   />
+                  // </div>
                   <div className={`${classes.imageContainers} ${file?.length > 1 && classes._}`}>
-                    {mintId === "ai" ? (
-                      <img src={aiData.imageUrl} alt="" className={classes.singleImage} />
-                    ) : (
-                      file &&
+                    {file &&
                       (file?.length > 1 ? (
                         file
                           .filter((_, idx) => idx < 3)
@@ -781,13 +743,8 @@ const Minter = () => {
                       ) : audioExtensions.includes(fileExtension) ? (
                         <audio src={URL.createObjectURL(file[0])} className={classes.singleImage} controls muted />
                       ) : (
-                        <img
-                          src={mintId !== "ai" ? URL.createObjectURL(file[0]) : aiData.imageUrl}
-                          alt=""
-                          className={classes.singleImage}
-                        />
-                      ))
-                    )}
+                        <img src={URL.createObjectURL(file[0])} alt="" className={classes.singleImage} />
+                      ))}
                     {category === "Vibe" && <VibesLogo className={classes.overlayImage} />}
                   </div>
                 )}
@@ -798,8 +755,6 @@ const Minter = () => {
                       <span>
                         {tweet
                           ? `${tweet.author_id.username + moment(tweet.created_at).format(" hh:mm a · MM Do, YYYY")}`
-                          : mintId === "ai"
-                          ? fileName
                           : fName}
                       </span>
                     </div>
@@ -937,16 +892,14 @@ const Minter = () => {
                       >
                         {category ? (
                           <div className={classes.chainLabel}>{category}</div>
-                        ) : mintId === "Audio File" || ipfsType === "Audio" ? (
+                        ) : params.mintId === "Audio File" || ipfsType === "Audio" ? (
                           <div className={classes.chainLabel}>Audio</div>
-                        ) : mintId === "Video File" || ipfsType === "Video" ? (
+                        ) : params.mintId === "Video File" || ipfsType === "Video" ? (
                           <div className={classes.chainLabel}>Video</div>
-                        ) : mintId === "ai" ? (
-                          <div className={classes.chainLabel}>Mint Art</div>
                         ) : (
                           <span>Select Category</span>
                         )}
-                        {!metadata?.category && mintId !== "Audio File" && mintId !== "Video File" && (
+                        {!metadata?.category && params.mintId !== "Audio File" && params.mintId !== "Video File" && (
                           <DropdownIcon className={classes.dropdownIcon} />
                         )}
                       </div>
