@@ -213,7 +213,7 @@ const AI = () => {
                 style={{ margin: "1em 0.5em" }}
                 onClick={generateIamgeRequest}
               >
-                Regenarate
+                Regenerate
               </button>
             </div>
           )}
