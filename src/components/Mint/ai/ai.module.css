@@ -230,6 +230,9 @@
   width: 10px;
 }
 
+.mintBtns {
+  display: flex;
+}
 @media screen and (max-width: 768px) {
   .wrapper {
     width: 20em;
