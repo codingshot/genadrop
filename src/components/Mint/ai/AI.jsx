@@ -198,14 +198,24 @@ const AI = () => {
             </form>
           )}
           {generated && (
-            <button
-              type="submit"
-              className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
-              style={{ margin: "1em 0.5em" }}
-              onClick={aiMintHandler}
-            >
-              Mint
-            </button>
+            <div className={classes.mintBtns}>
+              <button
+                type="submit"
+                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                style={{ margin: "1em 0.5em" }}
+                onClick={aiMintHandler}
+              >
+                Mint
+              </button>
+              <button
+                type="submit"
+                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                style={{ margin: "1em 0.5em" }}
+                onClick={generateIamgeRequest}
+              >
+                Regenarate
+              </button>
+            </div>
           )}
         </section>
         <form className={classes.previewSizeForm}>
