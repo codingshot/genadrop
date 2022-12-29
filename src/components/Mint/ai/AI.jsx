@@ -8,6 +8,13 @@ import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-relo
 import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
+import cartonist from "../../../assets/ai-art-style/cartoonist.png";
+import paint from "../../../assets/ai-art-style/paint.png";
+import retrofuturism from "../../../assets/ai-art-style/retrofuturism.png";
+import surreal from "../../../assets/ai-art-style/surreal.png";
+import throwback from "../../../assets/ai-art-style/throwback.png";
+import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
+import { indexOf } from "lodash";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -17,6 +24,7 @@ const AI = () => {
   const { dispatch } = useContext(GenContext);
   const [generated, setGenerated] = useState(false);
   const [imageBlob, setImageBlob] = useState("");
+  // const [isStyleSelected, setIsStyleSelected] = useState(false);
 
   const history = useHistory();
 
@@ -118,6 +126,34 @@ const AI = () => {
     "Cat on Bycicle",
   ];
 
+  const artStyles = [
+    { styleImage: NotIcon, styleName: "No Style" },
+    { styleImage: surreal, styleName: "Surreal" },
+    { styleImage: paint, styleName: "Painting" },
+    { styleImage: retrofuturism, styleName: "Retro-futuristic" },
+    { styleImage: throwback, styleName: "Throw back" },
+    { styleImage: cartonist, styleName: "Cartoonist" },
+  ];
+
+  // const artStyleClickHandler = () => {
+  //   setIsStyleSelected(true);
+  //   alert("clicked here");
+  // };
+
+  const artStyleList = artStyles.map((artStyle, key) => {
+    return (
+      <span className={classes.artIndStyle}>
+        <img
+          alt={artStyle.styleName}
+          src={artStyle.styleImage}
+          className={`${classes.artStyle} ${key === 0 && classes.noArtStyle}`}
+          // onClick={artStyleClickHandler}
+          key={indexOf}
+        />
+        <p>{artStyle.styleName}</p>
+      </span>
+    );
+  });
   const suggestedPrompts = SUGGESTIONS.map((item, id) => (
     <li
       id={id}
@@ -158,7 +194,7 @@ const AI = () => {
         </nav>
       )}
       <main className={classes.aiMain}>
-        <section className={classes.wrapper || classes.aiLeft}>
+        <section className={`${classes.wrapper} ${classes.aiLeft}`}>
           {generated ? (
             <div className={classes.successPart}>
               <h2 className={classes.successPartHeading}>Mint Image</h2>
@@ -184,8 +220,8 @@ const AI = () => {
               />
               <ul className={classes.aiPromptSuggestions}>{suggestedPrompts}</ul>
               <section className={classes.artStyleSection}>
-                <h2 className={classes.artStyle}>Art Style</h2>
-                <main className={classes.artStyleList} />
+                <h2 className={classes.artStyleTitle}>Art Style</h2>
+                <main className={classes.artStyleList}>{artStyleList}</main>
               </section>
               <button
                 type="submit"
