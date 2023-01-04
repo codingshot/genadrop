@@ -128,11 +128,12 @@
   flex-flow: column nowrap;
   -ms-flex-flow: column nowrap;
   text-align: center;
+  position: relative;
 }
 
 .artStyle {
-  /* width: 33.33%; */
-  /* height: 128px; */
+  width: 150px;
+  height: 128px;
   object-fit: cover;
   /* flex: 0.23; */
   cursor: pointer;
@@ -140,20 +141,45 @@
   border: 4px solid rgba(255, 255, 255, 0);
   overflow: hidden;
   box-shadow: 8px 8px 18px rgba(93, 134, 194, 0.08);
+  /* background-color: #0f1d40; */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-blend-mode: darken;
+}
+.comingSoonSection {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+.comingSoon {
+  opacity: 0.2;
 }
 
+.comingSoonText {
+  position: absolute;
+  z-index: 20;
+  top: 40%;
+  color: var(--error-500);
+  cursor: not-allowed;
+}
 .artStyle::after,
 .artStyle:active,
 .artStyle:focus {
   border: 4px solid var(--main-color);
 }
+
+.artStyle:hover {
+  cursor: not-allowed;
+}
 .noArtStyle {
   background-color: #fff;
-  height: 128px;
-  width: 149px;
+  /* height: 128px; */
+  /* width: 149px; */
   padding: 46.12px 46.12px;
   border: 1px solid var(--card-outline);
-  object-fit: contain;
+  /* object-fit: contain; */
+  background-size: contain;
 }
 .aiPromptSuggestions {
   display: flex;

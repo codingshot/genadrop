@@ -25,6 +25,7 @@ const AI = () => {
   const [generated, setGenerated] = useState(false);
   const [imageBlob, setImageBlob] = useState("");
   // const [isStyleSelected, setIsStyleSelected] = useState(false);
+  const [comingSoon, setComingSoon] = useState(true);
 
   const history = useHistory();
 
@@ -143,14 +144,24 @@ const AI = () => {
   const artStyleList = artStyles.map((artStyle, key) => {
     return (
       <span className={classes.artIndStyle}>
-        <img
-          alt={artStyle.styleName}
+        <div className={classes.comingSoonSection}>
+          <span
+            style={{ backgroundImage: `url(${artStyle.styleImage})` }}
+            key={indexOf}
+            className={`${classes.artStyle} ${key === 0 && classes.noArtStyle} ${classes.comingSoon}`}
+            // onClick={artStyleClickHandler}
+          >
+            {" "}
+          </span>
+        </div>
+        {comingSoon && <span className={`${classes.comingSoonText}`}>Coming Soon</span>}
+        {/* <img
           src={artStyle.styleImage}
-          className={`${classes.artStyle} ${key === 0 && classes.noArtStyle}`}
-          // onClick={artStyleClickHandler}
+          alt={artStyle.styleName}
           key={indexOf}
-        />
-        <p>{artStyle.styleName}</p>
+          className={`${classes.artStyle} ${key === 0 && classes.noArtStyle}`}
+        /> */}
+        <p className={classes.comingSoon}>{artStyle.styleName}</p>
       </span>
     );
   });
