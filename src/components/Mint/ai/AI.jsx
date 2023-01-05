@@ -262,7 +262,6 @@ const AI = () => {
           )}
         </section>
         <section className={classes.peviewSizeSection}>
-          {/* {!generated && <p className={classes.successMessage}>Successfully generated image!</p>} */}
           <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
             {generated ? (
               <button
