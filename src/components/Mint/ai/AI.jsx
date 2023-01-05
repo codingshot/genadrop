@@ -25,7 +25,7 @@ const AI = () => {
   const [generated, setGenerated] = useState(false);
   const [imageBlob, setImageBlob] = useState("");
   // const [isStyleSelected, setIsStyleSelected] = useState(false);
-  const [comingSoon, setComingSoon] = useState(true);
+  const [comingSoon, setComingSoon] = useState(false);
 
   const history = useHistory();
 
@@ -141,27 +141,26 @@ const AI = () => {
   //   alert("clicked here");
   // };
 
+  useEffect(() => {
+    setComingSoon(true);
+  }, []);
+
   const artStyleList = artStyles.map((artStyle, key) => {
     return (
       <span className={classes.artIndStyle}>
-        <div className={classes.comingSoonSection}>
-          <span
-            style={{ backgroundImage: `url(${artStyle.styleImage})` }}
-            key={indexOf}
-            className={`${classes.artStyle} ${key === 0 && classes.noArtStyle} ${classes.comingSoon}`}
-            // onClick={artStyleClickHandler}
-          >
-            {" "}
-          </span>
+        <div className={classes.artStyleArea}>
+          <img
+            src={artStyle.styleImage}
+            alt={artStyle.styleName}
+            className={`${classes.artStyle} ${key === 0 && classes.noArtStyle} ${comingSoon && classes.lowBrightness}`}
+          />
+          {comingSoon && (
+            <div className={classes.comingSoonOverlay}>
+              <span className={`${classes.comingSoonText}`}>Coming Soon</span>
+            </div>
+          )}
         </div>
-        {comingSoon && <span className={`${classes.comingSoonText}`}>Coming Soon</span>}
-        {/* <img
-          src={artStyle.styleImage}
-          alt={artStyle.styleName}
-          key={indexOf}
-          className={`${classes.artStyle} ${key === 0 && classes.noArtStyle}`}
-        /> */}
-        <p className={classes.comingSoon}>{artStyle.styleName}</p>
+        <p className={`${comingSoon && classes.comingSoon}`}>{artStyle.styleName}</p>
       </span>
     );
   });

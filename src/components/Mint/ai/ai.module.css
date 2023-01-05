@@ -132,8 +132,8 @@
 }
 
 .artStyle {
-  width: 150px;
-  height: 128px;
+  width: inherit;
+  height: inherit;
   object-fit: cover;
   /* flex: 0.23; */
   cursor: pointer;
@@ -141,36 +141,47 @@
   border: 4px solid rgba(255, 255, 255, 0);
   overflow: hidden;
   box-shadow: 8px 8px 18px rgba(93, 134, 194, 0.08);
-  /* background-color: #0f1d40; */
   background-repeat: no-repeat;
   background-position: center;
   background-blend-mode: darken;
 }
-.comingSoonSection {
+.lowBrightness {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  border: none;
+}
+.artStyleArea {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.comingSoonOverlay {
   display: flex;
   align-items: center;
-  text-align: center;
   justify-content: center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  width: inherit;
+  height: inherit;
+  cursor: not-allowed;
 }
 .comingSoon {
-  opacity: 0.2;
+  opacity: 0.4;
 }
 
 .comingSoonText {
-  position: absolute;
-  z-index: 20;
-  top: 40%;
   color: var(--error-500);
   cursor: not-allowed;
+  font-weight: 500;
 }
-.artStyle::after,
-.artStyle:active,
-.artStyle:focus {
-  border: 4px solid var(--main-color);
-}
-
 .artStyle:hover {
-  cursor: not-allowed;
+  border: 4px solid var(--main-color);
 }
 .noArtStyle {
   background-color: #fff;
@@ -178,8 +189,10 @@
   /* width: 149px; */
   padding: 46.12px 46.12px;
   border: 1px solid var(--card-outline);
-  /* object-fit: contain; */
-  background-size: contain;
+  object-fit: contain;
+}
+.noArtStyle:hover {
+  border: 1px solid var(--main-color);
 }
 .aiPromptSuggestions {
   display: flex;
