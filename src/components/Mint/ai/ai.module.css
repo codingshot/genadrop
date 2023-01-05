@@ -69,12 +69,15 @@
 }
 
 .aiLeft {
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 30px 68px;
   width: 50vw;
   border: transparent;
   flex: 1;
+  flex-flow: column nowrap;
+  align-items: center;
 }
 
 .aiTextInput {
@@ -121,15 +124,19 @@
   display: flex;
   gap: 0.3em;
   flex-flow: row wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
   overflow-y: scroll;
   width: 100%;
   height: 360px;
+  padding: 1rem 1rem 0 0;
+  align-items: center;
+  margin: 0 auto;
 }
 
 .artIndStyle {
   display: flex;
   align-items: center;
+  align-self: center;
   flex-flow: column nowrap;
   -ms-flex-flow: column nowrap;
   text-align: center;
@@ -159,7 +166,8 @@
   width: 150px;
   height: 150px;
   border-radius: 14px;
-  overflow: hidden;
+  /* overflow: hidden; */
+  flex: 1;
 }
 .comingSoonOverlay {
   display: flex;
@@ -174,6 +182,7 @@
   width: inherit;
   height: inherit;
   cursor: not-allowed;
+  border-radius: 14px;
 }
 .comingSoon {
   opacity: 0.4;
@@ -205,9 +214,11 @@
   overflow-y: scroll;
   padding: 0.5em 1em 2em 0;
   flex-wrap: wrap;
-  gap: 1em;
-  align-items: center !important;
-  align-content: center;
+  gap: 1.5em;
+  align-items: center;
+  justify-content: space-between;
+  align-content: flex-start;
+  width: 100%;
 }
 .suggestionItem {
   display: flex;
@@ -223,7 +234,8 @@
   height: 52px;
   font-size: 14px;
   gap: 58px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
+  flex-grow: 1;
 }
 
 .suggestionItem svg {
@@ -242,6 +254,7 @@
   border: none;
   background-color: var(--main-color);
   align-self: flex-start;
+  border: 2px solid var(--main-color);
 }
 .createImageBtn_inactive {
   border: transparent;
@@ -267,6 +280,7 @@
 
 .createImageBtn_active:hover {
   background-color: var(--main-hovered);
+  border-color: var(--main-hovered);
 }
 
 .peviewSizeSection {
@@ -321,11 +335,25 @@
 .downloadText {
   color: var(--default);
 }
+.artStyleSection {
+  display: flex;
+  /* align-items: center; */
+  flex-flow: column nowrap;
+  width: 100%;
+}
 
 .mintBtns {
   display: flex;
+  align-self: center;
+  align-items: center;
+  /* gap: 1em; */
+  /* margin: 0 auto; */
+  /* width: 100%; */
 }
-@media screen and (max-width: 768px) {
+.aiInspirationSection h3 {
+  margin-bottom: 0.5rem;
+}
+@media screen and (min-width: 320px) and (max-width: 768px) {
   .wrapper {
     /* width: 20em; */
   }
@@ -335,11 +363,12 @@
   }
   .aiLeft {
     padding: 1em;
-    width: 80%;
+    width: 90%;
   }
 
   .createImageBtn {
     width: max-content;
+    align-self: center;
   }
 
   /* .imageSizeSection {
@@ -351,4 +380,32 @@
   /* .peviewSizeSection {
     width: 20em;
   } */
+  .artIndStyle {
+    margin: 0 auto;
+  }
+  .aiPromptSuggestions {
+    padding: 0px;
+  }
+  .suggestionItem {
+    width: 100%;
+  }
+  .aiInspirationSection h3 {
+    align-self: center;
+    text-align: center;
+  }
+  .artPreview {
+    width: 85vw;
+    height: 85vw;
+  }
+  .artStyleTitle {
+    align-self: center;
+    text-align: center;
+  }
+  .imageDownloadBtn {
+    align-self: flex-end;
+  }
+  .artStyleList {
+    align-items: center;
+    margin: 0 auto;
+  }
 }

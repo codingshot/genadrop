@@ -20,7 +20,7 @@ import { ReactComponent as PreviewImageIcon } from "../../../assets/default-ai-p
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
-  const [imageDimension, setImageDimension] = useState(256);
+  // const [imageDimension, setImageDimension] = useState(256);
   const [promptText, setPromptText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const { dispatch } = useContext(GenContext);
@@ -36,9 +36,9 @@ const AI = () => {
     setWordCount(String(promptText.trim().length));
   };
 
-  const imageDimensionChangeHandler = (e) => {
-    setImageDimension(e.target.value.trim());
-  };
+  // const imageDimensionChangeHandler = (e) => {
+  //   setImageDimension(e.target.value.trim());
+  // };
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
@@ -256,7 +256,7 @@ const AI = () => {
                 style={{ margin: "1em 0.5em" }}
                 onClick={generateIamgeRequest}
               >
-                Regenerate
+                Recreate
               </button>
             </div>
           )}
