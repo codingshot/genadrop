@@ -222,7 +222,7 @@ export const orderedChainsList = [
     switch: null,
     coinGeckoLabel: "",
   },
-   {
+  {
     id: "near",
     label: "Near",
     chain: "Near",
@@ -236,7 +236,7 @@ export const orderedChainsList = [
     switch: null,
     coinGeckoLabel: "",
   },
-   {
+  {
     id: "algorand",
     label: "Algorand",
     chain: "Algorand",
@@ -303,7 +303,7 @@ export const orderedChainsList = [
     switch: switchChain,
     coinGeckoLabel: "avalanche-2",
   },
-   {
+  {
     id: "aurora-near",
     label: "Aurora",
     chain: "Aurora",
@@ -401,6 +401,6 @@ export const orderedChainsList = [
     coinGeckoLabel: "optimism",
     comingSoon: true,
   },
-]
+];
 
 export default supportedChains;
