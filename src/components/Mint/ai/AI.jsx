@@ -8,26 +8,37 @@ import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-relo
 import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
+import cartonist from "../../../assets/ai-art-style/cartoonist.png";
+import paint from "../../../assets/ai-art-style/paint.png";
+import retrofuturism from "../../../assets/ai-art-style/retrofuturism.png";
+import surreal from "../../../assets/ai-art-style/surreal.png";
+import throwback from "../../../assets/ai-art-style/throwback.png";
+import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
+import { indexOf } from "lodash";
+import { ReactComponent as PlusIcon } from "../../../assets/ai-mint-plus.svg";
+import { ReactComponent as PreviewImageIcon } from "../../../assets/default-ai-preview.svg";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
-  const [imageDimension, setImageDimension] = useState(256);
+  // const [imageDimension, setImageDimension] = useState(256);
   const [promptText, setPromptText] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const { dispatch } = useContext(GenContext);
   const [generated, setGenerated] = useState(false);
   const [imageBlob, setImageBlob] = useState("");
+  // const [isStyleSelected, setIsStyleSelected] = useState(false);
+  const [comingSoon, setComingSoon] = useState(false);
 
   const history = useHistory();
 
-  const handleAiDesc = (e) => {
+  const aiDescHandler = (e) => {
     setPromptText(e.target.value);
     setWordCount(String(promptText.trim().length));
   };
 
-  const imageDimensionChangeHandler = (e) => {
-    setImageDimension(e.target.value.trim());
-  };
+  // const imageDimensionChangeHandler = (e) => {
+  //   setImageDimension(e.target.value.trim());
+  // };
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
@@ -110,14 +121,51 @@ const AI = () => {
   };
 
   const SUGGESTIONS = [
-    "Sunset Cliffs",
-    "Fire and water",
-    "Never ending flower",
-    "DNA Torna",
-    "An oak tree",
-    "Cat on Bycicle",
+    "A giant donught on the road close to a  mountain",
+    "Photo of a futuristic car in the garage",
+    "A couple riding a dolphin on the race track",
+    "a cow riding a bike through Miami streets",
   ];
 
+  const artStyles = [
+    { styleImage: NotIcon, styleName: "No Style" },
+    { styleImage: surreal, styleName: "Surreal" },
+    { styleImage: paint, styleName: "Painting" },
+    { styleImage: retrofuturism, styleName: "Retro-futuristic" },
+    { styleImage: throwback, styleName: "Throw back" },
+    { styleImage: cartonist, styleName: "Cartoonist" },
+  ];
+
+  // const artStyleClickHandler = () => {
+  //   setIsStyleSelected(true);
+  //   alert("clicked here");
+  // };
+
+  useEffect(() => {
+    setComingSoon(true);
+  }, []);
+
+  const artStyleList = artStyles.map((artStyle, key) => {
+    return (
+      <span className={classes.artIndStyle}>
+        <div className={classes.artStyleArea}>
+          <img
+            src={artStyle.styleImage}
+            alt={artStyle.styleName}
+            className={`${classes.artStyle} ${key === 0 && classes.noArtStyle} ${
+              key > 0 && comingSoon && classes.lowBrightness
+            }`}
+          />
+          {key > 0 && comingSoon && (
+            <div className={classes.comingSoonOverlay}>
+              <span className={`${classes.comingSoonText}`}>Coming Soon</span>
+            </div>
+          )}
+        </div>
+        <p className={`${key > 0 && comingSoon && classes.comingSoon}`}>{artStyle.styleName}</p>
+      </span>
+    );
+  });
   const suggestedPrompts = SUGGESTIONS.map((item, id) => (
     <li
       id={id}
@@ -127,7 +175,8 @@ const AI = () => {
         setWordCount(String(item.length));
       }}
     >
-      {item}
+      <span>{item}</span>
+      <PlusIcon />
     </li>
   ));
 
@@ -149,44 +198,38 @@ const AI = () => {
   };
   return (
     <>
-      {generated && (
-        <nav className={classes.aiPageNav} onClick={navigateBackHandler}>
-          <span className={classes.aiPageNavMain}>
-            <BackArrow className={classes.aiPageNavBackArrow} />
-            <span>Back to creation</span>
-          </span>
-        </nav>
-      )}
+      <header className={classes.aiPageHeader}>
+        <h2>Create Art with A.I</h2>
+        <p>With our AI, you can easily create unique works of art just by describing the vision in your mind.</p>
+      </header>
       <main className={classes.aiMain}>
-        <section className={classes.wrapper || classes.aiLeft}>
-          {generated ? (
-            <div className={classes.successPart}>
-              <h2 className={classes.successPartHeading}>Mint Image</h2>
-              <p className={classes.successMainText}>
-                This generated image will be minted as NTF on any of the supported blockchain you select on the next
-                step
-              </p>
+        <section className={`${classes.wrapper} ${classes.aiLeft}`}>
+          <form className={classes.promptForm} onSubmit={formSubmitHandler}>
+            <div className={classes.promptFormTop}>
+              <h3 className={classes.promtFormTitle}>Describe the image you want to see</h3>
+              <span className={classes.descWordCount}>{wordCount}/200</span>
             </div>
-          ) : (
-            <form className={classes.promptForm} onSubmit={formSubmitHandler}>
-              <div className={classes.promptFormTop}>
-                <h2 className={classes.promtFormTitle}>Enter prompt</h2>
-                <span className={classes.descWordCount}>{wordCount}/200</span>
-              </div>
-              <input
-                type="text"
-                className={`${classes.wrapper} ${classes.aiTextInput}`}
-                onChange={handleAiDesc}
-                onBlur={handleAiDesc}
-                value={promptText}
-                // eslint-disable-next-line jsx-a11y/no-autofocus
-                autoFocus
-              />
+            <textarea
+              name="prompt"
+              id="prompt"
+              className={`${classes.wrapper} ${classes.aiTextInput}`}
+              value={promptText}
+              onChange={aiDescHandler}
+              onBlur={aiDescHandler}
+              cols="6"
+              rows="10"
+              placeholder="E.g: A man in a blue Suite"
+              autoFocus
+            />
+            <section className={classes.aiInspirationSection}>
+              <h3 className={classes.promtFormTitle}>Need Inspiration?</h3>
               <ul className={classes.aiPromptSuggestions}>{suggestedPrompts}</ul>
-              <section className={classes.artStyleSection}>
-                <h2 className={classes.artStyle}>Art Style</h2>
-                <main className={classes.artStyleList} />
-              </section>
+            </section>
+            <section className={classes.artStyleSection}>
+              <h2 className={classes.artStyleTitle}>Art Style</h2>
+              <main className={classes.artStyleList}>{artStyleList}</main>
+            </section>
+            {!generated && (
               <button
                 type="submit"
                 className={`${classes.wrapper} ${classes.createImageBtn} ${
@@ -195,8 +238,8 @@ const AI = () => {
               >
                 Create Image
               </button>
-            </form>
-          )}
+            )}
+          </form>
           {generated && (
             <div className={classes.mintBtns}>
               <button
@@ -205,61 +248,38 @@ const AI = () => {
                 style={{ margin: "1em 0.5em" }}
                 onClick={aiMintHandler}
               >
-                Mint
+                Mint Image
               </button>
               <button
                 type="submit"
-                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active} ${classes.regenerateBtn}`}
                 style={{ margin: "1em 0.5em" }}
                 onClick={generateIamgeRequest}
               >
-                Regenerate
+                Recreate
               </button>
             </div>
           )}
         </section>
-        <form className={classes.previewSizeForm}>
-          {generated ? (
-            <p className={classes.successMessage}>Successfully generated image!</p>
-          ) : (
-            <section className={classes.imageSizeSection}>
-              <h2 className={classes.aiPreviewHeading}>Preview Image</h2>
-              <div className={classes.sizesMain}>
-                <label htmlFor="height" className={classes.sizeLabel}>
-                  <span>Height</span>
-                  <span className={classes.sizeInWrapper}>
-                    <input type="text" className={classes.sizeInput} name="height" value={imageDimension} />{" "}
-                    <span>px</span>
-                  </span>
-                </label>
-                <label htmlFor="width" className={classes.sizeLabel}>
-                  <span>Width</span>
-                  <span className={classes.sizeInWrapper}>
-                    <input
-                      type="text"
-                      value={imageDimension}
-                      onChange={imageDimensionChangeHandler}
-                      className={classes.sizeInput}
-                      name="width"
-                      placeholder="A pink cat painting a black dog in space"
-                    />{" "}
-                    <span>px</span>
-                  </span>
-                </label>
+        <section className={classes.peviewSizeSection}>
+          <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
+            {generated ? (
+              <button
+                type="submit"
+                className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                onClick={downloadImage}
+              >
+                <span className={classes.downloadText}>Download</span>
+                <Download />
+              </button>
+            ) : (
+              <div className={classes.defaultPreviewContent}>
+                <PreviewImageIcon />
+                <p>Generated images will appear here!</p>
               </div>
-            </section>
-          )}
-          <output
-            className={classes.artPreview}
-            style={{ backgroundImage: `url(${imageUrl})`, width: imageDimension, height: imageDimension }}
-          />
-          {generated && (
-            <button type="submit" className={`${classes.wrapper} ${classes.imageDownloadBtn}`} onClick={downloadImage}>
-              <Download />
-              <span>Download</span>
-            </button>
-          )}
-        </form>
+            )}
+          </div>
+        </section>
       </main>
     </>
   );
