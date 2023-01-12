@@ -57,8 +57,6 @@
   line-height: 150%;
 }
 .aiPageHeader p {
-  font-family: "General Sans";
-  font-style: normal;
   font-weight: 400;
   font-size: 20px;
   line-height: 160%;
@@ -157,8 +155,8 @@
   background-blend-mode: darken;
 }
 .lowBrightness {
-  filter: grayscale(100%);
-  -webkit-filter: grayscale(100%);
+  /* filter: grayscale(100%); */
+  /* -webkit-filter: grayscale(100%); */
   border: none;
 }
 .artStyleArea {
@@ -171,14 +169,14 @@
 }
 .comingSoonOverlay {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
   width: inherit;
   height: inherit;
   cursor: not-allowed;
@@ -189,9 +187,14 @@
 }
 
 .comingSoonText {
-  color: var(--error-500);
+  color: var(--text-light);
+
   cursor: not-allowed;
-  font-weight: 500;
+  font-weight: 700;
+  background-image: linear-gradient(to bottom right, var(--default), var(--main-hovered));
+
+  width: 100%;
+  border-radius: 0 0 10px 10px;
 }
 .artStyle:hover {
   border: 4px solid var(--main-color);
@@ -353,13 +356,12 @@
   margin-bottom: 0.5rem;
 }
 @media screen and (min-width: 320px) and (max-width: 768px) {
-  .wrapper {
-    /* width: 20em; */
-  }
-
   .aiMain {
     flex-flow: column nowrap;
+    margin: 0 auto;
+    overflow: auto;
   }
+
   .aiLeft {
     padding: 1em;
     width: 90%;
@@ -369,8 +371,13 @@
     width: max-content;
     align-self: center;
   }
+
   .peviewSizeSection {
     order: -1;
+  }
+  .fixedBtns,
+  .topMintBtn {
+    order: -2;
   }
   .artIndStyle {
     margin: 0 auto;
