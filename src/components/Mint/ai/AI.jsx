@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { async } from "regenerator-runtime";
 import { useHistory } from "react-router-dom";
+import { indexOf } from "lodash";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
@@ -14,7 +15,6 @@ import retrofuturism from "../../../assets/ai-art-style/retrofuturism.png";
 import surreal from "../../../assets/ai-art-style/surreal.png";
 import throwback from "../../../assets/ai-art-style/throwback.png";
 import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
-import { indexOf } from "lodash";
 import { ReactComponent as PlusIcon } from "../../../assets/ai-mint-plus.svg";
 import { ReactComponent as PreviewImageIcon } from "../../../assets/default-ai-preview.svg";
 
@@ -232,7 +232,7 @@ const AI = () => {
             {!generated && (
               <button
                 type="submit"
-                className={`${classes.wrapper} ${classes.createImageBtn} ${
+                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.topMintBtn} ${
                   wordCount > 0 ? classes.createImageBtn_active : classes.createImageBtn_inactive
                 }`}
               >
@@ -241,7 +241,7 @@ const AI = () => {
             )}
           </form>
           {generated && (
-            <div className={classes.mintBtns}>
+            <div className={`${classes.mintBtns} ${classes.fixedBtns}`}>
               <button
                 type="submit"
                 className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
