@@ -20,6 +20,16 @@
   margin: 0 auto;
 }
 
+.skeletonWrapper {
+  display: flex;
+  gap: 1em;
+  overflow-x: hidden;
+  flex-flow: row nowrap;
+}
+
+.skeleton {
+  width: 20em;
+}
 @media screen and (max-width: 900px) {
   .heading {
     font-size: 2.5rem;
