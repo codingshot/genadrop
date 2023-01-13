@@ -23,9 +23,10 @@ const FeautedNfts = () => {
   const [state, setState] = useState({
     NFTs: [],
     init: false,
+    ready: false,
   });
 
-  const { NFTs, init } = state;
+  const { NFTs, init, ready } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -71,6 +72,10 @@ const FeautedNfts = () => {
     if (mainnet) handleSetState({ NFTs: [...nfts.filter((e) => featuredNFTs.includes(e.Id))] });
     else handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
   }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts, singleAvaxNfts]);
+
+  useEffect(() => {
+    if (NFTs.length > 0) handleSetState({ ready: true });
+  }, [NFTs]);
   return (
     <div className={classes.container}>
       <div className={classes.headingContainer}>
@@ -78,25 +83,29 @@ const FeautedNfts = () => {
       </div>
 
       <div className={`${classes.wrapper}`}>
-        <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
-          {NFTs.length ? (
-            NFTs.map((collection) => <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />)
-          ) : !NFTs ? (
-            <NotFound />
-          ) : (
-            [...new Array(4)]
+        {ready ? (
+          <GenadropCarouselScreen cardWidth={16 * 20} gap={32} init={init}>
+            {NFTs.length > 0 ? (
+              NFTs.map((collection) => <SingleNftCard use_width="20em" key={collection.Id} nft={collection} />)
+            ) : !NFTs ? (
+              <NotFound />
+            ) : (
+              ""
+            )}
+          </GenadropCarouselScreen>
+        ) : (
+          <div className={classes.skeletonWrapper}>
+            {[...new Array(4)]
               .map((_, idx) => idx)
               .map((id) => (
-                <div className={classes.skeleton} use_width="20em" key={id}>
+                <div className={classes.skeleton} key={id}>
                   <Skeleton count={1} height={250} />
-                  <br />
-                  <Skeleton count={1} height={30} />
-                  <br />
-                  <Skeleton count={1} height={30} />
+                  <Skeleton count={1} height={20} />
+                  <Skeleton count={1} height={20} />
                 </div>
-              ))
-          )}
-        </GenadropCarouselScreen>
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );

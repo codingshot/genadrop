@@ -212,10 +212,8 @@ const AllNfts = () => {
             {[...new Array(4)].map((id, idx) => (
               <div key={idx}>
                 <Skeleton count={1} height={200} />
-                <br />
-                <Skeleton count={1} height={30} />
-                <br />
-                <Skeleton count={1} height={30} />
+                <Skeleton count={1} height={20} />
+                <Skeleton count={1} height={20} />
               </div>
             ))}
           </div>
