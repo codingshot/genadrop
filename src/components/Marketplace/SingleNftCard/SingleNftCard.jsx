@@ -13,14 +13,17 @@ import {
   CollectedView,
 } from "./CardFooter";
 import thumbnail from "../../../assets/music-thumbnail.svg";
+import imgHolder from "../../../assets/imgHolder.jpeg";
 import { setOverlay } from "../../../gen-state/gen.actions";
 
 const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft, userId, usdPrice }) => {
+  const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed, isSoulBound } = nft;
+
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
   const { account, dispatch } = useContext(GenContext);
-  const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed, isSoulBound } = nft;
+  const [mediaURL, setMediaURL] = useState(image_url);
 
   const getUsdValue = useCallback(async () => {
     let value = usdPrice;
@@ -84,13 +87,13 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
       <div className={classes.imageContainer}>
         <div className={classes.imageWrapper}>
           {nft?.ipfs_data?.image_mimetype?.includes("video") ? (
-            <video className={classes.image} src={image_url} alt="" controls />
+            <video className={classes.image} src={mediaURL} alt="" controls onError={() => setMediaURL(imgHolder)} />
           ) : nft?.ipfs_data?.image_mimetype?.includes("audio") ? (
             <div className={classes.thumbnail} style={{ backgroundImage: `url(${thumbnail})` }}>
-              <audio className={classes.audio} src={image_url} alt="" controls />
+              <audio className={classes.audio} src={mediaURL} alt="" controls onError={() => setMediaURL(imgHolder)} />
             </div>
           ) : (
-            <img className={classes.image} src={image_url} alt="" />
+            <img className={classes.image} src={mediaURL} alt="" onError={() => setMediaURL(imgHolder)} />
           )}
         </div>
       </div>
