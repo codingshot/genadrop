@@ -54,7 +54,7 @@ const Creating = () => {
       <div className={classes.cardDeck}>
         {cards.slice(0, 6).map((card) => (
           <div onClick={() => handleRedirect(card)} to={card.url} className={classes.card} key={card.title}>
-            <div className={classes.icon}>{card.icon}</div>
+            <div className={`${classes.icon} ${card.title === "Tweets" ? classes.tweetIcon : ""}`}>{card.icon}</div>
             <div className={classes.cardTitle}>{card.title}</div>
             <div className={classes.cardDescription}>{card.description}</div>
           </div>

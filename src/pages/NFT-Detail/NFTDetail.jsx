@@ -25,9 +25,10 @@ const NFTDetail = () => {
     transactionHistory: null,
     collection: null,
     _1of1: null,
+    load: true,
   });
 
-  const { nftDetails, transactionHistory, collection, _1of1 } = state;
+  const { nftDetails, transactionHistory, collection, _1of1, load } = state;
 
   const {
     dispatch,
@@ -79,6 +80,8 @@ const NFTDetail = () => {
   };
 
   const getData = async () => {
+    document.documentElement.scrollTop = 0;
+
     let result;
     if (activeCollection || supportedChains[params.chainId]?.chain === "Algorand") {
       result = await getAlgoData({ algoProps });
@@ -89,13 +92,18 @@ const NFTDetail = () => {
   };
 
   useEffect(() => {
+    handleSetState({ load: true });
     getData();
-    document.documentElement.scrollTop = 0;
+    if (nftDetails && collection && _1of1 && transactionHistory) {
+      setTimeout(() => {
+        handleSetState({ load: false });
+      }, 2000);
+    }
   }, [singleAlgoNfts, algoCollections, auroraCollections, polygonCollections, celoCollections, params.nftId]);
 
   return (
     <div className={classes.container}>
-      {nftDetails && collection && _1of1 && transactionHistory ? (
+      {nftDetails && collection && _1of1 && transactionHistory && !load ? (
         <div className={classes.wrapper}>
           <div onClick={handleGoBack} className={classes.backBtnContainer}>
             <BackIcon className={classes.backIcon} />
