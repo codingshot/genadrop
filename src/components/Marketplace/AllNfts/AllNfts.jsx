@@ -39,9 +39,10 @@ const AllNfts = () => {
     collections: [],
     singles: [],
     newest: [],
+    load: true,
   });
 
-  const { activeType, activeChain, activeCategory, collections, singles, newest, filteredCollection } = state;
+  const { activeType, activeChain, activeCategory, collections, singles, newest, filteredCollection, load } = state;
   const { mainnet, dispatch, allChainsNfts } = useContext(GenContext);
 
   const categories = [
@@ -71,8 +72,14 @@ const AllNfts = () => {
   };
 
   const handleChainChange = (chain) => {
+    handleSetState({
+      load: true,
+    });
     const result = getCollectionsByChain({ collections: type[activeType], chain, mainnet });
     handleSetState({ filteredCollection: result || [], activeChain: chain });
+    setTimeout(() => {
+      handleSetState({ load: false });
+    }, 2000);
   };
 
   const handleMore = () => {
@@ -86,10 +93,14 @@ const AllNfts = () => {
   const haandleTabActive = (active) => {
     handleSetState({
       activeType: active,
+      load: true,
     });
     let result = getCollectionsByChain({ collections: type[active], chain: activeChain, mainnet });
     result = getCollectionsByCategory({ collections: result, category: activeCategory, activeChain });
     handleSetState({ filteredCollection: result });
+    setTimeout(() => {
+      handleSetState({ load: false });
+    }, 2000);
   };
 
   useEffect(() => {
@@ -120,12 +131,12 @@ const AllNfts = () => {
 
   useEffect(() => {
     const newestNfts = sortBy({ collections: [...singles], value: "newest" });
-    handleSetState({ newest: newestNfts });
+    handleSetState({ newest: newestNfts, load: false });
   }, [singles, collections]);
 
   useEffect(() => {
     const result = getCollectionsByChain({ collections: type[activeType], chain: activeChain, mainnet });
-    handleSetState({ filteredCollection: result || [] });
+    handleSetState({ filteredCollection: result || [], load: false });
   }, [singles, collections, activeType, newest]);
 
   useEffect(() => {
@@ -133,9 +144,12 @@ const AllNfts = () => {
   }, []);
 
   const categoryFilter = (category) => {
-    handleSetState({ activeCategory: category });
+    handleSetState({ activeCategory: category, load: true });
     const result = getCollectionsByCategory({ collections: type[activeType], category, activeChain });
     handleSetState({ filteredCollection: result || [] });
+    setTimeout(() => {
+      handleSetState({ load: false });
+    }, 1000);
   };
 
   return (
@@ -175,7 +189,7 @@ const AllNfts = () => {
           </div>
           <ChainDropdown onChainFilter={handleChainChange} />
         </section>
-        {collections?.length > 0 ? (
+        {collections?.length > 0 && !load ? (
           <section className={classes.nfts}>
             {activeType === "T1" ? (
               filteredCollection.length > 0 ? (

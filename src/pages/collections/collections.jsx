@@ -17,8 +17,14 @@ import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterD
 import Search from "../../components/Search/Search";
 
 const Collections = () => {
-  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, searchContainer } =
-    useContext(GenContext);
+  const {
+    auroraCollections,
+    algoCollections,
+    polygonCollections,
+    celoCollections,
+    mainnet,
+    searchContainer,
+  } = useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
@@ -32,6 +38,7 @@ const Collections = () => {
     searchValue: "",
     notFound: false,
     searchChain: "All Chains",
+    load: true,
   });
 
   const {
@@ -43,6 +50,7 @@ const Collections = () => {
     filteredCollection,
     notFound,
     searchChain,
+    load,
   } = state;
 
   const handleSetState = (payload) => {
@@ -78,10 +86,15 @@ const Collections = () => {
 
   // Chain Filter
   const handleChainChange = (chain) => {
+    handleSetState({ load: true });
+
     const tempCollection = getCollectionsByDate({ collections, date: activeDate });
 
     const result = getCollectionsByChain({ collections: tempCollection, chain, mainnet });
     handleSetState({ filteredCollection: result, searchChain: chain });
+    setTimeout(() => {
+      handleSetState({ load: false });
+    }, 2000);
   };
 
   const handleFilter = async ({ type, value }) => {
@@ -180,7 +193,7 @@ const Collections = () => {
               <CollectionNftCard key={idx} collection={collection} />
             ))}
           </div>
-        ) : !notFound ? (
+        ) : !notFound || load ? (
           <div className={classes.nfts}>
             {[...new Array(8)]
               .map((_, idx) => idx)

@@ -77,10 +77,12 @@
 .extra .card:hover .icon svg path {
   /* fill: var(--main-color); */
 }
+
 .card:hover {
   border-color: var(--main-color);
   box-shadow: 26px 18px 18px rgb(93 134 194 / 16%);
 }
+
 .icon {
   background: #f3f6fc;
   border-radius: 50%;
@@ -90,6 +92,12 @@
   width: 6.5rem;
   height: 6.5rem;
 }
+
+.tweetIcon {
+  padding-left: 25px;
+  padding-top: 20px;
+}
+
 .card:hover .icon {
   background: var(--main-color);
 }
