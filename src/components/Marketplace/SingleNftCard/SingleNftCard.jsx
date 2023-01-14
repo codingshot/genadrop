@@ -87,10 +87,10 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
       <div className={classes.imageContainer}>
         <div className={classes.imageWrapper}>
           {nft?.ipfs_data?.image_mimetype?.includes("video") ? (
-            <video className={classes.image} src={mediaURL} alt="" controls onError={() => setMediaURL(imgHolder)} />
+            <video className={classes.image} src={mediaURL} alt="" controls onLoad={() => setMediaURL(imgHolder)} />
           ) : nft?.ipfs_data?.image_mimetype?.includes("audio") ? (
             <div className={classes.thumbnail} style={{ backgroundImage: `url(${thumbnail})` }}>
-              <audio className={classes.audio} src={mediaURL} alt="" controls onError={() => setMediaURL(imgHolder)} />
+              <audio className={classes.audio} src={mediaURL} alt="" controls onLoad={() => setMediaURL(imgHolder)} />
             </div>
           ) : (
             <img className={classes.image} src={mediaURL} alt="" onError={() => setMediaURL(imgHolder)} />
