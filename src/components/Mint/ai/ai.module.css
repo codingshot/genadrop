@@ -191,7 +191,7 @@
 
   cursor: not-allowed;
   font-weight: 700;
-  background-image: linear-gradient(to bottom right, var(--default), var(--main-hovered));
+  background-image: linear-gradient(to bottom right, var(--main-hovered), var(--default));
 
   width: 100%;
   border-radius: 0 0 10px 10px;
