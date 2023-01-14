@@ -38,12 +38,21 @@ const SingleNftCollection = () => {
     currentPage: 1,
     paginate: {},
     currentPageValue: 1,
-
+    load: false,
     notFound: false,
     searchChain: "All Chains",
   });
 
-  const { collections, paginate, currentPage, currentPageValue, searchChain, filteredCollection, notFound } = state;
+  const {
+    collections,
+    paginate,
+    currentPage,
+    currentPageValue,
+    load,
+    searchChain,
+    filteredCollection,
+    notFound,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -66,8 +75,12 @@ const SingleNftCollection = () => {
   };
 
   const handleChainChange = (chain) => {
+    handleSetState({ load: true });
     const result = getCollectionsByChain({ collections, chain, mainnet });
     handleSetState({ filteredCollection: result, searchChain: chain });
+    setTimeout(() => {
+      handleSetState({ load: false });
+    }, 20000);
   };
 
   const handleFilter = ({ type, value }) => {
@@ -133,7 +146,7 @@ const SingleNftCollection = () => {
           <p>View all minted 1 of 1s {filteredCollection.length ? `(${filteredCollection.length} minted)` : "(...)"}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search type={"1of1"} searchPlaceholder="Search By 1 of 1s and Users" />
+          <Search type="1of1" searchPlaceholder="Search By 1 of 1s and Users" />
 
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>
@@ -147,13 +160,13 @@ const SingleNftCollection = () => {
         </div>
       </div>
       <div className={classes.wrapper}>
-        {Object.keys(paginate).length ? (
+        {Object.keys(paginate).length && !load ? (
           <div className={classes.nfts}>
             {paginate[currentPage].map((nft, idx) => (
               <SingleNftCard key={idx} nft={nft} />
             ))}
           </div>
-        ) : !notFound ? (
+        ) : !notFound || load ? (
           <div className={classes.nfts}>
             {[...new Array(8)]
               .map((_, idx) => idx)
