@@ -550,7 +550,25 @@ const Minter = () => {
               },
             });
           }
-          if (url.response[0].transaction.hash) {
+          if (url.message) {
+            return handleSetState({
+              popupProps: {
+                url: url.message,
+                isError: true,
+                popup: true,
+              },
+            });
+          }
+          if (url.transaction.hash) {
+            return handleSetState({
+              popupProps: {
+                url: `https://explorer.near.org/?query=${url.transaction.hash}`,
+                isError: false,
+                popup: true,
+              },
+            });
+          }
+          if (url?.response[0]?.transaction?.hash) {
             return handleSetState({
               popupProps: {
                 url: `https://explorer.near.org/?query=${url.response[0].transaction.hash}`,

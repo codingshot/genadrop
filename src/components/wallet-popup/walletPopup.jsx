@@ -1,18 +1,25 @@
 import React, { useContext, useEffect, useState } from "react";
+
+// near wallets
 import { setupWalletSelector } from "@near-wallet-selector/core";
+import { setupModal } from "@near-wallet-selector/modal-ui";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+import { setupHereWallet } from "@near-wallet-selector/here-wallet";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import { setupNearWallet } from "@near-wallet-selector/near-wallet";
+import { setupSender } from "@near-wallet-selector/sender";
+
+// near wallet styles & icons
+import "@near-wallet-selector/modal-ui/styles.css";
 import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
 import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
-import { setupModal } from "@near-wallet-selector/modal-ui";
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
-import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import "@near-wallet-selector/modal-ui/styles.css";
-import { setupSender } from "@near-wallet-selector/sender";
-import { setupNearWallet } from "@near-wallet-selector/near-wallet";
-import { async } from "regenerator-runtime";
-import Web3 from "web3";
-import { Magic } from "magic-sdk";
-import { ConnectExtension } from "@magic-ext/connect";
+import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
+import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
 import classes from "./walletPopup.module.css";
+
+// components
+import supportedChains, { orderedChainsList } from "../../utils/supportedChains";
 import {
   setProposedChain,
   setToggleWalletPopup,
@@ -20,13 +27,21 @@ import {
   setChainId,
   setConnector,
 } from "../../gen-state/gen.actions";
-import supportedChains, { orderedChainsList } from "../../utils/supportedChains";
 import getConfig from "./nearConfig";
+import { GenContext } from "../../gen-state/gen.context";
+
+// icons
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
-import magicLinkIcon from "../../assets/icon-magic-link.svg";
-import { GenContext } from "../../gen-state/gen.context";
+
+// unused for now
+
+// import { async } from "regenerator-runtime";
+// import Web3 from "web3";
+// import { Magic } from "magic-sdk";
+// import { ConnectExtension } from "@magic-ext/connect";
+// import magicLinkIcon from "../../assets/icon-magic-link.svg";
 
 const WalletPopup = ({ handleSetState }) => {
   const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
@@ -59,12 +74,16 @@ const WalletPopup = ({ handleSetState }) => {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
+          setupMeteorWallet({ iconUrl: MeteorIconUrl }),
+          setupHereWallet({ iconUrl: HereWalletIconUrl }),
         ];
       } else {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
           setupSender({ iconUrl: SenderIconUrl }),
+          setupMeteorWallet({ iconUrl: MeteorIconUrl }),
+          setupHereWallet({ iconUrl: HereWalletIconUrl }),
         ];
       }
       const walletSelector = await setupWalletSelector({
@@ -126,7 +145,7 @@ const WalletPopup = ({ handleSetState }) => {
     if (!connectFromMint.chainId) return;
     dispatch(setToggleWalletPopup(true));
     handleChain(connectFromMint.chainId, connectFromMint.isComingSoon);
-  }, [connectFromMint]);
+  }, [connectFromMint, window.selector]);
 
   return (
     <div className={classes.container}>
