@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { async } from "regenerator-runtime";
 import { useHistory } from "react-router-dom";
 import { indexOf } from "lodash";
+import Skeleton from "react-loading-skeleton";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
@@ -28,6 +29,7 @@ const AI = () => {
   const [imageBlob, setImageBlob] = useState("");
   // const [isStyleSelected, setIsStyleSelected] = useState(false);
   const [comingSoon, setComingSoon] = useState(false);
+  const [load, setLoad] = useState(false);
 
   const history = useHistory();
 
@@ -69,6 +71,8 @@ const AI = () => {
   };
 
   const generateIamgeRequest = async () => {
+    setLoad(true);
+
     if (promptText === "") {
       dispatch(
         setNotification({
@@ -110,6 +114,9 @@ const AI = () => {
               setImageBlob(blob);
               dispatch(setOverlay(false));
               dispatch(setNotification({ message: "Ready to mint", type: "success" }));
+              setTimeout(() => {
+                setLoad(false);
+              }, 5000);
             });
             setGenerated(true);
           });
@@ -262,23 +269,31 @@ const AI = () => {
           )}
         </section>
         <section className={classes.peviewSizeSection}>
-          <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
-            {generated ? (
-              <button
-                type="submit"
-                className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
-                onClick={downloadImage}
-              >
-                <span className={classes.downloadText}>Download</span>
-                <Download />
-              </button>
-            ) : (
-              <div className={classes.defaultPreviewContent}>
-                <PreviewImageIcon />
-                <p>Generated images will appear here!</p>
-              </div>
-            )}
-          </div>
+          {load ? (
+            <div style={{ width: "98%" }} className={classes.loader}>
+              <Skeleton count={1} height={10} />
+              <Skeleton count={1} height={405} />
+              <Skeleton count={1} height={10} />
+            </div>
+          ) : (
+            <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
+              {generated ? (
+                <button
+                  type="submit"
+                  className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                  onClick={downloadImage}
+                >
+                  <span className={classes.downloadText}>Download</span>
+                  <Download />
+                </button>
+              ) : (
+                <div className={classes.defaultPreviewContent}>
+                  <PreviewImageIcon />
+                  <p>Generated images will appear here!</p>
+                </div>
+              )}
+            </div>
+          )}
         </section>
       </main>
     </>
