@@ -1,18 +1,28 @@
-import WalletConnectProvider from "@walletconnect/web3-provider";
+// packages
+import Web3 from "web3";
+import { ConnectExtension } from "@magic-ext/connect";
 import { ethers } from "ethers";
-import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
-import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
-import { setupWalletSelector } from "@near-wallet-selector/core";
-import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
-import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
-import "@near-wallet-selector/modal-ui/styles.css";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import { Magic } from "magic-sdk";
+
+// near wallets 
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
-import { Magic } from "magic-sdk";
-import { ConnectExtension } from "@magic-ext/connect";
-import Web3 from "web3";
-import * as WS from "./wallet-script";
+import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+import { setupHereWallet } from "@near-wallet-selector/here-wallet";
 
+// near styles & icons
+import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
+import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
+import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
+import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
+import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
+import "@near-wallet-selector/modal-ui/styles.css";
+
+// components
+import * as WS from "./wallet-script";
 import {
   setNotification,
   setProposedChain,
@@ -114,12 +124,16 @@ export const initializeConnection = async (walletProps) => {
       connectedToNearMainnet.modules = [
         setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
+        setupMeteorWallet({ iconUrl: MeteorIconUrl }),
+        setupHereWallet({ iconUrl: HereWalletIconUrl }),
       ];
     } else {
       connectedToNearMainnet.modules = [
         setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
         setupSender({ iconUrl: SenderIconUrl }),
+        setupMeteorWallet({ iconUrl: MeteorIconUrl }),
+        setupHereWallet({ iconUrl: HereWalletIconUrl }),
       ];
     }
     const walletSelector = await setupWalletSelector({
@@ -130,6 +144,7 @@ export const initializeConnection = async (walletProps) => {
     const isSignedIn = walletSelector.isSignedIn();
     window.selector = walletSelector;
     const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
+    console.log('signed..');
     if (isSignedIn) {
       window.localStorage.setItem("near_wallet", "connected_to_near");
       dispatch(setChainId(connectedChain));
