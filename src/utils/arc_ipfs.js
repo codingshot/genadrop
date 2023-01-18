@@ -440,48 +440,44 @@ export async function listNearMultipleMarkets(nearMintProps) {
   }
 
   const wallet = await window.selector.wallet();
-  const response = await wallet.signAndSendTransactions({
-    transactions: [
+  const response = await wallet.signAndSendTransaction({
+    signerId: accountId,
+    receiverId: contractId,
+    // use map to handle cases of 1 market or more
+    actions: [
       {
-        signerId: accountId,
-        receiverId: contractId,
-        // use map to handle cases of 1 market or more
-        actions: [
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "nft_approve",
-              args: {
-                token_id: tokenId,
-                account_id: markets[0],
-                msg: {
-                  price,
-                  market_type: "sale",
-                  ft_token_id: "near"
-                },
-              },
-              gas: 300000000000000,
-              deposit: new BN("10000000000000000000000"),
+        type: "FunctionCall",
+        params: {
+          methodName: "nft_approve",
+          args: {
+            token_id: tokenId,
+            account_id: markets[0],
+            msg: {
+              price,
+              market_type: "sale",
+              ft_token_id: "near",
             },
           },
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "nft_approve",
-              args: {
-                token_id: tokenId,
-                account_id: markets[1],
-                msg: {
-                  sale_condition: {
-                    near: price,
-                  },
-                },
+          gas: 300000000000000,
+          deposit: new BN("10000000000000000000000"),
+        },
+      },
+      {
+        type: "FunctionCall",
+        params: {
+          methodName: "nft_approve",
+          args: {
+            token_id: tokenId,
+            account_id: markets[1],
+            msg: {
+              sale_condition: {
+                near: price,
               },
-              gas: 300000000000000,
-              deposit: new BN("10000000000000000000000"),
             },
           },
-        ],
+          gas: 300000000000000,
+          deposit: new BN("10000000000000000000000"),
+        },
       },
     ],
   });
