@@ -646,6 +646,7 @@ export const fetchNearSingleNfts = async (nfts) => {
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
+          nftObj.isListed = NFT?.isListed
           nftObj.description = data?.description;
           nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
