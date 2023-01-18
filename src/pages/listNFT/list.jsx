@@ -13,6 +13,7 @@ import {
   listAuroraNft,
   listAvaxNft,
   listCeloNft,
+  listNearMultipleMarkets,
   listPolygonNft,
 } from "../../utils/arc_ipfs";
 import { readUserProfile } from "../../utils/firebase";
@@ -59,13 +60,14 @@ const List = () => {
     nftDetails: null,
     amount: 0,
     isLoading: true,
-    nearMarket: "",
+    tpNearMarket: false,
+    fafNearMarket: false,
     chain: "",
     price: 0,
     image_url: "",
     activeTab: "sell",
   });
-  const { nftDetails, isLoading, price, amount, activeTab, chain, nearMarket } = state;
+  const { nftDetails, isLoading, price, amount, activeTab, chain, tpNearMarket, fafNearMarket } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -83,6 +85,14 @@ const List = () => {
           message: "Price cannot be empty",
         })
       );
+
+    const listNearProps = {
+      markets: ["market.tradeport.near", "market.fewandfar.near"],
+      tokenId: nftDetails.tokenID,
+      price,
+      connector,
+      dispatch,
+    };
 
     const listAlgoProps = {
       dispatch,
@@ -115,6 +125,16 @@ const List = () => {
       listedNFT = await listAlgoNft(listAlgoProps);
     } else if (supportedChains[chainId].chain === "Arbitrum") {
       listedNFT = await listArbitrumNft(listProps);
+    } else if (supportedChains[chainId].chain === "Near") {
+      if (!tpNearMarket && !fafNearMarket) {
+        return dispatch(
+          setNotification({
+            type: "warning",
+            message: "Please select a Near Marketplace",
+          })
+        );
+      }
+      return listNearMultipleMarkets(listNearProps);
     } else {
       return history.push(`${match.url}/listed`);
     }
@@ -328,8 +348,8 @@ const List = () => {
                     <div className={classes.marketplaces}>
                       <button
                         type="button"
-                        onClick={() => handleSetState({ nearMarket: "TRADEPORT" })}
-                        className={`${classes.marketBtn} ${nearMarket === "TRADEPORT" && classes.activeMarketBtn}`}
+                        onClick={() => handleSetState({ tpNearMarket: !tpNearMarket })}
+                        className={`${classes.marketBtn} ${tpNearMarket && classes.activeMarketBtn}`}
                       >
                         <div className={classes.mtxText}>
                           <img src={tradePortIcon} alt="" />
@@ -338,8 +358,8 @@ const List = () => {
                       </button>
                       <button
                         type="button"
-                        onClick={() => handleSetState({ nearMarket: "FEWANDFAR" })}
-                        className={`${classes.marketBtn} ${nearMarket === "FEWANDFAR" && classes.activeMarketBtn}`}
+                        onClick={() => handleSetState({ fafNearMarket: !fafNearMarket })}
+                        className={`${classes.marketBtn} ${fafNearMarket && classes.activeMarketBtn}`}
                       >
                         <div className={classes.mtxText}>
                           <img src={fewAndFarIcon} alt="" />
