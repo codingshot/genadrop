@@ -412,7 +412,7 @@ export async function mintSingleToNear(nearMintProps) {
 }
 
 
-export async function listNearMultipleMarkets(mintProps) {
+export async function listNearMultipleMarkets(nearMintProps) {
   const {
     tokenId,
     markets,
@@ -444,7 +444,8 @@ export async function listNearMultipleMarkets(mintProps) {
     transactions: [
       {
         signerId: accountId,
-        receiverId: contractId, // will have to rewrite shoul we support larger number if markets
+        receiverId: contractId,
+        // use map to handle cases of 1 market or more
         actions: [
           {
             type: "FunctionCall",
