@@ -411,6 +411,82 @@ export async function mintSingleToNear(nearMintProps) {
   };
 }
 
+
+export async function listNearMultipleMarkets(mintProps) {
+  const {
+    tokenId,
+    markets,
+    account,
+    connector,
+    dispatch,
+    price,
+    mainnet,
+    receiverAddress,
+    isIpfsLink,
+    isAi,
+    fileName,
+  } = nearMintProps;
+
+  const {
+    contract: { contractId },
+    accounts,
+  } = window.selector.store.getState();
+  const { accountId } = accounts[0];
+
+  if (!accountId) {
+    return {
+      message: "Connect to Near network on your wallet or select a different network",
+    };
+  }
+
+  const wallet = await window.selector.wallet();
+  const response = await wallet.signAndSendTransactions({
+    transactions: [
+      {
+        signerId: accountId,
+        receiverId: contractId, // will have to rewrite shoul we support larger number if markets
+        actions: [
+          {
+            type: "FunctionCall",
+            params: {
+              methodName: "nft_approve",
+              args: {
+                token_id: tokenId,
+                account_id: markets[0],
+                msg: {
+                  price,
+                  market_type: "sale",
+                  ft_token_id: "near"
+                },
+              },
+              gas: 300000000000000,
+              deposit: new BN("10000000000000000000000"),
+            },
+          },
+          {
+            type: "FunctionCall",
+            params: {
+              methodName: "nft_approve",
+              args: {
+                token_id: tokenId,
+                account_id: markets[1],
+                msg: {
+                  sale_condition: {
+                    near: price,
+                  },
+                },
+              },
+              gas: 300000000000000,
+              deposit: new BN("10000000000000000000000"),
+            },
+          },
+        ],
+      },
+    ],
+  });
+  return response;
+}
+
 export async function mintSoulBoundPoly(mintprops) {
   const {
     file,
