@@ -71,7 +71,7 @@ const Deals = ({ nftDetails }) => {
           <span>Non Transferable</span>
         </div>
       ) : !isListed && !price ? (
-        owner === account ? (
+        owner === account && supportedChains[chain]?.chain !== "Near" ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
               <button className={`${classes.btn} ${classes.disable}`} disabled>
@@ -100,7 +100,7 @@ const Deals = ({ nftDetails }) => {
             Buy
           </div>
         )
-      ) : account === owner ? (
+      ) : account === owner && supportedChains[chain]?.chain !== "Near" ? (
         <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
           <div className={`${classes.btn}`}>List</div>
         </Link>

@@ -31,7 +31,6 @@ import {
 import supportedChains from "./supportedChains";
 
 const PRICE_CONVERSION_VALUE = 0.000000000000000001;
-const NEAR_PRICE_CONVERSION_VALUE = 0.0000000000000000000000001;
 // setting a delay as not exceed the API limit
 const getDelayTime = (index, data, batch) => {
   const reqPagination = [...new Array(Math.floor(data.length / batch) + 1)].map((_, idx) => (idx + 1) * batch);
@@ -509,7 +508,7 @@ export const getNearNft = async (collection, mainnet) => {
     nftArr.name = data?.name;
     nftArr.chain = collection?.chain;
     nftArr.owner = collection?.owner?.id;
-    nftArr.price = collection?.price * NEAR_PRICE_CONVERSION_VALUE;
+    nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
     nftArr.ipfs_data = data;
     nftArr.sold = collection?.isSold;
@@ -597,7 +596,7 @@ export const getNearSingleGraphNfts = async (nfts) => {
             NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
           );
           nftObj.Id = NFT?.id;
-          nftObj.price = NFT?.price * NEAR_PRICE_CONVERSION_VALUE;
+          nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
@@ -605,8 +604,8 @@ export const getNearSingleGraphNfts = async (nfts) => {
           nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           nftObj.collectionId = NFT?.collection?.id;
-          nftObj.collectionPrice = NFT?.price * NEAR_PRICE_CONVERSION_VALUE;
-          nftObj.price = NFT?.price * NEAR_PRICE_CONVERSION_VALUE;
+          nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
+          nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
           nftObj.ipfs_data = data;
           nftObj.collection_contract = NFT?.id?.split(NFT?.tokenID)[0];
@@ -643,17 +642,16 @@ export const fetchNearSingleNfts = async (nfts) => {
             NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
           );
           nftObj.Id = NFT?.id;
-          nftObj.price = NFT?.price * NEAR_PRICE_CONVERSION_VALUE;
+          nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
           nftObj.sold = NFT?.isSold;
           nftObj.chain = NFT?.chain;
-          nftObj.isListed = NFT?.isListed
           nftObj.description = data?.description;
           nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
           nftObj.name = data?.name;
           nftObj.collectionId = NFT?.collection?.id;
-          nftObj.collectionPrice = NFT?.price * NEAR_PRICE_CONVERSION_VALUE;
-          nftObj.price = NFT?.price * NEAR_PRICE_CONVERSION_VALUE;
+          nftObj.collectionPrice = NFT?.price * PRICE_CONVERSION_VALUE;
+          nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.tokenID = NFT?.tokenID;
           nftObj.createdAt = new Date(Number(NFT?.createdAtTimestamp) * 1000);
           nftObj.ipfs_data = data;

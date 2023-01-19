@@ -1,40 +1,33 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
-
-// Components
+import axios from "axios";
+import classes from "./list.module.css";
 import supportedChains from "../../utils/supportedChains";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
-import { getFormatedPrice } from "../../utils";
+import { buyNft, getFormatedPrice, getUserBoughtNftCollection } from "../../utils";
 import {
   listAlgoNft,
   listArbitrumNft,
   listAuroraNft,
   listAvaxNft,
   listCeloNft,
-  listNearMultipleMarkets,
   listPolygonNft,
 } from "../../utils/arc_ipfs";
-import { readUserProfile } from "../../utils/firebase";
+import { fetchUserBoughtNfts, listNft, readUserProfile } from "../../utils/firebase";
 import {
   arbitrumUserData,
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
-  nearUserData,
   polygonUserData,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.svg";
-import { getAlgoData } from "../NFT-Detail/NFTDetail-script";
 
-// icons
-import tradePortIcon from "../../assets/tradeport.jpg";
-import fewAndFarIcon from "../../assets/fewandfar.jpg";
 import avatar from "../../assets/avatar.png";
-
-// Styles
-import classes from "./list.module.css";
+import { useCallback } from "react";
+import { getAlgoData } from "../NFT-Detail/NFTDetail-script";
 
 const List = () => {
   const {
@@ -60,14 +53,12 @@ const List = () => {
     nftDetails: null,
     amount: 0,
     isLoading: true,
-    tpNearMarket: false,
-    fafNearMarket: false,
     chain: "",
     price: 0,
     image_url: "",
     activeTab: "sell",
   });
-  const { nftDetails, isLoading, price, amount, activeTab, chain, tpNearMarket, fafNearMarket } = state;
+  const { nftDetails, isLoading, price, amount, activeTab, chain } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -85,14 +76,6 @@ const List = () => {
           message: "Price cannot be empty",
         })
       );
-
-    const listNearProps = {
-      markets: ["market.tradeport.near", "market.fewandfar.near"],
-      tokenId: nftDetails.tokenID,
-      price,
-      connector,
-      dispatch,
-    };
 
     const listAlgoProps = {
       dispatch,
@@ -125,16 +108,6 @@ const List = () => {
       listedNFT = await listAlgoNft(listAlgoProps);
     } else if (supportedChains[chainId].chain === "Arbitrum") {
       listedNFT = await listArbitrumNft(listProps);
-    } else if (supportedChains[chainId].chain === "Near") {
-      if (!tpNearMarket && !fafNearMarket) {
-        return dispatch(
-          setNotification({
-            type: "warning",
-            message: "Please select a Near Marketplace",
-          })
-        );
-      }
-      return listNearMultipleMarkets(listNearProps);
     } else {
       return history.push(`${match.url}/listed`);
     }
@@ -173,9 +146,6 @@ const List = () => {
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Aurora") {
         const [nftData] = await auroraUserData(nftId);
-        nft = nftData;
-      } else if (supportedChains[chainId]?.chain === "Near") {
-        const [nftData] = await nearUserData(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
         const [nftData] = await avaxUsersNfts(nftId);
@@ -334,92 +304,30 @@ const List = () => {
               </div>
             </div>
           </div>
-          {supportedChains[chainId]?.chain === "Near" ? (
-            <>
-              <div className={`${classes.feature}`}>
-                <div className={classes.mainDetails}>
-                  <div className={classes.collectionHeader}>
-                    <div className={classes.nftId}>Select Marketplace</div>
-                  </div>
-                </div>
-                <section className={`${classes.dropdownContent}`}>
-                  <div className={classes.marketContent}>
-                    <span className={classes.mktSpan}>Select a Near marketplace to list your NFT</span>
-                    <div className={classes.marketplaces}>
-                      <button
-                        type="button"
-                        onClick={() => handleSetState({ tpNearMarket: !tpNearMarket })}
-                        className={`${classes.marketBtn} ${tpNearMarket && classes.activeMarketBtn}`}
-                      >
-                        <div className={classes.mtxText}>
-                          <img src={tradePortIcon} alt="" />
-                          <span>TradePort</span>
-                        </div>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleSetState({ fafNearMarket: !fafNearMarket })}
-                        className={`${classes.marketBtn} ${fafNearMarket && classes.activeMarketBtn}`}
-                      >
-                        <div className={classes.mtxText}>
-                          <img src={fewAndFarIcon} alt="" />
-                          <span>Few and Far</span>
-                        </div>
-                      </button>
-                    </div>
-                  </div>
-                  <div className={classes.chain}>
-                    <img className={classes.icon} src={supportedChains[nftDetails?.chain]?.icon} alt="" />
-                    <div className={classes.inputWrapper}>
-                      <input
-                        value={price}
-                        onChange={handlePrice}
-                        placeholder="E.g. 10"
-                        type="number"
-                        min="1"
-                        step="1"
-                      />
-                    </div>
-                    <span className={classes.amount}>$ {amount.toFixed(2)}</span>
-                  </div>
-                </section>
+          <div className={`${classes.feature}`}>
+            <div className={classes.mainDetails}>
+              <div className={classes.collectionHeader}>
+                <div className={classes.nftId}>Price</div>
               </div>
-            </>
-          ) : (
-            <>
-              <div className={`${classes.feature}`}>
-                <div className={classes.mainDetails}>
-                  <div className={classes.collectionHeader}>
-                    <div className={classes.nftId}>Price</div>
-                  </div>
-                </div>
-                <section className={`${classes.dropdownContent}`}>
-                  <div className={classes.priceDescription}>
-                    Check the
-                    <a href="#" target="_blank">
-                      {" "}
-                      Collection Floor price
-                    </a>{" "}
-                    to give you an idea of the average price of the NFT at the moment
-                  </div>
-                  <div className={classes.chain}>
-                    <img className={classes.icon} src={supportedChains[nftDetails?.chain]?.icon} alt="" />
-                    <div className={classes.inputWrapper}>
-                      <input
-                        value={price}
-                        onChange={handlePrice}
-                        placeholder="E.g. 10"
-                        type="number"
-                        min="1"
-                        step="1"
-                      />
-                    </div>
-                    <span className={classes.amount}>$ {amount.toFixed(2)}</span>
-                  </div>
-                </section>
+            </div>
+            <section className={`${classes.dropdownContent}`}>
+              <div className={classes.priceDescription}>
+                Check the
+                <a href="#" target="_blank">
+                  {" "}
+                  Collection Floor price
+                </a>{" "}
+                to give you an idea of the average price of the NFT at the moment
               </div>
-            </>
-          )}
+              <div className={classes.chain}>
+                <img className={classes.icon} src={supportedChains[nftDetails?.chain]?.icon} alt="" />
+                <div className={classes.inputWrapper}>
+                  <input value={price} onChange={handlePrice} placeholder="E.g. 10" type="number" min="1" step="1" />
+                </div>
+                <span className={classes.amount}>$ {amount.toFixed(2)}</span>
+              </div>
+            </section>
+          </div>
           <div className={classes.listButtonWrapper}>
             <button onClick={listNFT} type="button" className={`${classes.listButton}`}>
               Post your Listing

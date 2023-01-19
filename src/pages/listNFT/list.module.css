@@ -256,9 +256,6 @@
 }
 
 @media screen and (max-width: 1000px) {
-  .marketplaces {
-    width: 100% !important;
-  }
   .container {
     max-width: 768px;
   }
@@ -273,9 +270,6 @@
 }
 
 @media screen and (max-width: 768px) {
-  .marketplaces {
-    width: 100% !important;
-  }
   .container {
     max-width: 540px;
     padding: 1em 2em;
@@ -294,13 +288,6 @@
 }
 
 @media screen and (max-width: 480px) {
-  .marketplaces {
-    flex-direction: column !important;
-  }
-  .marketBtn {
-    width: 10rem;
-    margin-bottom: 10px;
-  }
   .container {
     padding: 2rem 0.5rem;
   }
@@ -431,59 +418,4 @@
     opacity: 1;
     transform: translateY(0%);
   }
-}
-.mtxText img {
-  width: 20px;
-  height: 20px;
-  margin-right: 15px;
-}
-
-.mtxText span {
-  font-size: 15px;
-  font-weight: 450;
-}
-
-.marketplaces {
-  display: flex;
-  margin: 20px 0;
-  width: 60%;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.mtxText {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content:center;
-}
-.marketBtn {
-  background-color: white;
-  border: 1px solid var(--outline-dark);
-  padding: 15px 20px;
-  border-radius: 16px;
-}
-
-.marketBtn:hover {
-  border-color: var(--main-color);
-}
-
-.activeMarketBtn {
-  box-shadow: 0px 4px 4px rgba(38, 38, 38, 0.26);
-  border: 1.5px solid var(--main-color);
-}
-
-.mktSpan {
-  font-size: 15px;
-  color: var(--text-heading);
-  font-weight: 450;
-}
-
-.marketContent {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
 }
