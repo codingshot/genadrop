@@ -433,8 +433,6 @@ export async function listNearMultipleMarkets(nearMintProps) {
   } = window.selector.store.getState();
   const { accountId } = accounts[0];
 
-  console.log("********", accountId);
-
   if (!accountId) {
     return {
       message: "Connect to Near network on your wallet or select a different network",
@@ -442,79 +440,47 @@ export async function listNearMultipleMarkets(nearMintProps) {
   }
 
   const wallet = await window.selector.wallet();
-  console.log("got the wallet, lego!", wallet);
-  const response = await wallet.signAndSendTransactions({
-    transactions: [
+  const response = await wallet.signAndSendTransaction({
+    signerId: accountId,
+    receiverId: contractId,
+    // use map to handle cases of 1 market or more
+    actions: [
       {
-        signerId: accountId,
-        receiverId: "market.tradeport.near",
-        // use map to handle cases of 1 market or more
-        actions: [
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "storage_deposit",
-              args: {
-                receiver_id: accountId,
-              },
-              gas: 100000000000000,
-              deposit: new BN("10000000000000000000000"),
+        type: "FunctionCall",
+        params: {
+          methodName: "nft_approve",
+          args: {
+            token_id: tokenId,
+            account_id: markets[0],
+            msg: {
+              price,
+              market_type: "sale",
+              ft_token_id: "near",
             },
           },
-        ],
+          gas: 300000000000000,
+          deposit: new BN("10000000000000000000000"),
+        },
       },
       {
-        signerId: accountId,
-        receiverId: contractId,
-        // use map to handle cases of 1 market or more
-        actions: [
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "nft_approve",
-              args: {
-                token_id: tokenId,
-                account_id: markets[0],
-                msg: JSON.stringify({
-                  price: utils.format.parseNearAmount(price),
-                  market_type: "sale",
-                  ft_token_id: "near",
-                }),
+        type: "FunctionCall",
+        params: {
+          methodName: "nft_approve",
+          args: {
+            token_id: tokenId,
+            account_id: markets[1],
+            msg: {
+              sale_condition: {
+                near: price,
               },
-              gas: 100000000000000,
-              deposit: new BN("10000000000000000000000"),
             },
           },
-        ],
-      },
-      {
-        signerId: accountId,
-        receiverId: contractId,
-        // use map to handle cases of 1 market or more
-        actions: [
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "nft_approve",
-              args: {
-                token_id: tokenId,
-                account_id: markets[1],
-                msg: JSON.stringify({
-                  sale_conditions: {
-                    near: utils.format.parseNearAmount(price),
-                  },
-                }),
-              },
-              gas: 100000000000000,
-              deposit: new BN("100000000000000000000000"),
-            },
-          },
-        ],
+          gas: 300000000000000,
+          deposit: new BN("10000000000000000000000"),
+        },
       },
     ],
-    callbackUrl: `http://${window.location.host}/profile/1112/${accountId}`,
   });
-
   return response;
 }
 
