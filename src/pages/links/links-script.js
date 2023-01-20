@@ -1,18 +1,8 @@
 const links = [
   {
-    title: "The App",
-    img: "/assets/linktree/app.png",
-    url: "/",
-  },
-  {
     title: "Twitter",
     img: "/assets/linktree/twitter.png",
     url: "https://twitter.com/genadrop",
-  },
-  {
-    title: "Discord",
-    img: "/assets/linktree/discord.png",
-    url: "https://discord.gg/4vdtmQqz6d",
   },
   {
     title: "Telegram",
@@ -20,9 +10,19 @@ const links = [
     url: "https://t.me/+4BDhz2QLaa05NzEx",
   },
   {
+    title: "Instagram",
+    img: "/assets/linktree/ig-logo.png",
+    url: "https://www.instagram.com/genadrop",
+  },
+  {
     title: "LinkedIn",
     img: "/assets/linktree/linkedin.png",
     url: "https://www.linkedin.com/company/genadrop/",
+  },
+  {
+    title: "Discord",
+    img: "/assets/linktree/discord.png",
+    url: "https://discord.gg/4vdtmQqz6d",
   },
   {
     title: "Docs",
@@ -43,6 +43,11 @@ const links = [
     title: "Reddit",
     img: "/assets/linktree/reddit.png",
     url: "https://www.reddit.com/r/genadrop/",
+  },
+  {
+    title: "The App",
+    img: "/assets/linktree/app.png",
+    url: "/",
   },
 ];
 

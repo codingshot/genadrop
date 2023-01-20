@@ -55,7 +55,7 @@ export const footerLinks = [
     id: "1",
     title: "App",
     content: [
-      { name: "Mint", link: "/create", id: "2" },
+      { name: "Create", link: "/create", id: "2" },
       { name: "Marketplace", link: "/marketplace", id: "3" },
     ],
   },
