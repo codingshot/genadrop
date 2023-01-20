@@ -510,6 +510,7 @@ export async function listNearMultipleMarkets(nearMintProps) {
         ],
       },
     ],
+    callbackUrl: `http://${window.location.host}/profile/1112/${accountId}`,
   });
   return response;
 }
