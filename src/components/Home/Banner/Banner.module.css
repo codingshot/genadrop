@@ -1,6 +1,7 @@
 .container {
   width: 100%;
-  margin-bottom: 6em;
+  height: 100%;
+  margin-bottom: 6rem;
 }
 
 .heading {
@@ -10,7 +11,7 @@
   flex-direction: column;
   gap: 0.5em;
   margin-bottom: 3em;
-  padding-top: 5em;
+  padding-top: 3em;
   padding-left: 2em;
   padding-right: 2em;
   padding-bottom: 16em;
