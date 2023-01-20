@@ -162,11 +162,11 @@ const WalletPopup = ({ handleSetState }) => {
         </div>
 
         <div className={classes.heading}>
-          <h3>{showConnectionMethods ? "Connect Wallets" : "Link Wallets"}</h3>
+          <h3>{showConnectionMethods ? "Connect Wallets" : "Connect Your Wallet"}</h3>
           <p className={classes.description}>
             {showConnectionMethods
               ? "Connect with one of our available wallet providers."
-              : "Select any of our supported blockchain to connect your wallet."}{" "}
+              : "Select any of our supported blockchains"}{" "}
           </p>
           {!showConnectionMethods && (
             <div className={classes.networkSwitch}>

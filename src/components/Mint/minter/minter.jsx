@@ -767,7 +767,7 @@ const Minter = () => {
             </div>
           )}
           <div className={classes.grid}>
-            <Category handleSetState={handleSetState} category={category} file={file} params={params} />
+            {/* <Category handleSetState={handleSetState} category={category} file={file} params={params} /> */}
             <div className={classes.mintSection}>
               <section className={classes.assetContainer}>
                 {tweet ? (
