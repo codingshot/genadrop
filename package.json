@@ -70,7 +70,7 @@
     "magic-sdk": "^10.0.0",
     "moment": "^2.29.4",
     "nanoid": "^3.3.1",
-    "near-api-js": "0.44.2",
+    "near-api-js": "^1.0.0",
     "node-pre-gyp": "^0.17.0",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",
