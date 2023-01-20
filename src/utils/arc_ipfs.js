@@ -433,7 +433,6 @@ export async function listNearMultipleMarkets(nearMintProps) {
   } = window.selector.store.getState();
   const { accountId } = accounts[0];
 
-  console.log("********", accountId);
 
   if (!accountId) {
     return {
@@ -442,7 +441,6 @@ export async function listNearMultipleMarkets(nearMintProps) {
   }
 
   const wallet = await window.selector.wallet();
-  console.log("got the wallet, lego!", wallet);
   const response = await wallet.signAndSendTransactions({
     transactions: [
       {
