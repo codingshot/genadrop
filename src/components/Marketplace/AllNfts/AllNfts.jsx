@@ -117,12 +117,12 @@ const AllNfts = () => {
 
   useEffect(() => {
     Promise.all([
+      getAllNearNfts(),
       getAllCeloNfts(),
       getAllAuroraNfts(),
       getAllAvalancheNfts(),
       getAllArbitrumNfts(),
       getAllPolygonNfts(),
-      getAllNearNfts(),
       getAllAlgorandNfts(mainnet, dispatch),
     ]).then((data) => {
       handleSetState({ singles: sortBy({ collections: data.flat(), value: "newest" }) });

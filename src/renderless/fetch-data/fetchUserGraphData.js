@@ -325,7 +325,7 @@ export const getAllAuroraNfts = async () => {
 export const getAllNearNfts = async () => {
   const { data: graphData, error } = await nearClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
   if (error) return [];
-  const data = await getSingleGraphNfts(graphData?.nfts);
+  const data = await getNearSingleGraphNfts(graphData?.nfts);
   return data;
 };
 
