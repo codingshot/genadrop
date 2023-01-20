@@ -26,7 +26,6 @@ const Graph = ({ details }) => {
     });
   }
 
-  console.log("PRICE DETAILS: ", details, prices);
   const data = {
     labels: dates,
     datasets: [

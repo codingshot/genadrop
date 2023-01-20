@@ -134,7 +134,6 @@ const List = () => {
           })
         );
       }
-      console.log("======", listNearProps);
       return listNearMultipleMarkets(listNearProps);
     } else {
       return history.push(`${match.url}/listed`);
@@ -325,7 +324,7 @@ const List = () => {
                   </div>
                   <span className={classes.btnSpan}>Sell the NFT at a fixed price</span>
                 </button>
-                <button type="button" className={classes.bid} disabled={nftDetails.sold}>
+                <button type="button" className={classes.bid} disabled>
                   <div className={classes.btnText}>
                     <img src="/assets/bid.svg" alt="" />
                     HIGHEST BID

@@ -70,8 +70,14 @@ const Deals = ({ nftDetails }) => {
           <img src={lockIcon} alt="" />
           <span>Non Transferable</span>
         </div>
+      ) : supportedChains[chain]?.chain === "Near" && isListed ? (
+        <>
+          <div className={`${classes.btn} ${classes.disable}`} disabled>
+            Listed
+          </div>
+        </>
       ) : !isListed && !price ? (
-        owner === account ? (
+        owner === account && supportedChains[chain]?.networkId !== 1111 ? (
           <Link to={chain ? `/marketplace/1of1/list/${chain}/${Id}` : `/marketplace/1of1/list/${Id}`}>
             {isListed ? (
               <button className={`${classes.btn} ${classes.disable}`} disabled>
