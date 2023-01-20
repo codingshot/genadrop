@@ -134,7 +134,6 @@ const List = () => {
           })
         );
       }
-      console.log("======", listNearProps);
       return listNearMultipleMarkets(listNearProps);
     } else {
       return history.push(`${match.url}/listed`);
