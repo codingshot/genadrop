@@ -179,7 +179,7 @@
     width: 100%;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 0.5em;
+    gap: 0.3em;
   }
 
   .socialIcons .icon {
