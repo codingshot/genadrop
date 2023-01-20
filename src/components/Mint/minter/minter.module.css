@@ -70,6 +70,7 @@
   max-width: 1440px;
   display: flex;
   justify-content: center;
+  align-items: center;
   text-align: center;
   margin: auto;
   flex-direction: column;
@@ -95,9 +96,13 @@
   width: 6rem;
 }
 .grid {
-  display: grid;
+  /* display: grid;
   grid-template-columns: 27% calc(73% - 2rem);
-  gap: 2rem;
+  gap: 2rem; */
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .mintSection {
   width: 100%;
@@ -730,11 +735,11 @@ div.showPreview > span {
   width: 28em;
 }
 @media screen and (max-width: 1038px) {
-  .grid {
+  /* .grid {
     display: grid;
     grid-template-columns: 40% calc(60% - 1rem);
     gap: 1rem;
-  }
+  } */
 }
 
 @media screen and (max-width: 768px) {
@@ -790,11 +795,11 @@ div.showPreview > span {
   .imageContainers._ {
     height: 12em;
   }
-  .grid {
+  /* .grid {
     display: flex;
     flex-direction: column-reverse;
     gap: 2rem;
-  }
+  } */
 }
 
 @media screen and (max-width: 550px) {

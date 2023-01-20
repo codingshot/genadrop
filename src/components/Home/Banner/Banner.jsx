@@ -14,17 +14,17 @@ const Banner = () => {
     setShowOverlay(false);
   };
 
-  useEffect(() => {
-    videoRef.current.addEventListener("ended", () => {
-      setShowOverlay(true);
-    });
-  }, []);
+  // useEffect(() => {
+  //   videoRef.current.addEventListener("ended", () => {
+  //     setShowOverlay(true);
+  //   });
+  // }, []);
 
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
         <div className={classes.features}>Create.&nbsp;Mint.&nbsp;Sell.</div>
-        <div className={classes.description}>The ultimate NO-Code NFT tool Creators and Collectors love</div>
+        <div className={classes.description}>{`Create content + Art that you own in < 5 minutes`}</div>
         <div className={classes.btnContainer}>
           <Link to="/create">
             <div className={classes.btn_1}>Create</div>
@@ -34,10 +34,10 @@ const Banner = () => {
           </Link>
         </div>
       </div>
-      <div className={`${classes.demo} ${showOverlayer && classes.active}`}>
+      {/* <div className={`${classes.demo} ${showOverlayer && classes.active}`}>
         <video poster={poster} ref={videoRef} preload="auto" src={demo} controls />
         <PlayIcon onClick={handlePlay} className={classes.playIcon} />
-      </div>
+      </div> */}
     </div>
   );
 };
