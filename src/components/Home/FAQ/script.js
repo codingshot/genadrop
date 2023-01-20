@@ -57,12 +57,12 @@ export const FAQS = [
     answer:
       "With the Genadrop art creation tool (genadrop.com/create) a artist can upload and name different assets, choose blanks images, edit rarities, reorder layers, see possible combinations, choose generation size, omit or replace from combination with new images, rename collection and metadata for both EVM and Solana blockchains.",
   },
-  {
-    id: "12",
-    question: "Does GenaDrop save my assets?",
-    answer:
-      "To promote the decentralized stack, we do not have a backend to store assets. Rather this is handled on the client side. We only save contract references for things like collections on Algorand onto a database in order to build the marketplace with a Ethereum familiar UI.",
-  },
+  // {
+  //   id: "12",
+  //   question: "Does GenaDrop save my assets?",
+  //   answer:
+  //     "To promote the decentralized stack, we do not have a backend to store assets. Rather this is handled on the client side. We only save contract references for things like collections on Algorand onto a database in order to build the marketplace with a Ethereum familiar UI.",
+  // },
   {
     id: "13",
     question: "What type of NFT(s) can I mint?",

@@ -69,6 +69,7 @@ const GenadropCreatedNFTs = () => {
       <div className={classes.heading}>
         <span>NFTs created with</span> <span className={classes.accent}>Genadrop</span>
       </div>
+      <div className={classes.description}>Notable NFTs that were easily created with GenaDrop</div>
       <Link to="/create">
         <div className={classes.btn}>Create Now</div>
       </Link>
@@ -102,7 +103,7 @@ const GenadropCreatedNFTs = () => {
               <div className={classes.imgContainer}>
                 <img src={card?.image_url} alt="" />
               </div>
-              <div className={classes.name}>{card?.name}</div>
+              {/* <div className={classes.name}>{card?.name}</div> */}
             </div>
           ))}
         </div>
