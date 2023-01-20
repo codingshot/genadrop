@@ -20,7 +20,7 @@ const Home = () => (
     <EarlyAccess />
     <CameraMint />
     <Features />
-    <Plans />
+    {/* <Plans /> */}
     <GenadropCreatedNFTs />
     <Review />
     {/* <JoinDiscord /> */}
