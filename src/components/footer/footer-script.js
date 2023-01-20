@@ -64,11 +64,11 @@ export const footerLinks = [
     title: "Quick Links",
     content: [
       {
-        name: "DAO",
-        link: "https://snapshot.org/#/minorityprogrammers.eth",
+        name: "Twitter",
+        link: "https://twitter.com/genadrop",
         id: "1",
       },
-      { name: "MPA", link: "https://www.minorityprogrammers.org", id: "2" },
+      { name: "Telegram", link: "https://t.me/+4BDhz2QLaa05NzEx", id: "2" },
     ],
   },
   {
@@ -103,7 +103,7 @@ export const socialLinks = [
   {
     name: "Twitter",
     icon: twitterIcon,
-    link: "https://twitter.com/minorityprogram",
+    link: "https://twitter.com/genadrop",
   },
   {
     name: "Telegram",
@@ -113,7 +113,7 @@ export const socialLinks = [
   {
     name: "Linkedin",
     icon: linkedInIcon,
-    link: "https://linkedin.com/company/minority-programmers/",
+    link: "https://linkedin.com/company/genadrop",
   },
   {
     name: "Youtube",
@@ -123,6 +123,6 @@ export const socialLinks = [
   {
     name: "Instagram",
     icon: instagramIcon,
-    link: "http://instagram.com/minorityprogrammers",
+    link: "https://www.instagram.com/genadrop",
   },
 ];
