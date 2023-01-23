@@ -263,6 +263,7 @@ Thank you so much for your continued support. Would love to pilot some drops as 
 
 
 ### Listing to external markets through Genadrop
+  listing to https://www.tradeport.xyz/ and http://fewfar.com/ marketplaces
   - WalkThrough Video - https://www.loom.com/share/b2fbf24f8de04a57be9052032ecfba41
 
 <!-- DEPLOYING CONTRACTS -->
