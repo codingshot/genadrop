@@ -1,6 +1,7 @@
 .container {
   width: 100%;
-  margin-bottom: 6em;
+  height: 100%;
+  margin-bottom: 6rem;
 }
 
 .heading {
@@ -10,10 +11,10 @@
   flex-direction: column;
   gap: 0.5em;
   margin-bottom: 3em;
-  padding-top: 5em;
+  padding-top: 9em;
   padding-left: 2em;
   padding-right: 2em;
-  padding-bottom: 16em;
+  padding-bottom: 9em;
   background: linear-gradient(
     255.93deg,
     #eff3f9 -39.69%,
@@ -52,7 +53,7 @@
   justify-content: center;
   text-align: center;
   gap: 2em;
-  margin-top: 2em;
+  margin-top: 1.5em;
 }
 
 .btn_1,
@@ -137,8 +138,8 @@
 
 @media screen and (max-width: 900px) {
   .heading {
-    padding-top: 4em;
-    padding-bottom: 6em;
+    padding-top: 5em;
+    padding-bottom: 5em;
   }
 
   .demo {

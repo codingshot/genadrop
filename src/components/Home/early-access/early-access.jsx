@@ -13,7 +13,7 @@ const EarlyAccess = () => {
       >
         <div className={`${classes.wrapper}`}>
           <IconStars />
-          <p>Do you need a team to support your NFT drop or you want Early Access to Genadrop Minter + Marketplace?</p>
+          <p>Get Our Team to Support Your NFT Drop + Brand Coming Into Web3</p>
           <ArrowRight />
         </div>
       </a>
