@@ -463,6 +463,24 @@ export async function listNearMultipleMarkets(nearMintProps) {
       },
       {
         signerId: accountId,
+        receiverId: "market.fewandfar.near",
+        // use map to handle cases of 1 market or more
+        actions: [
+          {
+            type: "FunctionCall",
+            params: {
+              methodName: "storage_deposit",
+              args: {
+                receiver_id: accountId,
+              },
+              gas: 100000000000000,
+              deposit: new BN("10000000000000000000000"),
+            },
+          },
+        ],
+      },
+      {
+        signerId: accountId,
         receiverId: contractId,
         // use map to handle cases of 1 market or more
         actions: [
