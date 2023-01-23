@@ -261,6 +261,10 @@ Thank you so much for your continued support. Would love to pilot some drops as 
 - ### MAINNET
   - Single minter address - https://explorer.mainnet.near.org/accounts/genadrop-contract.nftgen.near
 
+
+### Listing to external markets through Genadrop
+  - WalkThrough Video - https://www.loom.com/share/b2fbf24f8de04a57be9052032ecfba41
+
 <!-- DEPLOYING CONTRACTS -->
 
 ## Deploying EVM Contracts
