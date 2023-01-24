@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import Attributes from "./Attributes/Attributes";
@@ -79,7 +79,7 @@ const NFTDetail = () => {
     history.push(`${match.url.split("/").slice(0, -1).join("/")}`);
   };
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     document.documentElement.scrollTop = 0;
 
     let result;
@@ -89,7 +89,7 @@ const NFTDetail = () => {
       result = await getGraphData({ graphProps });
     }
     handleSetState({ ...result });
-  };
+  }, []);
 
   useEffect(() => {
     handleSetState({ load: true });
@@ -97,7 +97,7 @@ const NFTDetail = () => {
     if (nftDetails && collection && _1of1 && transactionHistory) {
       setTimeout(() => {
         handleSetState({ load: false });
-      }, 2000);
+      }, 500);
     }
   }, [singleAlgoNfts, algoCollections, auroraCollections, polygonCollections, celoCollections, params.nftId]);
 
