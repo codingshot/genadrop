@@ -57,7 +57,9 @@
 }
 
 .logoDesktop {
-  width: 4em;
+  width: 3em;
+  margin-left: 40px;
+  margin-top: 10px;
 }
 
 .logoMobile {
@@ -182,7 +184,7 @@
 
   .logoMobile {
     display: block;
-    width: 3em;
+    width: 2em;
   }
 
   .closeIcon,

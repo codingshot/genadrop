@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import Attributes from "./Attributes/Attributes";
