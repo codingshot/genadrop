@@ -79,7 +79,7 @@ const NFTDetail = () => {
     history.push(`${match.url.split("/").slice(0, -1).join("/")}`);
   };
 
-  const getData = useCallback(async () => {
+  const getData = async () => {
     document.documentElement.scrollTop = 0;
 
     let result;
@@ -89,7 +89,7 @@ const NFTDetail = () => {
       result = await getGraphData({ graphProps });
     }
     handleSetState({ ...result });
-  }, []);
+  };
 
   useEffect(() => {
     handleSetState({ load: true });
@@ -97,7 +97,7 @@ const NFTDetail = () => {
     if (nftDetails && collection && _1of1 && transactionHistory) {
       setTimeout(() => {
         handleSetState({ load: false });
-      }, 500);
+      }, 2000);
     }
   }, [singleAlgoNfts, algoCollections, auroraCollections, polygonCollections, celoCollections, params.nftId]);
 

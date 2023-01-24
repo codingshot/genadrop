@@ -133,12 +133,11 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Near") {
         const [nearResult, trHistory] = await nearUserData(nftId);
-      const data = await getAllNearNfts();
         return {
           nftDetails: nearResult,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: data,
+          _1of1: singleNearNfts,
         };
       }
     } catch (error) {
