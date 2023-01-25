@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import classes from "./welcome.module.css";
-import dropIcon from "../../assets/drop.svg";
+import dropIcon from "../../assets/Genadro-logo.svg";
 
 const Welcome = ({ showWelcomeScreen }) => {
   useEffect(() => {
