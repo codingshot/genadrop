@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./loading.module.css";
-import drop from "../../assets/drop.svg";
+import drop from "../../assets/Genadro-logo.svg";
 
 const Loading = () => (
   <div className={classes.wrapper}>
