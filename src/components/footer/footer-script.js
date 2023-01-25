@@ -10,6 +10,7 @@ import instagramIcon from '../../assets/ig-logo.svg'
 import discordIcon from "../../assets/icon-discord.svg";
 import linkedInIcon from "../../assets/icon-linkedin.svg";
 import youTubeIcon from "../../assets/icon-youtube.svg";
+import arbitrumIcon from "../../assets/arbitrum.svg";
 import telegram from "../../assets/telegram.svg";
 import links from "../../assets/icon-links.svg";
 
@@ -48,6 +49,11 @@ export const orgs = [
     name: "Aurora",
     icon: auroraIcon,
     link: "https://aurora.dev/",
+  },
+  {
+    name: "Arbtrum",
+    icon: arbitrumIcon,
+    link: "https://arbitrum.io/",
   },
 ];
 export const footerLinks = [

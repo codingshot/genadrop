@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import classes from "./overlay.module.css";
 import { GenContext } from "../../gen-state/gen.context";
-import drop from "../../assets/drop.svg";
+import drop from "../../assets/Genadro-logo.svg";
 
 const Overlay = () => {
   const { isLoading } = useContext(GenContext);
