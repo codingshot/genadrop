@@ -103,7 +103,7 @@ const NFTDetail = () => {
 
   return (
     <div className={classes.container}>
-      {nftDetails && collection && _1of1 && transactionHistory && !load ? (
+      {nftDetails && collection && _1of1 && transactionHistory ? (
         <div className={classes.wrapper}>
           <div onClick={handleGoBack} className={classes.backBtnContainer}>
             <BackIcon className={classes.backIcon} />
