@@ -55,6 +55,7 @@ const Dashboard = () => {
     },
     activeDetail: "created",
     collectedNfts: null,
+    loading: true,
     createdNfts: null,
     myCollections: null,
     filteredCollection: null,
@@ -71,6 +72,7 @@ const Dashboard = () => {
     myCollections,
     createdNfts,
     collectedNfts,
+    loading,
     filteredCollection,
     userDetails,
     onSale,
@@ -128,6 +130,7 @@ const Dashboard = () => {
       handleSetState({
         createdNfts: [...(nfts || [])],
         onSale: onSaleNFTs || [],
+        loading: false,
       });
     })();
     (async function getUserCollectedNfts() {
@@ -157,7 +160,7 @@ const Dashboard = () => {
         default:
           break;
       }
-      handleSetState({ collectedNfts: [...(nfts || [])] });
+      handleSetState({ collectedNfts: [...(nfts || [])], loading: false });
     })();
 
     // Get User created Collections
@@ -187,6 +190,7 @@ const Dashboard = () => {
       }
       handleSetState({
         myCollections: [...(collection || [])],
+        loading: false,
       });
     })();
 
@@ -312,12 +316,17 @@ const Dashboard = () => {
   const params = new URLSearchParams(location.search);
 
   const activeSwitch = (active) => {
+    handleSetState({ loading: true });
+
     params.set("tab", active);
     history.push({
       pathname: location.pathname,
       search: params.toString(),
     });
     handleSetState({ activeDetail: active });
+    setTimeout(() => {
+      handleSetState({ loading: false });
+    }, 1000);
   };
 
   useEffect(() => {
@@ -454,13 +463,7 @@ const Dashboard = () => {
             ) : (
               ""
             )
-          ) : filteredCollection?.length === 0 ? (
-            filter.searchValue ? (
-              <NotFound />
-            ) : (
-              <NotFound />
-            )
-          ) : (
+          ) : loading ? (
             <div className={classes.skeleton}>
               {[...new Array(5)].map((id, idx) => (
                 <div key={idx}>
@@ -472,6 +475,8 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
+          ) : (
+            filteredCollection?.length === 0 && (filter.searchValue ? <NotFound /> : <NotFound />)
           )}
           {filteredCollection?.length > 0 && (
             <Pagination
