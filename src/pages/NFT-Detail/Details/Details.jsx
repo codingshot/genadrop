@@ -14,6 +14,8 @@ const Details = ({ nftDetails }) => {
   const handleExplorer = () => {
     if (supportedChains[chain]?.chain === "Algorand") {
       window.open(`${algoexplorer}address/${owner}`);
+    } else if (supportedChains[chain]?.chain === "Near") {
+      window.open(`${chainIdToParams[chain]?.blockExplorerUrls}${owner}`);
     } else {
       window.open(`${chainIdToParams[chain]?.blockExplorerUrls}address/${owner}`);
     }
