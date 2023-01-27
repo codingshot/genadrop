@@ -10,6 +10,7 @@ const RedirectLinks = {
   "/build": "https://linktr.ee/MinorityProgrammers",
   "/reddit": "https://www.reddit.com/r/genadrop/",
   "/discord": "https://discord.gg/4vdtmQqz6d",
+  "/merch": "https://nearswag.xyz/collections/genadrop",
 };
 
 const Redirect = () => {
