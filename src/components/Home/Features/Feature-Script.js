@@ -17,7 +17,7 @@ const features = [
     link: "Go to Mint",
     url: "/create",
     image: mintImage,
-    title: "You do not need to know all the technical terms before minting your NFTs.",
+    title: "Turn anything into a digital collectible you own with no code in minutes",
     description:
       "Directly upload files, render collections, memorialize tweets, use your camera, generate unique ART with AI........ to create NFTs you own (without any coding knowledge)",
   },

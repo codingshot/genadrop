@@ -6,6 +6,7 @@ import {
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
+  getAllNearNfts,
   nearUserData,
   polygonUserData,
 } from "../../renderless/fetch-data/fetchUserGraphData";

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import Attributes from "./Attributes/Attributes";
@@ -103,7 +103,7 @@ const NFTDetail = () => {
 
   return (
     <div className={classes.container}>
-      {nftDetails && collection && _1of1 && transactionHistory && !load ? (
+      {nftDetails && collection && _1of1 && transactionHistory ? (
         <div className={classes.wrapper}>
           <div onClick={handleGoBack} className={classes.backBtnContainer}>
             <BackIcon className={classes.backIcon} />
