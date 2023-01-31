@@ -93,6 +93,7 @@ const Dashboard = () => {
   // return null;
   useEffect(() => {
     // Get User Created NFTs
+    handleSetState({ loading: true });
     let address = "";
     if (supportedChains[chainID]?.chain !== "Algorand" && supportedChains[chainID]?.chain !== "Near" && userId) {
       address = ethers?.utils?.hexlify(userId);
@@ -165,6 +166,7 @@ const Dashboard = () => {
 
     // Get User created Collections
     (async function getCreatedCollections() {
+      handleSetState({ loading: true });
       let walletAddress = "";
       if (supportedChains[chainID]?.chain !== "Algorand" && supportedChains[chainID]?.chain !== "Near" && userId) {
         walletAddress = ethers?.utils?.hexlify(userId);
@@ -475,8 +477,10 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
+          ) : filter.searchValue ? (
+            <NotFound />
           ) : (
-            filteredCollection?.length === 0 && (filter.searchValue ? <NotFound /> : <NotFound />)
+            <NotFound />
           )}
           {filteredCollection?.length > 0 && (
             <Pagination
