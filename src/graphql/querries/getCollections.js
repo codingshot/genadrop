@@ -535,6 +535,7 @@ export const GET_NEAR_NFT = gql`
       isSold
       price
       tokenID
+      marketsData
       isListed
       owner {
         id
