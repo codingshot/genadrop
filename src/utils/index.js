@@ -510,6 +510,7 @@ export const getNearNft = async (collection, mainnet) => {
     nftArr.name = data?.name;
     nftArr.isListed = collection?.isListed
     nftArr.chain = collection?.chain;
+    nftArr.marketListed = collection?.marketsData
     nftArr.owner = collection?.owner?.id;
     nftArr.price = collection?.price ? utils.format.formatNearAmount(collection?.price) : 0;
     nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
