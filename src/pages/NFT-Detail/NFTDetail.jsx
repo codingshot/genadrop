@@ -15,6 +15,7 @@ import TransactionHistory from "./TransactionHistory/TransactionHistory";
 import { ReactComponent as BackIcon } from "../../assets/icon-arrow-left.svg";
 import supportedChains from "../../utils/supportedChains";
 import LoadingScreen from "./Loading-Screen/LoadingScreen";
+import ListingMarket from "./ListingMarket/ListingMarket";
 
 const NFTDetail = () => {
   const { params } = useRouteMatch();
@@ -114,11 +115,12 @@ const NFTDetail = () => {
             <div className={classes.nftSection}>
               <div className={classes.desktop}>
                 <NFT nftDetails={nftDetails} />
-                <Details nftDetails={nftDetails} />
+                {supportedChains[params.chainId]?.label === "Near" && <ListingMarket nftDetails={nftDetails} />}
               </div>
               <div className={classes.mobile}>
                 <NFT nftDetails={nftDetails} />
                 <Deals nftDetails={{ ...nftDetails, account, chainId, mainnet, connector, dispatch }} />
+                {supportedChains[params.chainId]?.label === "Near" && <ListingMarket nftDetails={nftDetails} />}
               </div>
             </div>
 
@@ -127,6 +129,7 @@ const NFTDetail = () => {
                 <Deals nftDetails={{ ...nftDetails, account, chainId, mainnet, connector, dispatch }} />
                 <Description nftDetails={nftDetails} />
                 <Attributes nftDetails={nftDetails} />
+                <Details nftDetails={nftDetails} />
               </div>
               <div className={classes.mobile}>
                 <Description nftDetails={nftDetails} />
