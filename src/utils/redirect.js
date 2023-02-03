@@ -11,6 +11,7 @@ const RedirectLinks = {
   "/reddit": "https://www.reddit.com/r/genadrop/",
   "/discord": "https://discord.gg/4vdtmQqz6d",
   "/merch": "https://nearswag.xyz/collections/genadrop",
+  "/docs": "https://github.com/GenaDrop/docs",
 };
 
 const Redirect = () => {
