@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-await-in-loop */
-import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
+// import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import { utils } from "near-api-js";
 import JSZip from "jszip";
@@ -336,6 +336,7 @@ export async function mintSingleToNear(nearMintProps) {
     accounts,
   } = window.selector.store.getState();
   const { accountId } = accounts[0];
+
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
@@ -343,8 +344,35 @@ export async function mintSingleToNear(nearMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
+    if (window?.xfi?.near?.connected) {
+      response = window?.xfi?.near.signAndSendTransaction({
+        signerId: accountId,
+        receiverId: contractId,
+        callbackUrl: `http://${window.location.host}/mint/1of1`,
+        actions: [
+          {
+            type: "FunctionCall",
+            params: {
+              methodName: "nft_mint",
+              args: {
+                token_id: `${Date.now()}`,
+                metadata: {
+                  title: metadata.name,
+                  description: metadata.description,
+                  media: `https://ipfs.io/ipfs/${asset.media}`,
+                  reference: asset.url,
+                },
+                receiver_id: receiverAddress,
+              },
+              gas: utils.format.parseNearAmount("0.0000000003"),
+              deposit: new BN("8930000000000000000000"),
+            },
+          },
+        ],
+      });
+    }
     if (window?.near?.accountId) {
-      response = await window?.near?.signAndSendTransaction({
+      response = await window?.near?.request({
         receiverId: contractId,
         actions: [
           {
