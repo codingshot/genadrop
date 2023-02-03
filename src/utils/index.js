@@ -388,6 +388,23 @@ export const getTransactions = async (transactions) => {
   return trnArr;
 };
 
+export const getNearTransactions = async (transactions) => {
+  const trnArr = [];
+  for (let i = 0; i < transactions?.length; i++) {
+    try {
+      const trnObj = {};
+      (trnObj.buyer = transactions[i]?.to?.id),
+        (trnObj.price = transactions[i]?.price * PRICE_CONVERSION_VALUE),
+        (trnObj.seller = transactions[i].from?.id),
+        (trnObj.txDate = transactions[i]?.price ? utils.format.formatNearAmount(transactions[i]?.price) : 0),
+        (trnObj.txId = transactions[i]?.txId),
+        (trnObj.type = transactions[i]?.type);
+      trnArr.push(trnObj);
+    } catch (error) {}
+  }
+  return trnArr;
+};
+
 export const getUserGraphNft = async (collections, address) => {
   function fetchUserNfts(collection) {
     const fetch = async (resolve, reject) => {
