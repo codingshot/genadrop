@@ -32,6 +32,7 @@ import {
   getUserGraphNft,
   getNftCollections,
   getSingleNfts,
+  getNearTransactions,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
@@ -96,7 +97,7 @@ export const nearUserData = async (address) => {
   let nearResult = [];
   if (nearData?.nft !== null) {
     nearResult = await getNearNft(nearData?.nft);
-    trHistory = await getTransactions(nearData?.nft?.transactions);
+    trHistory = await getNearTransactions(nearData?.nft?.transactions);
   }
   const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
   return [nearResult[0], transactionHistory];
