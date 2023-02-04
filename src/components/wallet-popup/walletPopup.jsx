@@ -8,6 +8,8 @@ import { setupHereWallet } from "@near-wallet-selector/here-wallet";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
+import { setupXDEFI } from "@near-wallet-selector/xdefi";
+import { setupNightly } from "@near-wallet-selector/nightly";
 
 // near wallet styles & icons
 import "@near-wallet-selector/modal-ui/styles.css";
@@ -16,6 +18,8 @@ import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-ic
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
 import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
+import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
+import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import classes from "./walletPopup.module.css";
 
 // components
@@ -84,6 +88,8 @@ const WalletPopup = ({ handleSetState }) => {
           setupSender({ iconUrl: SenderIconUrl }),
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
+          setupNightly({ iconUrl: NightlyIcon }),
+          // setupXDEFI({ iconUrl: XDefiIcon }),
         ];
       }
       const walletSelector = await setupWalletSelector({
@@ -188,8 +194,6 @@ const WalletPopup = ({ handleSetState }) => {
           <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
             {connectOptions
               .filter((chain) => mainnet === chain.isMainnet)
-              // .sort((a) => (a.comingSoon === true ? 1 : -1))
-              // .sort((a, b) => !a.comingSoon && a.chain.localeCompare(b.chain))
               .filter((_, idx) => showMoreOptions || idx <= 4)
               .map((chain, idx) => (
                 <div
