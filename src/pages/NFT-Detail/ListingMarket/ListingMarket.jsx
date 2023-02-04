@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import classes from "./listingMarket.module.css";
 import tradePortIcon from "../../../assets/tradeport.svg";
-import nearIcon from "../../../assets/icon-near.svg";
+// import nearIcon from "../../../assets/icon-near.svg";
 import fewfarIcon from "../../../assets/fewandfar.svg";
 
 const ListingMarket = ({ nftDetails }) => {
