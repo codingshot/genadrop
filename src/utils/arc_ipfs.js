@@ -344,33 +344,32 @@ export async function mintSingleToNear(nearMintProps) {
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
-    if (window?.xfi?.near?.connected) {
-      response = window?.xfi?.near.signAndSendTransaction({
-        signerId: accountId,
-        receiverId: contractId,
-        callbackUrl: `http://${window.location.host}/mint/1of1`,
-        actions: [
-          {
-            type: "FunctionCall",
-            params: {
-              methodName: "nft_mint",
-              args: {
-                token_id: `${Date.now()}`,
-                metadata: {
-                  title: metadata.name,
-                  description: metadata.description,
-                  media: `https://ipfs.io/ipfs/${asset.media}`,
-                  reference: asset.url,
-                },
-                receiver_id: receiverAddress,
-              },
-              gas: utils.format.parseNearAmount("0.0000000003"),
-              deposit: new BN("8930000000000000000000"),
-            },
-          },
-        ],
-      });
-    }
+    // if (window?.xfi?.near?.connected) {
+    //   response = window?.xfi?.near?.signAndSendTransaction({
+    //     signerId: accountId,
+    //     receiverId: contractId,
+    //     actions: [
+    //       {
+    //         type: "FunctionCall",
+    //         params: {
+    //           methodName: "nft_mint",
+    //           args: {
+    //             token_id: `${Date.now()}`,
+    //             metadata: {
+    //               title: metadata.name,
+    //               description: metadata.description,
+    //               media: `https://ipfs.io/ipfs/${asset.media}`,
+    //               reference: asset.url,
+    //             },
+    //             receiver_id: receiverAddress,
+    //           },
+    //           gas: 300000000000000,
+    //           deposit: new BN("10000000000000000000000"),
+    //         },
+    //       },
+    //     ],
+    //   });
+    // }
     if (window?.near?.accountId) {
       response = await window?.near?.request({
         receiverId: contractId,
@@ -420,19 +419,7 @@ export async function mintSingleToNear(nearMintProps) {
         ],
       });
     }
-    // if (window.selector) console.log(window.selector);
     return response;
-    // try {
-    //   const { assetID, txId } = await signTx(connector, [txn], dispatch);
-    //   await write.writeNft(account, undefined, assetID[0], price || 0, false, null, null, mainnet, txId[0]);
-    //   // notification: asset minted
-    //   return mainnet ? `https://algoexplorer.io/asset/${assetID}` : `https://testnet.algoexplorer.io/asset/${assetID}`;
-    // } catch (error) {
-    //   console.log(error.message);
-    //   return {
-    //     message: `${error.message}`,
-    //   };
-    // }
   }
   return {
     message: "Connect to Near network on your wallet or select a different network",

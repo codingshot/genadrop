@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { Magic } from "magic-sdk";
 
-// near wallets 
+// near wallets
 import { setupSender } from "@near-wallet-selector/sender";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
@@ -22,7 +22,7 @@ import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-ic
 import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
 import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
-import NightlyIcon from '@near-wallet-selector/nightly/assets/nightly.png'
+import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import "@near-wallet-selector/modal-ui/styles.css";
 
 // components
@@ -139,7 +139,7 @@ export const initializeConnection = async (walletProps) => {
         setupMeteorWallet({ iconUrl: MeteorIconUrl }),
         setupHereWallet({ iconUrl: HereWalletIconUrl }),
         setupNightly({ iconUrl: NightlyIcon }),
-        setupXDEFI({ iconUrl: XDefiIcon }),
+        // setupXDEFI({ iconUrl: XDefiIcon }),
       ];
     }
     const walletSelector = await setupWalletSelector({
@@ -150,7 +150,7 @@ export const initializeConnection = async (walletProps) => {
     const isSignedIn = walletSelector.isSignedIn();
     window.selector = walletSelector;
     const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
-    console.log('signed..');
+    console.log("signed..");
     if (isSignedIn) {
       window.localStorage.setItem("near_wallet", "connected_to_near");
       dispatch(setChainId(connectedChain));
