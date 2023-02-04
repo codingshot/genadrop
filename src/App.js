@@ -91,7 +91,7 @@ function App() {
             <Route exact path="/profile/:chainId/:userId" component={Dashboard} />
             {/* <Route exact path="/me/:userId/:nftId" component={List} /> */}
             <Route exact path="/profile/settings" component={Profile} />
-            <Route exact path="/docs" component={docsEmbed} />
+            {/* <Route exact path="/docs" component={docsEmbed} /> */}
             <Route exact path="/artist" component={Artist} />
             <Route exact path="/partner" component={Partner} />
             <Route exact path="/pitch" component={Pitch} />

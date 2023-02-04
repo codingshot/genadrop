@@ -3489,6 +3489,13 @@
   dependencies:
     rxjs "^7.5.7"
 
+"@near-wallet-selector/core@7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/core/-/core-7.6.1.tgz#9a682f78fa37121f19ab5e08fcde2332c7e1bf06"
+  integrity sha512-qFBWdtyZYXMBoIc2rTXKqUWE5mnaqo/7oIDn2qExTFRyRiLiGSe5ak0j5MkS52wNeFVu45FOs2NqszrKTiNyig==
+  dependencies:
+    rxjs "^7.5.7"
+
 "@near-wallet-selector/default-wallets@^7.0.2":
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/@near-wallet-selector/default-wallets/-/default-wallets-7.0.2.tgz#e7a46107b559f426f34f57eb54615e7b13219ff6"
@@ -3562,13 +3569,13 @@
     "@near-wallet-selector/core" "7.0.2"
     "@near-wallet-selector/my-near-wallet" "7.0.2"
 
-"@near-wallet-selector/nightly@^7.0.3":
-  version "7.0.3"
-  resolved "https://registry.yarnpkg.com/@near-wallet-selector/nightly/-/nightly-7.0.3.tgz#a2ff463b94d2b565af9f4dbeb87101e769285fe7"
-  integrity sha512-dGGg8/C8iM/OvlCGiiBZuR0/x1Z9YZ5uIWIJPOgyzlSjF1HvPD/Dw6055mrMPHwX/Mr5gC5sl7EaAltfnDCEng==
+"@near-wallet-selector/nightly@^7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/nightly/-/nightly-7.6.1.tgz#716e6113241904617c66b4246da41f655adbec2e"
+  integrity sha512-1r3ml0fxJOjAqEr0GpknhsjHrztZ33xktLt3o6dLDdGDAEpHIYGy1oj/7jBqnrT0uXx1oXTAPHC/N9xy7+Zrlg==
   dependencies:
-    "@near-wallet-selector/core" "7.0.3"
-    "@near-wallet-selector/wallet-utils" "7.0.3"
+    "@near-wallet-selector/core" "7.6.1"
+    "@near-wallet-selector/wallet-utils" "7.6.1"
     is-mobile "^3.1.1"
 
 "@near-wallet-selector/sender@^7.0.2":
@@ -3613,6 +3620,22 @@
   dependencies:
     "@near-wallet-selector/core" "7.5.0"
     bn.js "^5.2.0"
+
+"@near-wallet-selector/wallet-utils@7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/wallet-utils/-/wallet-utils-7.6.1.tgz#0acda754292baaae65cada9f02446a36573b9f86"
+  integrity sha512-g5mw69vBk0ZTvrCNxMLt7XwcrGbkDdbxoPMpMPNcpNFL0oo/n5WBZ4+qitoy8d8xoXxeS3r28sYYaQ8QckkLFw==
+  dependencies:
+    "@near-wallet-selector/core" "7.6.1"
+    bn.js "^5.2.0"
+
+"@near-wallet-selector/xdefi@^7.6.1":
+  version "7.6.1"
+  resolved "https://registry.yarnpkg.com/@near-wallet-selector/xdefi/-/xdefi-7.6.1.tgz#9ac40be0f08e8b9481bcb52b51a6bbff904f2722"
+  integrity sha512-nf8/WRp5XA0zCxcnFTy7M9UyCkvCwMqOS4PzbsTP3cD3TBTNJVgC6ZC1idR9mXeQ6aBhT0D2piboTuMv8irTyg==
+  dependencies:
+    "@near-wallet-selector/core" "7.6.1"
+    is-mobile "^3.1.1"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
