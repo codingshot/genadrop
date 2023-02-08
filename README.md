@@ -278,6 +278,9 @@ Follow the steps below to contribute to Genadrop
 3. In your console, `run yarn hardhat run --network (network-name) (script-name)` i.e `yarn hardhat run --network avax scripts/deployMarket.js` to deploy on avax network(check the hardhatconfig.js file to see the various network tags)
 4. The script runs and returns the Deployed Contract address
 
+--- Demo video ---
+https://www.loom.com/share/19d35f0ec9434411851190984475a676
+
 <!-- CONTRIBUTING -->
 
 ## Contributing
