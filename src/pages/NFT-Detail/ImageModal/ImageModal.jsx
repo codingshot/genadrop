@@ -1,24 +1,58 @@
 import ReactDOM from "react-dom";
+import { QrReader } from "react-qr-reader";
+
 import classes from "./imageModal.module.css";
 import CloseIcon from "../../../assets/ModalCancel.svg";
+import { setNotification } from "../../../gen-state/gen.actions";
 
-function ImageModalContainer({ setOpen, image }) {
+function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
   function close() {
-    setOpen(false);
+    handleCloseModal();
+  }
+
+  function handleCodeScanned(result, error) {
+    if (!!result) {
+      if (
+        result?.text?.includes("https//") ||
+        result?.text?.length >= 42 ||
+        (result?.text?.endsWith(".near") && mainnet) ||
+        (result?.text?.endsWith(".testnet") && !mainnet)
+      ) {
+        console.log(result);
+        handleAddress({ receiverAddress: result?.text });
+        handleCloseModal();
+      } else {
+        dispatch(
+          setNotification({
+            type: "warning",
+            message: "Recipient address is invalid",
+          })
+        );
+        handleCloseModal();
+      }
+    }
+
+    if (!!error) {
+      console.info(error);
+    }
   }
 
   return ReactDOM.createPortal(
     <>
-      <div className={classes.modalShadow} onClick={close}></div>
+      <div className={classes.modalShadow} onClick={close} />
       <div className={classes.Modal}>
-        <div>
+        <div className={classes.closeBtn}>
           <img onClick={close} className={classes.CloseIcon} src={CloseIcon} alt="" role="button" />
         </div>
-        <img className={classes.ModalImage} src={image} alt="" />
+        <div className={classes.modalContent}>
+          <h1>Scan your Address</h1>
+          <p>Place the QR code in front of your camera</p>
+          <QrReader onResult={(result, error) => handleCodeScanned(result, error)} className={classes.qrCode} />
+        </div>
       </div>
     </>,
     document.getElementById("image-modal")
   );
 }
 
-export default ImageModalContainer;
+export default QrReaderContainer;
