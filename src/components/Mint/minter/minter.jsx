@@ -189,11 +189,9 @@ const Minter = () => {
     });
   }, []);
 
-  const handleCloseQrModal = () => handleSetState({ openQrModal: false });
-
-  useEffect(() => {
-    console.log(openQrModal);
-  }, [openQrModal]);
+  const handleCloseQrModal = () => {
+    handleSetState({ openQrModal: false });
+  };
 
   useEffect(() => {
     if (params.mintId === "tweet") {
@@ -1247,7 +1245,6 @@ const Minter = () => {
                       </div>
                       <div onClick={() => handleSetState({ openQrModal: true })} className={classes.qrScanner}>
                         <QrCodeIcon />
-                        {openQrModal && <QrReaderContainer handleCloseModal={handleCloseQrModal} />}
                       </div>
                     </div>
                   </div>
@@ -1332,6 +1329,13 @@ const Minter = () => {
               </div>
             </div>
           </div>
+          {openQrModal && (
+            <QrReaderContainer
+              dispatch={dispatch}
+              handleCloseModal={handleCloseQrModal}
+              handleAddress={handleSetState}
+            />
+          )}
         </div>
       )}
       <ProfileImgOverlay

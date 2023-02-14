@@ -3,33 +3,51 @@ import { QrReader } from "react-qr-reader";
 
 import classes from "./imageModal.module.css";
 import CloseIcon from "../../../assets/ModalCancel.svg";
+import { setNotification } from "../../../gen-state/gen.actions";
 
-function QrReaderContainer({ handleCloseModal }) {
+function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
   function close() {
     handleCloseModal();
   }
 
   function handleCodeScanned(result, error) {
     if (!!result) {
-      console.log(result?.text);
-      handleCloseModal();
+      if (
+        result?.text?.includes("https//") ||
+        result?.text?.length >= 42 ||
+        (result?.text?.endsWith(".near") && mainnet) ||
+        (result?.text?.endsWith(".testnet") && !mainnet)
+      ) {
+        console.log(result);
+        handleAddress({ receiverAddress: result?.text });
+        handleCloseModal();
+      } else {
+        dispatch(
+          setNotification({
+            type: "warning",
+            message: "Recipient address is invalid",
+          })
+        );
+        handleCloseModal();
+      }
     }
 
-    // if (!!error) {
-    //   console.info(error);
-    // }
+    if (!!error) {
+      console.info(error);
+    }
   }
 
   return ReactDOM.createPortal(
     <>
-      <div className={classes.modalShadow} onClick={close}></div>
+      <div className={classes.modalShadow} onClick={close} />
       <div className={classes.Modal}>
-        <div>
+        <div className={classes.closeBtn}>
           <img onClick={close} className={classes.CloseIcon} src={CloseIcon} alt="" role="button" />
         </div>
-        <div>
+        <div className={classes.modalContent}>
           <h1>Scan your Address</h1>
-          <QrReader onResult={(result, error) => handleCodeScanned(result, error)} style={{ width: "100%" }} />
+          <p>Place the QR code in front of your camera</p>
+          <QrReader onResult={(result, error) => handleCodeScanned(result, error)} className={classes.qrCode} />
         </div>
       </div>
     </>,
