@@ -19,6 +19,8 @@ import { ReactComponent as DropdownIcon } from "../../../assets/icon-dropdown2.s
 import { ReactComponent as GreenTickIcon } from "../../../assets/icon-green-tick.svg";
 import { ReactComponent as BorderIcon } from "../../../assets/create/border-icon.svg";
 import { ReactComponent as VibesLogo } from "../../../assets/proof-of-vibes.svg";
+import { ReactComponent as QrCodeIcon } from "../../../assets/Scan.svg";
+
 // components
 import CollectionPreview from "../collection-preview/collectionPreview";
 import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
@@ -40,6 +42,7 @@ import {
 import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
 import IpfsImage from "../IpfsImage/IpfsImage";
+import QrReaderContainer from "../../../pages/NFT-Detail/ImageModal/ImageModal";
 
 const Minter = () => {
   const params = useParams();
@@ -72,6 +75,7 @@ const Minter = () => {
     toggleDropdown: false,
     isSoulBound: false,
     toggleCategory: false,
+    openQrModal: false,
     toggleType: false,
     previewSelectMode: false,
     profileSelected: false,
@@ -120,6 +124,7 @@ const Minter = () => {
     category,
     toggleCategory,
     showLocation,
+    openQrModal,
     vibeProps,
     toggleType,
     fileExtension,
@@ -183,6 +188,10 @@ const Minter = () => {
       handleSetState({ locationPermission: permission.state === "granted" });
     });
   }, []);
+
+  const handleCloseQrModal = () => {
+    handleSetState({ openQrModal: false });
+  };
 
   useEffect(() => {
     if (params.mintId === "tweet") {
@@ -1214,24 +1223,28 @@ const Minter = () => {
                         </label>
                       </div>
                     </div>
+                    <div className={classes.otherAddress}>
+                      <div className={classes.receiverAddress}>
+                        <label>Receiver Address</label>
 
-                    <div className={classes.receiverAddress}>
-                      <label>Receiver Address</label>
-
-                      <div className={classes.inputContainer}>
-                        <input
-                          style={zip ? { pointerEvents: "none" } : {}}
-                          type="text"
-                          value={mintToMyAddress ? account : receiverAddress}
-                          placeholder={account === "" ? "Please connect your wallet" : account}
-                          onChange={(event) => handleReceiverAddress(event)}
-                          disabled={!!mintToMyAddress}
-                        />
-                        {goodReceiverAddress && account !== "" ? (
-                          <GreenTickIcon />
-                        ) : (
-                          <GreenTickIcon className={classes.tick} />
-                        )}
+                        <div className={classes.inputContainer}>
+                          <input
+                            style={zip ? { pointerEvents: "none" } : {}}
+                            type="text"
+                            value={mintToMyAddress ? account : receiverAddress}
+                            placeholder={account === "" ? "Please connect your wallet" : account}
+                            onChange={(event) => handleReceiverAddress(event)}
+                            disabled={!!mintToMyAddress}
+                          />
+                          {goodReceiverAddress && account !== "" ? (
+                            <GreenTickIcon />
+                          ) : (
+                            <GreenTickIcon className={classes.tick} />
+                          )}
+                        </div>
+                      </div>
+                      <div onClick={() => handleSetState({ openQrModal: true })} className={classes.qrScanner}>
+                        <QrCodeIcon />
                       </div>
                     </div>
                   </div>
@@ -1316,6 +1329,13 @@ const Minter = () => {
               </div>
             </div>
           </div>
+          {openQrModal && (
+            <QrReaderContainer
+              dispatch={dispatch}
+              handleCloseModal={handleCloseQrModal}
+              handleAddress={handleSetState}
+            />
+          )}
         </div>
       )}
       <ProfileImgOverlay

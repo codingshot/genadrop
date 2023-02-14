@@ -7,14 +7,33 @@
   z-index: 98;
 }
 
+.qrCode {
+  width: 450px;
+}
+.closeBtn {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  margin-right: 20px;
+  margin-top: 20px;
+}
+
+.modalContent h1, p {
+  text-align: center;
+}
+
 .Modal {
   width: 790px;
   position: fixed;
   top: 110px;
+  display: flex;
+  height: 70%;
+  align-items: center;
+  border-radius: 16px;
+  background-color: white;
   z-index: 999;
   max-height: 846px;
   left: calc(50% - 350px);
-  display: flex;
   flex-direction: column;
   @media (max-width: 500px) {
     left: 0px;
@@ -36,6 +55,15 @@
     margin: 0px auto;
     width: 654px;
     height: 700px;
+  }
+}
+
+@media screen and (max-width: 740px)  {
+  .Modal {
+    height: 60%;
+  }
+  .qrCode {
+    width: 350px;
   }
 }
 

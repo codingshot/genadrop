@@ -3,7 +3,7 @@ pragma solidity ^0.8.15;
 
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Receiver.sol";
 import "forge-std/Test.sol";
-import "../../contracts/NFT.sol";
+import "../../contracts/NftCollection.sol";
 
 contract NftTest is Test {
     using stdStorage for StdStorage;
