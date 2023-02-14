@@ -5,14 +5,12 @@ import classes from "./NFT.module.css";
 import { ReactComponent as ShareIcon } from "../../../assets/icon-share.svg";
 import Share from "./Share";
 import avatar from "../../../assets/avatar.png";
-import ImageModalContainer from "../ImageModal/ImageModal";
 
 // import { ReactComponent as MoreIcon } from "../../../assets/icon-more.svg";
 
 const NFT = ({ nftDetails }) => {
   const { name, image_url, owner, collection_name } = nftDetails;
   const [share, setShare] = useState(false);
-  const [open, setOpen] = useState(false);
   const wrapperRef = useRef(null);
   const hanldeClickOutside = (e) => {
     if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
@@ -50,7 +48,6 @@ const NFT = ({ nftDetails }) => {
       ) : (
         <img className={classes.image} src={image_url} alt="" />
       )}
-      {/* <img role="button" onClick={() => setOpen(true)} src={image_url} alt="" /> */}
       <div className={classes.details}>
         <div className={classes.detail}>
           {owner && (
@@ -73,7 +70,6 @@ const NFT = ({ nftDetails }) => {
           </div>
         ) : null}
       </div>
-      {open && <ImageModalContainer setOpen={setOpen} image={image_url} />}
     </div>
   );
 };
