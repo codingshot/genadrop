@@ -318,6 +318,7 @@
 .artPreview {
   display: flex;
   align-items: center;
+  padding: 11px;
   justify-content: center;
   border: 4px dashed #e2e4e8;
   border-radius: 0.5em;
@@ -352,8 +353,11 @@
   flex-flow: column nowrap;
 }
 .imageDownloadBtn {
+  display: flex;
+  align-items: center;
   margin: 1em 0.5em;
   border: transparent;
+  align-self: flex-end;
 }
 .imageDownloadBtn path {
   /* height: 10px;
@@ -362,6 +366,7 @@
 }
 .downloadText {
   color: var(--default);
+  margin-right: 5px;
 }
 .artStyleSection {
   display: flex;
