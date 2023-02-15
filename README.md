@@ -14,7 +14,7 @@
   <p align="center">
      The Ultimate No-code NFT solution
     <br />
-    <a href="https://doc.clickup.com/4659940/d/4e6q4-2087/gena-drop-docs"><strong>Explore the docs »</strong></a>
+    <a href="https://www.docs.geandrop.io"><strong>Explore the docs »</strong></a>
     <br />
     <br />
     <a href="https://youtu.be/wC0odzMW_9g">View Demo</a>

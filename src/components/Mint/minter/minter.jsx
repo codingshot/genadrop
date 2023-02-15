@@ -1210,7 +1210,7 @@ const Minter = () => {
                   <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
-                        Mint To Your Address{" "}
+                        Mint To Another Address{" "}
                         <GenadropToolTip
                           content="Click toggle button to mint to another address. This can't be reversed."
                           fill="#0d99ff"
@@ -1278,7 +1278,7 @@ const Minter = () => {
                     )}
                 </section>
 
-                <section className={classes.mintOptions}>
+                {/* <section className={classes.mintOptions}>
                   <div className={classes.category}>Set Mint Options</div>
                   <div className={classes.inputWrapper}>
                     <label>Blockchain</label>
@@ -1316,7 +1316,7 @@ const Minter = () => {
                         ))}
                     </div>
                   </div>
-                </section>
+                </section> */}
 
                 <section className={classes.mintButtonWrapper}>
                   <button type="button" onClick={setMint} className={classes.mintBtn}>
