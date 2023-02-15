@@ -6,6 +6,8 @@ import { indexOf } from "lodash";
 import Skeleton from "react-loading-skeleton";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
+import { ReactComponent as RefreshIcon } from "../../../assets/mint-ai-page/refresh_icon.svg";
+
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
@@ -219,14 +221,14 @@ const AI = () => {
             </div>
           ) : (
             <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
-              {generated ? (
+              {!generated ? (
                 <button
                   type="submit"
-                  className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active} ${classes.regenerateBtn}`}
-                  style={{ margin: "1em 0.5em" }}
+                  className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
                   onClick={generateIamgeRequest}
                 >
-                  Regenerate
+                  <span className={classes.downloadText}>Regenerate</span>
+                  <RefreshIcon />
                 </button>
               ) : (
                 <div className={classes.defaultPreviewContent}>
