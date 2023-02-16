@@ -330,6 +330,10 @@
   color: #8f94a3;
 }
 
+.loaderWidth {
+  width: 500px;
+}
+
 .downloadBtn {
   display: flex;
   font-size: 16px;
@@ -396,6 +400,10 @@
     flex-flow: column nowrap;
     margin: 0 auto;
     overflow: auto;
+  }
+
+  .loaderWidth {
+    width: 330px;
   }
 
   .aiLeft {
