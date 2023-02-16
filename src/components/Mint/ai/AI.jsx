@@ -221,7 +221,7 @@ const AI = () => {
             </div>
           ) : (
             <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
-              {!generated ? (
+              {generated ? (
                 <button
                   type="submit"
                   className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
