@@ -33,6 +33,7 @@
 .aiMain {
   display: flex;
   padding: 4em 2em;
+  flex-direction: column;
   align-items: center;
   gap: 1em;
   align-items: center;
@@ -214,7 +215,7 @@
 }
 .aiPromptSuggestions {
   display: flex;
-  padding: 0.5em 1em 2em 0;
+  padding: 0.5em 0 2em 0;
   flex-wrap: wrap;
   gap: 1.5em;
   align-items: center;
@@ -231,7 +232,7 @@
   border-radius: 6px;
   color: var(--text-heading);
   padding: 0.6em;
-  width: 230px;
+  width: 330px;
   cursor: pointer;
   height: 52px;
   font-size: 14px;
@@ -243,6 +244,14 @@
 .suggestionItem svg {
   width: 24px;
   height: 24px;
+}
+
+.footerBtn {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .createImageBtn {
@@ -285,6 +294,11 @@
   border-color: var(--main-hovered);
 }
 
+.downloadBtn:hover {
+    background-color: var(--main-color);
+    color: var(--default);
+}
+
 .peviewSizeSection {
   display: flex;
   flex: 1;
@@ -304,8 +318,9 @@
 .artPreview {
   display: flex;
   align-items: center;
+  padding: 11px;
   justify-content: center;
-  background-color: #d3d9eb;
+  border: 4px dashed #e2e4e8;
   border-radius: 0.5em;
   height: 507px;
   width: 507px;
@@ -314,6 +329,26 @@
   background-repeat: no-repeat;
   color: #8f94a3;
 }
+
+.loaderWidth {
+  width: 500px;
+}
+
+.downloadBtn {
+  display: flex;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--main-color);
+  border: transparent;
+  padding: 0.5em 1em;
+  transition: .3s;
+  border-radius: 6px;
+  border: none;
+  background-color: var(--default);
+  align-self: flex-start;
+  border: 1px solid var(--main-color);
+}
+
 .defaultPreviewContent {
   display: flex;
   align-self: center;
@@ -324,10 +359,9 @@
 .imageDownloadBtn {
   display: flex;
   align-items: center;
-  align-self: flex-end;
-  margin: 30px auto;
-  column-gap: 0.6em;
+  margin: 1em 0.5em;
   border: transparent;
+  align-self: flex-end;
 }
 .imageDownloadBtn path {
   /* height: 10px;
@@ -336,12 +370,18 @@
 }
 .downloadText {
   color: var(--default);
+  margin-right: 5px;
 }
 .artStyleSection {
   display: flex;
   /* align-items: center; */
   flex-flow: column nowrap;
   width: 100%;
+}
+.createBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .mintBtns {
@@ -360,6 +400,10 @@
     flex-flow: column nowrap;
     margin: 0 auto;
     overflow: auto;
+  }
+
+  .loaderWidth {
+    width: 330px;
   }
 
   .aiLeft {

@@ -6,6 +6,8 @@ import { indexOf } from "lodash";
 import Skeleton from "react-loading-skeleton";
 import classes from "./ai.module.css";
 import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
+import { ReactComponent as RefreshIcon } from "../../../assets/mint-ai-page/refresh_icon.svg";
+
 import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
 import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
@@ -17,7 +19,7 @@ import surreal from "../../../assets/ai-art-style/surreal.png";
 import throwback from "../../../assets/ai-art-style/throwback.png";
 import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
 import { ReactComponent as PlusIcon } from "../../../assets/ai-mint-plus.svg";
-import { ReactComponent as PreviewImageIcon } from "../../../assets/default-ai-preview.svg";
+import { ReactComponent as PreviewImageIcon } from "../../../assets/ai-preview.svg";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -210,6 +212,33 @@ const AI = () => {
         <p>With our AI, you can easily create unique works of art just by describing the vision in your mind.</p>
       </header>
       <main className={classes.aiMain}>
+        <section className={classes.peviewSizeSection}>
+          {load ? (
+            <div style={{ width: "98%" }} className={classes.loader}>
+              <Skeleton count={1} height={10} className={classes.loaderWidth} />
+              <Skeleton count={1} height={405} className={classes.loaderWidth} />
+              <Skeleton count={1} height={10} className={classes.loaderWidth} />
+            </div>
+          ) : (
+            <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
+              {generated ? (
+                <button
+                  type="submit"
+                  className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                  onClick={generateIamgeRequest}
+                >
+                  <span className={classes.downloadText}>Regenerate</span>
+                  <RefreshIcon />
+                </button>
+              ) : (
+                <div className={classes.defaultPreviewContent}>
+                  <PreviewImageIcon />
+                  <p>Generated images will appear here!</p>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
         <section className={`${classes.wrapper} ${classes.aiLeft}`}>
           <form className={classes.promptForm} onSubmit={formSubmitHandler}>
             <div className={classes.promptFormTop}>
@@ -232,66 +261,43 @@ const AI = () => {
               <h3 className={classes.promtFormTitle}>Need Inspiration?</h3>
               <ul className={classes.aiPromptSuggestions}>{suggestedPrompts}</ul>
             </section>
-            <section className={classes.artStyleSection}>
+            {/* <section className={classes.artStyleSection}>
               <h2 className={classes.artStyleTitle}>Art Style</h2>
               <main className={classes.artStyleList}>{artStyleList}</main>
-            </section>
-            {!generated && (
-              <button
-                type="submit"
-                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.topMintBtn} ${
-                  wordCount > 0 ? classes.createImageBtn_active : classes.createImageBtn_inactive
-                }`}
-              >
-                Create Image
-              </button>
-            )}
-          </form>
-          {generated && (
-            <div className={`${classes.mintBtns} ${classes.fixedBtns}`}>
-              <button
-                type="submit"
-                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
-                style={{ margin: "1em 0.5em" }}
-                onClick={aiMintHandler}
-              >
-                Mint Image
-              </button>
-              <button
-                type="submit"
-                className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active} ${classes.regenerateBtn}`}
-                style={{ margin: "1em 0.5em" }}
-                onClick={generateIamgeRequest}
-              >
-                Recreate
-              </button>
-            </div>
-          )}
-        </section>
-        <section className={classes.peviewSizeSection}>
-          {load ? (
-            <div style={{ width: "98%" }} className={classes.loader}>
-              <Skeleton count={1} height={10} />
-              <Skeleton count={1} height={405} />
-              <Skeleton count={1} height={10} />
-            </div>
-          ) : (
-            <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
-              {generated ? (
+            </section> */}
+            <div className={classes.createBtn}>
+              {!generated && (
                 <button
                   type="submit"
-                  className={`${classes.wrapper} ${classes.imageDownloadBtn} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
-                  onClick={downloadImage}
+                  className={`${classes.wrapper} ${classes.createImageBtn} ${classes.topMintBtn} ${
+                    wordCount > 0 ? classes.createImageBtn_active : classes.createImageBtn_inactive
+                  }`}
                 >
-                  <span className={classes.downloadText}>Download</span>
-                  <Download />
+                  Create Image
                 </button>
-              ) : (
-                <div className={classes.defaultPreviewContent}>
-                  <PreviewImageIcon />
-                  <p>Generated images will appear here!</p>
-                </div>
               )}
+            </div>
+          </form>
+          {generated && (
+            <div className={classes.footerBtn}>
+              <div className={`${classes.mintBtns} ${classes.fixedBtns}`}>
+                <button
+                  type="submit"
+                  className={`${classes.wrapper} ${classes.createImageBtn} ${classes.createImageBtn_active}`}
+                  style={{ margin: "1em 0.5em" }}
+                  onClick={aiMintHandler}
+                >
+                  Mint Image
+                </button>
+              </div>
+              <button
+                type="submit"
+                className={`${classes.wrapper} ${classes.downloadBtn}`}
+                style={{ margin: "1em 0.5em" }}
+                onClick={downloadImage}
+              >
+                Download
+              </button>
             </div>
           )}
         </section>

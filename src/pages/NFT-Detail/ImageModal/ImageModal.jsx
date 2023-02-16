@@ -18,7 +18,6 @@ function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
         (result?.text?.endsWith(".near") && mainnet) ||
         (result?.text?.endsWith(".testnet") && !mainnet)
       ) {
-        console.log(result);
         handleAddress({ receiverAddress: result?.text });
         handleCloseModal();
       } else {
@@ -45,7 +44,7 @@ function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
           <img onClick={close} className={classes.CloseIcon} src={CloseIcon} alt="" role="button" />
         </div>
         <div className={classes.modalContent}>
-          <h1>Scan your Address</h1>
+          <h1>Scan Address</h1>
           <p>Place the QR code in front of your camera</p>
           <QrReader onResult={(result, error) => handleCodeScanned(result, error)} className={classes.qrCode} />
         </div>
