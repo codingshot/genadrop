@@ -215,9 +215,9 @@ const AI = () => {
         <section className={classes.peviewSizeSection}>
           {load ? (
             <div style={{ width: "98%" }} className={classes.loader}>
-              <Skeleton count={1} height={10} />
-              <Skeleton count={1} height={405} />
-              <Skeleton count={1} height={10} />
+              <Skeleton count={1} height={10} className={classes.loaderWidth} />
+              <Skeleton count={1} height={405} className={classes.loaderWidth} />
+              <Skeleton count={1} height={10} className={classes.loaderWidth} />
             </div>
           ) : (
             <div className={classes.artPreview} style={{ backgroundImage: `url(${imageUrl})` }}>
