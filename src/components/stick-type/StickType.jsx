@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./StickType.module.css";
 import typeCards from "./StickType-script";
 import { ReactComponent as TypeIcon } from "../../assets/stick_type/type-icon.svg";
+import moment from "moment";
 
 const StickType = ({ handleSetState, attributes }) => {
   return (
@@ -19,6 +20,7 @@ const StickType = ({ handleSetState, attributes }) => {
                 className={classes.typeCard}
                 onClick={() =>
                   handleSetState({
+                    stickType: `PROOF OF SESH: {${type.title}} ${moment().format("DD/MM/YYYY")}`,
                     attributes: {
                       ...attributes,
                       smoking_stick: { trait_type: "smoking stick", value: type.title },
@@ -44,5 +46,4 @@ const StickType = ({ handleSetState, attributes }) => {
     </div>
   );
 };
-
 export default StickType;
