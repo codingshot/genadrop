@@ -21,10 +21,10 @@ const cards = [
     comingSoon: "",
   },
   {
-    title: "Collection",
-    description: "Import arts into layers",
-    icon: <Collection />,
-    url: "/collection",
+    title: "Proof Of Sesh",
+    description: "Scan your stick for proof",
+    icon: <Sesh />,
+    url: "/mint/sesh",
     comingSoon: "",
   },
   {
@@ -32,20 +32,6 @@ const cards = [
     description: "Upload an image and mint",
     icon: <Art />,
     url: "/mint/1of1",
-    comingSoon: "",
-  },
-  {
-    title: "Photo",
-    description: "Take a photo and mint",
-    icon: <Photo />,
-    url: "/mint/camera",
-    comingSoon: "",
-  },
-  {
-    title: "Shorts",
-    description: "Take short video and mint",
-    icon: <Shorts />,
-    url: "/mint/video",
     comingSoon: "",
   },
   {
@@ -57,19 +43,28 @@ const cards = [
   },
 
   {
+    title: "Collection",
+    description: "Import arts into layers",
+    icon: <Collection />,
+    url: "/collection",
+    comingSoon: "",
+  },
+  {
+    title: "Photo",
+    description: "Take a photo and mint",
+    icon: <Photo />,
+    url: "/mint/camera",
+    comingSoon: "",
+  },
+
+  {
     title: "Proof Of Vibes",
     description: "Mint your favorite moments on chain.",
     icon: <Vibes />,
     url: "/mint/vibe",
     comingSoon: "",
   },
-  {
-    title: "Proof Of Sesh",
-    description: "Scan your stick for proof",
-    icon: <Sesh />,
-    url: "/mint/sesh",
-    comingSoon: "",
-  },
+
   {
     title: "Video",
     description: "Mint your favorite videos on chain",
@@ -82,6 +77,13 @@ const cards = [
     description: "Mint your songs/audios on chain",
     icon: <Audio />,
     url: "/mint/Audio File",
+    comingSoon: "",
+  },
+  {
+    title: "Shorts",
+    description: "Take short video and mint",
+    icon: <Shorts />,
+    url: "/mint/video",
     comingSoon: "",
   },
   {
