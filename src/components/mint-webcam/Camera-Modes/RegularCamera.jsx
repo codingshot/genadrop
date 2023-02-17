@@ -50,6 +50,7 @@ const RegularCamera = ({ regularCameraProps }) => {
     webcam,
     video,
     videoDuration,
+    stickType,
     gifGenrating,
     webcamCurrentType,
     currenFile,
@@ -188,7 +189,7 @@ const RegularCamera = ({ regularCameraProps }) => {
 
     dispatch(
       setZip({
-        name,
+        name: stickType ?? name,
         file,
         type,
         ...(!isEmpty(attributes) && { attributes }),

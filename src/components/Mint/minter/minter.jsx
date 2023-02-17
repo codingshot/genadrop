@@ -246,6 +246,21 @@ const Minter = () => {
   }, [file]);
 
   useEffect(() => {
+    if (category === "Sesh") {
+      handleSetState({
+        isSoulBound: true,
+        attributes: {
+          ...attributes,
+          metadata: {
+            trait_type: "Validator",
+            value: account,
+          },
+        },
+      });
+    }
+  }, [category]);
+
+  useEffect(() => {
     if (minter) {
       Promise.all(Array.prototype.map.call(minter.file, getBase64))
         .then((urls) => {
@@ -1210,7 +1225,7 @@ const Minter = () => {
                   <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
-                        Mint To Another Address{" "}
+                        Mint to {mintToMyAddress ? "my" : "Another"} Address{" "}
                         <GenadropToolTip
                           content="Click toggle button to mint to another address. This can't be reversed."
                           fill="#0d99ff"
@@ -1218,7 +1233,11 @@ const Minter = () => {
                       </div>
                       <div className={classes.toggler}>
                         <label className={classes.switch}>
-                          <input type="checkbox" onClick={() => handleCheck()} defaultChecked={account !== ""} />
+                          <input
+                            type="checkbox"
+                            onClick={() => handleCheck()}
+                            defaultChecked={account !== "" || category === "Sesh"}
+                          />
                           <span className={classes.slider} />
                         </label>
                       </div>
@@ -1232,7 +1251,9 @@ const Minter = () => {
                             style={zip ? { pointerEvents: "none" } : {}}
                             type="text"
                             value={mintToMyAddress ? account : receiverAddress}
-                            placeholder={account === "" ? "Please connect your wallet" : account}
+                            placeholder={
+                              account === "" ? "Please connect your wallet" : `Input a valid Receiver Address`
+                            }
                             onChange={(event) => handleReceiverAddress(event)}
                             disabled={!!mintToMyAddress}
                           />
@@ -1243,9 +1264,14 @@ const Minter = () => {
                           )}
                         </div>
                       </div>
-                      <div onClick={() => handleSetState({ openQrModal: true })} className={classes.qrScanner}>
+                      <button
+                        disabled={!!mintToMyAddress}
+                        type="button"
+                        onClick={() => handleSetState({ openQrModal: true })}
+                        className={classes.qrScanner}
+                      >
                         <QrCodeIcon />
-                      </div>
+                      </button>
                     </div>
                   </div>
                   {chainId !== null &&
@@ -1268,7 +1294,7 @@ const Minter = () => {
                                 type="checkbox"
                                 value={isSoulBound}
                                 onClick={() => handleCheckSoulBound()}
-                                defaultChecked={false}
+                                defaultChecked={category === "Sesh"}
                               />
                               <span className={classes.slider} />
                             </label>
