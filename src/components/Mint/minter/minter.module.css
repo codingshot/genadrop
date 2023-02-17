@@ -706,6 +706,12 @@ div.showPreview > span {
   margin-top: 40px;
   cursor: pointer;
 }
+
+.qrScanner:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
 .receiverAddress {
   transition: opacity 1s ease-out;
   width: 100%;
