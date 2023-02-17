@@ -45,6 +45,7 @@ const Capture = () => {
     webcam: "environment",
     // video size
     width: "100%",
+    stickType: "",
     height: "100%",
     // genrate GIF loading status
     cameraPermission: false,
@@ -68,6 +69,7 @@ const Capture = () => {
     currenFile,
     activeFile,
     gifGenrating,
+    stickType,
     webcamCurrentType,
     cameraPermission,
     videoDuration,
@@ -131,6 +133,7 @@ const Capture = () => {
     video,
     videoDuration,
     gifGenrating,
+    stickType,
     webcamCurrentType,
     currenFile,
     activeFile,
