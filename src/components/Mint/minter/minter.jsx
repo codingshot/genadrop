@@ -43,6 +43,7 @@ import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
 import IpfsImage from "../IpfsImage/IpfsImage";
 import QrReaderContainer from "../../../pages/NFT-Detail/ImageModal/ImageModal";
+import { useCallback } from "react";
 
 const Minter = () => {
   const params = useParams();
@@ -642,6 +643,7 @@ const Minter = () => {
   }, [chainId]);
 
   const handleReceiverAddress = (e) => {
+    console.log(e.target.value);
     handleSetState({ receiverAddress: e.target.value });
     if (
       e.target.value.length >= 42 ||
@@ -1225,9 +1227,13 @@ const Minter = () => {
                   <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
-                        Mint to {mintToMyAddress ? "my" : "Another"} Address{" "}
+                        Mint to {mintToMyAddress && category !== "Sesh" ? "my" : "Another"} Address{" "}
                         <GenadropToolTip
-                          content="Click toggle button to mint to another address. This can't be reversed."
+                          content={`${
+                            category === "Sesh"
+                              ? "Input the Reciever address to mint"
+                              : "Click toggle button to mint to another address. This can't be reversed."
+                          }`}
                           fill="#0d99ff"
                         />
                       </div>
@@ -1236,7 +1242,8 @@ const Minter = () => {
                           <input
                             type="checkbox"
                             onClick={() => handleCheck()}
-                            defaultChecked={account !== "" || category === "Sesh"}
+                            defaultChecked={account !== "" && category !== "Sesh"}
+                            disabled={category === "Sesh"}
                           />
                           <span className={classes.slider} />
                         </label>
@@ -1250,12 +1257,12 @@ const Minter = () => {
                           <input
                             style={zip ? { pointerEvents: "none" } : {}}
                             type="text"
-                            value={mintToMyAddress ? account : receiverAddress}
+                            value={mintToMyAddress && category !== "Sesh" ? account : receiverAddress}
                             placeholder={
                               account === "" ? "Please connect your wallet" : `Input a valid Receiver Address`
                             }
                             onChange={(event) => handleReceiverAddress(event)}
-                            disabled={!!mintToMyAddress}
+                            disabled={!!mintToMyAddress && category !== "Sesh"}
                           />
                           {goodReceiverAddress && account !== "" ? (
                             <GreenTickIcon />
