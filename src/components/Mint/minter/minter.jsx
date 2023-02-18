@@ -260,6 +260,13 @@ const Minter = () => {
       });
     }
   }, [category]);
+  useEffect(() => {
+    if (category === "Sesh" && !receiverAddress) {
+      handleSetState({ goodReceiverAddress: false });
+    } else {
+      handleSetState({ goodReceiverAddress: true });
+    }
+  }, [category]);
 
   useEffect(() => {
     if (minter) {
@@ -442,6 +449,22 @@ const Minter = () => {
       return dispatch(
         setNotification({
           message: "connect your wallet and try again",
+          type: "warning",
+        })
+      );
+    }
+    if (!goodReceiverAddress) {
+      return dispatch(
+        setNotification({
+          message: "You must mint to a valid Address",
+          type: "warning",
+        })
+      );
+    }
+    if (category === "Sesh" && receiverAddress === "") {
+      return dispatch(
+        setNotification({
+          message: "You must mint to a valid Address",
           type: "warning",
         })
       );
@@ -682,9 +705,8 @@ const Minter = () => {
   const handleCheck = () => {
     const mintToMe = !mintToMyAddress;
     handleSetState({ mintToMyAddress: mintToMe });
-    if (!mintToMe || receiverAddress === "") {
-      return handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
-    } else handleSetState({ goodReceiverAddress: true });
+    if (!mintToMe) handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
+    else handleSetState({ goodReceiverAddress: true });
   };
 
   const handleCheckSoulBound = () => {
@@ -1242,7 +1264,7 @@ const Minter = () => {
                           <input
                             type="checkbox"
                             onClick={() => handleCheck()}
-                            defaultChecked={account !== "" && category !== "Sesh"}
+                            defaultChecked={account !== ""}
                             disabled={category === "Sesh"}
                           />
                           <span className={classes.slider} />
@@ -1299,7 +1321,7 @@ const Minter = () => {
                             <label className={classes.switch}>
                               <input
                                 type="checkbox"
-                                value={isSoulBound}
+                                // value={isSoulBound}
                                 onClick={() => handleCheckSoulBound()}
                                 defaultChecked={category === "Sesh"}
                               />
