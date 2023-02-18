@@ -15,7 +15,7 @@
   flex-direction: row-reverse;
   width: 100%;
   margin-right: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .modalContent h1, p {
@@ -47,6 +47,7 @@
   border-radius: 12px;
 }
 
+
 @media screen and (max-width: 900px) {
   .Modal {
     max-width: 710px;
@@ -58,12 +59,15 @@
   }
 }
 
-@media screen and (max-width: 740px)  {
+@media screen and (max-width: 400px)  {
+  .ModalImage {
+    width: 250px;
+  }
   .Modal {
-    height: 60%;
+    height: 80%;
   }
   .qrCode {
-    width: 350px;
+    width: 300px !important;
   }
 }
 
@@ -71,6 +75,9 @@
   .Modal {
     width: 91%;
     left: 10px;
+  }
+  .qrCode {
+    width: 350px;
   }
   .ModalImage {
     margin: 0px 10px;
@@ -92,4 +99,11 @@
 .CloseIcon:hover {
   opacity: 0.8;
   transition: 0.3s;
+}
+.cameraFooter {
+  margin-bottom: 80px;
+}
+
+.cameraIcon:hover {
+  opacity: .5;
 }
