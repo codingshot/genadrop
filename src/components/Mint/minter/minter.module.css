@@ -843,7 +843,10 @@ div.showPreview > span {
     height: 2.5rem;
   }
   .category {
-    font-size: 1.1rem;
+    font-size: 0.9rem;
+  }
+  .grid {
+    width: 95%;
   }
 
   .dropWrapper > div {
