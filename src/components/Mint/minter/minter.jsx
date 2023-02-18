@@ -643,7 +643,6 @@ const Minter = () => {
   }, [chainId]);
 
   const handleReceiverAddress = (e) => {
-    console.log(e.target.value);
     handleSetState({ receiverAddress: e.target.value });
     if (
       e.target.value.length >= 42 ||
@@ -683,8 +682,9 @@ const Minter = () => {
   const handleCheck = () => {
     const mintToMe = !mintToMyAddress;
     handleSetState({ mintToMyAddress: mintToMe });
-    if (!mintToMe) handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
-    else handleSetState({ goodReceiverAddress: true });
+    if (!mintToMe || receiverAddress === "") {
+      return handleSetState({ goodReceiverAddress: false, receiverAddress: "" });
+    } else handleSetState({ goodReceiverAddress: true });
   };
 
   const handleCheckSoulBound = () => {
@@ -1272,7 +1272,7 @@ const Minter = () => {
                         </div>
                       </div>
                       <button
-                        disabled={!!mintToMyAddress}
+                        disabled={!!mintToMyAddress && category !== "Sesh"}
                         type="button"
                         onClick={() => handleSetState({ openQrModal: true })}
                         className={classes.qrScanner}
