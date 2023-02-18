@@ -1,11 +1,14 @@
 import ReactDOM from "react-dom";
 import { QrReader } from "react-qr-reader";
+import { useState } from "react";
 
 import classes from "./imageModal.module.css";
 import CloseIcon from "../../../assets/ModalCancel.svg";
 import { setNotification } from "../../../gen-state/gen.actions";
+import { ReactComponent as IconCamera } from "../../../assets/camera_switch_bg.svg";
 
 function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
+  const [qrScannerFacingMode, setQrReaderFacingMode] = useState({ facingMode: "environment" });
   function close() {
     handleCloseModal();
   }
@@ -36,6 +39,19 @@ function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
     }
   }
 
+  const toggleQrScannerFacingMode = () => {
+    setQrReaderFacingMode((old) => {
+      let myNew = { ...old };
+
+      if (myNew.facingMode === "user") {
+        myNew.facingMode = "environment";
+      } else {
+        myNew.facingMode = "user";
+      }
+      return myNew;
+    });
+  };
+
   return ReactDOM.createPortal(
     <>
       <div className={classes.modalShadow} onClick={close} />
@@ -46,7 +62,14 @@ function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
         <div className={classes.modalContent}>
           <h1>Scan Address</h1>
           <p>Place the QR code in front of your camera</p>
-          <QrReader onResult={(result, error) => handleCodeScanned(result, error)} className={classes.qrCode} />
+          <QrReader
+            constraints={qrScannerFacingMode}
+            onResult={(result, error) => handleCodeScanned(result, error)}
+            className={classes.qrCode}
+          />
+        </div>
+        <div className={classes.cameraFooter}>
+          <IconCamera onClick={toggleQrScannerFacingMode} className={classes.cameraIcon} />
         </div>
       </div>
     </>,
