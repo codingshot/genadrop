@@ -68,9 +68,9 @@ function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
             className={classes.qrCode}
           />
         </div>
-        <div className={classes.cameraFooter}>
+        {/* <div className={classes.cameraFooter}>
           <IconCamera onClick={toggleQrScannerFacingMode} className={classes.cameraIcon} />
-        </div>
+        </div> */}
       </div>
     </>,
     document.getElementById("image-modal")
