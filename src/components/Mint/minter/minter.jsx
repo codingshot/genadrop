@@ -43,6 +43,7 @@ import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
 import IpfsImage from "../IpfsImage/IpfsImage";
 import QrReaderContainer from "../../../pages/NFT-Detail/ImageModal/ImageModal";
+import { useCallback } from "react";
 
 const Minter = () => {
   const params = useParams();
@@ -259,6 +260,13 @@ const Minter = () => {
       });
     }
   }, [category]);
+  useEffect(() => {
+    if (category === "Sesh" && !receiverAddress) {
+      handleSetState({ goodReceiverAddress: false });
+    } else {
+      handleSetState({ goodReceiverAddress: true });
+    }
+  }, [category]);
 
   useEffect(() => {
     if (minter) {
@@ -441,6 +449,22 @@ const Minter = () => {
       return dispatch(
         setNotification({
           message: "connect your wallet and try again",
+          type: "warning",
+        })
+      );
+    }
+    if (!goodReceiverAddress) {
+      return dispatch(
+        setNotification({
+          message: "You must mint to a valid Address",
+          type: "warning",
+        })
+      );
+    }
+    if (category === "Sesh" && receiverAddress === "") {
+      return dispatch(
+        setNotification({
+          message: "You must mint to a valid Address",
           type: "warning",
         })
       );
@@ -1225,9 +1249,13 @@ const Minter = () => {
                   <div className={`${classes.inputWrapper} `}>
                     <div className={`${classes.toggleTitle}`}>
                       <div className={classes.category}>
-                        Mint to {mintToMyAddress ? "my" : "Another"} Address{" "}
+                        Mint to {mintToMyAddress && category !== "Sesh" ? "my" : "Another"} Address{" "}
                         <GenadropToolTip
-                          content="Click toggle button to mint to another address. This can't be reversed."
+                          content={`${
+                            category === "Sesh"
+                              ? "Input the Reciever address to mint"
+                              : "Click toggle button to mint to another address. This can't be reversed."
+                          }`}
                           fill="#0d99ff"
                         />
                       </div>
@@ -1236,7 +1264,8 @@ const Minter = () => {
                           <input
                             type="checkbox"
                             onClick={() => handleCheck()}
-                            defaultChecked={account !== "" || category === "Sesh"}
+                            defaultChecked={account !== ""}
+                            disabled={category === "Sesh"}
                           />
                           <span className={classes.slider} />
                         </label>
@@ -1250,12 +1279,12 @@ const Minter = () => {
                           <input
                             style={zip ? { pointerEvents: "none" } : {}}
                             type="text"
-                            value={mintToMyAddress ? account : receiverAddress}
+                            value={mintToMyAddress && category !== "Sesh" ? account : receiverAddress}
                             placeholder={
                               account === "" ? "Please connect your wallet" : `Input a valid Receiver Address`
                             }
                             onChange={(event) => handleReceiverAddress(event)}
-                            disabled={!!mintToMyAddress}
+                            disabled={!!mintToMyAddress && category !== "Sesh"}
                           />
                           {goodReceiverAddress && account !== "" ? (
                             <GreenTickIcon />
@@ -1265,7 +1294,7 @@ const Minter = () => {
                         </div>
                       </div>
                       <button
-                        disabled={!!mintToMyAddress}
+                        disabled={!!mintToMyAddress && category !== "Sesh"}
                         type="button"
                         onClick={() => handleSetState({ openQrModal: true })}
                         className={classes.qrScanner}
@@ -1292,7 +1321,7 @@ const Minter = () => {
                             <label className={classes.switch}>
                               <input
                                 type="checkbox"
-                                value={isSoulBound}
+                                // value={isSoulBound}
                                 onClick={() => handleCheckSoulBound()}
                                 defaultChecked={category === "Sesh"}
                               />
