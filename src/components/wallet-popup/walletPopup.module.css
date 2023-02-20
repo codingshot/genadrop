@@ -11,21 +11,23 @@
 
 .card {
   width: 100%;
-  max-width: 28em;
+  max-width: 65em;
   overflow: auto;
   background: var(--default);
+  height: 617px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  padding-left: 3em;
-  padding-right: 3em;
-  padding-top: 2em;
-  padding-bottom: 3em;
+  justify-content: space-between;
+  flex-direction: row;
   gap: 1em;
   border-radius: 1em;
   animation: show 300ms alternate;
   margin: 6em auto 4em auto;
+}
+
+.leftGrid {
+  padding-left: 3em;
+  padding-top: 1.5em;
 }
 
 @keyframes show {
@@ -38,16 +40,19 @@
 }
 
 .heading {
-  text-align: center;
-  margin-bottom: 1em;
+  text-align: left;
+  margin-bottom: 1.5em;
 }
 
 .heading h3 {
   margin-bottom: 0.5em;
+  font-size: 26px;
 }
 
 .description {
   font-size: 0.85rem;
+  padding-bottom: 1em;
+  text-align: left;
 }
 
 .iconContainer {
@@ -69,24 +74,61 @@
   cursor: var(--cursor-pointer);
   fill: var(--icon-color);
 }
-
+.rightGrid {
+  min-width:45%;
+  background: var(--text-placeholder-light);
+  height: 100%;
+}
 .closeIcon:hover {
   background: var(--outline-dark);
   fill: var(--default);
 }
 
 .wrapper {
-  width: 100%;
+  max-width: 100%;
+  min-height: 371px;
   position: relative;
 }
 
 .chains {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   align-items: stretch;
+  justify-content: flex-start;
+  gap: 2em;
+}
+.lockSection {
+  display: flex;
+  align-items: center;
+  height: 80%;
   justify-content: center;
-  gap: 0.5em;
+  flex-direction: column;
+}
+.learnButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding:  0.5em 1.5em;
+  offset: 0px, -1px rgba(14, 14, 44, 0.4);
+  transition: .3s;
+  border-radius: 16px;
+  background: var(--main-color);
+}
+.closeIcon {
+  margin: 15px 20px;
+}
+
+.learnButton:hover {
+  background: var(--main-hovered);
+}
+
+.learnButton h1 {
+  color: var(--default);
+  margin-right: 7px;
+  font-size: 24px;
 }
 
 .chains.active {
@@ -94,13 +136,13 @@
 }
 
 .chain {
-  border: 1px solid var(--outline);
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  min-width: 130px;
+  flex-direction: column;
   gap: 1em;
-  padding: 0.5em 0;
-  padding-left: 1em;
+  padding-top: .5em;
   border-radius: 1em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
@@ -108,11 +150,12 @@
 
 .chain.comingSoon {
   background: var(--card-trait);
-  cursor: var(--cursor-default);
+  cursor: not-allowed;
 }
 
 .chain.comingSoon h4 {
   color: var(--text-placeholder);
+  font-size: 12px;
 }
 
 .chain.comingSoon p {
@@ -138,8 +181,8 @@
 }
 
 .chain img {
-  width: 2.5em;
-  height: 2.5em;
+  width: 3.4em;
+  height: 3.4em;
   border-radius: 50%;
 }
 
@@ -164,7 +207,20 @@
 }
 
 .viewBtnContainer {
+  min-width: 130px;
   margin-top: 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1em;
+  cursor: var(--cursor-pointer);
+  transition: .3s;
+  background: var(--text-placeholder-light);
+}
+
+.viewBtnContainer:hover {
+  background: var(--text-placeholder);
 }
 
 .viewBtn {
@@ -173,19 +229,14 @@
   border-radius: 1em;
   padding: 0.15em 1em;
   transition: all 300ms;
-  color: var(--main-color);
-}
-
-.viewBtn:hover {
-  text-decoration: underline;
 }
 
 .connectionMethods {
   width: 100%;
   display: none;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: flex-start;
+  flex-direction: row;
   gap: 1em;
   background: var(--default);
 }
@@ -195,10 +246,9 @@
 }
 
 .connectionMethod {
-  width: 100%;
+  width: 20%;
   padding: 1em 0;
   border: 1px solid transparent;
-  box-shadow: var(--shadow-light);
   display: flex;
   align-items: center;
   justify-content: stretch;
@@ -208,6 +258,10 @@
   text-align: center;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
+}
+
+.connectionMethod h5 {
+  font-weight: 500;
 }
 
 .connectionMethod:hover {
@@ -234,7 +288,8 @@
   font-size: 0.75rem;
   background: var(--card-info);
   padding: 0.5em 1rem;
-  margin-top: 0.5em;
+  width: 80%;
+  margin-top: 1em;
   text-align: left;
 }
 .networkSwitch a {
