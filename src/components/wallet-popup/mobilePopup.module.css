@@ -236,10 +236,10 @@
     margin-top: 0.5em;
     display: flex;
     min-height: 95px;
+    margin-left: 10px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-left: 10px;
     border-radius: 1em;
     cursor: var(--cursor-pointer);
     transition: .3s;
@@ -297,7 +297,7 @@
 }
 
 
-  @media screen and (max-width: 380px) {
+  @media screen and (max-width: 400px) {
     .mobileRoot {
         height: 75%;
     }
@@ -305,6 +305,9 @@
       min-width: 90px;
     }
     .chains {
-      max-height: 200px;
+      max-height: 300px;
+    }
+    .viewBtnContainer {
+      margin-left: 0;
     }
   }
