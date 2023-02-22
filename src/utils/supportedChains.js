@@ -219,7 +219,7 @@ const supportedChains = {
 export const orderedChainsList = [
   {
     id: "near",
-    label: "Near Testnet",
+    label: "Near",
     chain: "Near",
     icon: nearChainIcon,
     livePrice: "",
@@ -258,7 +258,7 @@ export const orderedChainsList = [
   },
   {
     id: "matic-network",
-    label: "Polygon Testnet",
+    label: "Polygon ",
     chain: "Polygon",
     icon: polygonChainIcon,
     symbol: "MATIC",
@@ -300,7 +300,7 @@ export const orderedChainsList = [
   },
   {
     id: "avalanche",
-    label: "Avalanche Testnet",
+    label: "Avalanche ",
     chain: "Avalanche",
     icon: avaxChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
@@ -327,7 +327,7 @@ export const orderedChainsList = [
   },
   {
     id: "ethereum",
-    label: "Aurora Testnet",
+    label: "Aurora ",
     chain: "Aurora",
     icon: auroraChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
@@ -353,7 +353,7 @@ export const orderedChainsList = [
     coinGeckoLabel: "celo",
   },
   {
-    label: "Celo Testnet (Alfajores)",
+    label: "Celo",
     chain: "Celo",
     icon: celoIcon,
     id: "celo",
@@ -369,7 +369,7 @@ export const orderedChainsList = [
   },
   {
     id: "arbitrum",
-    label: "Arbitrum Testnet",
+    label: "Arbitrum ",
     chain: "Arbitrum",
     icon: arbitrumIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
