@@ -240,4 +240,14 @@
   .container {
     justify-content: space-between;
   }
+ .popupContainer {
+  position: fixed;
+  bottom: -600px; /* start off the screen */
+  left: 50%;
+  transform: translateX(-50%);
+  transition: bottom 650ms ease-in-out;
+ }
+ .popupContainer.active {
+  bottom: 0;
+ }
 }

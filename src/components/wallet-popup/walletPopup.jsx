@@ -8,7 +8,7 @@ import { setupHereWallet } from "@near-wallet-selector/here-wallet";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
-import { setupXDEFI } from "@near-wallet-selector/xdefi";
+// import { setupXDEFI } from "@near-wallet-selector/xdefi";
 import { setupNightly } from "@near-wallet-selector/nightly";
 
 // near wallet styles & icons
@@ -18,7 +18,7 @@ import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-ic
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
 import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
-import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
+// import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
 import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import classes from "./walletPopup.module.css";
 
@@ -34,13 +34,8 @@ import {
 import getConfig from "./nearConfig";
 import { GenContext } from "../../gen-state/gen.context";
 
-// icons
-import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
-import metamaskIcon from "../../assets/icon-metamask.svg";
-import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
-import walletLockIcon from "../../assets/lock.svg";
-import moreIcons from "../../assets/moreDots.svg";
-import exportIcon from "../../assets/icon-link-white.svg";
+import DesktopPopup from "./desktopPopup";
+import MobilePopup from "./mobilePopup";
 
 // unused for now
 
@@ -158,101 +153,37 @@ const WalletPopup = ({ handleSetState }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.card}>
-        <div className={classes.leftGrid}>
-          <div className={classes.heading}>
-            <h3>{showConnectionMethods ? "Connect Wallets" : "Connect Your Wallet"}</h3>
-            <p className={classes.description}>
-              {showConnectionMethods
-                ? "Connect with one of our available wallet providers. You need to connect your wallet to access most of Genadrop features."
-                : "Select any of our supported blockchains"}{" "}
-            </p>
-            {!showConnectionMethods && (
-              <div className={classes.networkSwitch}>
-                You&apos;re viewing data from the {mainnet ? "main" : "test"} network.
-                <br /> Go to{" "}
-                <a
-                  href={mainnet ? "https://genadrop-testnet.vercel.app/" : "https://www.genadrop.com/"}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {mainnet ? "genadrop-testnet.vercel.app" : "genadrop.com"}
-                </a>{" "}
-                to switch to {!mainnet ? "main" : "test"} network
-              </div>
-            )}
-          </div>
-
-          <div className={classes.wrapper}>
-            <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
-              {connectOptions
-                .filter((chain) => mainnet === chain.isMainnet)
-                .filter((_, idx) => showMoreOptions || idx <= 4)
-                .map((chain, idx) => (
-                  <div
-                    onClick={async () => {
-                      await handleChain(chain.networkId, chain.comingSoon);
-                    }}
-                    key={idx}
-                    className={`${classes.chain} ${chain.comingSoon && classes.comingSoon}`}
-                  >
-                    <img src={chain.icon} alt="" />
-                    <div className={classes.name}>
-                      <h4>{chain.label}</h4>
-                      {chain.comingSoon ? <span>Coming soon</span> : ""}
-                    </div>
-                  </div>
-                ))}
-              <div className={classes.viewBtnContainer} onClick={() => setShowMoreOptions(!showMoreOptions)}>
-                <img src={moreIcons} alt="" />
-                <div className={classes.viewBtn}>View {showMoreOptions ? "Less" : "More"}</div>
-              </div>
-            </div>
-            <div className={`${classes.connectionMethods} ${showConnectionMethods && classes.active}`}>
-              {window.ethereum !== undefined && (
-                <div
-                  onClick={handleMetamask}
-                  className={`${classes.connectionMethod} ${classes.metamask} ${showMetamask && classes.active}`}
-                >
-                  <img src={metamaskIcon} alt="" />
-                  <h5>MetaMask</h5>
-                </div>
-              )}
-              <div onClick={handleWalletConnect} className={classes.connectionMethod}>
-                <img src={walletConnectIcon} alt="" />
-                <h5>WalletConnect</h5>
-              </div>
-              {/* <div onClick={handleMagicLink} className={classes.connectionMethod}>
-              <img src={magicLinkIcon} alt="" />
-              <h3>Magic Connect</h3>
-              <p>Connect using Magic Connect</p>
-            </div> */}
-            </div>
-          </div>
-        </div>
-        <div className={classes.rightGrid}>
-          <div className={classes.iconContainer}>
-            <CloseIcon
-              onClick={() => {
-                dispatch(setToggleWalletPopup(false));
-                setShowMoreOptions(false);
-                setConnectionMethods(false);
-              }}
-              className={classes.closeIcon}
-            />
-          </div>
-          <div className={classes.lockSection}>
-            <div>
-              <img src={walletLockIcon} alt="" />
-            </div>
-            <div>
-              <button className={classes.learnButton} type="button">
-                <h1>Learn How to Connect</h1>
-                <img src={exportIcon} alt="" />
-              </button>
-            </div>
-          </div>
-        </div>
+      <div className={classes.desktopView}>
+        <DesktopPopup
+          showConnectionMethods={showConnectionMethods}
+          mainnet={mainnet}
+          connectOptions={connectOptions}
+          showMoreOptions={showMoreOptions}
+          handleChain={handleChain}
+          setShowMoreOptions={setShowMoreOptions}
+          dispatch={dispatch}
+          setConnectionMethods={setConnectionMethods}
+          handleMetamask={handleMetamask}
+          handleWalletConnect={handleWalletConnect}
+          showMetamask={showMetamask}
+          setToggleWalletPopup={setToggleWalletPopup}
+        />
+      </div>
+      <div className={classes.mobileView}>
+        <MobilePopup
+          showConnectionMethods={showConnectionMethods}
+          mainnet={mainnet}
+          connectOptions={connectOptions}
+          showMoreOptions={showMoreOptions}
+          handleChain={handleChain}
+          setShowMoreOptions={setShowMoreOptions}
+          dispatch={dispatch}
+          setConnectionMethods={setConnectionMethods}
+          handleMetamask={handleMetamask}
+          handleWalletConnect={handleWalletConnect}
+          showMetamask={showMetamask}
+          setToggleWalletPopup={setToggleWalletPopup}
+        />
       </div>
     </div>
   );
