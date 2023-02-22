@@ -9,6 +9,15 @@ import arbitrumIcon from "../assets/arbitrum.svg";
 import optimismIcon from "../assets/optism.svg";
 import { addChain, switchChain } from "./chainConnect";
 
+// Chain Icons
+import avaxChainIcon from "../assets/chainIcons/avalanche.svg";
+import nearChainIcon from "../assets/chainIcons/near.svg";
+import optimismChainIcon from "../assets/chainIcons/optimism.svg";
+import algorandChainIcon from "../assets/chainIcons/algoIcon.svg";
+import arbitrumChainIcon from "../assets/chainIcons/arbitrum.svg";
+import auroraChainIcon from "../assets/chainIcons/aurora.svg";
+import polygonChainIcon from "../assets/chainIcons/polygon.svg";
+
 const supportedChains = {
   1111: {
     id: "near",
@@ -212,7 +221,7 @@ export const orderedChainsList = [
     id: "near",
     label: "Near Testnet",
     chain: "Near",
-    icon: nearIcon,
+    icon: nearChainIcon,
     livePrice: "",
     symbol: "",
     networkId: 1111,
@@ -226,7 +235,7 @@ export const orderedChainsList = [
     id: "near",
     label: "Near",
     chain: "Near",
-    icon: nearIcon,
+    icon: nearChainIcon,
     livePrice: "",
     symbol: "",
     networkId: 1112,
@@ -240,7 +249,7 @@ export const orderedChainsList = [
     id: "algorand",
     label: "Algorand",
     chain: "Algorand",
-    icon: algoIcon,
+    icon: algorandChainIcon,
     symbol: "ALGO",
     networkId: 4160,
     add: null,
@@ -251,7 +260,7 @@ export const orderedChainsList = [
     id: "matic-network",
     label: "Polygon Testnet",
     chain: "Polygon",
-    icon: polygonIcon,
+    icon: polygonChainIcon,
     symbol: "MATIC",
     explorer: "https://mumbai.polygonscan.com/address",
     networkId: 80001,
@@ -266,7 +275,7 @@ export const orderedChainsList = [
     label: "Polygon",
     chain: "Polygon",
     explorer: "https://polygonscan.com/address",
-    icon: polygonIcon,
+    icon: polygonChainIcon,
     symbol: "MATIC",
     networkId: 137,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=matic-network&vs_currencies=usd",
@@ -279,7 +288,7 @@ export const orderedChainsList = [
     id: "avalanche",
     label: "Avalanche",
     chain: "Avalanche",
-    icon: avalancheIcon,
+    icon: avaxChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
     symbol: "AVAX",
     networkId: 43114,
@@ -293,7 +302,7 @@ export const orderedChainsList = [
     id: "avalanche",
     label: "Avalanche Testnet",
     chain: "Avalanche",
-    icon: avalancheIcon,
+    icon: avaxChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=avalanche-2&vs_currencies=usd",
     symbol: "AVAX",
     networkId: 43113,
@@ -307,7 +316,7 @@ export const orderedChainsList = [
     id: "aurora-near",
     label: "Aurora",
     chain: "Aurora",
-    icon: auroraIcon,
+    icon: auroraChainIcon,
     symbol: "AETH",
     explorer: "https://aurorascan.dev/",
     networkId: 1313161554,
@@ -320,7 +329,7 @@ export const orderedChainsList = [
     id: "ethereum",
     label: "Aurora Testnet",
     chain: "Aurora",
-    icon: auroraIcon,
+    icon: auroraChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "AETH",
     networkId: 1313161555,
@@ -376,7 +385,7 @@ export const orderedChainsList = [
     id: "arbitrum",
     label: "Arbitrum",
     chain: "Arbitrum",
-    icon: arbitrumIcon,
+    icon: arbitrumChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "ETH",
     networkId: 42161,
@@ -390,7 +399,7 @@ export const orderedChainsList = [
     id: "optimism",
     label: "Optimism",
     chain: "Optimism",
-    icon: optimismIcon,
+    icon: optimismChainIcon,
     livePrice: "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd",
     symbol: "OP",
     networkId: 10,
