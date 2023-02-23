@@ -353,6 +353,11 @@
     height: 3em;
   }
 }
+@media screen and (max-width: 950px) {
+  .chain {
+    min-width: 110px;
+  }
+}
 @media screen and (max-width: 820px) {
   .chains {
     overflow-y: scroll;
@@ -367,11 +372,13 @@
   }
   .mobileView {
     display: block;
+    height: 100vh;
   }
   .heading h4 {
     font-size: 0.75rem;
   }
   .container {
+    height: 100vh;
   }
   .card {
     flex-direction: column;

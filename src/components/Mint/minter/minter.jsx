@@ -162,7 +162,6 @@ const Minter = () => {
     setLoader,
     setNotification,
     setClipboard,
-    isIpfsLink: false,
     isAi: false,
     receiverAddress,
     account,
@@ -504,7 +503,6 @@ const Minter = () => {
       const { uploadType } = browserLocation.state;
       singleMintProps.file = ipfsLink;
       singleMintProps.fileName = `${singleMintProps.fileName}.${uploadType}`;
-      singleMintProps.isIpfsLink = true;
     }
     if (file?.length > 1) {
       if (!mintProps.description) {
