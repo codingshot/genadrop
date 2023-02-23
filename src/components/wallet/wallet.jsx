@@ -9,6 +9,7 @@ import { ReactComponent as DropdownIcon } from "../../assets/icon-chevron-down.s
 import disconnectIcon from "../../assets/icon-disconnect.svg";
 import WalletPopup from "../wallet-popup/walletPopup";
 import supportedChains from "../../utils/supportedChains";
+import bellIcon from "../../assets/bell.svg";
 
 import {
   setNetworkType,
@@ -22,6 +23,7 @@ import {
 } from "./wallet-script";
 
 import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
+import PushNotification from "../notifications/PushNotification";
 
 function ConnectWallet() {
   const history = useHistory();
@@ -36,12 +38,21 @@ function ConnectWallet() {
     walletConnectProvider: null,
     connectionMethod: null,
     isMetamask: true,
+    openNotification: false,
     overrideWalletConnect: false,
     rpc: null,
   });
 
-  const { clipboardState, network, walletConnectProvider, overrideWalletConnect, connectionMethod, rpc, isMetamask } =
-    state;
+  const {
+    clipboardState,
+    openNotification,
+    network,
+    walletConnectProvider,
+    overrideWalletConnect,
+    connectionMethod,
+    rpc,
+    isMetamask,
+  } = state;
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -152,6 +163,19 @@ function ConnectWallet() {
       <div className={classes.network}>
         <div className={`${classes.dot} ${network === "mainnet" && classes.mainnet}`} />{" "}
         <div className={classes.activeNetwork}>{network === "mainnet" ? "Mainnet" : "Testnet"}</div>
+      </div>
+      <div className={classes.notificationContent}>
+        <div className={`${classes.notification} ${openNotification && classes.notiActive}`}>
+          <img
+            className={classes.nIcon}
+            src={bellIcon}
+            alt=""
+            onClick={() => handleSetState({ openNotification: true })}
+          />
+          <div id="push-notification" className={classes.pushNotification}>
+            <PushNotification toggleNotification={handleSetState} />
+          </div>
+        </div>
       </div>
     </div>
   );

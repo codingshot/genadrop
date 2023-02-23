@@ -205,14 +205,15 @@
     right: 0;
     top: 3.4em;
     padding: 0 2em;
-    max-height: 0;
     overflow: hidden;
+    max-height: 0;
     transition: max-height 650ms;
   }
 
   .navContainer.active {
     max-height: 22em;
     justify-content: center;
+    overflow: visible;
     align-items: center;
   }
 
