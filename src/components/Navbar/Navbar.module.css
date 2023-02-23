@@ -206,7 +206,6 @@
     top: 3.4em;
     padding: 0 2em;
     max-height: 0;
-    overflow: hidden;
     transition: max-height 650ms;
   }
 

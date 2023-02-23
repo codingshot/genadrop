@@ -110,7 +110,7 @@
 
 .networkContainer {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   position: relative;
 }
@@ -125,7 +125,7 @@
 }
 
 .activeNetwork {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .chevronIcon {
@@ -185,9 +185,18 @@
   visibility: hidden;
 }
 
-.connectedContainer:hover .dropdownContainer {
+.connectedContainer:hover .dropdownContainer, .notification.notiActive .pushNotification {
   animation: drop 300ms forwards;
   visibility: visible;
+  z-index: 2000;
+}
+
+.pushNotification {
+  position: absolute;
+  width: max-content;
+  top: 2em;
+  right: 0;
+  visibility: hidden;
 }
 
 @keyframes drop {
@@ -230,24 +239,36 @@
 .option img {
   width: 1.2em;
 }
+.notificationContent {
+  position: relative;
+}
+.notification {
+  margin-left: 14px;
+  margin-top: 7px;
+}
+.notification img {
+  width: 20px;
+}
 
 @media screen and (max-width: 1000px) {
   .connect {
     max-width: 100%;
   }
+  
 }
 @media screen and (max-width: 480px) {
   .container {
     justify-content: space-between;
   }
- .popupContainer {
-  position: fixed;
-  bottom: -600px; /* start off the screen */
-  left: 50%;
-  transform: translateX(-50%);
-  transition: bottom 650ms ease-in-out;
- }
  .popupContainer.active {
-  bottom: 0;
+  animation:  300ms forwards
  }
+ .pushNotification {
+  right: -1.4em;
+ }
+}
+@media screen and (max-width: 380px) {
+  .pushNotification {
+    right: -1.7em;
+   }
 }
