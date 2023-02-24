@@ -3,14 +3,14 @@
     background: var(--default);
     height: 465px;
     width: 370px;
-    padding: 10px;
+    padding: 25px 10px 10px 10px;
     border-radius: 14px;
     z-index: 2000
 }
 .header {
     display: flex;
     flex-direction: row;
-    padding: 0 15px;
+    padding: 0 10px;
     justify-content: space-between;
     align-items: center;
 }
