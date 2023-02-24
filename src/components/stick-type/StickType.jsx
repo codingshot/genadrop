@@ -1,10 +1,35 @@
 import React from "react";
-import classes from "./StickType.module.css";
+import moment from "moment";
 import typeCards from "./StickType-script";
 import { ReactComponent as TypeIcon } from "../../assets/stick_type/type-icon.svg";
-import moment from "moment";
+import { setZip } from "../../gen-state/gen.actions";
+import { capitalizeFirstLetter, getFileFromBase64, isEmpty } from "../mint-webcam/Capture/Capture-script";
+import classes from "./StickType.module.css";
 
-const StickType = ({ handleSetState, attributes }) => {
+const StickType = ({ seshProps }) => {
+  const { img, attributes, onlyCamera, dispatch, pathname, history } = seshProps;
+
+  const handleMintStick = (type) => {
+    let mintType;
+    const imgResult = getFileFromBase64(img, "Image", "image/png");
+    if (onlyCamera) {
+      mintType = capitalizeFirstLetter(pathname);
+    }
+
+    dispatch(
+      setZip({
+        name: `PROOF OF SESH: {${type.title}} ${moment().format("MM/DD/YYYY")}`,
+        file: imgResult,
+        type: mintType,
+        attributes: {
+          ...attributes,
+          smoking_stick: { trait_type: "smoking stick", value: type.title },
+        },
+      })
+    );
+    history.push("/mint/1of1");
+  };
+
   return (
     <div className={`${classes.container} `}>
       <div className={classes.popupWrapper}>
@@ -16,18 +41,7 @@ const StickType = ({ handleSetState, attributes }) => {
 
           <div className={classes.wrapper}>
             {typeCards.map((type) => (
-              <div
-                className={classes.typeCard}
-                onClick={() =>
-                  handleSetState({
-                    stickType: `PROOF OF SESH: {${type.title}} ${moment().format("DD/MM/YYYY")}`,
-                    attributes: {
-                      ...attributes,
-                      smoking_stick: { trait_type: "smoking stick", value: type.title },
-                    },
-                  })
-                }
-              >
+              <div className={classes.typeCard} onClick={() => handleMintStick(type)}>
                 <div className={classes.icon}>{type.icon}</div>
                 <div className={classes.content}>
                   <div className={classes.typeIcon}>
@@ -47,3 +61,10 @@ const StickType = ({ handleSetState, attributes }) => {
   );
 };
 export default StickType;
+// handleSetState({
+//   stickType: `PROOF OF SESH: {${type.title}} ${moment().format("MM/DD/YYYY")}`,
+//   attributes: {
+//     ...attributes,
+//     smoking_stick: { trait_type: "smoking stick", value: type.title },
+//   },
+// });
