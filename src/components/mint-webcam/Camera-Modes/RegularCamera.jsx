@@ -28,6 +28,7 @@ const RegularCamera = ({ regularCameraProps }) => {
   // video capture
   const [recordedChunks, setRecordedChunks] = useState([]);
   const [capturing, setCapturing] = useState(false);
+  const [seshType, setSeshType] = useState(false);
 
   const mediaRecorderRef = useRef();
   const webcamWrapper = useRef();
@@ -164,6 +165,17 @@ const RegularCamera = ({ regularCameraProps }) => {
     });
   };
 
+  const seshProps = {
+    img,
+    attributes,
+    activeFile,
+    currenFile,
+    onlyCamera,
+    dispatch,
+    history,
+    pathname,
+  };
+
   // proceed with the generated file to the mint page
   const continueToMint = () => {
     let name;
@@ -198,6 +210,8 @@ const RegularCamera = ({ regularCameraProps }) => {
 
     history.push("/mint/1of1");
   };
+
+  const continueToSelectStick = () => setSeshType(true);
 
   // update camera on resizing
   useEffect(() => {
@@ -234,12 +248,21 @@ const RegularCamera = ({ regularCameraProps }) => {
         )}
       </div>
       {/* select smoking stick for proof of sesh */}
-      {!attributes.smoking_stick && pathname === "sesh" && (
-        <StickType handleSetState={handleSetState} attributes={attributes} />
+      {!attributes.smoking_stick && seshType && img && (
+        <StickType
+          handleContinueToMint={continueToMint}
+          seshProps={seshProps}
+          handleSetState={handleSetState}
+          attributes={attributes}
+        />
       )}
       {/*  */}
       <div className={classes.imgBtn}>
-        <div className={classes.mintBtn} onClick={continueToMint} attributes={attributes}>
+        <div
+          className={classes.mintBtn}
+          onClick={pathname === "sesh" ? continueToSelectStick : continueToMint}
+          attributes={attributes}
+        >
           Continue
         </div>
         <p
