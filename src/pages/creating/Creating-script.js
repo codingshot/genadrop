@@ -86,13 +86,13 @@ const cards = [
     url: "/mint/video",
     comingSoon: "",
   },
-  {
-    title: "Doubletake",
-    description: "Take a photo and selfie and mint",
-    icon: <Doubletake />,
-    url: "/mint/doubletake",
-    comingSoon: "",
-  },
+  // {
+  //   title: "Doubletake",
+  //   description: "Take a photo and selfie and mint",
+  //   icon: <Doubletake />,
+  //   url: "/mint/doubletake",
+  //   comingSoon: "",
+  // },
   // {
   //   title: "IPFS",
   //   description: "Mint your NFTs using IPFS link",
