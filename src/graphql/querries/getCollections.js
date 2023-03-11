@@ -396,7 +396,7 @@ query MyQuery {
     tokenIPFSPath
   }
 }
-`
+`;
 
 const polygonAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
@@ -441,7 +441,7 @@ query MyQuery {
     tokenIPFSPath
   }
 }
-`
+`;
 
 const celoAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
@@ -484,7 +484,7 @@ query MyQuery {
     tokenIPFSPath
   }
 }
-`
+`;
 
 export const GET_NEAR_SINGLE_NFTS = gql`
   query MyQuery {

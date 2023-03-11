@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import classes from "./mobilePopup.module.css";
 
 // icons
@@ -6,7 +7,6 @@ import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import moreIcons from "../../assets/moreDots.svg";
 import exportIcon from "../../assets/icon-link-white.svg";
-import { Link } from "react-router-dom";
 
 const MobilePopup = ({
   showConnectionMethods,
@@ -22,15 +22,31 @@ const MobilePopup = ({
   handleWalletConnect,
   showMetamask,
 }) => {
+  const cardrRef = useRef();
+
   const handleCloseMobileModal = () => {
     dispatch(setToggleWalletPopup(false));
     setShowMoreOptions(false);
     setConnectionMethods(false);
   };
+  const handleClickOutside = (event) => {
+    if (cardrRef.current && !cardrRef.current.contains(event.target)) {
+      console.log(cardrRef.current);
+      console.log(event.target);
+      console.log(cardrRef.current.contains(event.target));
+      handleCloseMobileModal();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
   return (
     <div className={classes.container}>
-      <div className={classes.closeModal} onClick={handleCloseMobileModal} />
-      <div className={classes.mobileRoot}>
+      <div className={classes.mobileRoot} ref={cardrRef}>
         <div className={classes.mobileMain}>
           <div className={classes.heading}>
             <h3>{showConnectionMethods ? "Connect Wallets" : "Connect Your Wallet"}</h3>

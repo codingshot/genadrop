@@ -185,7 +185,8 @@
   visibility: hidden;
 }
 
-.connectedContainer:hover .dropdownContainer, .notification.notiActive .pushNotification {
+.connectedContainer:hover .dropdownContainer,
+.notification.notiActive .pushNotification {
   animation: drop 300ms forwards;
   visibility: visible;
   z-index: 2000;
@@ -254,21 +255,20 @@
   .connect {
     max-width: 100%;
   }
-  
 }
 @media screen and (max-width: 480px) {
   .container {
     justify-content: space-between;
   }
- .popupContainer.active {
-  animation:  300ms forwards
- }
- .pushNotification {
-  right: -1.4em;
- }
+  .popupContainer.active {
+    animation: 300ms forwards;
+  }
+  .pushNotification {
+    right: -1.4em;
+  }
 }
 @media screen and (max-width: 380px) {
   .pushNotification {
     right: -1.7em;
-   }
+  }
 }

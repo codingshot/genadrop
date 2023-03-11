@@ -295,8 +295,8 @@
 }
 
 .downloadBtn:hover {
-    background-color: var(--main-color);
-    color: var(--default);
+  background-color: var(--main-color);
+  color: var(--default);
 }
 
 .peviewSizeSection {
@@ -341,7 +341,7 @@
   color: var(--main-color);
   border: transparent;
   padding: 0.5em 1em;
-  transition: .3s;
+  transition: 0.3s;
   border-radius: 6px;
   border: none;
   background-color: var(--default);

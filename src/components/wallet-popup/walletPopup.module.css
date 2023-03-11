@@ -8,26 +8,31 @@
   overflow: auto;
   padding: 0 1em;
 }
-
+.desktopView {
+  display: flex;
+  width: 100%;
+}
 .card {
   width: 100%;
   max-width: 65em;
   overflow: auto;
   background: var(--default);
-  height: 617px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  gap: 1em;
+  min-height: 617px;
   border-radius: 1em;
   animation: show 300ms alternate;
   margin: 6em auto 4em auto;
+  display: grid;
+  grid-template-columns: 50% 48%;
+  gap: 2%;
 }
 
 .leftGrid {
   padding-left: 3em;
   padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 @keyframes show {
@@ -75,7 +80,6 @@
   fill: var(--icon-color);
 }
 .rightGrid {
-  min-width:45%;
   background: var(--text-placeholder-light);
   height: 100%;
 }
@@ -86,18 +90,14 @@
 
 .wrapper {
   max-width: 100%;
-  min-height: 371px;
   position: relative;
 }
 
 .chains {
   width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: stretch;
-  justify-content: flex-start;
-  gap: 2em;
+  display: grid;
+  gap: 1rem;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
 .lockSection {
   display: flex;
@@ -111,9 +111,9 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding:  0.5em 1.5em;
+  padding: 0.5em 1.5em;
   offset: 0px, -1px rgba(14, 14, 44, 0.4);
-  transition: .3s;
+  transition: 0.3s;
   border-radius: 16px;
   background: var(--main-color);
 }
@@ -139,10 +139,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 130px;
   flex-direction: column;
   gap: 1em;
-  padding-top: .5em;
+  padding-top: 0.5em;
   border-radius: 1em;
   cursor: var(--cursor-pointer);
   transition: all 300ms;
@@ -167,22 +166,20 @@
   color: inherit;
 }
 
-.chain:hover {
-  background: var(--main-hovered);
-  border-color: transparent;
-}
-
 .chain:hover h4 {
-  color: var(--default);
+  color: var(--main-color);
 }
 
 .chain:hover p {
-  color: var(--default);
+  color: var(--main-color);
 }
-
+.chain:hover img {
+  transform: scale(1.2);
+}
 .chain img {
   width: 3.4em;
   height: 3.4em;
+  transition: 200ms ease-in-out;
   /* border-radius: 50%; */
 }
 
@@ -209,18 +206,15 @@
   margin-bottom: 30px;
 }
 
-
 .viewBtnContainer {
-  min-width: 130px;
   margin-top: 0.5em;
   display: flex;
-  min-height: 125px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 1em;
   cursor: var(--cursor-pointer);
-  transition: .6s ease-in-out;
+  transition: 0.6s ease-in-out;
 }
 
 .viewBtnImage {
@@ -237,7 +231,6 @@
 
 .viewBtnContainer:hover {
   background: var(--text-placeholder-light);
-  
 }
 
 .viewBtn {
@@ -248,8 +241,6 @@
   font-weight: bold;
   transition: all 300ms;
 }
-
-
 
 .connectionMethods {
   width: 100%;
@@ -354,15 +345,10 @@
   }
 }
 @media screen and (max-width: 950px) {
-  .chain {
-    min-width: 110px;
-  }
-}
-@media screen and (max-width: 820px) {
   .chains {
+    grid-template: repeat(4, 1fr) / repeat(2, 1fr);
+    max-height: 15rem;
     overflow-y: scroll;
-    max-height: 380px;
-    gap: 1em;
   }
 }
 
@@ -382,16 +368,16 @@
   }
   .card {
     flex-direction: column;
-    
   }
-  .rightGrid, .lockSection {
+  .rightGrid,
+  .lockSection {
     width: 100%;
     height: 50%;
   }
   .lockImage {
     display: none;
   }
-  
+
   .chain {
     padding: 0.5em 0;
     padding-left: 1em;
