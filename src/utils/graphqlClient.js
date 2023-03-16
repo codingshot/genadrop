@@ -28,6 +28,17 @@ export const nearClient = createClient({
       : "https://api.thegraph.com/subgraphs/name/prometheo/near-mainnet",
 });
 
+export const nearCollectionClient = createClient({
+  url: "https://genadrop-near.hasura.app/v1/graphql",
+  fetchOptions: {
+    headers: {
+      "Hasura-Client-Name": "hasura-console",
+      "X-Hasura-Admin-Secret": "6NemYe8quC7J5KeHKcihbSN04NpEAX6UugM1oyBiLXQj35vQkAWKMJ4D8Rn2d1Ep",
+      "content-type": "application/json",
+    },
+  },
+});
+
 export const avalancheClient = createClient({
   url:
     process.env.REACT_APP_ENV_STAGING === "true"

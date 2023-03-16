@@ -16,6 +16,7 @@ import { setActiveCollection } from "../../gen-state/gen.actions";
 import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
 import Items from "./items/items";
 import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
+import { getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -66,7 +67,11 @@ const Explore = () => {
     handleSetState({ headerHeight: res });
   };
 
-  const getAllCollectionChains = () => {
+  const getAllCollectionChains = async () => {
+    const nearCollection = await getNearCollection(collectionName);
+    if (nearCollection.length) {
+      return nearCollection;
+    }
     return !auroraCollections && !polygonCollections && !celoCollections
       ? null
       : [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
@@ -92,7 +97,19 @@ const Explore = () => {
 
   useEffect(() => {
     (async function getGraphResult() {
-      const allCollection = getAllCollectionChains();
+      const allCollection = await getAllCollectionChains();
+      if (allCollection[0]?.chain === 1112) {
+        handleSetState({
+          collection: {
+            ...allCollection[0],
+            owner: allCollection[0]?.owner,
+            price: allCollection[0]?.price,
+          },
+          collectionId: allCollection[0]?.Id,
+          NFTCollection: allCollection,
+          loadedChain: allCollection[0]?.chain,
+        });
+      }
       const NFTCollection = allCollection?.filter((col) => col?.Id === collectionName);
       if (NFTCollection?.length) {
         const result = await getGraphCollection(NFTCollection[0].nfts, NFTCollection[0]);

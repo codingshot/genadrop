@@ -40,6 +40,7 @@ import { ReactComponent as Twitter } from "../../assets/icon-twitter-blue.svg";
 import { ReactComponent as Discord } from "../../assets/icon-discord-blue.svg";
 import { ReactComponent as Instagram } from "../../assets/icon-instagram-blue.svg";
 import { ReactComponent as LinkIcon } from "../../assets/icon-link.svg";
+import { getUserNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -173,7 +174,6 @@ const Dashboard = () => {
       }
       let collection;
       const collections = await fetchUserCollections(userId);
-
       switch (supportedChains[chainID]?.chain) {
         case "Algorand":
           collection = await getUserNftCollections({ collections, mainnet });
@@ -186,6 +186,9 @@ const Dashboard = () => {
           break;
         case "Polygon":
           collection = await getPolygonUserCollections(walletAddress);
+          break;
+        case "Near":
+          collection = await getUserNearCollection(userId);
           break;
         default:
           break;

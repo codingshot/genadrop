@@ -11,6 +11,7 @@ import {
   polygonUserData,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import supportedChains from "../../utils/supportedChains";
+import { getCollectionNft, getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
 
 export const getAlgoData = async ({ algoProps }) => {
   const { singleAlgoNfts, activeCollection, params, algoCollections } = algoProps;
@@ -57,6 +58,18 @@ export const getGraphData = async ({ graphProps }) => {
 
   if (collectionName) {
     let graphCollections = [];
+    if (collectionName.startsWith("agbado")) {
+      const nearGraphNft = await getCollectionNft(nftId);
+      if (nearGraphNft.length) {
+        const nearCollectionNft = await getNearCollection(collectionName);
+        return {
+          nftDetails: nearGraphNft[0],
+          collection: nearCollectionNft,
+          _1of1: [],
+          transactionHistory: [],
+        };
+      }
+    }
     graphCollections = [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
     // filtering to get the unqiue collection
     let collection = graphCollections.find((col) => col.Id === collectionName);

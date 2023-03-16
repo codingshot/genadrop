@@ -108,6 +108,76 @@ function fetchCollection(collection, mainnet) {
   });
 }
 
+export const fetchNearCollection = async (nfts, collection) => {
+  const nftArr = [];
+  if (nfts) {
+    for (let i = 0; i < nfts?.length; i++) {
+      const { data } = await axios.get(nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      try {
+        const nftObj = {};
+        nftObj.collection_name = collection?.name;
+        nftObj.description = collection?.description;
+        nftObj.chain = nfts[i].chain;
+        nftObj.owner = nfts[i]?.owner;
+        nftObj.Id = nfts[i].id;
+        nftObj.price = nfts[i].price ? utils.format.formatNearAmount(nfts[i].price) : 0;
+        nftObj.sold = nfts[i].isSold;
+        nftObj.nfts = nfts;
+        nftObj.ipfs_data = data;
+        nftObj.name = data.name;
+        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs");
+        nftArr.push(nftObj);
+        window.localStorage.activeCollection = JSON.stringify({ ...nftObj });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
+  return nftArr;
+};
+
+export const getNearCollections = async (collections) => {
+  function fetchNearCollection(collection) {
+    const fetch = async (resolve, reject) => {
+      try {
+        const collectionObj = {};
+        const { data } = await axios.get(
+          collection?.Nfts[0]?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
+        );
+        collectionObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        const getPrice = collection?.Nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
+        collectionObj.price = getPrice ? utils.format.formatNearAmount(getPrice.toString()) : 0;
+        collectionObj.name = collection?.name;
+        collectionObj.owner = collection?.creator;
+        collectionObj.Id = collection?.id;
+        collectionObj.chain = collection?.Nfts[0]?.chain;
+        collectionObj.nfts = collection?.Nfts;
+        collectionObj.description = collection?.description;
+        collectionObj.createdAt = new Date(Number(collection?.created_at));
+        collectionObj.transactions = collection?.Nfts.Transactions;
+        resolve(collectionObj);
+      } catch (error) {
+        console.log("near collection error", error);
+        reject(error);
+      }
+    };
+    return new Promise((resolve, reject) => {
+      fetch(resolve, reject);
+    });
+  }
+  const collectionArr = [];
+  if (collections) {
+    const responses = await Promise.allSettled(collections.map((collection) => fetchNearCollection(collection)));
+    responses.forEach((element) => {
+      if (element?.status === "fulfilled") {
+        collectionArr.push(element.value);
+      }
+    });
+  }
+  return collectionArr;
+};
+
 export const getGraphCollections = async (collections) => {
   function fetchAuroraCollection(collection) {
     const fetch = async (resolve, reject) => {
@@ -539,6 +609,34 @@ export const getNearNft = async (collection, mainnet) => {
     nftArr.Id = collection?.id;
     nftArr.tokenID = collection?.tokenID;
     nftArr.marketId = collection?.marketId;
+    nftArr.properties = data?.properties;
+    nftObj.push(nftArr);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return nftObj;
+};
+
+export const getCollectionNearNft = async (nft) => {
+  const { data } = await axios.get(nft?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+  const nftObj = [];
+  try {
+    const nftArr = {};
+    nftArr.collection_name = nft?.Collection?.name;
+    nftArr.creator = nft?.Collection?.creator;
+    nftArr.collection_contract = nft?.id?.split(nft?.tokenId)[0];
+    nftArr.name = data?.name;
+    nftArr.isListed = nft?.isListed;
+    nftArr.chain = nft?.chain;
+    nftArr.owner = nft?.owner;
+    nftArr.price = nft?.price ? utils.format.formatNearAmount(nft?.price) : 0;
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+    nftArr.ipfs_data = data;
+    nftArr.sold = nft?.isSold;
+    nftArr.description = data?.description;
+    nftArr.Id = nft?.id;
+    nftArr.tokenId = nft?.tokenId;
     nftArr.properties = data?.properties;
     nftObj.push(nftArr);
   } catch (error) {

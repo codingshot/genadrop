@@ -28,6 +28,7 @@ import {
   getAllPolygonCollections,
   getAllPolygonNfts,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
+import { getAllNearCollections } from "../../../renderless/fetch-data/fetchNearCollectionData";
 
 const AllNfts = () => {
   const history = useHistory();
@@ -107,6 +108,7 @@ const AllNfts = () => {
     Promise.all([
       getAllAuroraCollections(),
       getAllPolygonCollections(),
+      getAllNearCollections(),
       getAllCeloCollections(),
       getAllAlgorandCollections(mainnet, dispatch),
     ]).then((data) => {

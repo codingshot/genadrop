@@ -1,10 +1,10 @@
+import { useContext } from "react";
 import SearchBar from "../../../components/Marketplace/Search-bar/searchBar.component";
 import classes from "../Explore.module.css";
 import Filter from "../Filter/Filter";
 import Menu from "../Menu/Menu";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { GenContext } from "../../../gen-state/gen.context";
-import { useContext } from "react";
 
 const Items = ({ handleSetState, state, collectionName }) => {
   const {
