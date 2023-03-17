@@ -18,7 +18,7 @@
 .mobileRoot {
   display: flex;
   border-radius: 21px;
-  overflow: hidden;
+  overflow-y: scroll;
   justify-content: space-between;
   flex-direction: column;
   background: #fff;
@@ -66,8 +66,11 @@
   width: 100%;
   display: grid;
   overflow-y: scroll;
-  max-height: 260px;
   gap: 1em;
+  padding: 1rem 0;
+  grid-template: repeat(2, 1fr) / repeat(3, 1fr);
+}
+.chains.showMore {
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
 .chains.active {
@@ -143,7 +146,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 110px;
   flex-direction: column;
   gap: 1em;
   padding-top: 0.5em;
@@ -175,6 +177,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: 200ms ease-in-out;
 }
 .viewBtnImage img {
   margin-right: 2px;
@@ -198,7 +201,6 @@
 .chain img {
   width: 3.4em;
   height: 3.4em;
-  border-radius: 50%;
   transition: 200ms ease-in-out;
 }
 
@@ -227,7 +229,6 @@
 }
 
 .viewBtnContainer {
-  min-width: 90px;
   margin-top: 0.5em;
   display: flex;
   min-height: 95px;
@@ -239,7 +240,9 @@
   cursor: var(--cursor-pointer);
   transition: 0.3s;
 }
-
+.viewBtnContainer:hover .viewBtnImage {
+  transform: scale(1.2);
+}
 .footer {
   background: var(--text-placeholder-light);
   height: 120px;
@@ -247,6 +250,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding: 1rem 0;
 }
 .footer h1 {
   font-size: 18px;
@@ -292,12 +296,6 @@
 @media screen and (max-width: 400px) {
   .mobileRoot {
     height: 80%;
-  }
-  .chain {
-    min-width: 90px;
-  }
-  .chains {
-    max-height: 300px;
   }
   .viewBtnContainer {
     margin-left: 0;

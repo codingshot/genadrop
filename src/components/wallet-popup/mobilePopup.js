@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import classes from "./mobilePopup.module.css";
 
@@ -22,20 +22,15 @@ const MobilePopup = ({
   handleWalletConnect,
   showMetamask,
 }) => {
-  const cardrRef = useRef();
-
   const handleCloseMobileModal = () => {
     dispatch(setToggleWalletPopup(false));
     setShowMoreOptions(false);
     setConnectionMethods(false);
   };
   const handleClickOutside = (event) => {
-    if (cardrRef.current && !cardrRef.current.contains(event.target)) {
-      console.log(cardrRef.current);
-      console.log(event.target);
-      console.log(cardrRef.current.contains(event.target));
-      handleCloseMobileModal();
-    }
+    const card = document.getElementById("wallet-mobile");
+
+    if (card && !card.contains(event.target) && card?.clientWidth > 0) handleCloseMobileModal();
   };
 
   useEffect(() => {
@@ -46,7 +41,7 @@ const MobilePopup = ({
   }, []);
   return (
     <div className={classes.container}>
-      <div className={classes.mobileRoot} ref={cardrRef}>
+      <div className={classes.mobileRoot} id="wallet-mobile">
         <div className={classes.mobileMain}>
           <div className={classes.heading}>
             <h3>{showConnectionMethods ? "Connect Wallets" : "Connect Your Wallet"}</h3>
@@ -71,7 +66,11 @@ const MobilePopup = ({
             )}
           </div>
           <div className={classes.wrapper}>
-            <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
+            <div
+              className={`${classes.chains} ${showConnectionMethods && classes.active} ${
+                showMoreOptions && classes.showMore
+              }`}
+            >
               {connectOptions
                 .filter((chain) => mainnet === chain.isMainnet)
                 .filter((_, idx) => showMoreOptions || idx <= 4)
