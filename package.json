@@ -29,6 +29,7 @@
     "@openzeppelin/hardhat-upgrades": "^1.20.0",
     "@paypal/react-paypal-js": "^7.8.1",
     "@pinata/sdk": "^1.1.23",
+    "@pushprotocol/restapi": "0.1.1",
     "@splidejs/react-splide": "0.7.5",
     "@splidejs/splide": "4.0.7",
     "@splidejs/splide-extension-auto-scroll": "0.4.2",
@@ -127,18 +128,11 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.6",
     "@nomiclabs/hardhat-waffle": "^2.0.3",

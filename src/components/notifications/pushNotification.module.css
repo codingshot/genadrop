@@ -38,7 +38,7 @@
     height: 50px;
     color: var(--default);
     background: var(--main-light);
-    cursor: not-allowed;
+    cursor: pointer;
     font-size: 16px;
     font-weight: 500;
     border-radius: 8px;
