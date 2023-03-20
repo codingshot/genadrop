@@ -6,6 +6,7 @@ import { utils } from "near-api-js";
 import JSZip from "jszip";
 import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+import { util } from "chai";
 
 const BN = require("bn.js");
 
@@ -2302,13 +2303,14 @@ export async function mintToNear(polyProps) {
     accounts,
   } = window.selector.store.getState();
   const { accountId } = accounts[0];
+  const collectioName = fileName.trim().toLowerCase().replace(/\s+/g, "");
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
   
   const ids = ipfsJsonData.map((asset) => {
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
-    return id;
+    return id.toString();
   });
   const arrayMetadata = ipfsJsonData.map((asset) => ({
     title: asset.name,
@@ -2317,11 +2319,12 @@ export async function mintToNear(polyProps) {
     reference: asset.url,
   }));
 
-  const nftDeposit = 10000000000000000000000 * arrayMetadata.length;
+  const nftDeposit = (utils.format.formatNearAmount("10000000000000000000000") * arrayMetadata.length).toString();
 
   let response;
 
   if (window?.near?.accountId) {
+    console.log("first option??")
     response = await window?.near?.request({
       receiverId: contractId,
       transactions: [
@@ -2379,24 +2382,27 @@ export async function mintToNear(polyProps) {
           receiverId: "dev-1679101466048-37677895607366",
           actions: [
             {
-              methodName: "create_collection",
-              args: {
-                metadata: {
-                  spec: "nft-1.0.0",
-                  name: fileName.split("-")[0],
-                  symbol: "NFT", 
-                  reference: description,
+              type: "FunctionCall",
+              params: {
+                methodName: "create_collection",
+                args: {
+                  metadata: {
+                    spec: "nft-1.0.0",
+                    name: collectioName,
+                    symbol: "NFT",
+                    reference: description,
+                  },
+                  owner_id: accountId,
                 },
-                owner_id: accountId,
+                gas: utils.format.parseNearAmount("0.0000000003"),
+                deposit: utils.format.parseNearAmount("3.256"),
               },
-              gas: utils.format.parseNearAmount("0.0000000003"),
-              deposit: utils.format.parseNearAmount("3.256"),
             },
           ],
         },
         {
           signerId: accountId,
-          receiverId: "dev-1679101466048-37677895607366",
+          receiverId: `${collectioName}.dev-1679101466048-37677895607366`,
           // use map to handle cases of 1 market or more
           actions: [
             {
@@ -2409,13 +2415,13 @@ export async function mintToNear(polyProps) {
                   receiver_id: receiverAddress,
                 },
                 gas: 100000000000000,
-                deposit: new BN(nftDeposit.toString()),
+                deposit: utils.format.parseNearAmount(nftDeposit),
               },
             },
           ],
         },
       ],
-      callbackUrl: `http://${window.location.host}/mint/1of1`,
+      callbackUrl: `http://${window.location.host}/mint/collection/minter/`,
     });
   }
 }
