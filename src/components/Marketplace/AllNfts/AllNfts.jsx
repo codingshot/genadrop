@@ -112,7 +112,7 @@ const AllNfts = () => {
       getAllCeloCollections(),
       getAllAlgorandCollections(mainnet, dispatch),
     ]).then((data) => {
-      const filteredData = sortBy({ collections: shuffle(data.flat()), value: "newest" });
+      const filteredData = sortBy({ collections: data.flat(), value: "newest" });
       handleSetState({ collections: filteredData });
     });
   }, []);

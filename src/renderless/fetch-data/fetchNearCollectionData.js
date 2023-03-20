@@ -5,7 +5,6 @@ import {
   getCollectionNearNft,
   getNearCollections,
   getNearCollectionTransactions,
-  getNearNftDetailTransaction,
 } from "../../utils";
 import { nearCollectionClient } from "../../utils/graphqlClient";
 
