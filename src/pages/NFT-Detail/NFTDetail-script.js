@@ -1,12 +1,10 @@
 import { readNftTransaction, readUserProfile } from "../../utils/firebase";
-// import axios from "axios";
-import { getCeloGraphNft, getGraphCollection, getTransactions } from "../../utils";
+import { getCeloGraphNft, getGraphCollection, getNearNftDetailTransaction, getTransactions } from "../../utils";
 import {
   arbitrumUserData,
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
-  getAllNearNfts,
   nearUserData,
   polygonUserData,
 } from "../../renderless/fetch-data/fetchUserGraphData";
@@ -58,15 +56,16 @@ export const getGraphData = async ({ graphProps }) => {
 
   if (collectionName) {
     let graphCollections = [];
-    if (collectionName.startsWith("agbado")) {
+    if (nftId.endsWith("dev-1679101466048-37677895607366d2908")) {
       const nearGraphNft = await getCollectionNft(nftId);
       if (nearGraphNft.length) {
         const nearCollectionNft = await getNearCollection(collectionName);
+        const nearTransactionHistory = await getNearNftDetailTransaction(nearCollectionNft[0]?.transactions);
         return {
           nftDetails: nearGraphNft[0],
           collection: nearCollectionNft,
           _1of1: [],
-          transactionHistory: [],
+          transactionHistory: nearTransactionHistory,
         };
       }
     }

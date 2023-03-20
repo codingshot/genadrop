@@ -125,7 +125,8 @@ export const fetchNearCollection = async (nfts, collection) => {
         nftObj.nfts = nfts;
         nftObj.ipfs_data = data;
         nftObj.name = data.name;
-        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs");
+        nftObj.transactions = nfts[i]?.Transactions;
+        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
         nftArr.push(nftObj);
         window.localStorage.activeCollection = JSON.stringify({ ...nftObj });
       } catch (error) {
@@ -470,6 +471,44 @@ export const getNearTransactions = async (transactions) => {
         (trnObj.seller = transactions[i].from?.id),
         (trnObj.txDate = Number(transactions[i]?.txDate)),
         (trnObj.txId = transactions[i]?.txId),
+        (trnObj.type = transactions[i]?.type);
+      trnArr.push(trnObj);
+    } catch (error) {}
+  }
+  return trnArr;
+};
+
+export const getNearNftDetailTransaction = async (transactions) => {
+  const trnArr = [];
+  for (let i = 0; i < transactions?.length; i++) {
+    try {
+      const trnObj = {};
+      (trnObj.buyer = transactions[i]?.to),
+        (trnObj.price = transactions[i]?.price
+          ? utils.format.formatNearAmount((transactions[i]?.price).toString())
+          : 0),
+        (trnObj.seller = transactions[i].from),
+        (trnObj.txDate = Number(transactions[i]?.txDate)),
+        (trnObj.txId = transactions[i]?.txId),
+        (trnObj.type = transactions[i]?.type);
+      trnArr.push(trnObj);
+    } catch (error) {}
+  }
+  return trnArr;
+};
+
+export const getNearCollectionTransactions = async (transactions) => {
+  const trnArr = [];
+  for (let i = 0; i < transactions?.length; i++) {
+    try {
+      const trnObj = {};
+      (trnObj.to = transactions[i]?.to),
+        (trnObj.price = transactions[i]?.price
+          ? utils.format.formatNearAmount((transactions[i]?.price).toString())
+          : 0),
+        (trnObj.from = transactions[i].from),
+        (trnObj.date = Number(transactions[i]?.txDate)),
+        (trnObj.id = transactions[i]?.txId),
         (trnObj.type = transactions[i]?.type);
       trnArr.push(trnObj);
     } catch (error) {}

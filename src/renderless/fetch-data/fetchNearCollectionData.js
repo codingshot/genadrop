@@ -1,6 +1,12 @@
 import { gql } from "@apollo/client";
 import { GET_NEAR_COLLECTIONS } from "../../graphql/querries/getCollections";
-import { fetchNearCollection, getCollectionNearNft, getNearCollections } from "../../utils";
+import {
+  fetchNearCollection,
+  getCollectionNearNft,
+  getNearCollections,
+  getNearCollectionTransactions,
+  getNearNftDetailTransaction,
+} from "../../utils";
 import { nearCollectionClient } from "../../utils/graphqlClient";
 
 export const getNearCollection = async (collectionId) => {
@@ -116,6 +122,28 @@ export const getUserNearCollection = async () => {
     .toPromise();
   if (error) return [];
   const result = await getNearCollections(data?.User_by_pk?.Collections);
-  console.log(result);
+  return result;
+};
+
+export const getCollectionTransactions = async () => {
+  const { data, error } = await nearCollectionClient
+    .query(
+      gql`
+        query MyQuery {
+          Transactions(where: { Nft: { Collection: { id: { _eq: "agbado.dev-1677462632216-22981353323896" } } } }) {
+            from
+            id
+            price
+            to
+            txDate
+            txId
+            type
+          }
+        }
+      `
+    )
+    .toPromise();
+  if (error) return [];
+  const result = await getNearCollectionTransactions(data?.Transactions);
   return result;
 };

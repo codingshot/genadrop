@@ -68,9 +68,9 @@ const Explore = () => {
   };
 
   const getAllCollectionChains = async () => {
-    const nearCollection = await getNearCollection(collectionName);
-    if (nearCollection.length) {
-      return nearCollection;
+    const result = await getNearCollection(collectionName);
+    if (result.length) {
+      return result;
     }
     return !auroraCollections && !polygonCollections && !celoCollections
       ? null
