@@ -154,6 +154,72 @@ export const GET_GRAPH_COLLECTION = gql`
   }
 `;
 
+export const GET_NEAR_COLLECTION = gql`
+  query myQuery {
+    Collection_by_pk(id: $id) {
+      id
+      description
+      name
+      creator
+      created_at
+      Nfts {
+        chain
+        id
+        isListed
+        isSold
+        isSoulBound
+        owner
+        price
+        tokenIPFSPath
+        createdAtTimestamp
+        tokenId
+        Transactions {
+          from
+          id
+          price
+          to
+          txDate
+          txId
+          type
+        }
+      }
+    }
+  }
+`;
+
+export const GET_NEAR_COLLECTIONS = gql`
+  query MyQuery {
+    Collection {
+      id
+      description
+      name
+      creator
+      created_at
+      Nfts {
+        chain
+        id
+        isListed
+        isSold
+        isSoulBound
+        owner
+        price
+        tokenIPFSPath
+        createdAtTimestamp
+        tokenId
+        Transactions {
+          from
+          id
+          price
+          to
+          txDate
+          txId
+          type
+        }
+      }
+    }
+  }
+`;
+
 export const GET_USER_NFT = gql`
   query ($id: ID) {
     user(id: $id) {

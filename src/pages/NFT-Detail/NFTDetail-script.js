@@ -1,16 +1,15 @@
 import { readNftTransaction, readUserProfile } from "../../utils/firebase";
-// import axios from "axios";
-import { getCeloGraphNft, getGraphCollection, getTransactions } from "../../utils";
+import { getCeloGraphNft, getGraphCollection, getNearNftDetailTransaction, getTransactions } from "../../utils";
 import {
   arbitrumUserData,
   auroraUserData,
   avaxUsersNfts,
   celoUserData,
-  getAllNearNfts,
   nearUserData,
   polygonUserData,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import supportedChains from "../../utils/supportedChains";
+import { getCollectionNft, getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
 
 export const getAlgoData = async ({ algoProps }) => {
   const { singleAlgoNfts, activeCollection, params, algoCollections } = algoProps;
@@ -57,6 +56,19 @@ export const getGraphData = async ({ graphProps }) => {
 
   if (collectionName) {
     let graphCollections = [];
+    if (nftId.includes("dev-1679101466048")) {
+      const nearGraphNft = await getCollectionNft(nftId);
+      if (nearGraphNft.length) {
+        const nearCollectionNft = await getNearCollection(collectionName);
+        const nearTransactionHistory = await getNearNftDetailTransaction(nearCollectionNft[0]?.transactions);
+        return {
+          nftDetails: nearGraphNft[0],
+          collection: nearCollectionNft,
+          _1of1: [],
+          transactionHistory: nearTransactionHistory,
+        };
+      }
+    }
     graphCollections = [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
     // filtering to get the unqiue collection
     let collection = graphCollections.find((col) => col.Id === collectionName);

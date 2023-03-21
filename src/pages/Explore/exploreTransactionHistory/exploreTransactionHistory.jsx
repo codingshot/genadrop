@@ -20,6 +20,7 @@ import {
   polygonCollectionTransactions,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 import NotFound from "../../../components/not-found/notFound";
+import { getCollectionTransactions, getNearCollection } from "../../../renderless/fetch-data/fetchNearCollectionData";
 
 const ExploreTransactionHistory = ({ collectionId, chain }) => {
   const [state, setState] = useState({
@@ -62,6 +63,9 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
           break;
         case "Polygon":
           data = await polygonCollectionTransactions(collectionId);
+          break;
+        case "Near":
+          data = await getCollectionTransactions(collectionId);
           break;
         default:
           handleSetState({ isAlgoChain: true });

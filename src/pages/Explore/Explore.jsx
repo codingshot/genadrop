@@ -16,6 +16,8 @@ import { setActiveCollection } from "../../gen-state/gen.actions";
 import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
 import Items from "./items/items";
 import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
+import { getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
+import supportedChains from "../../utils/supportedChains";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -66,7 +68,11 @@ const Explore = () => {
     handleSetState({ headerHeight: res });
   };
 
-  const getAllCollectionChains = () => {
+  const getAllCollectionChains = async () => {
+    const result = await getNearCollection(collectionName);
+    if (result.length) {
+      return result;
+    }
     return !auroraCollections && !polygonCollections && !celoCollections
       ? null
       : [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
@@ -92,7 +98,19 @@ const Explore = () => {
 
   useEffect(() => {
     (async function getGraphResult() {
-      const allCollection = getAllCollectionChains();
+      const allCollection = await getAllCollectionChains();
+      if (supportedChains[allCollection[0]?.chain]?.chain === "Near") {
+        handleSetState({
+          collection: {
+            ...allCollection[0],
+            owner: allCollection[0]?.owner,
+            price: allCollection[0]?.price,
+          },
+          collectionId: allCollection[0]?.Id,
+          NFTCollection: allCollection,
+          loadedChain: allCollection[0]?.chain,
+        });
+      }
       const NFTCollection = allCollection?.filter((col) => col?.Id === collectionName);
       if (NFTCollection?.length) {
         const result = await getGraphCollection(NFTCollection[0].nfts, NFTCollection[0]);

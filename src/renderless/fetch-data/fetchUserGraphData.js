@@ -11,6 +11,8 @@ import {
   GET_CELO_SOUL_BOUND_NFTS,
   GET_GRAPH_COLLECTIONS,
   GET_GRAPH_NFT,
+  GET_NEAR_COLLECTION,
+  GET_NEAR_COLLECTIONS,
   GET_NEAR_NFT,
   GET_NEAR_SINGLE_NFTS,
   GET_NEAR_USER_NFT,
@@ -33,6 +35,8 @@ import {
   getNftCollections,
   getSingleNfts,
   getNearTransactions,
+  getNearCollections,
+  fetchNearCollection,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
@@ -41,6 +45,7 @@ import {
   avalancheClient,
   celoClient,
   nearClient,
+  nearCollectionClient,
   polygonClient,
 } from "../../utils/graphqlClient";
 

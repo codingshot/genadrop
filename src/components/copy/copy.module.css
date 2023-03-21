@@ -12,6 +12,7 @@
 .point {
   font-size: 0.7em;
   display: flex;
+  margin-left: 5px;
   align-items: center;
   justify-content: flex-start;
 }
