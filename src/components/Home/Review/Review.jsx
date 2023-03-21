@@ -42,7 +42,6 @@ const Review = () => {
         },
       })
       .then((data) => {
-        console.log("XXX", data);
         let tweets = data.data;
         const attachments = {};
         const users = {};

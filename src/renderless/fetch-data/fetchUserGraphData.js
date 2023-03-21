@@ -11,6 +11,8 @@ import {
   GET_CELO_SOUL_BOUND_NFTS,
   GET_GRAPH_COLLECTIONS,
   GET_GRAPH_NFT,
+  GET_NEAR_COLLECTION,
+  GET_NEAR_COLLECTIONS,
   GET_NEAR_NFT,
   GET_NEAR_SINGLE_NFTS,
   GET_NEAR_USER_NFT,
@@ -33,6 +35,8 @@ import {
   getNftCollections,
   getSingleNfts,
   getNearTransactions,
+  getNearCollections,
+  fetchNearCollection,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
@@ -41,6 +45,7 @@ import {
   avalancheClient,
   celoClient,
   nearClient,
+  nearCollectionClient,
   polygonClient,
 } from "../../utils/graphqlClient";
 
@@ -214,7 +219,7 @@ export const getAuroraMintedNfts = async (address) => {
     process.env.REACT_APP_ENV_STAGING === "true"
       ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS)
       : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS);
-  
+
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
   const auroraMintedNfts = response?.filter(
     (NFTS) => !NFTS?.sold && (NFTS?.collectionId === auroraSoulBoundAddress || NFTS?.collectionId === filterAddress)
