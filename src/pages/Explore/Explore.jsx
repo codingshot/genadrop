@@ -17,6 +17,7 @@ import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
 import Items from "./items/items";
 import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
 import { getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
+import supportedChains from "../../utils/supportedChains";
 
 const Explore = () => {
   const [state, setState] = useState({
@@ -98,7 +99,7 @@ const Explore = () => {
   useEffect(() => {
     (async function getGraphResult() {
       const allCollection = await getAllCollectionChains();
-      if (allCollection[0]?.chain === 1112) {
+      if (supportedChains[allCollection[0]?.chain]?.chain === "Near") {
         handleSetState({
           collection: {
             ...allCollection[0],

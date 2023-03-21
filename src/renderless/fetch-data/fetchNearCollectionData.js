@@ -88,12 +88,12 @@ export const getAllNearCollections = async () => {
   return result;
 };
 
-export const getUserNearCollection = async () => {
+export const getUserNearCollection = async (userId) => {
   const { data, error } = await nearCollectionClient
     .query(
       gql`
         query MyQuery {
-          User_by_pk(id: "0xprometheus.testnet") {
+          User_by_pk(id: "${userId}") {
             Collections {
               created_at
               creator
