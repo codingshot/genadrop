@@ -56,7 +56,7 @@ export const getGraphData = async ({ graphProps }) => {
 
   if (collectionName) {
     let graphCollections = [];
-    if (nftId.endsWith("dev-1679101466048-37677895607366d2908")) {
+    if (nftId.includes("dev-1679101466048")) {
       const nearGraphNft = await getCollectionNft(nftId);
       if (nearGraphNft.length) {
         const nearCollectionNft = await getNearCollection(collectionName);

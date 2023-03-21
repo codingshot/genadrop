@@ -30,6 +30,7 @@ import {
   setCurrentPlan,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
+import moment from "moment";
 
 const PRICE_CONVERSION_VALUE = 0.000000000000000001;
 const NEAR_PRICE_CONVERSION_VALUE = 0.0000000000000000000000001;
@@ -112,7 +113,9 @@ export const fetchNearCollection = async (nfts, collection) => {
   const nftArr = [];
   if (nfts) {
     for (let i = 0; i < nfts?.length; i++) {
-      const { data } = await axios.get(nfts[i].tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+      const { data } = await axios.get(
+        nfts[i].tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+      );
       try {
         const nftObj = {};
         nftObj.collection_name = collection?.name;
@@ -126,7 +129,7 @@ export const fetchNearCollection = async (nfts, collection) => {
         nftObj.ipfs_data = data;
         nftObj.name = data.name;
         nftObj.transactions = nfts[i]?.Transactions;
-        nftObj.image_url = data.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        nftObj.image_url = data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
         nftArr.push(nftObj);
         window.localStorage.activeCollection = JSON.stringify({ ...nftObj });
       } catch (error) {
@@ -144,9 +147,9 @@ export const getNearCollections = async (collections) => {
       try {
         const collectionObj = {};
         const { data } = await axios.get(
-          collection?.Nfts[0]?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
+          collection?.Nfts[0]?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
         );
-        collectionObj.image_url = data?.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+        collectionObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
         const getPrice = collection?.Nfts.map((col) => col.price).reduce((a, b) => (a < b ? a : b));
         collectionObj.price = getPrice ? utils.format.formatNearAmount(getPrice.toString()) : 0;
         collectionObj.name = collection?.name;
@@ -155,7 +158,8 @@ export const getNearCollections = async (collections) => {
         collectionObj.chain = collection?.Nfts[0]?.chain;
         collectionObj.nfts = collection?.Nfts;
         collectionObj.description = collection?.description;
-        collectionObj.createdAt = new Date(Number(collection?.created_at));
+        const newDate = moment(collection?.created_at).format();
+        collectionObj.createdAt = new Date(newDate);
         collectionObj.transactions = collection?.Nfts.Transactions;
         resolve(collectionObj);
       } catch (error) {
@@ -658,7 +662,7 @@ export const getNearNft = async (collection, mainnet) => {
 };
 
 export const getCollectionNearNft = async (nft) => {
-  const { data } = await axios.get(nft?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+  const { data } = await axios.get(nft?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/"));
   const nftObj = [];
   try {
     const nftArr = {};
