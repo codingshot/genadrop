@@ -43,16 +43,8 @@ const SingleNftCollection = () => {
     searchChain: "All Chains",
   });
 
-  const {
-    collections,
-    paginate,
-    currentPage,
-    currentPageValue,
-    load,
-    searchChain,
-    filteredCollection,
-    notFound,
-  } = state;
+  const { collections, paginate, currentPage, currentPageValue, load, searchChain, filteredCollection, notFound } =
+    state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));

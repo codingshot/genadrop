@@ -25,7 +25,7 @@ async function generateGif(handleSetState, dispatch, imgList, videoDuration) {
       duration: videoDuration / 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
-      }
+      },
     })
     .then((res) => {
       const gifFile = getFileFromBytes(res.data.data, "Image.gif", "image/gif");

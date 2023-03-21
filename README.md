@@ -261,11 +261,12 @@ Thank you so much for your continued support. Would love to pilot some drops as 
 - ### MAINNET
   - Single minter address - https://explorer.mainnet.near.org/accounts/genadrop-contract.nftgen.near
 
-
 ### Listing to external markets through Genadrop
-  listing to https://www.tradeport.xyz/ and http://fewfar.com/ marketplaces; there is a fee of 0.01 near each for storage deposit on the respective markets.
-  and another 0.01 attachement for gas fees, there will be a refund of excess gas attachement.
-  - WalkThrough Video - https://www.loom.com/share/b2fbf24f8de04a57be9052032ecfba41
+
+listing to https://www.tradeport.xyz/ and http://fewfar.com/ marketplaces; there is a fee of 0.01 near each for storage deposit on the respective markets.
+and another 0.01 attachement for gas fees, there will be a refund of excess gas attachement.
+
+- WalkThrough Video - https://www.loom.com/share/b2fbf24f8de04a57be9052032ecfba41
 
 <!-- DEPLOYING CONTRACTS -->
 

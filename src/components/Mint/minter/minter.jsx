@@ -412,7 +412,7 @@ const Minter = () => {
     handleSetState({ mentions: false, attributes: newAttributes });
   };
 
-  const setMint = async () => {
+  const onMint = async () => {
     if (showLocation && location !== "") {
       handleSetState({
         attributes: {
@@ -1372,7 +1372,7 @@ const Minter = () => {
                 </section> */}
 
                 <section className={classes.mintButtonWrapper}>
-                  <button type="button" onClick={setMint} className={classes.mintBtn}>
+                  <button type="button" onClick={onMint} className={classes.mintBtn}>
                     Mint
                   </button>
                   <button type="button" onClick={handleCancel} className={classes.cancelBtn}>

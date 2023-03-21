@@ -1,10 +1,9 @@
 ---
 name: Feature request
 about: Create an issue for a new feature to be implemented
-title: 'Feature: '
+title: "Feature: "
 labels: frontend, new feature ✨
-assignees: ''
-
+assignees: ""
 ---
 
 **🙁 Is your feature request related to a problem? Please describe.**
