@@ -17,14 +17,8 @@ import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterD
 import Search from "../../components/Search/Search";
 
 const Collections = () => {
-  const {
-    auroraCollections,
-    algoCollections,
-    polygonCollections,
-    celoCollections,
-    mainnet,
-    searchContainer,
-  } = useContext(GenContext);
+  const { auroraCollections, algoCollections, polygonCollections, celoCollections, mainnet, searchContainer } =
+    useContext(GenContext);
   const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
 
   const mountRef = useRef(0);
