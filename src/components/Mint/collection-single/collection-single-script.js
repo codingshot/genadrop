@@ -17,28 +17,30 @@ export const extractZip = async (zip) => {
 
   const collection = [];
   let metadata = null;
-  Object.keys(unzipped.files).forEach((file) => {
-    let blob = null;
-    let string = null;
-    const uint8array = unzipped.files[file]._data.compressedContent;
-    const fileType = file.split(".")[1]?.toLowerCase();
-    if (fileType === "json") {
-      string = new TextDecoder().decode(uint8array);
-      blob = new Blob([new Uint8Array(uint8array).buffer], {
-        type: "application/json",
-      });
-      metadata = JSON.parse(string);
-    } else {
-      string = new TextDecoder().decode(uint8array);
-      blob = new Blob([new Uint8Array(uint8array).buffer], {
-        type: `image/${fileType}`,
-      });
-      const imageFile = new File([blob], file, {
-        type: `image/${fileType}`,
-      });
-      collection.push(imageFile);
-    }
-  });
+  await Promise.all(
+    Object.keys(unzipped.files).map(async (file) => {
+      const fileType = file.split(".")[1]?.toLowerCase();
+      if (fileType === "json") {
+        const content = await unzipped.files[file].async("string");
+        // string = new TextDecoder().decode(uint8array);
+        // blob = new Blob([new Uint8Array(uint8array).buffer], {
+        //   type: "application/json",
+        // });
+        metadata = JSON.parse(content);
+      } else {
+        // string = new TextDecoder().decode(uint8array);
+        const content = await unzipped.files[file].async("arraybuffer");
+        const blob = new Blob([content], {
+          type: `image/${fileType}`,
+        });
+        const imageFile = new File([blob], file, {
+          type: `image/${fileType}`,
+        });
+        collection.push(imageFile);
+      }
+    })
+  );
+
   return { metadata, collection };
 };
 
@@ -71,7 +73,9 @@ export const updateZip = async (zip, name, handleSetState) => {
   unzipped.files[Object.keys(unzipped.files)[1]] = selectedImage;
 
   // updating metaData
-  let string = new TextDecoder().decode(unzipped.files["metadata.json"]._data.compressedContent);
+  let string = await unzipped.files["metadata.json"].async("string");
+  // console.log("the outcome", string)
+  // let string = new TextDecoder().decode(unzipped.files["metadata.json"]._data.compressedContent);
   const metadata = JSON.parse(string);
   const index = metadata.findIndex((object) => {
     return object.image === name;
