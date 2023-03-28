@@ -904,7 +904,6 @@ const Minter = () => {
                       Title <span className={classes.required}>*</span>
                     </label>
                     <input
-                      style={zip ? { pointerEvents: "none" } : {}}
                       type="text"
                       value={fileName}
                       onChange={(event) => {
