@@ -127,7 +127,7 @@ export const fetchNearCollection = async (nfts, collection) => {
         nftObj.sold = nfts[i].isSold;
         nftObj.nfts = nfts;
         nftObj.ipfs_data = data;
-        nftObj.name = data.name;
+        nftObj.name = collection?.name;
         nftObj.transactions = nfts[i]?.Transactions;
         nftObj.image_url = data.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
         nftArr.push(nftObj);
