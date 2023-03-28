@@ -1,41 +1,56 @@
 import * as PushAPI from "@pushprotocol/restapi";
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import { ethers } from "ethers";
 import classes from "./pushNotification.module.css";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { GenContext } from "../../gen-state/gen.context";
+import { setNotification } from "../../gen-state/gen.actions";
 
 const PushNotification = ({ toggleNotification }) => {
   const [notifs, setNotifs] = useState();
-  const { connector, account } = useContext(GenContext);
+  const { connector, account, dispatch } = useContext(GenContext);
 
   const subscribeToChannel = async () => {
-    console.log(connector.getSigner());
     const _signer = connector.getSigner();
-    // console.log(provider.getSigner());
     try {
       await PushAPI.channels.subscribe({
         signer: _signer,
-        channelAddress: "0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
-        userAddress: `${account}`,
+        channelAddress: "eip155:80001:0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
+        userAddress: `eip155:80001:${account}`,
         onSuccess: () => {
-          console.log("opted in");
+          dispatch(
+            setNotification({
+              type: "success",
+              message: "Successfully subscribed to channel",
+            })
+          );
         },
         onError: () => {
-          console.log("couldn't opted in");
+          dispatch(
+            setNotification({
+              type: "warning",
+              message: "Unsuccessful, Something went wrong",
+            })
+          );
         },
         env: "staging",
       });
     } catch (error) {
-      console.log(error);
+      dispatch(
+        setNotification({
+          type: "warning",
+          message: "Unsuccessful, Something went wrong",
+        })
+      );
     }
   };
 
   const loadNotifications = useCallback(async () => {
     try {
-      const feeds = await PushAPI.user.getFeeds({
-        user: "0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
-        limit: 50,
+      const feeds = await PushAPI.channels._getSubscribers({
+        channel: "0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
+
+        // user: "0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
+        // // limit: 50,
         env: "staging",
       });
       console.log(feeds);
@@ -47,7 +62,7 @@ const PushNotification = ({ toggleNotification }) => {
 
   useEffect(() => {
     loadNotifications();
-  }, [loadNotifications]);
+  }, []);
   const handleClose = () => toggleNotification({ openNotification: false });
 
   return (

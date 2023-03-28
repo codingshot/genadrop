@@ -37,7 +37,7 @@
     width: 80%;
     height: 50px;
     color: var(--default);
-    background: var(--main-light);
+    background: var(--main);
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;

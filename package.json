@@ -29,7 +29,7 @@
     "@openzeppelin/hardhat-upgrades": "^1.20.0",
     "@paypal/react-paypal-js": "^7.8.1",
     "@pinata/sdk": "^1.1.23",
-    "@pushprotocol/restapi": "0.1.1",
+    "@pushprotocol/restapi": "0.1.0",
     "@splidejs/react-splide": "0.7.5",
     "@splidejs/splide": "4.0.7",
     "@splidejs/splide-extension-auto-scroll": "0.4.2",

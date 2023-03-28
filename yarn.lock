@@ -3434,10 +3434,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@pushprotocol/restapi@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@pushprotocol/restapi/-/restapi-0.1.1.tgz#c95cf8530a7eadc81d1a4598c83771fb19eb056c"
-  integrity sha512-Am95rcEu6p/7XbvkuiBr8SlQ9/or9q1FN5Zu7LsScBPv6vp6cKF5MeQFebdZcKvvKru9k/HkxtIeNVQxFjQr4Q==
+"@pushprotocol/restapi@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@pushprotocol/restapi/-/restapi-0.1.0.tgz#cac60c241d20c63005f00ade4c198a30a556a957"
+  integrity sha512-3os12Ht1+DH0rfWxivL3Yv6fujF8k5ezLlLgzXJCm7f8IC0H/qJlTP0FAhPmp19/BhskbWUi7705w2tkpN8fOw==
   dependencies:
     axios "^0.27.2"
     tslib "^2.3.0"
