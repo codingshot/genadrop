@@ -2324,13 +2324,12 @@ export async function mintToNear(polyProps) {
   let response;
 
   if (window?.near?.accountId) {
-    console.log("first option??")
     response = await window?.near?.request({
       receiverId: contractId,
       transactions: [
         {
           signerId: accountId,
-          receiverId: "dev-1679101466048-37677895607366",
+          receiverId: "genadorp.testnet",
           actions: [
             {
               methodName: "create_collection",
@@ -2350,7 +2349,7 @@ export async function mintToNear(polyProps) {
         },
         {
           signerId: accountId,
-          receiverId: "dev-1679101466048-37677895607366",
+          receiverId: "genadorp.testnet",
           // use map to handle cases of 1 market or more
           actions: [
             {
@@ -2379,7 +2378,7 @@ export async function mintToNear(polyProps) {
       transactions: [
         {
           signerId: accountId,
-          receiverId: "dev-1679101466048-37677895607366",
+          receiverId: "genadorp.testnet",
           actions: [
             {
               type: "FunctionCall",
@@ -2402,7 +2401,7 @@ export async function mintToNear(polyProps) {
         },
         {
           signerId: accountId,
-          receiverId: `${collectioName}.dev-1679101466048-37677895607366`,
+          receiverId: `${collectioName}.genadorp.testnet`,
           // use map to handle cases of 1 market or more
           actions: [
             {
