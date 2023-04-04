@@ -80,7 +80,7 @@ export const arbitrumUserData = async (address) => {
   return [arbitrumResult[0], trHistory];
 };
 
-export const avaxUsersNfts = async (address) => {
+export const getAvalancheNft = async (address) => {
   const { data: avaxData, error: avaxError } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
   if (avaxError) return;
   let trHistory;
@@ -93,6 +93,22 @@ export const avaxUsersNfts = async (address) => {
     });
   }
   return [avaxResult[0], trHistory];
+};
+
+export const getFeaturedAvalancheNft = async (address) => {
+  const { data, error } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
+  if (error) return [];
+  const avaxData = await getGraphNft(data?.nft);
+  return avaxData;
+};
+
+export const getFeaturedPolygonNfts = async (address) => {
+  const { data: polygonData, error: polygonError } = await polygonClient
+    .query(GET_GRAPH_NFT, { id: address })
+    .toPromise();
+  if (polygonError) return [];
+  const avaxData = await getGraphNft(polygonData?.nft);
+  return avaxData;
 };
 
 export const nearUserData = async (address) => {

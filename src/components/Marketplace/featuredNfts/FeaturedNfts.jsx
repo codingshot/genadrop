@@ -7,18 +7,21 @@ import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
+import {
+  getAllAlgorandNfts,
+  getAllArbitrumNfts,
+  getAllAuroraNfts,
+  getAllAvalancheNfts,
+  getAllCeloNfts,
+  getAllNearNfts,
+  getAllPolygonNfts,
+  getAvalancheNft,
+  getFeaturedAvalancheNft,
+  getFeaturedPolygonNfts,
+} from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const FeautedNfts = () => {
-  const {
-    singleAuroraNfts,
-    singleAlgoNfts,
-    singleCeloNfts,
-    singlePolygonNfts,
-    singleNearNfts,
-    singleAvaxNfts,
-    mainnet,
-  } = useContext(GenContext);
-  const algoNFTs = Object.values(singleAlgoNfts);
+  const { mainnet, dispatch } = useContext(GenContext);
 
   const [state, setState] = useState({
     NFTs: [],
@@ -32,16 +35,6 @@ const FeautedNfts = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  function shuffle(array) {
-    for (let i = 0; i < 100; i += 1) {
-      for (let x = array.length - 1; x > 0; x -= 1) {
-        const j = Math.floor(Math.random() * (x + 1));
-        [array[x], array[j]] = [array[j], array[x]];
-      }
-    }
-    return array;
-  }
-
   const featuredNFTs = [
     "genadrop-contract.nftgen.near1664562603103",
     "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
@@ -53,25 +46,16 @@ const FeautedNfts = () => {
   ];
 
   useEffect(() => {
-    const nfts = [
-      ...(algoNFTs || []),
-      ...(singleAuroraNfts || []),
-      ...(singleNearNfts || []),
-      ...(singlePolygonNfts || []),
-      ...(singleCeloNfts || []),
-      ...(singleAvaxNfts || []),
-    ];
-
-    // nfts = nfts.filter((nft) => !featuredNFTs.includes(nft.Id));
-
-    // nfts = shuffle(nfts);
-    const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
-      featuredNFTs.includes(nft.Id)
-    );
-
-    if (mainnet) handleSetState({ NFTs: [...nfts.filter((e) => featuredNFTs.includes(e.Id))] });
-    else handleSetState({ NFTs: [...featuredNFT1, ...nfts] });
-  }, [singleAlgoNfts, singleAuroraNfts, singleNearNfts, singlePolygonNfts, singleCeloNfts, singleAvaxNfts]);
+    Promise.all([
+      getFeaturedAvalancheNft(featuredNFTs[1]),
+      getFeaturedAvalancheNft(featuredNFTs[3]),
+      getFeaturedAvalancheNft(featuredNFTs[4]),
+      getFeaturedAvalancheNft(featuredNFTs[5]),
+      getFeaturedPolygonNfts(featuredNFTs[6]),
+    ]).then((data) => {
+      if (!mainnet) handleSetState({ NFTs: [...data.flat()] });
+    });
+  }, []);
 
   useEffect(() => {
     if (NFTs.length > 0) handleSetState({ ready: true });

@@ -571,6 +571,25 @@ export const GET_NEAR_SINGLE_NFTS = gql`
   }
 `;
 
+export const GET_FEATURED_SINGLE_NFT = gql`
+  query MyQuery {
+    nft(id: $id) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
 export const GET_AVAX_SINGLE_NFTS = gql`
   query MyQuery {
     nfts {

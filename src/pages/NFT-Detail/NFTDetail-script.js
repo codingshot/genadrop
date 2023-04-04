@@ -3,7 +3,7 @@ import { getCeloGraphNft, getGraphCollection, getNearNftDetailTransaction, getTr
 import {
   arbitrumUserData,
   auroraUserData,
-  avaxUsersNfts,
+  getAvalancheNft,
   celoUserData,
   nearUserData,
   polygonUserData,
@@ -134,7 +134,7 @@ export const getGraphData = async ({ graphProps }) => {
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Avalanche") {
-        const [avaxData, trHistory] = await avaxUsersNfts(nftId);
+        const [avaxData, trHistory] = await getAvalancheNft(nftId);
         // if (!polygonData) return history.goBack();
         return {
           nftDetails: avaxData,
