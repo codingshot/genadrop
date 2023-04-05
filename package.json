@@ -110,7 +110,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "build": "GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": "react-app-rewired test",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject",
@@ -156,8 +156,10 @@
     "eslint-plugin-react-hooks": "4.3.0",
     "ethereum-waffle": "^3.4.4",
     "hardhat": "^2.9.9",
+    "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.0",
     "prettier": "2.6.2",
-    "react-app-rewire-babel-loader": "^0.1.1"
+    "react-app-rewire-babel-loader": "^0.1.1",
+    "webpack": "4.44.2"
   }
 }
