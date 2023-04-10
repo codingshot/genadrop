@@ -1,6 +1,8 @@
 import { providers, Contract, utils } from "ethers";
 import { setPriceFeed } from "../gen-state/gen.actions";
 
+import { getEnv } from "../env";
+
 const provider = new providers.JsonRpcProvider(getEnv('REACT_APP_ALCHEMY_URL'));
 const aggregatorV3InterfaceABI = [
   {

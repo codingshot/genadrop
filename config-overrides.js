@@ -20,6 +20,15 @@ module.exports = function override(config, env) {
   config.plugins.push(
     new WebpackObfuscator({
       rotateStringArray: true,
+      obfuscationSeed: CryptoJS.enc.Utf8.parse(encryptionKey + Math.random().toString(36).substring(2, 15)),
+      shuffleStringArray: true,
+      simplify: true,
+      splitStrings: false,
+      splitStringsChunkLength: 10,
+      stringArrayIndexShift: true,
+      stringArrayWrappersCount: 1,
+      stringArrayWrappersChainedCalls: true,
+      stringArrayWrappersType: 'function'
     })
   );
 
