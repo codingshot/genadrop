@@ -37,6 +37,8 @@ import { GenContext } from "../../gen-state/gen.context";
 import DesktopPopup from "./desktopPopup";
 import MobilePopup from "./mobilePopup";
 
+import { getEnv } from "../../../env";
+
 // unused for now
 
 // import { async } from "regenerator-runtime";
@@ -69,10 +71,10 @@ const WalletPopup = ({ handleSetState }) => {
     }
     if (supportedChains[chainId]?.chain === "Near") {
       // NEAR Connect
-      const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+      const network = getEnv('REACT_APP_ENV_STAGING') === "true" ? "testnet" : "mainnet";
       const nearConfig = getConfig(`${network}`);
       const connectedToNearMainnet = {};
-      if (process.env.REACT_APP_ENV_STAGING === "true") {
+      if (getEnv('REACT_APP_ENV_STAGING') === "true") {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
@@ -96,7 +98,7 @@ const WalletPopup = ({ handleSetState }) => {
       });
       const description = "Please select a wallet to sign in..";
       const contract =
-        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop-contract.nftgen.near";
+        getEnv('REACT_APP_ENV_STAGING') === "true" ? "genadrop-test.mpadev.testnet" : "genadrop-contract.nftgen.near";
 
       const modal = setupModal(walletSelector, { contractId: contract, description });
       modal.show();

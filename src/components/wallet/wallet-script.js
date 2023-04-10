@@ -25,6 +25,8 @@ import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
 import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import "@near-wallet-selector/modal-ui/styles.css";
 
+import { getEnv } from "../../../env";
+
 // components
 import * as WS from "./wallet-script";
 import {
@@ -121,10 +123,10 @@ export const initializeConnection = async (walletProps) => {
     search.get("account_id") ||
     window.localStorage.getItem("near_wallet") === "connected_to_near"
   ) {
-    const network = process.env.REACT_APP_ENV_STAGING === "true" ? "testnet" : "mainnet";
+    const network = getEnv('REACT_APP_ENV_STAGING') === "true" ? "testnet" : "mainnet";
     const nearConfig = getConfig(network);
     const connectedToNearMainnet = {};
-    if (process.env.REACT_APP_ENV_STAGING === "true") {
+    if (getEnv('REACT_APP_ENV_STAGING') === "true") {
       connectedToNearMainnet.modules = [
         setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
         setupNearWallet({ iconUrl: NearIconUrl }),
@@ -149,7 +151,7 @@ export const initializeConnection = async (walletProps) => {
 
     const isSignedIn = walletSelector.isSignedIn();
     window.selector = walletSelector;
-    const connectedChain = process.env.REACT_APP_ENV_STAGING === "true" ? 1111 : 1112;
+    const connectedChain = getEnv('REACT_APP_ENV_STAGING') === "true" ? 1111 : 1112;
     console.log("signed..");
     if (isSignedIn) {
       window.localStorage.setItem("near_wallet", "connected_to_near");
@@ -190,8 +192,8 @@ export const initializeConnection = async (walletProps) => {
 };
 
 export const setNetworkType = ({ dispatch, handleSetState }) => {
-  dispatch(setMainnet(process.env.REACT_APP_ENV_STAGING === "false"));
-  handleSetState({ network: process.env.REACT_APP_ENV_STAGING === "false" ? "mainnet" : "testnet" });
+  dispatch(setMainnet(getEnv('REACT_APP_ENV_STAGING') === "false"));
+  handleSetState({ network: getEnv('REACT_APP_ENV_STAGING') === "false" ? "mainnet" : "testnet" });
 };
 
 export const connectWithQRCode = async ({ walletConnectProvider, dispatch, supportedChains }) => {

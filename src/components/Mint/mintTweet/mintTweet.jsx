@@ -10,6 +10,8 @@ import classes from "./mintTweet.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 
+import { getEnv } from '../../../../env';
+
 const MintTweet = () => {
   const [state, setState] = useState({
     tweetLink: "",
@@ -31,7 +33,7 @@ const MintTweet = () => {
 
     axios
       .get(
-        `${process.env.REACT_APP_TWITTER_BACKEND}?url=https://api.twitter.com/2/tweets/${id}?tweet.fields=attachments,author_id,created_at,entities%26expansions=attachments.media_keys,author_id%26media.fields=alt_text,duration_ms,media_key,preview_image_url,type,url,variants%26user.fields=name,profile_image_url,username`
+        `${getEnv('REACT_APP_TWITTER_BACKEND')}?url=https://api.twitter.com/2/tweets/${id}?tweet.fields=attachments,author_id,created_at,entities%26expansions=attachments.media_keys,author_id%26media.fields=alt_text,duration_ms,media_key,preview_image_url,type,url,variants%26user.fields=name,profile_image_url,username`
       )
       .then((data) => {
         let tweets = data.data;

@@ -60,6 +60,8 @@ import {
   parsePolygonSingle,
 } from "./fetchData-script";
 
+import { getEnv } from "../../../env";
+
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
   useEffect(() => {
@@ -109,9 +111,9 @@ const FetchData = () => {
       }
       const result = await getGraphCollections(data?.collections);
       const filterAddress =
-        process.env.REACT_APP_ENV_STAGING === "true"
-          ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
-          : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
+        getEnv('REACT_APP_ENV_STAGING') === "true"
+          ? ethers.utils.hexlify(getEnv('REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS'))
+          : ethers.utils.hexlify(getEnv('REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS'));
       const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
       if (res?.length) {
         dispatch(setAuroraCollections(res));
@@ -165,9 +167,9 @@ const FetchData = () => {
       }
       const result = await getGraphCollections(data?.collections);
       const filterAddress =
-        process.env.REACT_APP_ENV_STAGING === "true"
-          ? ethers.utils.hexlify(process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS)
-          : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
+        getEnv('REACT_APP_ENV_STAGING') === "true"
+          ? ethers.utils.hexlify(getEnv('REACT_APP_POLY_TESTNET_SINGLE_ADDRESS'))
+          : ethers.utils.hexlify(getEnv('REACT_APP_GENA_MAINNET_SINGLE_ADDRESS'));
       const res = result?.filter((data) => data?.Id !== filterAddress);
       if (res?.length) {
         dispatch(setPolygonCollections(res));
@@ -248,9 +250,9 @@ const FetchData = () => {
       }
       const result = await getGraphCollections(data?.collections);
       const filterAddress =
-        process.env.REACT_APP_ENV_STAGING === "true"
-          ? ethers.utils.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
-          : ethers.utils.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
+        getEnv('REACT_APP_ENV_STAGING') === "true"
+          ? ethers.utils.hexlify(getEnv('REACT_APP_CELO_TESTNET_SINGLE_ADDRESS'))
+          : ethers.utils.hexlify(getEnv('REACT_APP_CELO_MAINNET_SINGLE_ADDRESS'));
       const res = result.filter((data) => data?.Id !== filterAddress);
       if (res?.length) {
         dispatch(setCeloCollections(res));

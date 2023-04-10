@@ -15,6 +15,8 @@ import {
   deleteRule,
 } from "./gen.utils";
 
+import { getEnv } from "../../env";
+
 export const INITIAL_STATE = {
   layers: [],
   preview: [],
@@ -55,7 +57,7 @@ export const INITIAL_STATE = {
   loaderMessage: "",
   didMount: false,
   graphCollections: [],
-  mainnet: process.env.REACT_APP_ENV_STAGING === "false",
+  mainnet: getEnv('REACT_APP_ENV_STAGING') === "false",
   prompt: null,
   promptAsset: null,
   promptLayer: null,

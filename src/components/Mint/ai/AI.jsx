@@ -21,6 +21,8 @@ import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
 import { ReactComponent as PlusIcon } from "../../../assets/ai-mint-plus.svg";
 import { ReactComponent as PreviewImageIcon } from "../../../assets/ai-preview.svg";
 
+import { getEnv } from '../../../../env';
+
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
   // const [imageDimension, setImageDimension] = useState(256);
@@ -87,7 +89,7 @@ const AI = () => {
         dispatch(setOverlay(true));
 
         await fetch(
-          `${process.env.REACT_APP_TWITTER_BACKEND}genImage`,
+          `${getEnv('REACT_APP_TWITTER_BACKEND')}genImage`,
           getReqOptions({
             prompt: promptText,
             n: 1,
@@ -107,7 +109,7 @@ const AI = () => {
             setImageUrl(data.data.data[0]?.url);
             dispatch(setNotification({ message: "Preparing your image", type: "success" }));
             fetch(
-              `${process.env.REACT_APP_TWITTER_BACKEND}singleImage`,
+              `${getEnv('REACT_APP_TWITTER_BACKEND')}singleImage`,
               getReqOptions({
                 uri: data?.data?.data[0].url,
               })

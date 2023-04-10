@@ -7,6 +7,7 @@ import linkIconAccent from "../../../assets/icon-link-accent.svg";
 import linkIconWhite from "../../../assets/icon-link-white.svg";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
+import { getEnv } from '../../../../env';
 
 export const NearErrorPop = (props) => {
   const { handleSetState, popupProps } = props;
@@ -64,7 +65,7 @@ export const NearSuccessPopup = (props) => {
   };
 
   const nearExplorerUrl =
-    process.env.REACT_APP_ENV_STAGING === "true"
+    getEnv('REACT_APP_ENV_STAGING') === "true"
       ? `https://explorer.testnet.near.org/?query=${url}`
       : `https://explorer.near.org/transactions/${url}`;
 

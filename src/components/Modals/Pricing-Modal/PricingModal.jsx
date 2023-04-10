@@ -10,11 +10,13 @@ import { saveUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setOverlay } from "../../../gen-state/gen.actions";
 
+import { getEnv } from '../../../../env';
+
 let stripePromise;
 
 const getStripe = () => {
   if (!stripePromise) {
-    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_LIVE_PUBLIC_KEY);
+    stripePromise = loadStripe(getEnv('REACT_APP_STRIPE_LIVE_PUBLIC_KEY'));
   }
   return stripePromise;
 };
@@ -37,7 +39,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
   const [stripeError, setStripeError] = useState(null);
 
   const initialOptionsPaypal = {
-    "client-id": process.env.REACT_APP_PAYPAL_LIVE_CLIENT_ID,
+    "client-id": getEnv('REACT_APP_PAYPAL_LIVE_CLIENT_ID'),
     currency: "USD",
     intent: "capture",
   };

@@ -1,5 +1,7 @@
-const CONTRACT_NAME = process.env.CONTRACT_NAME;
-const MARKET_CONTRACT_NAME = process.env.MARKET_CONTRACT_NAME;
+import { getEnv } from "../../../env";
+
+const CONTRACT_NAME = getEnv('CONTRACT_NAME');
+const MARKET_CONTRACT_NAME = getEnv('MARKET_CONTRACT_NAME');
 
 function getConfig(env) {
   switch (env) {
@@ -38,7 +40,7 @@ function getConfig(env) {
       return {
         networkId: "local",
         nodeUrl: "http://localhost:3030",
-        keyPath: `${process.env.HOME}/.near/validator_key.json`,
+        keyPath: `${getEnv('HOME')}/.near/validator_key.json`,
         walletUrl: "http://localhost:4000/wallet",
         contractName: CONTRACT_NAME,
         marketContactName: MARKET_CONTRACT_NAME,
