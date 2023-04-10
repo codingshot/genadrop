@@ -1,6 +1,6 @@
 import { createClient } from "urql";
 
-import { getEnv } from "../../env";
+import { getEnv } from "../env";
 
 export const polygonClient = createClient({
   url:

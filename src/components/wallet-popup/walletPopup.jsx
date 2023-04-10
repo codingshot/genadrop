@@ -37,7 +37,7 @@ import { GenContext } from "../../gen-state/gen.context";
 import DesktopPopup from "./desktopPopup";
 import MobilePopup from "./mobilePopup";
 
-import { getEnv } from "../../../env";
+import { getEnv } from "../../env";
 
 // unused for now
 

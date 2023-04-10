@@ -1,4 +1,4 @@
-import { getEnv } from "../../../env";
+import { getEnv } from "../../env";
 
 const CONTRACT_NAME = getEnv('CONTRACT_NAME');
 const MARKET_CONTRACT_NAME = getEnv('MARKET_CONTRACT_NAME');
@@ -67,4 +67,4 @@ function getConfig(env) {
   }
 }
 
-module.exports = getConfig;
+export default getConfig;

@@ -16,7 +16,7 @@ import {
   polygonCollectionTransactions,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 
-import { getEnv } from "../../../../env";
+import { getEnv } from "../../../env";
 
 const ExploreTransactionHistory = ({ collectionId, data, chain, fromCollection }) => {
   const [state, setState] = useState({

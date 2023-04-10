@@ -18,7 +18,7 @@ import arbitrumChainIcon from "../assets/chainIcons/arbitrum.svg";
 import auroraChainIcon from "../assets/chainIcons/aurora.svg";
 import polygonChainIcon from "../assets/chainIcons/polygon.svg";
 
-import { getEnv } from "../../env";
+import { getEnv } from "../env";
 
 const supportedChains = {
   1111: {

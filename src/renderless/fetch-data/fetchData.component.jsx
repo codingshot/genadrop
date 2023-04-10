@@ -60,7 +60,7 @@ import {
   parsePolygonSingle,
 } from "./fetchData-script";
 
-import { getEnv } from "../../../env";
+import { getEnv } from "../../env";
 
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);

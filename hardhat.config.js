@@ -5,7 +5,7 @@ require("@openzeppelin/hardhat-upgrades");
 // require("hardhat-contract-sizer");
 // require("solidity-coverage");
 // require("hardhat-gas-reporter");
-import { getEnv } from './env';
+import { getEnv } from './src/env';
 
 console.log("ololo", getEnv('REACT_APP_CeloTest_URL'));
 module.exports = {

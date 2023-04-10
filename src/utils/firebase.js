@@ -3,7 +3,7 @@ import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
 import { doc, getDoc, query, where, getDocs, onSnapshot, collection } from "firebase/firestore";
 
-import { getEnv } from "../../env";
+import { getEnv } from "../env";
 
 // const {
 //   getDatabase,

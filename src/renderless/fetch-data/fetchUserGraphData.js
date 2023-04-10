@@ -44,7 +44,7 @@ import {
   polygonClient,
 } from "../../utils/graphqlClient";
 
-import { getEnv } from "../../../env";
+import { getEnv } from "../../env";
 
 const soulboundSingleFilterAddress = ethers.utils.hexlify(getEnv('REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS'));
 

@@ -7,7 +7,7 @@ import linkIconAccent from "../../../assets/icon-link-accent.svg";
 import linkIconWhite from "../../../assets/icon-link-white.svg";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
-import { getEnv } from '../../../../env';
+import { getEnv } from '../../../env';
 
 export const NearErrorPop = (props) => {
   const { handleSetState, popupProps } = props;

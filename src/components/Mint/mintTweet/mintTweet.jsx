@@ -10,7 +10,7 @@ import classes from "./mintTweet.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 
-import { getEnv } from '../../../../env';
+import { getEnv } from '../../../env';
 
 const MintTweet = () => {
   const [state, setState] = useState({

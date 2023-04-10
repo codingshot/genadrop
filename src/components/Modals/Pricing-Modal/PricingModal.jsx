@@ -10,7 +10,7 @@ import { saveUserData } from "../../../renderless/store-data/StoreDataLocal";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setOverlay } from "../../../gen-state/gen.actions";
 
-import { getEnv } from '../../../../env';
+import { getEnv } from '../../../env';
 
 let stripePromise;
 

@@ -21,7 +21,7 @@ import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
 import { ReactComponent as PlusIcon } from "../../../assets/ai-mint-plus.svg";
 import { ReactComponent as PreviewImageIcon } from "../../../assets/ai-preview.svg";
 
-import { getEnv } from '../../../../env';
+import { getEnv } from '../../../env';
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);

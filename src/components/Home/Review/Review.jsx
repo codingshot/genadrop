@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import classes from "./Review.module.css";
 import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
-import { getEnv } from '../../../../env';
+import { getEnv } from '../../../env';
 
 import displayShadow from "../../../assets/home-display-shadow.png";
 import { twitterAPIURL } from "./Reviews-Script";

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 import { ethers } from "ethers";
-import { getEnv } from "../../../env";
+import { getEnv } from "../../env";
 
 export const GET_GRAPH_COLLECTIONS = gql`
   query MyQuery {

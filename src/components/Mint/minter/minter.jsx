@@ -45,7 +45,7 @@ import IpfsImage from "../IpfsImage/IpfsImage";
 import QrReaderContainer from "../../../pages/NFT-Detail/ImageModal/ImageModal";
 import { useCallback } from "react";
 
-import { getEnv } from '../../../../env';
+import { getEnv } from '../../../env';
 
 const Minter = () => {
   const params = useParams();

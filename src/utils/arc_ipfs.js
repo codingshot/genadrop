@@ -7,7 +7,7 @@ import JSZip from "jszip";
 import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
 
-import { getEnv } from "../../env";
+import { getEnv } from "../env";
 
 const BN = require("bn.js");
 

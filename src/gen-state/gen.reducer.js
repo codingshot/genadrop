@@ -15,7 +15,7 @@ import {
   deleteRule,
 } from "./gen.utils";
 
-import { getEnv } from "../../env";
+import { getEnv } from "../env";
 
 export const INITIAL_STATE = {
   layers: [],

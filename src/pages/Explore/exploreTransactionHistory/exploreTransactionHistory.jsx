@@ -21,7 +21,7 @@ import {
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 import NotFound from "../../../components/not-found/notFound";
 
-import { getEnv } from "../../../../env";
+import { getEnv } from "../../../env";
 
 const ExploreTransactionHistory = ({ collectionId, chain }) => {
   const [state, setState] = useState({

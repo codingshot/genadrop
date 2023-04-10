@@ -25,7 +25,7 @@ import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
 import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import "@near-wallet-selector/modal-ui/styles.css";
 
-import { getEnv } from "../../../env";
+import { getEnv } from "../../env";
 
 // components
 import * as WS from "./wallet-script";
