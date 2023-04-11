@@ -1,7 +1,9 @@
 import { providers, Contract, utils } from "ethers";
 import { setPriceFeed } from "../gen-state/gen.actions";
 
-const provider = new providers.JsonRpcProvider(process.env.REACT_APP_ALCHEMY_URL);
+import { getEnv } from "../env";
+
+const provider = new providers.JsonRpcProvider(getEnv('REACT_APP_ALCHEMY_URL'));
 const aggregatorV3InterfaceABI = [
   {
     inputs: [],
@@ -52,11 +54,11 @@ const aggregatorV3InterfaceABI = [
   },
 ];
 
-const ETH_USD = process.env.REACT_APP_ETH_USD;
-const CELO_ETH = process.env.REACT_APP_CELO_ETH;
-const MATIC_USD = process.env.REACT_APP_MATIC_USD;
-const NEAR_USD = process.env.REACT_APP_NEAR_USD;
-const AVAX_USD = process.env.REACT_APP_AVAX_USD;
+const ETH_USD = getEnv('REACT_APP_ETH_USD');
+const CELO_ETH = getEnv('REACT_APP_CELO_ETH');
+const MATIC_USD = getEnv('REACT_APP_MATIC_USD');
+const NEAR_USD = getEnv('REACT_APP_NEAR_USD');
+const AVAX_USD = getEnv('REACT_APP_AVAX_USD');
 
 export const getLatestPriceCelo = async (dispatch) => {
   const ethPriceFeed = new Contract(ETH_USD, aggregatorV3InterfaceABI, provider);

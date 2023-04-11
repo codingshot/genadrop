@@ -64,6 +64,7 @@
     "html-to-image": "^1.10.8",
     "image-data-uri": "^2.0.1",
     "ipfs": "^0.60.0",
+    "javascript-obfuscator": "^4.0.2",
     "js-file-download": "^0.4.12",
     "jsdoc": "^3.6.10",
     "jszip": "^3.7.1",
@@ -106,11 +107,12 @@
     "web-vitals": "^1.0.1",
     "web3": "^1.7.0",
     "web3modal": "^1.9.5",
+    "webpack-obfuscator": "2.6.0",
     "workerize-loader": "^1.3.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
-    "build": "react-app-rewired build",
+    "start": "react-app-rewired --max_old_space_size=4096 start",
+    "build": "GENERATE_SOURCEMAP='false' react-app-rewired build",
     "test": "react-app-rewired test",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject",

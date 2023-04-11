@@ -16,13 +16,15 @@ import {
   polygonCollectionTransactions,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 
+import { getEnv } from "../../../env";
+
 const ExploreTransactionHistory = ({ collectionId, data, chain, fromCollection }) => {
   const [state, setState] = useState({
     selected: "all",
     transactionData: [],
     isAlgoChain: false,
     explorer:
-      process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
+      getEnv('REACT_APP_ENV_STAGING') === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
   });
 
   const { selected, explorer, transactionData, isAlgoChain } = state;

@@ -22,6 +22,8 @@ import {
 import NotFound from "../../../components/not-found/notFound";
 import { getCollectionTransactions, getNearCollection } from "../../../renderless/fetch-data/fetchNearCollectionData";
 
+import { getEnv } from "../../../env";
+
 const ExploreTransactionHistory = ({ collectionId, chain }) => {
   const [state, setState] = useState({
     selected: "all",
@@ -30,7 +32,7 @@ const ExploreTransactionHistory = ({ collectionId, chain }) => {
     searchValue: "",
     filterdHistory: [],
     explorer:
-      process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
+      getEnv('REACT_APP_ENV_STAGING') === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
   });
   const txIcons = {
     Minting: <MintIcon />,

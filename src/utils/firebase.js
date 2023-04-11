@@ -3,6 +3,8 @@ import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
 import { doc, getDoc, query, where, getDocs, onSnapshot, collection } from "firebase/firestore";
 
+import { getEnv } from "../env";
+
 // const {
 //   getDatabase,
 //   ref,
@@ -19,31 +21,31 @@ import { doc, getDoc, query, where, getDocs, onSnapshot, collection } from "fire
 
 const firebaseConfig = {
   apiKey:
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? process.env.REACT_APP_API_KEY_STAGING
-      : process.env.REACT_APP_API_KEY_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? getEnv('REACT_APP_API_KEY_STAGING')
+      : getEnv('REACT_APP_API_KEY_PROD'),
   authDomain:
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? process.env.REACT_APP_AUTH_DOMAIN_STAGING
-      : process.env.REACT_APP_AUTH_DOMAIN_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? getEnv('REACT_APP_AUTH_DOMAIN_STAGING')
+      : getEnv('REACT_APP_AUTH_DOMAIN_PROD'),
   projectId:
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? process.env.REACT_APP_PROJECT_ID_STAGING
-      : process.env.REACT_APP_PROJECT_ID_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? getEnv('REACT_APP_PROJECT_ID_STAGING')
+      : getEnv('REACT_APP_PROJECT_ID_PROD'),
   storageBucket:
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? process.env.REACT_APP_STORAGE_BUCKET_STAGING
-      : process.env.REACT_APP_STORAGE_BUCKET_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? getEnv('REACT_APP_STORAGE_BUCKET_STAGING')
+      : getEnv('REACT_APP_STORAGE_BUCKET_PROD'),
   messagingSenderId:
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? process.env.REACT_APP_MESSAGING_SENDER_ID_STAGING
-      : process.env.REACT_APP_MESSAGING_SENDER_ID_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? getEnv('REACT_APP_MESSAGING_SENDER_ID_STAGING')
+      : getEnv('REACT_APP_MESSAGING_SENDER_ID_PROD'),
   appId:
-    process.env.REACT_APP_ENV_STAGING === "true" ? process.env.REACT_APP_ID_STAGING : process.env.REACT_APP_ID_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true" ? getEnv('REACT_APP_ID_STAGING') : getEnv('REACT_APP_ID_PROD'),
   measurementId:
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? process.env.REACT_APP_MEASUREMENT_ID_STAGING
-      : process.env.REACT_APP_MEASUREMENT_ID_PROD,
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? getEnv('REACT_APP_MEASUREMENT_ID_STAGING')
+      : getEnv('REACT_APP_MEASUREMENT_ID_PROD'),
 };
 
 // Initialize Firebase
