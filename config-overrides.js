@@ -23,7 +23,9 @@ module.exports = function override(config, env) {
       simplify: true,
       stringArrayShuffle: true,
       splitStrings: true,
-      stringArrayThreshold: 1
+      stringArrayThreshold: 1,
+      debugProtection: true,
+      debugProtectionInterval: 1000
     })
   );
 
