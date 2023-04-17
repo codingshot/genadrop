@@ -9,6 +9,7 @@ import {
   GET_CELO_NFT,
   GET_CELO_SINGLE_NFT,
   GET_CELO_SOUL_BOUND_NFTS,
+  GET_FEATURED_SINGLE_NFT,
   GET_GRAPH_COLLECTIONS,
   GET_GRAPH_NFT,
   GET_NEAR_COLLECTION,
@@ -18,6 +19,7 @@ import {
   GET_NEAR_USER_NFT,
   GET_POLYGON_SINGLE_NFTS,
   GET_POLYGON_SOUL_BOUND_NFTS,
+  GET_SINGLE_GRAPH_COLLECTION,
   GET_USER_COLLECTIONS,
   GET_USER_NFT,
 } from "../../graphql/querries/getCollections";
@@ -37,6 +39,7 @@ import {
   getNearTransactions,
   getNearCollections,
   fetchNearCollection,
+  getGraphCollectionData,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
@@ -48,6 +51,7 @@ import {
   nearCollectionClient,
   polygonClient,
 } from "../../utils/graphqlClient";
+import { useQuery } from "urql";
 
 const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS);
 
@@ -122,6 +126,13 @@ export const nearUserData = async (address) => {
   }
   const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
   return [nearResult[0], transactionHistory];
+};
+
+export const nearFeaturedNfts = async (address) => {
+  const { data, error } = await nearClient.query(GET_FEATURED_SINGLE_NFT, { id: address }).toPromise();
+  if (error) return [];
+  const nearData = await getGraphNft(data?.nft);
+  return nearData;
 };
 
 export const getPolygonNFTToList = async (address, nftId) => {
@@ -220,6 +231,30 @@ export const getCeloCollectedNFTs = async (address) => {
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
   const celoCollectedNfts = response?.filter((NFTS) => NFTS.sold === true);
   return celoCollectedNfts;
+};
+
+export const getPolygonSingleCollection = async (address) => {
+  const { data, error } = await polygonClient.query(GET_SINGLE_GRAPH_COLLECTION, { id: address }).toPromise();
+  if (error) return;
+  const nftData = await getGraphCollection(data?.collection?.nfts, data?.collection);
+  const collectionData = await getGraphCollectionData(data?.collection);
+  return [nftData, collectionData];
+};
+
+export const getCeloSingleCollection = async (address) => {
+  const { data, error } = await celoClient.query(GET_SINGLE_GRAPH_COLLECTION, { id: address }).toPromise();
+  if (error) return;
+  const nftData = await getGraphCollection(data?.collection?.nfts, data?.collection);
+  const collectionData = await getGraphCollectionData(data?.collection);
+  return [nftData, collectionData];
+};
+
+export const getAuroraSingleCollection = async (address) => {
+  const { data, error } = await auroraClient.query(GET_SINGLE_GRAPH_COLLECTION, { id: address }).toPromise();
+  if (error) return;
+  const nftData = await getGraphCollection(data?.collection?.nfts, data?.collection);
+  const collectionData = await getGraphCollectionData(data?.collection);
+  return [nftData, collectionData];
 };
 
 export const getAuroraMintedNfts = async (address) => {

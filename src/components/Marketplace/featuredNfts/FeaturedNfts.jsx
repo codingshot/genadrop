@@ -46,15 +46,21 @@ const FeautedNfts = () => {
   ];
 
   useEffect(() => {
-    Promise.all([
-      getFeaturedAvalancheNft(featuredNFTs[1]),
-      getFeaturedAvalancheNft(featuredNFTs[3]),
-      getFeaturedAvalancheNft(featuredNFTs[4]),
-      getFeaturedAvalancheNft(featuredNFTs[5]),
-      getFeaturedPolygonNfts(featuredNFTs[6]),
-    ]).then((data) => {
-      if (!mainnet) handleSetState({ NFTs: [...data.flat()] });
-    });
+    if (mainnet) {
+      Promise.all([
+        getFeaturedAvalancheNft(featuredNFTs[1]),
+        getFeaturedAvalancheNft(featuredNFTs[3]),
+        getFeaturedAvalancheNft(featuredNFTs[4]),
+        getFeaturedAvalancheNft(featuredNFTs[5]),
+        getFeaturedPolygonNfts(featuredNFTs[6]),
+      ]).then((data) => {
+        handleSetState({ NFTs: [...data.flat()] });
+      });
+    } else {
+      Promise.all([getAllNearNfts()]).then((data) => {
+        handleSetState({ NFTs: [...data.flat()] });
+      });
+    }
   }, []);
 
   useEffect(() => {

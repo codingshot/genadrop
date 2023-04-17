@@ -85,7 +85,7 @@ const Header = ({ collection, getHeight }) => {
             <div className={classes.collectionDetail}>
               <div className={classes.nameAndChainWrapper}>
                 <div className={classes.name}>{name}</div>
-                <img className={classes.chain} src={supportedChains[chain].icon} alt="" />
+                <img className={classes.chain} src={supportedChains[chain]?.icon} alt="" />
               </div>
               <div className={classes.creator}>
                 <p>Created by</p>

@@ -88,6 +88,51 @@ export const GET_CELO_GRAPH_COLLECITONS = gql`
   }
 `;
 
+export const GET_SINGLE_GRAPH_COLLECTION = gql`
+  query ($id: ID) {
+    collection(id: $id) {
+      description
+      id
+      name
+      creator {
+        id
+      }
+      nfts {
+        chain
+        category
+        createdAtTimestamp
+        id
+        isSold
+        isSoulBound
+        isListed
+        price
+        collection {
+          name
+          id
+        }
+        tokenID
+        owner {
+          id
+        }
+        tokenIPFSPath
+        transactions {
+          id
+          txDate
+          txId
+          from {
+            id
+          }
+          type
+          price
+          to {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_ALL_POLYGON_COLLECTIONS = gql`
   query MyQuery {
     collections {
@@ -489,6 +534,26 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
   }
 `;
 
+export const MY_QUERY = `
+query MyQuery {
+  nfts(where: { collection_in: ["${polygonAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    isListed
+    isSoulBound
+    price
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
 export const GET_POLYGON_SOUL_BOUND_NFTS = gql`
 query MyQuery {
   nfts(where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
@@ -572,7 +637,7 @@ export const GET_NEAR_SINGLE_NFTS = gql`
 `;
 
 export const GET_FEATURED_SINGLE_NFT = gql`
-  query MyQuery {
+  query ($id: ID) {
     nft(id: $id) {
       category
       chain
