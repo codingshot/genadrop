@@ -147,7 +147,7 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
             </button>
             <button
               onClick={handleSlideRight}
-              className={`${classes.ctrlBtn_right} ${slideActiveCount <= slideCount && classes.active}`}
+              className={`${classes.ctrlBtn_right} ${slideActiveCount < slideCount && classes.active}`}
             >
               <img src={iconRight} alt="" />
             </button>
