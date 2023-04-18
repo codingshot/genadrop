@@ -12,13 +12,10 @@ import { setActiveCollection } from "../../gen-state/gen.actions";
 import { filterBy, sortBy } from "../Marketplace/Marketplace-script";
 import Items from "./items/items";
 import ExploreTransactionHistory from "./exploreTransactionHistory/exploreTransactionHistory";
-import { getAllNearCollections, getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
+import { getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
 import supportedChains from "../../utils/supportedChains";
 import {
   getAllAlgorandCollections,
-  getAllAuroraCollections,
-  getAllCeloCollections,
-  getAllPolygonCollections,
   getAuroraSingleCollection,
   getCeloSingleCollection,
   getPolygonSingleCollection,
@@ -44,20 +41,8 @@ const Explore = () => {
     activeType: "T1",
     collectionId: null,
   });
-  const {
-    toggleFilter,
-    collection,
-    NFTCollection,
-    attributes,
-    filter,
-    filterToDelete,
-    FilteredCollection,
-    headerHeight,
-    loadedChain,
-    activeType,
-    collectionId,
-  } = state;
-  const { dispatch, mainnet, algoCollections } = useContext(GenContext);
+  const { collection, NFTCollection, filter, headerHeight, loadedChain, activeType, collectionId } = state;
+  const { dispatch, mainnet } = useContext(GenContext);
 
   const { collectionName } = useParams();
 
@@ -74,7 +59,7 @@ const Explore = () => {
   };
 
   const getAllCollectionChains = async () => {
-    let result = await getNearCollection(collectionName);
+    let result = await getNearCollection(collectionName, mainnet);
     if (result.length) {
       return result;
     }
