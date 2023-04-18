@@ -20,7 +20,6 @@ const CollectionNftCard = ({ use_width, collection }) => {
     const chainName = supportedChains[chain].coinGeckoLabel || supportedChains[chain].id;
     const value = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${chainName}&vs_currencies=usd`);
 
-    // const value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     setUsdValue(Number(value) * Number(price));
   }, []);
 
@@ -31,7 +30,7 @@ const CollectionNftCard = ({ use_width, collection }) => {
   return (
     <div
       style={use_width ? { width: use_width } : {}}
-      onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? Id : name}`)}
+      onClick={() => history.push(`/marketplace/collections/${chain !== 4160 ? `${chain}~${Id}` : name}`)}
       className={classes.container}
     >
       <div className={classes.imageContainer}>

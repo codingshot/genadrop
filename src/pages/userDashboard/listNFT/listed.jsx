@@ -10,7 +10,7 @@ import supportedChains from "../../../utils/supportedChains";
 import {
   arbitrumUserData,
   auroraUserData,
-  avaxUsersNfts,
+  getAvalancheNft,
   celoUserData,
   polygonUserData,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
@@ -72,7 +72,7 @@ const Listed = () => {
           isLoading: false,
         });
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
-        const [nft] = await avaxUsersNfts(nftId);
+        const [nft] = await getAvalancheNft(nftId);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

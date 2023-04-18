@@ -8,8 +8,8 @@ import classes from "./home.module.css";
 import GenadropCreatedNFTs from "../../components/Home/Genadrop-Created-NFTs/GenadropCreatedNFTs";
 import CameraMint from "../../components/Home/Camera-Mint/CameraMint";
 import EarlyAccess from "../../components/Home/early-access/early-access";
-import Plans from "../../components/Home/Plans/Plans";
-import JoinDiscord from "../../components/Home/Join-Discord/JoinDiscord";
+// import Plans from "../../components/Home/Plans/Plans";
+// import JoinDiscord from "../../components/Home/Join-Discord/JoinDiscord";
 import Media from "../../components/Media/Media";
 import Partners from "../../components/Partners/Partners";
 
