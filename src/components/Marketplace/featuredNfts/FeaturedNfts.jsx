@@ -2,26 +2,18 @@ import React, { useContext, useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import classes from "./FeaturedNfts.module.css";
 import "react-loading-skeleton/dist/skeleton.css";
-// import CollectionsCard from "../collectionsCard/collectionsCard";
 import { GenContext } from "../../../gen-state/gen.context";
 import NotFound from "../../not-found/notFound";
 import GenadropCarouselScreen from "../../Genadrop-Carousel-Screen/GenadropCarouselScreen";
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
 import {
-  getAllAlgorandNfts,
-  getAllArbitrumNfts,
-  getAllAuroraNfts,
-  getAllAvalancheNfts,
-  getAllCeloNfts,
   getAllNearNfts,
-  getAllPolygonNfts,
-  getAvalancheNft,
   getFeaturedAvalancheNft,
   getFeaturedPolygonNfts,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const FeautedNfts = () => {
-  const { mainnet, dispatch } = useContext(GenContext);
+  const { mainnet } = useContext(GenContext);
 
   const [state, setState] = useState({
     NFTs: [],
@@ -57,7 +49,7 @@ const FeautedNfts = () => {
         handleSetState({ NFTs: [...data.flat()] });
       });
     } else {
-      Promise.all([getAllNearNfts()]).then((data) => {
+      Promise.all([getAllNearNfts(10)]).then((data) => {
         handleSetState({ NFTs: [...data.flat()] });
       });
     }

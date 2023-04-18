@@ -489,9 +489,49 @@ export const GET_AURORA_SINGLE_NFTS = gql`
   }
 `;
 
+export const GET_AURORA_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(first: 10 where: { collection_in: ["${auroraAddress}"]}) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
 export const GET_AURORA_SOUL_BOUND_NFTS = gql`
 query MyQuery {
   nfts(where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    isListed
+    isSoulBound
+    price
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
+export const GET_AURORA_SOUL_BOUND_NFTS_WITH_LIMIT = gql`
+query MyQuery {
+  nfts(first: 10 where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -517,6 +557,26 @@ const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
     nfts(where: { collection_in: ["${polygonAddress}"]}) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_POLYGON_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(first: 10 where: { collection_in: ["${polygonAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -574,6 +634,26 @@ query MyQuery {
 }
 `;
 
+export const GET_POLYGON_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
+query MyQuery {
+  nfts(first: 5 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    isListed
+    isSoulBound
+    price
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
 const celoAddress =
   process.env.REACT_APP_ENV_STAGING === "true"
     ? ethers.utils.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
@@ -582,6 +662,25 @@ const celoAddress =
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
     nfts(where: { collection_in: ["${celoAddress}"]}) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      price
+      isSoulBound
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_CELO_SINGLE_NFT_WITH_LIMITS = gql`
+  query MyQuery {
+    nfts(first: 7 where: { collection_in: ["${celoAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -617,9 +716,47 @@ query MyQuery {
 }
 `;
 
+export const GET_CELO_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
+query MyQuery {
+  nfts(first: 8 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    price
+    isSoulBound
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
 export const GET_NEAR_SINGLE_NFTS = gql`
   query MyQuery {
     nfts {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_NEAR_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(first: 10) {
       category
       chain
       createdAtTimestamp
@@ -675,6 +812,26 @@ export const GET_AVAX_SINGLE_NFTS = gql`
   }
 `;
 
+export const GET_AVAX_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(first: 10) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
 export const GET_NEAR_NFT = gql`
   query ($id: ID) {
     nft(id: $id) {
@@ -685,7 +842,6 @@ export const GET_NEAR_NFT = gql`
       isSold
       price
       tokenID
-      marketsData
       isListed
       owner {
         id

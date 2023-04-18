@@ -128,7 +128,7 @@ export const getGraphData = async ({ graphProps }) => {
       // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
       if (supportedChains[Number(chainId)]?.chain === "Celo") {
         const [celoData, trHistory] = await celoUserData(nftId);
-        const celoNfts = await getAllCeloNfts();
+        const celoNfts = await getAllCeloNfts(10);
         return {
           nftDetails: celoData,
           transactionHistory: trHistory,
@@ -138,7 +138,7 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Aurora") {
         const [auroraData, trHistory] = await auroraUserData(nftId);
-        const auroraNfts = await getAllAuroraNfts();
+        const auroraNfts = await getAllAuroraNfts(10);
         return {
           nftDetails: auroraData,
           collection: [],
@@ -148,7 +148,7 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Polygon") {
         const [polygonData, trHistory] = await polygonUserData(nftId);
-        const polygonNfts = await getAllPolygonNfts();
+        const polygonNfts = await getAllPolygonNfts(10);
         return {
           nftDetails: polygonData,
           collection: [],
@@ -158,7 +158,7 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Arbitrum") {
         const [data, trHistory] = await arbitrumUserData(nftId);
-        const arbitrumNfts = await getAllArbitrumNfts();
+        const arbitrumNfts = await getAllArbitrumNfts(10);
         return {
           nftDetails: data,
           collection: [],
@@ -168,7 +168,7 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Avalanche") {
         const [avaxData, trHistory] = await getAvalancheNft(nftId);
-        const avalancheNfts = await getAllAvalancheNfts();
+        const avalancheNfts = await getAllAvalancheNfts(10);
         return {
           nftDetails: avaxData,
           collection: [],
@@ -178,7 +178,7 @@ export const getGraphData = async ({ graphProps }) => {
       }
       if (supportedChains[Number(chainId)]?.chain === "Near") {
         const [nearResult, trHistory] = await nearUserData(nftId);
-        const nearNfts = getAllNearNfts();
+        const nearNfts = await getAllNearNfts(10);
         return {
           nftDetails: nearResult,
           collection: [],
