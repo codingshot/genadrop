@@ -18,7 +18,8 @@
   margin-top: 10px;
 }
 
-.modalContent h1, p {
+.modalContent h1,
+p {
   text-align: center;
 }
 
@@ -47,7 +48,6 @@
   border-radius: 12px;
 }
 
-
 @media screen and (max-width: 900px) {
   .Modal {
     max-width: 710px;
@@ -59,7 +59,7 @@
   }
 }
 
-@media screen and (max-width: 400px)  {
+@media screen and (max-width: 400px) {
   .ModalImage {
     width: 250px;
   }
@@ -105,5 +105,5 @@
 }
 
 .cameraIcon:hover {
-  opacity: .5;
+  opacity: 0.5;
 }

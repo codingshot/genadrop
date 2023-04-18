@@ -6,6 +6,7 @@ import { utils } from "near-api-js";
 import JSZip from "jszip";
 import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+import { util } from "chai";
 
 const BN = require("bn.js");
 
@@ -156,6 +157,7 @@ const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink, isAi) => {
   const jsonIntegrity = convertIpfsCidV0ToByte32(resultMeta.IpfsHash);
   return {
     name: asset.name,
+    description: asset.description,
     url: `ipfs://${resultMeta.IpfsHash}`,
     metadata: jsonIntegrity.buffer,
     integrity: jsonIntegrity.base64,
@@ -2280,6 +2282,147 @@ export async function mintToAvax(celoProps) {
     })
   );
   return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
+}
+
+
+export async function mintToNear(polyProps) {
+  const {
+    price,
+    account,
+    connector,
+    fileName,
+    description,
+    dispatch,
+    setNotification,
+    receiverAddress,
+    setLoader,
+    mainnet,
+  } = polyProps;
+  const {
+    contract: { contractId },
+    accounts,
+  } = window.selector.store.getState();
+  const { accountId } = accounts[0];
+  const collectioName = fileName.trim().toLowerCase().replace(/\s+/g, "");
+  const ipfsJsonData = await createNFT({ ...polyProps });
+  dispatch(setLoader("preparing assets for minting"));
+  
+  const ids = ipfsJsonData.map((asset) => {
+    const uintArray = asset.metadata.toLocaleString();
+    const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+    return id.toString();
+  });
+  const arrayMetadata = ipfsJsonData.map((asset) => ({
+    title: asset.name,
+    description: asset.description,
+    media: `https://ipfs.io/ipfs/${asset.media}`,
+    reference: asset.url,
+  }));
+
+  const nftDeposit = (utils.format.formatNearAmount("10000000000000000000000") * arrayMetadata.length).toString();
+
+  let response;
+
+  if (window?.near?.accountId) {
+    response = await window?.near?.request({
+      receiverId: contractId,
+      transactions: [
+        {
+          signerId: accountId,
+          receiverId: "genadorp.testnet",
+          actions: [
+            {
+              methodName: "create_collection",
+              args: {
+                metadata: {
+                  spec: "nft-1.0.0",
+                  name: fileName.split("-")[0],
+                  symbol: "NFT", 
+                  reference: description,
+                },
+                owner_id: accountId,
+              },
+              gas: utils.format.parseNearAmount("0.0000000003"),
+              deposit: utils.format.parseNearAmount("3.256"),
+            },
+          ],
+        },
+        {
+          signerId: accountId,
+          receiverId: "genadorp.testnet",
+          // use map to handle cases of 1 market or more
+          actions: [
+            {
+              type: "FunctionCall",
+              params: {
+                methodName: "batch_mint",
+                args: {
+                  token_ids: ids,
+                  metadata: arrayMetadata,
+                  receiver_id: receiverAddress,
+                },
+                gas: 100000000000000,
+                deposit: new BN("10000000000000000000000"),
+              },
+            },
+          ],
+        },
+      ],
+      callbackUrl: `http://${window.location.host}/mint/1of1`,
+    });
+  } else {
+    const wallet = await window.selector.wallet();
+    response = await wallet.signAndSendTransactions({
+      signerId: accountId,
+      receiverId: contractId,
+      transactions: [
+        {
+          signerId: accountId,
+          receiverId: "genadorp.testnet",
+          actions: [
+            {
+              type: "FunctionCall",
+              params: {
+                methodName: "create_collection",
+                args: {
+                  metadata: {
+                    spec: "nft-1.0.0",
+                    name: collectioName,
+                    symbol: "NFT",
+                    reference: description,
+                  },
+                  owner_id: accountId,
+                },
+                gas: utils.format.parseNearAmount("0.0000000003"),
+                deposit: utils.format.parseNearAmount("3.256"),
+              },
+            },
+          ],
+        },
+        {
+          signerId: accountId,
+          receiverId: `${collectioName}.genadorp.testnet`,
+          // use map to handle cases of 1 market or more
+          actions: [
+            {
+              type: "FunctionCall",
+              params: {
+                methodName: "batch_mint",
+                args: {
+                  token_ids: ids,
+                  metadata: arrayMetadata,
+                  receiver_id: receiverAddress,
+                },
+                gas: 100000000000000,
+                deposit: utils.format.parseNearAmount(nftDeposit),
+              },
+            },
+          ],
+        },
+      ],
+      callbackUrl: `http://${window.location.host}/mint/collection/minter/`,
+    });
+  }
 }
 
 export async function mintToPoly(polyProps) {

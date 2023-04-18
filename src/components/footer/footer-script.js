@@ -6,7 +6,7 @@ import avalancheIcon from "../../assets/footer-icon-avalanche.svg";
 import nearIcon from "../../assets/footer-icon-near.svg";
 import auroraIcon from "../../assets/footer-icon-aurora.svg";
 import twitterIcon from "../../assets/icon-twitter.svg";
-import instagramIcon from '../../assets/ig-logo.svg'
+import instagramIcon from "../../assets/ig-logo.svg";
 import discordIcon from "../../assets/icon-discord.svg";
 import linkedInIcon from "../../assets/icon-linkedin.svg";
 import youTubeIcon from "../../assets/icon-youtube.svg";

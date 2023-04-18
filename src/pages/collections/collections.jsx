@@ -15,17 +15,16 @@ import {
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";
+import { getAllNearCollections } from "../../renderless/fetch-data/fetchNearCollectionData";
+import {
+  getAllAlgorandCollections,
+  getAllAuroraCollections,
+  getAllCeloCollections,
+  getAllPolygonCollections,
+} from "../../renderless/fetch-data/fetchUserGraphData";
 
 const Collections = () => {
-  const {
-    auroraCollections,
-    algoCollections,
-    polygonCollections,
-    celoCollections,
-    mainnet,
-    searchContainer,
-  } = useContext(GenContext);
-  const algoCollectionsArr = algoCollections ? Object.values(algoCollections) : [];
+  const { dispatch, mainnet } = useContext(GenContext);
 
   const mountRef = useRef(0);
   const [state, setState] = useState({
@@ -114,15 +113,17 @@ const Collections = () => {
   };
 
   useEffect(() => {
-    let collections = [
-      ...(auroraCollections || []),
-      ...(algoCollectionsArr || []),
-      ...(polygonCollections || []),
-      ...(celoCollections || []),
-    ];
-    collections = shuffle(collections);
-    handleSetState({ collections, filteredCollection: collections });
-  }, [auroraCollections, algoCollections, polygonCollections, celoCollections]);
+    Promise.all([
+      getAllAuroraCollections(),
+      getAllPolygonCollections(),
+      getAllNearCollections(mainnet),
+      getAllCeloCollections(),
+      getAllAlgorandCollections(mainnet, dispatch),
+    ]).then((data) => {
+      const filteredData = sortBy({ collections: data.flat(), value: "newest" });
+      handleSetState({ collections: filteredData, filteredCollection: filteredData });
+    });
+  }, []);
 
   useEffect(() => {
     const countPerPage = 20;
