@@ -188,7 +188,7 @@ const Dashboard = () => {
           collection = await getPolygonUserCollections(walletAddress);
           break;
         case "Near":
-          collection = await getUserNearCollection(userId);
+          collection = await getUserNearCollection(userId, mainnet);
           break;
         default:
           break;

@@ -30,7 +30,6 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
     const chainName = supportedChains[chain].coinGeckoLabel || supportedChains[chain].id;
     if (!value) {
       value = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${chainName}&vs_currencies=usd`);
-      // value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     }
     setUsdValue(Number(Object.values(value.data)[0].usd) * Number(price));
   }, []);

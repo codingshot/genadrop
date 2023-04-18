@@ -116,7 +116,7 @@ const Collections = () => {
     Promise.all([
       getAllAuroraCollections(),
       getAllPolygonCollections(),
-      getAllNearCollections(),
+      getAllNearCollections(mainnet),
       getAllCeloCollections(),
       getAllAlgorandCollections(mainnet, dispatch),
     ]).then((data) => {

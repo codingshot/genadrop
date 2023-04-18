@@ -20,7 +20,7 @@ import { readUserProfile } from "../../utils/firebase";
 import {
   arbitrumUserData,
   auroraUserData,
-  avaxUsersNfts,
+  getAvalancheNft,
   celoUserData,
   nearUserData,
   polygonUserData,
@@ -178,7 +178,7 @@ const List = () => {
         const [nftData] = await nearUserData(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
-        const [nftData] = await avaxUsersNfts(nftId);
+        const [nftData] = await getAvalancheNft(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Arbitrum") {
         const [nftData] = await arbitrumUserData(nftId);
