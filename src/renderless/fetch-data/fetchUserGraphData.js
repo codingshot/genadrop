@@ -48,6 +48,7 @@ import {
   getNearCollections,
   fetchNearCollection,
   getGraphCollectionData,
+  getFeaturedGraphNft,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
@@ -110,8 +111,15 @@ export const getAvalancheNft = async (address) => {
 export const getFeaturedAvalancheNft = async (address) => {
   const { data, error } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
   if (error) return [];
-  const avaxData = await getGraphNft(data?.nft);
-  return avaxData;
+  const result = await getFeaturedGraphNft(data?.nft);
+  return result;
+};
+
+export const getFeaturedNearNfts = async (address) => {
+  const { data, error } = await nearClient.query(GET_NEAR_NFT, { id: address }).toPromise();
+  if (error) return [];
+  const result = await getNearNft(data?.nft);
+  return result;
 };
 
 export const getFeaturedPolygonNfts = async (address) => {
@@ -119,8 +127,8 @@ export const getFeaturedPolygonNfts = async (address) => {
     .query(GET_GRAPH_NFT, { id: address })
     .toPromise();
   if (polygonError) return [];
-  const avaxData = await getGraphNft(polygonData?.nft);
-  return avaxData;
+  const result = await getFeaturedGraphNft(polygonData?.nft);
+  return result;
 };
 
 export const nearUserData = async (address) => {
