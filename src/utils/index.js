@@ -668,6 +668,36 @@ export const getGraphNft = async (collection, mainnet) => {
   return nftObj;
 };
 
+export const getFeaturedGraphNft = async (collection, mainnet) => {
+  const nftObj = [];
+  try {
+    const { data } = await axios.get(
+      collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+    );
+    const nftArr = {};
+    nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
+    nftArr.name = data?.name;
+    nftArr.chain = collection?.chain;
+    nftArr.owner = collection?.owner?.id;
+    nftArr.isListed = collection?.isListed;
+    nftArr.price = collection?.price * PRICE_CONVERSION_VALUE;
+    nftArr.image_url = data?.image?.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+    nftArr.ipfs_data = data;
+    nftArr.isSoulBound = collection?.isSoulBound;
+    nftArr.sold = collection?.isSold;
+    nftArr.description = data?.description;
+    nftArr.Id = collection?.id;
+    nftArr.tokenID = collection?.tokenID;
+    nftArr.marketId = collection?.marketId;
+    nftArr.properties = data?.properties;
+    nftObj.push(nftArr);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return nftObj;
+};
+
 export const getNearNft = async (collection, mainnet) => {
   const nftObj = [];
   try {
