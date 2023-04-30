@@ -471,7 +471,7 @@ const auroraSoulBoundAddress =
 
 export const GET_AURORA_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection_in: ["${auroraAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${auroraAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -491,7 +491,7 @@ export const GET_AURORA_SINGLE_NFTS = gql`
 
 export const GET_AURORA_SINGLE_NFTS_WITH_LIMIT = gql`
   query MyQuery {
-    nfts(first: 10 where: { collection_in: ["${auroraAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${auroraAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -511,7 +511,7 @@ export const GET_AURORA_SINGLE_NFTS_WITH_LIMIT = gql`
 
 export const GET_AURORA_SOUL_BOUND_NFTS = gql`
 query MyQuery {
-  nfts(where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -531,7 +531,7 @@ query MyQuery {
 
 export const GET_AURORA_SOUL_BOUND_NFTS_WITH_LIMIT = gql`
 query MyQuery {
-  nfts(first: 10 where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -556,7 +556,7 @@ const polygonAddress =
 const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS);
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection_in: ["${polygonAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${polygonAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -576,7 +576,7 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
 
 export const GET_POLYGON_SINGLE_NFTS_WITH_LIMIT = gql`
   query MyQuery {
-    nfts(first: 10 where: { collection_in: ["${polygonAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${polygonAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -594,29 +594,9 @@ export const GET_POLYGON_SINGLE_NFTS_WITH_LIMIT = gql`
   }
 `;
 
-export const MY_QUERY = `
-query MyQuery {
-  nfts(where: { collection_in: ["${polygonAddress}"]}) {
-    category
-    chain
-    createdAtTimestamp
-    id
-    isSold
-    isListed
-    isSoulBound
-    price
-    tokenID
-    owner {
-      id
-    }
-    tokenIPFSPath
-  }
-}
-`;
-
 export const GET_POLYGON_SOUL_BOUND_NFTS = gql`
 query MyQuery {
-  nfts(where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -636,7 +616,7 @@ query MyQuery {
 
 export const GET_POLYGON_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
 query MyQuery {
-  nfts(first: 5 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -661,7 +641,7 @@ const celoAddress =
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection_in: ["${celoAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${celoAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -680,7 +660,7 @@ export const GET_CELO_SINGLE_NFT = gql`
 
 export const GET_CELO_SINGLE_NFT_WITH_LIMITS = gql`
   query MyQuery {
-    nfts(first: 7 where: { collection_in: ["${celoAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${celoAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -699,7 +679,7 @@ export const GET_CELO_SINGLE_NFT_WITH_LIMITS = gql`
 
 export const GET_CELO_SOUL_BOUND_NFTS = gql`
 query MyQuery {
-  nfts(where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -718,7 +698,7 @@ query MyQuery {
 
 export const GET_CELO_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
 query MyQuery {
-  nfts(first: 8 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -737,7 +717,7 @@ query MyQuery {
 
 export const GET_NEAR_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc) {
       category
       chain
       createdAtTimestamp
@@ -756,7 +736,7 @@ export const GET_NEAR_SINGLE_NFTS = gql`
 
 export const GET_NEAR_SINGLE_NFTS_WITH_LIMIT = gql`
   query MyQuery {
-    nfts(first: 10) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10) {
       category
       chain
       createdAtTimestamp
@@ -794,7 +774,7 @@ export const GET_FEATURED_SINGLE_NFT = gql`
 
 export const GET_AVAX_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc) {
       category
       chain
       createdAtTimestamp
@@ -814,7 +794,7 @@ export const GET_AVAX_SINGLE_NFTS = gql`
 
 export const GET_AVAX_SINGLE_NFTS_WITH_LIMIT = gql`
   query MyQuery {
-    nfts(first: 10) {
+    nfts(first: 10, orderBy: createdAtTimestamp, orderDirection: desc) {
       category
       chain
       createdAtTimestamp

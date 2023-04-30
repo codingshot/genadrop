@@ -113,12 +113,12 @@ const AllNfts = () => {
 
   useEffect(() => {
     Promise.all([
-      getAllCeloNfts(),
-      getAllAuroraNfts(),
-      getAllAvalancheNfts(),
-      getAllArbitrumNfts(),
-      getAllPolygonNfts(),
-      getAllNearNfts(),
+      getAllCeloNfts(10),
+      getAllAuroraNfts(10),
+      getAllAvalancheNfts(10),
+      getAllArbitrumNfts(10),
+      getAllPolygonNfts(10),
+      getAllNearNfts(10),
       getAllAlgorandNfts(mainnet, dispatch),
     ]).then((data) => {
       handleSetState({ singles: sortBy({ collections: data.flat(), value: "newest" }) });
