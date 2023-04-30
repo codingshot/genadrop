@@ -671,7 +671,9 @@ export const getGraphNft = async (collection, mainnet) => {
 export const getFeaturedGraphNft = async (collection, mainnet) => {
   const nftObj = [];
   try {
-    const { data } = await axios.get(collection?.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/"));
+    const { data } = await axios.get(
+      collection?.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
+    );
     const nftArr = {};
     nftArr.collection_contract = collection?.id?.split(collection?.tokenID)[0];
     nftArr.name = data?.name;
