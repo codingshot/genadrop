@@ -41,9 +41,9 @@ const CollectionsCard = ({ collection, use_width, fromDashboard }) => {
               <div className={classes.floor}>FLOORPRICE</div>
               <div className={classes.price}>
                 <img src={supportedChains[chain]?.icon} alt="" />
-                {price} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
+                {price ?? 0} <span className={classes.chain}>{supportedChains[chain]?.sybmol}</span>{" "}
                 <div>
-                  <span className={classes.usdPrice}>({totalPrice.toFixed(2)} $)</span>
+                  <span className={classes.usdPrice}>({totalPrice.toFixed(2) ?? 0} $)</span>
                 </div>
               </div>
             </div>

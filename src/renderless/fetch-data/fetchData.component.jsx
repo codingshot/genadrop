@@ -63,13 +63,15 @@ import {
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
   useEffect(() => {
+
     // Get ALGO Collection
     (async function getALgoCollections() {
+      dispatch(setAlgoCollections({}));
       const collections = await fetchAlgoCollections(mainnet);
       dispatch(setCollections(collections));
       if (collections?.length) {
         const result = await getNftCollections({ collections, mainnet, dispatch });
-        dispatch(setAlgoCollections(result));
+        // dispatch(setAlgoCollections(result));
         dispatch(
           setSearchContainer({
             "Algorand collection": parseAlgoCollection(result),
@@ -82,6 +84,7 @@ const FetchData = () => {
 
     // Get ALGO Single NFTs
     (async function getAlgoSingle() {
+      dispatch(setAlgoSingleNfts({}));
       const singleNfts = await fetchAlgoSingle(mainnet);
       dispatch(setSingleNfts(singleNfts));
       if (singleNfts?.length) {
@@ -98,6 +101,7 @@ const FetchData = () => {
 
     // get Aurora Collections
     (async function getAuroraCollection() {
+      dispatch(setAuroraCollections(null));
       const { data, error } = await auroraClient.query(GET_GRAPH_COLLECTIONS).toPromise();
       if (error) {
         return dispatch(
@@ -114,7 +118,7 @@ const FetchData = () => {
           : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
       const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
       if (res?.length) {
-        dispatch(setAuroraCollections(res));
+        // dispatch(setAuroraCollections(res));
         dispatch(
           setSearchContainer({
             "Aurora collection": parseAuroraCollection(res),
@@ -128,6 +132,8 @@ const FetchData = () => {
 
     // Get Aurora Signle NFTs
     (async function getAuroraSingleNfts() {
+      dispatch(setAuroraSingleNfts(null));
+
       const { data, error } = await auroraClient.query(GET_AURORA_SINGLE_NFTS).toPromise();
       if (error) {
         return dispatch(
@@ -140,7 +146,7 @@ const FetchData = () => {
       const result = await getSingleGraphNfts(data?.nfts);
 
       if (result?.length) {
-        dispatch(setAuroraSingleNfts(result));
+        // dispatch(setAuroraSingleNfts(result));
         dispatch(
           setSearchContainer({
             "Aurora 1of1": parseAuroraSingle(result),
@@ -154,6 +160,8 @@ const FetchData = () => {
 
     // Get Polygon Collections
     (async function getPolygonCollections() {
+      dispatch(setPolygonCollections(null));
+
       const { data, error } = await polygonClient.query(GET_ALL_POLYGON_COLLECTIONS).toPromise();
       if (error) {
         return dispatch(
@@ -170,7 +178,7 @@ const FetchData = () => {
           : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
       const res = result?.filter((data) => data?.Id !== filterAddress);
       if (res?.length) {
-        dispatch(setPolygonCollections(res));
+        // dispatch(setPolygonCollections(res));
         dispatch(
           setSearchContainer({
             "Polygon collection": parsePolygonCollection(res),
@@ -184,6 +192,8 @@ const FetchData = () => {
 
     // Get Polygon Signle NFTs
     (async function getPolygonSingleNfts() {
+      dispatch(setPolygonSingleNfts(null));
+
       const { data, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
       const { data: sbData, error: sbError } = await polygonClient.query(GET_POLYGON_SOUL_BOUND_NFTS).toPromise();
       if (error || sbError) {
@@ -196,7 +206,7 @@ const FetchData = () => {
       }
       const result = await getSingleGraphNfts([...data.nfts, ...sbData.nfts]);
       if (result?.length) {
-        dispatch(setPolygonSingleNfts(result));
+        // dispatch(setPolygonSingleNfts(result));
         dispatch(
           setSearchContainer({
             "Polygon 1of1": parsePolygonSingle(result),
@@ -210,6 +220,8 @@ const FetchData = () => {
 
     // Get Celo Single NFTs
     (async function getCeloSingleNft() {
+      dispatch(setCeloSingleNft(null));
+
       const { data, error } = await celoClient.query(GET_CELO_SINGLE_NFT).toPromise();
       const { data: sbData, error: sbError } = await celoClient.query(GET_CELO_SOUL_BOUND_NFTS).toPromise();
 
@@ -223,7 +235,7 @@ const FetchData = () => {
       }
       const result = await getSingleGraphNfts([...data.nfts, sbData.nfts]);
       if (result?.length) {
-        dispatch(setCeloSingleNft(result));
+        // dispatch(setCeloSingleNft(result));
         dispatch(
           setSearchContainer({
             "Celo 1of1": parseCeloSingle(result),
@@ -237,6 +249,8 @@ const FetchData = () => {
 
     // Get Celo Collection NFTs
     (async function getCeloCollections() {
+      dispatch(setCeloCollections(null));
+
       const { data, error } = await celoClient.query(GET_CELO_GRAPH_COLLECITONS).toPromise();
       if (error) {
         return dispatch(
@@ -253,7 +267,7 @@ const FetchData = () => {
           : ethers.utils.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
       const res = result.filter((data) => data?.Id !== filterAddress);
       if (res?.length) {
-        dispatch(setCeloCollections(res));
+        // dispatch(setCeloCollections(res));
         dispatch(
           setSearchContainer({
             "Celo collection": parseCeloCollection(res),
@@ -267,6 +281,8 @@ const FetchData = () => {
 
     // Near Single Nfts
     (async function getNearSingleNfts() {
+      dispatch(setNearSingleNft(null));
+
       const { data, error } = await nearClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
       if (error) {
         return dispatch(
@@ -278,7 +294,7 @@ const FetchData = () => {
       }
       const result = await fetchNearSingleNfts(data?.nfts);
       if (result) {
-        dispatch(setNearSingleNft(result));
+        // dispatch(setNearSingleNft(result));
         dispatch(
           setSearchContainer({
             "Near 1of1": parseNearSingle(result),
@@ -291,6 +307,8 @@ const FetchData = () => {
 
     //Avalanche Single Nfts
     (async function getAvalancheSingleNfts() {
+      dispatch(setAvaxSingleNfts(null));
+
       const { data, error } = await avalancheClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
       if (error) {
         return dispatch(
@@ -302,7 +320,7 @@ const FetchData = () => {
       }
       const result = await getSingleGraphNfts(data?.nfts);
       if (result) {
-        dispatch(setAvaxSingleNfts(result));
+        // dispatch(setAvaxSingleNfts(result));
         dispatch(
           setSearchContainer({
             "Avax 1of1": parseAvaxSingle(result),
@@ -315,6 +333,7 @@ const FetchData = () => {
 
     //Arbitrum Single Nfts
     (async function getArbitrumSingleNfts() {
+      dispatch(setArbitrumNfts(null));
       const { data, error } = await arbitrumClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
       if (error) {
         return dispatch(
@@ -326,7 +345,7 @@ const FetchData = () => {
       }
       const result = await getSingleGraphNfts(data?.nfts);
       if (result) {
-        dispatch(setArbitrumNfts(result));
+        // dispatch(setArbitrumNfts(result));
         dispatch(
           setSearchContainer({
             "Arbitrum 1of1": parseArbitrumSingle(result),

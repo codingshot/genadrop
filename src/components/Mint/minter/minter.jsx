@@ -412,7 +412,7 @@ const Minter = () => {
     handleSetState({ mentions: false, attributes: newAttributes });
   };
 
-  const setMint = async () => {
+  const onMint = async () => {
     if (showLocation && location !== "") {
       handleSetState({
         attributes: {
@@ -904,7 +904,6 @@ const Minter = () => {
                       Title <span className={classes.required}>*</span>
                     </label>
                     <input
-                      style={zip ? { pointerEvents: "none" } : {}}
                       type="text"
                       value={fileName}
                       onChange={(event) => {
@@ -1372,7 +1371,7 @@ const Minter = () => {
                 </section> */}
 
                 <section className={classes.mintButtonWrapper}>
-                  <button type="button" onClick={setMint} className={classes.mintBtn}>
+                  <button type="button" onClick={onMint} className={classes.mintBtn}>
                     Mint
                   </button>
                   <button type="button" onClick={handleCancel} className={classes.cancelBtn}>

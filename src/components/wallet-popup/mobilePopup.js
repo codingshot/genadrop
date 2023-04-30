@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import classes from "./mobilePopup.module.css";
 
 // icons
@@ -6,7 +7,6 @@ import metamaskIcon from "../../assets/icon-metamask.svg";
 import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import moreIcons from "../../assets/moreDots.svg";
 import exportIcon from "../../assets/icon-link-white.svg";
-import { Link } from "react-router-dom";
 
 const MobilePopup = ({
   showConnectionMethods,
@@ -27,10 +27,21 @@ const MobilePopup = ({
     setShowMoreOptions(false);
     setConnectionMethods(false);
   };
+  const handleClickOutside = (event) => {
+    const card = document.getElementById("wallet-mobile");
+
+    if (card && !card.contains(event.target) && card?.clientWidth > 0) handleCloseMobileModal();
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, []);
   return (
     <div className={classes.container}>
-      <div className={classes.closeModal} onClick={handleCloseMobileModal} />
-      <div className={classes.mobileRoot}>
+      <div className={classes.mobileRoot} id="wallet-mobile">
         <div className={classes.mobileMain}>
           <div className={classes.heading}>
             <h3>{showConnectionMethods ? "Connect Wallets" : "Connect Your Wallet"}</h3>
@@ -55,7 +66,11 @@ const MobilePopup = ({
             )}
           </div>
           <div className={classes.wrapper}>
-            <div className={`${classes.chains} ${showConnectionMethods && classes.active}`}>
+            <div
+              className={`${classes.chains} ${showConnectionMethods && classes.active} ${
+                showMoreOptions && classes.showMore
+              }`}
+            >
               {connectOptions
                 .filter((chain) => mainnet === chain.isMainnet)
                 .filter((_, idx) => showMoreOptions || idx <= 4)

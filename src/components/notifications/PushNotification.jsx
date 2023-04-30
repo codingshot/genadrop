@@ -4,65 +4,53 @@ import classes from "./pushNotification.module.css";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import { GenContext } from "../../gen-state/gen.context";
 import { setNotification } from "../../gen-state/gen.actions";
+import { subscribeToChannel, unSubscribeFromChannel } from "./notificationFunctions";
 
 const PushNotification = ({ toggleNotification }) => {
-  const [notifs, setNotifs] = useState();
+  const [notifications, setNotifications] = useState();
+  const [isUserSubscribed, setIsUserSubscribed] = useState(false);
   const { connector, account, dispatch } = useContext(GenContext);
 
-  const subscribeToChannel = async () => {
-    const _signer = connector.getSigner();
-    try {
-      await PushAPI.channels.subscribe({
-        signer: _signer,
-        channelAddress: "eip155:80001:0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
-        userAddress: `eip155:80001:${account}`,
-        onSuccess: () => {
-          dispatch(
-            setNotification({
-              type: "success",
-              message: "Successfully subscribed to channel",
-            })
-          );
-        },
-        onError: () => {
-          dispatch(
-            setNotification({
-              type: "warning",
-              message: "Unsuccessful, Something went wrong",
-            })
-          );
-        },
-        env: "staging",
-      });
-    } catch (error) {
-      dispatch(
-        setNotification({
-          type: "warning",
-          message: "Unsuccessful, Something went wrong",
-        })
-      );
-    }
+  const subscriptionProps = {
+    account,
+    connector,
+    dispatch,
+    setNotification,
   };
 
-  const loadNotifications = useCallback(async () => {
-    try {
-      const feeds = await PushAPI.channels._getSubscribers({
-        channel: "0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
+  const loadNotifications = () => {};
 
-        // user: "0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13",
-        // // limit: 50,
+  const confirmUserSubscriptionStatus = useCallback(async () => {
+    try {
+      const currentChannelSubscriptions = await PushAPI.user.getSubscriptions({
+        user: `eip155:80001:${account}`,
         env: "staging",
       });
-      console.log(feeds);
-      setNotifs(feeds);
-    } catch (error) {
-      console.log(error);
-    }
+      if (currentChannelSubscriptions.length) {
+        const subscribedAddress = currentChannelSubscriptions?.map((data) => data?.channel);
+        if (subscribedAddress.includes("0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13")) {
+          setIsUserSubscribed(true);
+        } else {
+          setIsUserSubscribed(false);
+        }
+      } else {
+        setIsUserSubscribed(false);
+      }
+    } catch (error) {}
   }, []);
 
   useEffect(() => {
-    loadNotifications();
+    confirmUserSubscriptionStatus();
   }, []);
+
+  const handleSubscription = () => {
+    if (isUserSubscribed) {
+      unSubscribeFromChannel(subscriptionProps);
+    } else {
+      subscribeToChannel(subscriptionProps);
+    }
+  };
+
   const handleClose = () => toggleNotification({ openNotification: false });
 
   return (
@@ -76,8 +64,8 @@ const PushNotification = ({ toggleNotification }) => {
         <span>You don't have any notifications yet</span>
       </div>
       <div className={classes.footer}>
-        <button onClick={subscribeToChannel} type="button" className={classes.subsButton}>
-          Subscribe
+        <button onClick={handleSubscription} type="button" className={classes.subsButton}>
+          {isUserSubscribed ? "UnSubscribe" : "Subscribe"}
         </button>
       </div>
     </div>

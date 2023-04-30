@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import supportedChains from "../../utils/supportedChains";
@@ -23,9 +23,10 @@ const Search = ({ searchPlaceholder, type }) => {
     setState((state) => ({ ...state, ...payload }));
   };
 
+
+
   const handleChange = (e) => {
     handleSetState({ value: e.target.value });
-
     handleSuggestions({ handleSetState, searchContainer, value: e.target.value, type });
   };
 
