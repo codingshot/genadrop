@@ -636,7 +636,7 @@ query MyQuery {
 
 export const GET_POLYGON_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
 query MyQuery {
-  nfts(first: 5 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(first: 10 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -680,7 +680,7 @@ export const GET_CELO_SINGLE_NFT = gql`
 
 export const GET_CELO_SINGLE_NFT_WITH_LIMITS = gql`
   query MyQuery {
-    nfts(first: 7 where: { collection_in: ["${celoAddress}"]}) {
+    nfts(first: 10 where: { collection_in: ["${celoAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -718,7 +718,7 @@ query MyQuery {
 
 export const GET_CELO_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
 query MyQuery {
-  nfts(first: 8 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(first: 10 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
