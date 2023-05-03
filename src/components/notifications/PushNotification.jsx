@@ -18,7 +18,17 @@ const PushNotification = ({ toggleNotification }) => {
     setNotification,
   };
 
-  const loadNotifications = () => {};
+  const loadNotifications = useCallback(async () => {
+    try { 
+      const notifications = await PushAPI.user.getFeeds({
+        user: 'eip155:5:0xFb6d5fAa665783f4E4A1f5B198797C4d39478F13', // user address in CAIP
+        env: 'staging'
+      });
+      console.log(notifications);
+    } catch (error) {
+        console.log(error)
+    }
+  }, []);
 
   const confirmUserSubscriptionStatus = useCallback(async () => {
     try {
@@ -41,6 +51,7 @@ const PushNotification = ({ toggleNotification }) => {
 
   useEffect(() => {
     confirmUserSubscriptionStatus();
+    loadNotifications()
   }, []);
 
   const handleSubscription = () => {
