@@ -70,13 +70,13 @@ const cards = [
     value: "ai",
     url: "/mint/ai",
   },
-  {
-    title: "Tweets",
-    description: "Mint your favorite tweets on chain",
-    icon: <Tweets />,
-    value: "tweet",
-    url: "/mint/tweet",
-  },
+  // {
+  //   title: "Tweets",
+  //   description: "Mint your favorite tweets on chain",
+  //   icon: <Tweets />,
+  //   value: "tweet",
+  //   url: "/mint/tweet",
+  // },
   // {
   //   title: "IPFS",
   //   description: "Mint your NFTs using IPFS link",
