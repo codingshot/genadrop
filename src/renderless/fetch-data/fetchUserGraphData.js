@@ -62,7 +62,9 @@ import {
 } from "../../utils/graphqlClient";
 import { useQuery } from "urql";
 
-const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS);
+import { getEnv } from "../../env";
+
+const soulboundSingleFilterAddress = ethers.utils.hexlify(getEnv('REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS'));
 
 export const polygonUserData = async (address) => {
   const { data: polygonData, error: polygonError } = await polygonClient
@@ -180,9 +182,9 @@ export const getPolygonMintedNFTs = async (address) => {
   if (polygonError) return;
 
   const filterAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers.utils.hexlify(getEnv('REACT_APP_POLY_TESTNET_SINGLE_ADDRESS'))
+      : ethers.utils.hexlify(getEnv('REACT_APP_GENA_MAINNET_SINGLE_ADDRESS'));
   const response = await getSingleGraphNfts(data?.user?.nfts, data?.user?.id);
   const polygonMintedNfts = response?.filter(
     (NFTS) =>
@@ -229,9 +231,9 @@ export const getCeloMintedNFTs = async (address) => {
   const { data, error: celoError } = await celoClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (celoError) return;
   const filterAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers?.utils?.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
-      : ethers?.utils?.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers?.utils?.hexlify(getEnv('REACT_APP_CELO_TESTNET_SINGLE_ADDRESS'))
+      : ethers?.utils?.hexlify(getEnv('REACT_APP_CELO_MAINNET_SINGLE_ADDRESS'));
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
   const celoMintedNfts = response?.filter(
     (NFTS) =>
@@ -278,15 +280,15 @@ export const getAuroraMintedNfts = async (address) => {
   if (auroraError) return;
 
   const filterAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers.utils.hexlify(getEnv('REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS'))
+      : ethers.utils.hexlify(getEnv('REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS'));
 
   const auroraSoulBoundAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS);
-
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers.utils.hexlify(getEnv('REACT_APP_AURORA_TESTNET_SOULBOUND_ADDRESS'))
+      : ethers.utils.hexlify(getEnv('REACT_APP_AURORA_MAINNET_SOULBOUND_ADDRESS'));
+  
   const response = await getSingleGraphNfts(data?.user?.nfts, address);
   const auroraMintedNfts = response?.filter(
     (NFTS) => !NFTS?.sold && (NFTS?.collectionId === auroraSoulBoundAddress || NFTS?.collectionId === filterAddress)
@@ -452,9 +454,9 @@ export const getAllAuroraCollections = async () => {
   if (error) return [];
   const result = await getGraphCollections(data?.collections);
   const filterAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS);
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers.utils.hexlify(getEnv('REACT_APP_AURORA_TESTNET_SINGLE_ADDRESS'))
+      : ethers.utils.hexlify(getEnv('REACT_APP_AURORA_MAINNET_SINGLE_ADDRESS'));
   const res = result?.filter((aurora) => aurora?.Id !== filterAddress);
   return res;
 };
@@ -464,9 +466,9 @@ export const getAllPolygonCollections = async () => {
   if (error) return [];
   const result = await getGraphCollections(data?.collections);
   const filterAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_POLY_TESTNET_SINGLE_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_GENA_MAINNET_SINGLE_ADDRESS);
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers.utils.hexlify(getEnv('REACT_APP_POLY_TESTNET_SINGLE_ADDRESS'))
+      : ethers.utils.hexlify(getEnv('REACT_APP_GENA_MAINNET_SINGLE_ADDRESS'));
   const res = result?.filter((aurora) => aurora?.Id !== filterAddress && aurora?.Id !== soulboundSingleFilterAddress);
   return res;
 };
@@ -476,9 +478,9 @@ export const getAllCeloCollections = async () => {
   if (error) return [];
   const result = await getGraphCollections(data?.collections);
   const filterAddress =
-    process.env.REACT_APP_ENV_STAGING === "true"
-      ? ethers.utils.hexlify(process.env.REACT_APP_CELO_TESTNET_SINGLE_ADDRESS)
-      : ethers.utils.hexlify(process.env.REACT_APP_CELO_MAINNET_SINGLE_ADDRESS);
+    getEnv('REACT_APP_ENV_STAGING') === "true"
+      ? ethers.utils.hexlify(getEnv('REACT_APP_CELO_TESTNET_SINGLE_ADDRESS'))
+      : ethers.utils.hexlify(getEnv('REACT_APP_CELO_MAINNET_SINGLE_ADDRESS'));
   const res = result?.filter((aurora) => aurora?.Id !== filterAddress && aurora?.Id !== soulboundSingleFilterAddress);
   return res;
 };

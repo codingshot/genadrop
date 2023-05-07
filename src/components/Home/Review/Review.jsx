@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import classes from "./Review.module.css";
 import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
+import { getEnv } from '../../../env';
 
 import displayShadow from "../../../assets/home-display-shadow.png";
 import { twitterAPIURL } from "./Reviews-Script";
@@ -38,7 +39,7 @@ const Review = () => {
 
       .get(`https://cors-anywhere-wjlt.onrender.com/${twitterAPIURL(reviews)}`, {
         headers: {
-          Authorization: `Bearer ${process.env.REACT_APP_TWITTER_ACCESS_TOKEN}`,
+          Authorization: `Bearer ${getEnv('REACT_APP_TWITTER_ACCESS_TOKEN')}`,
         },
       })
       .then((data) => {

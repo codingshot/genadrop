@@ -18,6 +18,8 @@ import arbitrumChainIcon from "../assets/chainIcons/arbitrum.svg";
 import auroraChainIcon from "../assets/chainIcons/aurora.svg";
 import polygonChainIcon from "../assets/chainIcons/polygon.svg";
 
+import { getEnv } from "../env";
+
 const supportedChains = {
   1111: {
     id: "near",
@@ -55,7 +57,7 @@ const supportedChains = {
     symbol: "ALGO",
     networkId: 4160,
     add: null,
-    isMainnet: process.env.REACT_APP_ENV_STAGING === "false",
+    isMainnet: getEnv('REACT_APP_ENV_STAGING') === "false",
     switch: null,
   },
   80001: {
@@ -253,7 +255,7 @@ export const orderedChainsList = [
     symbol: "ALGO",
     networkId: 4160,
     add: null,
-    isMainnet: process.env.REACT_APP_ENV_STAGING === "false",
+    isMainnet: getEnv('REACT_APP_ENV_STAGING') === "false",
     switch: null,
   },
   {

@@ -45,6 +45,8 @@ import IpfsImage from "../IpfsImage/IpfsImage";
 import QrReaderContainer from "../../../pages/NFT-Detail/ImageModal/ImageModal";
 import { useCallback } from "react";
 
+import { getEnv } from '../../../env';
+
 const Minter = () => {
   const params = useParams();
   const browserLocation = useLocation();
@@ -428,7 +430,7 @@ const Minter = () => {
 
     if (mintId === "ai") {
       dispatch(setLoader("Getting image"));
-      const response = await fetch(`${process.env.REACT_APP_TWITTER_BACKEND}singleImage`, {
+      const response = await fetch(`${getEnv('REACT_APP_TWITTER_BACKEND')}singleImage`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -4,6 +4,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import algoIcon from "../../assets/icon-algo.svg";
 import supportedChains from "../../utils/supportedChains";
 import { chainIdToParams } from "../../utils/chainConnect";
+
+import { getEnv } from '../../env';
 const Transaction = (data) => {
   function breakAddress(address = "", width = 6) {
     if (!address) return "--";
@@ -12,7 +14,7 @@ const Transaction = (data) => {
 
   const [state, setState] = useState({
     explorer:
-      process.env.REACT_APP_ENV_STAGING === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
+      getEnv('REACT_APP_ENV_STAGING') === "false" ? "https://algoexplorer.io/" : "https://testnet.algoexplorer.io/",
     isCopied: false,
     showDrop: false,
     clicked: "",
