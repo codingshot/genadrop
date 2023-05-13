@@ -282,7 +282,112 @@ Follow the steps below to contribute to Genadrop
 --- Demo video ---
 https://www.loom.com/share/19d35f0ec9434411851190984475a676
 
+<!-- Contract Docs -->
+
+## NEAR Contract Docs
+### genadrop-contract.nftgen.near
+| **Contract Name** | *NEAR Mainnet* |
+| --- | --- |
+| **Contract Address** | *genadrop-contract.nftgen.near* |
+| **Chain Name** | *NEAR Mainnet* |
+| **Chain ID** | *null* |
+| **Type** | *near* |
+| **RPC URL** | *https://rpc.mainnet.near.org* |
+
+### nft_approve
+| Name | State Mutability |
+| --- | --- |
+| *nft_approve* | *null* |
+
+### nft_is_approved
+| Name | State Mutability |
+| --- | --- |
+| *nft_is_approved* | *null* |
+
+### nft_revoke
+| Name | State Mutability |
+| --- | --- |
+| *nft_revoke* | *null* |
+
+### nft_revoke_all
+| Name | State Mutability |
+| --- | --- |
+| *nft_revoke_all* | *null* |
+
+### nft_total_supply
+| Name | State Mutability |
+| --- | --- |
+| *nft_total_supply* | *null* |
+
+### nft_tokens
+| Name | State Mutability |
+| --- | --- |
+| *nft_tokens* | *null* |
+
+### nft_supply_for_owner
+| Name | State Mutability |
+| --- | --- |
+| *nft_supply_for_owner* | *null* |
+
+### nft_tokens_for_owner
+| Name | State Mutability |
+| --- | --- |
+| *nft_tokens_for_owner* | *null* |
+
+### nft_metadata
+| Name | State Mutability |
+| --- | --- |
+| *nft_metadata* | *null* |
+
+### nft_mint
+| Name | State Mutability |
+| --- | --- |
+| *nft_mint* | *null* |
+
+### nft_transfer
+| Name | State Mutability |
+| --- | --- |
+| *nft_transfer* | *null* |
+
+### nft_transfer_call
+| Name | State Mutability |
+| --- | --- |
+| *nft_transfer_call* | *null* |
+
+### nft_token
+| Name | State Mutability |
+| --- | --- |
+| *nft_token* | *null* |
+
+### nft_resolve_transfer
+| Name | State Mutability |
+| --- | --- |
+| *nft_resolve_transfer* | *null* |
+
+### nft_payout
+| Name | State Mutability |
+| --- | --- |
+| *nft_payout* | *null* |
+
+### nft_transfer_payout
+| Name | State Mutability |
+| --- | --- |
+| *nft_transfer_payout* | *null* |
+
+### new_default_meta
+| Name | State Mutability |
+| --- | --- |
+| *new_default_meta* | *null* |
+
+### new
+| Name | State Mutability |
+| --- | --- |
+| *new* | *null* |
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 <!-- CONTRIBUTING -->
+
 
 ## Contributing
 
