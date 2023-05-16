@@ -1,3 +1,9 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-shadow */
+/* eslint-disable func-names */
+/* eslint-disable consistent-return */
+/* eslint-disable no-async-promise-executor */
+/* eslint-disable import/no-self-import */
 // packages
 import Web3 from "web3";
 import { ConnectExtension } from "@magic-ext/connect";
@@ -12,7 +18,6 @@ import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
 import { setupHereWallet } from "@near-wallet-selector/here-wallet";
-import { setupXDEFI } from "@near-wallet-selector/xdefi";
 import { setupNightly } from "@near-wallet-selector/nightly";
 
 // near styles & icons
@@ -21,7 +26,6 @@ import SenderIconUrl from "@near-wallet-selector/sender/assets/sender-icon.png";
 import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-icon.png";
 import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
-import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
 import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import "@near-wallet-selector/modal-ui/styles.css";
 
@@ -94,7 +98,7 @@ export const initializeConnection = async (walletProps) => {
     });
 
     // Subscribe to session disconnection
-    walletConnectProvider.on("disconnect", (code, reason) => {
+    walletConnectProvider.on("disconnect", () => {
       WS.disconnectWallet(walletProps);
     });
   } else if (rpc) {
@@ -113,7 +117,7 @@ export const initializeConnection = async (walletProps) => {
     });
 
     // Subscribe to session disconnection
-    walletConnectProvider.on("disconnect", (code, reason) => {
+    walletConnectProvider.on("disconnect", () => {
       WS.disconnectWallet(walletProps);
     });
   } else if (
@@ -171,12 +175,12 @@ export const initializeConnection = async (walletProps) => {
     dispatch(setConnector(ethereumProvider));
     const { ethereum } = window;
     // Subscribe to accounts change
-    ethereum.on("accountsChanged", function (accounts) {
+    ethereum.on("accountsChanged", function () {
       WS.updateAccount(walletProps);
     });
 
     // Subscribe to chainId change
-    ethereum.on("chainChanged", (chainId) => {
+    ethereum.on("chainChanged", () => {
       const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
       dispatch(setConnector(ethereumProvider));
       WS.updateAccount(walletProps);
@@ -316,8 +320,7 @@ export const connectWallet = async (walletProps) => {
       .then(async (accounts) => {
         // WS.updateAccount(walletProps);
 
-        let res;
-        res = await supportedChains[proposedChain]?.switch(proposedChain);
+        const res = await supportedChains[proposedChain]?.switch(proposedChain);
         if (!res) {
           await WS.disconnectWalletConnectProvider(walletConnectProvider);
           const activeChain = await WS.getNetworkID();

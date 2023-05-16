@@ -1,3 +1,4 @@
+import React from "react";
 import classes from "../preview.module.css";
 
 const PageControl = ({ controProps }) => {

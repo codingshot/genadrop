@@ -3,7 +3,7 @@ import moment from "moment";
 import typeCards from "./StickType-script";
 import { ReactComponent as TypeIcon } from "../../assets/stick_type/type-icon.svg";
 import { setZip } from "../../gen-state/gen.actions";
-import { capitalizeFirstLetter, getFileFromBase64, isEmpty } from "../mint-webcam/Capture/Capture-script";
+import { capitalizeFirstLetter, getFileFromBase64 } from "../mint-webcam/Capture/Capture-script";
 import classes from "./StickType.module.css";
 
 const StickType = ({ seshProps }) => {

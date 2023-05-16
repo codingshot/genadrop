@@ -1,4 +1,11 @@
+/* eslint-disable prefer-destructuring */
+/* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-shadow */
+/* eslint-disable prefer-const */
+/* eslint-disable no-restricted-syntax */
 import axios from "axios";
+import { v4 as uuid } from "uuid";
 import {
   addDescription,
   promptDeleteAsset,
@@ -13,7 +20,6 @@ import {
   setPrompt,
 } from "../../gen-state/gen.actions";
 import { getDefaultName, handleImage } from "../../utils";
-import { v4 as uuid } from "uuid";
 
 export const isUnique = (attributes, attr, rule) => {
   const parseAttrToRule = attr.map((p) => ({
@@ -310,7 +316,7 @@ export const handleCollectionDescription = (descriptionProps) => {
 };
 
 export const handleRename = (renameProps) => {
-  const { id, value, index, dispatch } = renameProps;
+  const { id, value, index, dispatch, collectionName } = renameProps;
   if (!value) {
     dispatch(
       renameAsset({

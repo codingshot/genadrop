@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import classes from "./Header.module.css";

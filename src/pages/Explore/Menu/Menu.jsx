@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
+import React, { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import SingleNftCard from "../../../components/Marketplace/SingleNftCard/SingleNftCard";
 import classes from "./Menu.module.css";

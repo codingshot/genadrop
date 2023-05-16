@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 const CONTRACT_NAME = process.env.CONTRACT_NAME;
 const MARKET_CONTRACT_NAME = process.env.MARKET_CONTRACT_NAME;
 

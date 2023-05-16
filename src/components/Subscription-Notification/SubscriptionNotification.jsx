@@ -1,6 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
-import { useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { setUpgradePlan } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
@@ -21,16 +19,16 @@ const SubscriptionNotification = () => {
     }, _5mins);
   };
 
-  const handleUpgrade = () => {
-    dispatch(setUpgradePlan(true));
-    history.push("/create/session/pricing");
-    handleClose();
-  };
-
   const handleClose = () => {
     setToggle(false);
     clearInterval(timerId);
     counter();
+  };
+
+  const handleUpgrade = () => {
+    dispatch(setUpgradePlan(true));
+    history.push("/create/session/pricing");
+    handleClose();
   };
 
   useEffect(() => {

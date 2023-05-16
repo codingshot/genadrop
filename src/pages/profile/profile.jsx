@@ -11,7 +11,6 @@ import avatar from "../../assets/avatar.png";
 import bg from "../../assets/bg.png";
 import copyIcon from "../../assets/icon-copy.svg";
 import { getConnectedChain } from "../../components/wallet/wallet-script";
-import uploadIcon from "../../assets/uploadIcon.svg";
 
 const Profile = () => {
   const history = useHistory();
@@ -20,7 +19,7 @@ const Profile = () => {
   const copyRef = useRef(null);
 
   const handleCopy = (props) => {
-    const { navigator, copy } = props;
+    const { navigator } = props;
     navigator.clipboard.writeText(account);
   };
 

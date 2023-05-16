@@ -1,3 +1,6 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 import { gql } from "@apollo/client";
 import { ethers } from "ethers";
 import {
@@ -17,8 +20,6 @@ import {
   GET_FEATURED_SINGLE_NFT,
   GET_GRAPH_COLLECTIONS,
   GET_GRAPH_NFT,
-  GET_NEAR_COLLECTION,
-  GET_NEAR_COLLECTIONS,
   GET_NEAR_NFT,
   GET_NEAR_SINGLE_NFTS,
   GET_NEAR_SINGLE_NFTS_WITH_LIMIT,
@@ -45,8 +46,6 @@ import {
   getNftCollections,
   getSingleNfts,
   getNearTransactions,
-  getNearCollections,
-  fetchNearCollection,
   getGraphCollectionData,
   getFeaturedGraphNft,
 } from "../../utils";
@@ -57,10 +56,8 @@ import {
   avalancheClient,
   celoClient,
   nearClient,
-  nearCollectionClient,
   polygonClient,
 } from "../../utils/graphqlClient";
-import { useQuery } from "urql";
 
 const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS);
 

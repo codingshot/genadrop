@@ -1,3 +1,6 @@
+/* eslint-disable no-return-await */
+/* eslint-disable no-unused-vars */
+/* eslint-disable consistent-return */
 import { readNftTransaction, readUserProfile } from "../../utils/firebase";
 import { getCeloGraphNft, getGraphCollection, getNearNftDetailTransaction, getTransactions } from "../../utils";
 import {
@@ -55,7 +58,7 @@ export const getGraphData = async ({ graphProps }) => {
   } = graphProps;
 
   if (collectionName) {
-    let graphCollections = [];
+    const graphCollections = [];
     if (nftId.includes("genadorp.testnet")) {
       const nearGraphNft = await getCollectionNft(nftId);
       if (nearGraphNft.length) {

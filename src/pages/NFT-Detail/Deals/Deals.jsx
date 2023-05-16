@@ -1,5 +1,6 @@
-import { useState, useEffect, useContext } from "react";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+/* eslint-disable react/button-has-type */
+import React, { useState, useEffect, useContext } from "react";
+import { Link, useHistory } from "react-router-dom";
 import classes from "./Deals.module.css";
 import supportedChains from "../../../utils/supportedChains";
 import { buyGraphNft, buyNft, getFormatedPrice } from "../../../utils";
@@ -24,9 +25,6 @@ const Deals = ({ nftDetails }) => {
     collection_name,
     isSoulBound,
   } = nftDetails;
-  const {
-    params: { chainId: nftChainId, nftId },
-  } = useRouteMatch();
   const history = useHistory();
   const [usdValue, setUsdValue] = useState(0);
   const buyProps = {

@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useEffect, useState } from "react";
 import { breakAddress, getFormatedTxDate } from "../NFTDetail-script";
 import classes from "./TransactionHistory.module.css";
@@ -40,9 +43,9 @@ const TransactionHistory = ({ transactionHistory, nftDetails }) => {
     handleSetState({ transaction });
   };
 
-  const handleSearchChange = (e) => {
-    handleSetState({ searchValue: e.target.value });
-  };
+  // const handleSearchChange = (e) => {
+  //   handleSetState({ searchValue: e.target.value });
+  // };
 
   const handleSearch = (e) => {
     handleSetState({ searchValue: e.target.value });

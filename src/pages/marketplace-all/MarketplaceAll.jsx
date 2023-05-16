@@ -1,6 +1,7 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
-import { useHistory, useLocation } from "react-router-dom";
 import classes from "./MarketplaceAll.module.css";
 import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/CollectionNftCard";
 import { GenContext } from "../../gen-state/gen.context";
@@ -11,8 +12,6 @@ import {
   sortBy,
   getCollectionsByDate,
   getCollectionsByChain,
-  // getCollectionsBySearch,
-  shuffle,
   filterBy,
 } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
@@ -35,8 +34,6 @@ import {
 
 const MarketplaceAll = () => {
   const { mainnet, dispatch } = useContext(GenContext);
-  const location = useLocation();
-  const history = useHistory();
   const mountRef = useRef(0);
   const [state, setState] = useState({
     collections: [],
@@ -185,7 +182,7 @@ const MarketplaceAll = () => {
           <p>View all minted {filteredCollection.length ? `(${filteredCollection.length} minted)` : "(...)"}</p>
         </div>
         <div className={classes.searchAndFilter}>
-          <Search searchPlaceholder="Search By collections, 1of1s or Users" type={""} />
+          <Search searchPlaceholder="Search By collections, 1of1s or Users" type="" />
 
           <div className={classes.filter}>
             <div className={classes.chainDesktop}>

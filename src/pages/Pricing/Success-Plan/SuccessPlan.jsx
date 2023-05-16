@@ -1,4 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+/* eslint-disable consistent-return */
+/* eslint-disable no-shadow */
+import React, { useContext, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import { useHistory } from "react-router-dom";
 import {
@@ -144,7 +146,7 @@ const SuccessPlan = () => {
         </div>
         <form onSubmit={handleContinue}>
           <input onChange={handleChange} type="text" placeholder="Enter collection name" value={inputValue} />
-          <button onClick={handleContinue} className={inputValue && classes.active}>
+          <button type="button" onClick={handleContinue} className={inputValue && classes.active}>
             Continue
           </button>
         </form>

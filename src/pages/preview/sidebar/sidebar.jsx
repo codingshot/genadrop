@@ -1,3 +1,5 @@
+/* eslint-disable no-restricted-globals */
+import React, { useContext, useRef } from "react";
 import GenadropToolTip from "../../../components/Genadrop-Tooltip/GenadropTooltip";
 import { handleDownload } from "../../../utils/index2";
 import { generateGif, handleCollectionDescription, handleCollectionName, handleFormatChange } from "../preview-script";
@@ -6,7 +8,6 @@ import CaretDown from "../../../assets/icon-caret-down.svg";
 import CaretUP from "../../../assets/icon-caret-up.svg";
 import TextEditor from "../text-editor";
 import classes from "../preview.module.css";
-import { useContext, useRef } from "react";
 import { setNotification, setLoader, setZip, setToggleUpgradeModal } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 
@@ -116,7 +117,7 @@ const Sidebar = ({ sidebarProps }) => {
         {gifShow && (
           <div className={classes.durationWrapper}>
             <div className={classes.durationField}>
-              <div className={classes.durationLabel}></div>
+              <div className={classes.durationLabel} />
               <div className={classes.durationInput}>
                 <input
                   onChange={(e) => handleSetState({ duration: e.target.valueAsNumber })}

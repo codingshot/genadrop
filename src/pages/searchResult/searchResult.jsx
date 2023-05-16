@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";

@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-await-in-loop */
 import fileDownload from "js-file-download";
 import JSZip from "jszip";
@@ -142,9 +143,9 @@ ${i + 1} of ${value.length}`
 export const handleDownload = async (input) => {
   const { dispatch, setZip, setNotification, name, currentPlan } = input;
   // transform attribute to metadata format
-  let value = input.value;
+  let { value } = input;
   value = value.map(({ attributes, ...v }) => {
-    let transformAttribute = attributes.map((attr) => ({
+    const transformAttribute = attributes.map((attr) => ({
       trait_type: attr.trait_type,
       value: attr.imageName,
       rarity: attr.rarity,

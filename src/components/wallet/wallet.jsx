@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import classes from "./wallet.module.css";
@@ -22,7 +23,7 @@ import {
   initConnectWallet,
 } from "./wallet-script";
 
-import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
+// import { setSwitchWalletNotification } from "../../gen-state/gen.actions";
 import PushNotification from "../notifications/PushNotification";
 
 function ConnectWallet() {
@@ -88,9 +89,9 @@ function ConnectWallet() {
     disconnectWallet(walletProps);
   };
 
-  const handleNetworkClick = () => {
-    dispatch(setSwitchWalletNotification(true));
-  };
+  // const handleNetworkClick = () => {
+  //   dispatch(setSwitchWalletNotification(true));
+  // };
 
   const handleDashboard = () => {
     history.push(`/profile/${chainId}/${account}`);
