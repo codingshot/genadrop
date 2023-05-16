@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+import React from "react";
 import moment from "moment";
 import classes from "./tweeter.module.css";
 

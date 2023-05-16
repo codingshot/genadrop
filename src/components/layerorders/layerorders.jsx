@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/no-autofocus */
+/* eslint-disable no-unused-expressions */
 import React, { useContext, useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { v4 as uuid } from "uuid";
@@ -22,7 +25,7 @@ import LayerInput from "./Layer-Input/LayerInput";
 import { ReactComponent as EditIcon } from "../../assets/icon-edit.svg";
 import { ReactComponent as MarkIcon } from "../../assets/icon-mark.svg";
 
-const LayerOrders = ({ isCreateModal }) => {
+const LayerOrders = () => {
   const { layers, rule, dispatch, collectionName, isRule, promptLayer } = useContext(GenContext);
   const [state, setState] = useState({
     prompt: false,

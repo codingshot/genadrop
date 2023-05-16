@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import classes from "./attributeOverlay.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";

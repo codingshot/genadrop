@@ -5,11 +5,8 @@
 /* eslint-disable no-async-promise-executor */
 /* eslint-disable import/no-self-import */
 // packages
-import Web3 from "web3";
-import { ConnectExtension } from "@magic-ext/connect";
 import { ethers } from "ethers";
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { Magic } from "magic-sdk";
 
 // near wallets
 import { setupSender } from "@near-wallet-selector/sender";
@@ -264,15 +261,7 @@ export const initConnectWallet = (walletProps) => {
 };
 
 export const connectWallet = async (walletProps) => {
-  const {
-    dispatch,
-    proposedChain,
-    connectionMethod,
-    walletProviderRef,
-    handleSetState,
-    mainnet,
-    walletConnectProvider,
-  } = walletProps;
+  const { dispatch, proposedChain, connectionMethod, walletProviderRef, handleSetState, mainnet } = walletProps;
   if (connectionMethod === "metamask") {
     if (window?.ethereum !== undefined) {
       await WS.connectWithMetamask(walletProps);
@@ -303,47 +292,6 @@ export const connectWallet = async (walletProps) => {
         },
       });
     }
-  } else if (connectionMethod === "magicLink") {
-    const magic = new Magic("pk_live_051193EF8469FA65", {
-      network: {
-        rpcUrl: chainIdToParams[proposedChain].rpcUrls[0],
-        chainId: proposedChain,
-      },
-      locale: "en_US",
-      extensions: [new ConnectExtension()],
-    });
-
-    const web3 = new Web3(magic.rpcProvider);
-
-    web3.eth
-      .getAccounts()
-      .then(async (accounts) => {
-        // WS.updateAccount(walletProps);
-
-        const res = await supportedChains[proposedChain]?.switch(proposedChain);
-        if (!res) {
-          await WS.disconnectWalletConnectProvider(walletConnectProvider);
-          const activeChain = await WS.getNetworkID();
-          if (activeChain === proposedChain) {
-            WS.updateAccount(walletProps);
-          }
-        } else {
-          dispatch(setChainId(Number(proposedChain)));
-          dispatch(setAccount(accounts[0]));
-          dispatch(
-            setNotification({
-              message: `Your site is connected to ${supportedChains[proposedChain].label}`,
-              type: "success",
-            })
-          );
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    const ethereumProvider = new ethers.providers.Web3Provider(window.ethereum);
-    dispatch(setConnector(ethereumProvider));
   }
 };
 

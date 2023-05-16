@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React from "react";
 import classes from "./footer.module.css";
 import logo from "../../assets/genadrop-logo-light.svg";

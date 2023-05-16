@@ -1,3 +1,6 @@
+/* eslint-disable prefer-const */
+/* eslint-disable jsx-a11y/no-autofocus */
+/* eslint-disable no-restricted-syntax */
 import React, { useContext, useState, useEffect } from "react";
 import {
   addPreview,
@@ -118,10 +121,7 @@ const ArtCard = ({ layerTitle, trait, setActiveCard, activeCard, layerId, index 
         {!isRule ? (
           <CloseIcon onClick={handleRemove} className={classes.closeIcon} />
         ) : (
-          <RadioButton
-            active={activeCard === index ? true : false}
-            onClick={() => handleAddPreview(traitTitle, image)}
-          />
+          <RadioButton active={activeCard === index} onClick={() => handleAddPreview(traitTitle, image)} />
         )}
       </div>
       <div onClick={() => handleAddPreview(traitTitle, image)} className={classes.imageContainer}>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import axios from "axios";

@@ -6,7 +6,7 @@ import Preview from "./pages/preview/preview";
 import Explore from "./pages/Explore/Explore";
 import Collections from "./pages/collections/collections";
 import Dashboard from "./pages/dashboard/dashboard";
-import docsEmbed from "./pages/docs/docsEmbed";
+// import docsEmbed from "./pages/docs/docsEmbed";
 import List from "./pages/listNFT/list";
 import Profile from "./pages/profile/profile";
 import SingleNftCollection from "./pages/singleNftCollection/singleNftCollection";

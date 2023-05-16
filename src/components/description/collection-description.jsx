@@ -1,12 +1,14 @@
-import React, { useContext, useEffect, useRef } from "react";
+/* eslint-disable react/jsx-curly-brace-presence */
+/* eslint-disable no-return-assign */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-shadow */
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { setImageQuality, setOverlay, setMintAmount, setToggleUpgradeModal } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import CollectionDetails from "../details/collection-details";
 import classes from "./collection-description.module.css";
 import CollectionPreview from "../preview/collection-preview";
-// import GenadropToolTip from "../Genadrop-Tooltip/GenadropTooltip";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 import { ReactComponent as PreviewIcon } from "../../assets/icon-preview.svg";
 import { handleGenerate } from "./collection-description-script";
 import { plans } from "../../pages/Pricing/Pricing.script";

@@ -1,18 +1,15 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import classes from "./Banner.module.css";
-import { ReactComponent as PlayIcon } from "../../../assets/icon-play.svg";
-import demo from "../../../assets/vid/Demo.mp4";
-import poster from "../../../assets/poster.png";
 
 const Banner = () => {
-  const videoRef = useRef(null);
-  const [showOverlayer, setShowOverlay] = useState(true);
+  // const videoRef = useRef(null);
+  // const [showOverlayer, setShowOverlay] = useState(true);
 
-  const handlePlay = () => {
-    videoRef.current.play();
-    setShowOverlay(false);
-  };
+  // const handlePlay = () => {
+  //   videoRef.current.play();
+  //   setShowOverlay(false);
+  // };
 
   // useEffect(() => {
   //   videoRef.current.addEventListener("ended", () => {
