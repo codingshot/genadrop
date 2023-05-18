@@ -1,3 +1,8 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable prefer-const */
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useEffect, useState, useRef, useContext } from "react";
 import classes from "./create-guide.module.css";
 import rightCtrl from "../../assets/icon-angle-right.svg";

@@ -1,3 +1,8 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-unused-expressions */
 export const handleImage = async ({ layers, preview, canvas, width, height }) => {
   canvas.setAttribute("width", width);
   canvas.setAttribute("height", height);

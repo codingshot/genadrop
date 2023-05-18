@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from "react";
 import classes from "./collectionPreview.module.css";
 import arrowIconLeft from "../../../assets/icon-arrow-left.svg";

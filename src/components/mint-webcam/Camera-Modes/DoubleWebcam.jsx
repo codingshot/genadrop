@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import React, { useEffect, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./Camera.module.css";
@@ -139,7 +140,7 @@ const DoubleWebcam = ({ doubleCameraProps }) => {
         {loaderToggle && (
           <div className={classes.loader}>
             <Hypnosis width="4rem" height="4rem" />
-            <p>Don't move and keep smiling</p>
+            <p>Don&apos;t move and keep smiling</p>
           </div>
         )}
         {img && <img className={classes.rearImg} src={img} alt="camera-shot" ref={rearCamera} />}

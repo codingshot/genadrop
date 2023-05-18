@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useContext } from "react";
 import SearchBar from "../../../components/Marketplace/Search-bar/searchBar.component";
 import classes from "../Explore.module.css";
@@ -7,24 +8,12 @@ import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const Items = ({ handleSetState, state, collectionName }) => {
-  const {
-    toggleFilter,
-    collection,
-    NFTCollection,
-    attributes,
-    filter,
-    filterToDelete,
-    FilteredCollection,
-    headerHeight,
-    loadedChain,
-    activeType,
-  } = state;
+  const { toggleFilter, attributes, filter, filterToDelete, FilteredCollection, headerHeight, loadedChain } = state;
   const handleFilter = (_filter) => {
     handleSetState({ filter: { ...filter, ..._filter } });
   };
 
-  const { dispatch, mainnet, algoCollections, auroraCollections, polygonCollections, celoCollections } =
-    useContext(GenContext);
+  const { algoCollections } = useContext(GenContext);
 
   return (
     <div className={classes.displayWrapper}>
@@ -42,8 +31,8 @@ const Items = ({ handleSetState, state, collectionName }) => {
 
         <div className={classes.filterDisplay}>
           {filter?.attributes &&
-            filter.attributes.map((f, idx) => (
-              <div key={idx} className={classes.filteredItem}>
+            filter.attributes.map((f) => (
+              <div key={Date.now()} className={classes.filteredItem}>
                 <span>{f.trait_type}</span>:<span>{f.value}</span>
                 <CloseIcon onClick={() => handleSetState({ filterToDelete: f })} className={classes.closeIcon} />
               </div>

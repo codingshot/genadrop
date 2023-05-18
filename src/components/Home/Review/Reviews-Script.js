@@ -1,3 +1,5 @@
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -18,7 +20,7 @@ export const getFormattedDate = (date, address = true) => {
     ? `${dayName}, ${monthName} ${dayMonth}, ${yaer}, ${getHours(d)} UTC`
     : `${dayName}, ${monthName} ${dayMonth}, ${yaer} | ${getHours(d)} UTC`;
 };
-export const getFormattedDateTweets = (date, address = true) => {
+export const getFormattedDateTweets = (date) => {
   const d = new Date(date);
   const dayName = days[d.getDay()];
   const dayMonth = d.getDate();

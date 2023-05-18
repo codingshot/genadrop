@@ -1,3 +1,4 @@
+import React from "react";
 import Graph from "../../../components/Nft-details/graph/graph";
 import classes from "./PriceHistory.module.css";
 import { ReactComponent as HistoryIcon } from "../../../assets/icon-history.svg";

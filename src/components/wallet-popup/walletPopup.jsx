@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useContext, useEffect, useState } from "react";
 
 // near wallets
@@ -8,7 +9,6 @@ import { setupHereWallet } from "@near-wallet-selector/here-wallet";
 import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 import { setupSender } from "@near-wallet-selector/sender";
-// import { setupXDEFI } from "@near-wallet-selector/xdefi";
 import { setupNightly } from "@near-wallet-selector/nightly";
 
 // near wallet styles & icons
@@ -18,7 +18,6 @@ import NearIconUrl from "@near-wallet-selector/near-wallet/assets/near-wallet-ic
 import MyNearIconUrl from "@near-wallet-selector/my-near-wallet/assets/my-near-wallet-icon.png";
 import MeteorIconUrl from "@near-wallet-selector/meteor-wallet/assets/meteor-icon.png";
 import HereWalletIconUrl from "@near-wallet-selector/here-wallet/assets/here-wallet-icon.png";
-// import XDefiIcon from "@near-wallet-selector/xdefi/assets/xdefi-icon.png";
 import NightlyIcon from "@near-wallet-selector/nightly/assets/nightly.png";
 import classes from "./walletPopup.module.css";
 
@@ -39,14 +38,8 @@ import MobilePopup from "./mobilePopup";
 
 // unused for now
 
-// import { async } from "regenerator-runtime";
-// import Web3 from "web3";
-// import { Magic } from "magic-sdk";
-// import { ConnectExtension } from "@magic-ext/connect";
-// import magicLinkIcon from "../../assets/icon-magic-link.svg";
-
 const WalletPopup = ({ handleSetState }) => {
-  const { dispatch, mainnet, connectFromMint, connector } = useContext(GenContext);
+  const { dispatch, mainnet, connectFromMint } = useContext(GenContext);
   const [showMoreOptions, setShowMoreOptions] = useState(false);
   const [showConnectionMethods, setConnectionMethods] = useState(false);
   const [activeChain, setActiveChain] = useState(null);
@@ -87,7 +80,6 @@ const WalletPopup = ({ handleSetState }) => {
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
           setupNightly({ iconUrl: NightlyIcon }),
-          // setupXDEFI({ iconUrl: XDefiIcon }),
         ];
       }
       const walletSelector = await setupWalletSelector({
@@ -136,10 +128,10 @@ const WalletPopup = ({ handleSetState }) => {
     handleProposedChain();
   };
 
-  const handleMagicLink = async () => {
-    handleSetState({ connectionMethod: "magicLink" });
-    handleProposedChain();
-  };
+  // const handleMagicLink = async () => {
+  //   handleSetState({ connectionMethod: "magicLink" });
+  //   handleProposedChain();
+  // };
   useEffect(() => {
     setShowMoreOptions(false);
     setConnectionMethods(false);

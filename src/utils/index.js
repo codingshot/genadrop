@@ -1,6 +1,13 @@
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-shadow */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable no-console */
+/* eslint-disable consistent-return */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-restricted-syntax */
 import axios from "axios";
+import moment from "moment";
 import { utils } from "near-api-js";
 import {
   getAlgoData,
@@ -11,7 +18,7 @@ import {
   PurchaseNft,
   purchasePolygonNfts,
 } from "./arc_ipfs";
-import { fetchUserNfts, readSIngleUserNft } from "./firebase";
+import { readSIngleUserNft } from "./firebase";
 import blankImage from "../assets/blank.png";
 import {
   clearLayers,
@@ -30,11 +37,10 @@ import {
   setCurrentPlan,
 } from "../gen-state/gen.actions";
 import supportedChains from "./supportedChains";
-import moment from "moment";
 
 const PRICE_CONVERSION_VALUE = 0.000000000000000001;
-const NEAR_PRICE_CONVERSION_VALUE = 0.0000000000000000000000001;
 // setting a delay as not exceed the API limit
+
 const getDelayTime = (index, data, batch) => {
   const reqPagination = [...new Array(Math.floor(data.length / batch) + 1)].map((_, idx) => (idx + 1) * batch);
   for (const base of reqPagination) {
@@ -490,14 +496,16 @@ export const getTransactions = async (transactions) => {
   for (let i = 0; i < transactions?.length; i++) {
     try {
       const trnObj = {};
-      (trnObj.buyer = transactions[i]?.to?.id),
-        (trnObj.price = transactions[i]?.price * PRICE_CONVERSION_VALUE),
-        (trnObj.seller = transactions[i].from?.id),
-        (trnObj.txDate = Number(transactions[i]?.txDate)),
-        (trnObj.txId = transactions[i]?.txId),
-        (trnObj.type = transactions[i]?.type);
+      trnObj.buyer = transactions[i]?.to?.id;
+      trnObj.price = transactions[i]?.price * PRICE_CONVERSION_VALUE;
+      trnObj.seller = transactions[i].from?.id;
+      trnObj.txDate = Number(transactions[i]?.txDate);
+      trnObj.txId = transactions[i]?.txId;
+      trnObj.type = transactions[i]?.type;
       trnArr.push(trnObj);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
   return trnArr;
 };
@@ -507,16 +515,16 @@ export const getNearTransactions = async (transactions) => {
   for (let i = 0; i < transactions?.length; i++) {
     try {
       const trnObj = {};
-      (trnObj.buyer = transactions[i]?.to?.id),
-        (trnObj.price = transactions[i]?.price
-          ? utils.format.formatNearAmount((transactions[i]?.price).toString())
-          : 0),
-        (trnObj.seller = transactions[i].from?.id),
-        (trnObj.txDate = Number(transactions[i]?.txDate)),
-        (trnObj.txId = transactions[i]?.txId),
-        (trnObj.type = transactions[i]?.type);
+      trnObj.buyer = transactions[i]?.to?.id;
+      trnObj.price = transactions[i]?.price ? utils.format.formatNearAmount((transactions[i]?.price).toString()) : 0;
+      trnObj.seller = transactions[i].from?.id;
+      trnObj.txDate = Number(transactions[i]?.txDate);
+      trnObj.txId = transactions[i]?.txId;
+      trnObj.type = transactions[i]?.type;
       trnArr.push(trnObj);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
   return trnArr;
 };
@@ -526,16 +534,16 @@ export const getNearNftDetailTransaction = async (transactions) => {
   for (let i = 0; i < transactions?.length; i++) {
     try {
       const trnObj = {};
-      (trnObj.buyer = transactions[i]?.to),
-        (trnObj.price = transactions[i]?.price
-          ? utils.format.formatNearAmount((transactions[i]?.price).toString())
-          : 0),
-        (trnObj.seller = transactions[i].from),
-        (trnObj.txDate = Number(transactions[i]?.txDate)),
-        (trnObj.txId = transactions[i]?.txId),
-        (trnObj.type = transactions[i]?.type);
+      trnObj.buyer = transactions[i]?.to;
+      trnObj.price = transactions[i]?.price ? utils.format.formatNearAmount((transactions[i]?.price).toString()) : 0;
+      trnObj.seller = transactions[i].from;
+      trnObj.txDate = Number(transactions[i]?.txDate);
+      trnObj.txId = transactions[i]?.txId;
+      trnObj.type = transactions[i]?.type;
       trnArr.push(trnObj);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
   return trnArr;
 };
@@ -545,16 +553,16 @@ export const getNearCollectionTransactions = async (transactions) => {
   for (let i = 0; i < transactions?.length; i++) {
     try {
       const trnObj = {};
-      (trnObj.to = transactions[i]?.to),
-        (trnObj.price = transactions[i]?.price
-          ? utils.format.formatNearAmount((transactions[i]?.price).toString())
-          : 0),
-        (trnObj.from = transactions[i].from),
-        (trnObj.date = Number(transactions[i]?.txDate)),
-        (trnObj.id = transactions[i]?.txId),
-        (trnObj.type = transactions[i]?.type);
+      trnObj.to = transactions[i]?.to;
+      trnObj.price = transactions[i]?.price ? utils.format.formatNearAmount((transactions[i]?.price).toString()) : 0;
+      trnObj.from = transactions[i].from;
+      trnObj.date = Number(transactions[i]?.txDate);
+      trnObj.id = transactions[i]?.txId;
+      trnObj.type = transactions[i]?.type;
       trnArr.push(trnObj);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }
   return trnArr;
 };
@@ -637,7 +645,7 @@ export const getCeloGraphNft = async (collection) => {
   return nftObj;
 };
 
-export const getGraphNft = async (collection, mainnet) => {
+export const getGraphNft = async (collection) => {
   const nftObj = [];
   try {
     const { data } = await axios.get(
@@ -668,7 +676,7 @@ export const getGraphNft = async (collection, mainnet) => {
   return nftObj;
 };
 
-export const getFeaturedGraphNft = async (collection, mainnet) => {
+export const getFeaturedGraphNft = async (collection) => {
   const nftObj = [];
   try {
     const { data } = await axios.get(
@@ -698,7 +706,7 @@ export const getFeaturedGraphNft = async (collection, mainnet) => {
   return nftObj;
 };
 
-export const getNearNft = async (collection, mainnet) => {
+export const getNearNft = async (collection) => {
   const nftObj = [];
   try {
     const { data } = await axios.get(
@@ -952,7 +960,7 @@ export const buyGraphNft = async (buyProps) => {
     );
   }
 
-  if (chainId != chain) {
+  if (Number(chainId) !== Number(chain)) {
     return dispatch(
       setNotification({
         message: `Please, connect your wallet to ${supportedChains[chain].label} network and try again.`,

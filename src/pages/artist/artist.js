@@ -4,7 +4,6 @@ import Join from "../../components/artist/Join/Join";
 import classes from "./artist.module.css";
 
 const artist = () => {
-  let a;
   return (
     <div>
       <div className={classes.container}>

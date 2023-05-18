@@ -1,21 +1,10 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-console */
+/* eslint-disable no-plusplus */
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import { nanoid } from "nanoid";
-import { doc, getDoc, query, where, getDocs, onSnapshot, collection } from "firebase/firestore";
-
-// const {
-//   getDatabase,
-//   ref,
-//   get,
-//   child,
-//   push,
-//   update,
-// } = require('firebase/database');
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+import { doc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey:
@@ -80,7 +69,7 @@ async function recordTransaction(assetId, type, buyer, seller, price, txId) {
 async function writeUserData(owner, collection, fileName, collection_id, priceValue, description, mainnet, txId, list) {
   const name = fileName.split("-")[0];
   const updates = {};
-  for (let i = 0; i < collection_id.length; ++i) {
+  for (let i = 0; i < collection_id.length; i++) {
     updates[collection_id[i]] = {
       id: collection_id[i],
       collection: name,
@@ -121,7 +110,7 @@ async function writeUserData(owner, collection, fileName, collection_id, priceVa
 
 async function writeUserProfile(userObj, user) {
   try {
-    const lendy = await db
+    await db
       .collection("profile")
       .doc(`${user}`)
       .set(
@@ -237,8 +226,6 @@ async function readUserProfile(userAddress) {
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       return docSnap.data();
-    } else {
-      return {};
     }
   } catch (error) {
     return {};
@@ -377,7 +364,7 @@ async function writeNftSale(assetId, price, owner, txId, seller) {
   }
 }
 
-async function listNft(assetId, price, owner, manager, txId, list) {
+async function listNft(assetId, price, owner, manager, txId) {
   console.log("so you wanna list??");
   const updates = {};
   const batch = db.batch();

@@ -1,13 +1,14 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-extra-boolean-cast */
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { QrReader } from "react-qr-reader";
-import { useState } from "react";
 
 import classes from "./imageModal.module.css";
 import CloseIcon from "../../../assets/ModalCancel.svg";
 import { setNotification } from "../../../gen-state/gen.actions";
-import { ReactComponent as IconCamera } from "../../../assets/camera_switch_bg.svg";
 
-function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
+function QrReaderContainer({ handleCloseModal, handleAddress, dispatch, mainnet }) {
   const [qrScannerFacingMode, setQrReaderFacingMode] = useState({ facingMode: "environment" });
   function close() {
     handleCloseModal();
@@ -39,25 +40,25 @@ function QrReaderContainer({ handleCloseModal, handleAddress, dispatch }) {
     }
   }
 
-  const toggleQrScannerFacingMode = () => {
-    setQrReaderFacingMode((old) => {
-      let myNew = { ...old };
+  // const toggleQrScannerFacingMode = () => {
+  //   setQrReaderFacingMode((old) => {
+  //     let myNew = { ...old };
 
-      if (myNew.facingMode === "user") {
-        myNew.facingMode = "environment";
-      } else {
-        myNew.facingMode = "user";
-      }
-      return myNew;
-    });
-  };
+  //     if (myNew.facingMode === "user") {
+  //       myNew.facingMode = "environment";
+  //     } else {
+  //       myNew.facingMode = "user";
+  //     }
+  //     return myNew;
+  //   });
+  // };
 
   return ReactDOM.createPortal(
     <>
       <div className={classes.modalShadow} onClick={close} />
       <div className={classes.Modal}>
         <div className={classes.closeBtn}>
-          <img onClick={close} className={classes.CloseIcon} src={CloseIcon} alt="" role="button" />
+          <img onClick={close} className={classes.CloseIcon} src={CloseIcon} alt="" />
         </div>
         <div className={classes.modalContent}>
           <h1>Scan Address</h1>

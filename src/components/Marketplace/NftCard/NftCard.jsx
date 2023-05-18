@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import classes from "./NftCard.module.css";
 import supportedChains from "../../../utils/supportedChains";
-import Copy from "../../copy/copy";
 import { GenContext } from "../../../gen-state/gen.context";
 import avatar from "../../../assets/avatar.png";
 
@@ -14,7 +12,7 @@ const NftCard = ({ nft, listed, chinPrice, use_width, fromDashboard }) => {
   const breakAddress = (address = "", width = 6) => {
     return address && `${address.slice(0, width)}...${address.slice(-width)}`;
   };
-  const { account, priceFeed } = useContext(GenContext);
+  const { priceFeed } = useContext(GenContext);
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {

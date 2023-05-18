@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useContext, useEffect } from "react";
+/* eslint-disable no-param-reassign */
+import React, { useState, useContext, useEffect } from "react";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./googleAuth.module.css";
 import { getCurrentUser, signInWithGoogle } from "./googleAuth.script";

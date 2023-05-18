@@ -1,4 +1,4 @@
-import axios from "axios";
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useCallback, useState, useEffect } from "react";
 import classes from "./ipfsImage.module.css";
 

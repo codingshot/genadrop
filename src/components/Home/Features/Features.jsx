@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-restricted-syntax */
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import classes from "./Features.module.css";

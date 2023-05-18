@@ -1,3 +1,8 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-shadow */
+/* eslint-disable prefer-const */
+/* eslint-disable no-restricted-syntax */
 import { v4 as uuid } from "uuid";
 import {
   setCurrentDnaLayers,
@@ -152,7 +157,7 @@ export const getFirstLayerWithTrait = (layers) => {
 };
 
 export const handleGenerate = async (generateProps) => {
-  var startTime = performance.now();
+  let startTime = performance.now();
   const { isRule, mintAmount, combinations, layers, collectionName, dispatch, rule, canvasRef, imageQuality } =
     generateProps;
 
@@ -222,6 +227,6 @@ export const handleGenerate = async (generateProps) => {
       type: "success",
     })
   );
-  var endTime = performance.now();
+  const endTime = performance.now();
   console.log(`Call to generate collection took ${(endTime - startTime) / 1000} seconds`);
 };

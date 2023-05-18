@@ -22,10 +22,10 @@ import linktree from "../../../assets/linked-tree.svg";
 import { getAlgoData } from "../../NFT-Detail/NFTDetail-script";
 
 const Listed = () => {
-  const { account, mainnet, singleAlgoNfts, activeCollection, algoCollections } = useContext(GenContext);
+  const { mainnet, singleAlgoNfts, activeCollection, algoCollections } = useContext(GenContext);
 
   const {
-    params: { nftId, url },
+    params: { nftId },
   } = useRouteMatch();
   const { params } = useRouteMatch();
   const { chainId } = useContext(GenContext);

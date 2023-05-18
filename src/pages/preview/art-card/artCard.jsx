@@ -1,3 +1,4 @@
+import React from "react";
 import { handleDownload } from "../../../utils/index2";
 import { addGif, handleDelete, handleDeleteAndReplace, handleDescription, handleRename } from "../preview-script";
 import TextEditor from "../text-editor";

@@ -1,3 +1,8 @@
+/* eslint-disable prefer-const */
+/* eslint-disable consistent-return */
+/* eslint-disable no-shadow */
+/* eslint-disable no-plusplus */
+/* eslint-disable prefer-destructuring */
 /* eslint-disable no-alert */
 /* eslint-disable no-await-in-loop */
 // import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
@@ -6,7 +11,6 @@ import { utils } from "near-api-js";
 import JSZip from "jszip";
 import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
-import { util } from "chai";
 
 const BN = require("bn.js");
 
@@ -279,7 +283,7 @@ async function signTx(connector, txns, dispatch) {
     for (let id = 0; id < decodedResult.length; id += chunkSize) {
       const chunk = decodedResult.slice(id, id + chunkSize);
       // should watch for failed transaction sendings on rare occassions and log the signed tx to send later on.
-      const tx = await algodTxnClient.sendRawTransaction(chunk).do();
+      await algodTxnClient.sendRawTransaction(chunk).do();
     }
     dispatch(
       setLoader(
@@ -331,8 +335,7 @@ export async function mintSingleToAlgo(algoMintProps) {
 }
 
 export async function mintSingleToNear(nearMintProps) {
-  const { file, metadata, account, connector, dispatch, price, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
-    nearMintProps;
+  const { file, metadata, dispatch, receiverAddress, isIpfsLink, isAi, fileName } = nearMintProps;
   const {
     contract: { contractId },
     accounts,
@@ -429,19 +432,7 @@ export async function mintSingleToNear(nearMintProps) {
 }
 
 export async function listNearMultipleMarkets(nearMintProps) {
-  const {
-    tokenId,
-    markets,
-    account,
-    connector,
-    dispatch,
-    price,
-    mainnet,
-    receiverAddress,
-    isIpfsLink,
-    isAi,
-    fileName,
-  } = nearMintProps;
+  const { tokenId, markets, price } = nearMintProps;
 
   const {
     contract: { contractId },
@@ -647,27 +638,15 @@ export async function listNearMultipleMarkets(nearMintProps) {
 }
 
 export async function mintSoulBoundPoly(mintprops) {
-  const {
-    file,
-    metadata,
-    price,
-    account,
-    connector,
-    dispatch,
-    setLoader,
-    mainnet,
-    receiverAddress,
-    isIpfsLink,
-    isAi,
-    fileName,
-    isSoulBound,
-  } = mintprops;
+  const { file, metadata, account, connector, dispatch, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
+    mintprops;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
     const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
     const uintArray = asset.metadata.toLocaleString();
+    // eslint-disable-next-line no-unused-vars
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -704,8 +683,8 @@ export async function mintSoulBoundPoly(mintprops) {
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, dispatch, isAi);
-  const uintArray = asset.metadata.toLocaleString();
-  const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  // const uintArray = asset.metadata.toLocaleString();
+  // const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -742,7 +721,6 @@ export async function mintSoulBoundAvax(mintprops) {
   const {
     file,
     metadata,
-    price,
     account,
     connector,
     dispatch,
@@ -752,14 +730,13 @@ export async function mintSoulBoundAvax(mintprops) {
     isIpfsLink,
     isAi,
     fileName,
-    isSoulBound,
   } = mintprops;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
     const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
-    const uintArray = asset.metadata.toLocaleString();
+    // const uintArray = asset.metadata.toLocaleString();
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
       mainnet
@@ -831,7 +808,6 @@ export async function mintSoulBoundCelo(mintprops) {
   const {
     file,
     metadata,
-    price,
     account,
     connector,
     dispatch,
@@ -841,7 +817,6 @@ export async function mintSoulBoundCelo(mintprops) {
     isIpfsLink,
     isAi,
     fileName,
-    isSoulBound,
   } = mintprops;
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
@@ -923,7 +898,6 @@ export async function mintSingleToPoly(singleMintProps) {
   const {
     file,
     metadata,
-    price,
     account,
     connector,
     dispatch,
@@ -1028,7 +1002,6 @@ export async function mintSingleToCelo(singleMintProps) {
   const {
     file,
     metadata,
-    price,
     account,
     connector,
     dispatch,
@@ -1123,7 +1096,6 @@ export async function mintSingleToAvax(singleMintProps) {
   const {
     file,
     metadata,
-    price,
     account,
     connector,
     dispatch,
@@ -1206,20 +1178,8 @@ export async function mintSingleToAvax(singleMintProps) {
 }
 
 export async function mintSingleToAurora(singleMintProps) {
-  const {
-    file,
-    metadata,
-    price,
-    account,
-    connector,
-    dispatch,
-    setLoader,
-    mainnet,
-    receiverAddress,
-    isIpfsLink,
-    isAi,
-    fileName,
-  } = singleMintProps;
+  const { file, metadata, connector, dispatch, setLoader, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
+    singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
@@ -1259,20 +1219,8 @@ export async function mintSingleToAurora(singleMintProps) {
 }
 
 export async function mintSingleToAbitrum(singleMintProps) {
-  const {
-    file,
-    metadata,
-    price,
-    account,
-    connector,
-    dispatch,
-    setLoader,
-    mainnet,
-    receiverAddress,
-    isIpfsLink,
-    isAi,
-    fileName,
-  } = singleMintProps;
+  const { file, metadata, connector, dispatch, setLoader, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
+    singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
@@ -1303,20 +1251,8 @@ export async function mintSingleToAbitrum(singleMintProps) {
 }
 
 export async function mintSingleToOptimism(singleMintProps) {
-  const {
-    file,
-    metadata,
-    price,
-    account,
-    connector,
-    dispatch,
-    setLoader,
-    mainnet,
-    receiverAddress,
-    isIpfsLink,
-    isAi,
-    fileName,
-  } = singleMintProps;
+  const { file, metadata, connector, dispatch, setLoader, mainnet, receiverAddress, isIpfsLink, isAi, fileName } =
+    singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
   const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
@@ -2085,18 +2021,8 @@ export async function mintToAlgo(algoProps) {
 }
 
 export async function mintToCelo(celoProps) {
-  const {
-    price,
-    account,
-    connector,
-    fileName,
-    description,
-    dispatch,
-    setNotification,
-    setLoader,
-    mainnet,
-    receiverAddress,
-  } = celoProps;
+  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet, receiverAddress } =
+    celoProps;
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -2191,18 +2117,8 @@ export async function mintToCelo(celoProps) {
 }
 
 export async function mintToAvax(celoProps) {
-  const {
-    price,
-    account,
-    connector,
-    fileName,
-    description,
-    dispatch,
-    setNotification,
-    setLoader,
-    mainnet,
-    receiverAddress,
-  } = celoProps;
+  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet, receiverAddress } =
+    celoProps;
   const ipfsJsonData = await createNFT({ ...celoProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -2284,20 +2200,8 @@ export async function mintToAvax(celoProps) {
   return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
 }
 
-
 export async function mintToNear(polyProps) {
-  const {
-    price,
-    account,
-    connector,
-    fileName,
-    description,
-    dispatch,
-    setNotification,
-    receiverAddress,
-    setLoader,
-    mainnet,
-  } = polyProps;
+  const { fileName, description, dispatch, receiverAddress, setLoader } = polyProps;
   const {
     contract: { contractId },
     accounts,
@@ -2306,7 +2210,7 @@ export async function mintToNear(polyProps) {
   const collectioName = fileName.trim().toLowerCase().replace(/\s+/g, "");
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
-  
+
   const ids = ipfsJsonData.map((asset) => {
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -2321,10 +2225,8 @@ export async function mintToNear(polyProps) {
 
   const nftDeposit = (utils.format.formatNearAmount("10000000000000000000000") * arrayMetadata.length).toString();
 
-  let response;
-
   if (window?.near?.accountId) {
-    response = await window?.near?.request({
+    await window?.near?.request({
       receiverId: contractId,
       transactions: [
         {
@@ -2337,7 +2239,7 @@ export async function mintToNear(polyProps) {
                 metadata: {
                   spec: "nft-1.0.0",
                   name: fileName.split("-")[0],
-                  symbol: "NFT", 
+                  symbol: "NFT",
                   reference: description,
                 },
                 owner_id: accountId,
@@ -2372,7 +2274,7 @@ export async function mintToNear(polyProps) {
     });
   } else {
     const wallet = await window.selector.wallet();
-    response = await wallet.signAndSendTransactions({
+    await wallet.signAndSendTransactions({
       signerId: accountId,
       receiverId: contractId,
       transactions: [
@@ -2426,18 +2328,8 @@ export async function mintToNear(polyProps) {
 }
 
 export async function mintToPoly(polyProps) {
-  const {
-    price,
-    account,
-    connector,
-    fileName,
-    description,
-    dispatch,
-    setNotification,
-    receiverAddress,
-    setLoader,
-    mainnet,
-  } = polyProps;
+  const { account, connector, fileName, description, dispatch, setNotification, receiverAddress, setLoader, mainnet } =
+    polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
   const contract = await initializeContract({
@@ -2451,14 +2343,6 @@ export async function mintToPoly(polyProps) {
     setLoader,
     description,
   });
-  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  // const marketContract = new ethers.Contract(
-  //   mainnet
-  //     ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-  //     : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
-  //   marketAbi,
-  //   wallet
-  // );
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
@@ -2467,7 +2351,6 @@ export async function mintToPoly(polyProps) {
     return id;
   });
 
-  // const amounts = new Array(ids.length).fill(1);
   let tx;
 
   dispatch(setLoader("finalizing"));
@@ -2478,8 +2361,6 @@ export async function mintToPoly(polyProps) {
     tx = {
       from: account,
       to: contract.address,
-      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
-      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
       data: contract.interface.encodeFunctionData("mintBatch", [receiverAddress, ids, uris]),
       nonce: ethNonce,
     };
@@ -2505,15 +2386,6 @@ export async function mintToPoly(polyProps) {
   try {
     tx = await contract.mintBatch(receiverAddress, ids, uris);
     await tx.wait();
-    // await marketContract.createBulkMarketItem(
-    //   contract.address,
-    //   ids,
-    //   String(price * 10 ** 18),
-    //   amounts,
-    //   "General",
-    //   account,
-    //   description
-    // );
   } catch (error) {
     dispatch(setLoader(""));
     dispatch(
@@ -2631,7 +2503,7 @@ export async function getAlgoData(mainnet, id) {
 }
 
 export async function mintToAurora(polyProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(
     setNotification({
@@ -2650,14 +2522,6 @@ export async function mintToAurora(polyProps) {
     setLoader,
     description,
   });
-  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  // const marketContract = new ethers.Contract(
-  //   mainnet
-  //     ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
-  //     : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
-  //   marketAbi,
-  //   wallet
-  // );
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
@@ -2676,8 +2540,6 @@ export async function mintToAurora(polyProps) {
     tx = {
       from: account,
       to: contract.address,
-      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
-      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
       data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
       nonce: ethNonce,
     };
@@ -2704,15 +2566,6 @@ export async function mintToAurora(polyProps) {
   try {
     tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
-    // await marketContract.createBulkMarketItem(
-    //   contract.address,
-    //   ids,
-    //   String(price * 10 ** 18),
-    //   amounts,
-    //   "General",
-    //   account,
-    //   description
-    // );
   } catch (error) {
     dispatch(setLoader(""));
     dispatch(
@@ -2734,7 +2587,7 @@ export async function mintToAurora(polyProps) {
 }
 
 export async function mintToArbitrum(polyProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(
     setNotification({
@@ -2779,8 +2632,6 @@ export async function mintToArbitrum(polyProps) {
     tx = {
       from: account,
       to: contract.address,
-      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
-      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
       data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
       nonce: ethNonce,
     };
@@ -2807,15 +2658,6 @@ export async function mintToArbitrum(polyProps) {
   try {
     tx = await contract.mintBatch(account, ids, uris);
     await tx.wait();
-    // await marketContract.createBulkMarketItem(
-    //   contract.address,
-    //   ids,
-    //   String(price * 10 ** 18),
-    //   amounts,
-    //   "General",
-    //   account,
-    //   description
-    // );
   } catch (error) {
     dispatch(setLoader(""));
     dispatch(
@@ -2837,7 +2679,7 @@ export async function mintToArbitrum(polyProps) {
 }
 
 export async function mintToOptimism(polyProps) {
-  const { price, account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
+  const { account, connector, fileName, description, dispatch, setNotification, setLoader, mainnet } = polyProps;
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(
     setNotification({
@@ -2856,14 +2698,6 @@ export async function mintToOptimism(polyProps) {
     setLoader,
     description,
   });
-  // const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  // const marketContract = new ethers.Contract(
-  //   mainnet
-  //     ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
-  //     : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
-  //   marketAbi,
-  //   wallet
-  // );
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
@@ -2882,8 +2716,6 @@ export async function mintToOptimism(polyProps) {
     tx = {
       from: account,
       to: contract.address,
-      // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
-      // gasPrice: ethers.utils.parseUnits('5', "gwei"),
       data: contract.interface.encodeFunctionData("mintBatch", [account, ids, uris]),
       nonce: ethNonce,
     };
@@ -3010,7 +2842,7 @@ export async function PurchaseNft(buyProps) {
   console.log("txes", appCloseTxn, refundTxn, params);
 
   const txList = [payTax, paySeller, optTxn, buyTxn, appCloseTxn, refundTxn];
-  const groupedTx = algosdk.assignGroupID(txList);
+  // const groupedTx = algosdk.assignGroupID(txList);
   const txnsFromManager = [appCloseTxn, refundTxn];
 
   const txnsToSign = txList.map((txn) => {

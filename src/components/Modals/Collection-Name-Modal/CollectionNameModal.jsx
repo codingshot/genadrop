@@ -1,6 +1,6 @@
+/* eslint-disable consistent-return */
+import React, { useEffect, useState, useContext } from "react";
 import classes from "./CollectionNameModal.module.css";
-import { useEffect, useState } from "react";
-import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { setCollectionName, setLayerAction, setToggleCollectionNameModal } from "../../../gen-state/gen.actions";
 
@@ -16,6 +16,11 @@ const CollectionNameModal = () => {
     setInputValue(e.target.value);
   };
 
+  const handleClose = () => {
+    setInputValue("");
+    dispatch(setToggleCollectionNameModal(false));
+  };
+
   const handleClick = (e) => {
     e.preventDefault();
     if (!inputValue) return setError(true);
@@ -26,11 +31,6 @@ const CollectionNameModal = () => {
       })
     );
     handleClose();
-  };
-
-  const handleClose = () => {
-    setInputValue("");
-    dispatch(setToggleCollectionNameModal(false));
   };
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const CollectionNameModal = () => {
             <input value={inputValue} onChange={handleChange} type="text" placeholder="Minority_Drop" />
           </div>
           <div className={`${classes.errorMessage} ${error && classes.error}`}>Enter collection name</div>
-          <button className={`${inputValue && classes.active}`} onClick={handleClick}>
+          <button type="button" className={`${inputValue && classes.active}`} onClick={handleClick}>
             Continue
           </button>
         </form>

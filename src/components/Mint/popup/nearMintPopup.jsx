@@ -1,11 +1,11 @@
+import React, { useContext, useRef, useState } from "react";
+import { useHistory } from "react-router-dom";
 import errorIcon from "../../../assets/icon-error_2.svg";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";
 import classes from "./popup.module.css";
-import { useContext, useRef, useState } from "react";
 import successIcon from "../../../assets/icon-success_2.svg";
 import linkIconAccent from "../../../assets/icon-link-accent.svg";
 import linkIconWhite from "../../../assets/icon-link-white.svg";
-import { useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
 
 export const NearErrorPop = (props) => {
@@ -32,7 +32,7 @@ export const NearErrorPop = (props) => {
         <h3 className={`${classes.heading} ${classes.error}`}>Mint Failed</h3>
         <p className={classes.errorMsg}>Something went wrong while minting, Please try again</p>
         <div className={classes.actionBtnContainer}>
-          <button onClick={handleResetPopup} className={`${classes.actionBtn} ${classes.errorBtn}`}>
+          <button type="button" onClick={handleResetPopup} className={`${classes.actionBtn} ${classes.errorBtn}`}>
             Cancel
           </button>
         </div>
