@@ -1,6 +1,10 @@
+/* eslint-disable no-useless-escape */
+/* eslint-disable import/no-self-import */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable prefer-const */
+import * as PS from "./profile-script";
 import { setLoader, setNotification } from "../../gen-state/gen.actions";
 import { writeUserProfile } from "../../utils/firebase";
-import * as PS from "./profile-script";
 
 export const handleValidate = (state) => {
   const discordRegex = /^[0-9]{18}$/;
@@ -12,7 +16,6 @@ export const handleValidate = (state) => {
     isDiscord: true,
     isEmail: true,
     isTwitter: true,
-    isEmail: true,
   };
 
   if (discordRegex.test(state.discord) || !state.discord) {

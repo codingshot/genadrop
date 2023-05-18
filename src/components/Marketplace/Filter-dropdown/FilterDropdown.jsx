@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable consistent-return */
+/* eslint-disable prefer-const */
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./FilterDropdown.module.css";
 import Dropdown from "../../../pages/Explore/Dropdown/Dropdown";

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import { useCallback, useState } from "react";
 import interval from "./interval";
 

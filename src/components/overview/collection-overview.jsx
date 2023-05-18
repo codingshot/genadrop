@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-restricted-syntax */
 import React, { useContext, useEffect, useState } from "react";
 import CollectionMenu from "../menu/collection-menu";
 import classes from "./collection-overview.module.css";

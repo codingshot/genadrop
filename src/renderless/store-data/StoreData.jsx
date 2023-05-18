@@ -1,10 +1,7 @@
-import { async } from "@firebase/util";
-import axios from "axios";
 import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { setImageAction, setLayerAction, setNftLayers, setPriceFeed } from "../../gen-state/gen.actions";
+import { setImageAction, setLayerAction, setNftLayers } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
-import { getLatestPriceAvax, getLatestPriceCelo, getLatestPriceMatic, getLatestPriceNear } from "../../utils/priceFeed";
 import {
   deleteAllTraits,
   deleteTrait,
@@ -31,7 +28,6 @@ const StoreData = () => {
     layerAction,
     upgradePlan,
     currentPlan,
-    priceFeed,
   } = useContext(GenContext);
 
   const resetLayerAction = () => {
@@ -41,28 +37,6 @@ const StoreData = () => {
       })
     );
   };
-
-  // useEffect(async () => {
-
-  //   getLatestPriceCelo(dispatch);
-  //   getLatestPriceAvax(dispatch);
-  //   getLatestPriceMatic(dispatch);
-  //   getLatestPriceNear(dispatch);
-
-  // }, []);
-
-  // useEffect(()=>{
-  //   axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=algorand&vs_currencies=usd`).then((res) => {
-  //     const price = Object.values(res.data)[0]?.usd;
-  //     dispatch(setPriceFeed({ algorand: price }));
-  //   });
-
-  //   axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=aurora-near&vs_currencies=usd`).then((res) => {
-  //     const price = Object.values(res.data)[0]?.usd;
-
-  //     dispatch(setPriceFeed({ "aurora-near": price }));
-  //   });
-  // },[])
 
   useEffect(() => {
     const { type } = layerAction;
@@ -153,8 +127,8 @@ const StoreData = () => {
         });
         return { traits: newTraits, ...otherLayerProps };
       });
-      layers.forEach(({ id, traits }, i) => {
-        traits.forEach(async (trait, j) => {
+      layers.forEach(({ id, traits }) => {
+        traits.forEach(async (trait) => {
           await saveTraits({ dispatch, currentUser, sessionId, id, traits: [trait] });
         });
       });

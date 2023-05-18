@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import React from "react";
 import classes from "./Orgs.module.css";
 import { ReactComponent as LinkIcon } from "../../../assets/icon-arr-right-long.svg";
@@ -9,8 +10,6 @@ import mpIcon from "../../../assets/logo-polygon-icon.png";
 import celoIcon from "../../../assets/logo-celo-icon.png";
 import algoIcon from "../../../assets/logo-algo-icon.png";
 import nearIcon from "../../../assets/logo-near-icon.png";
-
-import { Link } from "react-router-dom";
 
 const Orgs = () => (
   <div className={classes.container}>

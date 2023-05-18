@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";

@@ -1,3 +1,4 @@
+import React from "react";
 import classes from "./RadioButton.module.css";
 
 const RadioButton = ({ active, onClick }) => {

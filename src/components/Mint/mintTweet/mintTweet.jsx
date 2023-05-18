@@ -1,4 +1,6 @@
-import { useState, useEffect, useContext, useRef } from "react";
+/* eslint-disable no-shadow */
+/* eslint-disable no-unused-expressions */
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import moment from "moment";

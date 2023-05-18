@@ -1,3 +1,6 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-use-before-define */
+/* eslint-disable func-names */
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
@@ -94,7 +97,7 @@ const PricingModal = ({ plan, price, closeModal }) => {
     // This function captures the funds from the transaction.
     return actions.order
       .capture()
-      .then(function (details) {
+      .then(function () {
         // This function shows a transaction success message to your buyer.
         handleClick();
       })

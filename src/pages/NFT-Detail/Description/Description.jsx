@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import classes from "./Description.module.css";
 
 const Description = ({ nftDetails }) => {
@@ -13,7 +13,7 @@ const Description = ({ nftDetails }) => {
       <div className={classes.heading}>Description</div>
       <div className={classes.content}>
         {showMore || description?.length <= 210 ? (
-          <div>{description ? description : "No description available."}</div>
+          <div>{description || "No description available."}</div>
         ) : (
           <div>
             {sentenceBreak(description)} <span onClick={() => setShowMore(true)}>show more</span>

@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-shadow */
 import { useContext, useEffect } from "react";
 import { ethers } from "ethers";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
@@ -17,7 +19,6 @@ import {
   setNearSingleNft,
   setAvaxSingleNfts,
   setArbitrumNfts,
-  setAllNfts,
 } from "../../gen-state/gen.actions";
 import {
   getGraphCollections,
@@ -63,7 +64,6 @@ import {
 const FetchData = () => {
   const { dispatch, mainnet } = useContext(GenContext);
   useEffect(() => {
-
     // Get ALGO Collection
     (async function getALgoCollections() {
       dispatch(setAlgoCollections({}));
@@ -305,7 +305,7 @@ const FetchData = () => {
       }
     })();
 
-    //Avalanche Single Nfts
+    // Avalanche Single Nfts
     (async function getAvalancheSingleNfts() {
       dispatch(setAvaxSingleNfts(null));
 
@@ -331,7 +331,7 @@ const FetchData = () => {
       }
     })();
 
-    //Arbitrum Single Nfts
+    // Arbitrum Single Nfts
     (async function getArbitrumSingleNfts() {
       dispatch(setArbitrumNfts(null));
       const { data, error } = await arbitrumClient.query(GET_NEAR_SINGLE_NFTS).toPromise();

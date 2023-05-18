@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-shadow */
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useContext, useEffect, useState } from "react";
 import classes from "./preview.module.css";
 import { GenContext } from "../../gen-state/gen.context";

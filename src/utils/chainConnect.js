@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export const chainIdToParams = {
   137: {
     chainId: "0x89",

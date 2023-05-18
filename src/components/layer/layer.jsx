@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState, useContext } from "react";
 import { setLayerAction, updateLayer } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";

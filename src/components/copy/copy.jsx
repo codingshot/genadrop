@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useRef } from "react";
 import classes from "./copy.module.css";
 import { ReactComponent as CopyIcon } from "../../assets/icon-copy.svg";

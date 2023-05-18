@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import classes from "./singleNftCollection.module.css";
@@ -7,14 +9,7 @@ import { GenContext } from "../../gen-state/gen.context";
 import SingleNftCard from "../../components/Marketplace/SingleNftCard/SingleNftCard";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import {
-  filterBy,
-  getCollectionsByChain,
-  getCollectionsBySearch,
-  rangeBy,
-  shuffle,
-  sortBy,
-} from "../Marketplace/Marketplace-script";
+import { filterBy, getCollectionsByChain, rangeBy, sortBy } from "../Marketplace/Marketplace-script";
 
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";

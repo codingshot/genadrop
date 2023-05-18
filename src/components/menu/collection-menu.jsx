@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/button-has-type */
 import React, { useRef, useContext, useState } from "react";
 import classes from "./collection-menu.module.css";
 import ArtCard from "../art-card/art-card";

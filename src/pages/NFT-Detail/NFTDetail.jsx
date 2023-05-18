@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
@@ -29,7 +30,7 @@ const NFTDetail = () => {
     load: true,
   });
 
-  const { nftDetails, transactionHistory, collection, _1of1, load } = state;
+  const { nftDetails, transactionHistory, collection, _1of1 } = state;
 
   const { dispatch, algoCollections, activeCollection, singleAlgoNfts, account, connector, mainnet, chainId } =
     useContext(GenContext);

@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+/* eslint-disable consistent-return */
+/* eslint-disable no-shadow */
+/* eslint-disable no-case-declarations */
+import React, { useEffect, useState } from "react";
 import classes from "./exploreTransactionHistory.module.css";
 
 import exportIcon from "../../../assets/icon-export.svg";
@@ -20,7 +23,7 @@ import {
   polygonCollectionTransactions,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
 import NotFound from "../../../components/not-found/notFound";
-import { getCollectionTransactions, getNearCollection } from "../../../renderless/fetch-data/fetchNearCollectionData";
+import { getCollectionTransactions } from "../../../renderless/fetch-data/fetchNearCollectionData";
 
 const ExploreTransactionHistory = ({ collectionId, chain }) => {
   const [state, setState] = useState({

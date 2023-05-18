@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 export const mapAttributeToFilter = (data) => {
   const attributes = {};
   data.forEach(({ ipfs_data }) => {

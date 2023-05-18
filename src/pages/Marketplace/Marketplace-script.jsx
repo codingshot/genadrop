@@ -1,13 +1,15 @@
+/* eslint-disable no-shadow */
+/* eslint-disable consistent-return */
 import moment from "moment";
 import { getFormatedPrice } from "../../utils";
 import supportedChains from "../../utils/supportedChains";
 
-const filterByListed = (collections, account) => {
+const filterByListed = (collections) => {
   return collections.filter((col) => col.isListed);
   // return collections.filter(({ price, owner }) => !price && owner === account);
 };
 
-const filterByNOtListed = (collections, account) => {
+const filterByNOtListed = (collections) => {
   return collections.filter((col) => !col.isListed);
 };
 
@@ -141,7 +143,7 @@ export const getCollectionsByChain = ({ collections, chain, mainnet }) => {
   const mapChainLabelToId = {};
   const chains = Object.values(supportedChains);
   chains
-    .filter((chain) => mainnet === chain.isMainnet)
+    .filter((data) => mainnet === data.isMainnet)
     .forEach((chain) => {
       mapChainLabelToId[chain.chain] = chain;
     });

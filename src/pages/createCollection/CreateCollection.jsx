@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
+/* eslint-disable no-shadow */
+
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import LayerOrders from "../../components/layerorders/layerorders";

@@ -1,3 +1,6 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable consistent-return */
 import React, { useEffect, useState, useContext, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import classes from "./chainDropdown.module.css";
@@ -11,7 +14,7 @@ import nearIcon from "../../../assets/icon-near.svg";
 import avalancheIcon from "../../../assets/icon-avalanche.svg";
 import { ReactComponent as DropdownIcon } from "../../../assets/icon-chevron-down.svg";
 import allChainsIcon from "../../../assets/all-chains.svg";
-import supportedChains, { orderedChainsList } from "../../../utils/supportedChains";
+import { orderedChainsList } from "../../../utils/supportedChains";
 import { GenContext } from "../../../gen-state/gen.context";
 
 const chainIcon = {

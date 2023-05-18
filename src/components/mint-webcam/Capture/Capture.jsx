@@ -1,13 +1,10 @@
-import React, { useRef, useState, useContext, useEffect } from "react";
+/* eslint-disable no-shadow */
+import React, { useRef, useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { async } from "regenerator-runtime";
 import classes from "./Capture.module.css";
 import WebcamEnable from "../webcam-enable/webcamEnable";
 import DoubleWebcam from "../Camera-Modes/DoubleWebcam";
 import RegularCamera from "../Camera-Modes/RegularCamera";
-import { GenContext } from "../../../gen-state/gen.context";
-import { setNotification } from "../../../gen-state/gen.actions";
 // mode switch icons
 import { ReactComponent as IconVideo } from "../../../assets/icon-video.svg";
 import { ReactComponent as IconDoubleTake } from "../../../assets/icon-dual-camera.svg";
@@ -19,8 +16,6 @@ const Capture = () => {
   const history = useHistory();
 
   const pathname = history.location?.pathname.replace("/mint/", "");
-
-  const { dispatch } = useContext(GenContext);
 
   /* regular expression 
   containing some mobile devices keywords 
@@ -78,7 +73,6 @@ const Capture = () => {
     loaderToggle,
     dualCam,
     attributes,
-    category,
   } = state;
 
   const handleSetState = (payload) => {

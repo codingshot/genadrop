@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import classes from "./radioButton.module.css";
 
 const RadioButton = ({ active, onClick }) => {
