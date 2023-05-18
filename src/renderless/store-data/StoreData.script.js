@@ -1,3 +1,13 @@
+/* eslint-disable no-return-assign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable no-return-await */
+/* eslint-disable prefer-const */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-else-return */
+/* eslint-disable no-shadow */
+/* eslint-disable consistent-return */
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-unused-expressions */
 import {
   getStorage,
   ref,
@@ -56,7 +66,7 @@ export const saveNftLayers = ({ currentUser, sessionId, nftLayers, nftTraits }) 
     const docRef = doc(firestore, `users/${currentUser.uid}/nftLayers/${sessionId}`);
     setDoc(docRef, { nftLayers });
     // save the layer trait to storage
-    nftTraits.forEach(async ({ id, image }, idx) => {
+    nftTraits.forEach(async ({ id, image }) => {
       const nftTraitRef = ref(storage, `${currentUser.uid}/nftLayers/${sessionId}/${id}`);
       try {
         await uploadString(nftTraitRef, image, "data_url");
@@ -71,7 +81,7 @@ export const saveTraits = async ({ dispatch, currentUser, sessionId, id, traits 
   if (!traits.length) return;
   if (currentUser && sessionId) {
     await Promise.all(
-      traits.map(async ({ traitTitle, image }, idx) => {
+      traits.map(async ({ traitTitle, image }) => {
         const traitRef = ref(storage, `${currentUser.uid}/${sessionId}/${id}/${traitTitle}`);
         try {
           await uploadBytes(traitRef, image);

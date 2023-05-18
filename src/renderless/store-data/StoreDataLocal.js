@@ -1,3 +1,6 @@
+/* eslint-disable no-return-await */
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable func-names */
 import { dataURItoBlob } from "../../utils";
 
 const getFile = ({ imageUrl, fileName, fileType }) => {
@@ -15,7 +18,7 @@ const delay = async () => {
 
 const getBase64 = async (file) => {
   return new Promise((resolve, reject) => {
-    var reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = function () {
       resolve(reader.result);

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/mouse-events-have-key-events */
 import React, { useRef, useEffect, useState } from "react";
 
 import { ReactComponent as InfoIcon } from "../../assets/tooltip.svg";

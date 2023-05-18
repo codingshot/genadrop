@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+/* eslint-disable prefer-const */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable no-shadow */
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./GenadropCarouselCard.module.css";
 import iconRight from "../../assets/icon-angle-right.svg";
 import iconLeft from "../../assets/icon-angle-left.svg";
-import { useWheel } from "@use-gesture/react";
 
 const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
   const cardContainerRef = useRef(null);
   const wrapperRef = useRef(null);
-  const run = useRef(null);
 
   const [state, setState] = useState({
     wrapperWidth: window.innerWidth,
@@ -35,19 +36,19 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
     setSlideActiveCount((sc) => sc + 1);
   };
 
-  const bind = useWheel(({ wheeling, movement: [x] }) => {
-    if (x > 0 && run.current) {
-      handleSlideRight();
-      run.current = false;
-    } else if (x < 0 && run.current) {
-      handleSlideLeft();
-      run.current = false;
-    }
+  // const bind = useWheel(({ wheeling, movement: [x] }) => {
+  //   if (x > 0 && run.current) {
+  //     handleSlideRight();
+  //     run.current = false;
+  //   } else if (x < 0 && run.current) {
+  //     handleSlideLeft();
+  //     run.current = false;
+  //   }
 
-    if (!wheeling) {
-      run.current = true;
-    }
-  });
+  //   if (!wheeling) {
+  //     run.current = true;
+  //   }
+  // });
 
   useEffect(() => {
     cardContainerRef.current.style.transform = `translateX(-${
@@ -118,12 +119,14 @@ const GenadropCarouselCard = ({ children, cardWidth, gap = 16 }) => {
         {slideNumberOfCounts ? (
           <>
             <button
+              type="button"
               onClick={handleSlideLeft}
               className={`${classes.ctrlBtn_left} ${slideActiveCount && classes.active}`}
             >
               <img src={iconLeft} alt="" />
             </button>
             <button
+              type="button"
               onClick={handleSlideRight}
               className={`${classes.ctrlBtn_right} ${slideActiveCount < slideNumberOfCounts && classes.active}`}
             >

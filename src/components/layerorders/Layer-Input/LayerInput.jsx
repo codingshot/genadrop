@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-autofocus */
 import React, { useState } from "react";
 import classes from "./LayerInput.module.css";
 

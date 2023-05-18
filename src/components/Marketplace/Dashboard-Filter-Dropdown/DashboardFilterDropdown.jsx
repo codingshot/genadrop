@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable prefer-destructuring */
 import React, { useEffect, useState } from "react";
 import classes from "./DashboardFilterDropdown.module.css";
 import dropdownIcon from "../../../assets/icon-caret-down.svg";

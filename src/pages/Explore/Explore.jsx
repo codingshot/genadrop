@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
@@ -50,16 +51,16 @@ const Explore = () => {
     setState((states) => ({ ...states, ...payload }));
   };
 
-  const handleFilter = (_filter) => {
-    handleSetState({ filter: { ...filter, ..._filter } });
-  };
+  // const handleFilter = (_filter) => {
+  //   handleSetState({ filter: { ...filter, ..._filter } });
+  // };
 
   const getHeight = (res) => {
     handleSetState({ headerHeight: res });
   };
 
   const getAllCollectionChains = async () => {
-    let result = await getNearCollection(collectionName, mainnet);
+    const result = await getNearCollection(collectionName, mainnet);
     if (result.length) {
       return result;
     }

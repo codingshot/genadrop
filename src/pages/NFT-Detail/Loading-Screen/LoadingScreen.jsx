@@ -1,3 +1,4 @@
+import React from "react";
 import Skeleton from "react-loading-skeleton";
 import classes from "./LoadingScreen.module.css";
 

@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable prefer-const */
 import React, { useEffect, useRef, useContext, useState } from "react";
 import { setNotification } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";

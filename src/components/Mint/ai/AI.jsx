@@ -1,15 +1,12 @@
+/* eslint-disable jsx-a11y/no-autofocus */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-use-before-define */
 import React, { useState, useEffect, useContext } from "react";
-import { async } from "regenerator-runtime";
 import { useHistory } from "react-router-dom";
-import { indexOf } from "lodash";
 import Skeleton from "react-loading-skeleton";
 import classes from "./ai.module.css";
-import { ReactComponent as Download } from "../../../assets/mint-ai-page/download-simple.svg";
 import { ReactComponent as RefreshIcon } from "../../../assets/mint-ai-page/refresh_icon.svg";
 
-import { ReactComponent as Reload } from "../../../assets/mint-ai-page/icon-reload.svg";
-import { ReactComponent as BackArrow } from "../../../assets/arrow-left-stretched.svg";
 import { setNotification, setOverlay } from "../../../gen-state/gen.actions";
 import { GenContext } from "../../../gen-state/gen.context";
 import cartonist from "../../../assets/ai-art-style/cartoonist.png";

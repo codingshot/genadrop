@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react";
+/* eslint-disable consistent-return */
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { GenContext } from "../../../gen-state/gen.context";
 import { ReactComponent as FailedIcon } from "../../../assets/icon-payment-failed.svg";
@@ -28,10 +29,10 @@ const FailedPlan = () => {
         <div className={classes.heading}>Payment failed!</div>
         <div className={classes.description}>Something went terribly wrong here Don’t worry! Let’s try again</div>
         <div className={classes.btnContainer}>
-          <button onClick={() => history.push("/create/session/pricing")} className={classes.btn_1}>
+          <button type="button" onClick={() => history.push("/create/session/pricing")} className={classes.btn_1}>
             Try again
           </button>
-          <button onClick={() => history.push("/create/collection")} className={classes.btn_2}>
+          <button type="button" onClick={() => history.push("/create/collection")} className={classes.btn_2}>
             Go to create
           </button>
         </div>

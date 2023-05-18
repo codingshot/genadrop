@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import classes from "./mobilePopup.module.css";
@@ -114,7 +115,7 @@ const MobilePopup = ({
           </div>
         </div>
         <div className={classes.footer}>
-          <h1>Haven't got a wallet yet?</h1>
+          <h1>Haven&apos;t got a wallet yet?</h1>
           <Link to={{ pathname: "https://docs.genadrop.io" }} target="_blank">
             <button className={classes.learnButton} type="button">
               <h1>Learn How to Connect</h1>

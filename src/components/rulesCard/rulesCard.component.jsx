@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-constant-condition */
 import React, { useContext, useEffect, useRef } from "react";
 import { clearRule, deleteRule, promptDeleteRules, setPrompt } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";

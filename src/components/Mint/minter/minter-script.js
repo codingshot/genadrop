@@ -1,4 +1,3 @@
-import { async } from "regenerator-runtime";
 import {
   mintSingleToAlgo,
   mintSingleToPoly,
@@ -59,7 +58,7 @@ export const handleMint = async (args) => {
 };
 
 export const handleSingleMint = async (args) => {
-  const { account, chain, dispatch, setNotification, setLoader, setClipboard } = args;
+  const { account, chain, dispatch, setNotification, setLoader } = args;
   console.log(args);
 
   if (!account) {

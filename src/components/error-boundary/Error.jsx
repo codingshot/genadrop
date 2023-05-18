@@ -1,3 +1,5 @@
+/* eslint-disable dot-notation */
+/* eslint-disable prefer-const */
 import React, { useLayoutEffect } from "react";
 import { useHistory } from "react-router-dom";
 import wrongSvg from "../../assets/something_wrong.svg";

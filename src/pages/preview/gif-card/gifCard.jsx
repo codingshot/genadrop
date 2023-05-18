@@ -1,3 +1,4 @@
+import React from "react";
 import { handleDownload } from "../../../utils/index2";
 import { addToCollection, handleDescription, handleRename } from "../preview-script";
 import TextEditor from "../text-editor";
@@ -7,7 +8,7 @@ import { setNotification, setLoader, setZip } from "../../../gen-state/gen.actio
 
 const GifCard = ({ gifCardProps, asset }) => {
   const { image, id, name, description, index } = asset;
-  const { dispatch, outputFormat, collectionName } = gifCardProps;
+  const { dispatch, outputFormat, collectionName, handleSetState, gifs } = gifCardProps;
 
   return (
     <div key={id} className={classes.card}>

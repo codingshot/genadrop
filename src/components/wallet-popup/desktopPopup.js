@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+import { Link } from "react-router-dom";
 import React from "react";
 import classes from "./walletPopup.module.css";
 
@@ -8,7 +10,6 @@ import walletConnectIcon from "../../assets/icon-wallet-connect.svg";
 import walletLockIcon from "../../assets/lock.svg";
 import moreIcons from "../../assets/moreDots.svg";
 import exportIcon from "../../assets/icon-link-white.svg";
-import { Link } from "react-router-dom";
 
 const DesktopPopup = ({
   showConnectionMethods,
@@ -111,7 +112,7 @@ const DesktopPopup = ({
           />
         </div>
         <div className={classes.lockSection}>
-          <h1 className={classes.lockHeader}>Haven't got a wallet yet?</h1>
+          <h1 className={classes.lockHeader}>Haven&apos;t got a wallet yet?</h1>
           <div>
             <img className={classes.lockImage} src={walletLockIcon} alt="" />
           </div>

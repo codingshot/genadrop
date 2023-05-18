@@ -1,10 +1,10 @@
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { GenContext } from "../../gen-state/gen.context";
 import classes from "./profileDropdown.module.css";
 import { ReactComponent as SessionIcon } from "../../assets/icon-session.svg";
 import { ReactComponent as SignOutIcon } from "../../assets/icon-signout.svg";
 import { ReactComponent as UpgradeIcon } from "../../assets/icon-upgrade2.svg";
-import { useHistory } from "react-router-dom";
-import { useContext } from "react";
-import { GenContext } from "../../gen-state/gen.context";
 import { logOut } from "../google-auth/googleAuth.script";
 import { setUpgradePlan } from "../../gen-state/gen.actions";
 

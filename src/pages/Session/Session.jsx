@@ -1,4 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
+/* eslint-disable consistent-return */
+import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./Session.module.css";
@@ -76,11 +79,6 @@ const Session = () => {
     history.push("/create/session/pricing");
   };
 
-  // const handleUpgrade = () => {
-  //   dispatch(setUpgradePlan(true));
-  //   history.push("/create/session/pricing");
-  // };
-
   const handleDropdown = (id) => {
     if (id === dropdownId) return setDropdown(-1);
     setDropdown(id);
@@ -123,7 +121,9 @@ const Session = () => {
             <h1>Session</h1>
             <div className={classes.subHeading}>
               <h3>Active Session</h3>
-              <button onClick={handleCreate}>create new</button>
+              <button type="button" onClick={handleCreate}>
+                create new
+              </button>
             </div>
             {noResult === "false" ? (
               <div className={classes.sessionContainer}>

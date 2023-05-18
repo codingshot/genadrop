@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React from "react";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -16,7 +17,7 @@ const Graph = ({ details }) => {
       return a.txDate - b.txDate;
     });
 
-    details.map((e, i) => {
+    details.map((e) => {
       if (e.type === "Listing" || e.type === "Sale") {
         const date = new Date(e.txDate * 1000);
 

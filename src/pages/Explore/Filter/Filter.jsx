@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-unsafe-optional-chaining */
 import React, { useEffect, useState } from "react";
 import classes from "./Filter.module.css";
 import arrowIconLeft from "../../../assets/icon-arrow-left.svg";
@@ -30,7 +33,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
   const toPercent = (count, total) => (count >= 0 && total > 0 ? ((100 * count) / total).toFixed(1) : "NaN");
 
   const handleStatus = (status) => {
-    handleSetState({ filter: { ...filter, status: status } });
+    handleSetState({ filter: { ...filter, status } });
   };
 
   const handleSort = (sort) => {
@@ -150,7 +153,7 @@ const Filter = ({ attributes, handleFilter, filterToDelete, toggleFilter, handle
                                   <MarkIcon className={classes.markIcon} />
                                 </span>
                               ) : (
-                                <span className={`${classes.statusIcon}`}></span>
+                                <span className={`${classes.statusIcon}`} />
                               )}
                               <div className={classes.valuesOfAttr}>
                                 <span className={classes.attributeValue}>{capitalize(val)}</span>

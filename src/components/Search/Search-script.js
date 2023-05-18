@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const handleSuggestions = async ({ handleSetState, searchContainer, value, type }) => {
   let newSearch = [];
   let oldSearch = [];

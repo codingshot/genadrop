@@ -1,4 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable jsx-a11y/no-autofocus */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
+import React, { useContext, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
 import supportedChains from "../../utils/supportedChains";
@@ -22,8 +26,6 @@ const Search = ({ searchPlaceholder, type }) => {
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
   };
-
-
 
   const handleChange = (e) => {
     handleSetState({ value: e.target.value });

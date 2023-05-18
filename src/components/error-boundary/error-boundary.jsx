@@ -1,5 +1,4 @@
 import React from "react";
-import classes from "./error.module.css";
 
 import SomethingWentWrong from "./Error";
 
