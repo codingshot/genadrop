@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 /* eslint-disable consistent-return */
 import moment from "moment";
 import { getFormatedPrice } from "../../utils";
@@ -143,8 +144,8 @@ export const getCollectionsByChain = ({ collections, chain, mainnet }) => {
   const chains = Object.values(supportedChains);
   chains
     .filter((data) => mainnet === data.isMainnet)
-    .forEach((data) => {
-      mapChainLabelToId[data.chain] = chain;
+    .forEach((chain) => {
+      mapChainLabelToId[chain.chain] = chain;
     });
   return collections.filter((col) => col.chain === mapChainLabelToId[chain]?.networkId);
 };
