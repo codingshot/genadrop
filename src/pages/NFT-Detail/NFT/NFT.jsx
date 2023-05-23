@@ -20,6 +20,13 @@ const NFT = ({ nftDetails }) => {
     }
   };
 
+  const truncateText = (text, maxCharacters = 35) => {
+    if (text?.length > maxCharacters) {
+      return `${text.substring(0, maxCharacters)}...`;
+    }
+    return text;
+  };
+
   useEffect(() => {
     if (share) {
       document.addEventListener("click", hanldeClickOutside, true);
@@ -30,7 +37,7 @@ const NFT = ({ nftDetails }) => {
   return (
     <div className={classes.container}>
       <div className={classes.heading}>
-        <div className={classes.nftName}>{name}</div>
+        <div className={classes.nftName}>{truncateText(name, 15)}</div>
         <div className={classes.shareSection}>
           <div className={classes.dropdown} ref={wrapperRef}>
             <ShareIcon onClick={() => setShare(true)} className={classes.shareIcon} />
