@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import axios from "axios";
@@ -14,7 +15,6 @@ import {
 } from "./CardFooter";
 import thumbnail from "../../../assets/music-thumbnail.svg";
 import imgHolder from "../../../assets/imgHolder.jpeg";
-import { setOverlay } from "../../../gen-state/gen.actions";
 
 const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionNft, userId, usdPrice }) => {
   const { Id, image_url, name, owner, collection_name, price, chain, sold, isListed, isSoulBound } = nft;
@@ -22,7 +22,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
   const history = useHistory();
   const match = useRouteMatch();
   const [usdValue, setUsdValue] = useState(0);
-  const { account, dispatch } = useContext(GenContext);
+  const { account } = useContext(GenContext);
   const [mediaURL, setMediaURL] = useState(image_url);
 
   const getUsdValue = useCallback(async () => {
@@ -30,7 +30,6 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
     const chainName = supportedChains[chain].coinGeckoLabel || supportedChains[chain].id;
     if (!value) {
       value = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${chainName}&vs_currencies=usd`);
-      // value = await getFormatedPrice(supportedChains[chain].coinGeckoLabel || supportedChains[chain].id);
     }
     setUsdValue(Number(Object.values(value.data)[0].usd) * Number(price));
   }, []);

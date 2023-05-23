@@ -1,18 +1,14 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import moment from "moment/moment";
 import Skeleton from "react-loading-skeleton";
 import CollectionNftCard from "../CollectionNftCard/CollectionNftCard";
 import classes from "./AllNfts.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
 import SingleNftCard from "../SingleNftCard/SingleNftCard";
 import ChainDropdown from "../Chain-dropdown/chainDropdown";
-import {
-  getCollectionsByCategory,
-  getCollectionsByChain,
-  shuffle,
-  sortBy,
-} from "../../../pages/Marketplace/Marketplace-script";
+import { getCollectionsByCategory, getCollectionsByChain, sortBy } from "../../../pages/Marketplace/Marketplace-script";
 import { setActiveCollection } from "../../../gen-state/gen.actions";
 import NotFound from "../../not-found/notFound";
 import {
@@ -44,7 +40,7 @@ const AllNfts = () => {
   });
 
   const { activeType, activeChain, activeCategory, collections, singles, newest, filteredCollection, load } = state;
-  const { mainnet, dispatch, allChainsNfts } = useContext(GenContext);
+  const { mainnet, dispatch } = useContext(GenContext);
 
   const categories = [
     "All",
@@ -108,7 +104,7 @@ const AllNfts = () => {
     Promise.all([
       getAllAuroraCollections(),
       getAllPolygonCollections(),
-      getAllNearCollections(),
+      getAllNearCollections(mainnet),
       getAllCeloCollections(),
       getAllAlgorandCollections(mainnet, dispatch),
     ]).then((data) => {
@@ -119,12 +115,12 @@ const AllNfts = () => {
 
   useEffect(() => {
     Promise.all([
-      getAllCeloNfts(),
-      getAllAuroraNfts(),
-      getAllAvalancheNfts(),
-      getAllArbitrumNfts(),
-      getAllPolygonNfts(),
-      getAllNearNfts(),
+      getAllCeloNfts(10),
+      getAllAuroraNfts(10),
+      getAllAvalancheNfts(10),
+      getAllArbitrumNfts(10),
+      getAllPolygonNfts(10),
+      getAllNearNfts(10),
       getAllAlgorandNfts(mainnet, dispatch),
     ]).then((data) => {
       handleSetState({ singles: sortBy({ collections: data.flat(), value: "newest" }) });

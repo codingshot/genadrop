@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+import React from "react";
 import GifCard from "../gif-card/gifCard";
 import classes from "../preview.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";

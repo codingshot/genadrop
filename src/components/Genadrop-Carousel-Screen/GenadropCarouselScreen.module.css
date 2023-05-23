@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  transition: transform 850ms;
+  transition: transform 800ms;
   padding: 1em 0;
 }
 

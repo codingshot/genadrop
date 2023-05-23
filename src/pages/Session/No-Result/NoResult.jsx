@@ -1,8 +1,8 @@
+import React, { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./NoResult.module.css";
 import { ReactComponent as CartIcon } from "../../../assets/icon-cart.svg";
-import { useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
-import { useHistory } from "react-router-dom";
 import { setUpgradePlan } from "../../../gen-state/gen.actions";
 
 const NotFound = () => {
@@ -29,10 +29,10 @@ const NotFound = () => {
             <div>You have no saved session</div>
             <div>Upgrade to any of our paid plans to save your session progress</div>
           </div>
-          <button onClick={handleUpgrade} className={classes.upgradeBtn}>
+          <button type="button" onClick={handleUpgrade} className={classes.upgradeBtn}>
             Upgrade
           </button>
-          <button onClick={handleCreate} className={classes.createBtn}>
+          <button type="button" onClick={handleCreate} className={classes.createBtn}>
             Create new session
           </button>
         </div>

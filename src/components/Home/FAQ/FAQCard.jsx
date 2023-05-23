@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import React from "react";
 import classes from "./FAQCard.module.css";
 import closeIcon from "../../../assets/close-icon.svg";

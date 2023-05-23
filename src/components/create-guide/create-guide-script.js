@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import vid1 from "../../assets/vid/T1.mp4";
 import vid2 from "../../assets/vid/T2.mp4";
 import vid3 from "../../assets/vid/T3.mp4";

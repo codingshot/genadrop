@@ -1,3 +1,12 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable no-unused-expressions */
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable consistent-return */
+/* eslint-disable no-unsafe-optional-chaining */
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import axios from "axios";
@@ -27,7 +36,6 @@ import ProfileImgOverlay from "../ProfileImgOverlay/ProfileImgOverlay";
 import Popup from "../popup/popup.component";
 import GenadropToolTip from "../../Genadrop-Tooltip/GenadropTooltip";
 import SliderInput from "./SliderInput";
-import Category from "../Category/Category";
 import Attribute from "../Attribute/Attribute";
 
 import {
@@ -43,7 +51,6 @@ import { GenContext } from "../../../gen-state/gen.context";
 import Tweeter from "../Tweeter/tweeter";
 import IpfsImage from "../IpfsImage/IpfsImage";
 import QrReaderContainer from "../../../pages/NFT-Detail/ImageModal/ImageModal";
-import { useCallback } from "react";
 
 const Minter = () => {
   const params = useParams();
@@ -114,7 +121,6 @@ const Minter = () => {
     preview,
     collectionProfile,
     toggleGuide,
-    toggleDropdown,
     previewSelectMode,
     profileSelected,
     isSoulBound,
@@ -130,7 +136,6 @@ const Minter = () => {
     toggleType,
     fileExtension,
     location,
-    locationPermission,
     tweet,
     ipfsLink,
     ipfsType,
@@ -282,9 +287,7 @@ const Minter = () => {
         });
     } else if (params.mintId === "tweet") {
       handleSetState({ description: tweet.text });
-    } else if (params.mintId === "ipfs") {
-      const { uploadType } = browserLocation.state;
-    } else if (params.mintId == "ai") {
+    } else if (params.mintId === "ai") {
       return;
     } else {
       if (!loadedMinter) {
@@ -646,16 +649,16 @@ const Minter = () => {
     }
   };
 
-  const handleConnectFromMint = (props) => {
-    handleSetState({ toggleDropdown: false });
-    dispatch(setToggleWalletPopup(true));
-    dispatch(
-      setConnectFromMint({
-        chainId: props.networkId,
-        isComingSoon: props.comingSoon,
-      })
-    );
-  };
+  // const handleConnectFromMint = (props) => {
+  //   handleSetState({ toggleDropdown: false });
+  //   dispatch(setToggleWalletPopup(true));
+  //   dispatch(
+  //     setConnectFromMint({
+  //       chainId: props.networkId,
+  //       isComingSoon: props.comingSoon,
+  //     })
+  //   );
+  // };
 
   useEffect(() => {
     if (chainId) {
@@ -1386,6 +1389,7 @@ const Minter = () => {
               dispatch={dispatch}
               handleCloseModal={handleCloseQrModal}
               handleAddress={handleSetState}
+              mainnet={mainnet}
             />
           )}
         </div>

@@ -1,10 +1,13 @@
+/* eslint-disable func-names */
+/* eslint-disable no-shadow */
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import classes from "./Review.module.css";
 import twitterIcon from "../../../assets/twitter/icon-twitter2.svg";
 
-import displayShadow from "../../../assets/home-display-shadow.png";
 import { twitterAPIURL } from "./Reviews-Script";
+import displayShadow from "../../../assets/home-display-shadow.png";
+
 const reviews = [
   "1614492280743948289",
   "1611711201695911937",

@@ -9,8 +9,8 @@ import { ReactComponent as Art } from "../../../assets/create/art-icon.svg";
 import { ReactComponent as Doubletake } from "../../../assets/create/bereal-icon.svg";
 import { ReactComponent as Audio } from "../../../assets/create/MusicNotes.svg";
 import { ReactComponent as Video } from "../../../assets/create/MintVideos.svg";
-import { ReactComponent as Tweets } from "../../../assets/create/tweets-icon.svg";
-import { ReactComponent as Ipfs } from "../../../assets/create/ipfsIcon.svg";
+// import { ReactComponent as Tweets } from "../../../assets/create/tweets-icon.svg";
+// import { ReactComponent as Ipfs } from "../../../assets/create/ipfsIcon.svg";
 import { ReactComponent as Ai } from "../../../assets/create/ai-icon.svg";
 
 const cards = [
@@ -70,13 +70,13 @@ const cards = [
     value: "ai",
     url: "/mint/ai",
   },
-  {
-    title: "Tweets",
-    description: "Mint your favorite tweets on chain",
-    icon: <Tweets />,
-    value: "tweet",
-    url: "/mint/tweet",
-  },
+  // {
+  //   title: "Tweets",
+  //   description: "Mint your favorite tweets on chain",
+  //   icon: <Tweets />,
+  //   value: "tweet",
+  //   url: "/mint/tweet",
+  // },
   // {
   //   title: "IPFS",
   //   description: "Mint your NFTs using IPFS link",

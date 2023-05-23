@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./UpgradeModal.module.css";

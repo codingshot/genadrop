@@ -1,4 +1,3 @@
-import createImage from "../../../assets/app-create.png";
 import mintImage from "../../../assets/app-mint.svg";
 import exploreImage from "../../../assets/app-explore.svg";
 

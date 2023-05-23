@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import { GenContext } from "../../gen-state/gen.context";
@@ -29,38 +30,12 @@ const NFTDetail = () => {
     load: true,
   });
 
-  const { nftDetails, transactionHistory, collection, _1of1, load } = state;
+  const { nftDetails, transactionHistory, collection, _1of1 } = state;
 
-  const {
-    dispatch,
-    algoCollections,
-    activeCollection,
-    singleAlgoNfts,
-    auroraCollections,
-    polygonCollections,
-    celoCollections,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleArbitrumNfts,
-    singleAvaxNfts,
-    singleCeloNfts,
-    singleNearNfts,
-    account,
-    connector,
-    mainnet,
-    chainId,
-  } = useContext(GenContext);
+  const { dispatch, algoCollections, activeCollection, singleAlgoNfts, account, connector, mainnet, chainId } =
+    useContext(GenContext);
 
   const graphProps = {
-    auroraCollections,
-    polygonCollections,
-    celoCollections,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleNearNfts,
-    singleCeloNfts,
-    singleArbitrumNfts,
-    singleAvaxNfts,
     params,
   };
 
@@ -80,7 +55,7 @@ const NFTDetail = () => {
     history.push(`${match.url.split("/").slice(0, -1).join("/")}`);
   };
 
-  const getData = async () => {
+  const getData = useCallback(async () => {
     document.documentElement.scrollTop = 0;
 
     let result;
@@ -90,17 +65,11 @@ const NFTDetail = () => {
       result = await getGraphData({ graphProps });
     }
     handleSetState({ ...result });
-  };
+  }, []);
 
   useEffect(() => {
-    handleSetState({ load: true });
     getData();
-    if (nftDetails && collection && _1of1 && transactionHistory) {
-      setTimeout(() => {
-        handleSetState({ load: false });
-      }, 2000);
-    }
-  }, [singleAlgoNfts, algoCollections, auroraCollections, polygonCollections, celoCollections, params.nftId]);
+  }, [getData]);
 
   return (
     <div className={classes.container}>

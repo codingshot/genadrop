@@ -8,11 +8,14 @@ import {
 } from "../../utils";
 import { nearCollectionClient } from "../../utils/graphqlClient";
 
-export const getNearCollection = async (collectionId) => {
+export const getNearCollection = async (collectionId, mainnet) => {
+  if (mainnet) {
+    return [];
+  }
   const { data, error } = await nearCollectionClient
     .query(
       gql` query myQuery {
-      Collection_by_pk(id: "${collectionId}") {
+      Collection_by_pk(id: "${collectionId.split("~")[1]}") {
         id
         description
         name
@@ -81,14 +84,18 @@ export const getCollectionNft = async (nftId) => {
   return result;
 };
 
-export const getAllNearCollections = async () => {
+export const getAllNearCollections = async (mainnet) => {
+  if (mainnet) return [];
   const { data, error } = await nearCollectionClient.query(GET_NEAR_COLLECTIONS).toPromise();
   if (error) return [];
   const result = await getNearCollections(data?.Collection);
   return result;
 };
 
-export const getUserNearCollection = async (userId) => {
+export const getUserNearCollection = async (userId, mainnet) => {
+  if (mainnet) {
+    return [];
+  }
   const { data, error } = await nearCollectionClient
     .query(
       gql`

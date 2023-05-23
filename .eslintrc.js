@@ -40,6 +40,8 @@ module.exports = {
 
     "linebreak-style": 0,
 
+    "no-console": "off",
+
     "react/jsx-no-useless-fragment": "off",
 
     radix: "off",

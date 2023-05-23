@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-use-before-define */
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./SessionModal.module.css";
@@ -78,7 +80,9 @@ const SessionModal = () => {
                 </div>
               ))}
           </div>
-          <button onClick={handleCreate}>New Collection</button>
+          <button type="button" onClick={handleCreate}>
+            New Collection
+          </button>
         </div>
       </div>
     </div>

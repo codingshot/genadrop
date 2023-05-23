@@ -1,3 +1,5 @@
+/* eslint-disable react/no-array-index-key */
+import React from "react";
 import { addGif } from "../preview-script";
 import classes from "./selectedGifArt.module.css";
 import { ReactComponent as CloseIcon } from "../../../assets/icon-close.svg";

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-import-module-exports */
 import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";

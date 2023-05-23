@@ -1,3 +1,4 @@
+/* eslint-disable default-param-last */
 import genActionTypes from "./gen.types";
 import {
   addLayer,
@@ -85,7 +86,6 @@ export const INITIAL_STATE = {
     totalCount: 0,
     resetCount: true,
   },
-  currentPlan: "free",
   proposedPlan: "",
   minter: "",
   toggleUpgradeModal: "",

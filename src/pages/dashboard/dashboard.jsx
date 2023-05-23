@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { ethers } from "ethers";
@@ -188,7 +189,7 @@ const Dashboard = () => {
           collection = await getPolygonUserCollections(walletAddress);
           break;
         case "Near":
-          collection = await getUserNearCollection(userId);
+          collection = await getUserNearCollection(userId, mainnet);
           break;
         default:
           break;

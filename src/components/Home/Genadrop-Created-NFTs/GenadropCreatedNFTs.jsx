@@ -1,9 +1,12 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-shadow */
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
 import classes from "./GenadropCreatedNFTs.module.css";
 import { GenContext } from "../../../gen-state/gen.context";
-import { shuffle } from "../../../pages/Marketplace/Marketplace-script";
+import { getFeaturedAvalancheNft, nearFeaturedNfts } from "../../../renderless/fetch-data/fetchUserGraphData";
 
 const GenadropCreatedNFTs = () => {
   const cardRef = useRef(null);
@@ -15,9 +18,7 @@ const GenadropCreatedNFTs = () => {
 
   const { singles } = state;
   useEffect(() => {}, []);
-  const { singleAlgoNfts, singleAuroraNfts, singlePolygonNfts, singleCeloNfts, singleNearNfts, mainnet } =
-    useContext(GenContext);
-  const singleAlgoNftsArr = Object.values(singleAlgoNfts);
+  const { mainnet } = useContext(GenContext);
 
   const handleSetState = (payload) => {
     setState((state) => ({ ...state, ...payload }));
@@ -30,32 +31,26 @@ const GenadropCreatedNFTs = () => {
   const history = useHistory();
 
   useEffect(() => {
-    const goodIds = [
-      "genadrop-contract.nftgen.near1664562603103",
-      "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
-      "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
-      "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
-    ];
-
-    const singles = [
-      ...(singleAlgoNftsArr || []),
-      ...(singleAuroraNfts || []),
-      ...(singlePolygonNfts || []),
-      ...(singleCeloNfts || []),
-      ...(singleNearNfts || []),
-    ];
-
-    const goodTesnet = ["genadrop-test.mpadev.testnet1663492551707"];
-
-    // singles = singles.filter((nft) => !featturedNFTs.includes(nft.Id));
-    // singles = shuffle(singles);
-    // const featuredNFT1 = [...(singleNearNfts || []), ...(singleCeloNfts || [])].filter((nft) =>
-    //   featturedNFTs.includes(nft.Id)
-    // );
-
-    if (mainnet) handleSetState({ singles: [...singles.filter((e) => goodIds.includes(e.Id))] });
-    else handleSetState({ singles: [...singles.filter((e) => goodTesnet.includes(e.Id))] });
-  }, [singleAlgoNfts, singleAuroraNfts, singleCeloNfts, singlePolygonNfts, singleNearNfts]);
+    if (mainnet) {
+      const goodIds = [
+        "genadrop-contract.nftgen.near1664562603103",
+        "0x5ce2deee9b495b5db2996c81c16005559393efb810815",
+        "0x436aeceaeec57b38a17ebe71154832fb0faff87823108",
+        "0x5ce2deee9b495b5db2996c81c16005559393efb8238140",
+      ];
+      Promise.all([
+        getFeaturedAvalancheNft(goodIds[1]),
+        getFeaturedAvalancheNft(goodIds[2]),
+        getFeaturedAvalancheNft(goodIds[3]),
+      ]).then((data) => {
+        handleSetState({ singles: [...data.flat()] });
+      });
+    } else {
+      Promise.all([nearFeaturedNfts("genadrop-test.mpadev.testnet1663492551707")]).then((data) => {
+        handleSetState({ singles: [...data.flat()] });
+      });
+    }
+  }, []);
 
   const handlePreview = (chain, Id) => {
     if (chain) {

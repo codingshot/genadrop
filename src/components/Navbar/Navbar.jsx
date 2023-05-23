@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import ConnectWallet from "../wallet/wallet";
 import classes from "./Navbar.module.css";
@@ -7,7 +7,6 @@ import drop from "../../assets/drop.svg";
 import { ReactComponent as CloseIcon } from "../../assets/icon-close.svg";
 import hamburgerIcon from "../../assets/icon-hamburger.svg";
 import Search from "../Search/Search";
-import { GenContext } from "../../gen-state/gen.context";
 
 const Navbar = () => {
   const [state, setState] = useState({
@@ -18,7 +17,6 @@ const Navbar = () => {
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
   };
-  const { searchContainer } = useContext(GenContext);
   const { pathname } = useLocation();
   const history = useHistory();
 
@@ -34,7 +32,7 @@ const Navbar = () => {
         <img onClick={() => history.push("/")} className={classes.logoMobile} src={logo} alt="" />
       </div>
       <div className={classes.searchAndNavWrapper}>
-        <Search searchPlaceholder="Search collections, and 1 of 1s" type={""} />
+        <Search searchPlaceholder="Search collections, and 1 of 1s" type="" />
 
         <nav className={`${classes.navContainer} ${dropdown ? classes.active : classes.inactive}`}>
           <br />

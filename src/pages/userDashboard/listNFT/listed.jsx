@@ -10,7 +10,7 @@ import supportedChains from "../../../utils/supportedChains";
 import {
   arbitrumUserData,
   auroraUserData,
-  avaxUsersNfts,
+  getAvalancheNft,
   celoUserData,
   polygonUserData,
 } from "../../../renderless/fetch-data/fetchUserGraphData";
@@ -22,10 +22,10 @@ import linktree from "../../../assets/linked-tree.svg";
 import { getAlgoData } from "../../NFT-Detail/NFTDetail-script";
 
 const Listed = () => {
-  const { account, mainnet, singleAlgoNfts, activeCollection, algoCollections } = useContext(GenContext);
+  const { mainnet, singleAlgoNfts, activeCollection, algoCollections } = useContext(GenContext);
 
   const {
-    params: { nftId, url },
+    params: { nftId },
   } = useRouteMatch();
   const { params } = useRouteMatch();
   const { chainId } = useContext(GenContext);
@@ -72,7 +72,7 @@ const Listed = () => {
           isLoading: false,
         });
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
-        const [nft] = await avaxUsersNfts(nftId);
+        const [nft] = await getAvalancheNft(nftId);
         if (!nft) history.push("/");
         handleSetState({
           nftDetails: nft,

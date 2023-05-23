@@ -7,7 +7,7 @@ import { handleImage } from "./collection-preview-script";
 import assetPlaceholder from "../../assets/asset-placeholder.png";
 
 const CollectionPreview = () => {
-  const { dispatch, layers, preview, imageQuality } = useContext(GenContext);
+  const { dispatch, layers, preview } = useContext(GenContext);
   const canvasRef = useRef(null);
 
   // const handleDownload = async () => {

@@ -1,12 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+/* eslint-disable prefer-const */
+/* eslint-disable no-else-return */
+/* eslint-disable no-shadow */
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./GenadropCarouselScreen.module.css";
 import iconRight from "../../assets/icon-angle-right.svg";
 import iconLeft from "../../assets/icon-angle-left.svg";
-import { useWheel } from "@use-gesture/react";
 
 const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) => {
   const cardContainerRef = useRef(null);
-  const run = useRef(null);
   const wrapperRef = useRef(null);
 
   const [state, setState] = useState({
@@ -27,32 +28,35 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
   };
 
   const handleSlideLeft = () => {
-    if (slideActiveCount <= 0) return;
+    // if (slideActiveCount <= 0) return;
     setSlideActiveCount((sc) => sc - 1);
   };
 
   const handleSlideRight = () => {
-    if (slideActiveCount >= slideCount) return;
+    // if (slideActiveCount >= slideCount) return;
     setSlideActiveCount((sc) => sc + 1);
   };
 
-  const bind = useWheel(({ wheeling, movement: [x] }) => {
-    if (x > 0 && run.current) {
-      handleSlideRight();
-      run.current = false;
-    } else if (x < 0 && run.current) {
-      handleSlideLeft();
-      run.current = false;
-    }
+  // const bind = useWheel(({ wheeling, movement: [x] }) => {
+  //   if (x > 0 && run.current) {
+  //     handleSlideRight();
+  //     run.current = false;
+  //   } else if (x < 0 && run.current) {
+  //     handleSlideLeft();
+  //     run.current = false;
+  //   }
 
-    if (!wheeling) {
-      run.current = true;
-    }
-  });
+  //   if (!wheeling) {
+  //     run.current = true;
+  //   }
+  // });
 
   useEffect(() => {
     const width = wrapperRef.current && wrapperRef.current.getBoundingClientRect().width;
-    const cardsInView = Math.floor(width / (cardWidth + gap / 2));
+    let cardsInView = Math.floor(width / (cardWidth + gap / 2));
+    if (width > 600) {
+      cardsInView = Math.floor(cardsInView / 3);
+    }
     const scrollLength = slideActiveCount * cardsInView * cardWidth + slideActiveCount * cardsInView * gap;
     handleSetState({ scrollLength });
     cardContainerRef.current.style.transform = `translateX(-${scrollLength}px)`;
@@ -130,19 +134,21 @@ const GenadropCarouselScreen = ({ children, cardWidth, gap = 16, init = true }) 
 
   return (
     <div className={classes.container}>
-      <div ref={wrapperRef} className={classes.wrapper} {...bind()}>
+      <div ref={wrapperRef} className={classes.wrapper}>
         <div style={{ gap }} ref={cardContainerRef} className={classes.cardContainer}>
           {children}
         </div>
         {slideCount ? (
           <>
             <button
+              type="button"
               onClick={handleSlideLeft}
               className={`${classes.ctrlBtn_left} ${slideActiveCount && classes.active}`}
             >
               <img src={iconLeft} alt="" />
             </button>
             <button
+              type="button"
               onClick={handleSlideRight}
               className={`${classes.ctrlBtn_right} ${slideActiveCount < slideCount && classes.active}`}
             >

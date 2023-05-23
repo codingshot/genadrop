@@ -1,7 +1,8 @@
-import { setImageAction, setLayers, setOverlay } from "../../gen-state/gen.actions";
-import { dataURItoBlob, handleBlankImage, handleTemplateImage } from "../../utils";
+/* eslint-disable dot-notation */
+/* eslint-disable prefer-const */
 import { v4 as uuid } from "uuid";
-import { getFile } from "../../utils";
+import { setImageAction, setLayers, setOverlay } from "../../gen-state/gen.actions";
+import { dataURItoBlob, handleBlankImage, getFile } from "../../utils";
 
 export const handleFileChange = (props) => {
   const { layerId, event, traits, layerTitle, dispatch } = props;

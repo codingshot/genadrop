@@ -1,10 +1,11 @@
+import React from "react";
+import { useHistory } from "react-router-dom";
 import classes from "./navbar.module.css";
 import { ReactComponent as BackIcon } from "../../../assets/icon-arrow-left.svg";
-import { useHistory } from "react-router-dom";
 
 const Navbar = ({ navbarProps }) => {
   const history = useHistory();
-  const { gifShow, gifs, handleSetState, mintAmount, mintInfo, combinations, rule, layers, nftLayers } = navbarProps;
+  const { gifShow, gifs, handleSetState, mintInfo, combinations, nftLayers } = navbarProps;
 
   return (
     <div className={classes.container}>

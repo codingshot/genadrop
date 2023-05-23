@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { setImageAction, setLayerAction, setPrompt } from "../../gen-state/gen.actions";
 import { GenContext } from "../../gen-state/gen.context";
 import classes from "./prompt.module.css";
@@ -33,10 +33,10 @@ const DeletePrompt = () => {
       <div className={classes.wrapper}>
         <p>Are you sure you want to delete?</p>
         <div className={classes.action}>
-          <button onClick={handleReject} className={classes.reject}>
+          <button type="button" onClick={handleReject} className={classes.reject}>
             Cancel
           </button>
-          <button onClick={handleAccept} className={classes.accept}>
+          <button type="button" onClick={handleAccept} className={classes.accept}>
             Yes
           </button>
         </div>

@@ -88,6 +88,51 @@ export const GET_CELO_GRAPH_COLLECITONS = gql`
   }
 `;
 
+export const GET_SINGLE_GRAPH_COLLECTION = gql`
+  query ($id: ID) {
+    collection(id: $id) {
+      description
+      id
+      name
+      creator {
+        id
+      }
+      nfts {
+        chain
+        category
+        createdAtTimestamp
+        id
+        isSold
+        isSoulBound
+        isListed
+        price
+        collection {
+          name
+          id
+        }
+        tokenID
+        owner {
+          id
+        }
+        tokenIPFSPath
+        transactions {
+          id
+          txDate
+          txId
+          from {
+            id
+          }
+          type
+          price
+          to {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const GET_ALL_POLYGON_COLLECTIONS = gql`
   query MyQuery {
     collections {
@@ -426,7 +471,27 @@ const auroraSoulBoundAddress =
 
 export const GET_AURORA_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection_in: ["${auroraAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${auroraAddress}"]}) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_AURORA_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${auroraAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -446,7 +511,27 @@ export const GET_AURORA_SINGLE_NFTS = gql`
 
 export const GET_AURORA_SOUL_BOUND_NFTS = gql`
 query MyQuery {
-  nfts(where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    isListed
+    isSoulBound
+    price
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
+export const GET_AURORA_SOUL_BOUND_NFTS_WITH_LIMIT = gql`
+query MyQuery {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${auroraSoulBoundAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -471,7 +556,27 @@ const polygonAddress =
 const soulboundSingleFilterAddress = ethers.utils.hexlify(process.env.REACT_APP_POLY_MAINNET_SOULBOUND_ADDRESS);
 export const GET_POLYGON_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts(where: { collection_in: ["${polygonAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${polygonAddress}"]}) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_POLYGON_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${polygonAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -491,7 +596,27 @@ export const GET_POLYGON_SINGLE_NFTS = gql`
 
 export const GET_POLYGON_SOUL_BOUND_NFTS = gql`
 query MyQuery {
-  nfts(where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    isListed
+    isSoulBound
+    price
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
+export const GET_POLYGON_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
+query MyQuery {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -516,7 +641,26 @@ const celoAddress =
 
 export const GET_CELO_SINGLE_NFT = gql`
   query MyQuery {
-    nfts(where: { collection_in: ["${celoAddress}"]}) {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${celoAddress}"]}) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      price
+      isSoulBound
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_CELO_SINGLE_NFT_WITH_LIMITS = gql`
+  query MyQuery {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${celoAddress}"]}) {
       category
       chain
       createdAtTimestamp
@@ -535,7 +679,26 @@ export const GET_CELO_SINGLE_NFT = gql`
 
 export const GET_CELO_SOUL_BOUND_NFTS = gql`
 query MyQuery {
-  nfts(where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
+    category
+    chain
+    createdAtTimestamp
+    id
+    isSold
+    price
+    isSoulBound
+    tokenID
+    owner {
+      id
+    }
+    tokenIPFSPath
+  }
+}
+`;
+
+export const GET_CELO_SOUL_BOUND_NFTS_WITH_LIMITS = gql`
+query MyQuery {
+  nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10 where: { collection_in: ["${soulboundSingleFilterAddress}"]}) {
     category
     chain
     createdAtTimestamp
@@ -554,7 +717,45 @@ query MyQuery {
 
 export const GET_NEAR_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_NEAR_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc, first: 10) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_FEATURED_SINGLE_NFT = gql`
+  query ($id: ID) {
+    nft(id: $id) {
       category
       chain
       createdAtTimestamp
@@ -573,7 +774,27 @@ export const GET_NEAR_SINGLE_NFTS = gql`
 
 export const GET_AVAX_SINGLE_NFTS = gql`
   query MyQuery {
-    nfts {
+    nfts(orderBy: createdAtTimestamp, orderDirection: desc) {
+      category
+      chain
+      createdAtTimestamp
+      id
+      isSold
+      isListed
+      isSoulBound
+      price
+      tokenID
+      owner {
+        id
+      }
+      tokenIPFSPath
+    }
+  }
+`;
+
+export const GET_AVAX_SINGLE_NFTS_WITH_LIMIT = gql`
+  query MyQuery {
+    nfts(first: 10, orderBy: createdAtTimestamp, orderDirection: desc) {
       category
       chain
       createdAtTimestamp
@@ -601,7 +822,6 @@ export const GET_NEAR_NFT = gql`
       isSold
       price
       tokenID
-      marketsData
       isListed
       owner {
         id

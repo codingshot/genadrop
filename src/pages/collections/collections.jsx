@@ -1,3 +1,7 @@
+/* eslint-disable no-shadow */
+/* eslint-disable prefer-const */
+/* eslint-disable react/no-array-index-key */
+
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Skeleton from "react-loading-skeleton";
 import classes from "./collections.module.css";
@@ -5,13 +9,7 @@ import CollectionNftCard from "../../components/Marketplace/CollectionNftCard/Co
 import { GenContext } from "../../gen-state/gen.context";
 import PageControl from "../../components/Marketplace/Page-Control/PageControl";
 import ChainDropdown from "../../components/Marketplace/Chain-dropdown/chainDropdown";
-import {
-  rangeBy,
-  sortBy,
-  shuffle,
-  getCollectionsByDate,
-  getCollectionsByChain,
-} from "../Marketplace/Marketplace-script";
+import { rangeBy, sortBy, getCollectionsByDate, getCollectionsByChain } from "../Marketplace/Marketplace-script";
 import NotFound from "../../components/not-found/notFound";
 import FilterDropdown from "../../components/Marketplace/Filter-dropdown/FilterDropdown";
 import Search from "../../components/Search/Search";
@@ -116,7 +114,7 @@ const Collections = () => {
     Promise.all([
       getAllAuroraCollections(),
       getAllPolygonCollections(),
-      getAllNearCollections(),
+      getAllNearCollections(mainnet),
       getAllCeloCollections(),
       getAllAlgorandCollections(mainnet, dispatch),
     ]).then((data) => {

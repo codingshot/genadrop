@@ -20,7 +20,7 @@ import { readUserProfile } from "../../utils/firebase";
 import {
   arbitrumUserData,
   auroraUserData,
-  avaxUsersNfts,
+  getAvalancheNft,
   celoUserData,
   nearUserData,
   polygonUserData,
@@ -37,17 +37,8 @@ import avatar from "../../assets/avatar.png";
 import classes from "./list.module.css";
 
 const List = () => {
-  const {
-    account,
-    chainId,
-    connector,
-    dispatch,
-    priceFeed,
-    singleAlgoNfts,
-    algoCollections,
-    activeCollection,
-    mainnet,
-  } = useContext(GenContext);
+  const { account, chainId, connector, dispatch, singleAlgoNfts, algoCollections, activeCollection, mainnet } =
+    useContext(GenContext);
 
   const {
     params: { nftId },
@@ -67,7 +58,7 @@ const List = () => {
     image_url: "",
     activeTab: "sell",
   });
-  const { nftDetails, isLoading, price, amount, activeTab, chain, tpNearMarket, fafNearMarket } = state;
+  const { nftDetails, isLoading, price, amount, activeTab, tpNearMarket, fafNearMarket } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -178,7 +169,7 @@ const List = () => {
         const [nftData] = await nearUserData(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Avalanche") {
-        const [nftData] = await avaxUsersNfts(nftId);
+        const [nftData] = await getAvalancheNft(nftId);
         nft = nftData;
       } else if (supportedChains[chainId]?.chain === "Arbitrum") {
         const [nftData] = await arbitrumUserData(nftId);

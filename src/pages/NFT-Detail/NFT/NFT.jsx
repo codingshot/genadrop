@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable consistent-return */
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { breakAddress } from "../NFTDetail-script";

@@ -1,23 +1,34 @@
+/* eslint-disable no-unsafe-optional-chaining */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
 import { gql } from "@apollo/client";
 import { ethers } from "ethers";
 import {
   GET_ALL_POLYGON_COLLECTIONS,
   GET_AURORA_SINGLE_NFTS,
+  GET_AURORA_SINGLE_NFTS_WITH_LIMIT,
   GET_AURORA_SOUL_BOUND_NFTS,
+  GET_AURORA_SOUL_BOUND_NFTS_WITH_LIMIT,
   GET_AVAX_SINGLE_NFTS,
+  GET_AVAX_SINGLE_NFTS_WITH_LIMIT,
   GET_CELO_GRAPH_COLLECITONS,
   GET_CELO_NFT,
   GET_CELO_SINGLE_NFT,
+  GET_CELO_SINGLE_NFT_WITH_LIMITS,
   GET_CELO_SOUL_BOUND_NFTS,
+  GET_CELO_SOUL_BOUND_NFTS_WITH_LIMITS,
+  GET_FEATURED_SINGLE_NFT,
   GET_GRAPH_COLLECTIONS,
   GET_GRAPH_NFT,
-  GET_NEAR_COLLECTION,
-  GET_NEAR_COLLECTIONS,
   GET_NEAR_NFT,
   GET_NEAR_SINGLE_NFTS,
+  GET_NEAR_SINGLE_NFTS_WITH_LIMIT,
   GET_NEAR_USER_NFT,
   GET_POLYGON_SINGLE_NFTS,
+  GET_POLYGON_SINGLE_NFTS_WITH_LIMIT,
   GET_POLYGON_SOUL_BOUND_NFTS,
+  GET_POLYGON_SOUL_BOUND_NFTS_WITH_LIMITS,
+  GET_SINGLE_GRAPH_COLLECTION,
   GET_USER_COLLECTIONS,
   GET_USER_NFT,
 } from "../../graphql/querries/getCollections";
@@ -35,8 +46,8 @@ import {
   getNftCollections,
   getSingleNfts,
   getNearTransactions,
-  getNearCollections,
-  fetchNearCollection,
+  getGraphCollectionData,
+  getFeaturedGraphNft,
 } from "../../utils";
 import { fetchAlgoCollections, fetchAlgoSingle } from "../../utils/firebase";
 import {
@@ -45,7 +56,6 @@ import {
   avalancheClient,
   celoClient,
   nearClient,
-  nearCollectionClient,
   polygonClient,
 } from "../../utils/graphqlClient";
 
@@ -80,7 +90,7 @@ export const arbitrumUserData = async (address) => {
   return [arbitrumResult[0], trHistory];
 };
 
-export const avaxUsersNfts = async (address) => {
+export const getAvalancheNft = async (address) => {
   const { data: avaxData, error: avaxError } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
   if (avaxError) return;
   let trHistory;
@@ -95,6 +105,29 @@ export const avaxUsersNfts = async (address) => {
   return [avaxResult[0], trHistory];
 };
 
+export const getFeaturedAvalancheNft = async (address) => {
+  const { data, error } = await avalancheClient.query(GET_GRAPH_NFT, { id: address }).toPromise();
+  if (error) return [];
+  const result = await getFeaturedGraphNft(data?.nft);
+  return result;
+};
+
+export const getFeaturedNearNfts = async (address) => {
+  const { data, error } = await nearClient.query(GET_NEAR_NFT, { id: address }).toPromise();
+  if (error) return [];
+  const result = await getNearNft(data?.nft);
+  return result;
+};
+
+export const getFeaturedPolygonNfts = async (address) => {
+  const { data: polygonData, error: polygonError } = await polygonClient
+    .query(GET_GRAPH_NFT, { id: address })
+    .toPromise();
+  if (polygonError) return [];
+  const result = await getFeaturedGraphNft(polygonData?.nft);
+  return result;
+};
+
 export const nearUserData = async (address) => {
   const { data: nearData, error: nearError } = await nearClient.query(GET_NEAR_NFT, { id: address }).toPromise();
   if (nearError) return;
@@ -106,6 +139,13 @@ export const nearUserData = async (address) => {
   }
   const transactionHistory = trHistory.sort((a, b) => b?.txDate - a?.txDate);
   return [nearResult[0], transactionHistory];
+};
+
+export const nearFeaturedNfts = async (address) => {
+  const { data, error } = await nearClient.query(GET_FEATURED_SINGLE_NFT, { id: address }).toPromise();
+  if (error) return [];
+  const nearData = await getGraphNft(data?.nft);
+  return nearData;
 };
 
 export const getPolygonNFTToList = async (address, nftId) => {
@@ -206,6 +246,30 @@ export const getCeloCollectedNFTs = async (address) => {
   return celoCollectedNfts;
 };
 
+export const getPolygonSingleCollection = async (address) => {
+  const { data, error } = await polygonClient.query(GET_SINGLE_GRAPH_COLLECTION, { id: address }).toPromise();
+  if (error) return;
+  const nftData = await getGraphCollection(data?.collection?.nfts, data?.collection);
+  const collectionData = await getGraphCollectionData(data?.collection);
+  return [nftData, collectionData];
+};
+
+export const getCeloSingleCollection = async (address) => {
+  const { data, error } = await celoClient.query(GET_SINGLE_GRAPH_COLLECTION, { id: address }).toPromise();
+  if (error) return;
+  const nftData = await getGraphCollection(data?.collection?.nfts, data?.collection);
+  const collectionData = await getGraphCollectionData(data?.collection);
+  return [nftData, collectionData];
+};
+
+export const getAuroraSingleCollection = async (address) => {
+  const { data, error } = await auroraClient.query(GET_SINGLE_GRAPH_COLLECTION, { id: address }).toPromise();
+  if (error) return;
+  const nftData = await getGraphCollection(data?.collection?.nfts, data?.collection);
+  const collectionData = await getGraphCollectionData(data?.collection);
+  return [nftData, collectionData];
+};
+
 export const getAuroraMintedNfts = async (address) => {
   const { data, error: auroraError } = await auroraClient.query(GET_USER_NFT, { id: address }).toPromise();
   if (auroraError) return;
@@ -294,42 +358,58 @@ export const celoUserData = async (address) => {
   return [celoResult[0], trHistory];
 };
 
-export const getAllCeloNfts = async () => {
-  const { data: graphData, error } = await celoClient.query(GET_CELO_SINGLE_NFT).toPromise();
-  const { data: sbData, error: sbError } = await celoClient.query(GET_CELO_SOUL_BOUND_NFTS).toPromise();
+export const getAllCeloNfts = async (limit) => {
+  const { data: graphData, error } = await celoClient
+    .query(limit ? GET_CELO_SINGLE_NFT_WITH_LIMITS : GET_CELO_SINGLE_NFT)
+    .toPromise();
+  const { data: sbData, error: sbError } = await celoClient
+    .query(limit ? GET_CELO_SOUL_BOUND_NFTS_WITH_LIMITS : GET_CELO_SOUL_BOUND_NFTS)
+    .toPromise();
 
   if (error || sbError) return [];
   const data = await getSingleGraphNfts([...graphData.nfts, ...sbData.nfts]);
   return data;
 };
 
-export const getAllPolygonNfts = async () => {
-  const { data: graphData, error } = await polygonClient.query(GET_POLYGON_SINGLE_NFTS).toPromise();
-  const { data: sbData, error: sbError } = await polygonClient.query(GET_POLYGON_SOUL_BOUND_NFTS).toPromise();
+export const getAllPolygonNfts = async (limit) => {
+  const { data: graphData, error } = await polygonClient
+    .query(limit ? GET_POLYGON_SINGLE_NFTS_WITH_LIMIT : GET_POLYGON_SINGLE_NFTS)
+    .toPromise();
+  const { data: sbData, error: sbError } = await polygonClient
+    .query(limit ? GET_POLYGON_SOUL_BOUND_NFTS_WITH_LIMITS : GET_POLYGON_SOUL_BOUND_NFTS)
+    .toPromise();
 
   if (error || sbError) return [];
   const data = getSingleGraphNfts([...graphData.nfts, ...sbData.nfts]);
   return data;
 };
 
-export const getAllArbitrumNfts = async () => {
-  const { data: graphData, error } = await arbitrumClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+export const getAllArbitrumNfts = async (limit) => {
+  const { data: graphData, error } = await arbitrumClient
+    .query(limit ? GET_NEAR_SINGLE_NFTS_WITH_LIMIT : GET_NEAR_SINGLE_NFTS)
+    .toPromise();
   if (error) return [];
   const data = await getSingleGraphNfts(graphData?.nfts);
   return data;
 };
 
-export const getAllAuroraNfts = async () => {
-  const { data: graphData, error } = await auroraClient.query(GET_AURORA_SINGLE_NFTS).toPromise();
-  const { data: sbData, error: sbError } = await auroraClient.query(GET_AURORA_SOUL_BOUND_NFTS).toPromise();
+export const getAllAuroraNfts = async (limit) => {
+  const { data: graphData, error } = await auroraClient
+    .query(limit ? GET_AURORA_SINGLE_NFTS_WITH_LIMIT : GET_AURORA_SINGLE_NFTS)
+    .toPromise();
+  const { data: sbData, error: sbError } = await auroraClient
+    .query(limit ? GET_AURORA_SOUL_BOUND_NFTS_WITH_LIMIT : GET_AURORA_SOUL_BOUND_NFTS)
+    .toPromise();
 
   if (error || sbError) return [];
   const data = await getSingleGraphNfts([...graphData.nfts, ...sbData.nfts]);
   return data;
 };
 
-export const getAllNearNfts = async () => {
-  const { data: graphData, error } = await nearClient.query(GET_NEAR_SINGLE_NFTS).toPromise();
+export const getAllNearNfts = async (limit) => {
+  const { data: graphData, error } = await nearClient
+    .query(limit ? GET_NEAR_SINGLE_NFTS_WITH_LIMIT : GET_NEAR_SINGLE_NFTS)
+    .toPromise();
   if (error) return [];
   const data = await getNearSingleGraphNfts(graphData?.nfts);
   return data;
@@ -355,8 +435,10 @@ export const getAllAlgorandCollections = async (mainnet, dispatch) => {
   return result;
 };
 
-export const getAllAvalancheNfts = async () => {
-  const { data: graphData, error } = await avalancheClient.query(GET_AVAX_SINGLE_NFTS).toPromise();
+export const getAllAvalancheNfts = async (limit) => {
+  const { data: graphData, error } = await avalancheClient
+    .query(limit ? GET_AVAX_SINGLE_NFTS_WITH_LIMIT : GET_AVAX_SINGLE_NFTS)
+    .toPromise();
   if (error) return [];
   const data = await getSingleGraphNfts(graphData?.nfts);
   return data;

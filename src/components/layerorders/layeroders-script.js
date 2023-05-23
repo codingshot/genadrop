@@ -1,4 +1,5 @@
-import { setNotification } from "../../gen-state/gen.actions";
+/* eslint-disable prefer-const */
+/* eslint-disable no-unused-expressions */
 
 export const getItemStyle = (isDragging, draggableStyle) => ({
   userSelect: "none",

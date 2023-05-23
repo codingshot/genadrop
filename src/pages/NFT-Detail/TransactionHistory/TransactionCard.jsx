@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useContext, useState } from "react";
+/* eslint-disable no-lonely-if */
+import React, { useContext, useState } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import { chainIdToParams } from "../../../utils/chainConnect";
 import supportedChains from "../../../utils/supportedChains";

@@ -1,4 +1,6 @@
-import { useEffect, useState, useContext } from "react";
+/* eslint-disable prefer-const */
+/* eslint-disable no-shadow */
+import React, { useEffect, useState, useContext } from "react";
 import { GenContext } from "../../../gen-state/gen.context";
 import classes from "./ProgressBar.module.css";
 import { ReactComponent as CloudIcon } from "../../../assets/icon-cloud.svg";

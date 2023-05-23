@@ -1,3 +1,6 @@
+/* eslint-disable consistent-return */
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable no-shadow */
 import React, { useEffect, useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import classes from "./Pricing.module.css";

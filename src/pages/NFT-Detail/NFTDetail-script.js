@@ -1,12 +1,24 @@
+/* eslint-disable no-return-await */
+/* eslint-disable no-unused-vars */
+/* eslint-disable consistent-return */
 import { readNftTransaction, readUserProfile } from "../../utils/firebase";
 import { getCeloGraphNft, getGraphCollection, getNearNftDetailTransaction, getTransactions } from "../../utils";
 import {
   arbitrumUserData,
   auroraUserData,
-  avaxUsersNfts,
+  getAvalancheNft,
   celoUserData,
   nearUserData,
   polygonUserData,
+  getAllCeloNfts,
+  getAllAuroraNfts,
+  getAllPolygonNfts,
+  getAllArbitrumNfts,
+  getAllAvalancheNfts,
+  getAllNearNfts,
+  getPolygonSingleCollection,
+  getAuroraSingleCollection,
+  getCeloSingleCollection,
 } from "../../renderless/fetch-data/fetchUserGraphData";
 import supportedChains from "../../utils/supportedChains";
 import { getCollectionNft, getNearCollection } from "../../renderless/fetch-data/fetchNearCollectionData";
@@ -42,20 +54,11 @@ export const getAlgoData = async ({ algoProps }) => {
 
 export const getGraphData = async ({ graphProps }) => {
   const {
-    auroraCollections,
-    polygonCollections,
-    celoCollections,
-    singleNearNfts,
-    singleAuroraNfts,
-    singlePolygonNfts,
-    singleAvaxNfts,
-    singleArbitrumNfts,
-    singleCeloNfts,
     params: { collectionName, nftId, chainId },
   } = graphProps;
 
   if (collectionName) {
-    let graphCollections = [];
+    const graphCollections = [];
     if (nftId.includes("genadorp.testnet")) {
       const nearGraphNft = await getCollectionNft(nftId);
       if (nearGraphNft.length) {
@@ -69,7 +72,38 @@ export const getGraphData = async ({ graphProps }) => {
         };
       }
     }
-    graphCollections = [...(auroraCollections || []), ...(polygonCollections || []), ...(celoCollections || [])];
+
+    if (collectionName.split("~")[1]) {
+      const collectionChain = collectionName.split("~")[0];
+      const collectionId = collectionName.split("~")[1];
+      let nft = {};
+      let transactionHistory = [];
+      let collection = [];
+      if (supportedChains[collectionChain]?.chain === "Polygon") {
+        const [nftsData, _] = await getPolygonSingleCollection(collectionId);
+        nft = nftsData.find((key) => key.Id === nftId);
+        collection = nftsData;
+        transactionHistory = await getTransactions(nft.transactions);
+      } else if (supportedChains[collectionChain]?.chain === "Aurora") {
+        const [nftsData, _] = await getAuroraSingleCollection(collectionId);
+        nft = nftsData.find((key) => key.Id === nftId);
+        collection = nftsData;
+        transactionHistory = await getTransactions(nft.transactions);
+      } else if (supportedChains[collectionChain]?.chain === "Celo") {
+        const [nftsData, _] = await getCeloSingleCollection(collectionId);
+        nft = nftsData.find((key) => key.Id === nftId);
+        collection = nftsData;
+        transactionHistory = await getTransactions(nft.transactions);
+      }
+
+      return {
+        nftDetails: nft,
+        transactionHistory,
+        _1of1: [],
+        collection,
+      };
+    }
+
     // filtering to get the unqiue collection
     let collection = graphCollections.find((col) => col.Id === collectionName);
     if (collection) {
@@ -97,59 +131,62 @@ export const getGraphData = async ({ graphProps }) => {
       // Fetching for nft by Id comparing it to the chain it belongs to before displaying the Id
       if (supportedChains[Number(chainId)]?.chain === "Celo") {
         const [celoData, trHistory] = await celoUserData(nftId);
+        const celoNfts = await getAllCeloNfts(10);
         return {
           nftDetails: celoData,
           transactionHistory: trHistory,
           collection: [],
-          _1of1: singleCeloNfts,
+          _1of1: celoNfts,
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Aurora") {
         const [auroraData, trHistory] = await auroraUserData(nftId);
+        const auroraNfts = await getAllAuroraNfts(10);
         return {
           nftDetails: auroraData,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: singleAuroraNfts,
+          _1of1: auroraNfts,
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Polygon") {
         const [polygonData, trHistory] = await polygonUserData(nftId);
-        // if (!polygonData) return history.goBack();
+        const polygonNfts = await getAllPolygonNfts(10);
         return {
           nftDetails: polygonData,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: singlePolygonNfts,
+          _1of1: polygonNfts,
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Arbitrum") {
         const [data, trHistory] = await arbitrumUserData(nftId);
-        // if (!polygonData) return history.goBack();
+        const arbitrumNfts = await getAllArbitrumNfts(10);
         return {
           nftDetails: data,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: singleArbitrumNfts,
+          _1of1: arbitrumNfts,
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Avalanche") {
-        const [avaxData, trHistory] = await avaxUsersNfts(nftId);
-        // if (!polygonData) return history.goBack();
+        const [avaxData, trHistory] = await getAvalancheNft(nftId);
+        const avalancheNfts = await getAllAvalancheNfts(10);
         return {
           nftDetails: avaxData,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: singleAvaxNfts,
+          _1of1: avalancheNfts,
         };
       }
       if (supportedChains[Number(chainId)]?.chain === "Near") {
         const [nearResult, trHistory] = await nearUserData(nftId);
+        const nearNfts = await getAllNearNfts(10);
         return {
           nftDetails: nearResult,
           collection: [],
           transactionHistory: trHistory,
-          _1of1: singleNearNfts,
+          _1of1: nearNfts,
         };
       }
     } catch (error) {
