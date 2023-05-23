@@ -1,10 +1,10 @@
 async function main() {
-  const proxyAddress = "0xee7Ff1636FF6e85c1613FDDD703E4A48b2b2A9A0"; //proxy address here
+  const proxyAddress = "0xB9eEFb0C664c86d7e375D5136167Fe80D5C4B94D"; //proxy address here
 
   const Market = await ethers.getContractFactory("NFTMarketV2"); // new contract
   console.log("Preparing upgrade...");
-  const MarketV2Address = await upgrades.validateUpgrade(proxyAddress, Market, { kind: "uups" });
-  console.log("FAED v2 at:", MarketV2Address);
+  const marketV2Address = await upgrades.validateUpgrade(proxyAddress, Market, { kind: "uups" });
+  console.log("FAED v2 at:", marketV2Address);
 }
 main()
   .then(() => process.exit(0))

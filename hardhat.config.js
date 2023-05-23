@@ -4,9 +4,9 @@ require("dotenv").config();
 require("@openzeppelin/hardhat-upgrades");
 // require("hardhat-contract-sizer");
 // require("solidity-coverage");
-require("hardhat-gas-reporter");
+// require("hardhat-gas-reporter");
 
-console.log("ololo", process.env.REACT_APP_MUMBAI_URL);
+console.log("ololo", process.env.REACT_APP_POLYGON_URL);
 module.exports = {
   networks: {
     mumbai: {
