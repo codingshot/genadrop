@@ -1,5 +1,5 @@
 async function main() {
-  const proxyAddress = "0xB9eEFb0C664c86d7e375D5136167Fe80D5C4B94D"; //proxy address here
+  const proxyAddress = "0x27E52A81975F5Fb836e79007E3c478C6c0E6E9FB"; //proxy address here
 
   const Market = await ethers.getContractFactory("NFTMarketV2"); // new contract
   console.log("Preparing upgrade...");
