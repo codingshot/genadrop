@@ -2915,40 +2915,38 @@ export async function purchasePolygonNfts(buyProps) {
       })
     );
   }
-  let wallet;
-  let chainId;
-  if (connector.isWalletConnect) {
-    const provider = new ethers.providers.Web3Provider(connector);
-    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
-    ({ chainId } = provider._network);
-  } else {
-    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-    ({ chainId } = connector._network);
-  }
+  // if (connector.isWalletConnect) {
+  //   const provider = new ethers.providers.Web3Provider(connector);
+  //   wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+  //   ({ chainId } = provider._network);
+  // } else {
+  //   wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  //   ({ chainId } = connector._network);
+  // }
   price = ethers.utils.parseEther(price.toString()).toString();
-  const signature = await wallet._signTypedData(
-    // Domain
-    {
-      name: "GenaDrop",
-      version: "1.0.0",
-      chainId,
-      verifyingContract: mainnet
-        ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
-    },
-    // Types
-    {
-      NFT: [
-        { name: "tokenId", type: "uint256" },
-        { name: "account", type: "address" },
-        { name: "price", type: "uint256" },
-        { name: "seller", type: "address" },
-        { name: "nftContract", type: "address" },
-      ],
-    },
-    // Value
-    { tokenId, account, price, seller, nftContract }
-  );
+  // const signature = await wallet._signTypedData(
+  //   // Domain
+  //   {
+  //     name: "GenaDrop",
+  //     version: "1.0.0",
+  //     chainId,
+  //     verifyingContract: mainnet
+  //       ? process.env.REACT_APP_GENADROP_POLY_MAINNET_MARKET_ADDRESS
+  //       : process.env.REACT_APP_GENADROP_POLY_TESTNET_MARKET_ADDRESS,
+  //   },
+  //   // Types
+  //   {
+  //     NFT: [
+  //       { name: "tokenId", type: "uint256" },
+  //       { name: "account", type: "address" },
+  //       { name: "price", type: "uint256" },
+  //       { name: "seller", type: "address" },
+  //       { name: "nftContract", type: "address" },
+  //     ],
+  //   },
+  //   // Value
+  //   { tokenId, account, price, seller, nftContract }
+  // );
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -2965,7 +2963,7 @@ export async function purchasePolygonNfts(buyProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract]),
       value: price,
       nonce: ethNonce,
     };
@@ -2991,7 +2989,7 @@ export async function purchasePolygonNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, { value: price });
     await tx.wait();
     return mainnet ? `https://polygonscan.com/tx/${tx.hash}` : `https://mumbai.polygonscan.com/tx/${tx.hash}`;
   } catch (error) {
@@ -3016,40 +3014,38 @@ export async function purchaseAuroraNfts(buyProps) {
       })
     );
   }
-  let wallet;
-  let chainId;
-  if (connector.isWalletConnect) {
-    const provider = new ethers.providers.Web3Provider(connector);
-    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
-    ({ chainId } = provider._network);
-  } else {
-    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-    ({ chainId } = connector._network);
-  }
+  // if (connector.isWalletConnect) {
+  //   const provider = new ethers.providers.Web3Provider(connector);
+  //   wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
+  //   ({ chainId } = provider._network);
+  // } else {
+  //   wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
+  //   ({ chainId } = connector._network);
+  // }
   price = ethers.utils.parseEther(price.toString()).toString();
-  const signature = await wallet._signTypedData(
-    // Domain
-    {
-      name: "GenaDrop",
-      version: "1.0.0",
-      chainId,
-      verifyingContract: mainnet
-        ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
-    },
-    // Types
-    {
-      NFT: [
-        { name: "tokenId", type: "uint256" },
-        { name: "account", type: "address" },
-        { name: "price", type: "uint256" },
-        { name: "seller", type: "address" },
-        { name: "nftContract", type: "address" },
-      ],
-    },
-    // Value
-    { tokenId, account, price, seller, nftContract }
-  );
+  // const signature = await wallet._signTypedData(
+  //   // Domain
+  //   {
+  //     name: "GenaDrop",
+  //     version: "1.0.0",
+  //     chainId,
+  //     verifyingContract: mainnet
+  //       ? process.env.REACT_APP_GENADROP_AURORA_MAINNET_MARKET_ADDRESS
+  //       : process.env.REACT_APP_GENADROP_AURORA_TESTNET_MARKET_ADDRESS,
+  //   },
+  //   // Types
+  //   {
+  //     NFT: [
+  //       { name: "tokenId", type: "uint256" },
+  //       { name: "account", type: "address" },
+  //       { name: "price", type: "uint256" },
+  //       { name: "seller", type: "address" },
+  //       { name: "nftContract", type: "address" },
+  //     ],
+  //   },
+  //   // Value
+  //   { tokenId, account, price, seller, nftContract }
+  // );
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -3066,7 +3062,7 @@ export async function purchaseAuroraNfts(buyProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract]),
       value: price,
       nonce: ethNonce,
     };
@@ -3092,7 +3088,7 @@ export async function purchaseAuroraNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, { value: price });
     await tx.wait();
     return mainnet ? `https://aurorascan.dev/tx/${tx.hash}` : `https://testnet.aurorascan.dev/tx/${tx.hash}`;
   } catch (error) {
@@ -3117,32 +3113,7 @@ export async function purchaseArbitrumNfts(buyProps) {
       })
     );
   }
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const { chainId } = connector._network;
   price = ethers.utils.parseEther(price.toString()).toString();
-  const signature = await wallet._signTypedData(
-    // Domain
-    {
-      name: "GenaDrop",
-      version: "1.0.0",
-      chainId,
-      verifyingContract: mainnet
-        ? process.env.REACT_APP_GENADROP_ARBITRUM_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_ARBITRUM_TESTNET_MARKET_ADDRESS,
-    },
-    // Types
-    {
-      NFT: [
-        { name: "tokenId", type: "uint256" },
-        { name: "account", type: "address" },
-        { name: "price", type: "uint256" },
-        { name: "seller", type: "address" },
-        { name: "nftContract", type: "address" },
-      ],
-    },
-    // Value
-    { tokenId, account, price, seller, nftContract }
-  );
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_ARBITRUM_MAINNET_MARKET_ADDRESS
@@ -3151,7 +3122,7 @@ export async function purchaseArbitrumNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, { value: price });
     await tx.wait();
     return mainnet ? `https://arbiscan.io/tx/${tx.hash}` : `https://goerli.arbiscan.io/tx/${tx.hash}`;
   } catch (error) {
@@ -3238,40 +3209,7 @@ export async function purchaseCeloNfts(buyProps) {
       })
     );
   }
-  let wallet;
-  let chainId;
-  if (connector.isWalletConnect) {
-    const provider = new ethers.providers.Web3Provider(connector);
-    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, provider);
-    ({ chainId } = provider._network);
-  } else {
-    wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-    ({ chainId } = connector._network);
-  }
   price = ethers.utils.parseEther(price.toString()).toString();
-  const signature = await wallet._signTypedData(
-    // Domain
-    {
-      name: "GenaDrop",
-      version: "1.0.0",
-      chainId,
-      verifyingContract: mainnet
-        ? process.env.REACT_APP_GENADROP_CELO_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_CELO_TESTNET_MARKET_ADDRESS,
-    },
-    // Types
-    {
-      NFT: [
-        { name: "tokenId", type: "uint256" },
-        { name: "account", type: "address" },
-        { name: "price", type: "uint256" },
-        { name: "seller", type: "address" },
-        { name: "nftContract", type: "address" },
-      ],
-    },
-    // Value
-    { tokenId, account, price, seller, nftContract }
-  );
   if (connector.isWalletConnect) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
@@ -3288,7 +3226,7 @@ export async function purchaseCeloNfts(buyProps) {
       to: contract.address,
       // gasLimit: ethers.utils.hexlify(250000), change tx from legacy later
       // gasPrice: ethers.utils.parseUnits('5', "gwei"),
-      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract, signature]),
+      data: contract.interface.encodeFunctionData("nftSale", [price, tokenId, seller, nftContract]),
       value: price,
       nonce: ethNonce,
     };
@@ -3316,7 +3254,7 @@ export async function purchaseCeloNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, { value: price });
     await tx.wait();
     return mainnet
       ? `https://explorer.celo.org/mainnet/tx/${tx.hash}`
@@ -3343,32 +3281,7 @@ export async function purchaseAvaxNfts(buyProps) {
       })
     );
   }
-  const wallet = new ethers.Wallet(process.env.REACT_APP_GENADROP_SERVER_KEY, connector);
-  const { chainId } = connector._network;
   price = ethers.utils.parseEther(price.toString()).toString();
-  const signature = await wallet._signTypedData(
-    // Domain
-    {
-      name: "GenaDrop",
-      version: "1.0.0",
-      chainId,
-      verifyingContract: mainnet
-        ? process.env.REACT_APP_GENADROP_AVAX_MAINNET_MARKET_ADDRESS
-        : process.env.REACT_APP_GENADROP_AVAX_TESTNET_MARKET_ADDRESS,
-    },
-    // Types
-    {
-      NFT: [
-        { name: "tokenId", type: "uint256" },
-        { name: "account", type: "address" },
-        { name: "price", type: "uint256" },
-        { name: "seller", type: "address" },
-        { name: "nftContract", type: "address" },
-      ],
-    },
-    // Value
-    { tokenId, account, price, seller, nftContract }
-  );
   const contract = new ethers.Contract(
     mainnet
       ? process.env.REACT_APP_GENADROP_AVAX_MAINNET_MARKET_ADDRESS
@@ -3377,7 +3290,7 @@ export async function purchaseAvaxNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(price, tokenId, seller, nftContract, signature, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, { value: price });
     await tx.wait();
     return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
   } catch (error) {
