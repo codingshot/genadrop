@@ -6,7 +6,7 @@ require("@openzeppelin/hardhat-upgrades");
 // require("solidity-coverage");
 // require("hardhat-gas-reporter");
 
-console.log("ololo", process.env.REACT_APP_CeloTest_URL);
+console.log("ololo", process.env.REACT_APP_POLYGON_URL);
 module.exports = {
   networks: {
     mumbai: {
