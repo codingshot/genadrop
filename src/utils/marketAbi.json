@@ -402,11 +402,6 @@
         "internalType": "address",
         "name": "nftContract",
         "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "signature",
-        "type": "bytes"
       }
     ],
     "name": "nftSale",
