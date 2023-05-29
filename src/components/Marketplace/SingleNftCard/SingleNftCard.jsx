@@ -92,7 +92,7 @@ const SingleNftCard = ({ use_width, nft, fromDashboard, fromDetails, collectionN
               <audio className={classes.audio} src={mediaURL} alt="" controls onLoad={() => setMediaURL(imgHolder)} />
             </div>
           ) : (
-            <img className={classes.image} src={mediaURL} alt="" onError={() => setMediaURL(imgHolder)} />
+            <img className={classes.image} src={image_url} alt="" />
           )}
         </div>
       </div>
