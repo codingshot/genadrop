@@ -11,6 +11,7 @@ import { utils } from "near-api-js";
 import JSZip from "jszip";
 import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+// import axios from "axios";
 
 const BN = require("bn.js");
 
@@ -170,6 +171,9 @@ const uploadToIpfs = async (nftFile, nftFileName, asset, isIpfsLink, isAi) => {
 };
 
 export const connectAndMint = async (file, metadata, imgName, retryTimes, isIpfsLink, isAi) => {
+  console.log("Get the details we need", file, metadata, imgName)
+  file.
+  return
   try {
     await pinata.testAuthentication();
     return await uploadToIpfs(file, imgName, metadata, isIpfsLink, isAi);
@@ -344,9 +348,16 @@ export async function mintSingleToNear(nearMintProps) {
 
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
+    console.log("filefun!", file);
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post("https://genadrop.onrender.com/upload/", formData);
+    const asset = rd.data; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     // notification: asset uploaded, minting in progress
+    console.log("before before", rd, asset.data);
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
     // if (window?.xfi?.near?.connected) {
@@ -1326,6 +1337,7 @@ export async function createNFT(createProps, doAccountCheck) {
     const imgFile = data.files[imgName];
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
+    console.log("GETTING TO THE BLOBBER", blob)
     const asset = await connectAndMint(blob, metadata[i], imgName, 4);
     assets.push(asset);
   }
