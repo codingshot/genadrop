@@ -11,6 +11,7 @@ import { utils } from "near-api-js";
 import JSZip from "jszip";
 import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
+// import axios from "axios";
 
 const BN = require("bn.js");
 
@@ -313,7 +314,12 @@ export async function mintSingleToAlgo(algoMintProps) {
   if (connector.isWalletConnect && connector.chainId === 4160) {
     dispatch(setLoader("uploading to ipfs"));
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
@@ -344,9 +350,16 @@ export async function mintSingleToNear(nearMintProps) {
 
   if (accountId) {
     dispatch(setLoader("uploading to ipfs"));
+    console.log("filefun!", file);
     // notification: uploading to ipfs
-    const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     // notification: asset uploaded, minting in progress
+    console.log("before before", rd, asset.data);
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
     // if (window?.xfi?.near?.connected) {
@@ -644,7 +657,12 @@ export async function mintSoulBoundPoly(mintprops) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     // eslint-disable-next-line no-unused-vars
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -682,7 +700,12 @@ export async function mintSoulBoundPoly(mintprops) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, dispatch, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   // const uintArray = asset.metadata.toLocaleString();
   // const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -735,7 +758,12 @@ export async function mintSoulBoundAvax(mintprops) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     // const uintArray = asset.metadata.toLocaleString();
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -771,7 +799,12 @@ export async function mintSoulBoundAvax(mintprops) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, dispatch, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -822,7 +855,12 @@ export async function mintSoulBoundCelo(mintprops) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
       mainnet
@@ -859,7 +897,12 @@ export async function mintSoulBoundCelo(mintprops) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, dispatch, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -920,7 +963,12 @@ export async function mintSingleToPoly(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -955,7 +1003,12 @@ export async function mintSingleToPoly(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1020,7 +1073,12 @@ export async function mintSingleToCelo(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -1057,7 +1115,12 @@ export async function mintSingleToCelo(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1114,7 +1177,12 @@ export async function mintSingleToAvax(singleMintProps) {
     const provider = new ethers.providers.Web3Provider(connector);
     const signer = provider.getSigner();
     dispatch(setLoader("uploading 1 of 1"));
-    const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("asset", JSON.stringify(metadata));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -1151,7 +1219,12 @@ export async function mintSingleToAvax(singleMintProps) {
   }
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1182,7 +1255,12 @@ export async function mintSingleToAurora(singleMintProps) {
     singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1223,7 +1301,12 @@ export async function mintSingleToAbitrum(singleMintProps) {
     singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1255,7 +1338,12 @@ export async function mintSingleToOptimism(singleMintProps) {
     singleMintProps;
   const signer = await connector.getSigner();
   dispatch(setLoader("uploading 1 of 1"));
-  const asset = await connectAndMint(file, metadata, isIpfsLink || isAi ? fileName : file.name, 4, isIpfsLink, isAi);
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("asset", JSON.stringify(metadata));
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1326,7 +1414,13 @@ export async function createNFT(createProps, doAccountCheck) {
     const imgFile = data.files[imgName];
     const uint8array = await imgFile.async("uint8array");
     const blob = new File([uint8array], imgName, { type: imgName.split(".")[1] });
-    const asset = await connectAndMint(blob, metadata[i], imgName, 4);
+    // const asset = await connectAndMint(blob, metadata[i], imgName, 4);
+    const formData = new FormData();
+    formData.append("file", blob);
+    formData.append("filename", imgName);
+    formData.append("asset", JSON.stringify(metadata[i]));
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const asset = rd.data;
     assets.push(asset);
   }
   dispatch(setLoader(""));
