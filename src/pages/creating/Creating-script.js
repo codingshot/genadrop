@@ -13,13 +13,13 @@ import { ReactComponent as Video } from "../../assets/create/MintVideos.svg";
 // import { ReactComponent as Ipfs } from "../../assets/create/ipfsIcon.svg";
 
 const cards = [
-  {
-    title: "AI",
-    description: "Create Digital art with AI",
-    icon: <Ai />,
-    url: "/mint/ai",
-    comingSoon: "",
-  },
+  // {
+  //   title: "AI",
+  //   description: "Create Digital art with AI",
+  //   icon: <Ai />,
+  //   url: "/mint/ai",
+  //   comingSoon: "",
+  // },
   {
     title: "Proof Of Sesh",
     description: "Scan your stick for proof",
