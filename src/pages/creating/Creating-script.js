@@ -21,17 +21,17 @@ const cards = [
   //   comingSoon: "",
   // },
   {
-    title: "Proof Of Sesh",
-    description: "Scan your stick for proof",
-    icon: <Sesh />,
-    url: "/mint/sesh",
-    comingSoon: "",
-  },
-  {
     title: "Digital Art",
     description: "Upload an image and mint",
     icon: <Art />,
     url: "/mint/1of1",
+    comingSoon: "",
+  },
+  {
+    title: "Proof Of Sesh",
+    description: "Scan your stick for proof",
+    icon: <Sesh />,
+    url: "/mint/sesh",
     comingSoon: "",
   },
   // {
