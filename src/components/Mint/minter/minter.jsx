@@ -808,7 +808,7 @@ const Minter = () => {
             <div className={classes.headerDescription}>
               Upload an{" "}
               <span>
-                {params?.mintId === "1of1" ? "1 of 1" : params.mintId}
+                {params?.mintId === "1of1" ? "1 of 1" : params?.mintId}
                 <BorderIcon />
               </span>{" "}
               to create a proof of sesh NFTs <br />
