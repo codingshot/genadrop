@@ -152,7 +152,7 @@
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "4.3.0",
     "ethereum-waffle": "^3.4.4",
-    "ethers": "^5.7.2",
+    "ethers": "5.7.2",
     "hardhat": "^2.9.9",
     "hardhat-gas-reporter": "^1.0.9",
     "husky": "^7.0.0",
