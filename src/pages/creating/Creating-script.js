@@ -6,7 +6,7 @@ import { ReactComponent as Sesh } from "../../assets/create/sesh-icon.svg";
 import { ReactComponent as Shorts } from "../../assets/create/shorts-icon.svg";
 import { ReactComponent as Art } from "../../assets/create/art-icon.svg";
 // import { ReactComponent as Doubletake } from "../../assets/create/bereal-icon.svg";
-import { ReactComponent as Ai } from "../../assets/create/ai-icon.svg";
+// import { ReactComponent as Ai } from "../../assets/create/ai-icon.svg";
 import { ReactComponent as Audio } from "../../assets/create/MusicNotes.svg";
 import { ReactComponent as Video } from "../../assets/create/MintVideos.svg";
 // import { ReactComponent as Tweets } from "../../assets/create/tweets-icon.svg";

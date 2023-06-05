@@ -6,10 +6,11 @@
 /* eslint-disable no-alert */
 /* eslint-disable no-await-in-loop */
 // import { CeloProvider, CeloWallet } from "@celo-tools/celo-ethers-wrapper";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { ethers } from "ethers";
 import { formatJsonRpcRequest } from "@json-rpc-tools/utils";
 import { utils } from "near-api-js";
 import JSZip from "jszip";
-import { ethers } from "ethers";
 import { setLoader, setNotification } from "../gen-state/gen.actions";
 // import axios from "axios";
 
@@ -3197,7 +3198,7 @@ export async function purchaseAuroraNfts(buyProps) {
 }
 
 export async function purchaseArbitrumNfts(buyProps) {
-  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  const { dispatch, connector, mainnet, nftDetails } = buyProps;
   let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   if (!connector) {
     return dispatch(
@@ -3365,7 +3366,7 @@ export async function purchaseCeloNfts(buyProps) {
 }
 
 export async function purchaseAvaxNfts(buyProps) {
-  const { dispatch, account, connector, mainnet, nftDetails } = buyProps;
+  const { dispatch, connector, mainnet, nftDetails } = buyProps;
   let { tokenID: tokenId, price, owner: seller, collection_contract: nftContract } = nftDetails;
   if (!connector) {
     return dispatch(
