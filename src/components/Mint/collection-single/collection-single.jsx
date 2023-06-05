@@ -225,7 +225,7 @@ const CollectionToSingleMinter = () => {
               <BackIcon className={classes.backIcon} />
             </Link>
             <header className={classes.headingWrapper}>
-              {/* <h1 className={classes.heading}>Mint Your NFTs</h1> */}
+              <h1 className={classes.heading}>Create</h1>
               <p className={classes.description}>
                 Upload a{params.mintId === "Audio File" ? "n " : " "}
                 <span>
