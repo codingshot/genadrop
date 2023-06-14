@@ -321,8 +321,8 @@ export async function mintSingleToAlgo(algoMintProps) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -364,8 +364,8 @@ export async function mintSingleToNear(nearMintProps) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
@@ -674,8 +674,8 @@ export async function mintSoulBoundPoly(mintprops) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -722,8 +722,8 @@ export async function mintSoulBoundPoly(mintprops) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -785,8 +785,8 @@ export async function mintSoulBoundAvax(mintprops) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -831,8 +831,8 @@ export async function mintSoulBoundAvax(mintprops) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -892,8 +892,8 @@ export async function mintSoulBoundCelo(mintprops) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -939,8 +939,8 @@ export async function mintSoulBoundCelo(mintprops) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1010,8 +1010,8 @@ export async function mintSingleToPoly(singleMintProps) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -1055,8 +1055,8 @@ export async function mintSingleToPoly(singleMintProps) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1130,8 +1130,8 @@ export async function mintSingleToCelo(singleMintProps) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -1177,8 +1177,8 @@ export async function mintSingleToCelo(singleMintProps) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1244,8 +1244,8 @@ export async function mintSingleToAvax(singleMintProps) {
     formData.append("asset", JSON.stringify(metadata));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
@@ -1291,8 +1291,8 @@ export async function mintSingleToAvax(singleMintProps) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1332,8 +1332,8 @@ export async function mintSingleToAurora(singleMintProps) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1383,8 +1383,8 @@ export async function mintSingleToAbitrum(singleMintProps) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1425,8 +1425,8 @@ export async function mintSingleToOptimism(singleMintProps) {
   formData.append("asset", JSON.stringify(metadata));
   const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
     auth: {
-      username: "usernamebasic",
-      password: "passwordbasic",
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data;
@@ -1507,8 +1507,8 @@ export async function createNFT(createProps, doAccountCheck) {
     formData.append("asset", JSON.stringify(metadata[i]));
     const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
       auth: {
-        username: "usernamebasic",
-        password: "passwordbasic",
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data;
