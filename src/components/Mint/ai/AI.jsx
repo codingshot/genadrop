@@ -17,6 +17,7 @@ import throwback from "../../../assets/ai-art-style/throwback.png";
 import NotIcon from "../../../assets/ai-art-style/not-icon.svg";
 import { ReactComponent as PlusIcon } from "../../../assets/ai-mint-plus.svg";
 import { ReactComponent as PreviewImageIcon } from "../../../assets/ai-preview.svg";
+import axios from "axios";
 
 const AI = () => {
   const [wordCount, setWordCount] = useState(0);
@@ -83,42 +84,79 @@ const AI = () => {
       try {
         dispatch(setOverlay(true));
 
-        await fetch(
-          `${process.env.REACT_APP_TWITTER_BACKEND}genImage`,
-          getReqOptions({
+        console.log("LAVENDER", promptText)
+
+        const gen_image = await axios.post(
+          `${process.env.REACT_APP_BACKEND}/generate-image`,
+          {
             prompt: promptText,
             n: 1,
             size: String(`${512}x${512}`),
-          })
-        )
-          .then(async (response) => {
-            if (!response.ok) {
-              dispatch(setOverlay(false));
-              setGenerated(false);
-              dispatch(setNotification({ message: "Image could not be generated", type: "error" }));
-            }
+          },
+          {
+            auth: {
+              username: process.env.REACT_APP_USERNAME,
+              password: process.env.REACT_APP_PASSWORD,
+            },
+          }
+        );
 
-            return response.json();
-          })
-          .then((data) => {
-            setImageUrl(data.data.data[0]?.url);
-            dispatch(setNotification({ message: "Preparing your image", type: "success" }));
-            fetch(
-              `${process.env.REACT_APP_TWITTER_BACKEND}singleImage`,
-              getReqOptions({
-                uri: data?.data?.data[0].url,
-              })
-            ).then(async (response) => {
-              const blob = await response.blob();
-              setImageBlob(blob);
-              dispatch(setOverlay(false));
-              dispatch(setNotification({ message: "Ready to mint", type: "success" }));
-              setTimeout(() => {
-                setLoad(false);
-              }, 5000);
-            });
-            setGenerated(true);
-          });
+        if (gen_image.status !== 200) {
+          dispatch(setOverlay(false));
+          setGenerated(false);
+          dispatch(setNotification({ message: "Image could not be generated", type: "error" }));
+        }
+
+        const res_data = gen_image.data;
+        console.log("AFTERSHAVE...", res_data);
+        setImageUrl(res_data.content[0].url);
+        dispatch(setNotification({ message: "Preparing your image", type: "success" }));
+
+        const response = await axios.get(res_data.content[0].url, { responseType: 'blob' });
+        setImageBlob(response.data);
+        dispatch(setOverlay(false));
+        dispatch(setNotification({ message: "Ready to mint", type: "success" }));
+        setTimeout(() => {
+          setLoad(false);
+        }, 5000);
+        setGenerated(true);
+
+        // await fetch(
+        //   `${process.env.REACT_APP_TWITTER_BACKEND}genImage`,
+        //   getReqOptions({
+        //     prompt: promptText,
+        //     n: 1,
+        //     size: String(`${512}x${512}`),
+        //   })
+        // )
+        //   .then(async (response) => {
+        //     if (!response.ok) {
+        //       dispatch(setOverlay(false));
+        //       setGenerated(false);
+        //       dispatch(setNotification({ message: "Image could not be generated", type: "error" }));
+        //     }
+
+        //     return response.json();
+        //   })
+        //   .then((data) => {
+        //     setImageUrl(data.data.data[0]?.url);
+        //     dispatch(setNotification({ message: "Preparing your image", type: "success" }));
+        //     fetch(
+        //       `${process.env.REACT_APP_TWITTER_BACKEND}singleImage`,
+        //       getReqOptions({
+        //         uri: data?.data?.data[0].url,
+        //       })
+        //     ).then(async (response) => {
+        //       const blob = await response.blob();
+        //       setImageBlob(blob);
+        //       dispatch(setOverlay(false));
+        //       dispatch(setNotification({ message: "Ready to mint", type: "success" }));
+        //       setTimeout(() => {
+        //         setLoad(false);
+        //       }, 5000);
+        //     });
+        //     setGenerated(true);
+        //   });
       } catch (error) {
         dispatch(setNotification({ message: "Image could not be generated please try another prompt", type: "error" }));
         console.log(error);
