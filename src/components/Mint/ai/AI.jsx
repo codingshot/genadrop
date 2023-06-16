@@ -112,8 +112,23 @@ const AI = () => {
         setImageUrl(res_data.content[0].url);
         dispatch(setNotification({ message: "Preparing your image", type: "success" }));
 
-        const response = await axios.get(res_data.content[0].url, { responseType: 'blob' });
-        setImageBlob(response.data);
+        const response = await axios.post(
+          `${process.env.REACT_APP_BACKEND}/blob`,
+          {
+            imageUri: res_data.content[0].url,
+            fileName: promptText,
+          },
+          {
+            auth: {
+              username: process.env.REACT_APP_USERNAME,
+              password: process.env.REACT_APP_PASSWORD,
+            },
+          }
+        );
+        const ui8A = new Uint8Array(Object.values(response.data.content));
+        const blob = new File([ui8A], "AIGenerated", { type: "PNG" });
+        //await axios.get(res_data.content[0].url, { responseType: 'blob' });
+        setImageBlob(blob);
         dispatch(setOverlay(false));
         dispatch(setNotification({ message: "Ready to mint", type: "success" }));
         setTimeout(() => {

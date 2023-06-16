@@ -432,7 +432,20 @@ const Minter = () => {
     if (mintId === "ai") {
       console.log("IN CAP", aiData)
       dispatch(setLoader("Getting image"));
-      const response = await axios.get(aiData.imageUrl, { responseType: 'blob' });
+      // const response = await axios.get(aiData.imageUrl, { responseType: 'blob' });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND}/blob`,
+        {
+          imageUri: aiData.imageUrl,
+          fileName: aiData.title,
+        },
+        {
+          auth: {
+            username: process.env.REACT_APP_USERNAME,
+            password: process.env.REACT_APP_PASSWORD,
+          },
+        }
+      );
       // const response = await fetch(`${process.env.REACT_APP_TWITTER_BACKEND}singleImage`, {
       //   method: "POST",
       //   headers: {
@@ -440,8 +453,9 @@ const Minter = () => {
       //   },
       //   body: JSON.stringify({ uri: aiData.imageUrl }),
       // });
-
-      singleMintProps.file = await response.data();
+      const ui8A = new Uint8Array(Object.values(response.data.content));
+      const blob = new File([ui8A], aiData.title, { type: "PNG" });
+      singleMintProps.file = blob;
       dispatch(setLoader(""));
       singleMintProps.isAi = true;
       singleMintProps.fileName = aiData.title;

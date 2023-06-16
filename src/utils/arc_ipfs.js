@@ -362,7 +362,7 @@ export async function mintSingleToNear(nearMintProps) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
