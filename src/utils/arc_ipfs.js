@@ -368,9 +368,8 @@ export async function mintSingleToNear(nearMintProps) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
+    const asset = rd.data.content.upload.media; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     // notification: asset uploaded, minting in progress
-    console.log("before before", rd, asset.data);
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
     // if (window?.xfi?.near?.connected) {
