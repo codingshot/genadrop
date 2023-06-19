@@ -317,9 +317,14 @@ export async function mintSingleToAlgo(algoMintProps) {
     // notification: uploading to ipfs
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
@@ -355,9 +360,14 @@ export async function mintSingleToNear(nearMintProps) {
     // notification: uploading to ipfs
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     // notification: asset uploaded, minting in progress
     console.log("before before", rd, asset.data);
@@ -660,9 +670,14 @@ export async function mintSoulBoundPoly(mintprops) {
     dispatch(setLoader("uploading 1 of 1"));
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     // eslint-disable-next-line no-unused-vars
@@ -703,9 +718,14 @@ export async function mintSoulBoundPoly(mintprops) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   // const uintArray = asset.metadata.toLocaleString();
   // const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -761,9 +781,14 @@ export async function mintSoulBoundAvax(mintprops) {
     dispatch(setLoader("uploading 1 of 1"));
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     // const uintArray = asset.metadata.toLocaleString();
     dispatch(setLoader("minting 1 of 1"));
@@ -802,9 +827,14 @@ export async function mintSoulBoundAvax(mintprops) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -858,9 +888,14 @@ export async function mintSoulBoundCelo(mintprops) {
     dispatch(setLoader("uploading 1 of 1"));
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -900,9 +935,14 @@ export async function mintSoulBoundCelo(mintprops) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -966,9 +1006,14 @@ export async function mintSingleToPoly(singleMintProps) {
     dispatch(setLoader("uploading 1 of 1"));
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1006,9 +1051,14 @@ export async function mintSingleToPoly(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1076,9 +1126,14 @@ export async function mintSingleToCelo(singleMintProps) {
     dispatch(setLoader("uploading 1 of 1"));
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1118,9 +1173,14 @@ export async function mintSingleToCelo(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1180,9 +1240,14 @@ export async function mintSingleToAvax(singleMintProps) {
     dispatch(setLoader("uploading 1 of 1"));
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+    formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1222,9 +1287,14 @@ export async function mintSingleToAvax(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1258,9 +1328,14 @@ export async function mintSingleToAurora(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1304,9 +1379,14 @@ export async function mintSingleToAbitrum(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1341,9 +1421,14 @@ export async function mintSingleToOptimism(singleMintProps) {
   dispatch(setLoader("uploading 1 of 1"));
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("filename", isAi || isIpfsLink ? fileName : file.name);
+  formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    auth: {
+      username: process.env.REACT_APP_USERNAME,
+      password: process.env.REACT_APP_PASSWORD,
+    },
+  });
   const asset = rd.data;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -1418,9 +1503,14 @@ export async function createNFT(createProps, doAccountCheck) {
     // const asset = await connectAndMint(blob, metadata[i], imgName, 4);
     const formData = new FormData();
     formData.append("file", blob);
-    formData.append("filename", imgName);
+    formData.append("fileName", imgName);
     formData.append("asset", JSON.stringify(metadata[i]));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData);
+    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+      auth: {
+        username: process.env.REACT_APP_USERNAME,
+        password: process.env.REACT_APP_PASSWORD,
+      },
+    });
     const asset = rd.data;
     assets.push(asset);
   }
