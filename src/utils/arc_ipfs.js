@@ -325,7 +325,7 @@ export async function mintSingleToAlgo(algoMintProps) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     const txn = await createAsset(asset, account);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
@@ -368,7 +368,7 @@ export async function mintSingleToNear(nearMintProps) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data.content.upload.media; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
+    const asset = rd.data.content.upload; // await connectAndMint(file, metadata, isAi || isIpfsLink ? fileName : file.name, 4, isIpfsLink, isAi);
     // notification: asset uploaded, minting in progress
     dispatch(setLoader("asset uploaded, minting in progress"));
     let response;
@@ -677,7 +677,7 @@ export async function mintSoulBoundPoly(mintprops) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     const uintArray = asset.metadata.toLocaleString();
     // eslint-disable-next-line no-unused-vars
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
@@ -725,7 +725,7 @@ export async function mintSoulBoundPoly(mintprops) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   // const uintArray = asset.metadata.toLocaleString();
   // const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -788,7 +788,7 @@ export async function mintSoulBoundAvax(mintprops) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     // const uintArray = asset.metadata.toLocaleString();
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -834,7 +834,7 @@ export async function mintSoulBoundAvax(mintprops) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -895,7 +895,7 @@ export async function mintSoulBoundCelo(mintprops) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
       mainnet
@@ -942,7 +942,7 @@ export async function mintSoulBoundCelo(mintprops) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet
@@ -1013,7 +1013,7 @@ export async function mintSingleToPoly(singleMintProps) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -1058,7 +1058,7 @@ export async function mintSingleToPoly(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1133,7 +1133,7 @@ export async function mintSingleToCelo(singleMintProps) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -1180,7 +1180,7 @@ export async function mintSingleToCelo(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1247,7 +1247,7 @@ export async function mintSingleToAvax(singleMintProps) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     const uintArray = asset.metadata.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -1294,7 +1294,7 @@ export async function mintSingleToAvax(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1335,7 +1335,7 @@ export async function mintSingleToAurora(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1386,7 +1386,7 @@ export async function mintSingleToAbitrum(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1428,7 +1428,7 @@ export async function mintSingleToOptimism(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
-  const asset = rd.data;
+  const asset = rd.data.content.upload;
   const uintArray = asset.metadata.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
@@ -1510,7 +1510,7 @@ export async function createNFT(createProps, doAccountCheck) {
         password: process.env.REACT_APP_PASSWORD,
       },
     });
-    const asset = rd.data;
+    const asset = rd.data.content.upload;
     assets.push(asset);
   }
   dispatch(setLoader(""));
