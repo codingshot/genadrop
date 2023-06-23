@@ -1463,6 +1463,7 @@ export async function createNFT(createProps, doAccountCheck) {
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
   const files = data.files["metadata.json"];
+  console.log("all", files, file, data)
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
   try {
@@ -1504,7 +1505,7 @@ export async function createNFT(createProps, doAccountCheck) {
     formData.append("file", blob);
     formData.append("fileName", imgName);
     formData.append("asset", JSON.stringify(metadata[i]));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
