@@ -12,6 +12,11 @@ const RedirectLinks = {
   "/discord": "https://discord.gg/4vdtmQqz6d",
   "/merch": "https://nearswag.xyz/collections/genadrop",
   "/docs": "https://github.com/GenaDrop/docs",
+  "/dao": "https://near.org/ndcplug.near/widget/DAO.main?daoId=drop.sputnik-dao.near",
+  "/gateway": "https://bos.genadrop.io",
+  "/bos": "https://genadrop.near.social",
+  "/telegram": "https://t.me/GenaDrop",
+  // "/docs": "https://docs.genadrop.io",
 };
 
 const Redirect = () => {
