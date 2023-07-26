@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"  # Replace with your build command
+  command = "yarn build"  # Replace with your build command
   publish = "build"         # Replace with your build output directory
 
 [build.environment]
