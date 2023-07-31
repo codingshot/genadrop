@@ -1294,19 +1294,27 @@ export async function mintSingleToAvax(singleMintProps) {
       password: process.env.REACT_APP_PASSWORD,
     },
   });
+  console.log("rd", rd);
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
-  const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  console.log("url", asset.url, receiverAddress);
+  const id = 0;
+  // const uintArray = asset.metadata.toLocaleString();
+  // const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
+  console.log("contract address", process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS);
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
     mainnet ? process.env.REACT_APP_AVAX_MAINNET_SINGLE_ADDRESS : process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS,
     mintSingle,
     signer
   );
+  console.log("contract", process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS, contract);
   let txn;
   try {
+    console.log("before mint");
     txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
+    console.log("after mint");
     await txn.wait();
+    console.log(txn.hash);
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
     dispatch(setLoader(""));
     return mainnet ? `https://snowtrace.io/tx/${txn.hash}` : `https://testnet.snowtrace.io/tx/${txn.hash}`;

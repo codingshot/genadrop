@@ -14,6 +14,8 @@ import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
+import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+
 /**
  * @dev Implementation of the basic standard multi-token.
  * See https://eips.ethereum.org/EIPS/eip-1155
@@ -21,7 +23,17 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
  *
  * _Available since v3.1._
  */
-contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeable, ERC2981Upgradeable, IERC1155Upgradeable, IERC1155MetadataURIUpgradeable {
+contract SingleNftMinter is
+    UUPSUpgradeable,
+    ContextUpgradeable,
+    ERC165Upgradeable,
+    ERC2981Upgradeable,
+    IERC1155Upgradeable,
+    IERC1155MetadataURIUpgradeable
+{
+    using CountersUpgradeable for CountersUpgradeable.Counter;
+    CountersUpgradeable.Counter private supply;
+
     using AddressUpgradeable for address;
     using StringsUpgradeable for uint;
     string private _name;
@@ -30,12 +42,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
 
     event CollectionInit(address collectionAddress, address indexed collectionOwner, string collectionName);
 
-    event TransferBatch(
-        address indexed operator,
-        address indexed from,
-        address indexed to,
-        uint256[] ids
-    );
+    event TransferBatch(address indexed operator, address indexed from, address indexed to, uint256[] ids);
 
     // Mapping from token ID to account balances
     mapping(uint256 => mapping(address => uint256)) private _balances;
@@ -43,7 +50,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
     // Mapping from account to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
-    mapping (uint256 => string) private _tokenURIs;
+    mapping(uint256 => string) private _tokenURIs;
     string private _baseURI;
 
     // owner modifier
@@ -58,33 +65,33 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
 
      */
 
-
-    function initialize(string memory name_, string memory symbol_, address deployer) initializer public{
+    function initialize(string memory name_, string memory symbol_, address deployer) public initializer {
         _owner = deployer;
         _name = name_;
         _symbol = symbol_;
         emit CollectionInit(address(this), deployer, _name);
     }
-    
-    function _authorizeUpgrade(address newImplementation) internal onlyOwner override{
+
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {
         // can add required upgrade access control here
     }
+
     /**
      * @dev Returns the address of the current owner.
      */
     function owner() public view virtual returns (address) {
         return _owner;
     }
-    
+
     /**
-    * @dev Returns the base URI set via {_setBaseURI}. This will be
-    * automatically added as a prefix in {tokenURI} to each token's URI, or
-    * to the token ID if no specific URI is set for that token ID.
-    */
+     * @dev Returns the base URI set via {_setBaseURI}. This will be
+     * automatically added as a prefix in {tokenURI} to each token's URI, or
+     * to the token ID if no specific URI is set for that token ID.
+     */
     function baseURI() public view virtual returns (string memory) {
         return _baseURI;
     }
-    
+
     /**
      * @dev Internal function to set the base URI for all token IDs. It is
      * automatically added as a prefix to the value returned in {tokenURI},
@@ -93,7 +100,6 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
     function _setBaseURI(string memory baseURI_) internal virtual {
         _baseURI = baseURI_;
     }
-    
 
     /**
      * @dev token CID
@@ -125,7 +131,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
         _tokenURIs[tokenId] = _uri;
         emit URI(tokenURI(tokenId), tokenId);
     }
-    
+
     /**
      * @dev Gets the token name
      * @return string representing the token name
@@ -133,7 +139,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
     function name() external view returns (string memory) {
         return _name;
     }
-    
+
     /**
      * @dev Gets the token symbol
      * @return string representing the token symbol
@@ -141,19 +147,21 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
     function symbol() external view returns (string memory) {
         return _symbol;
     }
-    
+
     /**
      * @dev withdraw function.... incase!!!
      */
-    function withdraw() public{
-        (bool sent,) = payable(owner()).call{value: address(this).balance}("");
+    function withdraw() public {
+        (bool sent, ) = payable(owner()).call{value: address(this).balance}("");
         require(sent, "Failed to send Ether");
     }
 
     /**
      * @dev See {IERC165-supportsInterface}.
      */
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC165Upgradeable, ERC2981Upgradeable, IERC165Upgradeable) returns (bool) {
+    function supportsInterface(
+        bytes4 interfaceId
+    ) public view virtual override(ERC165Upgradeable, ERC2981Upgradeable, IERC165Upgradeable) returns (bool) {
         return
             interfaceId == type(IERC1155Upgradeable).interfaceId ||
             interfaceId == type(IERC1155MetadataURIUpgradeable).interfaceId ||
@@ -170,7 +178,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      * Clients calling this function must replace the `\{id\}` substring with the
      * actual token type ID.
      */
-    function uri(uint id) external view override virtual returns (string memory) {
+    function uri(uint id) external view virtual override returns (string memory) {
         return tokenURI(id);
     }
 
@@ -193,13 +201,10 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      *
      * - `accounts` and `ids` must have the same length.
      */
-    function balanceOfBatch(address[] memory accounts, uint256[] memory ids)
-        public
-        view
-        virtual
-        override
-        returns (uint256[] memory)
-    {
+    function balanceOfBatch(
+        address[] memory accounts,
+        uint256[] memory ids
+    ) public view virtual override returns (uint256[] memory) {
         require(accounts.length == ids.length, "ERC1155: accounts and ids length mismatch");
 
         uint256[] memory batchBalances = new uint256[](accounts.length);
@@ -339,14 +344,9 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
 
     function mint(address to, uint256 id, uint256 amount, string memory uri_, bytes memory data) public {
         _mint(to, id, amount, uri_, data);
-        
     }
-    
-    function mintBatch(
-        address to,
-        uint256[] memory ids,
-        string[] memory uris
-    ) public onlyOwner {
+
+    function mintBatch(address to, uint256[] memory ids, string[] memory uris) public onlyOwner {
         _mintBatch(to, ids, uris);
     }
 
@@ -361,25 +361,23 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155Received} and return the
      * acceptance magic value.
      */
-    function _mint(
-        address to,
-        uint256 id,
-        uint256 amount,
-        string memory uri_,
-        bytes memory data
-    ) internal virtual {
+    function _mint(address to, uint256 id, uint256 amount, string memory uri_, bytes memory data) internal virtual {
         require(to != address(0), "ERC1155: mint to the zero address");
 
         address operator = _msgSender();
 
-        _beforeTokenTransfer(operator, address(0), to, _asSingletonArray(id), _asSingletonArray(amount), data);
+        uint256 newItemId = supply.current();
 
-        _balances[id][to] += amount;
-        _setTokenURI(id, uri_);
-        
-        emit TransferSingle(operator, address(0), to, id, amount);
+        _beforeTokenTransfer(operator, address(0), to, _asSingletonArray(newItemId), _asSingletonArray(amount), data);
 
-        _doSafeTransferAcceptanceCheck(operator, address(0), to, id, amount, data);
+        _balances[newItemId][to] += amount;
+        _setTokenURI(newItemId, uri_);
+
+        emit TransferSingle(operator, address(0), to, newItemId, amount);
+
+        _doSafeTransferAcceptanceCheck(operator, address(0), to, newItemId, amount, data);
+
+        supply.increment();
     }
 
     /**
@@ -391,15 +389,11 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      * - If `to` refers to a smart contract, it must implement {IERC1155Receiver-onERC1155BatchReceived} and return the
      * acceptance magic value.
      */
-    function _mintBatch(
-        address to,
-        uint256[] memory ids,
-        string[] memory uris
-    ) internal virtual {
+    function _mintBatch(address to, uint256[] memory ids, string[] memory uris) internal virtual {
         require(to != address(0), "ERC1155: mint to the zero address");
         uint256 idsLength = ids.length;
 
-        for (uint256 i = 0; i < idsLength;) {
+        for (uint256 i = 0; i < idsLength; ) {
             _balances[ids[i]][to] += 1;
             _setTokenURI(ids[i], uris[i]); // this increases gas cost, will implement better alternative
 
@@ -418,11 +412,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      * - `from` cannot be the zero address.
      * - `from` must have at least `amount` tokens of token type `id`.
      */
-    function _burn(
-        address from,
-        uint256 id,
-        uint256 amount
-    ) internal virtual {
+    function _burn(address from, uint256 id, uint256 amount) internal virtual {
         require(from != address(0), "ERC1155: burn from the zero address");
 
         address operator = _msgSender();
@@ -445,11 +435,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      *
      * - `ids` and `amounts` must have the same length.
      */
-    function _burnBatch(
-        address from,
-        uint256[] memory ids,
-        uint256[] memory amounts
-    ) internal virtual {
+    function _burnBatch(address from, uint256[] memory ids, uint256[] memory amounts) internal virtual {
         require(from != address(0), "ERC1155: burn from the zero address");
         require(ids.length == amounts.length, "ERC1155: ids and amounts length mismatch");
 
@@ -476,11 +462,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
      *
      * Emits a {ApprovalForAll} event.
      */
-    function _setApprovalForAll(
-        address owner_,
-        address operator,
-        bool approved
-    ) internal virtual {
+    function _setApprovalForAll(address owner_, address operator, bool approved) internal virtual {
         require(owner_ != operator, "ERC1155: setting approval status for self");
         _operatorApprovals[owner_][operator] = approved;
         emit ApprovalForAll(owner_, operator, approved);
@@ -524,7 +506,9 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
         bytes memory data
     ) private {
         if (to.isContract()) {
-            try IERC1155ReceiverUpgradeable(to).onERC1155Received(operator, from, id, amount, data) returns (bytes4 response) {
+            try IERC1155ReceiverUpgradeable(to).onERC1155Received(operator, from, id, amount, data) returns (
+                bytes4 response
+            ) {
                 if (response != IERC1155ReceiverUpgradeable.onERC1155Received.selector) {
                     revert("ERC1155: ERC1155Receiver rejected tokens");
                 }
@@ -566,7 +550,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
         return array;
     }
 
-    function setDefaultRoyalty(address receiver, uint96 feeNumerator) public onlyOwner{
+    function setDefaultRoyalty(address receiver, uint96 feeNumerator) public onlyOwner {
         _setDefaultRoyalty(receiver, feeNumerator);
     }
 
@@ -574,12 +558,7 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
         _deleteDefaultRoyalty();
     }
 
-
-    function setTokenRoyalty(
-        uint256 tokenId,
-        address receiver,
-        uint96 feeNumerator
-    ) public onlyOwner {
+    function setTokenRoyalty(uint256 tokenId, address receiver, uint96 feeNumerator) public onlyOwner {
         _setTokenRoyalty(tokenId, receiver, feeNumerator);
     }
 
@@ -588,4 +567,8 @@ contract SingleNftMinter is UUPSUpgradeable, ContextUpgradeable, ERC165Upgradeab
     }
 
     uint256[47] private __gap;
+
+    function totalSupply() public view returns (uint256) {
+        return supply.current();
+    }
 }
