@@ -37,3 +37,4 @@ remnant/
 /backend/node_modules
 /backend/yarn.lock
 /backend/.env
+/backend/uploads

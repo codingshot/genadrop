@@ -39,8 +39,8 @@ app.post("/api/", async (req, res) => {
         // Assuming you're receiving the file in "file" field and other data in the request
         const file = req.files[0];
         const fileName = req.body.fileName;
-        const metadata = req.body.asset;
-        console.log(file, fileName, metadata);
+        const nftMetadata = req.body.asset;
+        console.log(file, fileName, nftMetadata);
 
         // Create the "uploads" directory if it doesn't exist
         const uploadDir = path.join(__dirname, "uploads");
@@ -63,7 +63,7 @@ app.post("/api/", async (req, res) => {
           formData.append("file", readStream);
 
           const metadata = JSON.stringify({
-            name: "File name",
+            name: fileName,
           });
           formData.append("pinataMetadata", metadata);
 
@@ -81,9 +81,36 @@ app.post("/api/", async (req, res) => {
               },
             });
             console.log(response.data);
+
+            const data = {
+              pinataOptions: {
+                cidVersion: 1,
+              },
+              pinataMetadata: {
+                name: "nft metadata",
+                keyvalues: {},
+              },
+              pinataContent: {
+                ...JSON.parse(nftMetadata),
+                image: `ipfs://${response.data.IpfsHash}`,
+              },
+            };
+
+            const config = {
+              method: "post",
+              url: "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: JWT,
+              },
+              data: JSON.stringify(data),
+            };
+
+            const resp = await axios(config);
+
             return res
               .status(200)
-              .json({ content: { upload: { metadata: response.data, url: `ipfs://${response.data.IpfsHash}` } } });
+              .json({ content: { upload: { metadata: nftMetadata, url: `ipfs://${resp.data.IpfsHash}` } } });
           } catch (error) {
             console.log(error);
           }

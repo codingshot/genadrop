@@ -785,9 +785,7 @@ export const getSingleGraphNfts = async (nfts, address) => {
       setTimeout(async () => {
         try {
           const nftObj = {};
-          const { data } = await axios.get(
-            NFT.tokenIPFSPath.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/")
-          );
+          const { data } = await axios.get(NFT.tokenIPFSPath.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/"));
           nftObj.Id = NFT?.id;
           nftObj.price = NFT?.price * PRICE_CONVERSION_VALUE;
           nftObj.owner = NFT?.owner?.id;
@@ -795,7 +793,7 @@ export const getSingleGraphNfts = async (nfts, address) => {
           nftObj.isListed = NFT?.isListed;
           nftObj.chain = NFT?.chain;
           nftObj.description = data?.description;
-          nftObj.image_url = data?.image.replace("ipfs://", "https://genadrop.mypinata.cloud/ipfs/");
+          nftObj.image_url = data?.image.replace("ipfs://", "https://cloudflare-ipfs.com/ipfs/");
           nftObj.name = data?.name;
           nftObj.isSoulBound = NFT?.isSoulBound;
           nftObj.collectionId = NFT?.collection?.id;

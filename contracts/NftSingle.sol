@@ -104,7 +104,7 @@ contract SingleNftMinter is
     /**
      * @dev token CID
      */
-    function tokenURI(uint256 tokenId) internal view virtual returns (string memory) {
+    function tokenURI(uint256 tokenId) public view virtual returns (string memory) {
         string memory _tokenURI = _tokenURIs[tokenId];
         string memory base = baseURI();
 

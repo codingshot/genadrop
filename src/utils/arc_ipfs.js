@@ -1310,9 +1310,7 @@ export async function mintSingleToAvax(singleMintProps) {
   console.log("contract", process.env.REACT_APP_AVAX_TESTNET_SINGLE_ADDRESS, contract);
   let txn;
   try {
-    console.log("before mint");
     txn = await contract.mint(receiverAddress, id, 1, asset.url, "0x");
-    console.log("after mint");
     await txn.wait();
     console.log(txn.hash);
     // await marketContract.createMarketplaceItem(contract.address, id, String(price * 10 ** 18), "General", account);
