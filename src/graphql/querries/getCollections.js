@@ -372,6 +372,7 @@ export const GET_CELO_NFT = gql`
         id
       }
       collection {
+        id
         name
         creator {
           id
@@ -411,6 +412,7 @@ export const GET_GRAPH_NFT = gql`
         id
       }
       collection {
+        id
         name
         creator {
           id

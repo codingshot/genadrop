@@ -1,0 +1,6 @@
+[build]
+  command = "yarn build"  # Replace with your build command
+  publish = "build"         # Replace with your build output directory
+  CI = "false"
+[build.environment]
+  NODE_VERSION = "16"       # Replace with the desired Node.js version
