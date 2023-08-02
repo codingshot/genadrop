@@ -3482,7 +3482,7 @@ export async function purchaseAvaxNfts(buyProps) {
   try {
     const tx = await contract.nftSale(price, tokenId, seller, nftContract, {
       value: price,
-      gasLimit: ethers.utils.parseUnits("0.0000000000001", "ether"),
+      gasLimit: ethers.utils.parseUnits("0.0000000000003", "ether"),
     });
     await tx.wait();
     return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
