@@ -3480,7 +3480,10 @@ export async function purchaseAvaxNfts(buyProps) {
     connector.getSigner()
   );
   try {
-    const tx = await contract.nftSale(price, tokenId, seller, nftContract, { value: price });
+    const tx = await contract.nftSale(price, tokenId, seller, nftContract, {
+      value: price,
+      gasLimit: ethers.utils.parseUnits("0.0000000000001", "ether"),
+    });
     await tx.wait();
     return mainnet ? `https://snowtrace.io/tx/${tx.hash}` : `https://testnet.snowtrace.io/tx/${tx.hash}`;
   } catch (error) {

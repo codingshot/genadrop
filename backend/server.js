@@ -82,6 +82,8 @@ app.post("/api/", async (req, res) => {
             });
             console.log(response.data);
 
+            const nftJson = JSON.parse(nftMetadata);
+
             const data = {
               pinataOptions: {
                 cidVersion: 1,
@@ -91,7 +93,8 @@ app.post("/api/", async (req, res) => {
                 keyvalues: {},
               },
               pinataContent: {
-                ...JSON.parse(nftMetadata),
+                ...nftJson,
+                properties: nftJson.attributes,
                 image: `ipfs://${response.data.IpfsHash}`,
               },
             };
