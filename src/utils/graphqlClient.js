@@ -34,6 +34,10 @@ export const nearClient = createClient({
 
 export const nearCollectionClient = createClient({
   url: "https://genadrop-near.hasura.app/v1/graphql",
+  url:
+    process.env.REACT_APP_ENV_STAGING === "true"
+      ? "https://genadrop-near.hasura.app/v1/graphql"
+      : "https://genadrop-mainnet.hasura.app/v1/graphql",
   fetchOptions: {
     headers: {
       "Hasura-Client-Name": "hasura-console",

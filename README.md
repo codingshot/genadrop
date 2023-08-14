@@ -259,7 +259,7 @@ Thank you so much for your continued support. Would love to pilot some drops as 
 - ### Testnet
   - Single minter address - https://explorer.testnet.near.org/accounts/genadrop-test.mpadev.testnet
 - ### MAINNET
-  - Single minter address - https://explorer.mainnet.near.org/accounts/genadrop-contract.nftgen.near
+  - Single minter address - https://explorer.mainnet.near.org/accounts/nft.genadrop.near
 
 ### Listing to external markets through Genadrop
 
