@@ -319,7 +319,7 @@ export async function mintSingleToAlgo(algoMintProps) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
@@ -671,14 +671,14 @@ export async function mintSoulBoundPoly(mintprops) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data.content.upload;
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     // eslint-disable-next-line no-unused-vars
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
@@ -719,14 +719,14 @@ export async function mintSoulBoundPoly(mintprops) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  // const uintArray = asset.metadata.toLocaleString();
+  // const uintArray = asset.metadata.data.toLocaleString();
   // const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -782,14 +782,14 @@ export async function mintSoulBoundAvax(mintprops) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data.content.upload;
-    // const uintArray = asset.metadata.toLocaleString();
+    // const uintArray = asset.metadata.data.toLocaleString();
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
       mainnet
@@ -828,7 +828,7 @@ export async function mintSoulBoundAvax(mintprops) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
@@ -889,7 +889,7 @@ export async function mintSoulBoundCelo(mintprops) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
@@ -936,7 +936,7 @@ export async function mintSoulBoundCelo(mintprops) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
@@ -1007,14 +1007,14 @@ export async function mintSingleToPoly(singleMintProps) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data.content.upload;
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -1052,14 +1052,14 @@ export async function mintSingleToPoly(singleMintProps) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
+  const uintArray = asset.metadata.data.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -1127,14 +1127,14 @@ export async function mintSingleToCelo(singleMintProps) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data.content.upload;
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -1174,14 +1174,14 @@ export async function mintSingleToCelo(singleMintProps) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
+  const uintArray = asset.metadata.data.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -1241,14 +1241,14 @@ export async function mintSingleToAvax(singleMintProps) {
     formData.append("file", file);
     formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
     formData.append("asset", JSON.stringify(metadata));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
       },
     });
     const asset = rd.data.content.upload;
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     dispatch(setLoader("minting 1 of 1"));
     const contract = new ethers.Contract(
@@ -1288,14 +1288,14 @@ export async function mintSingleToAvax(singleMintProps) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
+  const uintArray = asset.metadata.data.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -1329,14 +1329,14 @@ export async function mintSingleToAurora(singleMintProps) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
+  const uintArray = asset.metadata.data.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -1380,14 +1380,14 @@ export async function mintSingleToAbitrum(singleMintProps) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
+  const uintArray = asset.metadata.data.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -1422,14 +1422,14 @@ export async function mintSingleToOptimism(singleMintProps) {
   formData.append("file", file);
   formData.append("fileName", isAi || isIpfsLink ? fileName : file.name);
   formData.append("asset", JSON.stringify(metadata));
-  const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+  const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
     auth: {
       username: process.env.REACT_APP_USERNAME,
       password: process.env.REACT_APP_PASSWORD,
     },
   });
   const asset = rd.data.content.upload;
-  const uintArray = asset.metadata.toLocaleString();
+  const uintArray = asset.metadata.data.toLocaleString();
   const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   dispatch(setLoader("minting 1 of 1"));
   const contract = new ethers.Contract(
@@ -1463,6 +1463,7 @@ export async function createNFT(createProps, doAccountCheck) {
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
   const files = data.files["metadata.json"];
+  console.log("all", files, file, data)
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
   try {
@@ -1504,7 +1505,7 @@ export async function createNFT(createProps, doAccountCheck) {
     formData.append("file", blob);
     formData.append("fileName", imgName);
     formData.append("asset", JSON.stringify(metadata[i]));
-    const rd = await axios.post(process.env.REACT_APP_BACKEND, formData, {
+    const rd = await axios.post(`${process.env.REACT_APP_BACKEND}/uploads`, formData, {
       auth: {
         username: process.env.REACT_APP_USERNAME,
         password: process.env.REACT_APP_PASSWORD,
@@ -2231,7 +2232,7 @@ export async function mintToCelo(celoProps) {
   // );
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     return parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   });
 
@@ -2319,7 +2320,7 @@ export async function mintToAvax(celoProps) {
   await connector.getSigner();
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     return parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
   });
 
@@ -2385,7 +2386,7 @@ export async function mintToAvax(celoProps) {
 }
 
 export async function mintToNear(polyProps) {
-  const { fileName, description, dispatch, receiverAddress, setLoader } = polyProps;
+  const { fileName, description, dispatch, receiverAddress, setLoader, mainnet } = polyProps;
   const {
     contract: { contractId },
     accounts,
@@ -2395,11 +2396,14 @@ export async function mintToNear(polyProps) {
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
 
+  console.log("the json data", ipfsJsonData, mainnet)
+
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     return id.toString();
   });
+  console.log("the idss of idss ", ids)
   const arrayMetadata = ipfsJsonData.map((asset) => ({
     title: asset.name,
     description: asset.description,
@@ -2415,7 +2419,7 @@ export async function mintToNear(polyProps) {
       transactions: [
         {
           signerId: accountId,
-          receiverId: "genadorp.testnet",
+          receiverId: mainnet ? "genadrop.near" : "genadorp.testnet",
           actions: [
             {
               methodName: "create_collection",
@@ -2435,7 +2439,7 @@ export async function mintToNear(polyProps) {
         },
         {
           signerId: accountId,
-          receiverId: "genadorp.testnet",
+          receiverId: mainnet ? `${collectioName}.genadrop.near` : `${collectioName}.genadorp.testnet`,
           // use map to handle cases of 1 market or more
           actions: [
             {
@@ -2464,7 +2468,7 @@ export async function mintToNear(polyProps) {
       transactions: [
         {
           signerId: accountId,
-          receiverId: "genadorp.testnet",
+          receiverId: mainnet ? "genadrop.near" : "genadorp.testnet",
           actions: [
             {
               type: "FunctionCall",
@@ -2487,7 +2491,7 @@ export async function mintToNear(polyProps) {
         },
         {
           signerId: accountId,
-          receiverId: `${collectioName}.genadorp.testnet`,
+          receiverId: mainnet ? `${collectioName}.genadrop.near` : `${collectioName}.genadorp.testnet`,
           // use map to handle cases of 1 market or more
           actions: [
             {
@@ -2530,7 +2534,7 @@ export async function mintToPoly(polyProps) {
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     return id;
   });
@@ -2709,7 +2713,7 @@ export async function mintToAurora(polyProps) {
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     return id;
   });
@@ -2801,7 +2805,7 @@ export async function mintToArbitrum(polyProps) {
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     return id;
   });
@@ -2885,7 +2889,7 @@ export async function mintToOptimism(polyProps) {
 
   const uris = ipfsJsonData.map((asset) => asset.url);
   const ids = ipfsJsonData.map((asset) => {
-    const uintArray = asset.metadata.toLocaleString();
+    const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     return id;
   });
