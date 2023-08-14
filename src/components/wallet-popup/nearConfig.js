@@ -9,7 +9,7 @@ function getConfig(env) {
       return {
         networkId: "mainnet",
         nodeUrl: "https://rpc.mainnet.near.org",
-        contractName: "genadrop-contract.nftgen.near",
+        contractName: "nft.genadrop.near",
         marketContractName: MARKET_CONTRACT_NAME,
         GAS: "200000000000000",
         // walletUrl: "https://wallet.near.org",

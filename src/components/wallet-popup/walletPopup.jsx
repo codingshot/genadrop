@@ -88,7 +88,7 @@ const WalletPopup = ({ handleSetState }) => {
       });
       const description = "Please select a wallet to sign in..";
       const contract =
-        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "genadrop-contract.nftgen.near";
+        process.env.REACT_APP_ENV_STAGING === "true" ? "genadrop-test.mpadev.testnet" : "nft.genadrop.near";
 
       const modal = setupModal(walletSelector, { contractId: contract, description });
       modal.show();
