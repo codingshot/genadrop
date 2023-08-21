@@ -47,7 +47,7 @@ const Header = ({ collection, getHeight }) => {
     const user = await readUserProfile(owner);
     const links = [];
     const link = {};
-    if (user.twitter) {
+    if (user?.twitter) {
       link.url = `https://twitter.com/${user.twitter}`;
       link.icon = linkIcons.twitter;
       links.push(link);
