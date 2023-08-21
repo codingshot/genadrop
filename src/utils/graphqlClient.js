@@ -33,7 +33,6 @@ export const nearClient = createClient({
 });
 
 export const nearCollectionClient = createClient({
-  url: "https://genadrop-near.hasura.app/v1/graphql",
   url:
     process.env.REACT_APP_ENV_STAGING === "true"
       ? "https://genadrop-near.hasura.app/v1/graphql"
@@ -41,7 +40,7 @@ export const nearCollectionClient = createClient({
   fetchOptions: {
     headers: {
       "Hasura-Client-Name": "hasura-console",
-      "X-Hasura-Admin-Secret": "6NemYe8quC7J5KeHKcihbSN04NpEAX6UugM1oyBiLXQj35vQkAWKMJ4D8Rn2d1Ep",
+      "X-Hasura-Admin-Secret": process.env.REACT_APP_ENV_STAGING === "true" ? "6NemYe8quC7J5KeHKcihbSN04NpEAX6UugM1oyBiLXQj35vQkAWKMJ4D8Rn2d1Ep" : 'tBuEbrlWHFY8XPK1g0IZB165K5f5VpowoN26WXJnwGKsMYZnk3hJxMiadaYAuSqU',
       "content-type": "application/json",
     },
     requestPolicy: "cache-first",
