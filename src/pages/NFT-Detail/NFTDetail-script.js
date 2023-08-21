@@ -59,7 +59,7 @@ export const getGraphData = async ({ graphProps }) => {
 
   if (collectionName) {
     const graphCollections = [];
-    if (nftId.includes("genadorp.testnet")) {
+    if (nftId.includes("genadorp.testnet") || nftId.includes("genadrop.near")) {
       const nearGraphNft = await getCollectionNft(nftId);
       if (nearGraphNft.length) {
         const nearCollectionNft = await getNearCollection(collectionName);
