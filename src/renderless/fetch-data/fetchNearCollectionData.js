@@ -85,7 +85,6 @@ export const getCollectionNft = async (nftId) => {
 };
 
 export const getAllNearCollections = async (mainnet) => {
-  if (mainnet) return [];
   const { data, error } = await nearCollectionClient.query(GET_NEAR_COLLECTIONS).toPromise();
   if (error) return [];
   const result = await getNearCollections(data?.Collection);
