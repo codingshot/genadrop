@@ -15,6 +15,7 @@ const RedirectLinks = {
   "/dao": "https://near.org/ndcplug.near/widget/DAO.main?daoId=drop.sputnik-dao.near",
   "/gateway": "https://bos.genadrop.io",
   "/bos": "https://genadrop.near.social",
+  "/swap": "https://near.org/harrydhillon.near/widget/NFTSwap.NFT-Trade",
   "/telegram": "https://t.me/GenaDrop",
   // "/docs": "https://docs.genadrop.io",
 };
