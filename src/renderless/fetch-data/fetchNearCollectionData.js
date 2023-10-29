@@ -89,9 +89,6 @@ export const getAllNearCollections = async (mainnet) => {
 };
 
 export const getUserNearCollection = async (userId, mainnet) => {
-  if (mainnet) {
-    return [];
-  }
   const { data, error } = await nearCollectionClient
     .query(
       gql`
