@@ -49,7 +49,7 @@ const Menu = ({ NFTCollection, toggleFilter, headerHeight }) => {
       <div className={`${classes.menu} ${toggleFilter && classes.resize}`}>
         {Object.keys(paginate).length
           ? paginate[currentPage].map((nft, idx) => (
-              <SingleNftCard collectionNft={{ name: NFTCollection[0]?.collection_name }} key={idx} nft={nft} />
+              <SingleNftCard collectionNft={{ name: nft?.ipfs_data?.name }} key={idx} nft={nft} />
             ))
           : [...new Array(8)]
               .map((_, idx) => idx)
