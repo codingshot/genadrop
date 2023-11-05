@@ -18,6 +18,7 @@ const RedirectLinks = {
   "/swap": "https://near.org/harrydhillon.near/widget/NFTSwap.NFT-Trade",
   "/telegram": "https://t.me/GenaDrop",
   "/bos-app": "https://near.org/agwaze.near/widget/GenaDrop.index?tab=create",
+  "/bos-portfolio": "https://docs.google.com/document/d/1I49g8FqaGaMVmOIISM4G45f8AHRmVjya73HGv8cN2pY/edit?usp=sharing",
   // "/docs": "https://docs.genadrop.io",
 };
 
