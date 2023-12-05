@@ -12,7 +12,8 @@ import { setupSender } from "@near-wallet-selector/sender";
 import { setupNightly } from "@near-wallet-selector/nightly";
 import { setupNearSnap } from "@near-wallet-selector/near-snap";
 import { setupMintbaseWallet } from "@near-wallet-selector/mintbase-wallet";
-import { setupBitgetWallet } from "@near-wallet-selector/bitget-wallet"; 
+import { setupBitgetWallet } from "@near-wallet-selector/bitget-wallet";
+import { setupNearMobileWallet } from "@near-wallet-selector/near-mobile-wallet";
 
 // near wallet styles & icons
 import "@near-wallet-selector/modal-ui/styles.css";
@@ -78,7 +79,8 @@ const WalletPopup = ({ handleSetState }) => {
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
           setupMintbaseWallet({walletUrl: 'https://testnet.wallet.mintbase.xyz'}),
-          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl })
+          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl }),
+          setupNearMobileWallet()
         ];
       } else {
         connectedToNearMainnet.modules = [
@@ -90,7 +92,8 @@ const WalletPopup = ({ handleSetState }) => {
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
           setupNightly({ iconUrl: NightlyIcon }),
           setupMintbaseWallet({walletUrl: 'https://wallet.mintbase.xyz'}),
-          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl })
+          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl }),
+          setupNearMobileWallet()
         ];
       }
       const walletSelector = await setupWalletSelector({
