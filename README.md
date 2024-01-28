@@ -285,109 +285,128 @@ https://www.loom.com/share/19d35f0ec9434411851190984475a676
 <!-- Contract Docs -->
 
 ## NEAR Contract Docs
+
 ### genadrop-contract.nftgen.near
-| **Contract Name** | *NEAR Mainnet* |
-| --- | --- |
-| **Contract Address** | *genadrop-contract.nftgen.near* |
-| **Chain Name** | *NEAR Mainnet* |
-| **Chain ID** | *null* |
-| **Type** | *near* |
-| **RPC URL** | *https://rpc.mainnet.near.org* |
+
+| **Contract Name**    | _NEAR Mainnet_                  |
+| -------------------- | ------------------------------- |
+| **Contract Address** | _genadrop-contract.nftgen.near_ |
+| **Chain Name**       | _NEAR Mainnet_                  |
+| **Chain ID**         | _null_                          |
+| **Type**             | _near_                          |
+| **RPC URL**          | *https://rpc.mainnet.near.org*  |
 
 ### nft_approve
-| Name | State Mutability |
-| --- | --- |
-| *nft_approve* | *null* |
+
+| Name          | State Mutability |
+| ------------- | ---------------- |
+| _nft_approve_ | _null_           |
 
 ### nft_is_approved
-| Name | State Mutability |
-| --- | --- |
-| *nft_is_approved* | *null* |
+
+| Name              | State Mutability |
+| ----------------- | ---------------- |
+| _nft_is_approved_ | _null_           |
 
 ### nft_revoke
-| Name | State Mutability |
-| --- | --- |
-| *nft_revoke* | *null* |
+
+| Name         | State Mutability |
+| ------------ | ---------------- |
+| _nft_revoke_ | _null_           |
 
 ### nft_revoke_all
-| Name | State Mutability |
-| --- | --- |
-| *nft_revoke_all* | *null* |
+
+| Name             | State Mutability |
+| ---------------- | ---------------- |
+| _nft_revoke_all_ | _null_           |
 
 ### nft_total_supply
-| Name | State Mutability |
-| --- | --- |
-| *nft_total_supply* | *null* |
+
+| Name               | State Mutability |
+| ------------------ | ---------------- |
+| _nft_total_supply_ | _null_           |
 
 ### nft_tokens
-| Name | State Mutability |
-| --- | --- |
-| *nft_tokens* | *null* |
+
+| Name         | State Mutability |
+| ------------ | ---------------- |
+| _nft_tokens_ | _null_           |
 
 ### nft_supply_for_owner
-| Name | State Mutability |
-| --- | --- |
-| *nft_supply_for_owner* | *null* |
+
+| Name                   | State Mutability |
+| ---------------------- | ---------------- |
+| _nft_supply_for_owner_ | _null_           |
 
 ### nft_tokens_for_owner
-| Name | State Mutability |
-| --- | --- |
-| *nft_tokens_for_owner* | *null* |
+
+| Name                   | State Mutability |
+| ---------------------- | ---------------- |
+| _nft_tokens_for_owner_ | _null_           |
 
 ### nft_metadata
-| Name | State Mutability |
-| --- | --- |
-| *nft_metadata* | *null* |
+
+| Name           | State Mutability |
+| -------------- | ---------------- |
+| _nft_metadata_ | _null_           |
 
 ### nft_mint
-| Name | State Mutability |
-| --- | --- |
-| *nft_mint* | *null* |
+
+| Name       | State Mutability |
+| ---------- | ---------------- |
+| _nft_mint_ | _null_           |
 
 ### nft_transfer
-| Name | State Mutability |
-| --- | --- |
-| *nft_transfer* | *null* |
+
+| Name           | State Mutability |
+| -------------- | ---------------- |
+| _nft_transfer_ | _null_           |
 
 ### nft_transfer_call
-| Name | State Mutability |
-| --- | --- |
-| *nft_transfer_call* | *null* |
+
+| Name                | State Mutability |
+| ------------------- | ---------------- |
+| _nft_transfer_call_ | _null_           |
 
 ### nft_token
-| Name | State Mutability |
-| --- | --- |
-| *nft_token* | *null* |
+
+| Name        | State Mutability |
+| ----------- | ---------------- |
+| _nft_token_ | _null_           |
 
 ### nft_resolve_transfer
-| Name | State Mutability |
-| --- | --- |
-| *nft_resolve_transfer* | *null* |
+
+| Name                   | State Mutability |
+| ---------------------- | ---------------- |
+| _nft_resolve_transfer_ | _null_           |
 
 ### nft_payout
-| Name | State Mutability |
-| --- | --- |
-| *nft_payout* | *null* |
+
+| Name         | State Mutability |
+| ------------ | ---------------- |
+| _nft_payout_ | _null_           |
 
 ### nft_transfer_payout
-| Name | State Mutability |
-| --- | --- |
-| *nft_transfer_payout* | *null* |
+
+| Name                  | State Mutability |
+| --------------------- | ---------------- |
+| _nft_transfer_payout_ | _null_           |
 
 ### new_default_meta
-| Name | State Mutability |
-| --- | --- |
-| *new_default_meta* | *null* |
+
+| Name               | State Mutability |
+| ------------------ | ---------------- |
+| _new_default_meta_ | _null_           |
 
 ### new
-| Name | State Mutability |
-| --- | --- |
-| *new* | *null* |
+
+| Name  | State Mutability |
+| ----- | ---------------- |
+| _new_ | _null_           |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
-
 
 ## Contributing
 

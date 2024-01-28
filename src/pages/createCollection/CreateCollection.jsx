@@ -94,7 +94,7 @@ const CreateCollection = () => {
   useEffect(() => {
     document.documentElement.scrollTop = 0;
   }, []);
-
+  console.log(currentPlan);
   return (
     <div className={classes.container}>
       <SubscriptionNotification />

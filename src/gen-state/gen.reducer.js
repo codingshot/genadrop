@@ -81,12 +81,12 @@ export const INITIAL_STATE = {
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
   currentPlan: "geeks", // free|noobs|geeks|ogs
-  upgradePlan: false,
+  upgradePlan: true,
   actionProgress: {
     totalCount: 0,
     resetCount: true,
   },
-  proposedPlan: "",
+  proposedPlan: "agency",
   minter: "",
   toggleUpgradeModal: "",
   searchContainer: null,

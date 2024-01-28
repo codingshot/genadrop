@@ -62,10 +62,10 @@ export const logOut = ({ currentPlan, dispatch }) => {
   signOut(auth)
     .then(() => {
       dispatch(setCurrentUser(null));
-      if (currentPlan !== "free") {
-        handleResetCreate({ dispatch });
-        dispatch(setCollectionName("New Collection"));
-      }
+      // if (currentPlan !== "free") {
+      handleResetCreate({ dispatch });
+      dispatch(setCollectionName("New Collection"));
+      // }
     })
     .catch((error) => {
       console.log(error);

@@ -12,7 +12,7 @@ import { setupSender } from "@near-wallet-selector/sender";
 import { setupNightly } from "@near-wallet-selector/nightly";
 import { setupNearSnap } from "@near-wallet-selector/near-snap";
 import { setupMintbaseWallet } from "@near-wallet-selector/mintbase-wallet";
-import { setupBitgetWallet } from "@near-wallet-selector/bitget-wallet"; 
+import { setupBitgetWallet } from "@near-wallet-selector/bitget-wallet";
 
 // near wallet styles & icons
 import "@near-wallet-selector/modal-ui/styles.css";
@@ -74,23 +74,23 @@ const WalletPopup = ({ handleSetState }) => {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
-          setupNearSnap({ iconUrl: SnapIconUrl}),
+          setupNearSnap({ iconUrl: SnapIconUrl }),
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
-          setupMintbaseWallet({walletUrl: 'https://testnet.wallet.mintbase.xyz'}),
-          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl })
+          setupMintbaseWallet({ walletUrl: "https://testnet.wallet.mintbase.xyz" }),
+          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl }),
         ];
       } else {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
-          setupNearSnap({ iconUrl: SnapIconUrl}),
+          setupNearSnap({ iconUrl: SnapIconUrl }),
           setupSender({ iconUrl: SenderIconUrl }),
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
           setupNightly({ iconUrl: NightlyIcon }),
-          setupMintbaseWallet({walletUrl: 'https://wallet.mintbase.xyz'}),
-          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl })
+          setupMintbaseWallet({ walletUrl: "https://wallet.mintbase.xyz" }),
+          setupBitgetWallet({ iconUrl: bitgetWalletIconUrl }),
         ];
       }
       const walletSelector = await setupWalletSelector({
