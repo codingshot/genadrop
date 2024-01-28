@@ -12,7 +12,7 @@ export const getNearCollection = async (collectionId, mainnet) => {
   const { data, error } = await nearCollectionClient
     .query(
       gql` query myQuery {
-      Collection_by_pk(id: "${collectionId.split('~')[1]}") {
+      Collection_by_pk(id: "${collectionId.split("~")[1]}") {
         id
         description
         name

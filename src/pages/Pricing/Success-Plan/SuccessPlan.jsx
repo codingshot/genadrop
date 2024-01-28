@@ -52,7 +52,7 @@ const SuccessPlan = () => {
         type: "name",
       })
     );
-    await save({ collectionName: inputValue, sessionId, currentUser, proposedPlan });
+    await save({ collectionName: inputValue, sessionId, currentUser, proposedPlan: "agency" });
     history.push("/create/collection");
   };
 
