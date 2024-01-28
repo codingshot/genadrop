@@ -84,7 +84,7 @@ const AI = () => {
       try {
         dispatch(setOverlay(true));
 
-        console.log("LAVENDER", promptText)
+        console.log("LAVENDER", promptText);
 
         const gen_image = await axios.post(
           `${process.env.REACT_APP_BACKEND}/generate-image`,

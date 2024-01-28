@@ -1463,7 +1463,7 @@ export async function createNFT(createProps, doAccountCheck) {
   const zip = new JSZip();
   const data = await zip.loadAsync(file);
   const files = data.files["metadata.json"];
-  console.log("all", files, file, data)
+  console.log("all", files, file, data);
   const metadataString = await files.async("string");
   const metadata = JSON.parse(metadataString);
   try {
@@ -2396,14 +2396,14 @@ export async function mintToNear(polyProps) {
   const ipfsJsonData = await createNFT({ ...polyProps });
   dispatch(setLoader("preparing assets for minting"));
 
-  console.log("the json data", ipfsJsonData, mainnet)
+  console.log("the json data", ipfsJsonData, mainnet);
 
   const ids = ipfsJsonData.map((asset) => {
     const uintArray = asset.metadata.data.toLocaleString();
     const id = parseInt(uintArray.slice(0, 7).replace(/,/g, ""));
     return id.toString();
   });
-  console.log("the idss of idss ", ids)
+  console.log("the idss of idss ", ids);
   const arrayMetadata = ipfsJsonData.map((asset) => ({
     title: asset.name,
     description: asset.description,

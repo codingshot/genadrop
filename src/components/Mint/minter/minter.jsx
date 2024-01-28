@@ -430,7 +430,7 @@ const Minter = () => {
     }
 
     if (mintId === "ai") {
-      console.log("IN CAP", aiData)
+      console.log("IN CAP", aiData);
       dispatch(setLoader("Getting image"));
       // const response = await axios.get(aiData.imageUrl, { responseType: 'blob' });
       const response = await axios.post(

@@ -75,25 +75,25 @@ const WalletPopup = ({ handleSetState }) => {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://testnet.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
-          setupNearSnap({ iconUrl: SnapIconUrl}),
+          setupNearSnap({ iconUrl: SnapIconUrl }),
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
-          setupMintbaseWallet({walletUrl: 'https://testnet.wallet.mintbase.xyz'}),
+          setupMintbaseWallet({ walletUrl: "https://testnet.wallet.mintbase.xyz" }),
           setupBitgetWallet({ iconUrl: bitgetWalletIconUrl }),
-          setupNearMobileWallet()
+          setupNearMobileWallet(),
         ];
       } else {
         connectedToNearMainnet.modules = [
           setupMyNearWallet({ walletUrl: "https://app.mynearwallet.com", iconUrl: MyNearIconUrl }),
           setupNearWallet({ iconUrl: NearIconUrl }),
-          setupNearSnap({ iconUrl: SnapIconUrl}),
+          setupNearSnap({ iconUrl: SnapIconUrl }),
           setupSender({ iconUrl: SenderIconUrl }),
           setupMeteorWallet({ iconUrl: MeteorIconUrl }),
           setupHereWallet({ iconUrl: HereWalletIconUrl }),
           setupNightly({ iconUrl: NightlyIcon }),
-          setupMintbaseWallet({walletUrl: 'https://wallet.mintbase.xyz'}),
+          setupMintbaseWallet({ walletUrl: "https://wallet.mintbase.xyz" }),
           setupBitgetWallet({ iconUrl: bitgetWalletIconUrl }),
-          setupNearMobileWallet()
+          setupNearMobileWallet(),
         ];
       }
       const walletSelector = await setupWalletSelector({
