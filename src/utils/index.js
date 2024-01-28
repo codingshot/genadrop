@@ -1276,7 +1276,7 @@ export const handleResetCreate = ({ dispatch }) => {
   dispatch(clearRule());
   dispatch(setNftLayers([]));
   dispatch(setCurrentSession(null));
-  dispatch(setCurrentPlan("agency"));
+  dispatch(setCurrentPlan("pro"));
   dispatch(
     setLayerAction({
       type: "",

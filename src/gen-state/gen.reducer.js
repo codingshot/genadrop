@@ -80,7 +80,7 @@ export const INITIAL_STATE = {
   sessions: [],
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
-  currentPlan: "geeks", // free|noobs|geeks|ogs
+  currentPlan: "pro", // free|noobs|geeks|ogs
   upgradePlan: true,
   actionProgress: {
     totalCount: 0,
