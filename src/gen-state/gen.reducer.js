@@ -80,13 +80,13 @@ export const INITIAL_STATE = {
   sessions: [],
   toggleSessionModal: false,
   toggleCollectionNameModal: false,
-  currentPlan: "free", // free|noobs|geeks|ogs
-  upgradePlan: false,
+  currentPlan: "pro", // free|noobs|geeks|ogs
+  upgradePlan: true,
   actionProgress: {
     totalCount: 0,
     resetCount: true,
   },
-  proposedPlan: "",
+  proposedPlan: "agency",
   minter: "",
   toggleUpgradeModal: "",
   searchContainer: null,

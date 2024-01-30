@@ -31,6 +31,7 @@ import { getAlgoData } from "../NFT-Detail/NFTDetail-script";
 // icons
 import tradePortIcon from "../../assets/tradeport.jpg";
 import fewAndFarIcon from "../../assets/fewandfar.jpg";
+import genadropIcon from "../../assets/Genadrop Icon.svg"
 import avatar from "../../assets/avatar.png";
 
 // Styles
@@ -53,12 +54,13 @@ const List = () => {
     isLoading: true,
     tpNearMarket: false,
     fafNearMarket: false,
+    genadropMarket: false,
     chain: "",
     price: 0,
     image_url: "",
     activeTab: "sell",
   });
-  const { nftDetails, isLoading, price, amount, activeTab, tpNearMarket, fafNearMarket } = state;
+  const { nftDetails, isLoading, price, amount, activeTab, tpNearMarket, fafNearMarket, genadropMarket } = state;
 
   const handleSetState = (payload) => {
     setState((states) => ({ ...states, ...payload }));
@@ -78,7 +80,7 @@ const List = () => {
       );
 
     const listNearProps = {
-      markets: ["market.tradeport.near", "market.fewandfar.near"],
+      markets: [tpNearMarket, fafNearMarket, genadropMarket].filter(mrkt => mrkt),
       tokenId: nftDetails.tokenID,
       price,
       connector,
@@ -104,6 +106,8 @@ const List = () => {
       id: nftDetails.tokenID,
     };
     let listedNFT;
+
+    console.log("outside awaa..", listNearProps)
     if (supportedChains[chainId].chain === "Polygon") {
       listedNFT = await listPolygonNft(listProps);
     } else if (supportedChains[chainId].chain === "Celo") {
@@ -117,7 +121,7 @@ const List = () => {
     } else if (supportedChains[chainId].chain === "Arbitrum") {
       listedNFT = await listArbitrumNft(listProps);
     } else if (supportedChains[chainId].chain === "Near") {
-      if (!tpNearMarket && !fafNearMarket) {
+      if (!(tpNearMarket || fafNearMarket || genadropMarket)) {
         return dispatch(
           setNotification({
             type: "warning",
@@ -125,6 +129,7 @@ const List = () => {
           })
         );
       }
+      console.log("opiiii..", listNearProps)
       return listNearMultipleMarkets(listNearProps);
     } else {
       return history.push(`${match.url}/listed`);
@@ -337,9 +342,19 @@ const List = () => {
                   <div className={classes.marketContent}>
                     <span className={classes.mktSpan}>Select a Near marketplace to list your NFT</span>
                     <div className={classes.marketplaces}>
+                    <button
+                        type="button"
+                        onClick={() => handleSetState({ genadropMarket: genadropMarket ? "" : "market.genadrop.near" })}
+                        className={`${classes.marketBtn} ${genadropMarket && classes.activeMarketBtn}`}
+                      >
+                        <div className={classes.mtxText}>
+                          <img src={genadropIcon} alt="" />
+                          <span>Genadrop</span>
+                        </div>
+                      </button>
                       <button
                         type="button"
-                        onClick={() => handleSetState({ tpNearMarket: !tpNearMarket })}
+                        onClick={() => handleSetState({ tpNearMarket: tpNearMarket ? "" :  "market.tradeport.near"})}
                         className={`${classes.marketBtn} ${tpNearMarket && classes.activeMarketBtn}`}
                       >
                         <div className={classes.mtxText}>
@@ -349,7 +364,7 @@ const List = () => {
                       </button>
                       <button
                         type="button"
-                        onClick={() => handleSetState({ fafNearMarket: !fafNearMarket })}
+                        onClick={() => handleSetState({ fafNearMarket: fafNearMarket ? "" : "market.fewandfar.near" })}
                         className={`${classes.marketBtn} ${fafNearMarket && classes.activeMarketBtn}`}
                       >
                         <div className={classes.mtxText}>
