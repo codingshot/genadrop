@@ -18,7 +18,7 @@ const HeroSection = () => {
         </div>
         <a
           target="_blank"
-          href="https://docs.google.com/forms/d/e/1FAIpQLSeVwZlJOkX_i9g8ogHlB_Jvnt0iYSTsXvzdJygCZx3XZQEnUw/viewform"
+          href="https://t.me/genadrop
           className={classes.applyBtn}
           rel="noreferrer"
         >
