@@ -7,7 +7,7 @@ const EarlyAccess = () => {
   return (
     <div className={classes.container}>
       <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLSeVwZlJOkX_i9g8ogHlB_Jvnt0iYSTsXvzdJygCZx3XZQEnUw/viewform"
+        href="https://t.me/geandrop"
         target="_blank"
         rel="noreferrer"
       >
